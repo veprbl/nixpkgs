@@ -59,7 +59,7 @@ stdenv.mkDerivation rec {
   # without this some applications like blender don't start, but they start
   # with nvidia. This causes them to be symlinked to $out/lib so that they
   # appear in /run/opengl-driver/lib which get's added to LD_LIBRARY_PATH
- extraDRIlibs = [ xorg.libXext ];
+  extraDRIlibs = [ xorg.libXext xorg.libXinerama ];
 
   inherit mesa; # only required to build examples
 
