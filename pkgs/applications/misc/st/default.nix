@@ -1,14 +1,18 @@
-{ stdenv, fetchurl, libX11, ncurses, libXext, libXft }:
+{ stdenv, fetchurl, libX11, ncurses, libXext, libXft, fontconfig }:
 
 stdenv.mkDerivation rec {
-  name = "st-0.3";
+  name = "st-0.4.1";
   
   src = fetchurl {
     url = "http://dl.suckless.org/st/${name}.tar.gz";
-    sha256 = "0d0fjixiis4ixbz4l18rqhnssa7cy2bap3jkjyphqlqhl7lahv3d";
+    sha256 = "0cdzwbm5fxrwz8ryxkh90d3vwx54wjyywgj28ymsb5fdv3396bzf";
   };
+
+  patchPhase = "patch -p0 < ${./solarized_powerline.patch}";
   
-  buildInputs = [ libX11 ncurses libXext libXft ];
+  buildInputs = [ libX11 ncurses libXext libXft fontconfig ];
+
+  NIX_LDFLAGS = "-lfontconfig";
 
   installPhase = ''
     TERMINFO=$out/share/terminfo make install PREFIX=$out
