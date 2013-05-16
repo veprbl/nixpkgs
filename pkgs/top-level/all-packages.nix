@@ -1976,6 +1976,8 @@ let
 
   zsh = callPackage ../shells/zsh { };
 
+  zsh_python = callPackage ../shells/zsh/zpython.nix { };
+
 
   ### DEVELOPMENT / COMPILERS
 

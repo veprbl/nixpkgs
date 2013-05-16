@@ -1,0 +1,20 @@
+--- git-export/Makefile.in	2013-05-16 09:11:02.571106087 +0000
++++ git-export/Makefile.in	2013-05-16 10:26:04.211244842 +0000
+@@ -26,7 +26,7 @@
+ 
+ subdir = .
+ dir_top = .
+-SUBDIRS = Doc Etc Src Test
++SUBDIRS = Etc Src Test
+ 
+ @VERSION_MK@
+ 
+@@ -42,7 +42,7 @@
+ 
+ # default target
+ all: config.h config.modules
+-	@for subdir in Src Doc; do \
++	@for subdir in Src; do \
+ 	  (cd $$subdir && $(MAKE) $(MAKEDEFS) $@) || exit 1; \
+ 	done
+ 
