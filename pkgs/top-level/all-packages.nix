@@ -5361,6 +5361,8 @@ let
 
   xmlsec = callPackage ../development/libraries/xmlsec { };
 
+  ycm_core = callPackage ../development/libraries/ycm_core { }; 
+
   zziplib = callPackage ../development/libraries/zziplib { };
 
 
