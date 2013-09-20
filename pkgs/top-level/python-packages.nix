@@ -1033,7 +1033,7 @@ pythonPackages = modules // import ./python-packages-generated.nix {
       md5 = "18f150e7be96b5fe3c388b0e817b8087";
     };
 
-    buildInputs = [ py ];
+    propagatedBuildInputs = [ py ];
 
     meta = {
       maintainers = [ stdenv.lib.maintainers.iElectric ];
