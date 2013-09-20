@@ -853,6 +853,29 @@ pythonPackages = modules // import ./python-packages-generated.nix {
     };
   };
 
+
+  ColanderAlchemy = buildPythonPackage rec {
+    name = "ColanderAlchemy-0.2.0";
+
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/source/C/ColanderAlchemy/${name}.tar.gz";
+      md5 = "0939fad095b4954b653c0bbe7ff99102";
+    };
+
+    buildInputs = [ unittest2 ];
+    propagatedBuildInputs = [ colander sqlalchemy ];
+
+    # string: argument name cannot be overridden via info kwarg.
+    doCheck = false;
+
+    meta = {
+      description = "Autogenerate Colander schemas based on SQLAlchemy models.";
+      homepage = https://github.com/stefanofontanelli/ColanderAlchemy;
+      license = pkgs.lib.licenses.mit;
+    };
+  };
+
+
   configobj = buildPythonPackage (rec {
     name = "configobj-4.7.2";
 
