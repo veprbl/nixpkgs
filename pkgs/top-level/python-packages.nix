@@ -5434,21 +5434,15 @@ pythonPackages = modules // import ./python-packages-generated.nix {
 
 
   sqlalchemy = buildPythonPackage rec {
-    name = "sqlalchemy-${version}";
-    version = "0.7.10";
+    name = "SQLAlchemy-${version}";
+    version = "0.8.2";
 
     src = fetchurl {
-      url = "http://pypi.python.org/packages/source/S/SQLAlchemy/SQLAlchemy-${version}.tar.gz";
-      sha256 = "0rhxgr85xdhjn467qfs0dkyj8x46zxcv6ad3dfx3w14xbkb3kakp";
+      url = "https://pypi.python.org/packages/source/S/SQLAlchemy/${name}.tar.gz";
+      md5 = "5a33fb43dea93468dbb2a6562ee80b54";
     };
 
-    patches = [
-      # see https://groups.google.com/forum/#!searchin/sqlalchemy/module$20logging$20handlers/sqlalchemy/ukuGhmQ2p6g/2_dOpBEYdDYJ
-      # waiting for 0.7.11 release
-      ../development/python-modules/sqlalchemy-0.7.10-test-failures.patch
-    ];
-
-    buildInputs = [ nose ];
+    buildInputs = [ nose mock ];
 
     propagatedBuildInputs = [ modules.sqlite3 ];
 
