@@ -5453,6 +5453,30 @@ pythonPackages = modules // import ./python-packages-generated.nix {
   };
 
 
+  sqlalchemy_imageattach = buildPythonPackage rec {
+    name = "SQLAlchemy-ImageAttach-${version}";
+    version = "0.8.1";
+
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/source/S/SQLAlchemy-ImageAttach/${name}.tar.gz";
+      md5 = "2d43081b27e486ad66aec394167909e7";
+    };
+
+    buildInputs = [ pytest webob pkgs.imagemagick ];
+    propagatedBuildInputs = [ sqlalchemy wand ];
+
+    # ValueError: Attempted relative import beyond toplevel package
+    doCheck = false;
+    #checkPhase = "LD_LIBRARY_PATH=${pkgs.imagemagick}/lib py.test";
+
+    meta = {
+      homepage = https://github.com/crosspop/sqlalchemy-imageattach;
+      description = "SQLAlchemy extension for attaching images to entity objects";
+      license = pkgs.lib.licenses.mit;
+    };
+  };
+
+
   sqlalchemy_migrate = buildPythonPackage rec {
     name = "sqlalchemy-migrate-0.6.1";
 
