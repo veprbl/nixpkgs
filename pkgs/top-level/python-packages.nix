@@ -5898,6 +5898,25 @@ pythonPackages = modules // import ./python-packages-generated.nix {
     };
   };
 
+
+  wand = buildPythonPackage rec {
+    name = "Wand-0.3.5";
+
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/source/W/Wand/${name}.tar.gz";
+      md5 = "10bab03bf86ce8da2a95a3b15197ae2e";
+    };
+
+    buildInputs = [ pkgs.imagemagick pytest psutil memory_profiler pytest-xdist ];
+
+    meta = {
+      description = "Ctypes-based simple MagickWand API binding for Python";
+      homepage = http://wand-py.org/;
+      platforms = stdenv.lib.platforms.all;
+    };
+  };
+
+
   webob = buildPythonPackage rec {
     version = "1.2.3";
     name = "webob-${version}";
