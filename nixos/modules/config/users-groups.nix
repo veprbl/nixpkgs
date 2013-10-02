@@ -372,9 +372,9 @@ in
             gid = toString ((getGroup u.group).gid);
             h = u.home;
           in ''
-            test -a "${h}" || mkdir "${h}" || true
-            test "`stat -c %u "${h}"`" = ${uid} || chown ${uid} "${h}" || true
-            test "`stat -c %g "${h}"`" = ${gid} || chgrp ${gid} "${h}" || true
+            test -a "${h}" || mkdir -p "${h}" || true
+            test "$(stat -c %u "${h}")" = ${uid} || chown ${uid} "${h}" || true
+            test "$(stat -c %g "${h}")" = ${gid} || chgrp ${gid} "${h}" || true
           '';
       in stringAfter [ "etc" ] ''
         touch /etc/group
