@@ -1574,6 +1574,8 @@ let
 
   openvpn = callPackage ../tools/networking/openvpn { };
 
+  openvpn_learnaddress = callPackage ../tools/networking/openvpn/openvpn_learnaddress.nix { };
+
   optipng = callPackage ../tools/graphics/optipng { };
 
   oslrd = callPackage ../tools/networking/oslrd { };
