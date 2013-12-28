@@ -3140,6 +3140,32 @@ pythonPackages = modules // import ./python-packages-generated.nix {
       [ pkgs.unzip fs gdata python_keyczar mock pyasn1 pycrypto pytest ];
   };
 
+  kippo = buildPythonPackage rec {
+    name = "kippo-${version}";
+    version = "0.8";
+
+    src = fetchurl {
+      url    = "https://kippo.googlecode.com/files/kippo-${version}.tar.gz";
+      sha1 = "f57a5cf88171cb005afe44a4b33cb16f825c33d6";
+    };
+
+    doCheck = false;
+    installCommand= ''
+      mkdir -p $out/share
+      cp -R . $out/share/kippo
+    '';
+
+    meta = with stdenv.lib; {
+        homepage = https://code.google.com/p/kippo;
+        description = "SSH Honeypot";
+        license = licenses.bsd3;
+        platforms = platforms.linux;
+        maintainers = [ maintainers.tomberek ];
+    };
+
+    buildInputs = [ pycrypto pyasn1 twisted ];
+  };
+
   pylast = buildPythonPackage rec {
     name = "pylast-${version}";
     version = "0.5.11";
