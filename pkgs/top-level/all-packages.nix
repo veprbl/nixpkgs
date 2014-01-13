@@ -1452,6 +1452,10 @@ let
 
   networkmanager_openconnect = callPackage ../tools/networking/network-manager/openconnect.nix { gconf = gnome.GConf; };
 
+  networkmanager_firewalld = callPackage ../tools/networking/network-manager/firewalld.nix {
+    slip = pythonPackages.slip;
+  };
+
   networkmanagerapplet = newScope gnome ../tools/networking/network-manager-applet { };
 
   newsbeuter = callPackage ../applications/networking/feedreaders/newsbeuter { };
