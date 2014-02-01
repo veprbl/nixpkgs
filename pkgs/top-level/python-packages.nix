@@ -2611,6 +2611,26 @@ pythonPackages = modules // import ./python-packages-generated.nix {
     };
   };
 
+  fpconst = buildPythonPackage rec {
+    name = "fpconst-0.7.2";
+
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/source/f/fpconst/${name}.tar.gz";
+      md5 = "10ba9e04129af23108d24c22c3a698b1";
+    };
+
+    # error: invalid command 'test'
+    doCheck = false;
+
+    meta = {
+      homepage = http://flexget.com/;
+      description = "Multipurpose automation tool for content like torrents, ...";
+      license = stdenv.lib.licenses.mit;
+      maintainers = [ stdenv.lib.maintainers.iElectric ];
+    };
+  };
+
+
   python_tvrage = buildPythonPackage (rec {
     version = "0.4.1";
     name = "tvrage-${version}";
@@ -3848,6 +3868,33 @@ pythonPackages = modules // import ./python-packages-generated.nix {
       '';
     };
   });
+
+
+  nattraverso = buildPythonPackage rec {
+    name = "nattraverso-0.1.1";
+
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/source/n/nattraverso/${name}.tar.gz";
+      md5 = "96b9c39864db3587effc2859c5cc75b0";
+    };
+
+    # error: invalid command 'test'
+    # doCheck = false;
+
+    preConfigure = ''
+      substituteInPlace setup.py --replace 'not' ""
+    '';
+
+    propagatedBuildInputs = [ twisted soappy ];
+
+    # error: invalid command 'test'
+    doCheck = false;
+
+    meta = {
+      homepage = https://github.com/drkjam/netaddr/;
+      description = "A network address manipulation library for Python";
+    };
+  };
 
 
   netaddr = buildPythonPackage rec {
@@ -6351,6 +6398,24 @@ pythonPackages = modules // import ./python-packages-generated.nix {
   };
 
 
+  soappy = buildPythonPackage rec {
+    name = "SOAPpy-0.12.5";
+
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/source/S/SOAPpy/${name}.tar.gz";
+      md5 = "2eeadc857dc0b7d6d3ba27cb5fdb1e08";
+    };
+
+    propagatedBuildInputs = [ wstools fpconst ];
+
+    meta = {
+      description = "Joyent SmartDataCenter CloudAPI connector using http-signature authentication via Requests";
+      homepage = https://github.com/atl/py-smartdc;
+      license = pkgs.lib.licenses.mit;
+    };
+  };
+
+
   supervisor = buildPythonPackage rec {
     name = "supervisor-3.0";
 
@@ -7160,6 +7225,23 @@ pythonPackages = modules // import ./python-packages-generated.nix {
   });
 
 
+  wsgicors = buildPythonPackage rec {
+    name = "wsgicors-${version}";
+    version = "0.2";
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/source/w/wsgicors/wsgicors-${version}.tar.gz";
+      md5 = "3abd41808913ff74df4c90208c39f3ac";
+    };
+
+    doCheck = false;
+    #buildInputs = [ nose webob ];
+
+    meta = {
+      platforms = stdenv.lib.platforms.all;
+    };
+  };
+
+
   wsgiproxy2 = buildPythonPackage rec {
     name = "WSGIProxy2-0.1";
 
@@ -7169,6 +7251,27 @@ pythonPackages = modules // import ./python-packages-generated.nix {
     };
 
     propagatedBuildInputs = [ six webob ];
+
+    meta = {
+       maintainers = [
+         stdenv.lib.maintainers.garbas
+         stdenv.lib.maintainers.iElectric
+      ];
+      platforms = stdenv.lib.platforms.all;
+    };
+  };
+
+
+  wstools = buildPythonPackage rec {
+    name = "wstools-0.4.3";
+
+    src = fetchurl {
+      url = "https://pypi.python.org/packages/source/w/wstools/${name}.tar.gz";
+      md5 = "82f800f83195519ab6f01304456dadd9";
+    };
+
+    buildInputs = [ pytest virtualenv ];
+    propagatedBuildInputs = [ docutils ];
 
     meta = {
        maintainers = [

@@ -894,6 +894,8 @@ let
 
   fakeroot = callPackage ../tools/system/fakeroot { };
 
+  fakechroot = callPackage ../tools/system/fakechroot { };
+
   fcitx = callPackage ../tools/inputmethods/fcitx { };
 
   fcron = callPackage ../tools/system/fcron { };
@@ -3493,6 +3495,8 @@ let
   libcxxabi = callPackage ../development/libraries/libc++abi { stdenv = pkgs.clangStdenv; };
 
   dejagnu = callPackage ../development/tools/misc/dejagnu { };
+
+  depot_tools = callPackage ../development/tools/misc/depot_tools { };
 
   dfeet = callPackage ../development/tools/misc/d-feet {
     inherit (pythonPackages) pep8;

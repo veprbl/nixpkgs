@@ -110,6 +110,9 @@
       openldap = 99;
       memcached = 100;
       cgminer = 101;
+      systemd-journal-gateway = 102;
+      bitcoin = 103;
+      znc = 104;
 
       # When adding a uid, make sure it doesn't match an existing gid.
 
@@ -199,6 +202,7 @@
       haproxy = 92;
       openldap = 93;
       connman = 94;
+      systemd-journal-gateway = 95;
 
       # When adding a gid, make sure it doesn't match an existing uid.
 

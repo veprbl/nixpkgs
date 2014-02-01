@@ -74,6 +74,8 @@ let
       "systemd-journald.service"
       "systemd-journal-flush.service"
       "syslog.socket"
+      "systemd-journal-gatewayd.socket"
+      "systemd-journal-gatewayd.service"
 
       # SysV init compatibility.
       "systemd-initctl.socket"
@@ -371,7 +373,8 @@ let
       ln -s ../autovt@tty1.service $out/getty.target.wants/
 
       ln -s ../local-fs.target ../remote-fs.target ../network.target ../nss-lookup.target \
-            ../nss-user-lookup.target ../swap.target $out/multi-user.target.wants/
+            ../nss-user-lookup.target ../swap.target ../systemd-journal-gatewayd.service \
+            $out/multi-user.target.wants/
     ''; # */
 
 in
@@ -673,6 +676,8 @@ in
       };
 
     users.extraGroups.systemd-journal.gid = config.ids.gids.systemd-journal;
+    users.extraUsers.systemd-journal-gateway.uid = config.ids.uids.systemd-journal-gateway;
+    users.extraGroups.systemd-journal-gateway.gid = config.ids.gids.systemd-journal-gateway;
 
     # Generate timer units for all services that have a ‘startAt’ value.
     systemd.timers =

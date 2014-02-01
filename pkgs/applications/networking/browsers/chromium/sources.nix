@@ -15,4 +15,9 @@
     url = "http://commondatastorage.googleapis.com/chromium-browser-official/chromium-32.0.1700.102.tar.xz";
     sha256 = "0jxwhd7cd60ivisrnzcglqqnmy99np1vvjqa27y42d852xjx84ys";
   };
+  node = {
+    version = "0.8.4";
+    url = "https://s3.amazonaws.com/node-webkit/v0.8.4/node-webkit-src-v0.8.4.tar.gz";
+    sha256 = "3a41f1b6adce709171d552bbd91e0bd5f02abbfe1f89afc3544385a03b64106a";
+  };
 }

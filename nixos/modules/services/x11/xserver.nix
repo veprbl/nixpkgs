@@ -476,7 +476,7 @@ in
         "-verbose"
         "-terminate"
         "-logfile" "/var/log/X.${toString cfg.display}.log"
-        "-config ${configFile}"
+        "-config /etc/X11/xorg.conf"
         ":${toString cfg.display}" "vt${toString cfg.tty}"
         "-xkbdir" "${pkgs.xkeyboard_config}/etc/X11/xkb"
       ] ++ optional (!cfg.enableTCP) "-nolisten tcp";

@@ -115,6 +115,7 @@
   ./services/mail/postfix.nix
   ./services/mail/spamassassin.nix
   ./services/misc/autofs.nix
+  ./services/misc/bitcoin.nix
   ./services/misc/cgminer.nix
   ./services/misc/dictd.nix
   ./services/misc/disnix.nix
@@ -196,6 +197,7 @@
   ./services/networking/wicd.nix
   ./services/networking/wpa_supplicant.nix
   ./services/networking/xinetd.nix
+  ./services/networking/znc.nix
   ./services/printing/cupsd.nix
   ./services/scheduling/atd.nix
   ./services/scheduling/cron.nix
