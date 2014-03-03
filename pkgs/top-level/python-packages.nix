@@ -9,8 +9,11 @@ modules = python.modules or { readline = null; sqlite3 = null; curses = null; cu
 
 pythonPackages = modules // import ./python-packages-generated.nix {
   inherit pkgs python;
-  inherit (pkgs) stdenv fetchurl;
   self = pythonPackages;
+  overrides = import ./python-overrides.nix {
+    inherit pkgs python;
+    self = pythonPackages;
+  };
 } // rec {
 
   inherit python;
