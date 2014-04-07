@@ -633,6 +633,12 @@ in
       '';
     };
 
+    services.dataPrefix = mkOption {
+      default = "/var";
+      type = types.path;
+      description = '''';
+    };
+
     systemd.enableEmergencyMode = mkOption {
       default = true;
       type = types.bool;
