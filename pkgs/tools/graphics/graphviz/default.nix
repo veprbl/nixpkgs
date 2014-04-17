@@ -2,6 +2,8 @@
 , yacc, libtool, fontconfig, pango, gd, xlibs, gts, gettext, cairo
 }:
 
+with stdenv.lib;
+
 stdenv.mkDerivation rec {
   name = "graphviz-2.36.0";
 
@@ -12,11 +14,12 @@ stdenv.mkDerivation rec {
 
   buildInputs =
     [ pkgconfig libpng libjpeg expat libXaw yacc libtool fontconfig
-      pango gd gts
-    ] ++ stdenv.lib.optionals (xlibs != null) [ xlibs.xlibs xlibs.libXrender ]
-    ++ stdenv.lib.optional (stdenv.system == "x86_64-darwin") gettext;
+      gd gts
+    ] ++ optionals (xlibs != null) [ xlibs.xlibs xlibs.libXrender ]
+    ++ optional (stdenv.isDarwin) gettext
+    ++ optional (!stdenv.isDarwin) pango;
 
-  CPPFLAGS = stdenv.lib.optionalString (stdenv.system == "x86_64-darwin") "-I${cairo}/include/cairo";
+  CPPFLAGS = optionalString (stdenv.isDarwin) "-I${cairo}/include/cairo";
 
   configureFlags =
     [ "--with-pngincludedir=${libpng}/include"
@@ -26,7 +29,7 @@ stdenv.mkDerivation rec {
       "--with-expatincludedir=${expat}/include"
       "--with-expatlibdir=${expat}/lib"
     ]
-    ++ stdenv.lib.optional (xlibs == null) "--without-x";
+    ++ optional (xlibs == null) "--without-x";
 
   preBuild = ''
     sed -e 's@am__append_5 *=.*@am_append_5 =@' -i lib/gvc/Makefile
@@ -35,7 +38,7 @@ stdenv.mkDerivation rec {
   # "command -v" is POSIX, "which" is not
   postInstall = ''
     sed -i 's|`which lefty`|"'$out'/bin/lefty"|' $out/bin/dotty
-    sed -i 's|which|command -v|' $out/bin/vimdot
+    ${optionalString (!stdenv.isDarwin) ''sed -i 's|which|command -v|' $out/bin/vimdot''}
   '';
 
   meta = {
@@ -51,7 +54,7 @@ stdenv.mkDerivation rec {
       interfaces for other technical domains.
     '';
 
-    hydraPlatforms = stdenv.lib.platforms.linux ++ stdenv.lib.platforms.darwin;
-    maintainers = with stdenv.lib.maintainers; [ simons bjornfor ];
+    hydraPlatforms = platforms.linux ++ platforms.darwin;
+    maintainers = with maintainers; [ simons bjornfor offline ];
   };
 }
