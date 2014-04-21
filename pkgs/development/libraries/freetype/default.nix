@@ -31,8 +31,9 @@ stdenv.mkDerivation rec {
       (fetch_bohoomil "infinality-2.5.3.patch" "1df0kcgrns19pi5qc60q1p639wrgwjx8cwc27z9fikf5nqz416c8")
     ;
 
+  propagatedBuildInputs = [ zlib bzip2 libpng ]; # needed when linking against freetype
   # dependence on harfbuzz is looser than the reverse dependence
-  buildInputs = [ pkgconfig which zlib bzip2 libpng ]
+  buildInputs = [ pkgconfig which ]
     # FreeType requires GNU Make, which is not part of stdenv on FreeBSD.
     ++ optional (!stdenv.isLinux) gnumake;
 
