@@ -59,9 +59,9 @@ sub writeNixOSConfig {
     my ($nixosConfigFile) = @_;
 
     my $nixosConfig = <<EOF;
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
-with pkgs.lib;
+with lib;
 
 { boot.isContainer = true;
   security.initialRootPassword = mkDefault "!";
@@ -203,7 +203,7 @@ elsif ($action eq "update") {
 }
 
 elsif ($action eq "login") {
-    exec($socat, "unix:$root/var/lib/login.socket", "-,echo=0,raw");
+    exec("machinectl", "login", "--", $containerName);
 }
 
 elsif ($action eq "root-login") {

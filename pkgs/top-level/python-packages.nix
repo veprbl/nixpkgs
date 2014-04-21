@@ -581,6 +581,34 @@ rec {
   };
 
 
+  bedup = buildPythonPackage rec {
+    name = "bedup-20140206";
+
+    src = fetchgit {
+      url = "https://github.com/g2p/bedup.git";
+      rev = "80cb217d4819a03e159e42850a9a3f14e2b278a3";
+      sha256 = "1rik7a62v708ivfcy0pawhfnrb84b7gm3qr54x6jsxl0iqz078h6";
+    };
+
+    buildInputs = [ pkgs.btrfsProgs ];
+    propagatedBuildInputs = with pkgs; [ contextlib2 sqlalchemy pyxdg pycparser cffi alembic ];
+
+    meta = {
+      description = "Deduplication for Btrfs";
+      longDescription = ''
+        Deduplication for Btrfs. bedup looks for new and changed files, making sure that multiple
+        copies of identical files share space on disk. It integrates deeply with btrfs so that scans
+        are incremental and low-impact.
+      '';
+      homepage = https://github.com/g2p/bedup;
+      license = stdenv.lib.licenses.gpl2;
+
+      platforms = stdenv.lib.platforms.linux;
+
+      maintainers = [ stdenv.lib.maintainers.bluescreen303 ];
+    };
+  };
+
   beets = buildPythonPackage rec {
     name = "beets-1.0.0";
 
@@ -1142,6 +1170,15 @@ rec {
   };
 
 
+  contextlib2 = buildPythonPackage rec {
+    name = "contextlib2-0.4.0";
+
+    src = fetchurl rec {
+      url = "https://pypi.python.org/packages/source/c/contextlib2/${name}.tar.gz";
+      md5 = "ea687207db25f65552061db4a2c6727d";
+    };
+  };
+
   coverage = buildPythonPackage rec {
     name = "coverage-3.6";
 
@@ -1312,6 +1349,7 @@ rec {
     '';
 
     propagatedBuildInputs = [ py ]
+      ++ (optional isPy26 argparse)
       ++ stdenv.lib.optional
         pkgs.config.pythonPackages.pytest.selenium or false
         pythonPackages.selenium;
@@ -3206,6 +3244,24 @@ rec {
     };
 
     propagatedBuildInputs = [ gdata hcs_utils keyring simplejson ];
+  };
+
+  google_api_python_client = buildPythonPackage rec {
+    name = "google-api-python-client-1.2";
+
+    src = fetchurl {
+      url = "https://google-api-python-client.googlecode.com/files/google-api-python-client-1.2.tar.gz";
+      sha256 = "0xd619w71xk4ldmikxqhaaqn985rc2hy4ljgwfp50jb39afg7crw";
+    };
+
+    propagatedBuildInputs = [ httplib2 ];
+
+    meta = with stdenv.lib; {
+      description = "The core Python library for accessing Google APIs";
+      homepage = "https://code.google.com/p/google-api-python-client/";
+      license = licenses.asl20;
+      platforms = platforms.unix;
+    };
   };
 
   greenlet = buildPythonPackage rec {
@@ -5917,7 +5973,7 @@ rec {
     };
 
     buildInputs = with pkgs; [
-      pkgconfig python gtk2 pygtk libxml2 libxslt libsoup webkit_gtk2 icu
+      pkgconfig python gtk2 pygtk libxml2 libxslt libsoup webkitgtk2 icu
     ];
 
     meta = {
@@ -6958,7 +7014,7 @@ rec {
 
     checkPhase = ''
       cd tests
-      export LD_LIBRARY_PATH=${pkgs.imagemagick}/lib
+      export MAGICK_HOME="${pkgs.imagemagick}"
       export PYTHONPATH=$PYTHONPATH:../
       py.test
       cd ..

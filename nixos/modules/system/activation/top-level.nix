@@ -1,6 +1,6 @@
-{ config, pkgs, modules, baseModules, ... }:
+{ config, lib, pkgs, modules, baseModules, ... }:
 
-with pkgs.lib;
+with lib;
 
 let
 
@@ -11,7 +11,7 @@ let
   # you can provide an easy way to boot the same configuration
   # as you use, but with another kernel
   # !!! fix this
-  cloner = inheritParent: list: with pkgs.lib;
+  cloner = inheritParent: list:
     map (childConfig:
       (import ../../../lib/eval-config.nix {
         inherit baseModules;
@@ -68,6 +68,7 @@ let
       echo -n "$configurationName" > $out/configuration-name
       echo -n "systemd ${toString config.systemd.package.interfaceVersion}" > $out/init-interface-version
       echo -n "$nixosVersion" > $out/nixos-version
+      echo -n "$system" > $out/system
 
       mkdir $out/fine-tune
       childCount=0
@@ -108,7 +109,7 @@ let
     configurationName = config.boot.loader.grub.configurationName;
 
     # Needed by switch-to-configuration.
-    perl = "${pkgs.perl}/bin/perl -I${pkgs.perlPackages.FileSlurp}/lib/perl5/site_perl";
+    perl = "${pkgs.perl}/bin/perl -I${pkgs.perlPackages.XMLTwig}/lib/perl5/site_perl -I${pkgs.perlPackages.XMLParser}/lib/perl5/site_perl -I${pkgs.perlPackages.NetDBus}/lib/perl5/site_perl -I${pkgs.perlPackages.FileSlurp}/lib/perl5/site_perl";
   };
 
 

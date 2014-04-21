@@ -1,8 +1,6 @@
 # Test printing via CUPS.
 
-{ pkgs, ... }:
-
-{
+import ./make-test.nix ({pkgs, ... }: {
 
   nodes = {
 
@@ -33,7 +31,9 @@
 
       # Make sure that cups is up on both sides.
       $server->waitForUnit("cupsd.service");
+      $server->waitForUnit("network.target");
       $client->waitForUnit("cupsd.service");
+      $client->waitForUnit("network.target");
       $client->succeed("lpstat -r") =~ /scheduler is running/ or die;
       $client->succeed("lpstat -H") =~ "/var/run/cups/cups.sock" or die;
       $client->succeed("curl --fail http://localhost:631/");
@@ -88,4 +88,4 @@
       }
     '';
 
-}
+})
