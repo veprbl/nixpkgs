@@ -22,6 +22,8 @@ buildPythonPackage rec {
   patches = [ ./gconf.patch ];
 
   postPatch = ''
+    patch -p1 -d .. < "${./youtube-feeds.patch}"
+
     sed -i -e 's/\$(shell which python)/python/' Makefile
     sed -i -e 's|/usr/bin/||' -e 's|/usr||' \
            -e 's/BUILD_TIME[^,]*/BUILD_TIME=0/' setup.py
@@ -55,12 +57,12 @@ buildPythonPackage rec {
     wrapProgram "$out/bin/miro" \
       --prefix GST_PLUGIN_SYSTEM_PATH : "$GST_PLUGIN_SYSTEM_PATH" \
       --prefix GIO_EXTRA_MODULES : "${glib_networking}/lib/gio/modules" \
-      --prefix XDG_DATA_DIRS : "${gsettings_desktop_schemas}/share:$out/share"
+      --prefix XDG_DATA_DIRS : "$GSETTINGS_SCHEMAS_PATH:$out/share"
   '';
 
   buildInputs = [
     pkgconfig pyrex096 ffmpeg boost glib pygobject gtk2 webkitgtk2 libsoup
-    pygtk taglib
+    pygtk taglib gsettings_desktop_schemas
   ];
 
   propagatedBuildInputs = [

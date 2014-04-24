@@ -829,8 +829,6 @@ let
 
   dhcpcd = callPackage ../tools/networking/dhcpcd { };
 
-  dhcpcd_without_udev = callPackage ../tools/networking/dhcpcd { udev = null; };
-
   diffstat = callPackage ../tools/text/diffstat { };
 
   diffutils = callPackage ../tools/text/diffutils { };
@@ -1633,7 +1631,9 @@ let
 
   openvpn_learnaddress = callPackage ../tools/networking/openvpn/openvpn_learnaddress.nix { };
 
-  optipng = callPackage ../tools/graphics/optipng { };
+  optipng = callPackage ../tools/graphics/optipng {
+    libpng = libpng12;
+  };
 
   oslrd = callPackage ../tools/networking/oslrd { };
 
@@ -1833,6 +1833,8 @@ let
   relfs = callPackage ../tools/filesystems/relfs {
     inherit (gnome) gnome_vfs GConf;
   };
+
+  remarkjs = callPackage ../development/web/remarkjs { };
 
   remind = callPackage ../tools/misc/remind { };
 
@@ -2515,10 +2517,10 @@ let
   gcc_realCross = gcc48_realCross;
 
   gccCrossStageStatic = let
-      isMingw = (stdenv.cross.libc == "msvcrt");
-      isMingw64 = isMingw && stdenv.cross.config == "x86_64-w64-mingw32";
-      libcCross1 = if isMingw64 then windows.mingw_w64_headers else
-                   if isMingw then windows.mingw_headers1 else null;
+      libcCross1 =
+        if stdenv.cross.libc == "msvcrt" then windows.mingw_w64_headers
+        else if stdenv.cross.libc == "libSystem" then darwin.xcode
+        else null;
     in
       wrapGCCCross {
       gcc = forceNativeDrv (lib.addMetaAttrs { hydraPlatforms = []; } (
@@ -2638,6 +2640,41 @@ let
     else throw "Multilib gcc not supported on ‘${system}’";
 
   gcc48_debug = lowPrio (wrapGCC (callPackage ../development/compilers/gcc/4.8 {
+    stripped = false;
+
+    inherit noSysDirs;
+    cross = null;
+    libcCross = null;
+    binutilsCross = null;
+  }));
+
+  gcc49 = lowPrio (wrapGCC (callPackage ../development/compilers/gcc/4.9 {
+    inherit noSysDirs;
+
+    # PGO seems to speed up compilation by gcc by ~10%, see #445 discussion
+    profiledCompiler = with stdenv; (!isDarwin && (isi686 || isx86_64));
+
+    # When building `gcc.crossDrv' (a "Canadian cross", with host == target
+    # and host != build), `cross' must be null but the cross-libc must still
+    # be passed.
+    cross = null;
+    libcCross = if crossSystem != null then libcCross else null;
+    libpthreadCross =
+      if crossSystem != null && crossSystem.config == "i586-pc-gnu"
+      then gnu.libpthreadCross
+      else null;
+  }));
+
+  gcc49_multi =
+    if system == "x86_64-linux" then lowPrio (
+      wrapGCCWith (import ../build-support/gcc-wrapper) glibc_multi (gcc49.gcc.override {
+        stdenv = overrideGCC stdenv (wrapGCCWith (import ../build-support/gcc-wrapper) glibc_multi gcc.gcc);
+        profiledCompiler = false;
+        enableMultilib = true;
+      }))
+    else throw "Multilib gcc not supported on ‘${system}’";
+
+  gcc49_debug = lowPrio (wrapGCC (callPackage ../development/compilers/gcc/4.9 {
     stripped = false;
 
     inherit noSysDirs;
@@ -3594,11 +3631,13 @@ let
     gold = false;
   });
 
-  binutilsCross = lowPrio (forceNativeDrv (import ../development/tools/misc/binutils {
-    inherit stdenv fetchurl zlib;
-    noSysDirs = true;
-    cross = assert crossSystem != null; crossSystem;
-  }));
+  binutilsCross =
+    if crossSystem != null && crossSystem.libc == "libSystem" then darwin.cctools
+    else lowPrio (forceNativeDrv (import ../development/tools/misc/binutils {
+      inherit stdenv fetchurl zlib;
+      noSysDirs = true;
+      cross = assert crossSystem != null; crossSystem;
+    }));
 
   bison2 = callPackage ../development/tools/parsing/bison/2.x.nix { };
   bison3 = callPackage ../development/tools/parsing/bison/3.x.nix { };
@@ -3930,6 +3969,8 @@ let
 
   swig2 = callPackage ../development/tools/misc/swig/2.x.nix { };
 
+  swig3 = callPackage ../development/tools/misc/swig/3.x.nix { };
+
   swigWithJava = swig;
 
   swfmill = callPackage ../tools/video/swfmill { };
@@ -3982,6 +4023,8 @@ let
   xc3sprog = callPackage ../development/tools/misc/xc3sprog { };
 
   xmlindent = callPackage ../development/web/xmlindent {};
+
+  xpwn = callPackage ../development/mobile/xpwn {};
 
   xxdiff = callPackage ../development/tools/misc/xxdiff {
     bison = bison2;
@@ -4190,10 +4233,11 @@ let
   dbus_glib       = callPackage ../development/libraries/dbus-glib { };
   dbus_java       = callPackage ../development/libraries/java/dbus-java { };
   dbus_python     = callPackage ../development/python-modules/dbus { };
+
   # Should we deprecate these? Currently there are many references.
-  dbus_tools = dbus.tools;
-  dbus_libs = dbus.libs;
-  dbus_daemon = dbus.daemon;
+  dbus_tools = pkgs.dbus.tools;
+  dbus_libs = pkgs.dbus.libs;
+  dbus_daemon = pkgs.dbus.daemon;
 
   dhex = callPackage ../applications/editors/dhex { };
 
@@ -4406,9 +4450,8 @@ let
   # We can choose:
   libcCrossChooser = name : if name == "glibc" then glibcCross
     else if name == "uclibc" then uclibcCross
-    else if name == "msvcrt" && stdenv.cross.config == "x86_64-w64-mingw32" then
-      windows.mingw_w64
-    else if name == "msvcrt" then windows.mingw_headers3
+    else if name == "msvcrt" then windows.mingw_w64
+    else if name == "libSystem" then darwin.xcode
     else throw "Unknown libc";
 
   libcCross = assert crossSystem != null; libcCrossChooser crossSystem.libc;
@@ -5406,6 +5449,8 @@ let
 
   ming = callPackage ../development/libraries/ming { };
 
+  minizip = callPackage ../development/libraries/minizip { };
+
   minmay = callPackage ../development/libraries/minmay { };
 
   miro = callPackage ../applications/video/miro {
@@ -6153,7 +6198,13 @@ let
     inherit (gnome) libsoup;
   };
 
-  v8 = callPackage ../development/libraries/v8 { inherit (pythonPackages) gyp; };
+  v8 = callPackage ../development/libraries/v8 {
+    inherit (pythonPackages) gyp;
+  };
+
+  v8_3_14 = callPackage ../development/libraries/v8/3.14.nix {
+    inherit (pythonPackages) gyp;
+  };
 
   xmlsec = callPackage ../development/libraries/xmlsec { };
 
@@ -6479,6 +6530,8 @@ let
 
   postfix = callPackage ../servers/mail/postfix { };
 
+  postfix211 = callPackage ../servers/mail/postfix/2.11.nix { };
+
   pulseaudio = callPackage ../servers/pulseaudio {
     gconf = gnome.GConf;
     # The following are disabled in the default build, because if this
@@ -6750,6 +6803,22 @@ let
 
   cramfsswap = callPackage ../os-specific/linux/cramfsswap { };
 
+  darwin = rec {
+    cctools = forceNativeDrv (callPackage ../os-specific/darwin/cctools-port {
+      cross = assert crossSystem != null; crossSystem;
+      inherit maloader;
+      xctoolchain = xcode.toolchain;
+    });
+
+    maloader = callPackage ../os-specific/darwin/maloader {
+      inherit opencflite;
+    };
+
+    opencflite = callPackage ../os-specific/darwin/opencflite {};
+
+    xcode = callPackage ../os-specific/darwin/xcode {};
+  };
+
   devicemapper = lvm2;
 
   dmidecode = callPackage ../os-specific/linux/dmidecode { };
@@ -6867,23 +6936,23 @@ let
   libnl = callPackage ../os-specific/linux/libnl { };
   libnl_3_2_19 = callPackage ../os-specific/linux/libnl/3.2.19.nix { };
 
-  linuxHeaders = linuxHeaders37;
-
   linuxConsoleTools = callPackage ../os-specific/linux/consoletools { };
 
-  linuxHeaders26 = callPackage ../os-specific/linux/kernel-headers/2.6.32.nix { };
+  linuxHeaders = linuxHeaders_3_7;
 
-  linuxHeaders37 = callPackage ../os-specific/linux/kernel-headers/3.7.nix { };
+  linuxHeaders24Cross = forceNativeDrv (import ../os-specific/linux/kernel-headers/2.4.nix {
+    inherit stdenv fetchurl perl;
+    cross = assert crossSystem != null; crossSystem;
+  });
 
   linuxHeaders26Cross = forceNativeDrv (import ../os-specific/linux/kernel-headers/2.6.32.nix {
     inherit stdenv fetchurl perl;
     cross = assert crossSystem != null; crossSystem;
   });
 
-  linuxHeaders24Cross = forceNativeDrv (import ../os-specific/linux/kernel-headers/2.4.nix {
-    inherit stdenv fetchurl perl;
-    cross = assert crossSystem != null; crossSystem;
-  });
+  linuxHeaders_3_7 = callPackage ../os-specific/linux/kernel-headers/3.7.nix { };
+
+  linuxHeaders_3_14 = callPackage ../os-specific/linux/kernel-headers/3.14.nix { };
 
   # We can choose:
   linuxHeadersCrossChooser = ver : if ver == "2.4" then linuxHeaders24Cross
@@ -6892,8 +6961,6 @@ let
 
   linuxHeadersCross = assert crossSystem != null;
     linuxHeadersCrossChooser crossSystem.platform.kernelMajor;
-
-  linuxHeaders_2_6_28 = callPackage ../os-specific/linux/kernel-headers/2.6.28.nix { };
 
   kernelPatches = callPackage ../os-specific/linux/kernel/patches.nix { };
 
@@ -7003,6 +7070,8 @@ let
 
     cryptodev = callPackage ../os-specific/linux/cryptodev { };
 
+    cpupower = callPackage ../os-specific/linux/cpupower { };
+
     e1000e = callPackage ../os-specific/linux/e1000e {};
 
     v4l2loopback = callPackage ../os-specific/linux/v4l2loopback { };
@@ -7046,7 +7115,8 @@ let
 
     psmouse_alps = callPackage ../os-specific/linux/psmouse-alps { };
 
-    spl = callPackage ../os-specific/linux/spl/default.nix { };
+    spl = callPackage ../os-specific/linux/spl { };
+    spl_git = callPackage ../os-specific/linux/spl/git.nix { };
 
     sysdig = callPackage ../os-specific/linux/sysdig {};
 
@@ -7062,7 +7132,8 @@ let
 
     virtualboxGuestAdditions = callPackage ../applications/virtualization/virtualbox/guest-additions { };
 
-    zfs = callPackage ../os-specific/linux/zfs/default.nix { };
+    zfs = callPackage ../os-specific/linux/zfs { };
+    zfs_git = callPackage ../os-specific/linux/zfs/git.nix { };
   };
 
   # Build the kernel modules for the some of the kernels.
@@ -7260,7 +7331,9 @@ let
 
   sysstat = callPackage ../os-specific/linux/sysstat { };
 
-  systemd = callPackage ../os-specific/linux/systemd { };
+  systemd = callPackage ../os-specific/linux/systemd {
+    linuxHeaders = linuxHeaders_3_14;
+  };
 
   systemtap = callPackage ../development/tools/profiling/systemtap {
     inherit (gnome) libglademm;
@@ -7389,6 +7462,10 @@ let
 
     mingw_w64_headers = callPackage ../os-specific/windows/mingw-w64 {
       onlyHeaders = true;
+    };
+
+    mingw_w64_pthreads = callPackage ../os-specific/windows/mingw-w64 {
+      onlyPthreads = true;
     };
 
     pthreads = callPackage ../os-specific/windows/pthread-w32 {
@@ -7745,7 +7822,6 @@ let
 
   chromium = lowPrio (callPackage ../applications/networking/browsers/chromium {
     channel = "stable";
-    gconf = gnome.GConf;
     pulseSupport = config.pulseaudio or true;
   });
 
@@ -8710,6 +8786,7 @@ let
     };
 
   mpv = callPackage ../applications/video/mpv {
+    lua = lua5_1;
     bs2bSupport = true;
     quviSupport = true;
     cacaSupport = true;
@@ -9936,17 +10013,9 @@ let
 
   kakasi = callPackage ../tools/text/kakasi { };
 
-  kde4 = recurseIntoAttrs pkgs.kde411;
+  kde4 = recurseIntoAttrs pkgs.kde412;
 
   kde4_next = recurseIntoAttrs( lib.lowPrioSet pkgs.kde412 );
-
-  kde411 = kdePackagesFor (pkgs.kde411 // {
-      boost = boost149;
-      eigen = eigen2;
-      libotr = libotr_3_2;
-      libusb = libusb1;
-      libcanberra = libcanberra_kde;
-    }) ../desktops/kde-4.11;
 
   kde412 = kdePackagesFor (pkgs.kde412 // {
       eigen = eigen2;
@@ -10440,7 +10509,7 @@ let
 
   ghostscript = callPackage ../misc/ghostscript {
     x11Support = false;
-    cupsSupport = config.ghostscript.cups or true;
+    cupsSupport = config.ghostscript.cups or (!stdenv.isDarwin);
     gnuFork = config.ghostscript.gnu or false;
   };
 
