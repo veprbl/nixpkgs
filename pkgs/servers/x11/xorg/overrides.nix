@@ -73,6 +73,10 @@ in
       '';
   };
 
+  libXfont = attrs: attrs // {
+    propagatedBuildInputs = [ args.freetype ]; # propagate link reqs. like bzip2
+  };
+
   libXxf86vm = attrs: attrs // {
     preConfigure = setMalloc0ReturnsNullCrossCompiling;
   };
