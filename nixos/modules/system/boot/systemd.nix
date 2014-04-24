@@ -408,10 +408,11 @@ let
 
       # Symlink all units provided listed in systemd.packages.
       for i in ${toString cfg.packages}; do
-        files=$(echo $i/etc/systemd/${type}/* $i/lib/systemd/${type}/*)
-        if [ -n "$files" ]; then
-          ln -s $files $out/
-        fi
+        for fn in $i/etc/systemd/${type}/* $i/lib/systemd/${type}/*; do
+          if ! [[ "$fn" =~ .wants$ ]]; then
+            ln -s $fn $out/
+          fi
+        done
       done
 
       # Symlink all units defined by systemd.units. If these are also
@@ -687,10 +688,9 @@ in
 
   config = {
 
-    assertions = mapAttrsToList (name: service: {
-      assertion = service.serviceConfig.Type or "" == "oneshot" -> service.serviceConfig.Restart or "no" == "no";
-      message = "${name}: Type=oneshot services must have Restart=no";
-    }) cfg.services;
+    warnings = concatLists (mapAttrsToList (name: service:
+      optional (service.serviceConfig.Type or "" == "oneshot" && service.serviceConfig.Restart or "no" != "no")
+        "Service ‘${name}.service’ with ‘Type=oneshot’ must have ‘Restart=no’") cfg.services);
 
     system.build.units = cfg.units;
 
