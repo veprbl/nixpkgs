@@ -426,8 +426,6 @@ let
 
   aescrypt = callPackage ../tools/misc/aescrypt { };
 
-  cb1cat = callPackage ../tools/security/cb1cat { };
-
   ahcpd = callPackage ../tools/networking/ahcpd { };
 
   aircrackng = callPackage ../tools/networking/aircrack-ng { };
@@ -491,7 +489,9 @@ let
 
   otool = callPackage ../os-specific/darwin/otool { };
 
-  pass = callPackage ../tools/security/pass { };
+  pass = callPackage ../tools/security/pass {
+    gnupg = gnupg1compat;
+  };
 
   setfile = callPackage ../os-specific/darwin/setfile { };
 
@@ -1503,6 +1503,8 @@ let
 
   netcat-openbsd = callPackage ../tools/networking/netcat-openbsd { };
 
+  nethogs = callPackage ../tools/networking/nethogs { };
+
   netkittftp = callPackage ../tools/networking/netkit/tftp { };
 
   netpbm = callPackage ../tools/graphics/netpbm { };
@@ -2057,6 +2059,10 @@ let
     guile = guile_1_8;
   };
 
+  texmaker = callPackage ../applications/editors/texmaker { };
+
+  texstudio = callPackage ../applications/editors/texstudio { };
+
   tiled-qt = callPackage ../applications/editors/tiled-qt { qt = qt4; };
 
   tinc = callPackage ../tools/networking/tinc { };
@@ -2429,6 +2435,11 @@ let
   clang_32 = wrapClang (clangUnwrapped llvm_32 ../development/compilers/llvm/3.2/clang.nix);
   clang_31 = wrapClang (clangUnwrapped llvm_31 ../development/compilers/llvm/3.1/clang.nix);
 
+  clangAnalyzer = callPackage ../development/tools/analysis/clang-analyzer {
+    clang = clang_34;
+    llvmPackages = llvmPackages_34;
+  };
+
   clangUnwrapped = llvm: pkg: callPackage pkg {
       stdenv = if stdenv.isDarwin
          then stdenvAdapters.overrideGCC stdenv gccApple
@@ -2458,6 +2469,11 @@ let
   closurecompiler = callPackage ../development/compilers/closure { };
 
   cmucl_binary = callPackage ../development/compilers/cmucl/binary.nix { };
+
+  compcert = callPackage_i686 ../development/compilers/compcert {};
+
+  cryptol1 = lowPrio (callPackage ../development/compilers/cryptol/1.8.x.nix {});
+  cryptol2 = haskellPackages.cryptol;
 
   cython = pythonPackages.cython;
   cython3 = python3Packages.cython;
@@ -3156,6 +3172,8 @@ let
     opam_1_0_0 = callPackage ../development/tools/ocaml/opam/1.0.0.nix { };
     opam_1_1 = callPackage ../development/tools/ocaml/opam/1.1.nix { };
     opam = opam_1_1;
+
+    zarith = callPackage ../development/ocaml-modules/zarith { };
   };
 
   ocamlPackages = recurseIntoAttrs ocamlPackages_4_01_0;
@@ -3297,7 +3315,9 @@ let
 
   erlangR14B04 = callPackage ../development/interpreters/erlang/R14B04.nix { };
   erlangR15B03 = callPackage ../development/interpreters/erlang/R15B03.nix { };
-  erlang = callPackage ../development/interpreters/erlang/default.nix { };
+  erlangR16B02 = callPackage ../development/interpreters/erlang/R16B02.nix { };
+  erlangR17 = callPackage ../development/interpreters/erlang/R17.nix { };
+  erlang = erlangR17;
 
   rebar = callPackage ../development/tools/build-managers/rebar { };
 
@@ -3394,6 +3414,15 @@ let
   };
 
   php53 = callPackage ../development/interpreters/php/5.3.nix { };
+
+  php_fpm53 = callPackage ../development/interpreters/php/5.3.nix {
+    config = config // {
+      php = (config.php or {}) // {
+        fpm = true;
+        apxs2 = false;
+      };
+    };
+  };
 
   php54 = callPackage ../development/interpreters/php/5.4.nix { };
 
@@ -3702,13 +3731,15 @@ let
 
   coccinelle = callPackage ../development/tools/misc/coccinelle { };
 
-  framac = callPackage ../development/tools/misc/frama-c { };
+  framac = callPackage ../development/tools/analysis/frama-c { };
 
   cppi = callPackage ../development/tools/misc/cppi { };
 
   cproto = callPackage ../development/tools/misc/cproto { };
 
   cflow = callPackage ../development/tools/misc/cflow { };
+
+  cov-build = callPackage ../development/tools/analysis/cov-build {};
 
   cppcheck = callPackage ../development/tools/analysis/cppcheck { };
 
@@ -4129,6 +4160,8 @@ let
   };
 
   caelum = callPackage ../development/libraries/caelum { };
+
+  capnproto = callPackage ../development/libraries/capnproto { };
 
   scmccid = callPackage ../development/libraries/scmccid { };
 
@@ -6136,6 +6169,7 @@ let
 
   zeromq2 = callPackage ../development/libraries/zeromq/2.x.nix {};
   zeromq3 = callPackage ../development/libraries/zeromq/3.x.nix {};
+  zeromq4 = callPackage ../development/libraries/zeromq/4.x.nix {};
 
 
   ### DEVELOPMENT / LIBRARIES / JAVA
@@ -6328,6 +6362,8 @@ let
 
   pycairo = pythonPackages.pycairo;
 
+  pycapnp = pythonPackages.pycapnp;
+
   pycrypto = pythonPackages.pycrypto;
 
   pycups = callPackage ../development/python-modules/pycups { };
@@ -6452,7 +6488,9 @@ let
 
   dovecot_pigeonhole = callPackage ../servers/mail/dovecot-pigeonhole { };
 
-  ejabberd = callPackage ../servers/xmpp/ejabberd { };
+  ejabberd = callPackage ../servers/xmpp/ejabberd { 
+    erlang = erlangR16B02;
+  };
 
   elasticmq = callPackage ../servers/elasticmq { };
 
@@ -6518,7 +6556,12 @@ let
 
   myserver = callPackage ../servers/http/myserver { };
 
-  nginx = callPackage ../servers/http/nginx { };
+  nginx = callPackage ../servers/http/nginx {
+    rtmp        = true;
+    fullWebDAV  = true;
+    syslog      = true;
+    moreheaders = true;
+  };
 
   ngircd = callPackage ../servers/irc/ngircd { };
 
@@ -7816,9 +7859,7 @@ let
     amdappsdk = amdappsdk28;
   };
 
-  chatzilla = callPackage ../applications/networking/irc/chatzilla {
-    xulrunner = firefox36Pkgs.xulrunner;
-  };
+  chatzilla = callPackage ../applications/networking/irc/chatzilla { };
 
   chromium = lowPrio (callPackage ../applications/networking/browsers/chromium {
     channel = "stable";
@@ -9000,8 +9041,6 @@ let
 
   qemu = callPackage ../applications/virtualization/qemu { };
 
-  qemuImage = callPackage ../applications/virtualization/qemu/linux-img { };
-
   qmmp = callPackage ../applications/audio/qmmp { };
 
   qsampler = callPackage ../applications/audio/qsampler { };
@@ -9610,6 +9649,8 @@ let
 
   qgis = callPackage ../applications/misc/qgis {};
 
+  qtbitcointrader = callPackage ../applications/misc/qtbitcointrader { };
+
   ykpers = callPackage ../applications/misc/ykpers {};
 
   yoshimi = callPackage ../applications/audio/yoshimi {
@@ -9881,6 +9922,8 @@ let
   teeworlds = callPackage ../games/teeworlds { };
 
   tennix = callPackage ../games/tennix { };
+
+  tibia = callPackage ../games/tibia { };
 
   tintin = callPackage ../games/tintin { };
 
@@ -10248,6 +10291,8 @@ let
 
   mathematica = callPackage ../applications/science/math/mathematica { };
 
+  sage = callPackage ../applications/science/math/sage { };
+
   ### SCIENCE/MOLECULAR-DYNAMICS
 
   gromacs = callPackage ../applications/science/molecular-dynamics/gromacs {
@@ -10264,6 +10309,8 @@ let
 
 
   ### SCIENCE/LOGIC
+
+  alt-ergo = callPackage ../applications/science/logic/alt-ergo {};
 
   coq = callPackage ../applications/science/logic/coq {
     inherit (ocamlPackages) findlib lablgtk;
@@ -10307,6 +10354,8 @@ let
 
   logisim = callPackage ../applications/science/logic/logisim {};
 
+  ltl2ba = callPackage ../applications/science/logic/ltl2ba {};
+
   matita = callPackage ../applications/science/logic/matita {
     ocaml = ocaml_3_11_2;
     inherit (ocamlPackages_3_11_2) findlib lablgtk ocaml_expat gmetadom ocaml_http
@@ -10338,6 +10387,12 @@ let
   };
 
   tptp = callPackage ../applications/science/logic/tptp {};
+
+  verifast = callPackage_i686 ../applications/science/logic/verifast {};
+
+  why3 = callPackage ../applications/science/logic/why3 {};
+
+  yices = callPackage ../applications/science/logic/yices {};
 
   z3 = callPackage ../applications/science/logic/z3 {};
 

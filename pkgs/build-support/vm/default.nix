@@ -1117,6 +1117,18 @@ rec {
       packages = commonCentOSPackages;
     };
 
+    rhel7x86_64 = {
+      name = "rhel-7rc-x86_64";
+      fullName = "RHEL 7 rc (x86_64)";
+      packagesList = fetchurl {
+        url = http://ftp.redhat.com/redhat/rhel/rc/7/Server/x86_64/os/repodata/81f41fc6206a8477235dc7b5099ffe0867f71802415d66d6c0a213a41cae27c3-primary.xml.gz;
+        sha256 = "1hr7mqfa84x2q3b6cpa108cgfrq8zsghkdf7blipg13a4331zx41";
+      };
+      urlPrefix = http://ftp.redhat.com/redhat/rhel/rc/7/Server/x86_64/os ;
+      archs = ["noarch" "x86_64"];
+      packages = commonRHELPackages;
+    };
+
   };
 
 
@@ -1510,22 +1522,22 @@ rec {
     };
 
     debian60i386 = {
-      name = "debian-6.0.8-squeeze-i386";
-      fullName = "Debian 6.0.8 Squeeze (i386)";
+      name = "debian-6.0.9-squeeze-i386";
+      fullName = "Debian 6.0.9 Squeeze (i386)";
       packagesList = fetchurl {
         url = mirror://debian/dists/squeeze/main/binary-i386/Packages.bz2;
-        sha256 = "c850339aaf46a4ed4abc7c1789c29ea58c3a152aa173ee004578fda86b28391f";
+        sha256 = "1fb9afa9b2d007939e066c031fc60f6626b78105ce42fe8cdeab7124a0dbf477";
       };
       urlPrefix = mirror://debian;
       packages = commonDebianPackages;
     };
 
     debian60x86_64 = {
-      name = "debian-6.0.8-squeeze-amd64";
-      fullName = "Debian 6.0.8 Squeeze (amd64)";
+      name = "debian-6.0.9-squeeze-amd64";
+      fullName = "Debian 6.0.9 Squeeze (amd64)";
       packagesList = fetchurl {
         url = mirror://debian/dists/squeeze/main/binary-amd64/Packages.bz2;
-        sha256 = "1506ab7de3ad5a2c706183536d2ee88589d7cb922d9e0de36ac062d464082dda";
+        sha256 = "cee46e56f35342c17795d1923b6c7e545f626e8d568fd48f91d5e0eb92ea329e";
       };
       urlPrefix = mirror://debian;
       packages = commonDebianPackages;
@@ -1600,6 +1612,28 @@ rec {
     "perl"
     "pkgconfig"
     "procps"
+    "rpm"
+    "rpm-build"
+    "tar"
+    "unzip"
+  ];
+
+  commonRHELPackages = [
+    "autoconf"
+    "automake"
+    "basesystem"
+    "bzip2"
+    "curl"
+    "diffutils"
+    "findutils"
+    "gawk"
+    "gcc-c++"
+    "gzip"
+    "make"
+    "patch"
+    "perl"
+    "pkgconfig"
+    "procps-ng"
     "rpm"
     "rpm-build"
     "tar"
