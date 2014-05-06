@@ -173,7 +173,7 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
     vector       = self.vector_0_10_9_1;
     xhtml        = self.xhtml_3000_2_1;
     zlib         = self.zlib_0_5_4_1;
-    cabalInstall = self.cabalInstall_1_20_0_0;
+    cabalInstall = self.cabalInstall_1_20_0_1;
     alex         = self.alex_3_1_3;
     haddock      = self.haddock_2_14_2;
     happy        = self.happy_1_19_3;
@@ -502,8 +502,6 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
 
   acidState = callPackage ../development/libraries/haskell/acid-state {};
 
-  Agda = callPackage ../development/libraries/haskell/Agda {};
-
   accelerate = callPackage ../development/libraries/haskell/accelerate {};
 
   accelerateCuda = callPackage ../development/libraries/haskell/accelerate-cuda {};
@@ -721,6 +719,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
 
   cabalFileTh = callPackage ../development/libraries/haskell/cabal-file-th {};
 
+  cabalLenses = callPackage ../development/libraries/haskell/cabal-lenses {};
+
   cabalMacosx = callPackage ../development/libraries/haskell/cabal-macosx {};
 
   cairo = callPackage ../development/libraries/haskell/cairo {
@@ -738,6 +738,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
   caseInsensitive = self.caseInsensitive_1_2_0_0;
 
   cautiousFile = callPackage ../development/libraries/haskell/cautious-file {};
+
+  CCdelcont = callPackage ../development/libraries/haskell/CC-delcont {};
 
   cereal = callPackage ../development/libraries/haskell/cereal {};
 
@@ -816,9 +818,13 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
 
   compactStringFix = callPackage ../development/libraries/haskell/compact-string-fix {};
 
+  composition = callPackage ../development/libraries/haskell/composition {};
+
   concatenative = callPackage ../development/libraries/haskell/concatenative {};
 
   concreteTyperep = callPackage ../development/libraries/haskell/concreteTyperep {};
+
+  cond = callPackage ../development/libraries/haskell/cond {};
 
   conduit = callPackage ../development/libraries/haskell/conduit {};
 
@@ -1011,6 +1017,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
   dns = callPackage ../development/libraries/haskell/dns {};
 
   doctest = callPackage ../development/libraries/haskell/doctest {};
+
+  doctestProp = callPackage ../development/libraries/haskell/doctest-prop {};
 
   dotgen = callPackage ../development/libraries/haskell/dotgen {};
 
@@ -1235,7 +1243,10 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
 
   GlomeVec = callPackage ../development/libraries/haskell/GlomeVec {};
 
-  gloss = callPackage ../development/libraries/haskell/gloss {};
+  gloss = callPackage ../development/libraries/haskell/gloss {
+    OpenGL = self.OpenGL_2_9_1_0;
+    GLUT = self.GLUT_2_5_1_0;
+  };
 
   glossAccelerate = callPackage ../development/libraries/haskell/gloss-accelerate {};
 
@@ -1356,6 +1367,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
   heredoc = callPackage ../development/libraries/haskell/heredoc {};
 
   hexpat = callPackage ../development/libraries/haskell/hexpat {};
+
+  hourglass = callPackage ../development/libraries/haskell/hourglass {};
 
   hseCpp = callPackage ../development/libraries/haskell/hse-cpp {};
 
@@ -1618,6 +1631,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
 
   jsonTypes = callPackage ../development/libraries/haskell/jsonTypes {};
 
+  kanExtensions = callPackage ../development/libraries/haskell/kan-extensions {};
+
   kansasLava = callPackage ../development/libraries/haskell/kansas-lava {};
 
   keys = callPackage ../development/libraries/haskell/keys {};
@@ -1776,6 +1791,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
 
   monadControl = callPackage ../development/libraries/haskell/monad-control {};
 
+  monadCoroutine = callPackage ../development/libraries/haskell/monad-coroutine {};
+
   monadcryptorandom = callPackage ../development/libraries/haskell/monadcryptorandom {};
 
   monadExtras = callPackage ../development/libraries/haskell/monad-extras {};
@@ -1792,6 +1809,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
   monadPar_0_3_4_6 = callPackage ../development/libraries/haskell/monad-par/0.3.4.6.nix {};
   monadPar = self.monadPar_0_3_4_6;
 
+  monadParallel = callPackage ../development/libraries/haskell/monad-parallel {};
+
   monadParExtras = callPackage ../development/libraries/haskell/monad-par-extras {};
 
   monadPeel = callPackage ../development/libraries/haskell/monad-peel {};
@@ -1799,6 +1818,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
   MonadPrompt = callPackage ../development/libraries/haskell/MonadPrompt {};
 
   MonadRandom = callPackage ../development/libraries/haskell/MonadRandom {};
+
+  monadStm = callPackage ../development/libraries/haskell/monad-stm {};
 
   monadsTf = callPackage ../development/libraries/haskell/monads-tf {};
 
@@ -1835,6 +1856,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
   mueval = callPackage ../development/libraries/haskell/mueval {};
 
   multiarg = callPackage ../development/libraries/haskell/multiarg {};
+
+  multimap = callPackage ../development/libraries/haskell/multimap {};
 
   multiplate = callPackage ../development/libraries/haskell/multiplate {};
 
@@ -2077,6 +2100,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
 
   process = callPackage ../development/libraries/haskell/process {};
 
+  profiteur = callPackage ../development/tools/haskell/profiteur {};
+
   preludeExtras = callPackage ../development/libraries/haskell/prelude-extras {};
 
   preprocessorTools_0_1_3 = callPackage ../development/libraries/haskell/preprocessor-tools/0.1.3.nix {};
@@ -2191,6 +2216,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
 
   reflection = callPackage ../development/libraries/haskell/reflection {};
 
+  regexApplicative = callPackage ../development/libraries/haskell/regex-applicative {};
+
   regexBase_0_72_0_2 = callPackage ../development/libraries/haskell/regex-base/0.72.0.2.nix {};
   regexBase_0_93_1   = callPackage ../development/libraries/haskell/regex-base/0.93.1.nix {};
   regexBase_0_93_2   = callPackage ../development/libraries/haskell/regex-base/0.93.2.nix {};
@@ -2242,6 +2269,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
   retry = callPackage ../development/libraries/haskell/retry {};
 
   rethinkdb = callPackage ../development/libraries/haskell/rethinkdb {};
+
+  rex = callPackage ../development/libraries/haskell/rex {};
 
   rfc5051 = callPackage ../development/libraries/haskell/rfc5051 {};
 
@@ -2322,6 +2351,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
   socks = callPackage ../development/libraries/haskell/socks {};
 
   sparse = callPackage ../development/libraries/haskell/sparse {};
+
+  speculation = callPackage ../development/libraries/haskell/speculation {};
 
   spoon = callPackage ../development/libraries/haskell/spoon {};
 
@@ -2445,6 +2476,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
 
   stmConduit = callPackage ../development/libraries/haskell/stm-conduit {};
 
+  stmStats = callPackage ../development/libraries/haskell/stm-stats {};
+
   storableComplex = callPackage ../development/libraries/haskell/storable-complex {};
 
   storableRecord = callPackage ../development/libraries/haskell/storable-record {};
@@ -2558,6 +2591,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
   thespian = callPackage ../development/libraries/haskell/thespian {};
 
   thDesugar = callPackage ../development/libraries/haskell/th-desugar {};
+
+  thExpandSyns = callPackage ../development/libraries/haskell/th-expand-syns {};
 
   thExtras = callPackage ../development/libraries/haskell/th-extras {};
 
@@ -2722,6 +2757,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
 
   vectorThUnbox = callPackage ../development/libraries/haskell/vector-th-unbox {};
 
+  vinyl = callPackage ../development/libraries/haskell/vinyl {};
+
   void = callPackage ../development/libraries/haskell/void {};
 
   vty = callPackage ../development/libraries/haskell/vty {};
@@ -2790,10 +2827,10 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
   word8 = callPackage ../development/libraries/haskell/word8 {};
 
   wreq = callPackage ../development/libraries/haskell/wreq {
-    aeson = self.aeson.override { attoparsec = self.attoparsec_0_11_2_1; };
-    attoparsec = self.attoparsec_0_11_2_1;
+    aeson = self.aeson.override { attoparsec = self.attoparsec_0_11_3_0; };
+    attoparsec = self.attoparsec_0_11_3_0;
     lens = self.lens.override {
-      aeson = self.aeson.override { attoparsec = self.attoparsec_0_11_2_1; };
+      aeson = self.aeson.override { attoparsec = self.attoparsec_0_11_3_0; };
     };
   };
 
@@ -2923,8 +2960,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
 
   # Compilers.
 
-  AgdaExecutable = callPackage ../development/compilers/agda/agda-executable.nix {};
-  AgdaStdlib = callPackage ../development/compilers/agda/agda-stdlib.nix {};
+  Agda = callPackage ../development/compilers/agda/agda.nix {};
+  AgdaStdlib = callPackage ../development/compilers/agda/stdlib.nix {};
 
   uhc = callPackage ../development/compilers/uhc {};
 
@@ -3010,7 +3047,7 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
 
   cryptol = callPackage ../development/compilers/cryptol/2.0.x.nix {
     QuickCheck   = self.QuickCheck_2_7_3;
-    text         = self.text_1_1_0_1;
+    text         = self.text_1_1_1_1;
     cabalInstall = self.cabalInstall_1_18_0_3;
     Cabal        = self.Cabal_1_18_1_3;
   };
@@ -3059,7 +3096,8 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
       ${self.cabal2nix}/bin/cabal2nix ${src + "/${name}.cabal"} --sha256=FILTERME \
           | grep -v FILTERME | sed \
             -e 's/licenses.proprietary/licenses.unfree/' \
-            -e 's/{ cabal/{ cabal, src/' \
+            -e 's/{ cabal/{ cabal, cabalInstall, src/' \
+            -e 's/buildDepends = \[/buildDepends = \[ cabalInstall/' \
             -e 's/pname = \([^\n]*\)/pname = \1\n  inherit src;\n  jailbreak = true;/'  > $out
       '';
 
@@ -3096,7 +3134,7 @@ let result = let callPackage = x : y : modifyPrio (newScope result.finalReturn x
   cabalInstall_1_18_0_3 = callPackage ../tools/package-management/cabal-install/1.18.0.3.nix {
     Cabal = self.Cabal_1_18_1_3;
   };
-  cabalInstall_1_20_0_0 = callPackage ../tools/package-management/cabal-install/1.20.0.0.nix {
+  cabalInstall_1_20_0_1 = callPackage ../tools/package-management/cabal-install/1.20.0.1.nix {
     Cabal = self.Cabal_1_20_0_0;
   };
   cabalInstall = self.cabalInstall_1_20_0_0;
