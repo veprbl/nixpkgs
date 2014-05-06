@@ -1396,7 +1396,7 @@ let
 
   mdbtools = callPackage ../tools/misc/mdbtools { };
 
-  mdbtools_git = callPackage ../tools/misc/mdbtools/git.nix { 
+  mdbtools_git = callPackage ../tools/misc/mdbtools/git.nix {
     inherit (gnome) scrollkeeper;
   };
 
@@ -4279,7 +4279,7 @@ let
   dclib = callPackage ../development/libraries/dclib { };
 
   dillo = callPackage ../applications/networking/browsers/dillo {
-    fltk = fltk13;  
+    fltk = fltk13;
   };
 
   directfb = callPackage ../development/libraries/directfb { };
@@ -5776,6 +5776,8 @@ let
 
   qwt = callPackage ../development/libraries/qwt {};
 
+  qwt6 = callPackage ../development/libraries/qwt/6.nix { };
+
   rabbitmq-c = callPackage ../development/libraries/rabbitmq-c {};
 
   raul = callPackage ../development/libraries/audio/raul { };
@@ -6237,10 +6239,6 @@ let
     inherit (pythonPackages) gyp;
   };
 
-  v8_3_14 = callPackage ../development/libraries/v8/3.14.nix {
-    inherit (pythonPackages) gyp;
-  };
-
   xmlsec = callPackage ../development/libraries/xmlsec { };
 
   zziplib = callPackage ../development/libraries/zziplib { };
@@ -6426,9 +6424,22 @@ let
 
   ### DEVELOPMENT / R MODULES
 
-  buildRPackage = import ../development/r-modules/generic R;
+  R = callPackage ../applications/science/math/R {
+    inherit (xlibs) libX11 libXt;
+    texLive = texLiveAggregationFun { paths = [ texLive texLiveExtra ]; };
+    withRecommendedPackages = false;
+  };
 
-  rPackages = recurseIntoAttrs (import ./r-packages.nix {
+  rWrapper = callPackage ../development/r-modules/wrapper.nix {
+    # Those packages are usually installed as part of the R build.
+    recommendedPackages = with rPackages; [ MASS lattice Matrix nlme
+      survival boot cluster codetools foreign KernSmooth rpart class
+      nnet spatial mgcv ];
+    # Override this attribute to register additional libraries.
+    packages = [];
+  };
+
+  rPackages = recurseIntoAttrs (import ../development/r-modules/cran-packages.nix {
     inherit pkgs;
     overrides = (config.rPackageOverrides or (p: {})) pkgs;
   });
@@ -6489,7 +6500,7 @@ let
 
   dovecot_pigeonhole = callPackage ../servers/mail/dovecot-pigeonhole { };
 
-  ejabberd = callPackage ../servers/xmpp/ejabberd { 
+  ejabberd = callPackage ../servers/xmpp/ejabberd {
     erlang = erlangR16B02;
   };
 
@@ -10015,11 +10026,11 @@ let
   cinnamon = recurseIntoAttrs rec {
     callPackage = newScope pkgs.cinnamon;
     inherit (gnome3) gnome_common libgnomekbd gnome-menus zenity;
-    
+
     muffin = callPackage ../desktops/cinnamon/muffin.nix { } ;
-    
+
     cinnamon-control-center = callPackage ../desktops/cinnamon/cinnamon-control-center.nix{ };
-    
+
     cinnamon-settings-daemon = callPackage ../desktops/cinnamon/cinnamon-settings-daemon.nix{ };
 
     cinnamon-session = callPackage ../desktops/cinnamon/cinnamon-session.nix{ } ;
@@ -10442,11 +10453,6 @@ let
 
   pspp = callPackage ../applications/science/math/pssp {
     inherit (gnome) libglade gtksourceview;
-  };
-
-  R = callPackage ../applications/science/math/R {
-    inherit (xlibs) libX11 libXt;
-    texLive = texLiveAggregationFun { paths = [ texLive texLiveExtra ]; };
   };
 
   singular = callPackage ../applications/science/math/singular {};

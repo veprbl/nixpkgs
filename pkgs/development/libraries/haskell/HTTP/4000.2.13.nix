@@ -12,6 +12,11 @@ cabal.mkDerivation (self: {
     caseInsensitive conduit deepseq httpdShed httpTypes HUnit mtl
     network pureMD5 split testFramework testFrameworkHunit wai warp
   ];
+  jailbreak = true;
+  doCheck = false;
+  preConfigure = self.stdenv.lib.optional (self.stdenv.lib.versionOlder "7.9" self.ghc.version) ''
+    sed -i -e 's|Extensions: |Extensions: FlexibleContexts, |' HTTP.cabal
+  '';
   meta = {
     homepage = "https://github.com/haskell/HTTP";
     description = "A library for client-side HTTP";
