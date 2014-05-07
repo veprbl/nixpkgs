@@ -25,8 +25,8 @@ let
 
   syslog-ext = fetchgit {
     url = https://github.com/yaoweibin/nginx_syslog_patch.git;
-    rev = "165affd9741f0e30c4c8225da5e487d33832aca3";
-    sha256 = "14dkkafjnbapp6jnvrjg9ip46j00cr8pqc2g7374z9aj7hrvdvhs";
+    rev = "3ca5ba65541637f74467038aa032e2586321d0cb";
+    sha256 = "15z9r17lx42fdcw8lalddc86wpabgmc1rqi7f90v4mcirjzrpgyi";
   };
 
   moreheaders-ext = fetchgit {
@@ -43,7 +43,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ openssl zlib pcre libxml2 libxslt
     ] ++ stdenv.lib.optional fullWebDAV expat;
 
-  patches = if syslog then [ "${syslog-ext}/syslog_1.4.0.patch" ] else [];
+  patches = if syslog then [ "${syslog-ext}/syslog-1.5.6.patch" ] else [];
 
   configureFlags = [
     "--with-http_ssl_module"
