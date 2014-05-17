@@ -34,6 +34,19 @@ stdenv.mkDerivation rec {
   # Don't try to write to /var/cache/fontconfig at install time.
   installFlags = "fc_cachedir=$(TMPDIR)/dummy";
 
+
+  /** $out/etc/fonts/* is the root configuration file that
+      sets the default upstream configuration and adds other configs (if available):
+        - nix-specific & machine-specific /etc/fonts-nix/fonts.conf
+        - user-specific $XDG_CONFIG_HOME/fontconfig/fonts.conf
+  */
+  postInstall = ''
+    (
+      cd "$out/etc/fonts"
+      patch < ${./nix-paths.diff}
+    )
+  '';
+
   meta = with stdenv.lib; {
     description = "A library for font customization and configuration";
     homepage = http://fontconfig.org/;
