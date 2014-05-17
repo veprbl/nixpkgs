@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgconfig, which, zlib, bzip2, libpng, gnumake
+{ stdenv, fetchurl, fetchpatch, pkgconfig, which, zlib, bzip2, libpng, gnumake
   # FreeType supports sub-pixel rendering.  This is patented by
   # Microsoft, so it is disabled by default.  This option allows it to
   # be enabled.  See http://www.freetype.org/patents.html.
@@ -8,7 +8,7 @@
 let
   version = "2.5.3";
 
-  fetch_bohoomil = name: sha256: fetchurl {
+  fetch_bohoomil = name: sha256: fetchpatch {
     url = https://raw.githubusercontent.com/bohoomil/fontconfig-ultimate/8a155db28f264520596cc3e76eb44824bdb30f8e/01_freetype2-iu/ + name;
     inherit sha256;
   };
@@ -23,12 +23,12 @@ stdenv.mkDerivation rec {
   };
 
   patches = [ ./enable-validation.patch ] # from Gentoo
-    ++ [
-      (fetch_bohoomil "freetype-2.5.3-pkgconfig.patch" "12z6l1vjix543s9n2hvscl4l1nwkg9gq61h1k0h3qr8v196srsxw")
-      (fetch_bohoomil "fix_segfault_with_harfbuzz.diff" "033vcz0cr5k5zgrz7hdyc4v4q3pli952z95cghx8p75yvahbm9l4")
+    ++ [ #ToDo: hashes have changed :-/
+      (fetch_bohoomil "freetype-2.5.3-pkgconfig.patch" "1dpfdh8kmka3gzv14glz7l79i545zizah6wma937574v5z2iy3nn")
+      (fetch_bohoomil "fix_segfault_with_harfbuzz.diff" "1nx36inqrw717b86cla2miprdb3hii4vndw95k0jbbhfmax9k6fy")
     ]
     ++ optional useEncumberedCode
-      (fetch_bohoomil "infinality-2.5.3.patch" "1df0kcgrns19pi5qc60q1p639wrgwjx8cwc27z9fikf5nqz416c8")
+      (fetch_bohoomil "infinality-2.5.3.patch" "0mxiybcb4wwbicrjiinh1b95rv543bh05sdqk1v0ipr3fxfrb47q")
     ;
 
   propagatedBuildInputs = [ zlib bzip2 libpng ]; # needed when linking against freetype
