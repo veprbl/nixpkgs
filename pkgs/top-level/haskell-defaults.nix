@@ -16,9 +16,11 @@
 
   ghcHEADPrefs = self : super : super // {
     mtl = self.mtl_2_1_3_1;
+    cabalInstall_1_20_0_1 = super.cabalInstall_1_20_0_1.override { Cabal = null; };
   };
 
   ghc782Prefs = self : super : ghcHEADPrefs self super // {
+    cabalInstall_1_20_0_1 = super.cabalInstall_1_20_0_1.override { Cabal = self.Cabal_1_20_0_0; };
   };
 
   ghc763Prefs = self : super : ghc782Prefs self super // {
@@ -50,6 +52,7 @@
 
   ghc722Prefs = self : super : ghc742Prefs self super // {
     deepseq = self.deepseq_1_3_0_2;
+    DrIFT = null;                       # doesn't compile with old GHC versions
     extensibleExceptions = null;        # core package in ghc <= 7.4.x
     haddock = self.haddock_2_9_4;
     syb = self.syb_0_4_0;
@@ -77,6 +80,7 @@
 
   ghc6104Prefs = self : super : ghc6123Prefs self super // {
     alex = self.alex_2_3_5.override { cabal = self.cabal.override { Cabal = self.Cabal; }; };
+    binary = super.binary_0_6_1_0.override { cabal = self.cabal.override { Cabal = self.Cabal; }; };
     Cabal = self.Cabal_1_16_0_3;
     GLUT = self.GLUT_2_2_2_1;
     haddock = self.haddock_2_4_2;

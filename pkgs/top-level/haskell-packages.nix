@@ -227,6 +227,7 @@ self : let callPackage = x : y : modifyPrio (newScope self x y); in
 
   bimap = callPackage ../development/libraries/haskell/bimap {};
 
+  binary_0_6_1_0 = callPackage ../development/libraries/haskell/binary/0.6.1.0.nix {};
   binary_0_7_2_0 = callPackage ../development/libraries/haskell/binary/0.7.2.0.nix {};
   binary = null;                # core package since ghc >= 7.2.x
 
@@ -964,6 +965,8 @@ self : let callPackage = x : y : modifyPrio (newScope self x y); in
 
   hexpat = callPackage ../development/libraries/haskell/hexpat {};
 
+  hgal = callPackage ../development/libraries/haskell/hgal {};
+
   hourglass = callPackage ../development/libraries/haskell/hourglass {};
 
   hseCpp = callPackage ../development/libraries/haskell/hse-cpp {};
@@ -1255,8 +1258,6 @@ self : let callPackage = x : y : modifyPrio (newScope self x y); in
 
   lazysmallcheck = callPackage ../development/libraries/haskell/lazysmallcheck {};
 
-  leksahServer = callPackage ../development/libraries/haskell/leksah/leksah-server.nix {};
-
   lens = callPackage ../development/libraries/haskell/lens {};
 
   lensDatetime = callPackage ../development/libraries/haskell/lens-datetime {};
@@ -1316,8 +1317,6 @@ self : let callPackage = x : y : modifyPrio (newScope self x y); in
   llvmGeneralPure = self.llvmGeneralPure_3_4_2_2;
 
   lrucache = callPackage ../development/libraries/haskell/lrucache {};
-
-  ltk = callPackage ../development/libraries/haskell/ltk {};
 
   lockfreeQueue = callPackage ../development/libraries/haskell/lockfree-queue {};
 
@@ -1491,6 +1490,8 @@ self : let callPackage = x : y : modifyPrio (newScope self x y); in
   networkConduitTls = callPackage ../development/libraries/haskell/network-conduit-tls {};
 
   networkInfo = callPackage ../development/libraries/haskell/network-info {};
+
+  networkMetrics = callPackage ../development/libraries/haskell/network-metrics {};
 
   networkMulticast = callPackage ../development/libraries/haskell/network-multicast {};
 
@@ -1703,8 +1704,6 @@ self : let callPackage = x : y : modifyPrio (newScope self x y); in
   processConduit = callPackage ../development/libraries/haskell/process-conduit {};
 
   processExtras = callPackage ../development/libraries/haskell/process-extras {};
-
-  processLeksah = callPackage ../development/libraries/haskell/leksah/process-leksah.nix {};
 
   prolog = callPackage ../development/libraries/haskell/prolog {};
   prologGraphLib = callPackage ../development/libraries/haskell/prolog-graph-lib {};
@@ -2522,6 +2521,8 @@ self : let callPackage = x : y : modifyPrio (newScope self x y); in
 
   cpphs = callPackage ../development/tools/misc/cpphs {};
 
+  DrIFT = callPackage ../development/tools/haskell/DrIFT {};
+
   haddock_2_4_2 = callPackage ../development/tools/documentation/haddock/2.4.2.nix { Cabal = null; };
   haddock_2_7_2 = callPackage ../development/tools/documentation/haddock/2.7.2.nix { alex = self.alex_2_3_5; };
   haddock_2_9_2 = callPackage ../development/tools/documentation/haddock/2.9.2.nix {};
@@ -2586,8 +2587,6 @@ self : let callPackage = x : y : modifyPrio (newScope self x y); in
   };
 
   idris = callPackage ../development/compilers/idris/wrapper.nix {};
-
-  leksah = callPackage ../applications/editors/leksah {};
 
   nc-indicators = callPackage ../applications/misc/nc-indicators {};
 
