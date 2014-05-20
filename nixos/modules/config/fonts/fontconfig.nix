@@ -27,6 +27,10 @@ with lib;
 
   config = mkIf config.fonts.enableFontConfig {
 
+    #TODO: this is just legacy path, make it contain OLD fontconfig < 2.11 stuff
+    #TODO: add /etc/fonts-nix for minor per-machine modifications
+
+/*
     # Bring in the default (upstream) fontconfig configuration.
     environment.etc."fonts/fonts.conf".source =
       pkgs.makeFontsConf { fontDirectories = config.fonts.fonts; };
@@ -46,12 +50,8 @@ with lib;
 
         </fontconfig>
       '';
-
-    # FIXME: This variable is no longer needed, but we'll keep it
-    # around for a while for applications linked against old
-    # fontconfig builds.
-    environment.variables.FONTCONFIG_FILE = "/etc/fonts/fonts.conf";
-
+*/
+    # have the fc-* tools on PATH
     environment.systemPackages = [ pkgs.fontconfig ];
 
   };

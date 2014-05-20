@@ -19,6 +19,9 @@ with lib;
             # - the default profile
             "/nix/var/nix/profiles/default/lib/X11/fonts"
             "/nix/var/nix/profiles/default/share/fonts"
+            # - the default profile
+            "/run/current-system/sw/lib/X11/fonts"
+            "/run/current-system/sw/share/fonts"
           ];
       };
 
