@@ -707,6 +707,8 @@ let
 
   cabextract = callPackage ../tools/archivers/cabextract { };
 
+  cantata = callPackage ../applications/audio/cantata { };
+
   can-utils = callPackage ../os-specific/linux/can-utils { };
 
   ccid = callPackage ../tools/security/ccid { };
@@ -1439,6 +1441,10 @@ let
   mdbtools_git = callPackage ../tools/misc/mdbtools/git.nix {
     inherit (gnome) scrollkeeper;
   };
+
+  mednafen = callPackage ../misc/emulators/mednafen { };
+
+  mednafen-server = callPackage ../misc/emulators/mednafen/server.nix { };
 
   megacli = callPackage ../tools/misc/megacli { };
 
@@ -2846,7 +2852,7 @@ let
   };
 
   jhc = callPackage ../development/compilers/jhc {
-    inherit (haskellPackages_ghc6123) ghc binary zlib utf8String readline fgl
+    inherit (haskellPackages_ghc763) ghc binary zlib utf8String readline fgl
       regexCompat HsSyck random;
   };
 
@@ -3688,7 +3694,7 @@ let
   binutilsCross =
     if crossSystem != null && crossSystem.libc == "libSystem" then darwin.cctools
     else lowPrio (forceNativeDrv (import ../development/tools/misc/binutils {
-      inherit stdenv fetchurl zlib;
+      inherit stdenv fetchurl zlib bison;
       noSysDirs = true;
       cross = assert crossSystem != null; crossSystem;
     }));
@@ -4262,6 +4268,8 @@ let
   coredumper = callPackage ../development/libraries/coredumper { };
 
   ctl = callPackage ../development/libraries/ctl { };
+
+  cpp-netlib = callPackage ../development/libraries/cpp-netlib { };
 
   cppunit = callPackage ../development/libraries/cppunit { };
 
@@ -6045,9 +6053,7 @@ let
 
   tinyxml2 = callPackage ../development/libraries/tinyxml/2.6.2.nix { };
 
-  tk = callPackage ../development/libraries/tk {
-    libX11 = xlibs.libX11;
-  };
+  tk = callPackage ../development/libraries/tk { };
 
   tnt = callPackage ../development/libraries/tnt { };
 
@@ -7031,6 +7037,8 @@ let
 
   linuxConsoleTools = callPackage ../os-specific/linux/consoletools { };
 
+  # -- Linux kernel expressions ------------------------------------------------
+
   linuxHeaders = linuxHeaders_3_7;
 
   linuxHeaders24Cross = forceNativeDrv (import ../os-specific/linux/kernel-headers/2.4.nix {
@@ -7062,14 +7070,6 @@ let
     kernelPatches = [];
   };
 
-  linux_3_2_apparmor = lowPrio (linux_3_2.override {
-    kernelPatches = [ kernelPatches.apparmor_3_2 ];
-    extraConfig = ''
-      SECURITY_APPARMOR y
-      DEFAULT_SECURITY_APPARMOR y
-    '';
-  });
-
   linux_3_2_xen = lowPrio (linux_3_2.override {
     extraConfig = ''
       XEN_DOM0 y
@@ -7083,14 +7083,6 @@ let
         kernelPatches.mips_fpu_sigill
       ];
   };
-
-  linux_3_4_apparmor = lowPrio (linux_3_4.override {
-    kernelPatches = [ kernelPatches.apparmor_3_4 ];
-    extraConfig = ''
-      SECURITY_APPARMOR y
-      DEFAULT_SECURITY_APPARMOR y
-    '';
-  });
 
   linux_3_6_rpi = makeOverridable (import ../os-specific/linux/kernel/linux-rpi-3.6.nix) {
     inherit fetchurl stdenv perl buildLinux;
@@ -7141,6 +7133,43 @@ let
       ];
   };
 
+  /* grsec configuration
+
+     We build several flavors of 'default' grsec kernels. These are
+     built by default with Hydra. If the user selects a matching
+     'default' flavor, then the pre-canned package set can be
+     chosen. Typically, users will make very basic choices like
+     'security' + 'server' or 'performance' + 'desktop' with
+     virtualisation support. These will then be picked.
+
+     Note: Xen guest kernels are included for e.g. NixOps deployments
+     to EC2, where Xen is the Hypervisor.
+  */
+
+  grFlavors = import ../build-support/grsecurity/flavors.nix;
+
+  mkGrsecurity = opts:
+    (import ../build-support/grsecurity {
+      grsecOptions = opts;
+      inherit pkgs lib;
+    });
+
+  grKernel  = opts: (mkGrsecurity opts).grsecKernel;
+  grPackage = opts: recurseIntoAttrs (mkGrsecurity opts).grsecPackage;
+
+  # Stable kernels
+  linux_grsec_stable_desktop    = grKernel grFlavors.linux_grsec_stable_desktop;
+  linux_grsec_stable_server     = grKernel grFlavors.linux_grsec_stable_server;
+  linux_grsec_stable_server_xen = grKernel grFlavors.linux_grsec_stable_server_xen;
+
+  # Stable+vserver kernels - server versions only
+  #linux_grsec_vserver_server     = grKernel grFlavors.linux_grsec_vserver_server;
+  #linux_grsec_vserver_server_xen = grKernel grFlavors.linux_grsec_vserver_server_xen;
+
+  # Testing kernels
+  linux_grsec_testing_desktop = grKernel grFlavors.linux_grsec_testing_desktop;
+  linux_grsec_testing_server  = grKernel grFlavors.linux_grsec_testing_server;
+  linux_grsec_testing_server_xen = grKernel grFlavors.linux_grsec_testing_server_xen;
 
   /* Linux kernel modules are inherently tied to a specific kernel.  So
      rather than provide specific instances of those packages for a
@@ -7229,24 +7258,39 @@ let
     zfs_git = callPackage ../os-specific/linux/zfs/git.nix { };
   };
 
+  # The current default kernel / kernel modules.
+  linux = linuxPackages.kernel;
+  linuxPackages = linuxPackages_3_12;
+
+  # Update this when adding the newest kernel major version!
+  linux_latest = pkgs.linux_3_14;
+  linuxPackages_latest = pkgs.linuxPackages_3_14;
+
   # Build the kernel modules for the some of the kernels.
   linuxPackages_3_2 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_3_2 linuxPackages_3_2);
-  linuxPackages_3_2_apparmor = linuxPackagesFor pkgs.linux_3_2_apparmor linuxPackages_3_2_apparmor;
   linuxPackages_3_2_xen = linuxPackagesFor pkgs.linux_3_2_xen linuxPackages_3_2_xen;
   linuxPackages_3_4 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_3_4 linuxPackages_3_4);
-  linuxPackages_3_4_apparmor = linuxPackagesFor pkgs.linux_3_4_apparmor linuxPackages_3_4_apparmor;
   linuxPackages_3_6_rpi = linuxPackagesFor pkgs.linux_3_6_rpi linuxPackages_3_6_rpi;
   linuxPackages_3_10 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_3_10 linuxPackages_3_10);
   linuxPackages_3_10_tuxonice = linuxPackagesFor pkgs.linux_3_10_tuxonice linuxPackages_3_10_tuxonice;
   linuxPackages_3_12 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_3_12 linuxPackages_3_12);
   linuxPackages_3_13 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_3_13 linuxPackages_3_13);
   linuxPackages_3_14 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_3_14 linuxPackages_3_14);
-  # Update this when adding a new version!
-  linuxPackages_latest = pkgs.linuxPackages_3_14;
 
-  # The current default kernel / kernel modules.
-  linux = linuxPackages.kernel;
-  linuxPackages = linuxPackages_3_12;
+  # grsecurity flavors
+  # Stable kernels
+  linuxPackages_grsec_stable_desktop    = grPackage grFlavors.linux_grsec_stable_desktop;
+  linuxPackages_grsec_stable_server     = grPackage grFlavors.linux_grsec_stable_server;
+  linuxPackages_grsec_stable_server_xen = grPackage grFlavors.linux_grsec_stable_server_xen;
+
+  # Stable+vserver kernels - server versions only
+  #linuxPackages_grsec_vserver_server     = grPackage grFlavors.linux_grsec_vserver_server;
+  #linuxPackages_grsec_vserver_server_xen = grPackage grFlavors.linux_grsec_vserver_server_xen;
+
+  # Testing kernels
+  linuxPackages_grsec_testing_desktop = grPackage grFlavors.linux_grsec_testing_desktop;
+  linuxPackages_grsec_testing_server  = grPackage grFlavors.linux_grsec_testing_server;
+  linuxPackages_grsec_testing_server_xen = grPackage grFlavors.linux_grsec_testing_server_xen;
 
   # A function to build a manually-configured kernel
   linuxManualConfig = pkgs.buildLinux;
@@ -10391,6 +10435,8 @@ let
 
 
   ### SCIENCE/LOGIC
+
+  abc-verifier = callPackage ../applications/science/logic/abc {};
 
   alt-ergo = callPackage ../applications/science/logic/alt-ergo {};
 
