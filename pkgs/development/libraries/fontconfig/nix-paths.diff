@@ -1,42 +1,8 @@
 diff --git a/fonts.conf b/fonts.conf
-index 5e9daac..89578db 100644
+index 5e9daac..94a91ef 100644
 --- a/fonts.conf
 +++ b/fonts.conf
-@@ -21,6 +21,16 @@
- 	Keith Packard
- -->
- 
-+
-+<!-- Other config files -->
-+	<!-- upstream -->
-+	<include>conf.d</include>
-+	<!-- nix-specific and machine-specific -->
-+	<include ignore_missing="yes">/etc/fonts-nix/fonts.conf</include>
-+	<!-- user-specific -->
-+	<include ignore_missing="yes" prefix="xdg">fontconfig/fonts.conf</include>
-+
-+
- <!-- Font directory list -->
- 
- 	<dir></dir>
-@@ -29,6 +39,16 @@
- 	<!-- the following element will be removed in the future -->
- 	<dir>~/.fonts</dir>
- 
-+
-+<!-- Font cache directory list -->
-+
-+	<cachedir>/var/cache/fontconfig</cachedir>
-+	<cachedir prefix="xdg">fontconfig</cachedir>
-+	<!-- the following element will be removed in the future -->
-+	<cachedir>~/.fontconfig</cachedir>
-+
-+
-+
- <!--
-   Accept deprecated 'mono' alias, replacing it with 'monospace'
- -->
-@@ -65,18 +85,6 @@
+@@ -65,10 +65,11 @@
  		</edit>
  	</match>
  
@@ -44,14 +10,11 @@ index 5e9daac..89578db 100644
 -  Load local system customization file
 --->
 -	<include ignore_missing="yes">conf.d</include>
--
--<!-- Font cache directory list -->
--
--	<cachedir>/var/cache/fontconfig</cachedir>
--	<cachedir prefix="xdg">fontconfig</cachedir>
--	<!-- the following element will be removed in the future -->
--	<cachedir>~/.fontconfig</cachedir>
--
- 	<config>
- <!--
-   These are the default Unicode chars that are expected to be blank
++<!-- Other config files -->
++	<!-- upstream, including ~/.config/fontconfig/{fonts.conf,conf.d/} -->
++	<include>conf.d</include>
++	<!-- nix-specific and machine-specific -->
++	<include ignore_missing="yes">/etc/fonts-nix/fonts.conf</include>
+ 
+ <!-- Font cache directory list -->
+ 
