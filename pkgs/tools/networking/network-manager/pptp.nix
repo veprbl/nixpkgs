@@ -1,5 +1,5 @@
 { stdenv, fetchurl, networkmanager, pptp, ppp, intltool, pkgconfig, substituteAll
-, withGnome ? false, gtk, libgnome_keyring }:
+, withGnome ? true, gtk, libgnome_keyring }:
 
 stdenv.mkDerivation rec {
   name = "${pname}${if withGnome then "-gnome" else ""}-${version}";
