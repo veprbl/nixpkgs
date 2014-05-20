@@ -785,6 +785,8 @@ let
 
   curlftpfs = callPackage ../tools/filesystems/curlftpfs { };
 
+  cutter = callPackage ../tools/networking/cutter { };
+
   dadadodo = builderDefsPackage (import ../tools/text/dadadodo) { };
 
   daq = callPackage ../applications/networking/ids/daq { };
