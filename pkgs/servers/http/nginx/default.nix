@@ -43,7 +43,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ openssl zlib pcre libxml2 libxslt
     ] ++ stdenv.lib.optional fullWebDAV expat;
 
-  patches = if syslog then [ "${syslog-ext}/syslog-1.5.6.patch" ] else [];
+  patches = if syslog then [ "${syslog-ext}/syslog_1.4.0.patch" ] else [];
 
   configureFlags = [
     "--with-http_ssl_module"
