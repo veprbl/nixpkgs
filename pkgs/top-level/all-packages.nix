@@ -3601,7 +3601,7 @@ let
   ruby19 = callPackage ../development/interpreters/ruby/ruby-19.nix { };
   ruby2 = lowPrio (callPackage ../development/interpreters/ruby/ruby-2.0.nix { });
 
-  ruby = ruby19;
+  ruby = ruby2;
 
   rubyLibs = recurseIntoAttrs (callPackage ../development/interpreters/ruby/libs.nix { });
 
@@ -8543,6 +8543,11 @@ let
   fvwm = callPackage ../applications/window-managers/fvwm { };
 
   geany = callPackage ../applications/editors/geany { };
+
+  gitlab = callPackage ../applications/version-management/gitlab {
+    ruby = ruby2;
+    rubyLibs = rubyLibs.override {  };
+  };
 
   gnuradio = callPackage ../applications/misc/gnuradio {
     inherit (pythonPackages) lxml numpy scipy matplotlib pyopengl;
