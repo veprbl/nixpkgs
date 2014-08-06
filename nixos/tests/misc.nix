@@ -1,6 +1,7 @@
 # Miscellaneous small tests that don't warrant their own VM run.
 
 import ./make-test.nix {
+  name = "misc";
 
   machine =
     { config, lib, pkgs, ... }:
@@ -11,8 +12,7 @@ import ./make-test.nix {
       services.nixosManual.enable = mkOverride 0 true;
       systemd.tmpfiles.rules = [ "d /tmp 1777 root root 10d" ];
       fileSystems = mkVMOverride { "/tmp2" =
-        { device = "none";
-          fsType = "tmpfs";
+        { fsType = "tmpfs";
           options = "mode=1777,noauto";
         };
       };
@@ -97,6 +97,10 @@ import ./make-test.nix {
           $machine->fail("grep '/tmp2 tmpfs' /proc/mounts");
           $machine->succeed("touch /tmp2/x");
           $machine->succeed("grep '/tmp2 tmpfs' /proc/mounts");
+      };
+
+      subtest "shell-vars", sub {
+          $machine->succeed('[ -n "$NIX_PATH" ]');
       };
     '';
 

@@ -26,7 +26,12 @@ stdenv.mkDerivation {
     echo Source root reset to ''${sourceRoot}
   '';
 
-  configureFlags = "--disable-debug";
+  preConfigure = ''
+    sed -i -e "s|/bin/sh|${stdenv.shell}|" configure
+  '';
+
+  configureFlags = "--disable-debug" +
+    stdenv.lib.optionalString stdenv.isDarwin " --enable-rpath";
 
   enableParallelBuilding = true;
 

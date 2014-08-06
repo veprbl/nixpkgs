@@ -16,7 +16,7 @@ let
       [ p.mesa_drivers
         p.mesa_noglu # mainly for libGL
         (if cfg.s3tcSupport then p.libtxc_dxtn else p.libtxc_dxtn_s2tc)
-	p.udev
+        p.udev
       ];
   };
 
@@ -84,7 +84,7 @@ in
 
   config = mkIf cfg.enable {
 
-    assertions = pkgs.lib.singleton {
+    assertions = lib.singleton {
       assertion = cfg.driSupport32Bit -> pkgs.stdenv.isx86_64;
       message = "Option driSupport32Bit only makes sense on a 64-bit system.";
     };
@@ -101,7 +101,7 @@ in
         ''}
       '';
 
-    environment.variables.LD_LIBRARY_PATH =
+    environment.sessionVariables.LD_LIBRARY_PATH =
       [ "/run/opengl-driver/lib" "/run/opengl-driver-32/lib" ];
 
     # FIXME: move this into card-specific modules.
