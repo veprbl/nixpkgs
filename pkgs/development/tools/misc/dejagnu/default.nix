@@ -33,7 +33,7 @@ stdenv.mkDerivation rec {
   '';
 
   meta = {
-    description = "The DejaGNU testing framework";
+    description = "Framework for testing other programs";
 
     longDescription = ''
       DejaGnu is a framework for testing other programs.  Its purpose
@@ -47,7 +47,7 @@ stdenv.mkDerivation rec {
     '';
 
     homepage = http://www.gnu.org/software/dejagnu/;
-    license = "GPLv2+";
+    license = stdenv.lib.licenses.gpl2Plus;
 
     platforms = stdenv.lib.platforms.all;
     maintainers = [ stdenv.lib.maintainers.ludo ];

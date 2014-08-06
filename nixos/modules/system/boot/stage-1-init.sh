@@ -4,7 +4,8 @@ targetRoot=/mnt-root
 console=tty1
 
 export LD_LIBRARY_PATH=@extraUtils@/lib
-export PATH=@extraUtils@/bin:@extraUtils@/sbin
+export PATH=@extraUtils@/bin
+ln -s @extraUtils@/bin /bin
 
 
 fail() {
@@ -58,13 +59,14 @@ echo
 mkdir -p /etc
 touch /etc/fstab # to shut up mount
 touch /etc/mtab # to shut up mke2fs
+touch /etc/initrd-release
 mkdir -p /proc
-mount -t proc none /proc
+mount -t proc proc /proc
 mkdir -p /sys
-mount -t sysfs none /sys
-mount -t devtmpfs -o "size=@devSize@" none /dev
+mount -t sysfs sysfs /sys
+mount -t devtmpfs -o "size=@devSize@" devtmpfs /dev
 mkdir -p /run
-mount -t tmpfs -o "mode=0755,size=@runSize@" none /run
+mount -t tmpfs -o "mode=0755,size=@runSize@" tmpfs /run
 
 
 # Process the kernel command line.
@@ -261,6 +263,13 @@ mountFS() {
 
     checkFS "$device" "$fsType"
 
+    # Create backing directories for unionfs-fuse.
+    if [ "$fsType" = unionfs-fuse ]; then
+        for i in $(IFS=:; echo ${options##*,dirs=}); do
+            mkdir -m 0700 -p /mnt-root"${i%=*}"
+        done
+    fi
+
     echo "mounting $device on $mountPoint..."
 
     mkdir -p "/mnt-root$mountPoint" || true
@@ -345,8 +354,8 @@ exec 3>&-
 udevadm control --exit || true
 
 # Kill any remaining processes, just to be sure we're not taking any
-# with us into stage 2. unionfs-fuse mounts require the unionfs process.
-pkill -9 -v '(1|unionfs)'
+# with us into stage 2. But keep storage daemons like unionfs-fuse.
+pkill -9 -v -f '@'
 
 
 if test -n "$debug1mounts"; then fail; fi

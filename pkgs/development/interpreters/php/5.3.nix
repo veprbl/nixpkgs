@@ -104,7 +104,6 @@ composableDerivation.composableDerivation {} ( fixed : let inherit (fixed.fixed)
       gd = {
         configureFlags = [
           "--with-gd=${gd}"
-          "--with-freetype-dir=${freetype}"
           "--with-png-dir=${libpng}"
           "--with-jpeg-dir=${libjpeg}"
         ];
@@ -228,7 +227,7 @@ composableDerivation.composableDerivation {} ( fixed : let inherit (fixed.fixed)
   '' );
 
   src = fetchurl {
-    url = "http://nl1.php.net/get/php-${version}.tar.bz2/from/this/mirror";
+    url = "http://www.php.net/distributions/php-${version}.tar.bz2";
     sha256 = "04w53nn6qacpkd1x381mzd41kqh6k8kjnbyg44yvnkqwcl69db0c";
     name = "php-${version}.tar.bz2";
   };
@@ -241,6 +240,6 @@ composableDerivation.composableDerivation {} ( fixed : let inherit (fixed.fixed)
     platforms   = stdenv.lib.platforms.unix;
   };
 
-  patches = [./fix.patch];
+  patches = [ ./fix.patch ./5.3-freetype-dirs.patch ];
 
 })

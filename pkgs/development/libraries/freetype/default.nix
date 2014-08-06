@@ -2,6 +2,7 @@
   # FreeType supports sub-pixel rendering.  This is patented by
   # Microsoft, so it is disabled by default.  This option allows it to
   # be enabled.  See http://www.freetype.org/patents.html.
+, glib/*passthru only*/
 , useEncumberedCode ? true
 }:
 
@@ -23,7 +24,7 @@ stdenv.mkDerivation rec {
   };
 
   patches = [ ./enable-validation.patch ] # from Gentoo
-    ++ [ #ToDo: hashes have changed :-/
+    ++ [
       (fetch_bohoomil "freetype-2.5.3-pkgconfig.patch" "1dpfdh8kmka3gzv14glz7l79i545zizah6wma937574v5z2iy3nn")
       (fetch_bohoomil "fix_segfault_with_harfbuzz.diff" "1nx36inqrw717b86cla2miprdb3hii4vndw95k0jbbhfmax9k6fy")
     ]
@@ -46,7 +47,10 @@ stdenv.mkDerivation rec {
 
   doCheck = true;
 
-  postInstall = ''ln -s freetype2 "$out"/include/freetype''; # compat hack
+  # compat hacks
+  postInstall = glib.flattenInclude + ''
+    ln -s . "$out"/include/freetype
+  '';
 
   crossAttrs = {
     # Somehow it calls the unwrapped gcc, "i686-pc-linux-gnu-gcc", instead

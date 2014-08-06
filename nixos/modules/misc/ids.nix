@@ -1,19 +1,19 @@
 # This module defines the global list of uids and gids.  We keep a
 # central list to prevent id collisions.
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   options = {
 
-    ids.uids = pkgs.lib.mkOption {
+    ids.uids = lib.mkOption {
       internal = true;
       description = ''
         The user IDs used in NixOS.
       '';
     };
 
-    ids.gids = pkgs.lib.mkOption {
+    ids.gids = lib.mkOption {
       internal = true;
       description = ''
         The group IDs used in NixOS.
@@ -131,6 +131,13 @@
       starbound = 120;
       hydra = 122;
       spiped = 123;
+      teamspeak = 124;
+      influxdb = 125;
+      nsd = 126;
+      gitolite = 127;
+      znc = 128;
+      polipo = 129;
+      mopidy = 130;
 
       # When adding a uid, make sure it doesn't match an existing gid. And don't use uids above 399!
 
@@ -236,6 +243,14 @@
       grsecurity = 121;
       hydra = 122;
       spiped = 123;
+      teamspeak = 124;
+      influxdb = 125;
+      nsd = 126;
+      firebird = 127;
+      znc = 128;
+      polipo = 129;
+      mopidy = 130;
+      docker = 131;
 
       # When adding a gid, make sure it doesn't match an existing uid. And don't use gids above 399!
 

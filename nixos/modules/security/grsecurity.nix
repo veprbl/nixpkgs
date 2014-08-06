@@ -6,9 +6,10 @@ let
   cfg = config.security.grsecurity;
 
   customGrsecPkg =
-    (import ../../../pkgs/build-support/grsecurity
-      { grsecOptions = cfg; }
-    ).grsecPackage;
+    (import ../../../pkgs/build-support/grsecurity {
+      grsecOptions = cfg;
+      inherit pkgs lib;
+    }).grsecPackage;
 in
 {
   options = {
@@ -33,14 +34,6 @@ in
         '';
       };
 
-      vserver = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Enable the stable grsecurity/vserver patches, based on Linux 3.2.
-        '';
-      };
-
       testing = mkOption {
         type = types.bool;
         default = false;
@@ -57,7 +50,7 @@ in
           description = ''
             grsecurity configuration mode. This specifies whether
             grsecurity is auto-configured or otherwise completely
-            manually configured. Can either by
+            manually configured. Can either be
             <literal>custom</literal> or <literal>auto</literal>.
 
             <literal>auto</literal> is recommended.
@@ -71,7 +64,7 @@ in
           description = ''
             grsecurity configuration priority. This specifies whether
             the kernel configuration should emphasize speed or
-            security. Can either by <literal>security</literal> or
+            security. Can either be <literal>security</literal> or
             <literal>performance</literal>.
           '';
         };
@@ -83,7 +76,7 @@ in
           description = ''
             grsecurity system configuration. This specifies whether
             the kernel configuration should be suitable for a Desktop
-            or a Server. Can either by <literal>server</literal> or
+            or a Server. Can either be <literal>server</literal> or
             <literal>desktop</literal>.
           '';
         };
@@ -242,9 +235,6 @@ in
             You must select either the stable or testing patch, not
             both.
           '';
-        }
-        { assertion = (cfg.testing -> !cfg.vserver);
-          message   = "The vserver patches are only supported in the stable kernel.";
         }
         { assertion = (cfg.config.restrictProc -> !cfg.config.restrictProcWithGroup) ||
                       (cfg.config.restrictProcWithGroup -> !cfg.config.restrictProc);

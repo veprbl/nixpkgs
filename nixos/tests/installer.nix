@@ -129,9 +129,10 @@ let
       #$machine->waitForUnit('getty@tty2');
       $machine->waitForUnit("rogue");
       $machine->waitForUnit("nixos-manual");
-      $machine->waitForUnit("dhcpcd");
 
       ${optionalString testChannel ''
+        $machine->waitForUnit("dhcpcd");
+
         # Allow the machine to talk to the fake nixos.org.
         $machine->succeed(
             "rm /etc/hosts",
@@ -145,6 +146,9 @@ let
         $machine->succeed("hello") =~ /Hello, world/
             or die "bad `hello' output";
       ''}
+
+      # Wait for hard disks to appear in /dev
+      $machine->succeed("udevadm settle");
 
       # Partition the disk.
       ${createPartitions}
@@ -161,10 +165,10 @@ let
           "/mnt/etc/nixos/configuration.nix");
 
       # Perform the installation.
-      $machine->succeed("nixos-install >&2");
+      $machine->succeed("nixos-install < /dev/null >&2");
 
       # Do it again to make sure it's idempotent.
-      $machine->succeed("nixos-install >&2");
+      $machine->succeed("nixos-install < /dev/null >&2");
 
       $machine->succeed("umount /mnt/boot || true");
       $machine->succeed("umount /mnt");
@@ -173,7 +177,7 @@ let
       $machine->shutdown;
 
       # Now see if we can boot the installation.
-      my $machine = createMachine({ ${hdFlags} qemuFlags => "${qemuFlags}" });
+      $machine = createMachine({ ${hdFlags} qemuFlags => "${qemuFlags}" });
 
       # Did /boot get mounted?
       $machine->waitForUnit("local-fs.target");
@@ -205,16 +209,17 @@ let
 
       # And just to be sure, check that the machine still boots after
       # "nixos-rebuild switch".
-      my $machine = createMachine({ ${hdFlags} qemuFlags => "${qemuFlags}" });
+      $machine = createMachine({ ${hdFlags} qemuFlags => "${qemuFlags}" });
       $machine->waitForUnit("network.target");
       $machine->shutdown;
     '';
 
 
-  makeInstallerTest =
+  makeInstallerTest = name:
     { createPartitions, testChannel ? false, useEFI ? false, grubVersion ? 2, grubDevice ? "/dev/vda" }:
     makeTest {
       inherit iso;
+      name = "installer-" + name;
       nodes = if testChannel then { inherit webserver; } else { };
       testScript = testScriptFun {
         inherit createPartitions testChannel useEFI grubVersion grubDevice;
@@ -229,7 +234,7 @@ in {
 
   # The (almost) simplest partitioning scheme: a swap partition and
   # one big filesystem partition.
-  simple = makeInstallerTest
+  simple = makeInstallerTest "simple"
     { createPartitions =
         ''
           $machine->succeed(
@@ -247,7 +252,7 @@ in {
     };
 
   # Same as the previous, but now with a separate /boot partition.
-  separateBoot = makeInstallerTest
+  separateBoot = makeInstallerTest "separateBoot"
     { createPartitions =
         ''
           $machine->succeed(
@@ -269,7 +274,7 @@ in {
 
   # Create two physical LVM partitions combined into one volume group
   # that contains the logical swap and root partitions.
-  lvm = makeInstallerTest
+  lvm = makeInstallerTest "lvm"
     { createPartitions =
         ''
           $machine->succeed(
@@ -291,7 +296,7 @@ in {
         '';
     };
 
-  swraid = makeInstallerTest
+  swraid = makeInstallerTest "swraid"
     { createPartitions =
         ''
           $machine->succeed(
@@ -324,7 +329,7 @@ in {
     };
 
   # Test a basic install using GRUB 1.
-  grub1 = makeInstallerTest
+  grub1 = makeInstallerTest "grub1"
     { createPartitions =
         ''
           $machine->succeed(
@@ -344,7 +349,7 @@ in {
     };
 
   # Test an EFI install.
-  efi = makeInstallerTest
+  efi = makeInstallerTest "efi"
     { createPartitions =
         ''
           $machine->succeed(
@@ -365,6 +370,7 @@ in {
   # Rebuild the CD configuration with a little modification.
   rebuildCD = makeTest
     { inherit iso;
+      name = "rebuild-cd";
       nodes = { };
       testScript =
         ''
