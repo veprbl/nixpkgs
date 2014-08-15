@@ -1,12 +1,14 @@
-{ stdenv, fetchurl, setJavaClassPath }:
+{ stdenv, fetchurl, unzip, setJavaClassPath }:
 let
   jdk = stdenv.mkDerivation {
-    name = "openjdk6-b16-24_apr_2009-r1";
+    name = "openjdk7-u60";
 
     src = fetchurl {
-      url = http://landonf.bikemonkey.org/static/soylatte/bsd-dist/openjdk6_darwin/openjdk6-b16-24_apr_2009-r1.tar.bz2;
-      sha256 = "14pbv6jjk95k7hbgiwyvjdjv8pccm7m8a130k0q7mjssf4qmpx1v";
+      url = https://bitbucket.org/alexkasko/openjdk-unofficial-builds/downloads/openjdk-1.7.0-u60-unofficial-macosx-x86_64-image.zip;
+      sha256 = "1syb1sdbqcnbgvch5ygrgvv3l0ki6vxvszr5zq99q3zhr2nbv55l";
     };
+
+    buildInputs = [ unzip ];
 
     installPhase = ''
       mkdir -p $out
