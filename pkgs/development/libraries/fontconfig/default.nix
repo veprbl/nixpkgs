@@ -15,7 +15,8 @@ stdenv.mkDerivation rec {
 
   configureFlags = [
     "--with-cache-dir=/var/cache/fontconfig"
-    "--with-default-fonts="
+    "--with-default-fonts=" #ToDo: put something in there,
+      # as it's used when reading config fails (which isn't resilient)
   ];
 
   # We should find a better way to access the arch reliably.
