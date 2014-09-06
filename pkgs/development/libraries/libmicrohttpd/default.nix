@@ -22,14 +22,14 @@ stdenv.mkDerivation rec {
   doCheck = false;
 
   meta = {
-    description = "GNU libmicrohttpd, an embeddable HTTP server library";
+    description = "Embeddable HTTP server library";
 
     longDescription = ''
       GNU libmicrohttpd is a small C library that is supposed to make
       it easy to run an HTTP server as part of another application.
     '';
 
-    license = "LGPLv2+";
+    license = stdenv.lib.licenses.lgpl2Plus;
 
     homepage = http://www.gnu.org/software/libmicrohttpd/;
 

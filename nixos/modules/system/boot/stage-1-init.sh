@@ -4,7 +4,8 @@ targetRoot=/mnt-root
 console=tty1
 
 export LD_LIBRARY_PATH=@extraUtils@/lib
-export PATH=@extraUtils@/bin:@extraUtils@/sbin
+export PATH=@extraUtils@/bin
+ln -s @extraUtils@/bin /bin
 
 
 fail() {
@@ -60,12 +61,12 @@ touch /etc/fstab # to shut up mount
 touch /etc/mtab # to shut up mke2fs
 touch /etc/initrd-release
 mkdir -p /proc
-mount -t proc none /proc
+mount -t proc proc /proc
 mkdir -p /sys
-mount -t sysfs none /sys
-mount -t devtmpfs -o "size=@devSize@" none /dev
+mount -t sysfs sysfs /sys
+mount -t devtmpfs -o "size=@devSize@" devtmpfs /dev
 mkdir -p /run
-mount -t tmpfs -o "mode=0755,size=@runSize@" none /run
+mount -t tmpfs -o "mode=0755,size=@runSize@" tmpfs /run
 
 
 # Process the kernel command line.
@@ -193,6 +194,9 @@ checkFS() {
     # Don't check ROM filesystems.
     if [ "$fsType" = iso9660 -o "$fsType" = udf ]; then return 0; fi
 
+    # Don't check resilient COWs as they validate the fs structures at mount time
+    if [ "$fsType" = btrfs -o "$fsType" = zfs ]; then return 0; fi
+
     # If we couldn't figure out the FS type, then skip fsck.
     if [ "$fsType" = auto ]; then
         echo 'cannot check filesystem with type "auto"!'
@@ -261,6 +265,13 @@ mountFS() {
     echo "$device /mnt-root$mountPoint $fsType $options" >> /etc/fstab
 
     checkFS "$device" "$fsType"
+
+    # Create backing directories for unionfs-fuse.
+    if [ "$fsType" = unionfs-fuse ]; then
+        for i in $(IFS=:; echo ${options##*,dirs=}); do
+            mkdir -m 0700 -p /mnt-root"${i%=*}"
+        done
+    fi
 
     echo "mounting $device on $mountPoint..."
 

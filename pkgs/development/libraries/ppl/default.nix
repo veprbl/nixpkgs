@@ -13,7 +13,11 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ perl gnum4 ];
   propagatedBuildInputs = [ gmpxx ];
 
-  configureFlags = "--disable-watchdog";
+  configureFlags = [ "--disable-watchdog" ] ++
+    stdenv.lib.optionals stdenv.isDarwin [
+      "CPPFLAGS=-fexceptions"
+      "--disable-ppl_lcdd" "--disable-ppl_lpsol" "--disable-ppl_pips"
+    ];
 
   patches = [ ./upstream-based.patch ];
 
@@ -25,7 +29,7 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
 
   meta = {
-    description = "PPL: The Parma Polyhedra Library";
+    description = "The Parma Polyhedra Library";
 
     longDescription = ''
       The Parma Polyhedra Library (PPL) provides numerical abstractions
@@ -44,7 +48,7 @@ stdenv.mkDerivation rec {
 
     homepage = http://bugseng.com/products/ppl/;
 
-    license = "GPLv3+";
+    license = stdenv.lib.licenses.gpl3Plus;
 
     maintainers = [ ];
   };

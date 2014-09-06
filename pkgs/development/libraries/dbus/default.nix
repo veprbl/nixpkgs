@@ -3,8 +3,8 @@
 , libX11, libICE, libSM, useX11 ? (stdenv.isLinux || stdenv.isDarwin) }:
 
 let
-  version = "1.8.2";
-  sha256 = "025f7dnhr4gy5vcqsvn78x2bk382ldvf4x3ryd9wkbb5250zg2an";
+  version = "1.8.6";
+  sha256 = "0gyjxd0gfpjs3fq5bx6aljb5f3zxky5zsq0yfqr9ywbv03587vgd";
 
   inherit (stdenv) lib;
 
@@ -57,7 +57,7 @@ let
       "--sysconfdir=/etc"
       "--with-session-socket-dir=/tmp"
       "--with-systemdsystemunitdir=$(out)/etc/systemd/system"
-    ];
+    ] ++ lib.optional (!useX11) "--without-x";
 
     enableParallelBuilding = true;
 
@@ -91,7 +91,7 @@ let
       stdenv.lib.optionalString (!stdenv.isDarwin) "-Wl,--as-needed "
       + "-ldbus-1";
 
-    meta.platforms = stdenv.lib.platforms.all;
+    meta.platforms = with stdenv.lib.platforms; allBut darwin;
   };
 
   daemon = tools;

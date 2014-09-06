@@ -10,10 +10,6 @@ rec {
 
 #### Core (http://ftp.acc.umu.se/pub/GNOME/core/)
 
-  at_spi2_atk = callPackage ./core/at-spi2-atk { };
-
-  at_spi2_core = callPackage ./core/at-spi2-core { };
-
   baobab = callPackage ./core/baobab { };
 
   caribou = callPackage ./core/caribou { };
@@ -106,7 +102,7 @@ rec {
 
   gucharmap = callPackage ./core/gucharmap { };
 
-  gvfs = pkgs.gvfs.override { gnome = pkgs.gnome3; };
+  gvfs = pkgs.gvfs.override { gnome = pkgs.gnome3; lightWeight = false; };
 
   eog = callPackage ./core/eog { };
 

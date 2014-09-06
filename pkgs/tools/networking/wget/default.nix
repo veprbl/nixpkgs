@@ -36,7 +36,7 @@ stdenv.mkDerivation rec {
   doCheck = (perl != null);
 
   meta = {
-    description = "GNU Wget, a tool for retrieving files using HTTP, HTTPS, and FTP";
+    description = "Tool for retrieving files using HTTP, HTTPS, and FTP";
 
     longDescription =
       '' GNU Wget is a free software package for retrieving files using HTTP,
@@ -45,7 +45,7 @@ stdenv.mkDerivation rec {
          scripts, cron jobs, terminals without X-Windows support, etc.
       '';
 
-    license = "GPLv3+";
+    license = stdenv.lib.licenses.gpl3Plus;
 
     homepage = http://www.gnu.org/software/wget/;
 

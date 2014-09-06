@@ -34,7 +34,10 @@
 # The difference is that `pythonPath' is not propagated to the user
 # environment.  This is preferrable for programs because it doesn't
 # pollute the user environment.
-,  pythonPath ? []
+, pythonPath ? []
+
+# used to disable derivation, useful for specific python versions
+, disabled ? false
 
 , meta ? {}
 
@@ -46,8 +49,9 @@
 
 , ... } @ attrs:
 
+
 # Keep extra attributes from `attrs`, e.g., `patchPhase', etc.
-python.stdenv.mkDerivation (attrs // {
+if disabled then throw "${name} not supported for interpreter ${python.executable}" else python.stdenv.mkDerivation (attrs // {
   inherit doCheck;
 
   name = namePrefix + name;
@@ -135,8 +139,7 @@ python.stdenv.mkDerivation (attrs // {
     runHook postInstall
   '';
 
-  postFixup =
-    ''
+  postFixup = attrs.postFixup or ''
       wrapPythonPrograms
 
       # If a user installs a Python package, they probably also wants its
@@ -157,12 +160,14 @@ python.stdenv.mkDerivation (attrs // {
     '';
 
   shellHook = attrs.shellHook or ''
-    mkdir -p /tmp/$name/lib/${python.libPrefix}/site-packages
-    ${preShellHook}
-    export PATH="/tmp/$name/bin:$PATH"
-    export PYTHONPATH="/tmp/$name/lib/${python.libPrefix}/site-packages:$PYTHONPATH"
-    python setup.py develop --prefix /tmp/$name
-    ${postShellHook}
+    if test -e setup.py; then
+       mkdir -p /tmp/$name/lib/${python.libPrefix}/site-packages
+       ${preShellHook}
+       export PATH="/tmp/$name/bin:$PATH"
+       export PYTHONPATH="/tmp/$name/lib/${python.libPrefix}/site-packages:$PYTHONPATH"
+       ${python}/bin/${python.executable} setup.py develop --prefix /tmp/$name
+       ${postShellHook}
+    fi
   '';
 
   meta = with lib.maintainers; {

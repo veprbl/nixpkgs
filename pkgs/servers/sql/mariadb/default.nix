@@ -1,18 +1,32 @@
-{ stdenv, fetchurl, cmake, ncurses, openssl, bison, boost, libxml2, libaio, judy, libevent, groff }:
+{ stdenv, fetchurl, cmake, ncurses, openssl, bison, boost, libxml2, libaio, judy, libevent, groff, perl, fixDarwinDylibNames }:
 
 stdenv.mkDerivation rec {
-  name = "mariadb-10.0.10";
+  name = "mariadb-${version}";
+  version = "10.0.13";
 
   src = fetchurl {
-    url = "https://fossies.org/linux/misc/${name}.tar.gz";
-    md5 = "14ce22b8197d4eae88d237776d47220f";
+    url    = "https://downloads.mariadb.org/interstitial/mariadb-${version}/source/mariadb-${version}.tar.gz";
+    sha256 = "039wz89vs03a27anpshj5xaqknm7cqi7mrypvwingqkq26ns0mhs";
   };
 
-  buildInputs = [ cmake ncurses openssl bison boost libxml2 libaio judy libevent groff ];
+  buildInputs = [ cmake ncurses openssl bison boost libxml2 judy libevent groff ]
+     ++ stdenv.lib.optional (!stdenv.isDarwin) libaio
+     ++ stdenv.lib.optionals stdenv.isDarwin [ perl fixDarwinDylibNames ];
 
-  cmakeFlags = [ "-DWITH_READLINE=yes" "-DWITH_EMBEDDED_SERVER=yes" "-DWITHOUT_TOKUDB=1" "-DINSTALL_SCRIPTDIR=bin" ];
+  patches = stdenv.lib.optional stdenv.isDarwin ./my_context_asm.patch;
+
+  cmakeFlags = [ "-DWITH_READLINE=yes" "-DWITH_EMBEDDED_SERVER=yes" "-DINSTALL_SCRIPTDIR=bin" ];
 
   enableParallelBuilding = true;
+
+  prePatch = ''
+    substituteInPlace cmake/libutils.cmake \
+      --replace /usr/bin/libtool libtool
+  '';
+  postInstall = ''
+    substituteInPlace $out/bin/mysql_install_db \
+      --replace basedir=\"\" basedir=\"$out\"
+  '';
 
   passthru.mysqlVersion = "5.5";
 
@@ -20,7 +34,7 @@ stdenv.mkDerivation rec {
     description = "An enhanced, drop-in replacement for MySQL";
     homepage    = https://mariadb.org/;
     license     = stdenv.lib.licenses.gpl2;
-    maintainers = [ stdenv.lib.maintainers.shlevy ];
+    maintainers = with stdenv.lib.maintainers; [ shlevy thoughtpolice ];
     platforms   = stdenv.lib.platforms.all;
   };
 }

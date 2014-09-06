@@ -1,12 +1,13 @@
 # generic builder for Cabal packages
 
 { stdenv, fetchurl, lib, pkgconfig, ghc, Cabal, jailbreakCabal, glibcLocales
-, gnugrep, coreutils
+, gnugrep, coreutils, hscolour
 , enableLibraryProfiling ? false
 , enableSharedLibraries ? false
 , enableSharedExecutables ? false
 , enableStaticLibraries ? true
 , enableCheckPhase ? stdenv.lib.versionOlder "7.4" ghc.version
+, enableHyperlinkSource ? true
 , extension ? (self : super : {})
 }:
 
@@ -17,6 +18,11 @@ let
   optionals             = stdenv.lib.optionals;
   optionalString        = stdenv.lib.optionalString;
   filter                = stdenv.lib.filter;
+
+  defaultSetupHs        = builtins.toFile "Setup.hs" ''
+                            import Distribution.Simple
+                            main = defaultMain
+                          '';
 in
 
 # Cabal shipped with GHC 6.12.4 or earlier doesn't know the "--enable-tests configure" flag.
@@ -28,7 +34,7 @@ assert enableSharedExecutables -> versionOlder "7.4" ghc.version;
 # Our GHC 6.10.x builds do not provide sharable versions of their core libraries.
 assert enableSharedLibraries -> versionOlder "6.12" ghc.version;
 
-# Our GHC 6.10.x builds do not provide sharable versions of their core libraries.
+# Pure shared library builds don't work before GHC 7.8.x.
 assert !enableStaticLibraries -> versionOlder "7.7" ghc.version;
 
 {
@@ -50,6 +56,7 @@ assert !enableStaticLibraries -> versionOlder "7.7" ghc.version;
                 propagatedBuildInputs = filter (y : ! (y == null)) x.propagatedBuildInputs;
                 propagatedUserEnvPkgs = filter (y : ! (y == null)) x.propagatedUserEnvPkgs;
                 doCheck               = enableCheckPhase && x.doCheck;
+                hyperlinkSource       = enableHyperlinkSource && x.hyperlinkSource;
               };
 
         defaults =
@@ -80,9 +87,7 @@ assert !enableStaticLibraries -> versionOlder "7.7" ghc.version;
             # the default download location for Cabal packages is Hackage,
             # you still have to specify the checksum
             src = fetchurl {
-              # cannot use mirrors system because of subtly different directory structures
-              urls = ["http://hackage.haskell.org/packages/archive/${self.pname}/${self.version}/${self.fname}.tar.gz"
-                      "http://hdiff.luite.com/packages/archive/${self.pname}/${self.fname}.tar.gz"];
+              url = "mirror://hackage/${self.pname}/${self.fname}.tar.gz";
               inherit (self) sha256;
             };
 
@@ -92,6 +97,7 @@ assert !enableStaticLibraries -> versionOlder "7.7" ghc.version;
             buildInputs = [ghc Cabal] ++ self.extraBuildInputs;
             extraBuildInputs = self.buildTools ++
                                (optionals self.doCheck self.testDepends) ++
+                               (optional self.hyperlinkSource hscolour) ++
                                (if self.pkgconfigDepends == [] then [] else [pkgconfig]) ++
                                (if self.isLibrary then [] else self.buildDepends ++ self.extraLibraries ++ self.pkgconfigDepends);
 
@@ -140,6 +146,9 @@ assert !enableStaticLibraries -> versionOlder "7.7" ghc.version;
             # and run any regression test suites the package might have
             doCheck = enableCheckPhase;
 
+            # pass the '--hyperlink-source' flag to ./Setup haddock
+            hyperlinkSource = enableHyperlinkSource;
+
             # abort the build if the configure phase detects that the package
             # depends on multiple versions of the same build input
             strictConfigurePhase = true;
@@ -175,9 +184,10 @@ assert !enableStaticLibraries -> versionOlder "7.7" ghc.version;
 
               ${optionalString self.jailbreak "${jailbreakCabal}/bin/jailbreak-cabal ${self.pname}.cabal"}
 
-              for i in Setup.hs Setup.lhs; do
-                test -f $i && ghc --make $i
+              for i in Setup.hs Setup.lhs ${defaultSetupHs}; do
+                test -f $i && break
               done
+              ghc --make -o Setup -odir $TMPDIR $i
 
               for p in $extraBuildInputs $propagatedNativeBuildInputs; do
                 if [ -d "$p/lib/ghc-${ghc.ghc.version}/package.conf.d" ]; then
@@ -195,7 +205,13 @@ assert !enableStaticLibraries -> versionOlder "7.7" ghc.version;
               done
 
               ${optionalString (self.enableSharedExecutables && self.stdenv.isLinux) ''
-                configureFlags+=" --ghc-option=-optl=-Wl,-rpath=$out/lib/${ghc.ghc.name}/${self.pname}-${self.version}";
+                configureFlags+=" --ghc-option=-optl=-Wl,-rpath=$out/lib/${ghc.ghc.name}/${self.pname}-${self.version}"
+              ''}
+              ${optionalString (self.enableSharedExecutables && self.stdenv.isDarwin) ''
+                configureFlags+=" --ghc-option=-optl=-Wl,-headerpad_max_install_names"
+              ''}
+              ${optionalString (versionOlder "7.8" ghc.version) ''
+                configureFlags+=" --ghc-option=-j$NIX_BUILD_CORES"
               ''}
 
               echo "configure flags: $extraConfigureFlags $configureFlags"
@@ -219,7 +235,8 @@ assert !enableStaticLibraries -> versionOlder "7.7" ghc.version;
               ./Setup build ${self.buildTarget}
 
               export GHC_PACKAGE_PATH=$(${ghc.GHCPackages})
-              test -n "$noHaddock" || ./Setup haddock --html --hoogle
+              test -n "$noHaddock" || ./Setup haddock --html --hoogle \
+                  ${optionalString self.hyperlinkSource "--hyperlink-source"}
 
               eval "$postBuild"
             '';
@@ -240,12 +257,12 @@ assert !enableStaticLibraries -> versionOlder "7.7" ghc.version;
 
               ./Setup copy
 
-              ensureDir $out/bin # necessary to get it added to PATH
+              mkdir -p $out/bin # necessary to get it added to PATH
 
               local confDir=$out/lib/ghc-${ghc.ghc.version}/package.conf.d
               local installedPkgConf=$confDir/${self.fname}.installedconf
               local pkgConf=$confDir/${self.fname}.conf
-              ensureDir $confDir
+              mkdir -p $confDir
               ./Setup register --gen-pkg-config=$pkgConf
               if test -f $pkgConf; then
                 echo '[]' > $installedPkgConf
@@ -255,6 +272,13 @@ assert !enableStaticLibraries -> versionOlder "7.7" ghc.version;
               if test -f $out/nix-support/propagated-native-build-inputs; then
                 ln -s $out/nix-support/propagated-native-build-inputs $out/nix-support/propagated-user-env-packages
               fi
+
+              ${optionalString (self.enableSharedExecutables && self.isExecutable && self.stdenv.isDarwin) ''
+                for exe in "$out/bin/"* ; do
+                  install_name_tool -add_rpath \
+                    $out/lib/${ghc.ghc.name}/${self.pname}-${self.version} $exe
+                done
+              ''}
 
               eval "$postInstall"
             '';

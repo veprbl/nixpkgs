@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
   meta = {
     homepage = http://ufraw.sourceforge.net/;
 
-    description = "UFRaw, a utility to read and manipulate raw images from digital cameras";
+    description = "Utility to read and manipulate raw images from digital cameras";
 
     longDescription =
       '' The Unidentified Flying Raw (UFRaw) is a utility to read and
@@ -30,7 +30,7 @@ stdenv.mkDerivation rec {
          the camera's tone curves.
       '';
 
-    license = "GPLv2+";
+    license = stdenv.lib.licenses.gpl2Plus;
 
     maintainers = [ ];
     platforms = stdenv.lib.platforms.gnu;  # needs GTK+

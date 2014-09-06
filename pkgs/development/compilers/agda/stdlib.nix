@@ -1,31 +1,27 @@
-{ cabal, fetchurl, filemanip, Agda }:
+{ stdenv, agda, fetchurl, ghcWithPackages }:
 
-cabal.mkDerivation (self: {
-  pname = "Agda-stdlib";
-  version = "0.7";
+let
+  ghc = ghcWithPackages (s: [ s.filemanip ]);
+in
+agda.mkDerivation (self: rec {
+  name = "Agda-stdlib";
+  version = "0.8.1";
 
   src = fetchurl {
-    url = "http://www.cse.chalmers.se/~nad/software/lib-0.7.tar.gz";
-    sha256 = "1ynjgqk8hhnm6rbngy8fjsrd6i4phj2hlan9bk435bbywbl366k3";
+    url = "https://github.com/agda/agda-stdlib/archive/v${version}.tar.gz";
+    sha256 = "0ij4rg4lk0pq01ing285gbmnn23dcf2rhihdcs8bbdpjg52vl4gf";
   };
 
-  buildDepends = [ filemanip Agda ];
-
-  preConfigure = "cd ffi";
-
-  postInstall = ''
-      mkdir -p $out/share
-      cd ..
-      runhaskell GenerateEverything
-      agda -i . -i src Everything.agda
-      cp -pR src $out/share/agda
+  preConfigure = ''
+    ${ghc}/bin/runhaskell GenerateEverything.hs
   '';
 
-  meta = {
+  topSourceDirectories = [ "src" ];
+
+  meta = with stdenv.lib; {
     homepage = "http://wiki.portal.chalmers.se/agda/pmwiki.php?n=Libraries.StandardLibrary";
     description = "A standard library for use with the Agda compiler.";
     license = "unknown";
-    platforms = self.ghc.meta.platforms;
-    maintainers = [ self.stdenv.lib.maintainers.jwiegley ];
+    maintainers = with maintainers; [ jwiegley ];
   };
 })

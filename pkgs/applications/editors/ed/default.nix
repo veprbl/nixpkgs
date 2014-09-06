@@ -24,7 +24,7 @@ stdenv.mkDerivation rec {
   };
 
   meta = {
-    description = "GNU ed, an implementation of the standard Unix editor";
+    description = "An implementation of the standard Unix editor";
 
     longDescription = ''
       GNU ed is a line-oriented text editor.  It is used to create,
@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
       full-screen editors such as GNU Emacs or GNU Moe.
     '';
 
-    license = "GPLv3+";
+    license = stdenv.lib.licenses.gpl3Plus;
 
     homepage = http://www.gnu.org/software/ed/;
 

@@ -31,7 +31,7 @@ stdenv.mkDerivation rec {
   checkTarget = "test";
 
   meta = {
-    description = "Bigloo, an efficient Scheme compiler";
+    description = "Efficient Scheme compiler";
 
     longDescription = ''
       Bigloo is a Scheme implementation devoted to one goal: enabling
@@ -46,7 +46,7 @@ stdenv.mkDerivation rec {
     '';
 
     homepage = http://www-sop.inria.fr/indes/fp/Bigloo/;
-    license = "GPLv2+";
+    license = stdenv.lib.licenses.gpl2Plus;
 
     maintainers = [ stdenv.lib.maintainers.ludo ];
     platforms = stdenv.lib.platforms.gnu;  # arbitrary choice

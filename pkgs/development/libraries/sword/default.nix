@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
 
-  version = "1.7.2";
+  version = "1.7.3";
 
   name = "sword-${version}";
 
   src = fetchurl {
     url = "http://www.crosswire.org/ftpmirror/pub/sword/source/v1.7/${name}.tar.gz";
-    sha256 = "ac7aace0ecb7a405d4b4b211ee1ae5b2250bb5c57c9197179747c9e830787871";
+    sha256 = "1sm9ivypsx3mraqnziic7qkxjx1b7crvlln0zq6cnpjx2pzqfgas";
   };
 
   buildInputs = [ pkgconfig icu clucene_core curl ];
@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
     description = "A software framework that allows research manipulation of Biblical texts";
     homepage = http://www.crosswire.org/sword/;
     platforms = stdenv.lib.platforms.linux;
-    license = "GPLv2";
+    license = stdenv.lib.licenses.gpl2;
     maintainers = [ stdenv.lib.maintainers.piotr stdenv.lib.maintainers.AndersonTorres ];
   };
 

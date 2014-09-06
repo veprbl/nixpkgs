@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
   };
 
   meta = {
-    description = "GNU libiconv, an iconv(3) implementation";
+    description = "An iconv(3) implementation";
 
     longDescription = ''
       Some programs, like mailers and web browsers, must be able to convert
@@ -34,7 +34,7 @@ stdenv.mkDerivation rec {
     '';
 
     homepage = http://www.gnu.org/software/libiconv/;
-    license = "LGPLv2+";
+    license = stdenv.lib.licenses.lgpl2Plus;
 
     maintainers = [ ];
 

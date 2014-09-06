@@ -5,7 +5,7 @@
 # It is intended to be used in config.nix similarly to:
 #
 # { packageOverrides = pkgs: rec {
-# 
+#
 #   haskellPackages =
 #     let callPackage = pkgs.lib.callPackageWith haskellPackages;
 #     in pkgs.recurseIntoAttrs (pkgs.haskellPackages.override {
@@ -27,6 +27,7 @@
 , cmdargs, conduit, deepseq, filepath, haskellSrcExts, httpTypes
 , parsec, QuickCheck, random, resourcet, safe, shake, tagsoup, text
 , time, transformers, uniplate, vector, vectorAlgorithms, wai, warp
+, fetchurl
 
 , parallel, perl, wget, rehoo, haskellPlatform
 , packages ? haskellPlatform.propagatedUserEnvPkgs
@@ -38,20 +39,23 @@ cabal.mkDerivation (self: rec {
   sha256 = "1rhr7xh4x9fgflcszbsl176r8jq6rm81bwzmbz73f3pa1zf1v0zc";
   isLibrary = true;
   isExecutable = true;
-  buildInputs = [ self.ghc Cabal parallel perl wget rehoo ]
-    ++ self.extraBuildInputs ++ packages;
+  buildInputs = [self.ghc Cabal] ++ self.extraBuildInputs
+    ++ [ parallel perl wget rehoo ] ++ packages;
   buildDepends = [
       aeson binary blazeBuilder Cabal caseInsensitive cmdargs conduit
       deepseq filepath haskellSrcExts httpTypes parsec QuickCheck random
       resourcet safe shake tagsoup text time transformers uniplate vector
-      vectorAlgorithms wai warp parallel perl wget rehoo
+      vectorAlgorithms wai warp
     ];
   testDepends = [ filepath ];
   testTarget = "--test-option=--no-net";
 
   # The tests will fail because of the added documentation.
   doCheck = false;
-  patches = [ ./hoogle-local.diff ];
+  patches = [ ./hoogle-local.diff
+              (fetchurl { url = "https://github.com/ndmitchell/hoogle/commit/5fc294f2b5412fda107c7700f4d833b52f26184c.diff";
+                          sha256 = "1fn52g90p2jsy87gf5rqrcg49s8hfwway5hi4v9i2rpg5mzxaq3i"; })
+            ];
 
   docPackages = packages;
 
@@ -61,7 +65,7 @@ cabal.mkDerivation (self: rec {
         exit 1
     fi
 
-    ensureDir $out/share/hoogle/doc
+    mkdir -p $out/share/hoogle/doc
     export HOOGLE_DOC_PATH=$out/share/hoogle/doc
 
     cd $out/share/hoogle
@@ -112,6 +116,8 @@ cabal.mkDerivation (self: rec {
     description = "Haskell API Search";
     license = self.stdenv.lib.licenses.bsd3;
     platforms = self.ghc.meta.platforms;
-    maintainers = [ self.stdenv.lib.maintainers.andres ];
+    maintainers = [ self.stdenv.lib.maintainers.jwiegley ];
+    hydraPlatforms = self.stdenv.lib.platforms.none;
+    broken = true;
   };
 })

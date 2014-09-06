@@ -1,10 +1,11 @@
-{ stdenv, fetchurl, unzip, fullVariant }:
+{ stdenv, fetchurl, unzip, fullVariant ? false }:
 
 stdenv.mkDerivation rec {
-  name = "crafty-23.4";
+  name = "crafty-${version}";
+  version = "23.4";
   
   src = fetchurl {
-    url = http://www.craftychess.com/crafty-23.4.zip;
+    url = "http://www.craftychess.com/crafty-${version}.zip";
     sha256 = "0rhf4pfxcwj8hqd7bqj98fpdd80v6ss1jnc9kgwx2fw4ksdi37pl";
   };
 
@@ -620,10 +621,10 @@ stdenv.mkDerivation rec {
            else "make";
 
   installPhase = ''
-    ensureDir $out/bin
+    mkdir -p $out/bin
     cp -p ./crafty $out/bin
 
-    ensureDir $out/share/crafty
+    mkdir -p $out/share/crafty
     cd $out/share/crafty
 
     $out/bin/crafty "books create ${startPgn} 60"
@@ -634,7 +635,7 @@ stdenv.mkDerivation rec {
         $out/bin/crafty "book create enormous.pgn 60"
         rm -f *.001 enormous.pgn
         
-        ensureDir $out/share/crafty/TB
+        mkdir -p $out/share/crafty/TB
         ${stdenv.lib.fold
           (tb: acc: acc + "\nln -s "
                         + toString tb
@@ -658,8 +659,9 @@ stdenv.mkDerivation rec {
 
   meta = {
     homepage = http://www.craftychess.com/;
-    description = "Crafty is a free, open-source computer chess program developed by Dr. Robert M. Hyatt";
+    description = "Chess program developed by Dr. Robert M. Hyatt";
     license = stdenv.lib.licenses.unfree;
+    platforms = stdenv.lib.platforms.unix;
     maintainers = [ stdenv.lib.maintainers.jwiegley ];
   };
 }

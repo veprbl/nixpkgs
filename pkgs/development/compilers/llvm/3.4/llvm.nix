@@ -15,7 +15,7 @@
 }:
 
 let
-  src = fetch "llvm" "0fprxrilnlwk9qv7f0kplxc7kd8mp4x781asssv2nfi4r9pbna3x";
+  src = fetch "llvm" "1mzgy7r0dma0npi1qrbr1s5n4nbj1ipxgbiw0q671l4s0r3qs0qp";
 in stdenv.mkDerivation rec {
   name = "llvm-${version}";
 
@@ -36,14 +36,24 @@ in stdenv.mkDerivation rec {
     mkdir -p $out/
     ln -sv $PWD/lib $out
   '';
-  postBuild = "rm -fR $out";
 
   cmakeFlags = with stdenv; [
     "-DCMAKE_BUILD_TYPE=Release"
+    "-DLLVM_BUILD_TESTS=ON"
     "-DLLVM_ENABLE_FFI=ON"
     "-DLLVM_BINUTILS_INCDIR=${binutils}/include"
     "-DCMAKE_CXX_FLAGS=-std=c++11"
   ] ++ stdenv.lib.optional (!isDarwin) "-DBUILD_SHARED_LIBS=ON";
+
+  postBuild = ''
+    rm -fR $out
+
+    paxmark m bin/{lli,llvm-rtdyld}
+
+    paxmark m unittests/ExecutionEngine/JIT/JITTests
+    paxmark m unittests/ExecutionEngine/MCJIT/MCJITTests
+    paxmark m unittests/Support/SupportTests
+  '';
 
   enableParallelBuilding = true;
 

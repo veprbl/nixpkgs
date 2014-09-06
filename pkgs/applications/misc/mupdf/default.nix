@@ -1,19 +1,13 @@
 { stdenv, fetchurl, fetchpatch, pkgconfig, zlib, freetype, libjpeg, jbig2dec, openjpeg
 , libX11, libXext }:
 stdenv.mkDerivation rec {
-  name = "mupdf-1.3";
+  version = "1.5";
+  name = "mupdf-${version}";
 
   src = fetchurl {
     url = "http://mupdf.com/download/archive/${name}-source.tar.gz";
-    sha256 = "0y247nka5gkr1ajn47jrlp5rcnf6h4ff7dfsprma3h4wxqdv7a5b";
+    sha256 = "0sl47zqf4c9fhs4h5zg046vixjmwgy4vhljhr5g4md733nash7z4";
   };
-
-  patches = [(fetchpatch {
-    name = "CVE-2014-2013.patch";
-    url = "http://git.ghostscript.com/?p=mupdf.git;a=commitdiff_plain;"
-      + "h=60dabde18d7fe12b19da8b509bdfee9cc886aafc";
-    sha256 = "0p721f3g2djz9fy6rcgj83c20f5k257wg2d0yvvmp02m7sp06l0g";
-  })];
 
   buildInputs = [ pkgconfig zlib freetype libjpeg jbig2dec openjpeg libX11 libXext ];
 
@@ -71,8 +65,9 @@ stdenv.mkDerivation rec {
     homepage = http://mupdf.com/;
     repositories.git = git://git.ghostscript.com/mupdf.git;
     description = "Lightweight PDF viewer and toolkit written in portable C";
-    license = "GPLv3+";
+    license = stdenv.lib.licenses.gpl3Plus;
     maintainers = with stdenv.lib.maintainers; [ viric ];
     platforms = with stdenv.lib.platforms; linux;
+    inherit version;
   };
 }

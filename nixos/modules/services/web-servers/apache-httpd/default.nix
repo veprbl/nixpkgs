@@ -80,7 +80,7 @@ let
 
   # !!! should be in lib
   writeTextInDir = name: text:
-    pkgs.runCommand name {inherit text;} "ensureDir $out; echo -n \"$text\" > $out/$name";
+    pkgs.runCommand name {inherit text;} "mkdir -p $out; echo -n \"$text\" > $out/$name";
 
 
   enableSSL = any (vhost: vhost.enableSSL) allHosts;
@@ -130,7 +130,7 @@ let
   '';
 
 
-  loggingConf = ''
+  loggingConf = (if mainCfg.logFormat != "none" then ''
     ErrorLog ${mainCfg.logDir}/error_log
 
     LogLevel notice
@@ -141,7 +141,9 @@ let
     LogFormat "%{User-agent}i" agent
 
     CustomLog ${mainCfg.logDir}/access_log ${mainCfg.logFormat}
-  '';
+  '' else ''
+    ErrorLog /dev/null
+  '');
 
 
   browserHacks = ''
@@ -194,7 +196,7 @@ let
     ) null ([ cfg ] ++ subservices);
 
     documentRoot = if maybeDocumentRoot != null then maybeDocumentRoot else
-      pkgs.runCommand "empty" {} "ensureDir $out";
+      pkgs.runCommand "empty" {} "mkdir -p $out";
 
     documentRootConf = ''
       DocumentRoot "${documentRoot}"
@@ -387,7 +389,7 @@ let
   '';
 
 
-  enablePHP = any (svc: svc.enablePHP) allSubservices;
+  enablePHP = mainCfg.enablePHP || any (svc: svc.enablePHP) allSubservices;
 
 
   # Generate the PHP configuration file.  Should probably be factored
@@ -421,7 +423,7 @@ in
       package = mkOption {
         type = types.package;
         default = pkgs.apacheHttpd.override { mpm = mainCfg.multiProcessingModule; };
-        example = "pkgs.apacheHttpd_2_4";
+        example = literalExample "pkgs.apacheHttpd_2_4";
         description = ''
           Overridable attribute of the Apache HTTP Server package to use.
         '';
@@ -531,6 +533,12 @@ in
         '';
       };
 
+      enablePHP = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable the PHP module.";
+      };
+
       phpOptions = mkOption {
         type = types.lines;
         default = "";
@@ -594,17 +602,17 @@ in
                      message = "SSL is enabled for HTTPD, but sslServerCert and/or sslServerKey haven't been specified."; }
                  ];
 
-    users.extraUsers = optionalAttrs (mainCfg.user == "wwwrun") singleton
+    users.extraUsers = optionalAttrs (mainCfg.user == "wwwrun") (singleton
       { name = "wwwrun";
-        group = "wwwrun";
+        group = mainCfg.group;
         description = "Apache httpd user";
         uid = config.ids.uids.wwwrun;
-      };
+      });
 
-    users.extraGroups = optionalAttrs (mainCfg.group == "wwwrun") singleton
+    users.extraGroups = optionalAttrs (mainCfg.group == "wwwrun") (singleton
       { name = "wwwrun";
         gid = config.ids.gids.wwwrun;
-      };
+      });
 
     environment.systemPackages = [httpd] ++ concatMap (svc: svc.extraPath) allSubservices;
 

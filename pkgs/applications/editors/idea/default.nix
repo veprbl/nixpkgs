@@ -2,13 +2,15 @@
 , coreutils, gnugrep, which, git
 }:
 
+assert stdenv.isLinux;
+
 let
 
   buildIdea =
-  { name, version, build, src, description, license }:
+  { name, version, build, src, description, longDescription, license }:
 
   stdenv.mkDerivation rec {
-    inherit name build src license;
+    inherit name build src;
     ideaItem = makeDesktopItem {
       name = "IDEA";
       exec = "idea";
@@ -49,13 +51,14 @@ let
         --prefix IDEA_JDK : $jdk
 
         mkdir -p $out/share/applications
-        cp ${ideaItem}/share/applications/* $out/share/applications
+        cp "${ideaItem}/share/applications/"* $out/share/applications
         patchShebangs $out
     '';
 
     meta = {
       homepage = http://www.jetbrains.com/idea/;
       inherit description;
+      inherit longDescription;
       inherit license;
       maintainers = [ stdenv.lib.maintainers.edwtjo ];
       platforms = stdenv.lib.platforms.linux;
@@ -64,27 +67,39 @@ let
 
 in {
 
-  idea_community_1312 = buildIdea rec {
+  idea-community = buildIdea rec {
     name = "idea-community-${version}";
-    version = "13.1.2";
-    build = "IC-135.690";
-    description = "IntelliJ IDEA 13 Community Edition";
-    license = stdenv.lib.licenses.asl20.shortName;
+    version = "13.1.4b";
+    build = "IC-135.1230";
+    description = "Integrated Development Environment (IDE) by Jetbrains, community edition";
+    longDescription = ''
+      Lightweight IDE for Java SE, Groovy & Scala development
+      Powerful environment for building Google Android apps
+      Integration with JUnit, TestNG, popular SCMs, Ant & Maven
+      Free, open-source, Apache 2 licensed.
+    '';
+    license = stdenv.lib.licenses.asl20;
     src = fetchurl {
       url = "http://download-ln.jetbrains.com/idea/ideaIC-${version}.tar.gz";
-      sha256 = "59fde67bf23e4638edd4b5ada133ac1c61c3132dea936eb7de7ee5ea259cc102";
+      sha256 = "8b4ee25fd2934e06b87230b50e1474183ed4b331c1626a7fee69b96294d9616d";
     };
   };
 
-  idea_ultimate_1312 = buildIdea rec {
+  idea-ultimate = buildIdea rec {
     name = "idea-ultimate-${version}";
-    version = "13.1.2";
-    build = "IU-135.690";
-    description = "IntelliJ IDEA 13 Ultimate Edition";
+    version = "13.1.4b";
+    build = "IU-135.1230";
+    description = "Integrated Development Environment (IDE) by Jetbrains, requires paid license";
+    longDescription = ''
+      Full-featured IDE for JVM-based and polyglot development
+      Java EE, Spring/Hibernate and other technologies support
+      Deployment and debugging with most application servers
+      Duplicate code search, dependency structure matrix, etc.
+    '';
     license = stdenv.lib.licenses.unfree;
     src = fetchurl {
       url = "http://download-ln.jetbrains.com/idea/ideaIU-${version}.tar.gz";
-      sha256 = "ccbaed495e2f099c92d1f747a59d7af9f9d41d75cf10e8a299d11825d78685ad";
+      sha256 = "84660d97c9c3e4e7cfd6c2708f4685dc7322157f1e1c2888feac64df119f0606";
     };
   };
 

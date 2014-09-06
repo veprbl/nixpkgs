@@ -1,11 +1,11 @@
 { stdenv, fetchurl, libevent, openssl, zlib }:
 
 stdenv.mkDerivation rec {
-  name = "tor-0.2.4.21";
+  name = "tor-0.2.4.23";
 
   src = fetchurl {
     url = "https://archive.torproject.org/tor-package-archive/${name}.tar.gz";
-    sha256 = "1kpijqapml7y4sl54qgyrzppxxhmy4xgk2y7wkqwjxn7q24g97d1";
+    sha256 = "0a8l6d82hk4wbn7nlphd3c1maxhgdli8338wbg5r9dk6zcy7k8q5";
   };
 
   buildInputs = [ libevent openssl zlib ];
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
   meta = {
     homepage = http://www.torproject.org/;
     repositories.git = https://git.torproject.org/git/tor;
-    description = "Tor, an anonymous network router to improve privacy on the Internet";
+    description = "Anonymous network router to improve privacy on the Internet";
 
     longDescription=''
       Tor protects you by bouncing your communications around a distributed

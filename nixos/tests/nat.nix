@@ -5,6 +5,7 @@
 # for the client.
 
 import ./make-test.nix {
+  name = "nat";
 
   nodes =
     { client =
@@ -12,7 +13,7 @@ import ./make-test.nix {
         { virtualisation.vlans = [ 1 ];
           networking.firewall.allowPing = true;
           networking.defaultGateway =
-            nodes.router.config.networking.interfaces.eth2.ipAddress;
+            (pkgs.lib.head nodes.router.config.networking.interfaces.eth2.ip4).address;
         };
 
       router =

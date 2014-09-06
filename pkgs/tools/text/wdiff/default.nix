@@ -12,8 +12,8 @@ stdenv.mkDerivation rec {
 
   meta = {
     homepage = http://www.gnu.org/software/wdiff/;
-    description = "GNU wdiff, comparing files on a word by word basis";
-    license = "GPLv3+";
+    description = "Comparing files on a word by word basis";
+    license = stdenv.lib.licenses.gpl3Plus;
     maintainers = [ stdenv.lib.maintainers.eelco ];
     platforms = stdenv.lib.platforms.linux;
   };
