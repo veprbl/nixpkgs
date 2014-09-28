@@ -9,8 +9,8 @@
 
 cabal.mkDerivation (self: {
   pname = "MFlow";
-  version = "0.4.5.6";
-  sha256 = "12rgp4x2in3r1hf4j1fr5ih0x0mb54x1rdr1mjllbh8c09ricrah";
+  version = "0.4.5.9";
+  sha256 = "0mqsyx7wkfgvpppqgpjpvzwx79vj7lh4c8afzzj1hgh8z0ilb4ik";
   buildDepends = [
     blazeHtml blazeMarkup caseInsensitive clientsession conduit
     conduitExtra extensibleExceptions httpTypes monadloc mtl parsec
@@ -22,6 +22,6 @@ cabal.mkDerivation (self: {
     description = "stateful, RESTful web framework";
     license = self.stdenv.lib.licenses.bsd3;
     platforms = self.ghc.meta.platforms;
-    maintainers = [ self.stdenv.lib.maintainers.tomberek ];
+    maintainers = with self.stdenv.lib.maintainers; [ tomberek ];
   };
 })

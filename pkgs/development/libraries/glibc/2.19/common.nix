@@ -58,6 +58,9 @@ stdenv.mkDerivation ({
       ./fix_path_attribute_in_getconf.patch
 
       ./fix-math.patch
+
+      ./cve-2014-0475.patch
+      ./cve-2014-5119.patch
     ];
 
   postPatch = ''

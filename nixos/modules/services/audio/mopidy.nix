@@ -49,7 +49,7 @@ in {
       extensionPackages = mkOption {
         default = [];
         type = types.listOf types.package;
-        example = [ mopidy-spotify ];
+        example = literalExample "[ pkgs.mopidy-spotify ]";
         description = ''
           Mopidy extensions that should be loaded by the service.
         '';
@@ -89,6 +89,17 @@ in {
         ExecStart = "${mopidyLauncher}/bin/mopidy --config ${concatStringsSep ":" ([mopidyConf] ++ cfg.extraConfigFiles)}";
         User = "mopidy";
         PermissionsStartOnly = true;
+      };
+    };
+
+    systemd.services.mopidy-scan = {
+      description = "mopidy local files scanner";
+      preStart = "mkdir -p ${cfg.dataDir} && chown -R mopidy:mopidy  ${cfg.dataDir}";
+      serviceConfig = {
+        ExecStart = "${mopidyLauncher}/bin/mopidy --config ${concatStringsSep ":" ([mopidyConf] ++ cfg.extraConfigFiles)} local scan";
+        User = "mopidy";
+        PermissionsStartOnly = true;
+        Type = "oneshot";
       };
     };
 

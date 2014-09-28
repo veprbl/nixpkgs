@@ -26,17 +26,17 @@ with { inherit (stdenv.lib) optional optionals; };
 
 let
   result = {
-    libav_0_8 = libavFun "0.8.13" "1fr3rzykrlm1cla0csm9hqa3gcqp19hf5rgn70nyb9w92r67v685";
-    libav_9   = libavFun   "9.14" "07gn4lbqx6wfhb2h2ddj88hcsacwmzb4syalg211m55xmp1g1fp4";
-    libav_10  = libavFun  "10.2"  "06wvk51cnllw6367qagc90sva4jr5d0r6jx8183wcwzwzgv01w29";
+    libav_0_8 = libavFun "0.8.16" "df88b8f7d04d47edea8b19d80814227f0c058e57";
+    libav_9   = libavFun   "9.17" "5899d51947b62f6b0cf9795ec2330d5ed59a3273";
+    libav_10  = libavFun  "10.5"  "925a45d2700a436c28e0b663510fc8df5bb7e861";
   };
 
-  libavFun = version : sha256 : stdenv.mkDerivation rec {
+  libavFun = version : sha1 : stdenv.mkDerivation rec {
     name = "libav-${version}";
 
     src = fetchurl {
       url = "${meta.homepage}/releases/${name}.tar.xz";
-      inherit sha256;
+      inherit sha1; # upstream directly provides sha1 of releases over https
     };
     configureFlags =
       assert stdenv.lib.all (x: x!=null) buildInputs;
@@ -105,7 +105,7 @@ let
       description = "A complete, cross-platform solution to record, convert and stream audio and video (fork of ffmpeg)";
       license = with licenses; if enableUnfree then unfree #ToDo: redistributable or not?
         else if enableGPL then gpl2Plus else lgpl21Plus;
-      platforms = platforms.all;
+      platforms = platforms.linux;
       maintainers = [ maintainers.vcunat ];
     };
   }; # libavFun

@@ -7,8 +7,8 @@
 
 cabal.mkDerivation (self: {
   pname = "engine-io";
-  version = "1.1.0";
-  sha256 = "0l2jwgzi22ky13k9kmqhn15zyxyg5gr167rkywb458n1si4jr3jh";
+  version = "1.1.2";
+  sha256 = "1ry6rklrij7x1z8mw31vh41lc0axzj8l0lhmjsmhs554nv50062f";
   buildDepends = [
     aeson async attoparsec base64Bytestring either monadLoops mwcRandom
     stm text transformers unorderedContainers vector websockets
@@ -18,6 +18,6 @@ cabal.mkDerivation (self: {
     description = "A Haskell implementation of Engine.IO";
     license = self.stdenv.lib.licenses.bsd3;
     platforms = self.ghc.meta.platforms;
-    maintainers = [ self.stdenv.lib.maintainers.ocharles ];
+    maintainers = with self.stdenv.lib.maintainers; [ ocharles ];
   };
 })

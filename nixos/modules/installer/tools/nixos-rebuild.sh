@@ -194,13 +194,13 @@ if [ -z "$rollback" ]; then
         nix-env "${extraBuildFlags[@]}" -p "$profile" -f '<nixpkgs/nixos>' --set -A system
         pathToConfig="$profile"
     elif [ "$action" = test -o "$action" = build -o "$action" = dry-run ]; then
-        nix-build '<nixpkgs/nixos>' -A system -K -k "${extraBuildFlags[@]}" > /dev/null
+        nix-build '<nixpkgs/nixos>' -A system -k "${extraBuildFlags[@]}" > /dev/null
         pathToConfig=./result
     elif [ "$action" = build-vm ]; then
-        nix-build '<nixpkgs/nixos>' -A vm -K -k "${extraBuildFlags[@]}" > /dev/null
+        nix-build '<nixpkgs/nixos>' -A vm -k "${extraBuildFlags[@]}" > /dev/null
         pathToConfig=./result
     elif [ "$action" = build-vm-with-bootloader ]; then
-        nix-build '<nixpkgs/nixos>' -A vmWithBootLoader -K -k "${extraBuildFlags[@]}" > /dev/null
+        nix-build '<nixpkgs/nixos>' -A vmWithBootLoader -k "${extraBuildFlags[@]}" > /dev/null
         pathToConfig=./result
     else
         showSyntax
@@ -225,7 +225,10 @@ fi
 # If we're not just building, then make the new configuration the boot
 # default and/or activate it now.
 if [ "$action" = switch -o "$action" = boot -o "$action" = test ]; then
-    $pathToConfig/bin/switch-to-configuration "$action"
+    if ! $pathToConfig/bin/switch-to-configuration "$action"; then
+        echo "warning: error(s) occured while switching to the new configuration" >&2
+        exit 1
+    fi
 fi
 
 

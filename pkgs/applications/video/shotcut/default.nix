@@ -2,17 +2,14 @@
 
 stdenv.mkDerivation rec {
   name = "shotcut-${version}";
-  version = "14.07";
+  version = "14.09";
 
   src = fetchurl {
     url = "https://github.com/mltframework/shotcut/archive/v${version}.tar.gz";
-    sha256 = "05g0b3jhmmdv8qnlgmi8wsfi7l3c5zvjcrrb3q7ajfc3q7yf6k6a";
+    sha256 = "1504ds3ppqmpg84nb2gb74qndqysjwn3xw7n8xv19kd1pppnr10f";
   };
 
   buildInputs = [ SDL frei0r gettext makeWrapper mlt pkgconfig qt5 ];
-
-  # Fixed in git and can be removed for the next release
-  patches = [ ./CuteLogger.patch ];
 
   configurePhase = "qmake PREFIX=$out";
 

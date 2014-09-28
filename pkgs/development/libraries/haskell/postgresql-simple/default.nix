@@ -7,8 +7,8 @@
 
 cabal.mkDerivation (self: {
   pname = "postgresql-simple";
-  version = "0.4.3.0";
-  sha256 = "16i1qzshbscnbjb4rxz5hl1iaxjmsc21878prj5pp33zbm53dlcm";
+  version = "0.4.4.1";
+  sha256 = "0lqvy8nc2izwlv7z0n12cknsrb2dkmla84bvjis5z9f63ngs2580";
   buildDepends = [
     aeson attoparsec blazeBuilder blazeTextual hashable postgresqlLibpq
     scientific text time transformers uuid vector
@@ -21,6 +21,5 @@ cabal.mkDerivation (self: {
     description = "Mid-Level PostgreSQL client library";
     license = self.stdenv.lib.licenses.bsd3;
     platforms = self.ghc.meta.platforms;
-    maintainers = [ self.stdenv.lib.maintainers.andres ];
   };
 })

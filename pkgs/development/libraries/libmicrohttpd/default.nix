@@ -1,11 +1,11 @@
 {stdenv, fetchurl, curl, libgcrypt}:
 
 stdenv.mkDerivation rec {
-  name = "libmicrohttpd-0.9.35";
+  name = "libmicrohttpd-0.9.37";
 
   src = fetchurl {
     url = "mirror://gnu/libmicrohttpd/${name}.tar.gz";
-    sha256 = "1z0h6llx7pra78358ryi3bdh8p0ns0bn97n6bl0fj6cib9cz2pdw";
+    sha256 = "1p3wnhr43v6vqdgl86r76298wjfxz2ihj9zh9kpz8l7va30br357";
   };
 
   buildInputs = [ curl libgcrypt ];
@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
   doCheck = false;
 
   meta = {
-    description = "GNU libmicrohttpd, an embeddable HTTP server library";
+    description = "Embeddable HTTP server library";
 
     longDescription = ''
       GNU libmicrohttpd is a small C library that is supposed to make

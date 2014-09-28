@@ -12,11 +12,12 @@ cabal.mkDerivation (self: {
   testDepends = [
     binary conduit hspec QuickCheck quickcheckAssertions resourcet
   ];
+  jailbreak = true;
   meta = {
     homepage = "http://github.com/qnikst/binary-conduit";
     description = "data serialization/deserialization conduit library";
     license = self.stdenv.lib.licenses.mit;
     platforms = self.ghc.meta.platforms;
-    maintainers = [ self.stdenv.lib.maintainers.ocharles ];
+    maintainers = with self.stdenv.lib.maintainers; [ ocharles ];
   };
 })
