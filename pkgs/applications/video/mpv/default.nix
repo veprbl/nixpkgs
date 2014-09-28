@@ -1,7 +1,7 @@
 { stdenv, fetchurl, fetchgit, freetype, pkgconfig, freefont_ttf, ffmpeg, libass
 , lua, perl, libpthreadstubs
 , lua5_sockets
-, python3, docutils, which
+, python3, docutils, which, lib
 , x11Support ? true, libX11 ? null, libXext ? null, mesa ? null, libXxf86vm ? null
 , xineramaSupport ? true, libXinerama ? null
 , xvSupport ? true, libXv ? null
@@ -20,9 +20,9 @@
 # For screenshots
 , libpngSupport ? true, libpng ? null
 # for Youtube support
-, quviSupport? false, libquvi ? null
-, cacaSupport? false, libcaca ? null
-}:
+, quviSupport ? false, libquvi ? null
+, cacaSupport ? false, libcaca ? null
+, vaapiSupport ? false, libva ? null }:
 
 assert x11Support -> (libX11 != null && libXext != null && mesa != null && libXxf86vm != null);
 assert xineramaSupport -> (libXinerama != null && x11Support);
@@ -57,11 +57,11 @@ in
 
 stdenv.mkDerivation rec {
   name = "mpv-${version}";
-  version = "0.4.1";
+  version = "0.5.0";
 
   src = fetchurl {
     url = "https://github.com/mpv-player/mpv/archive/v${version}.tar.gz";
-    sha256 = "0wqjyzw3kk854zj263k7jyykzfaz1g27z50aqrd26hylg8k135cn";
+    sha256 = "17mmc6xm8yir2p379h00q3wy7rplz2s31h6sxswmzbh72xf10g96";
   };
 
   buildInputs = with stdenv.lib;
@@ -84,6 +84,7 @@ stdenv.mkDerivation rec {
     ++ optional quviSupport libquvi
     ++ optional sdl2Support SDL2
     ++ optional cacaSupport libcaca
+    ++ optional vaapiSupport libva
     ;
 
   nativeBuildInputs = [ python3 lua perl ];
@@ -97,7 +98,7 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
 
   configurePhase = ''
-    python3 ${waf} configure --prefix=$out
+    python3 ${waf} configure --prefix=$out ${lib.optionalString vaapiSupport "--enable-vaapi"}
     patchShebangs TOOLS
   '';
 
@@ -112,21 +113,23 @@ stdenv.mkDerivation rec {
     ln -s ${freefont_ttf}/share/fonts/truetype/FreeSans.ttf $out/share/mpv/subfont.ttf
     '';
 
-  meta = {
+  meta = with stdenv.lib;{
     description = "A movie player that supports many video formats (MPlayer and mplayer2 fork)";
     longDescription = ''
-    mpv is a free and open-source general-purpose video player, based on the MPlayer and mplayer2 projects, with great improvements above both.
+      mpv is a free and open-source general-purpose video player,
+      based on the MPlayer and mplayer2 projects, with great
+      improvements above both.
     '';
-    homepage = "http://mpv.io";
-    license = stdenv.lib.licenses.gpl2Plus;
-    maintainers = [ stdenv.lib.maintainers.AndersonTorres ];
-    platforms = stdenv.lib.platforms.linux;
+    homepage = http://mpv.io;
+    license = licenses.gpl2Plus;
+    maintainers = [ maintainers.AndersonTorres ];
+    platforms = platforms.linux;
   };
 }
 
-# Heavily based on mplayer2 expression
+# Many thanks @matejc for this update: 0.5.0 and vaapi (experimental)
 
 # TODO: Wayland support
-# TODO: investigate libquvi support
+# TODO: investigate libquvi problems (related to Youtube support)
 # TODO: investigate caca support
 # TODO: investigate lua5_sockets bug

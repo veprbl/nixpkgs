@@ -278,7 +278,7 @@ in
     boot.initrd.extraUtilsCommands =
       ''
         # We need mke2fs in the initrd.
-        cp -f ${pkgs.e2fsprogs}/sbin/mke2fs $out/bin
+        cp -vf --remove-destination ${pkgs.e2fsprogs}/sbin/mke2fs $out/bin
       '';
 
     boot.initrd.postDeviceCommands =
@@ -376,7 +376,7 @@ in
 
     system.build.vm = pkgs.runCommand "nixos-vm" { preferLocalBuild = true; }
       ''
-        ensureDir $out/bin
+        mkdir -p $out/bin
         ln -s ${config.system.build.toplevel} $out/system
         ln -s ${pkgs.writeScript "run-nixos-vm" startVM} $out/bin/run-${vmName}-vm
       '';

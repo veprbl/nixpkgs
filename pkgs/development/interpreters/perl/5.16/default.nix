@@ -54,6 +54,12 @@ stdenv.mkDerivation rec {
       ${optionalString stdenv.isArm ''
         configureFlagsArray=(-Dldflags="-lm -lrt")
       ''}
+
+      ${optionalString stdenv.isCygwin ''
+        cp cygwin/cygwin.c{,.bak}
+        echo "#define PERLIO_NOT_STDIO 0" > tmp
+        cat tmp cygwin/cygwin.c.bak > cygwin/cygwin.c
+      ''}
     '';
 
   preBuild = optionalString (!(stdenv ? gcc && stdenv.gcc.nativeTools))
@@ -63,30 +69,6 @@ stdenv.mkDerivation rec {
     '';
 
   setupHook = ./setup-hook.sh;
-
-  doCheck = !stdenv.isDarwin;
-
-  # some network-related tests don't work, mostly probably due to our sandboxing
-  testsToSkip = ''
-    lib/Net/hostent.t \
-    dist/IO/t/{io_multihomed.t,io_sock.t} \
-    dist/Net-Ping/t/*.t \
-    cpan/autodie/t/truncate.t \
-    t/porting/{maintainers.t,regen.t} \
-    cpan/Socket/t/get{name,addr}info.t \
-  '' + optionalString stdenv.isFreeBSD ''
-    cpan/CPANPLUS/t/04_CPANPLUS-Module.t \
-    cpan/CPANPLUS/t/20_CPANPLUS-Dist-MM.t \
-  '' + " ";
-
-  postPatch = optionalString (!stdenv.isDarwin) /* this failed on Darwin, no idea why */ ''
-    for test in ${testsToSkip}; do
-      echo "Removing test" $test
-      rm "$test"
-      pat=`echo "$test" | sed 's,/,\\\\/,g'` # just escape slashes
-      sed "/^$pat/d" -i MANIFEST
-    done
-  '';
 
   passthru.libPrefix = "lib/perl5/site_perl";
 }

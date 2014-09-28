@@ -34,11 +34,11 @@ assert vdpauSupport -> libvdpau != null && ffmpeg.vdpauSupport;
 assert pulseSupport -> pulseaudio != null;
 
 stdenv.mkDerivation rec {
-    name = "xbmc-13.1";
+    name = "xbmc-13.2";
 
     src = fetchurl {
-      url = "https://github.com/xbmc/xbmc/archive/13.1-Gotham.tar.gz";
-      sha256 = "0y56c5csfp8xhk088g47m3bzrri73z868yfx6b04gnrdmr760jrl";
+      url = "https://github.com/xbmc/xbmc/archive/13.2-Gotham.tar.gz";
+      sha256 = "11g5a3h6kxz1vmnhagfjhg9nqf11wy0wzqqf4h338jh3lgzmvgxc";
     };
 
     buildInputs = [
@@ -90,13 +90,14 @@ stdenv.mkDerivation rec {
           --prefix PATH ":" "${xdpyinfo}/bin" \
           --prefix LD_LIBRARY_PATH ":" "${curl}/lib" \
           --prefix LD_LIBRARY_PATH ":" "${systemd}/lib" \
+          --prefix LD_LIBRARY_PATH ":" "${libmad}/lib" \
           --prefix LD_LIBRARY_PATH ":" "${libvdpau}/lib"
       done
     '';
 
     meta = {
       homepage = http://xbmc.org/;
-      description = "XBMC Media Center";
+      description = "Media center";
       license = "GPLv2";
       platforms = stdenv.lib.platforms.linux; 
       maintainers = [ stdenv.lib.maintainers.iElectric ];

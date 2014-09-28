@@ -10,8 +10,7 @@
 , openalSupport ? false, openal ? null
 , alsaSupport ? true, alsaLib ? null
 , pulseaudioSupport ? true, pulseaudio ? null
-, portaudioSupport ? false, portaudio ? null
-}:
+, portaudioSupport ? false, portaudio ? null }:
 
 assert spellChecking -> (hunspell != null);
 assert automationSupport -> (lua != null);
@@ -22,17 +21,17 @@ assert portaudioSupport -> (portaudio != null);
 
 stdenv.mkDerivation rec {
   name = "aegisub-${version}";
-  version = "3.1.3";
+  version = "3.2.0";
 
   src = fetchurl {
     url = "http://ftp.aegisub.org/pub/releases/${name}.tar.xz";
-    sha256 = "0n2y5cggayr8246p2cvrz0ajlhhvmzcgsp7nljnm21jypk15pspg";
+    sha256 = "0nciw5p1aq94qwz5j4vbc06fywdjhazgh4qs6qr9iqj3n94gvrfr";
   };
 
   nativeBuildInputs = [ intltool ];
 
   buildInputs = with stdenv.lib;
-  [ libX11 gettext wxGTK libiconv fontconfig freetype mesa libass fftw ffms ffmpeg pkgconfig zlib icu boost ]
+  [ libX11 gettext wxGTK libiconv fontconfig freetype mesa libass fftw ffms ffmpeg pkgconfig zlib icu boost boost.lib ]
   ++ optional spellChecking hunspell
   ++ optional automationSupport lua
   ++ optional openalSupport openal
@@ -43,7 +42,7 @@ stdenv.mkDerivation rec {
 
   NIX_LDFLAGS = "-liconv -lavutil -lavformat -lavcodec -lswscale -lz -lm -lGL";
 
-  configureFlags = "--with-boost-libdir=${boost}/lib/";
+  configureFlags = "--with-boost-libdir=${boost.lib}/lib/";
 
   postInstall = "ln -s $out/bin/aegisub-* $out/bin/aegisub";
 
@@ -62,6 +61,5 @@ stdenv.mkDerivation rec {
               # - so the resulting program will be GPL
     maintainers = [ maintainers.AndersonTorres ];
     platforms = platforms.linux;
-
   };
 }

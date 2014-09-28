@@ -7,8 +7,8 @@
 
 cabal.mkDerivation (self: {
   pname = "yesod-persistent";
-  version = "1.2.3";
-  sha256 = "1kdspz6y32r8kl0qk89hgwi4n6dnxch7wriv829cnwqm0bzjfdpw";
+  version = "1.2.3.1";
+  sha256 = "1mmy1l91ksjvwi2zr1wnb50vshs4pdri9rcaracwrnrmdpbmyy3s";
   buildDepends = [
     blazeBuilder conduit persistent persistentTemplate resourcePool
     resourcet transformers yesodCore
@@ -22,6 +22,5 @@ cabal.mkDerivation (self: {
     description = "Some helpers for using Persistent from Yesod";
     license = self.stdenv.lib.licenses.mit;
     platforms = self.ghc.meta.platforms;
-    maintainers = [ self.stdenv.lib.maintainers.andres ];
   };
 })

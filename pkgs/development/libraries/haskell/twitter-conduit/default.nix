@@ -2,27 +2,27 @@
 
 { cabal, aeson, attoparsec, authenticateOauth, caseInsensitive
 , conduit, conduitExtra, dataDefault, doctest, filepath, hlint
-, hspec, httpClient, httpConduit, httpTypes, lens, monadControl
-, monadLogger, network, resourcet, shakespeare, text, time
+, hspec, httpClient, httpConduit, httpTypes, lens, lensAeson
+, monadControl, monadLogger, networkUri, resourcet, text, time
 , transformers, transformersBase, twitterTypes
 }:
 
 cabal.mkDerivation (self: {
   pname = "twitter-conduit";
-  version = "0.0.5.2";
-  sha256 = "0kcdf440fy998qy232mg8k9i97lwvgwzzv990a07m4hj771pp3fh";
+  version = "0.0.6";
+  sha256 = "1vm4wa3cdmyz2m45rnwkrjcx8wajc89395c28rz1q12hf856970j";
   isLibrary = true;
   isExecutable = true;
   buildDepends = [
     aeson attoparsec authenticateOauth conduit conduitExtra dataDefault
-    httpClient httpConduit httpTypes lens monadLogger resourcet
-    shakespeare text time transformers twitterTypes
+    httpClient httpConduit httpTypes lens lensAeson monadLogger
+    networkUri resourcet text time transformers twitterTypes
   ];
   testDepends = [
     aeson attoparsec authenticateOauth caseInsensitive conduit
     conduitExtra dataDefault doctest filepath hlint hspec httpClient
-    httpConduit httpTypes lens monadControl monadLogger network
-    resourcet shakespeare text time transformers transformersBase
+    httpConduit httpTypes lens lensAeson monadControl monadLogger
+    networkUri resourcet text time transformers transformersBase
     twitterTypes
   ];
   meta = {
@@ -30,6 +30,6 @@ cabal.mkDerivation (self: {
     description = "Twitter API package with conduit interface and Streaming API support";
     license = self.stdenv.lib.licenses.bsd3;
     platforms = self.ghc.meta.platforms;
-    maintainers = [ self.stdenv.lib.maintainers.ocharles ];
+    maintainers = with self.stdenv.lib.maintainers; [ ocharles ];
   };
 })

@@ -72,14 +72,12 @@ let
 
   # Unpack Mediawiki and put the config file in its root directory.
   mediawikiRoot = pkgs.stdenv.mkDerivation rec {
-    name= "mediawiki-1.23.1";
+    name= "mediawiki-1.23.3";
 
     src = pkgs.fetchurl {
       url = "http://download.wikimedia.org/mediawiki/1.23/${name}.tar.gz";
-      sha256 = "07z5j8d988cdg4ml4n0vs9fwmj0p594ibbqdid16faxwqm52dkhl";
+      sha256 = "0l6798jwjwk2khfnm84mgc65ij53a8pnv30wdnn15ys4ivia4bpf";
     };
-
-    patches = [ ./mediawiki-postgresql-fixes.patch ];
 
     skins = config.skins;
 
@@ -92,7 +90,7 @@ let
 
     installPhase =
       ''
-        ensureDir $out
+        mkdir -p $out
         cp -r * $out
         cp ${mediawikiConfig} $out/LocalSettings.php
         sed -i \
@@ -106,7 +104,7 @@ let
   mediawikiScripts = pkgs.runCommand "mediawiki-${config.id}-scripts"
     { buildInputs = [ pkgs.makeWrapper ]; }
     ''
-      ensureDir $out/bin
+      mkdir -p $out/bin
       for i in changePassword.php createAndPromote.php userOptions.php edit.php nukePage.php update.php; do
         makeWrapper ${php}/bin/php $out/bin/mediawiki-${config.id}-$(basename $i .php) \
           --add-flags ${mediawikiRoot}/maintenance/$i
@@ -133,6 +131,7 @@ in
         RewriteEngine On
         RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
         RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
+        ${concatMapStringsSep "\n" (u: "RewriteCond %{REQUEST_URI} !^${u.urlPath}") serverInfo.vhostConfig.servedDirs}
         RewriteRule ${if config.enableUploads
           then "!^/images"
           else "^.*\$"

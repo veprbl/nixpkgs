@@ -4,8 +4,8 @@
 
 cabal.mkDerivation (self: {
   pname = "Chart";
-  version = "1.2.3";
-  sha256 = "067bahxig5xyd6zasi74k86qb7bxvbs3shjn9fbslhyckxg50q1j";
+  version = "1.3.1";
+  sha256 = "019q77hgv5hyhfpsfs2k1a4qn8fandk1nj7xkzn00z21jqhman2s";
   buildDepends = [
     colour dataDefaultClass lens mtl operational time
   ];
@@ -15,6 +15,5 @@ cabal.mkDerivation (self: {
     description = "A library for generating 2D Charts and Plots";
     license = self.stdenv.lib.licenses.bsd3;
     platforms = self.ghc.meta.platforms;
-    maintainers = [ self.stdenv.lib.maintainers.andres ];
   };
 })

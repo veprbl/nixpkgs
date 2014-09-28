@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, lua5, lua5_sockets, openssl }:
+{ stdenv, fetchurl, lua5, openssl }:
 
 stdenv.mkDerivation rec {
   version = "0.5";
@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
 
   meta = {
     homepage = "https://github.com/brunoos/luasec";
-    platforms = stdenv.lib.platforms.linux;
+    hydraPlatforms = stdenv.lib.platforms.linux;
     maintainers = [ stdenv.lib.maintainers.flosse ];
   };
 }

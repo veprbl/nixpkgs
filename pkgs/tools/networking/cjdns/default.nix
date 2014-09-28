@@ -1,21 +1,24 @@
 { stdenv, fetchgit, nodejs, which, python27 }:
 
 let
-  date = "20140303";
-  rev = "f11ce1fd4795b0173ac0ef18c8a6f752aa824adb";
+  date = "20140919";
+  rev = "e9bcb0f9f06870d6f4904149e1c15eca09c7ed8a";
 in
 stdenv.mkDerivation {
   name = "cjdns-${date}-${stdenv.lib.strings.substring 0 7 rev}";
 
   src = fetchgit {
-    url = "git://github.com/cjdelisle/cjdns.git";
+    url = "https://github.com/cjdelisle/cjdns.git";
     inherit rev;
-    sha256 = "1bxhf9f1v0slf9mz3ll6jf45mkwvwxlf3yqxx9k23kjyr1nsc8s8";
+    sha256 = "e9fa82f3495b718cebd4d1836312b224c6689dc521fba093ad1accf2d2e15ff1";
   };
 
   buildInputs = [ which python27 nodejs];
 
-  builder = ./builder.sh;
+  patches = [ ./makekey.patch ];
+
+  buildPhase = "bash do";
+  installPhase = "installBin cjdroute makekey";
 
   meta = {
     homepage = https://github.com/cjdelisle/cjdns;

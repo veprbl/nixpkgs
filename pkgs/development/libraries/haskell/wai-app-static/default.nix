@@ -10,8 +10,8 @@
 
 cabal.mkDerivation (self: {
   pname = "wai-app-static";
-  version = "3.0.0";
-  sha256 = "117r2ps440i2i156k50b674fkny2ywwbbla6ry0km041604cl733";
+  version = "3.0.0.1";
+  sha256 = "1xqw7xvbq38m19337vpalnz5c5mvc57mfp53vqbah3lalxy9mqby";
   isLibrary = true;
   isExecutable = true;
   buildDepends = [
@@ -29,6 +29,5 @@ cabal.mkDerivation (self: {
     description = "WAI application for static serving";
     license = self.stdenv.lib.licenses.mit;
     platforms = self.ghc.meta.platforms;
-    maintainers = [ self.stdenv.lib.maintainers.andres ];
   };
 })
