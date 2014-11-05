@@ -52,7 +52,7 @@ with lib;
     # Versioned fontconfig > 2.10. Take shared fonts.conf from fontconfig.
     # Otherwise specify only font directories.
     environment.etc."fonts/${pkgs.fontconfig.configVersion}/fonts.conf".source =
-      "${pkgs.fontconfig}/etc/fonts/fonts.conf";
+      "${pkgs.fontconfig-OK}/etc/fonts/fonts.conf";
     environment.etc."fonts/${pkgs.fontconfig.configVersion}/conf.d/00-nixos.conf".text =
       ''
         <?xml version='1.0'?>

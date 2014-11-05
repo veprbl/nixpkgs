@@ -5132,7 +5132,8 @@ let
 
   fontconfig_210 = callPackage ../development/libraries/fontconfig/2.10.nix { };
 
-  fontconfig = callPackage ../development/libraries/fontconfig { };
+  fontconfig = callPackage ../development/libraries/fontconfig/default-broken.nix { };
+  fontconfig-OK = callPackage ../development/libraries/fontconfig { };
 
   folly = callPackage ../development/libraries/folly { };
 
