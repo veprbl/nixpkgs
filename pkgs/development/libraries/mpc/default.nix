@@ -1,11 +1,11 @@
 { fetchurl, stdenv, gmp, mpfr }:
 
 stdenv.mkDerivation rec {
-  name = "mpc-1.0.1";
+  name = "mpc-1.0.2";
 
   src = fetchurl {
     url = "http://www.multiprecision.org/mpc/download/${name}.tar.gz";
-    sha1 = "vxg0rkyn4cs40wr2cp6bbcyr1nnijzlc";
+    sha1 = "5072d82ab50ec36cc8c0e320b5c377adb48abe70";
   };
 
   buildInputs = [ gmp mpfr ];
