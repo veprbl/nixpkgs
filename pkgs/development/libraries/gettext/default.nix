@@ -8,7 +8,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "mirror://gnu/gettext/${name}.tar.gz";
-    sha256 = "0invjmax29q2h3z7shqqy3sg07599zv0zxklwp3qbkp8ksfb5zgn";
+    sha256 = "1xmkxviqnq60h4wmh3bi6b1zkc9qsk3l1lv91k0iwfrxb982v5ck";
   };
 
   postPatch = optionalString stdenv.isCygwin
