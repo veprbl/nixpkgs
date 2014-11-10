@@ -5277,7 +5277,7 @@ let
 
   gmm = callPackage ../development/libraries/gmm { };
 
-  gmp = gmp5;
+  gmp = gmp6;
   gmp5 = gmp51;
 
   gmpxx = appendToName "with-cxx" (gmp.override { cxx = true; });
