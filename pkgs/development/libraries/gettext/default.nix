@@ -1,6 +1,9 @@
-{ stdenv, fetchurl, libiconv, xz }:
+{ stdenv, fetchurl, libiconvOrEmpty, xz }:
 
-stdenv.mkDerivation (rec {
+let
+  inherit (stdenv.lib) optional optionals optionalString;
+in
+stdenv.mkDerivation rec {
   name = "gettext-0.19.3";
 
   src = fetchurl {
@@ -8,16 +11,16 @@ stdenv.mkDerivation (rec {
     sha256 = "0invjmax29q2h3z7shqqy3sg07599zv0zxklwp3qbkp8ksfb5zgn";
   };
 
-  LDFLAGS = if stdenv.isSunOS then "-lm -lmd -lmp -luutil -lnvpair -lnsl -lidmap -lavl -lsec" else "";
+  postPatch = optionalString stdenv.isCygwin
+   # Make sure `error.c' gets compiled and is part of `libgettextlib.la'.
+   # This fixes:
+   # gettext-0.18.1.1/gettext-tools/src/msgcmp.c:371: undefined reference to `_error_message_count'
 
-  configureFlags = [ "--disable-csharp" "--with-xz" ]
-     ++ (stdenv.lib.optionals stdenv.isCygwin
-          [ # We have a static libiconv, so we can only build the static lib.
-            "--disable-shared" "--enable-static"
+   '' sed -i gettext-tools/gnulib-lib/Makefile.in \
+          -e 's/am_libgettextlib_la_OBJECTS =/am_libgettextlib_la_OBJECTS = error.lo/g'
+   '';
 
-            # Share the cache among the various `configure' runs.
-            "--config-cache"
-          ]);
+  buildInputs = [ xz ] ++ libiconvOrEmpty;
 
   # On cross building, gettext supposes that the wchar.h from libc
   # does not fulfill gettext needs, so it tries to work with its
@@ -30,8 +33,17 @@ stdenv.mkDerivation (rec {
     fi
   '';
 
-  buildInputs = [ xz ] ++ stdenv.lib.optional (!stdenv.isLinux) libiconv;
+  configureFlags = [ "--disable-csharp" "--with-xz" ]
+     ++ optionals stdenv.isCygwin
+          [ # We have a static libiconv, so we can only build the static lib.
+            "--disable-shared" "--enable-static"
 
+            # Share the cache among the various `configure' runs.
+            "--config-cache"
+          ];
+
+  makeFlags = optionalString stdenv.isDarwin "CFLAGS=-D_FORTIFY_SOURCE=0";
+  LDFLAGS = optionalString stdenv.isSunOS "-lm -lmd -lmp -luutil -lnvpair -lnsl -lidmap -lavl -lsec";
   enableParallelBuilding = true;
 
   crossAttrs = {
@@ -70,17 +82,3 @@ stdenv.mkDerivation (rec {
   };
 }
 
-// stdenv.lib.optionalAttrs stdenv.isDarwin {
-  makeFlags = "CFLAGS=-D_FORTIFY_SOURCE=0";
-}
-
-// stdenv.lib.optionalAttrs stdenv.isCygwin {
-  patchPhase =
-   # Make sure `error.c' gets compiled and is part of `libgettextlib.la'.
-   # This fixes:
-   # gettext-0.18.1.1/gettext-tools/src/msgcmp.c:371: undefined reference to `_error_message_count'
-
-   '' sed -i gettext-tools/gnulib-lib/Makefile.in \
-          -e 's/am_libgettextlib_la_OBJECTS =/am_libgettextlib_la_OBJECTS = error.lo/g'
-   '';
-})
