@@ -2,7 +2,7 @@
 
 with { inherit (stdenv.lib) optional; };
 
-stdenv.mkDerivation (rec {
+stdenv.mkDerivation rec {
   name = "gmp-5.1.3";
 
   src = fetchurl { # we need to use bz2, others aren't in bootstrapping stdenv
@@ -26,9 +26,11 @@ stdenv.mkDerivation (rec {
     ++ optional stdenv.is64bit "--with-pic"
     ;
 
-  doCheck = true;
+  dontDisableStatic = withStatic;
 
   enableParallelBuilding = true;
+
+  doCheck = true;
 
   meta = with stdenv.lib; {
     homepage = "http://gmplib.org/";
@@ -61,6 +63,4 @@ stdenv.mkDerivation (rec {
     maintainers = [ maintainers.simons ];
   };
 }
-  // stdenv.lib.optionalAttrs withStatic { dontDisableStatic = true; }
-)
 
