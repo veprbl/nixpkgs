@@ -5287,6 +5287,8 @@ let
 
   gmp51 = callPackage ../development/libraries/gmp/5.1.x.nix { };
 
+  gmp6 = callPackage ../development/libraries/gmp/6.x.nix { };
+
   #GMP ex-satellite, so better keep it near gmp
   mpfr = callPackage ../development/libraries/mpfr/default.nix { };
 
