@@ -165,6 +165,7 @@
       liquidsoap = 155;
       etcd = 156;
       docker-registry = 157;
+      kubernetes = 158;
 
       # When adding a uid, make sure it doesn't match an existing gid. And don't use uids above 399!
 
@@ -294,6 +295,7 @@
       systemd-resolve = 153;
       systemd-timesync = 154;
       liquidsoap = 155;
+      kubernetes = 156;
 
       # When adding a gid, make sure it doesn't match an existing uid. And don't use gids above 399!
 
