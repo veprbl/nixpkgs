@@ -144,6 +144,7 @@ in {
     services.redis.enable = mkDefault true;
     # We use postgres as the main data store.
     services.postgresql.enable = mkDefault true;
+    services.postgresql.package = mkDefault pkgs.postgresql;
     # Use postfix to send out mails.
     services.postfix.enable = mkDefault true;
 
@@ -176,6 +177,8 @@ in {
       environment.GITLAB_SHELL_CONFIG_PATH = "${cfg.stateDir}/shell/config.yml";
       environment.GITLAB_SHELL_SECRET_PATH = "${cfg.stateDir}/config/gitlab_shell_secret";
       environment.GITLAB_HOST = "${cfg.host}";
+      environment.GITLAB_DATABASE_HOST = "${cfg.databaseHost}";
+      environment.GITLAB_DATABASE_PASSWORD = "${cfg.databasePassword}";
       environment.RAILS_ENV = "production";
       path = with pkgs; [
         config.services.postgresql.package
@@ -207,6 +210,8 @@ in {
       environment.BUNDLE_GEMFILE = "${pkgs.gitlab}/share/gitlab/Gemfile";
       environment.GITLAB_EMAIL_FROM = "${cfg.emailFrom}";
       environment.GITLAB_HOST = "${cfg.host}";
+      environment.GITLAB_DATABASE_HOST = "${cfg.databaseHost}";
+      environment.GITLAB_DATABASE_PASSWORD = "${cfg.databasePassword}";
       environment.RAILS_ENV = "production";
       path = with pkgs; [
         config.services.postgresql.package
