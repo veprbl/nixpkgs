@@ -3924,6 +3924,8 @@ let
 
   angelscript = callPackage ../development/interpreters/angelscript {};
 
+  bundler2nix = callPackage ../tools/package-management/bundler2nix { };
+
   chibi = callPackage ../development/interpreters/chibi { };
 
   clisp = callPackage ../development/interpreters/clisp { };
