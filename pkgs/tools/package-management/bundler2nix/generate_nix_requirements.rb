@@ -24,31 +24,18 @@ Dir.mktmpdir do |tmp_dir|
 
   requirements = {}
 
-  specs = Queue.new
-  ts = (1..4).map {
-    Thread.new {
-      while s = specs.deq
-        filename = `gem fetch #{s.name} -v #{s.version.to_s}`.split()[1]
-        hash = `sha256sum #{filename}.gem`
-        url = "#{GEMSERVER}/downloads/#{filename}.gem"
-        puts url
-        requirements[s.name] = { :version => s.version.to_s,
-                                :hash => hash.split().first,
-                                :url => url,}
-      end
-    }
-  }
-
   lockfile.specs.each do |s|
     possible_gem_name = "#{s.name}-#{s.version.to_s}.gem"
 
     Dir.chdir tmp_dir do
-      specs << s
+      filename = `gem fetch #{s.name} -v #{s.version.to_s}`.split()[1]
+      hash = `sha256sum #{filename}.gem`
+      url = "#{GEMSERVER}/downloads/#{filename}.gem"
+      puts url
+      requirements[s.name] = { :version => s.version.to_s,
+                               :hash => hash.split().first,
+                               :url => url,}
     end
-  end
-
-  ts.each do |t|
-    t.join
   end
 
   filename = ARGV[1]
