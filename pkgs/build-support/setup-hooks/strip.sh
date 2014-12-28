@@ -28,8 +28,12 @@ stripDirs() {
     done
     dirs=${dirsNew}
 
+    # Make "strip" produce deterministic output, by setting
+    # timestamps etc. to a fixed value.
+    commonStripFlags="${commonStripFlags:---enable-deterministic-archives}"
+
     if [ -n "${dirs}" ]; then
-        header "stripping (with flags $stripFlags) in$dirs"
+        header "stripping (with flags $commonStripFlags    $stripFlags) in $dirs"
         find $dirs -type f -print0 | xargs -0 ${xargsFlags:--r} strip $commonStripFlags $stripFlags || true
         stopNest
     fi

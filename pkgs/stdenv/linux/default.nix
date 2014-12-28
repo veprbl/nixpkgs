@@ -255,13 +255,7 @@ rec {
   stdenvLinux = import ../generic rec {
     inherit system config;
 
-    preHook =
-      ''
-        # Make "strip" produce deterministic output, by setting
-        # timestamps etc. to a fixed value.
-        commonStripFlags="--enable-deterministic-archives"
-        ${commonPreHook}
-      '';
+    preHook = commonPreHook;
 
     initialPath =
       ((import ../common-path.nix) {pkgs = stage4.pkgs;});
