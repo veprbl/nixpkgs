@@ -33,9 +33,13 @@ stdenv.mkDerivation rec {
   patches =
     [ # Do not look in /usr etc. for dependencies.
       ./no-sys-dirs.patch
+      ./no-impure-config.patch
+      ./no-date-in-perl-binary.patch
     ]
     ++ optional stdenv.isSunOS ./ld-shared.patch
-    ++ stdenv.lib.optional stdenv.isDarwin [ ./cpp-precomp.patch ./no-libutil.patch ] ;
+    ++ optional stdenv.isDarwin [ ./cpp-precomp.patch ./no-libutil.patch ] ;
+
+  stdenv_system = stdenv.system;
 
   # Build a thread-safe Perl with a dynamic libperls.o.  We need the
   # "installstyle" option to ensure that modules are put under
@@ -65,6 +69,12 @@ stdenv.mkDerivation rec {
 
       ${optionalString stdenv.isArm ''
         configureFlagsArray=(-Dldflags="-lm -lrt")
+      ''}
+
+      ${optionalString stdenv.isCygwin ''
+        cp cygwin/cygwin.c{,.bak}
+        echo "#define PERLIO_NOT_STDIO 0" > tmp
+        cat tmp cygwin/cygwin.c.bak > cygwin/cygwin.c
       ''}
     '';
 

@@ -1,0 +1,78 @@
+diff --git a/Configure b/Configure
+index af2d6c0..5064cd0 100755
+--- a/Configure
++++ b/Configure
+@@ -3251,6 +3251,7 @@ if test -f config.sh; then
+ 		;;
+ 	esac
+ fi
++myuname=`uname -s | tr A-Z a-z`" localhost 3.0.0 #1-nixos smp thu jan 1 00:00:01 utc 1970 "`echo "$stdenv_system" | tr - \  `
+ . ./UU/checkcc
+ if test ! -f config.sh; then
+ 	$cat <<EOM
+@@ -3763,11 +3764,17 @@ none)  osvers='' ;;
+ *) osvers="$ans" ;;
+ esac
+ 
++# Nixpkgs wants no version in the output
++osvers=""
++
+ 
+ . ./posthint.sh
+ 
+ : who configured the system
+ cf_time=`LC_ALL=C; LANGUAGE=C; export LC_ALL; export LANGUAGE; $date 2>&1`
++cf_time='Thu Jan  1 00:00:01 UTC 1970'
++
++cf_by=noone
+ case "$cf_by" in
+ "")
+ 	cf_by=`(logname) 2>/dev/null`
+@@ -9049,6 +9056,8 @@ case "$mydomain" in
+ 	mydomain=`echo $mydomain | ./tr '[A-Z]' '[a-z]'`
+ 	;;
+ esac
++myhostname="nomachine"
++mydomain=".nixos.org"
+ 
+ : a little sanity check here
+ case "$phostname" in
+@@ -9115,6 +9124,7 @@ while test "$cont"; do
+ 		;;
+ 	esac
+ done
++cf_email="noone@nixos.org"
+ 
+ : Ask e-mail of administrator
+ $cat <<EOM
+@@ -22877,7 +22887,7 @@ $startsh
+ # Source directory  : $src
+ # Configuration time: $cf_time
+ # Configured by     : $cf_by
+-# Target system     : $myuname
++# Target system     : $stdenv_system
+ 
+ EOT
+ : Add in command line options if available
+diff --git a/config_h.SH b/config_h.SH
+index fd46735..10a9ab5 100755
+--- a/config_h.SH
++++ b/config_h.SH
+@@ -46,7 +46,7 @@ sed <<!GROK!THIS! >$CONFIG_H -e 's!^#undef\(.*/\)\*!/\*#define\1 \*!' -e 's!^#un
+  * Source directory  : $src
+  * Configuration time: $cf_time
+  * Configured by     : $cf_by
+- * Target system     : $myuname
++ * Target system     : $stdenv_system
+  */
+ 
+ #ifndef _config_h_
+@@ -899,7 +899,7 @@ sed <<!GROK!THIS! >$CONFIG_H -e 's!^#undef\(.*/\)\*!/\*#define\1 \*!' -e 's!^#un
+  *	feature tests from Configure are generally more reliable.
+  */
+ #define OSNAME "$osname"		/**/
+-#define OSVERS "$osvers"		/**/
++#define OSVERS ""		/**/
+ 
+ /* MULTIARCH:
+  *	This symbol, if defined, signifies that the build
