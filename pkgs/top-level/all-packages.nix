@@ -4272,6 +4272,10 @@ let
     omake = omake_rc1;
   };
 
+  thrust = callPackage ../development/tools/thrust {
+    gconf = pkgs.gnome.GConf;
+  };
+
   tinycc = callPackage ../development/compilers/tinycc { };
 
   urweb = callPackage ../development/compilers/urweb { };
