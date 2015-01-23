@@ -34,6 +34,7 @@ stdenv.mkDerivation rec {
     [ # Do not look in /usr etc. for dependencies.
       ./no-sys-dirs.patch
       ./no-impure-config.patch
+      ./fixed-man-page-date.patch
       ./no-date-in-perl-binary.patch
     ]
     ++ optional stdenv.isSunOS ./ld-shared.patch
