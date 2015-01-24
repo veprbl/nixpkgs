@@ -1614,11 +1614,9 @@ let
   nodejs = callPackage ../development/web/nodejs { };
   nodejs-unstable = callPackage ../development/web/nodejs { unstableVersion = true; };
 
-  nodePackages = recurseIntoAttrs (callPackage ./node-packages.nix {
-    inherit pkgs stdenv nodejs fetchurl fetchgit;
-    neededNatives = [python] ++ lib.optional (lib.elem system lib.platforms.linux) utillinux;
-    self = pkgs.nodePackages;
-  });
+  nodePackages = recurseIntoAttrs (
+    callPackage ./node-packages.nix { self = nodePackages; }
+  );
 
   ldapvi = callPackage ../tools/misc/ldapvi { };
 
