@@ -89,6 +89,7 @@ stdenv.mkDerivation {
     export LD_LIBRARY_PATH="$(dirname $(echo ${stdenv.gcc.gcc}/lib/libgcc_s.so))"
 
     mkdir -p "$out/bin"
+    unset GOPATH
     export GOROOT="$(pwd)/"
     export GOBIN="$out/bin"
     export PATH="$GOBIN:$PATH"
@@ -106,6 +107,8 @@ stdenv.mkDerivation {
     mkdir -p "$out/share/emacs/site-lisp"
     cp ./misc/emacs/* $out/share/emacs/site-lisp/
   '';
+
+  setupHook = ./setup-hook.sh;
 
   meta = {
     homepage = http://golang.org/;
