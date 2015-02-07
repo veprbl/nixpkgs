@@ -1658,6 +1658,8 @@ let
 
   librdmacm = callPackage ../development/libraries/librdmacm { };
 
+  limesurvey = callPackage ../servers/limesurvey { };
+
   logcheck = callPackage ../tools/system/logcheck {
     inherit (perlPackages) mimeConstruct;
   };
