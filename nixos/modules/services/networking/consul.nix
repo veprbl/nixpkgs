@@ -119,6 +119,34 @@ in
         '';
       };
 
+      alerts = {
+        enable = mkEnableOption "Whether to enable consul-alerts";
+
+        listenAddr = mkOption {
+          description = "Api listening address.";
+          default = "localhost:9000";
+          type = types.str;
+        };
+
+        consulAddr = mkOption {
+          description = "Consul api listening adddress";
+          default = "localhost:8500";
+          type = types.str;
+        };
+
+        watchChecks = mkOption {
+          description = "Whether to enable check watcher.";
+          default = true;
+          type = types.bool;
+        };
+
+        watchEvents = mkOption {
+          description = "Whether to enable event watcher.";
+          default = true;
+          type = types.bool;
+        };
+      };
+
     };
 
   };
@@ -197,6 +225,24 @@ in
         wait
         exit 0
       '';
+    };
+
+    systemd.services.consul-alerts = mkIf (cfg.alerts.enable) {
+      wantedBy = [ "multi-user.target" ];
+      after = [ "consul.service" ];
+
+      path = [ pkgs.consul ];
+
+      serviceConfig = {
+        ExecStart = ''
+          ${pkgs.consul-alerts}/bin/consul-alerts start \
+            --alert-addr=${cfg.alerts.listenAddr} \
+            --consul-addr=${cfg.alerts.consulAddr} \
+            ${optionalString cfg.alerts.watchChecks "--watch-checks"} \
+            ${optionalString cfg.alerts.watchEvents "--watch-events"}
+        '';
+        User = if cfg.dropPrivileges then "consul" else null;
+      };
     };
 
   };
