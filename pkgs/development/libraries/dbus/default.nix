@@ -67,24 +67,16 @@ let
 
   } merge ]);
 
-  libs = dbus_drv "libs" "dbus" {
+  libs = dbus_drv "libs" "dbus" libs_attrs;
+  libs_attrs = {
     # Enable X11 autolaunch support in libdbus. This doesn't actually depend on X11
     # (it just execs dbus-launch in dbus.tools), contrary to what the configure script demands.
     NIX_CFLAGS_COMPILE = "-DDBUS_ENABLE_X11_AUTOLAUNCH=1";
     buildInputs = [ systemdOrEmpty ];
   };
 
-
-  attrs = rec {
-  # If you change much fix indentation
-
-  # This package has been split because most applications only need dbus.lib
-  # which serves as an interface to a *system-wide* daemon,
-  # see e.g. http://en.wikipedia.org/wiki/D-Bus#Architecture .
-
-  inherit libs;
-
-  tools = dbus_drv "tools" "tools bus" {
+  tools = dbus_drv "tools" "tools bus" tools_attrs;
+  tools_attrs = {
     preBuild = makeInternalLib;
     buildInputs = buildInputsX ++ systemdOrEmpty ++ [ libs ];
     NIX_CFLAGS_LINK =
@@ -101,11 +93,22 @@ let
     meta.platforms = with stdenv.lib.platforms; allBut darwin;
   };
 
-  daemon = tools;
+  attrs = rec {
+    # This package has been split because most applications only need dbus.lib
+    # which serves as an interface to a *system-wide* daemon,
+    # see e.g. http://en.wikipedia.org/wiki/D-Bus#Architecture .
 
-  docs = dbus_drv "docs" "doc" {
-    postInstall = ''rm -r "$out/lib"'';
+    inherit libs tools;
+    daemon = tools;
+
+    # contains all: libs + daemon + tools
+    # libdbus may invoke dbus-launch, which requires lots of dependencies, see
+    # https://github.com/NixOS/nixpkgs/issues/4414#issuecomment-73882545
+    combined = dbus_drv "combined" "dbus tools bus" (libs_attrs // tools_attrs);
+
+    docs = dbus_drv "docs" "doc" {
+      postInstall = ''rm -r "$out/lib"'';
+    };
   };
-};
 in attrs.libs // attrs
 
