@@ -23,7 +23,7 @@ in stdenv.mkDerivation rec {
 
   propagatedBuildInputs = [ zlib ];
 
-  doCheck = true;
+  doCheck = stdenv.is64bit;
 
   passthru = { inherit zlib; };
 
