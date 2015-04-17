@@ -980,7 +980,9 @@ let
 
   convertlit = callPackage ../tools/text/convertlit { };
 
-  collectd = callPackage ../tools/system/collectd { };
+  collectd = callPackage ../tools/system/collectd {
+    rabbitmq-c = rabbitmq-c_0_4;
+  };
 
   colormake = callPackage ../development/tools/build-managers/colormake { };
 
@@ -7385,6 +7387,8 @@ let
   qwt6 = callPackage ../development/libraries/qwt/6.nix { };
 
   rabbitmq-c = callPackage ../development/libraries/rabbitmq-c {};
+
+  rabbitmq-c_0_4 = callPackage ../development/libraries/rabbitmq-c/0.4.nix {};
 
   rabbitmq-java-client = callPackage ../development/libraries/rabbitmq-java-client {};
 
