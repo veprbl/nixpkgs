@@ -3,7 +3,7 @@
 # of the virtual consoles.  The latter is useful for the installation
 # CD.
 
-{ config, lib, pkgs, baseModules, ... }:
+{ config, lib, pkgs, baseModules, ... } @ extraArgs:
 
 with lib;
 
@@ -19,7 +19,7 @@ let
 
   eval = evalModules {
     modules = [ versionModule ] ++ baseModules;
-    args = (config._module.args) // { modules = [ ]; };
+    args = (removeAttrs extraArgs ["config" "options"]) // { modules = [ ]; };
   };
 
   manual = import ../../../doc/manual {

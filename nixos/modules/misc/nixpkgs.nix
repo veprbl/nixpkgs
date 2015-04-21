@@ -72,10 +72,6 @@ in
   };
 
   config = {
-    _module.args.pkgs = import ../../lib/nixpkgs.nix {
-      system = config.nixpkgs.system;
-
-      inherit (config.nixpkgs) config;
-    };
+    nixpkgs.system = mkDefault pkgs.stdenv.system;
   };
 }

@@ -1,6 +1,6 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 
-with lib;
+with pkgs.lib;
 
 let fcBool = x: if x then "<bool>true</bool>" else "<bool>false</bool>";
 in

@@ -6,9 +6,8 @@
 with lib;
 
 let
-  parentConfig = config;
 
-  pamOpts = { config, name, ... }: let cfg = config; in let config = parentConfig; in {
+  pamOpts = args: {
 
     options = {
 
@@ -181,8 +180,8 @@ let
 
     };
 
-    config = {
-      name = mkDefault name;
+    config = let cfg = args.config; in {
+      name = mkDefault args.name;
       setLoginUid = mkDefault cfg.startSession;
       limits = mkDefault config.security.pam.loginLimits;
 
