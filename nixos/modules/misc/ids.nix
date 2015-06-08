@@ -220,6 +220,7 @@
       asterisk = 192;
       plex = 193;
       grafana = 194;
+      ripple-rest = 195;
 
       # When adding a uid, make sure it doesn't match an existing gid. And don't use uids above 399!
 
@@ -417,6 +418,7 @@
       #asterisk = 192; # unused
       plex = 193;
       #grafana = 194; #unused
+      #ripple-rest = 195; #unused
 
       # When adding a gid, make sure it doesn't match an existing
       # uid. Users and groups with the same name should have equal

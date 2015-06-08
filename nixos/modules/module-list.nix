@@ -205,6 +205,7 @@
   ./services/misc/phd.nix
   ./services/misc/redmine.nix
   ./services/misc/rippled.nix
+  ./services/misc/ripple-rest.nix
   ./services/misc/ripple-data-api.nix
   ./services/misc/rogue.nix
   ./services/misc/siproxd.nix
