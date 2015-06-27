@@ -14159,7 +14159,13 @@ let
 
   ekrhyper = callPackage ../applications/science/logic/ekrhyper {};
 
-  eprover = callPackage ../applications/science/logic/eprover { };
+  eprover = callPackage ../applications/science/logic/eprover {
+    texLive = texLiveAggregationFun {
+      paths = [
+        texLive texLiveExtra
+      ];
+    };
+  };
 
   gappa = callPackage ../applications/science/logic/gappa { };
 

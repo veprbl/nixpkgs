@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, which }:
+{ stdenv, fetchurl, which, texLive, withDoc ? false }:
 let
   s = # Generated upstream information
   rec {
@@ -18,7 +18,7 @@ stdenv.mkDerivation {
     inherit (s) url sha256;
   };
 
-  buildInputs = [ which ];
+  buildInputs = [ which ] ++ stdenv.lib.optional withDoc texLive;
 
   preConfigure = "sed -e 's@^EXECPATH\\s.*@EXECPATH = '\$out'/bin@' -i Makefile.vars";
 
@@ -29,6 +29,10 @@ stdenv.mkDerivation {
     make install
     echo eproof -xAuto --tstp-in --tstp-out '"$@"' > $out/bin/eproof-tptp
     chmod a+x $out/bin/eproof-tptp
+  '' + stdenv.lib.optionalString withDoc ''
+    HOME=. make documentation
+    mkdir -p $out/share/doc/EProver
+    cp DOC/EProver/eprover.pdf $out/share/doc/EProver/
   '';
 
   meta = {
