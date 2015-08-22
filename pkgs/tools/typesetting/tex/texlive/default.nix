@@ -1,11 +1,15 @@
-args : with args;
+{ stdenv, fetchurl
+, config
+, zlib, bzip2, ncurses, libpng, flex, bison, libX11, libICE, xproto
+, freetype, t1lib, gd, libXaw, icu, ghostscript, ed, libXt, libXpm, libXmu, libXext
+, xextproto, perl, libSM, ruby, expat, curl, libjpeg, python, fontconfig, pkgconfig
+, poppler, libpaper, graphite2, lesstif, zziplib, harfbuzz, texinfo, potrace, gmp, mpfr
+, xpdf
+, makeWrapper
+}:
 
-rec {
-  src = assert config.allowTexliveBuilds or true; fetchurl {
-    url = mirror://debian/pool/main/t/texlive-bin/texlive-bin_2014.20140926.35254.orig.tar.xz;
-    sha256 = "1c39x059jhn5jsy6i9j3akjbkm1kmmzssy1jyi1aw20rl2vp86w3";
-  };
 
+let
   texmfVersion = "2014.20141024";
   texmfSrc = fetchurl {
     url = "mirror://debian/pool/main/t/texlive-base/texlive-base_${texmfVersion}.orig.tar.xz";
@@ -17,21 +21,56 @@ rec {
     url = "mirror://debian/pool/main/t/texlive-lang/texlive-lang_${langTexmfVersion}.orig.tar.xz";
     sha256 = "1ydz5m1v40n34g1l31r3vqg74rbr01x2f80drhz4igh21fm7zzpa";
   };
+in
+stdenv.mkDerivation rec {
+  name = "texlive-core-2014";
+
+  src = assert config.allowTexliveBuilds or true; fetchurl {
+    url = mirror://debian/pool/main/t/texlive-bin/texlive-bin_2014.20140926.35254.orig.tar.xz;
+    sha256 = "1c39x059jhn5jsy6i9j3akjbkm1kmmzssy1jyi1aw20rl2vp86w3";
+  };
+
+  buildInputs = [ zlib bzip2 ncurses libpng flex bison libX11 libICE xproto
+    freetype t1lib gd libXaw icu ghostscript ed libXt libXpm libXmu libXext
+    xextproto perl libSM ruby expat curl libjpeg python fontconfig pkgconfig
+    poppler libpaper graphite2 lesstif zziplib harfbuzz texinfo potrace gmp mpfr
+    xpdf ]
+    ++ stdenv.lib.optional stdenv.isDarwin makeWrapper
+    ;
+
+  configureFlags = [ "--with-x11" "--enable-ipc" "--with-mktexfmt"
+    "--enable-shared" "--disable-native-texlive-build" "--with-system-zziplib"
+    "--with-system-libgs" "--with-system-t1lib" "--with-system-freetype2"
+    "--with-system-freetype=no" "--disable-ttf2pk" "--enable-ttf2pk2" ]
+    ++ stdenv.lib.optionals stdenv.isDarwin [
+      # TODO: We should be able to fix these tests
+      "--disable-devnag"
+
+      # jww (2014-06-02): The following fails with:
+      # FAIL: tests/dvisvgm
+      # ===================
+      #
+      # dyld: Library not loaded: libgs.dylib.9.06
+      #   Referenced from: .../Work/texk/dvisvgm/.libs/dvisvgm
+      #   Reason: image not found
+      "--disable-dvisvgm"
+      "-C"
+    ];
+
 
   passthru = { inherit texmfSrc langTexmfSrc; };
 
   setupHook = ./setup-hook.sh;
 
-  doMainBuild = fullDepEntry ( stdenv.lib.optionalString stdenv.isDarwin ''
+  enableParallelBuilding = true;
+
+  ## doMainBuild
+  preConfigure = stdenv.lib.optionalString stdenv.isDarwin ''
     export DYLD_LIBRARY_PATH="${poppler}/lib"
   '' + ''
-    mkdir -p $out
-    mkdir -p $out/nix-support
-    cp ${setupHook} $out/nix-support/setup-hook.sh
-    mkdir -p $out/share
+    mkdir "$out"
     tar xf ${texmfSrc} -C $out --strip-components=1
     tar xf ${langTexmfSrc} -C $out --strip-components=1
-
     sed -e s@/usr/bin/@@g -i $(grep /usr/bin/ -rl . )
 
     sed -e 's@dehypht-x-2013-05-26@dehypht-x-2014-05-21@' -i $(grep 'dehypht-x' -rl $out )
@@ -47,14 +86,20 @@ rec {
     # sed -e s@ncurses/curses.h@curses.h@g -i $(grep ncurses/curses.h -rl . )
     sed -e '1i\#include <string.h>\n\#include <stdlib.h>' -i $( find libs/teckit -name '*.cpp' -o -name '*.c' )
 
-    NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE -I${icu}/include/layout";
+    #NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE -I${icu}/include/layout";
 
-    ./Build --prefix="$out" --datadir="$out/share" --mandir="$out/share/man" --infodir="$out/share/info" \
-      ${args.lib.concatStringsSep " " configureFlags}
+    #./Build --prefix="$out" --datadir="$out/share" --mandir="$out/share/man" --infodir="$out/share/info" \
+    #  ${stdenv.lib.concatStringsSep " " configureFlags}
+
+    mkdir Work
     cd Work
-  '' ) [ "minInit" "doUnpack" "addInputs" "defEnsureDir" ];
+  '';
+  configureScript = "../configure";
 
-  promoteLibexec = fullDepEntry (''
+  doCheck = true;
+
+  postInstall = ''
+  '' + /*promoteLibexec*/ ''
     mkdir -p $out/libexec/
     mv $out/bin $out/libexec/$(uname -m)
     mkdir -p $out/bin
@@ -71,9 +116,13 @@ rec {
           rm "$out/libexec/$(basename "$i")"
       fi;
     done
-  '') ["doMakeInstall"];
-
-  doPostInstall = fullDepEntry( ''
+  ''
+    + /*patchShebangsInterim*/ ''
+    for p in "$out"/{bin,libexec,share/texmf-dist/scripts,texmf-dist/scripts}; do
+      patchShebangs "$p"
+    done
+  ''
+    + /*doPostInstall*/ ''
     cp -r "$out/"texmf* "$out/share/" || true
     rm -rf "$out"/texmf*
     [ -d $out/share/texmf-config ] || ln -s $out/share/texmf-dist $out/share/texmf-config
@@ -97,50 +146,12 @@ rec {
     PATH="$PATH:$out/bin" fmtutil-sys --all || true
 
     PATH=$PATH:$out/bin mktexlsr $out/share/texmf*
-  '' + stdenv.lib.optionalString stdenv.isDarwin ''
+  ''
+    + stdenv.lib.optionalString stdenv.isDarwin ''
     for prog in $out/bin/*; do
       wrapProgram "$prog" --prefix DYLD_LIBRARY_PATH : "${poppler}/lib"
     done
-  '' ) [ "minInit" "defEnsureDir" "doUnpack" "doMakeInstall" "promoteLibexec" "patchShebangsInterim"];
-
-  patchShebangsInterimBin = doPatchShebangs ''$out/bin/'';
-  patchShebangsInterimLibexec = doPatchShebangs ''$out/libexec/'';
-  patchShebangsInterimShareTexmfDist = doPatchShebangs ''$out/share/texmf-dist/scripts/'';
-  patchShebangsInterimTexmfDist = doPatchShebangs ''$out/texmf-dist/scripts/'';
-
-  patchShebangsInterim = fullDepEntry ("") ["patchShebangsInterimBin"
-    "patchShebangsInterimLibexec" "patchShebangsInterimTexmfDist"
-    "patchShebangsInterimShareTexmfDist"];
-
-  buildInputs = [ zlib bzip2 ncurses libpng flex bison libX11 libICE xproto
-    freetype t1lib gd libXaw icu ghostscript ed libXt libXpm libXmu libXext
-    xextproto perl libSM ruby expat curl libjpeg python fontconfig xz pkgconfig
-    poppler libpaper graphite2 lesstif zziplib harfbuzz texinfo potrace gmp mpfr
-    xpdf ]
-    ++ stdenv.lib.optionals stdenv.isDarwin [ makeWrapper ]
-    ;
-
-  configureFlags = [ "--with-x11" "--enable-ipc" "--with-mktexfmt"
-    "--enable-shared" "--disable-native-texlive-build" "--with-system-zziplib"
-    "--with-system-libgs" "--with-system-t1lib" "--with-system-freetype2"
-    "--with-system-freetype=no" "--disable-ttf2pk" "--enable-ttf2pk2" ]
-    ++ stdenv.lib.optionals stdenv.isDarwin [
-      # TODO: We should be able to fix these tests
-      "--disable-devnag"
-
-      # jww (2014-06-02): The following fails with:
-      # FAIL: tests/dvisvgm
-      # ===================
-      #
-      # dyld: Library not loaded: libgs.dylib.9.06
-      #   Referenced from: .../Work/texk/dvisvgm/.libs/dvisvgm
-      #   Reason: image not found
-      "--disable-dvisvgm"
-    ];
-
-  phaseNames = [ "addInputs" "doMainBuild" "doMakeInstall" "doPostInstall" ];
-
-  name = "texlive-core-2014";
+  '';
 
   meta = with stdenv.lib; {
     description = "A TeX distribution";

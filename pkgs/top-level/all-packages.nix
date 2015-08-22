@@ -15005,13 +15005,15 @@ let
 
   texFunctions = import ../tools/typesetting/tex/nix pkgs;
 
-  texLive = builderDefsPackage (import ../tools/typesetting/tex/texlive) {
+  texLive = callPackage ../tools/typesetting/tex/texlive {
+    /*
     inherit builderDefs zlib bzip2 ncurses libpng ed lesstif ruby potrace
       gd t1lib freetype icu perl expat curl xz pkgconfig zziplib texinfo
       libjpeg bison python fontconfig flex poppler libpaper graphite2
       makeWrapper gmp mpfr xpdf config;
     inherit (xlibs) libXaw libX11 xproto libXt libXpm
       libXmu libXext xextproto libSM libICE;
+      */
     ghostscript = ghostscriptX;
     harfbuzz = harfbuzz.override {
       withIcu = true; withGraphite2 = true;
