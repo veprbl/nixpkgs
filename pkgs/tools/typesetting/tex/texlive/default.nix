@@ -60,6 +60,7 @@ stdenv.mkDerivation rec {
     # see "from TL tree" vs. "Using installed"  in configure output
     "harfbuzz" "icu" "graphite2" "zziplib" "xpdf" "poppler" "mpfr" "gmp"
     "cairo" "pixman" "potrace" "gd" "freetype2" "libpng" "libpaper" "zlib"
+      # beware: xpdf means to use stuff from poppler :-/
   ];
 
 /*
@@ -128,6 +129,8 @@ stdenv.mkDerivation rec {
 
   #doCheck = true;
   # ../../../texk/web2c/../../build-aux/test-driver: ../../../texk/web2c/tests/write18-quote-test.pl: /usr/bin/env: bad interpreter: No such file or directory
+
+  installTargets = [ "install" "texlinks" ];
 
   postInstall = ''
   '' + /*promoteLibexec*/ ''
