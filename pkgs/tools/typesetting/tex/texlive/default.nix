@@ -23,12 +23,15 @@ let
   };
 in
 stdenv.mkDerivation rec {
-  name = "texlive-core-2014";
+  name = "texlive-core-2015";
 
   src = assert config.allowTexliveBuilds or true; fetchurl {
-    url = mirror://debian/pool/main/t/texlive-bin/texlive-bin_2014.20140926.35254.orig.tar.xz;
-    sha256 = "1c39x059jhn5jsy6i9j3akjbkm1kmmzssy1jyi1aw20rl2vp86w3";
+    #url = mirror://debian/pool/main/t/texlive-bin/texlive-bin_2014.20140926.35254.orig.tar.xz;
+    #sha256 = "1c39x059jhn5jsy6i9j3akjbkm1kmmzssy1jyi1aw20rl2vp86w3";
+    url = ftp://tug.org/historic/systems/texlive/2015/texlive-20150521-source.tar.xz;
+    sha256 = "ed9bcd7bdce899c3c27c16a8c5c3017c4f09e1d7fd097038351b72497e9d4669";
   };
+
 /*
   buildInputs = [ zlib bzip2 ncurses libpng flex bison libX11 libICE xproto
     freetype t1lib gd libXaw icu ghostscript ed libXt libXpm libXmu libXext
@@ -40,18 +43,25 @@ stdenv.mkDerivation rec {
 */
   buildInputs = with xorg; [
     pkgconfig
-    ghostscript harfbuzz icu /*teckit*/ graphite2 zziplib poppler mpfr gmp
-    cairo pixman potrace gd freetype libpng libpaper zlib /*ptexenc*/
+    harfbuzz icu /*teckit*/ graphite2 zziplib poppler mpfr gmp
+    cairo pixman potrace gd freetype libpng libpaper zlib /*ptexenc kpathsea*/
     libXmu libXaw
   ];
 
   configureFlags = [
+    "--with-banner-add=/NixOS.org"
     "--disable-missing" "--disable-native-texlive-build"
     "--enable-shared" # "--enable-cxx-runtime-hack" # static runtime
     "--enable-tex-synctex"
 
-    # most dependencies are picked from buildInputs automatically, but not these
-    "--with-system-cairo" "--with-system-gd" "--with-system-freetype2" "--with-system-libpng"
+    "-C" # use configure cache to speed up
+
+  ] ++ map (libname: "--with-system-${libname}") [
+    # see "from TL tree" vs. "Using installed"  in configure output
+    "harfbuzz" "icu" "graphite2" "zziplib" "xpdf" "poppler" "mpfr" "gmp"
+    "cairo" "pixman" "potrace" "gd" "freetype2" "libpng" "libpaper" "zlib"
+  ];
+
 /*
    "--with-x11" "--enable-ipc" "--with-mktexfmt"
     "--enable-shared" "--with-system-zziplib"
@@ -71,8 +81,6 @@ stdenv.mkDerivation rec {
       "--disable-dvisvgm"
       "-C"
 */
-    ];
-
 
   passthru = { inherit texmfSrc langTexmfSrc; };
 
