@@ -31,8 +31,11 @@
 }:
 
 runCommand name
-  { inherit manifest paths ignoreCollisions passthru
+  { inherit manifest ignoreCollisions passthru
       pathsToLink extraPrefix preBuild postBuild;
+      paths = [ drv ]; # FIXME: handle multiple outputs
+      priority = drv.meta.priority or 5;
+    }) paths);
     preferLocalBuild = true;
   }
   ''
