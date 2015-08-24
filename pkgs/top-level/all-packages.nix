@@ -15005,7 +15005,11 @@ let
 
   texFunctions = import ../tools/typesetting/tex/nix pkgs;
 
-  texLive = callPackage ../tools/typesetting/tex/texlive {
+  tl = texlive; # TEMP
+  texlive = #recurseIntoAttrs
+    (callPackage ../tools/typesetting/tex/texlive-new { });
+
+  texlive-bin = callPackage ../tools/typesetting/tex/texlive {
     /*
     inherit builderDefs zlib bzip2 ncurses libpng ed lesstif ruby potrace
       gd t1lib freetype icu perl expat curl xz pkgconfig zziplib texinfo
