@@ -113,25 +113,21 @@ stdenv.mkDerivation rec {
   installTargets = [ "install" "texlinks" ];
 
     #mv "$out"/share/texmf{-dist,}
-    # perl patching taken from buildPerlPackage
+    # perl patching taken from buildPerlPackage and simplified
   postInstall = ''
     mkdir "$out/share/texmf-dist/scripts/texlive/TeXLive/"
     cp ../texk/tests/TeXLive/*.pm "$out/share/texmf-dist/scripts/texlive/TeXLive/"
+    ln -s "$out/bin/mktexlsr" "$out/share/texmf-dist/scripts/texlive/mktexlsr.pl"
 
     patchShebangs "$out/share/texmf-dist/scripts"
 
     perlFlags="-I$out/share/texmf-dist/scripts/texlive"
-    find "$out/share/texmf-dist/scripts/texlive/" | while read fn; do
-        if test -f "$fn"; then
-            first=$(dd if="$fn" count=2 bs=1 2> /dev/null)
-            if test "$first" = "#!"; then
-                echo "patching $fn..."
-                sed < "$fn" > "$fn".tmp \
-                    -e "s|^#\!\(.*/perl.*\)$|#\! \1$perlFlags|"
-                if test -x "$fn"; then chmod +x "$fn".tmp; fi
-                mv "$fn".tmp "$fn"
-            fi
-        fi
+    find "$out/share/texmf-dist/scripts/texlive/" -type f -executable | while read fn; do
+      first=$(dd if="$fn" count=2 bs=1 2> /dev/null)
+      if test "$first" = "#!"; then
+        echo "patching $fn..."
+        sed -e "s|^#\!\(.*/perl.*\)$|#\! \1$perlFlags|" -i "$fn"
+      fi
     done
   '';
 

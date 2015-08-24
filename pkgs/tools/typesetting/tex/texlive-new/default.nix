@@ -2,6 +2,8 @@
 , callPackage, ghostscriptX, harfbuzz
 }:
 let
+  # TODO: fixup scripts in individual packages
+
   /* curl ftp://tug.ctan.org/pub/tex/historic/systems/texlive/2015/tlnet-final/tlpkg/texlive.tlpdb.xz \
     | xzcat | sed -rn -f ./tl2nix.sed > ./pkgs.nix */
   tl-clean = removeAttrs (import ./pkgs.nix tl-flatDeps) [ "trash" ];
@@ -33,6 +35,7 @@ let
   mkPkg = version: name: md5:
     let src = fetchurl {
         # TODO: some src URLs have "source" instead of "src". Ask upstream?
+        # TODO: "historic" isn't mirrored
         #url = "http://mirror.ctan.org/historic/systems/texlive/${bin.year}/tlnet-final/archive/${name}.tar.xz";
         url = "ftp://tug.ctan.org/pub/tex/historic/systems/texlive/${bin.year}/tlnet-final/archive/${name}.tar.xz";
         inherit md5;
@@ -76,7 +79,12 @@ in
    tl-flatDeps // rec {
     inherit bin;
 
-    schemes.basic = combine { pkgSet = { inherit (tl-flatDeps) scheme-basic; }; };
+    combined = lib.mapAttrs
+      (name: attrs: combine { pkgSet.${name} = attrs; })
+      { inherit (tl-flatDeps)
+          scheme-full scheme-medium scheme-small scheme-basic scheme-minimal
+          scheme-context scheme-gust scheme-tetex scheme-xml;
+      };
 
     combine = { pkgSet, pkgFilter ? (type: _n: type == "run") }:
       let metaPkg = combinePkgs pkgSet;
@@ -94,9 +102,13 @@ in
           mkdir -p ./bin
           ln -s '${bin}'/bin/* ./bin/
 
-          PATH="$out/bin:$PATH"
+          export PATH="$out/share/texmf/scripts/texlive:$out/bin:$PATH"
+          export TEXMFSYSCONFIG="$out/share/texmf-config"
+
           mktexlsr ./share/texmf
-          updmap --sys --syncwithtrees
+          #fmtutil --sys --all
+          yes | updmap --sys --syncwithtrees || true
+          #texlinks.sh
         '';
       };
   }
