@@ -2,6 +2,8 @@
 , callPackage, ghostscriptX, harfbuzz
 }:
 let
+  /* curl ftp://tug.ctan.org/pub/tex/historic/systems/texlive/2015/tlnet-final/tlpkg/texlive.tlpdb.xz \
+    | xzcat | sed -rn -f ./tl2nix.sed > ./pkgs.nix */
   tl-clean = removeAttrs (import ./pkgs.nix tl-flatDeps) [ "trash" ];
   tl-flatDeps = lib.mapAttrs flatDeps tl-clean;
 
@@ -16,7 +18,7 @@ let
       */
     in
       if isSinglePackage name attrs
-      then let mkPkgV = mkPkg (attrs.version or bin.version);
+      then let mkPkgV = mkPkg (attrs.version or bin.year);
         in {
           # TL pkg contains three lists of packages: runtime files, docs, and sources
           pkgs.run = [ (mkPkgV name attrs.md5.run) ];
@@ -31,7 +33,8 @@ let
   mkPkg = version: name: md5:
     let src = fetchurl {
         # TODO: some src URLs have "source" instead of "src". Ask upstream?
-        url = "http://mirror.ctan.org/systems/texlive/tlnet/archive/${name}.tar.xz";
+        #url = "http://mirror.ctan.org/historic/systems/texlive/${bin.year}/tlnet-final/archive/${name}.tar.xz";
+        url = "ftp://tug.ctan.org/pub/tex/historic/systems/texlive/${bin.year}/tlnet-final/archive/${name}.tar.xz";
         inherit md5;
       };
     in runCommand "texlive-${name}-${version}"
@@ -78,7 +81,7 @@ in
     combine = { pkgSet, pkgFilter ? (type: _n: type == "run") }:
       let metaPkg = combinePkgs pkgSet;
       in buildEnv {
-        name = "texlive-combined-${bin.version}";
+        name = "texlive-combined-${bin.year}";
 
         extraPrefix = "/share/texmf";
         paths =

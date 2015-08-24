@@ -3,7 +3,6 @@
 $a}
 
 # some packages start with a number :-/
-# TODO: a better solution
 s/^name (.*)/name "\1"/
 #s/^depend (.*)/depend "\1"/
 
@@ -18,8 +17,10 @@ s/^name (.*)/name "\1"/
 s/^containermd5 (.*)/  md5.run = "\1";/p
 s/^doccontainermd5 (.*)/  md5.doc = "\1";/p
 s/^srccontainermd5 (.*)/  md5.src = "\1";/p
-# extract version
-s/^catalogue-version (.*)/  version = "\1";/p
+
+# extract version and clean unwanted chars from it
+/^catalogue-version/y/ \#/_-/
+s/^catalogue-version_(.*)/  version = "\1";/p
 
 # extract deps for collections and schemes
 /^category (Collection|Scheme)/,/^$/s/^depend ([^.]*)$/  deps."\1" = tl."\1";/p

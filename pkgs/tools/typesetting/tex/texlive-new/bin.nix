@@ -22,10 +22,10 @@ let
     sha256 = "1ydz5m1v40n34g1l31r3vqg74rbr01x2f80drhz4igh21fm7zzpa";
   };
 
-  version = "2015";
+  year = "2015";
 in
 stdenv.mkDerivation rec {
-  name = "texlive-bin-${version}";
+  name = "texlive-bin-${year}";
 
   src = assert config.allowTexliveBuilds or true; fetchurl {
     url = ftp://tug.org/historic/systems/texlive/2015/texlive-20150521-source.tar.xz;
@@ -63,7 +63,7 @@ stdenv.mkDerivation rec {
     "--disable-dvisvgm"
   ];
 
-  passthru = { inherit version /*texmfSrc langTexmfSrc*/; };
+  passthru = { inherit year /*texmfSrc langTexmfSrc*/; };
 
   setupHook = ./setup-hook.sh;
 
@@ -120,7 +120,7 @@ stdenv.mkDerivation rec {
 
     patchShebangs "$out/share/texmf-dist/scripts"
 
-    perlFlags="-I."
+    perlFlags="-I$out/share/texmf-dist/scripts/texlive"
     find "$out/share/texmf-dist/scripts/texlive/" | while read fn; do
         if test -f "$fn"; then
             first=$(dd if="$fn" count=2 bs=1 2> /dev/null)
@@ -204,6 +204,8 @@ stdenv.mkDerivation rec {
 }
 
 /* TODOs:
+  - patch/inspect kpathsea
+
   - let fontconfig search TeX fonts?
   <dir>/usr/share/texmf-dist/fonts/opentype</dir>
   <dir>/usr/share/texmf-dist/fonts/truetype</dir>
