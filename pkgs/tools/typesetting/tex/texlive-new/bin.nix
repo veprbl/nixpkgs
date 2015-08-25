@@ -117,7 +117,6 @@ stdenv.mkDerivation rec {
   postInstall = ''
     mkdir "$out/share/texmf-dist/scripts/texlive/TeXLive/"
     cp ../texk/tests/TeXLive/*.pm "$out/share/texmf-dist/scripts/texlive/TeXLive/"
-    ln -s "$out/bin/mktexlsr" "$out/share/texmf-dist/scripts/texlive/mktexlsr.pl"
 
     patchShebangs "$out/share/texmf-dist/scripts"
 

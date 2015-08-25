@@ -19,10 +19,10 @@ s/^doccontainermd5 (.*)/  md5.doc = "\1";/p
 s/^srccontainermd5 (.*)/  md5.src = "\1";/p
 
 # extract version and clean unwanted chars from it
-/^catalogue-version/y/ \#/_-/
+/^catalogue-version/y/ \/~/_--/
+/^catalogue-version/s/[\#,:\(\)]//g
 s/^catalogue-version_(.*)/  version = "\1";/p
 
 # extract deps for collections and schemes
 /^category (Collection|Scheme)/,/^$/s/^depend ([^.]*)$/  deps."\1" = tl."\1";/p
 
-#/^runfiles/,/^[^ ]/s/ RELO

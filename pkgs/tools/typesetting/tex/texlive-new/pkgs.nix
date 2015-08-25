@@ -1572,7 +1572,7 @@ trash."authorindex.x86_64-solaris" = {
   md5.run = "1bc6d7df61a9c9648c2e77aee6c8c791";
   md5.doc = "a7470927fea81e37a34fe58f4bb2ff11";
   md5.src = "4b92486248e02ce1517a4216ae9d332d";
-  version = "lower_sorbian:1.0g,_upper:1.0k";
+  version = "lower_sorbian1.0g_upper1.0k";
 };
 "babel-spanish" = {
   md5.run = "b692ab7787a32b46e13cfd56735fd951";
@@ -6902,7 +6902,7 @@ trash."cjkutils.x86_64-solaris" = {
   md5.run = "9df22afe46fc2b6417ab0a1c2238626f";
   md5.doc = "714f9429fcb3bafa57b167f4babe4fb6";
   md5.src = "6c74bc9d18d19a8dbf80200b29b3fe68";
-  version = "1999/03/18";
+  version = "1999-03-18";
 };
 "concmath-fonts" = {
   md5.run = "231d29cf1de84ecdecb4d26e2226965c";
@@ -12910,7 +12910,7 @@ trash."gsftopk.x86_64-solaris" = {
 "hitec" = {
   md5.run = "a0c67afccf2ac1d2488ea03870912c39";
   md5.doc = "7c415dd4260f8f036245e554e82e7cd5";
-  version = "0.0(beta)";
+  version = "0.0beta";
 };
 "hletter" = {
   md5.run = "f36b6278ed02faa7fd3e927e26620348";
@@ -13002,7 +13002,7 @@ trash."gsftopk.x86_64-solaris" = {
   md5.run = "2f205f47610fb23a726776f9a58612aa";
   md5.doc = "003670b92ed8b0dfa67506fcb2a40c31";
   md5.src = "3357192dced90f33f9edeedb90bcfb0f";
-  version = "-687";
+  version = "687";
 };
 "hyphen-afrikaans" = {
   md5.run = "47fc1979924af2202038ef565ba17b72";
@@ -20349,7 +20349,7 @@ trash."pmxchords.x86_64-solaris" = {
 "progressbar" = {
   md5.run = "bc269d524d72c0c171a9ee250d28c861";
   md5.doc = "c1a8c4a77cd2366186b335e0af596df8";
-  version = "v1.0b~4";
+  version = "v1.0b-4";
 };
 "properties" = {
   md5.run = "bf58da266cf708e26b17fe15171a8884";
@@ -27951,7 +27951,7 @@ trash."yplan.x86_64-solaris" = {
 "zhspacing" = {
   md5.run = "87917ad44dcd06a5c433b30dd7223139";
   md5.doc = "e57a36d314172ad6b0cd4c243dd2779b";
-  version = "2012/03/14";
+  version = "2012-03-14";
 };
 "ziffer" = {
   md5.run = "2ada1545d888d8a8538d482ee61e999b";

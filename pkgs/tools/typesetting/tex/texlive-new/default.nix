@@ -1,8 +1,11 @@
 { stdenv, lib, fetchurl, runCommand, buildEnv
 , callPackage, ghostscriptX, harfbuzz
+, perl
 }:
 let
   # TODO: fixup scripts in individual packages
+  # but first try through setting env vars in bin/ aggregate,
+  # as that would be needed anyway
 
   /* curl ftp://tug.ctan.org/pub/tex/historic/systems/texlive/2015/tlnet-final/tlpkg/texlive.tlpdb.xz \
     | xzcat | sed -rn -f ./tl2nix.sed > ./pkgs.nix */
@@ -10,16 +13,7 @@ let
   tl-flatDeps = lib.mapAttrs flatDeps tl-clean;
 
   flatDeps = name: attrs:
-    let
-      # list of tarballs to be contained;
-      # we could do sorted list merging, but they're represented as arrays...
-      /*
-      srcs_dup = lib.zipAttrsWith
-        (lib.mapAttrsToList (_name: dep: dep) (attrs.deps or []));
-      srcs = lib.unique srcs_dup; # TODO: optimize
-      */
-    in
-      if isSinglePackage name attrs
+    if isSinglePackage name attrs
       then let mkPkgV = mkPkg (attrs.version or bin.year);
         in {
           # TL pkg contains three lists of packages: runtime files, docs, and sources
@@ -27,21 +21,31 @@ let
           pkgs.doc = lib.optional (attrs.md5 ? "doc")
             (mkPkgV "${name}.doc" attrs.md5.doc);
           pkgs.src = lib.optional (attrs.md5 ? "src")
-            (mkPkgV "${name}.src" attrs.md5.src);
+            (mkPkgV "${name}.source" attrs.md5.src);
         }
       else
         combinePkgs attrs.deps;
 
   mkPkg = version: name: md5:
     let src = fetchurl {
-        # TODO: some src URLs have "source" instead of "src". Ask upstream?
-        # TODO: "historic" isn't mirrored
-        #url = "http://mirror.ctan.org/historic/systems/texlive/${bin.year}/tlnet-final/archive/${name}.tar.xz";
+      /* TODOs:
+          - some src URLs have "source" instead of "src". Ask upstream?
+          - "historic" isn't mirrored
+          - deal with empty packages (scan for runfiles?)
+          - make fixed-output *after* unpacking
+            (to have same derivation even when stdenv/platform changes)
+            for that we would need to download all and generate hashes on our own
+      */
+        #url = "http://mirror.ctan.org/
         url = "ftp://tug.ctan.org/pub/tex/historic/systems/texlive/${bin.year}/tlnet-final/archive/${name}.tar.xz";
+        # also works: ftp.math.utah.edu/pub/tex/historic
         inherit md5;
       };
     in runCommand "texlive-${name}-${version}"
-        { preferLocalBuild = true; passthru = { inherit version; pName = name; }; }
+        { # lots of derivations, not meant to be cached
+          preferLocalBuild = true; allowSubstitutes = false;
+          passthru = { inherit version; pName = name; };
+        }
         ''
           mkdir "$out"
           tar -xf '${src}' -C "$out" --anchored --exclude=tlpkg \
@@ -53,10 +57,9 @@ let
 
   # combine a set of TL packages into a single TL meta-package
   combinePkgs = pkgSet:
-    let getFlat = attrName: lib.unique (lib.concatLists
+    let getFlat = attrName: lib.concatLists # uniqueness is handled in `combine`
         (map (dep: lib.getAttr attrName dep.pkgs)
-          (lib.mapAttrsToList (_n: a: a) pkgSet))
-      );
+          (lib.mapAttrsToList (_n: a: a) pkgSet));
     in { # tarball of a collection/scheme itself only contains a tlobj file
       pkgs.run = getFlat "run";
       pkgs.doc = getFlat "doc";
@@ -92,23 +95,31 @@ in
         name = "texlive-combined-${bin.year}";
 
         extraPrefix = "/share/texmf";
-        paths =
-          lib.filter (pkgFilter "run") metaPkg.pkgs.run ++
-          lib.filter (pkgFilter "doc") metaPkg.pkgs.doc ++
-          lib.filter (pkgFilter "src") metaPkg.pkgs.src;
+
+        ignoreCollisions = true; # let ${bin} versions shadow pkgSet versions
+        paths = lib.unique ( [ "${bin}/share/texmf-dist" ]
+          ++ lib.filter (pkgFilter "run") metaPkg.pkgs.run
+          ++ lib.filter (pkgFilter "doc") metaPkg.pkgs.doc
+          ++ lib.filter (pkgFilter "src") metaPkg.pkgs.src );
+        /*
+        preBuild = ''
+          mkdir -p "$out/share/texmf"
+          ln -s '${bin}/share/texmf-dist/'* "$out/share/texmf/"
+        '';
+        */
 
         postBuild = ''
           cd "$out"
           mkdir -p ./bin
           ln -s '${bin}'/bin/* ./bin/
 
-          export PATH="$out/share/texmf/scripts/texlive:$out/bin:$PATH"
+          export PATH="$out/share/texmf/scripts/texlive:$out/bin:${perl}/bin:$PATH"
           export TEXMFSYSCONFIG="$out/share/texmf-config"
 
           mktexlsr ./share/texmf
-          #fmtutil --sys --all
-          yes | updmap --sys --syncwithtrees || true
-          #texlinks.sh
+          fmtutil-sys.sh --all
+          yes | updmap.pl --sys --syncwithtrees || true
+          texlinks.sh
         '';
       };
   }
