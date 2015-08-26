@@ -18,24 +18,35 @@ let
         md5.doc = "b25e79ae27b6f3bd1622043cc79aca23";
         version = "3.0";
       };
-      "dvidvi" = { }; # only contains docs that's in bin.doc already
+      "dvidvi".md5 = { }; # only contains docs that's in bin.doc already
     };
 
   tl-flatDeps = lib.mapAttrs flatDeps tl-clean;
 
   flatDeps = name: attrs:
     if isSinglePackage name attrs
-      then let mkPkgV = mkPkg (attrs.version or bin.year);
+      then let
+            mkPkgV = mkPkg (attrs.version or bin.year);
+
+            mkPkgVx = type: {
+              ${type} = lib.optional (attrs.md5 ? type)
+                (mkPkg (attrs.version or bin.year) "${name}.${type}" attrs.md5.${type});
+            };
+
         in {
           # TL pkg contains three lists of packages: runtime files, docs, and sources
-          pkgs.run =
-            # TODO: modular overrides
-            if name == "dvidvi" then [] else 
-            [ (mkPkgV name attrs.md5.run) ];
-          pkgs.doc = lib.optional (attrs.md5 ? "doc")
-            (mkPkgV "${name}.doc" attrs.md5.doc);
-          pkgs.src = lib.optional (attrs.md5 ? "src")
-            (mkPkgV "${name}.source" attrs.md5.src);
+          pkgs = if false then
+            mkPkgVx "run" //
+            mkPkgVx "doc" //
+            mkPkgVx "source"
+          else  {
+            run = lib.optional (attrs.md5 ? "run")
+              (mkPkgV name attrs.md5.run);
+            doc = lib.optional (attrs.md5 ? "doc")
+              (mkPkgV "${name}.doc" attrs.md5.doc);
+            source = lib.optional (attrs.md5 ? "source")
+              (mkPkgV "${name}.source" attrs.md5.source);
+          };
         }
       else # tarball of a collection/scheme itself only contains a tlobj file
         combinePkgs attrs.deps;
@@ -88,7 +99,7 @@ let
     in {
       pkgs.run = makeFlat "run";
       pkgs.doc = makeFlat "doc";
-      pkgs.src = makeFlat "src";
+      pkgs.source = makeFlat "source";
     };
 
   /*
@@ -126,7 +137,7 @@ in
       let
         metaPkg = combinePkgs (pkgSet // {
           # include a fake "bin" package with docs for binaries
-          bin.pkgs = { run = []; doc = [ bin.doc ]; src = []; };
+          bin.pkgs = { run = []; doc = [ bin.doc ]; source = []; };
         });
       in buildEnv {
         name = "texlive-combined-${bin.year}";
@@ -136,9 +147,9 @@ in
         ignoreCollisions = false;
         paths = lib.unique #( "${bin}/share/texmf-dist" ]
           ( [ ]
-          ++ lib.filter (pkgFilter "run") metaPkg.pkgs.run
-          ++ lib.filter (pkgFilter "doc") metaPkg.pkgs.doc
-          ++ lib.filter (pkgFilter "src") metaPkg.pkgs.src );
+          ++ lib.filter (pkgFilter "run"   ) metaPkg.pkgs.run
+          ++ lib.filter (pkgFilter "doc"   ) metaPkg.pkgs.doc
+          ++ lib.filter (pkgFilter "source") metaPkg.pkgs.source );
 
         postBuild = ''
           cd "$out"
@@ -151,6 +162,7 @@ in
           export TEXMFSYSVAR="$out/share/texmf-var"
           export PERL5LIB="$out/share/texmf/scripts/texlive"
 
+          mkdir -p "$out/share/texmf/scripts/texlive/"
           ln -s '${bin}/share/texmf-dist/scripts/texlive/TeXLive' "$out/share/texmf/scripts/texlive/"
 
           perl `type -P mktexlsr.pl`
@@ -169,9 +181,4 @@ in
       };
       # TODO: more testing http://tug.org/texlive/doc/texlive-en/texlive-en.html#x1-380003.5
   }
-  /*
-  tl-srcs // {
-  }
-  #*/
-
 

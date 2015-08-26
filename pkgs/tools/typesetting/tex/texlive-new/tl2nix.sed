@@ -16,7 +16,7 @@ s/^name (.*)/name "\1"/
 # extract md5 for runfiles
 s/^containermd5 (.*)/  md5.run = "\1";/p
 s/^doccontainermd5 (.*)/  md5.doc = "\1";/p
-s/^srccontainermd5 (.*)/  md5.src = "\1";/p
+s/^srccontainermd5 (.*)/  md5.source = "\1";/p
 
 # extract version and clean unwanted chars from it
 /^catalogue-version/y/ \/~/_--/
