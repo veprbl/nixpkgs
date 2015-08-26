@@ -24,32 +24,35 @@ let
   tl-flatDeps = lib.mapAttrs flatDeps tl-clean;
 
   flatDeps = name: attrs:
-    if isSinglePackage name attrs
-      then let
+        let
             mkPkgV = mkPkg (attrs.version or bin.year);
 
             mkPkgVx = type: {
-              ${type} = lib.optional (attrs.md5 ? type)
+              ${type} = lib.optional (isSingle && attrs.md5 ? type)
                 (mkPkg (attrs.version or bin.year) "${name}.${type}" attrs.md5.${type});
             };
-
+            isSingle = isSinglePackage name attrs;
+            combDeps = (combinePkgs (attrs.deps or {})).pkgs;
         in {
           # TL pkg contains three lists of packages: runtime files, docs, and sources
           pkgs = if false then # TODO: fix and finish the refactoring
+            combDeps //
             mkPkgVx "run" //
             mkPkgVx "doc" //
             mkPkgVx "source"
           else  {
-            run = lib.optional (attrs.md5 ? "run")
-              (mkPkgV name attrs.md5.run);
-            doc = lib.optional (attrs.md5 ? "doc")
-              (mkPkgV "${name}.doc" attrs.md5.doc);
-            source = lib.optional (attrs.md5 ? "source")
-              (mkPkgV "${name}.source" attrs.md5.source);
+            # tarball of a collection/scheme itself only contains a tlobj file
+            run = lib.optional (isSingle && attrs.md5 ? "run")
+                (mkPkgV name attrs.md5.run)
+              ++ (combDeps.run or []);
+            doc = lib.optional (isSingle && attrs.md5 ? "doc")
+                (mkPkgV "${name}.doc" attrs.md5.doc)
+              ++ (combDeps.doc or []);
+            source = lib.optional (isSingle && attrs.md5 ? "source")
+                (mkPkgV "${name}.source" attrs.md5.source)
+              ++ (combDeps.source or []);
           };
-        }
-      else # tarball of a collection/scheme itself only contains a tlobj file
-        combinePkgs attrs.deps;
+        };
 
   mkPkg = version: name: md5:
     let src = fetchurl {

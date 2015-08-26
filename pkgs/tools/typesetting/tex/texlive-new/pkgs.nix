@@ -1,9 +1,35 @@
 tl: { # no indentation
 trash."00texlive.config" = {
+  deps."container_format/xz" = tl."container_format/xz";
+  deps."container_split_doc_files/1" = tl."container_split_doc_files/1";
+  deps."container_split_src_files/1" = tl."container_split_src_files/1";
+  deps."minrelease/2013" = tl."minrelease/2013";
+  deps."release/2014" = tl."release/2014";
+  deps."revision/36763" = tl."revision/36763";
 };
 trash."00texlive.image" = {
 };
 trash."00texlive.installation" = {
+  deps."opt_paper:a4" = tl."opt_paper:a4";
+  deps."opt_path:0" = tl."opt_path:0";
+  deps."opt_adjustrepo:1" = tl."opt_adjustrepo:1";
+  deps."opt_write18_restricted:1" = tl."opt_write18_restricted:1";
+  deps."opt_frozen:1" = tl."opt_frozen:1";
+  deps."setting_available_architectures:alpha-linux amd64-freebsd amd64-kfreebsd amd64-netbsd armel-linux armhf-linux i386-cygwin i386-freebsd i386-kfreebsd i386-linux i386-netbsd i386-solaris mipsel-linux powerpc-linux sparc-solaris universal-darwin win32 x86_64-cygwin x86_64-darwin x86_64-linux x86_64-solaris" = tl."setting_available_architectures:alpha-linux amd64-freebsd amd64-kfreebsd amd64-netbsd armel-linux armhf-linux i386-cygwin i386-freebsd i386-kfreebsd i386-linux i386-netbsd i386-solaris mipsel-linux powerpc-linux sparc-solaris universal-darwin win32 x86_64-cygwin x86_64-darwin x86_64-linux x86_64-solaris";
+  deps."opt_autobackup:1" = tl."opt_autobackup:1";
+  deps."opt_backupdir:tlpkg/backups" = tl."opt_backupdir:tlpkg/backups";
+  deps."opt_create_formats:1" = tl."opt_create_formats:1";
+  deps."opt_desktop_integration:1" = tl."opt_desktop_integration:1";
+  deps."opt_file_assocs:1" = tl."opt_file_assocs:1";
+  deps."opt_generate_updmap:0" = tl."opt_generate_updmap:0";
+  deps."opt_install_docfiles:1" = tl."opt_install_docfiles:1";
+  deps."opt_install_srcfiles:1" = tl."opt_install_srcfiles:1";
+  deps."opt_location:__MASTER__" = tl."opt_location:__MASTER__";
+  deps."opt_post_code:1" = tl."opt_post_code:1";
+  deps."opt_sys_bin:/usr/local/bin" = tl."opt_sys_bin:/usr/local/bin";
+  deps."opt_sys_info:/usr/local/share/info" = tl."opt_sys_info:/usr/local/share/info";
+  deps."opt_sys_man:/usr/local/share/man" = tl."opt_sys_man:/usr/local/share/man";
+  deps."opt_w32_multi_user:1" = tl."opt_w32_multi_user:1";
 };
 trash."00texlive.installer" = {
 };
@@ -548,6 +574,9 @@ trash."afm2pl.x86_64-solaris" = {
   md5.doc = "ac666d9ac9ef7199e7f6d2f14547ccc9";
 };
 "aleph" = {
+  deps."latex" = tl."latex";
+  deps."plain" = tl."plain";
+  deps."lambda" = tl."lambda";
   md5.run = "5422b8c374b3bf4cbe83e99377bebe8b";
   md5.doc = "eaf4cf81441b3c71bb77dd8115dc7221";
   version = "RC2";
@@ -722,6 +751,7 @@ trash."aleph.x86_64-solaris" = {
   version = "2.14";
 };
 "amstex" = {
+  deps."tex" = tl."tex";
   md5.run = "6fa305c850b7545c85437dbba49540ed";
   md5.doc = "967d3a3017971c058977a5e1d85e0445";
   version = "2.2";
@@ -821,6 +851,7 @@ trash."amstex.x86_64-solaris" = {
   version = "001.003";
 };
 "antomega" = {
+  deps."omega" = tl."omega";
   md5.run = "215d54622a2cefb3974dae94ba24d2a9";
   md5.doc = "67f27c69848db854ef21f7ddf0c3b688";
   md5.source = "48db08f013a63871669c6c58e42942f8";
@@ -1743,6 +1774,8 @@ trash."authorindex.x86_64-solaris" = {
   version = "2.26";
 };
 "beamer" = {
+  deps."pgf" = tl."pgf";
+  deps."xcolor" = tl."xcolor";
   md5.run = "4e27fb98ea58a383f8ea2a234a99c61e";
   md5.doc = "9c9aaa12f1a5f1beb573dcf2e58dd9d1";
   version = "3.36";
@@ -2187,6 +2220,7 @@ trash."bibexport.x86_64-solaris" = {
   md5.doc = "3dbca04680f1cd96e1630c9f029fc82c";
 };
 "bibtex" = {
+  deps."kpathsea" = tl."kpathsea";
   md5.run = "912f40944c7c8417f28c6cb5b47e57c8";
   md5.doc = "faa9abe53a2eeb1f506eeaa9b1d420ca";
   version = "0.99d";
@@ -3048,6 +3082,7 @@ trash."cachepic.x86_64-solaris" = {
   version = "0.2";
 };
 "cbfonts" = {
+  deps."cbfonts-fd" = tl."cbfonts-fd";
   md5.run = "bb16a2d4fd66880cecf5b5cb563d41a9";
   md5.doc = "ca607e90d04d2c02677098f7c8080523";
 };
@@ -3495,6 +3530,12 @@ trash."chktex.x86_64-solaris" = {
   version = "0.1a";
 };
 "cjk" = {
+  deps."arphic" = tl."arphic";
+  deps."cns" = tl."cns";
+  deps."garuda-c90" = tl."garuda-c90";
+  deps."norasi-c90" = tl."norasi-c90";
+  deps."uhc" = tl."uhc";
+  deps."wadalab" = tl."wadalab";
   md5.run = "4e4633224f2d8e46877e79f0a18b5562";
   md5.doc = "39b7889989c463514fa31371c152e162";
   md5.source = "6add8d6547cce71afbd7075e7edef836";
@@ -6935,133 +6976,179 @@ trash."cjkutils.x86_64-solaris" = {
   version = "0.1";
 };
 "context" = {
+  deps."metapost" = tl."metapost";
+  deps."pdftex" = tl."pdftex";
+  deps."xetex" = tl."xetex";
+  deps."luatex" = tl."luatex";
+  deps."lm" = tl."lm";
+  deps."lm-math" = tl."lm-math";
+  deps."amsfonts" = tl."amsfonts";
+  deps."manfnt-font" = tl."manfnt-font";
+  deps."mflogo-font" = tl."mflogo-font";
+  deps."stmaryrd" = tl."stmaryrd";
+  deps."mptopdf" = tl."mptopdf";
   md5.run = "bb8eb8cf236be91d8cdc6a183e024e3c";
   md5.doc = "6272a134bfd8abdc1293deccb82ae748";
 };
 "context-account" = {
+  deps."context" = tl."context";
   md5.run = "6c3e47164d3019ac5fecde6ccb0c2978";
   md5.doc = "e488e631300a1f560fc45a6e02f1b9d5";
 };
 "context-algorithmic" = {
+  deps."context" = tl."context";
   md5.run = "0fae20be4579257c00f22c32c5dbbabb";
 };
 "context-animation" = {
+  deps."context" = tl."context";
   md5.run = "38fba0d810d74804e4ec3e5c5a3c15e2";
   md5.doc = "eb50140e8ee8d63bf5457ef76c8e8d57";
 };
 "context-annotation" = {
+  deps."context" = tl."context";
   md5.run = "207f8f3267fc6c170002c95ae779c54c";
   md5.doc = "91cfc780a9e61380d3a380f379d6be35";
 };
 "context-bnf" = {
+  deps."context" = tl."context";
   md5.run = "689c302e0f9fc47afa67b0a5b84d05cd";
   md5.doc = "5dd04f4ab8bbee8cec2017e833b0c696";
 };
 "context-chromato" = {
+  deps."context" = tl."context";
   md5.run = "a68eca8c8f1ba9046c50c83c98ba29b8";
   md5.doc = "dfb0c79c01ad273e9ae1181cdd252858";
 };
 "context-construction-plan" = {
+  deps."context" = tl."context";
   md5.run = "4ae0ecd6b3e9243223e34e8a2ce8b221";
   md5.doc = "72733956bcdc054c1ffad311838bbc97";
 };
 "context-cyrillicnumbers" = {
+  deps."context" = tl."context";
   md5.run = "36f22e8a772897dd8fac1ecaf760a456";
   md5.doc = "6525e54a48e38bdc54f5c8a3a235bfee";
 };
 "context-degrade" = {
+  deps."context" = tl."context";
   md5.run = "7204a680e1a30f9e45ff6793c3bc993d";
   md5.doc = "2d1327055f05ea265ce0f5d3cd61ae2a";
 };
 "context-fancybreak" = {
+  deps."context" = tl."context";
   md5.run = "04df4ba70975a09e19f68b63ddf9ee8d";
   md5.doc = "bc3c9d811e15881e77141ecf336c123f";
 };
 "context-filter" = {
+  deps."context" = tl."context";
   md5.run = "40ca124cedec09d29ea2c5d560dc1804";
   md5.doc = "1f2c1987c4ab8023cada623aa2922f41";
 };
 "context-fixme" = {
+  deps."context" = tl."context";
   md5.run = "d75a8a12017d2c4a3b02154c84bc712d";
 };
 "context-french" = {
+  deps."context" = tl."context";
   md5.run = "463843bf7f7c3e7b39f7d3d6c530bdbd";
   md5.doc = "a1012dafdf3d33fdd938b62f87f579f8";
 };
 "context-fullpage" = {
+  deps."context" = tl."context";
   md5.run = "57caddf31a06919f62b8bc4d6e563ffb";
   md5.doc = "7d89c16cf0ae338aad3260e43b85e674";
 };
 "context-games" = {
+  deps."skaknew" = tl."skaknew";
+  deps."context" = tl."context";
   md5.run = "c4ff61cb11c85b928751247be928a5de";
   md5.doc = "80dd3e172c31d7de565705c415390920";
 };
 "context-gantt" = {
+  deps."context" = tl."context";
+  deps."hatching" = tl."hatching";
   md5.run = "c2927d914a75e1a98516dec44a4bcaa4";
   md5.doc = "a44ad642a4c5e8b99ffbb551e270dc1d";
 };
 "context-gnuplot" = {
+  deps."context" = tl."context";
   md5.run = "0691262dba5da82975473a0d4a4acac4";
   md5.doc = "dc29a024e9500a6252c562360ea4e460";
 };
 "context-letter" = {
+  deps."context" = tl."context";
   md5.run = "14076c564ffbe66ffeb6757b554ddbcf";
   md5.doc = "7725e281e66f83626ebf5b4e270e5c4a";
 };
 "context-lettrine" = {
+  deps."context" = tl."context";
   md5.run = "4a20a4bc8382e68b88d2a67fa624178f";
   md5.doc = "4721bb209cd2dbbbb87c61548813c3f7";
 };
 "context-lilypond" = {
+  deps."context" = tl."context";
   md5.run = "e5239ac80cd60fd58a69613913c5832c";
   md5.doc = "8b51c237fa67f18c5da74363810a4a49";
 };
 "context-mathsets" = {
+  deps."context" = tl."context";
   md5.run = "3be8939ad69abc89dd5aa9212d966cca";
   md5.doc = "f0a29c800b1930499904c3b598b20335";
 };
 "context-notes-zh-cn" = {
+  deps."context" = tl."context";
   md5.run = "77a39f0faafd2538ef681a5e2e46ba12";
   md5.doc = "b18105f79efa1e6e397f93b68a893e92";
 };
 "context-rst" = {
+  deps."context" = tl."context";
   md5.run = "45fa9bcc86286f23173f5554a666e8c0";
   md5.doc = "15277ac783ff93b6ac5e8e3a15811590";
   version = "0.6c";
 };
 "context-ruby" = {
+  deps."context" = tl."context";
   md5.run = "3580b4c71b39c05802a8c842df3f0df1";
   md5.doc = "519fdac7463ed60fac954e11939179ba";
 };
 "context-simplefonts" = {
+  deps."context" = tl."context";
   md5.run = "aa61135855bb6968a7f08da29454770d";
   md5.doc = "8e8ea25294f41357c488b1a656d2b983";
 };
 "context-simpleslides" = {
+  deps."context" = tl."context";
   md5.run = "3ecc7f5e610852beb51876a06eb3747e";
   md5.doc = "131e275164599dd5d9d893c14ceb515c";
 };
 "context-title" = {
+  deps."context" = tl."context";
   md5.run = "2c574ae9dda722c13f7eac899043d1dd";
   md5.doc = "cd4525c1c865318aa228d5c697c629f2";
 };
 "context-transliterator" = {
+  deps."context" = tl."context";
   md5.run = "1a2c5fd024cc4bbd3cc2deee6af7dc6a";
   md5.doc = "56bd9241110d62fee3fe2e50e5bbf98a";
 };
 "context-typearea" = {
+  deps."context" = tl."context";
   md5.run = "da507ab69c3e3d68954b8cf0a70d4711";
   md5.doc = "d069ff4e558651d49bd7515d376ae47b";
 };
 "context-typescripts" = {
+  deps."context" = tl."context";
   md5.run = "604b177c1fde0410e81234f312e7a86a";
   md5.doc = "35d1ab004d4c692681c7c09d6c24b37e";
 };
 "context-vim" = {
+  deps."context-filter" = tl."context-filter";
+  deps."context" = tl."context";
   md5.run = "38ee5b7cd9bc4ea9e5c92282d4403b89";
   md5.doc = "a7b8b6a49723109fadefda68b13dbeeb";
 };
 "context-visualcounter" = {
+  deps."context" = tl."context";
   md5.run = "0ad2233aae737382d3f3bbd9e9804872";
   md5.doc = "75116960ab436e76aa660d4106b13cb6";
   md5.source = "311d1a033261b5b9e125357103e13db4";
@@ -7424,6 +7511,7 @@ trash."crossrefware.x86_64-solaris" = {
   version = "1.0";
 };
 "cslatex" = {
+  deps."latex" = tl."latex";
   md5.run = "9b8162d56cba9829b2c4710c830578c2";
   md5.source = "e82845e1b243f3d67fd109f892bd64a0";
 };
@@ -7491,6 +7579,7 @@ trash."cslatex.x86_64-solaris" = {
   md5.run = "5c0867835209722875dfec9c0f64f6e8";
 };
 "csplain" = {
+  deps."tex" = tl."tex";
   md5.run = "e05e8024127e368c234545c888c45500";
 };
 trash."csplain.alpha-linux" = {
@@ -7723,6 +7812,7 @@ trash."ctanupload.x86_64-solaris" = {
   md5.run = "7f2a243831053f59020255ac8a4add0f";
 };
 "ctex" = {
+  deps."ttfutils" = tl."ttfutils";
   md5.run = "7b4ebc39ad14746ec40be9829f93fe8f";
   md5.doc = "bb49a4b482568545641d24a792238548";
   version = "1.02d";
@@ -7737,6 +7827,7 @@ trash."ctanupload.x86_64-solaris" = {
   md5.source = "80c8ed6193175d2e25d9df9a28da2b4b";
 };
 "ctie" = {
+  deps."kpathsea" = tl."kpathsea";
   md5.run = "20cd7f91377e8fd74c57c8e344bee317";
   md5.doc = "877c479e41213584bc60b46208995048";
   version = "1.1";
@@ -7954,6 +8045,7 @@ trash."cweb.x86_64-solaris" = {
   version = "0.915";
 };
 "cyrillic" = {
+  deps."cyrillic-bin" = tl."cyrillic-bin";
   md5.run = "7a3b6edf6f74bec5b969b30f1fc99b4e";
   md5.doc = "4c548d6898c1e858ceb6a27f0f4c0c1e";
   md5.source = "37d92a998b8bb32cbf70b9368dae3330";
@@ -8433,6 +8525,8 @@ trash."de-macro.x86_64-solaris" = {
   version = "0.6";
 };
 "dehyph-exptl" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "4d707cf65962393f97adc2d763426c88";
   md5.doc = "5367cbb8fdc3cddada3e0edcd5e422e7";
   version = "0.40";
@@ -9474,6 +9568,8 @@ trash."dviout.win32" = {
   version = "3.18.4";
 };
 "dvipdfmx" = {
+  deps."glyphlist" = tl."glyphlist";
+  deps."dvipdfmx-def" = tl."dvipdfmx-def";
   md5.run = "a22b01e66110a7dff1aca27872160e0c";
   md5.doc = "8c0f50183b0880842d68a722229e395e";
 };
@@ -10016,6 +10112,7 @@ trash."ebong.x86_64-solaris" = {
   version = "1.2";
 };
 "ednotes" = {
+  deps."ncctools" = tl."ncctools";
   md5.run = "047c02037025d3fc6b841bb67fb87cbc";
   md5.doc = "c4d761fa6b6ff9c99532746382c9908a";
   version = "1.3a";
@@ -10280,6 +10377,7 @@ trash."ebong.x86_64-solaris" = {
   md5.source = "6b08402234329aafeb77ae4ba65ee623";
 };
 "eplain" = {
+  deps."pdftex" = tl."pdftex";
   md5.run = "c8b5fed80b16a5c2630c0a0c923acfa1";
   md5.doc = "c6d8e92437019ec9299a5d83f28331d3";
   md5.source = "a9f77537c21f7c8bffa2193602796f26";
@@ -10584,6 +10682,7 @@ trash."epstopdf.x86_64-solaris" = {
   version = "1.1";
 };
 "esint-type1" = {
+  deps."esint" = tl."esint";
   md5.run = "6b1bb46d8642be6027c20f243ef04f54";
   md5.doc = "070d1eabc49a2389432a691d1c2b254c";
 };
@@ -11669,6 +11768,11 @@ trash."fontools.x86_64-solaris" = {
   version = "0.6.1";
 };
 "fontspec" = {
+  deps."iftex" = tl."iftex";
+  deps."kastrup" = tl."kastrup";
+  deps."l3kernel" = tl."l3kernel";
+  deps."l3packages" = tl."l3packages";
+  deps."lm" = tl."lm";
   md5.run = "64a222bfded0e6098190aee2f80b994e";
   md5.doc = "f0db2b2b33c0865f90c0b0b2bbf9a7ae";
   md5.source = "2e1a1681460c0c4083aac8f8911cbae8";
@@ -12036,6 +12140,7 @@ trash."fragmaster.x86_64-solaris" = {
   md5.doc = "97a033094ee8743ef64c965ab9b74020";
 };
 "garuda-c90" = {
+  deps."fonts-tlwg" = tl."fonts-tlwg";
   md5.run = "eb4df16080997a42b1bef99beb48e52d";
   md5.source = "1154fec66a6e746ce8b67b214802a8b4";
 };
@@ -13005,182 +13110,296 @@ trash."gsftopk.x86_64-solaris" = {
   version = "687";
 };
 "hyphen-afrikaans" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "47fc1979924af2202038ef565ba17b72";
 };
 "hyphen-ancientgreek" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "a823251ed74dd235b65c514d7d7a5627";
 };
 "hyphen-arabic" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "7151855dd808ef69e6740a7701a50326";
 };
 "hyphen-armenian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "cea2d31d4435b588d8d35ecf64b31fc4";
 };
 "hyphen-base" = {
   md5.run = "6a655bada4a2080a75d5999521802394";
 };
 "hyphen-basque" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "da19840012af5372a015518892398851";
 };
 "hyphen-bulgarian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "b3691878b931651be209813de53d73a6";
 };
 "hyphen-catalan" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "e9883d30dcfe42ae42bb488b16bcc6b3";
 };
 "hyphen-chinese" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "59216552c465632fc4483569d16e3bea";
 };
 "hyphen-coptic" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "03426ad46cc8d6e7fb3ddbb8cdc067f2";
 };
 "hyphen-croatian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "b19673afec93caa89a1f6580203c161d";
 };
 "hyphen-czech" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "a8107b45a106782ad6b56ee158667fc1";
 };
 "hyphen-danish" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "a75831bcf8a0bb671c0f3f294c01052b";
 };
 "hyphen-dutch" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "3361c667c6258580404f65d4953208cd";
 };
 "hyphen-english" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "692663d3a043cf9b404e2576076ef8f1";
 };
 "hyphen-esperanto" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "6a0dccb1f7e415d8567c0afa9e27bdba";
 };
 "hyphen-estonian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "09c7a39535f985e7277025e24fcf6661";
 };
 "hyphen-ethiopic" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "1292bb2fe7ab8763f47ae89540acb137";
 };
 "hyphen-farsi" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "94b016a0a81546a3c894bbfd121a0eb3";
 };
 "hyphen-finnish" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "765c827e215cd586ba080bf620c98a1a";
 };
 "hyphen-french" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "67db21fa72edb042600ea5e1b8a846cf";
 };
 "hyphen-friulan" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "df390f4cb7da1481fdffbddd87216619";
 };
 "hyphen-galician" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "daecd17ad7bcbc6315e45045ada60466";
 };
 "hyphen-georgian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "2b0c969aaecf75037f362b2f9f0c73a2";
 };
 "hyphen-german" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "b7169218a2459192d869da9ad4104612";
 };
 "hyphen-greek" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "80ac174811d5419f9d5a8c2d52fe5985";
   md5.doc = "8877e91343591730622ad1eb23947073";
   version = "5";
 };
 "hyphen-hungarian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "c9d9d2ba35baed79cc58c59c2152c9c3";
   md5.doc = "811612a82586b98744e091bfca0eeef7";
 };
 "hyphen-icelandic" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "a89e3f6bd873ac79afbb375178738fb5";
 };
 "hyphen-indic" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "6e3721fe1f29817c5b294278b329f24a";
 };
 "hyphen-indonesian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "fc8b8fd926810fb4bed1e25777cba67b";
 };
 "hyphen-interlingua" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "155622fbd3f02072adbda5d08617057e";
 };
 "hyphen-irish" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "f0c3d5731c7d44ffac72ac95c50caa3b";
 };
 "hyphen-italian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "ee846602f0ba1c213d9d7f09dcc712c1";
   version = "4.8g";
 };
 "hyphen-kurmanji" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "95022a2cce75e78364731fc9d34afc5d";
 };
 "hyphen-latin" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "1bf50c0b2a20ff52195bd732de917c13";
   version = "3.1";
 };
 "hyphen-latvian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "ba4bdcf5d7eef2b9ad5e408ca37e757e";
 };
 "hyphen-lithuanian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "774943d0eebacdc6692da300a3f2f3be";
 };
 "hyphen-mongolian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "b14eb4c0c6923259015d382a9577b6c9";
 };
 "hyphen-norwegian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "abdd4e74b045d6ade41a77d6e141d593";
 };
 "hyphen-piedmontese" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "a4e683d28fc630a7ff49bb502a8fe5fe";
 };
 "hyphen-polish" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "79d7344253c8b70700a8b066e71be3ec";
   version = "3.0a";
 };
 "hyphen-portuguese" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "d510f9de3bf49a2a8cc0fa50beb038e3";
 };
 "hyphen-romanian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "4a2133ada6c03c775c39e68a510980af";
 };
 "hyphen-romansh" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "f881a168e264af0e82044409d9c8cb11";
 };
 "hyphen-russian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
+  deps."ruhyphen" = tl."ruhyphen";
   md5.run = "2857c1d8fb2f7b1ffc04e8485bca8022";
 };
 "hyphen-sanskrit" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "8eaa51c4068d23a684cecd80e971c9e5";
 };
 "hyphen-serbian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "d723e921a36257ae007e87da58a9f2ee";
   version = "1.0a";
 };
 "hyphen-slovak" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "c9d9a0c42394dd4974ce8cce308137cd";
 };
 "hyphen-slovenian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "30246880edf776cffe77f73a2a0fcf1a";
 };
 "hyphen-spanish" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "70135dbdcbca6c8949bc43c0e1b673fd";
   version = "4.5";
 };
 "hyphen-swedish" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "59a6b2f34479e7e71770f8af7c449456";
 };
 "hyphen-thai" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "36d41922ed78c658d379c348c48676e2";
 };
 "hyphen-turkish" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "98136e93ec7f4ac3e57df936e94a2eb5";
 };
 "hyphen-turkmen" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "23f4aed319e51e2024539df4763172a2";
 };
 "hyphen-ukrainian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
+  deps."ukrhyph" = tl."ukrhyph";
   md5.run = "7e594ae3927897cef922cb92a66808af";
 };
 "hyphen-uppersorbian" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "3b8ee41130981a18c4fd435a5bebc604";
 };
 "hyphen-welsh" = {
+  deps."hyphen-base" = tl."hyphen-base";
+  deps."hyph-utf8" = tl."hyph-utf8";
   md5.run = "97e6b12a170ab3243075b78585f15f67";
 };
 "hyphenat" = {
@@ -13605,6 +13824,10 @@ trash."installfont.x86_64-solaris" = {
   md5.doc = "6a01f6884142970b899e654d2d73613b";
 };
 "jadetex" = {
+  deps."latex" = tl."latex";
+  deps."passivetex" = tl."passivetex";
+  deps."pdftex" = tl."pdftex";
+  deps."tex" = tl."tex";
   md5.run = "80c7e9e3a1d2c1fe7d7b813832d5ee5c";
   md5.doc = "f55aec8830d4ab23a3b3b7eef0a95c22";
   md5.source = "c24fbca417ffc444437ce0ffc1f678dc";
@@ -13691,6 +13914,7 @@ trash."jadetex.x86_64-solaris" = {
   version = "v1.7b6";
 };
 "japanese-otf-uptex" = {
+  deps."japanese-otf" = tl."japanese-otf";
   md5.run = "e4f68140cb74b7811e201345943a3b34";
   md5.doc = "417483a11e0e4ae6191a62938b025bf2";
   md5.source = "daa3acb8a701e0a83c5d900c389c0959";
@@ -13964,6 +14188,8 @@ trash."jfontmaps.x86_64-solaris" = {
   version = "1.0.1";
 };
 "kotex-oblivoir" = {
+  deps."memoir" = tl."memoir";
+  deps."kotex-utf" = tl."kotex-utf";
   md5.run = "b91c41ab206307b86d628ef5dad5f292";
   md5.doc = "d9833eaa85865fa551556cdae414df19";
   version = "2.1.0";
@@ -13973,11 +14199,13 @@ trash."jfontmaps.x86_64-solaris" = {
   md5.doc = "3b0d436c78548c7271e19f4486f59aeb";
 };
 "kotex-utf" = {
+  deps."cjk-ko" = tl."cjk-ko";
   md5.run = "dc9a6638ecfef5c954fedd70bde407d6";
   md5.doc = "b0860c449b3fa40148d104a65309f520";
   version = "2.0.1";
 };
 "kotex-utils" = {
+  deps."kotex-utf" = tl."kotex-utf";
   md5.run = "a0c132f18ce1ee5eee58a46d33bfb4df";
   md5.doc = "b2248edb12c6df7aeed47393bd44b835";
   version = "2.0.1";
@@ -14307,6 +14535,10 @@ trash."lacheck.x86_64-solaris" = {
   version = "1.2m";
 };
 "latex" = {
+  deps."luatex" = tl."luatex";
+  deps."pdftex" = tl."pdftex";
+  deps."latexconfig" = tl."latexconfig";
+  deps."latex-fonts" = tl."latex-fonts";
   md5.run = "08ba653f467b2cec59013185536df03a";
   md5.doc = "773c3176172995d16243f5b133fb02ce";
   md5.source = "3630a489f67a1dece452a6bb85191359";
@@ -14316,6 +14548,7 @@ trash."lacheck.x86_64-solaris" = {
   md5.doc = "65e096aceaecc700d9b1c46ba5015d4a";
 };
 "latex-bin" = {
+  deps."latex" = tl."latex";
   md5.run = "6a6585f0fb9816fbecb055b020b9cda9";
   md5.doc = "a0e99ad46313ab0a8fb11629a468993f";
 };
@@ -15003,6 +15236,7 @@ trash."latexpand.x86_64-solaris" = {
   version = "0.3";
 };
 "lcdftypetools" = {
+  deps."glyphlist" = tl."glyphlist";
   md5.run = "114540722fd8fd0883052af4eac5c501";
   md5.doc = "8e85b37e15147967125dde95cd0199e3";
   version = "2.98";
@@ -15166,6 +15400,7 @@ trash."lcdftypetools.x86_64-solaris" = {
   md5.doc = "98e25556f4cd3c2ca3fb22eec9035802";
 };
 "lh" = {
+  deps."ec" = tl."ec";
   md5.run = "735fb9fc47cde2f6e0300c92c66fb00c";
   md5.doc = "a19b3436d33e116df71515e714c5557d";
   md5.source = "988561d5ca3254aa8a33038051720eb7";
@@ -16640,6 +16875,7 @@ trash."match_parens.x86_64-solaris" = {
   md5.doc = "b23ae993de115d8169e0cddc2794707a";
 };
 "mathabx-type1" = {
+  deps."mathabx" = tl."mathabx";
   md5.run = "02eb05b1044171d776d3a24232618bd3";
   md5.doc = "053f67fce8ade7b6d8d306dd38c6c602";
 };
@@ -16889,6 +17125,7 @@ trash."mathspic.x86_64-solaris" = {
   md5.doc = "d32451271eb4c8bc0575b67e2047480e";
 };
 "metafont" = {
+  deps."kpathsea" = tl."kpathsea";
   md5.run = "9be3fb4af0ed2e236a670d1b6ec8d79b";
   md5.doc = "f54c39e39b17525b1a5074d98d3c2bc8";
   version = "2.7182818";
@@ -16982,6 +17219,7 @@ trash."metafont.x86_64-solaris" = {
   version = "0.91";
 };
 "metapost" = {
+  deps."kpathsea" = tl."kpathsea";
   md5.run = "d5b2cda56e02bfb9d40850fae85f432e";
   md5.doc = "e83b19cac28039f17ff7d245f3018977";
   version = "1.803";
@@ -17082,6 +17320,10 @@ trash."metapost.x86_64-solaris" = {
   version = "1.1";
 };
 "mex" = {
+  deps."pl" = tl."pl";
+  deps."hyphen-polish" = tl."hyphen-polish";
+  deps."pdftex" = tl."pdftex";
+  deps."tex" = tl."tex";
   md5.run = "2b30c37a8c5f0674ad30e5a119555519";
   md5.doc = "059cd2cf907a78fef0cbf8c35391a333";
   md5.source = "f83c95ddca1dc4a345c596e721eeeb4c";
@@ -17628,6 +17870,7 @@ trash."mkpic.x86_64-solaris" = {
   version = "0.6a";
 };
 "mltex" = {
+  deps."latex" = tl."latex";
   md5.run = "0cfd1775f00a1e4bc10bee999ba2f374";
   md5.doc = "a9e72b09a985034474105518b5c88dae";
   version = "2.2";
@@ -17753,6 +17996,7 @@ trash."mltex.x86_64-solaris" = {
   version = "0.2";
 };
 "montex" = {
+  deps."cbfonts" = tl."cbfonts";
   md5.run = "2dcfe311a0043d70c14631b9e37670d0";
   md5.doc = "fd02775ced7d631394e03b93cdd07de9";
   version = "IVu.04.092";
@@ -18432,6 +18676,7 @@ trash."musixtex.x86_64-solaris" = {
   md5.doc = "c38ea9eec163cbcffd164d81ff35ccb0";
 };
 "norasi-c90" = {
+  deps."fonts-tlwg" = tl."fonts-tlwg";
   md5.run = "cc87f0c2c1cb16338b8211d500ac7f0d";
   md5.source = "ab52ec6cde99e5ae6aaba8f642bd8e3c";
 };
@@ -18906,6 +19151,7 @@ trash."omegaware.x86_64-solaris" = {
   version = "1.03";
 };
 "patgen" = {
+  deps."kpathsea" = tl."kpathsea";
   md5.run = "33af92bcd8b8afd04251f598fb418763";
   md5.doc = "0f436fff8e2b05ce826871e96f4c3e02";
   version = "2.3";
@@ -19241,6 +19487,7 @@ trash."pdfjam.x86_64-solaris" = {
   version = "0.92";
 };
 "pdfpages" = {
+  deps."eso-pic" = tl."eso-pic";
   md5.run = "5102d2f70609c31d15e68c07274bfe33";
   md5.doc = "e38b6aaef6cfa6a8598e70377e62d80c";
   md5.source = "6eaf80e9a454930d584460180f078644";
@@ -19260,6 +19507,7 @@ trash."pdfjam.x86_64-solaris" = {
   md5.doc = "25e14e5d6c25a8d625cdcfbbf7d58819";
 };
 "pdftex" = {
+  deps."kpathsea" = tl."kpathsea";
   md5.run = "eee4f94468e9fefc4735ac4b3fd19ee9";
   md5.doc = "c8be556b79649483f4bcc8dc453a596f";
   version = "1.40.11";
@@ -19659,6 +19907,7 @@ trash."pfarrei.x86_64-solaris" = {
   md5.run = "94a4e8d79f2075d73219165282f5e079";
 };
 "pgf" = {
+  deps."xkeyval" = tl."xkeyval";
   md5.run = "bbc304814f74ca5dc12e7c734a523bf8";
   md5.doc = "6e13250fa73be94615221492b76288d5";
   md5.source = "f16a42630777bd5230778f5558d46022";
@@ -20195,6 +20444,8 @@ trash."pmxchords.x86_64-solaris" = {
   version = "3.0.0";
 };
 "polski" = {
+  deps."pl" = tl."pl";
+  deps."hyphen-polish" = tl."hyphen-polish";
   md5.run = "6e38388454818595034b83ea1ddd200b";
   md5.doc = "179d26d63ccfb998865ea47abc63e686";
   md5.source = "1552b3c7cbfabd4c1d29655c5c51ec5b";
@@ -20206,6 +20457,11 @@ trash."pmxchords.x86_64-solaris" = {
   version = "1.101";
 };
 "polyglossia" = {
+  deps."etoolbox" = tl."etoolbox";
+  deps."fontspec" = tl."fontspec";
+  deps."ifluatex" = tl."ifluatex";
+  deps."makecmds" = tl."makecmds";
+  deps."xkeyval" = tl."xkeyval";
   md5.run = "1d630dca7daea18abc64b91acef0e486";
   md5.doc = "739dcdc861dffa8c19d4913f6fd9d35f";
   md5.source = "1e5f7a5d3a7d3a77d4ac98a34fffbeaf";
@@ -20490,6 +20746,7 @@ trash."ps2pk.x86_64-solaris" = {
   md5.source = "9462f9840d744d3643db0aa3714e48bb";
 };
 "psnfss" = {
+  deps."graphics" = tl."graphics";
   md5.run = "139abe0ae6d69a956c2fdf29b9e530a3";
   md5.doc = "8230dc0cc38dac7e9ed6ea7d1bc4ff54";
   md5.source = "32706ea31190490a9c7611f95885b46a";
@@ -20978,6 +21235,7 @@ trash."pst-pdf.x86_64-solaris" = {
   version = "1.01";
 };
 "pst-uml" = {
+  deps."multido" = tl."multido";
   md5.run = "d1583565a6c6976ae6d7db6c44ea23c2";
   md5.doc = "bad81d1d973fd6c614a2bf8c694f85ca";
   md5.source = "e0891f31bf303acb2f3e7677104cefb3";
@@ -21238,6 +21496,13 @@ trash."psutils.x86_64-solaris" = {
   md5.run = "ca4d23cb84b4ef84eb850c409dfcb155";
 };
 "ptex" = {
+  deps."tex" = tl."tex";
+  deps."latex" = tl."latex";
+  deps."hyph-utf8" = tl."hyph-utf8";
+  deps."adobemapping" = tl."adobemapping";
+  deps."ipaex" = tl."ipaex";
+  deps."japanese" = tl."japanese";
+  deps."japanese-otf" = tl."japanese-otf";
   md5.run = "7fd9f5f866af652fbdb6395bc1530e51";
   md5.doc = "6bc9c4646dc097c93bbc9f6b10a3cc48";
   md5.source = "a3f8aa21ca9ba09e1703ae35f9c5f3ae";
@@ -24114,6 +24379,8 @@ trash."tetex.x86_64-solaris" = {
   version = "4.5a";
 };
 "tex" = {
+  deps."kpathsea" = tl."kpathsea";
+  deps."plain" = tl."plain";
   md5.run = "a006e4c6bc424646e78ee2004b9e6034";
   md5.doc = "70693bbb8c6b583cc47dd5a4276d698a";
   version = "3.14159265";
@@ -24636,6 +24903,7 @@ trash."texdirflatten.x86_64-solaris" = {
   md5.run = "ae22ee328973a6054bfc3ef4049af236";
 };
 "texdoc" = {
+  deps."kpathsea" = tl."kpathsea";
   md5.run = "ac9e0380660869de9b1780fd4bbb645e";
   md5.doc = "5431d3b12a0ac056af91c32c26593de5";
 };
@@ -25118,6 +25386,7 @@ trash."texloganalyser.x86_64-solaris" = {
   version = "0.2.0";
 };
 "texpower" = {
+  deps."tpslifonts" = tl."tpslifonts";
   md5.run = "8a124d475307b45c9750c518a15be600";
   md5.doc = "739b90cc5c951a1a9ce091bfc5fc4499";
   md5.source = "503d51032a545fb521729315de6b1c07";
@@ -25130,6 +25399,7 @@ trash."texloganalyser.x86_64-solaris" = {
   version = "1.24";
 };
 "texsis" = {
+  deps."tex" = tl."tex";
   md5.run = "64bf99f00a3a66e20bf24acec87bbc59";
   md5.doc = "2b1a1ac53c48a8c39cc51793449cfdb6";
   version = "2.18";
@@ -25483,6 +25753,7 @@ trash."thumbpdf.x86_64-solaris" = {
   version = "1.0";
 };
 "tie" = {
+  deps."kpathsea" = tl."kpathsea";
   md5.run = "14d2277b5964898d5438f9d48040cad4";
   md5.doc = "17f0fd051d324cc627949225395251e7";
   version = "2.4";
@@ -25595,6 +25866,7 @@ trash."tie.x86_64-solaris" = {
   version = "1.2";
 };
 "tikz-timing" = {
+  deps."svn-prov" = tl."svn-prov";
   md5.run = "e8d2a754a3dfd22ef124ebec79d8fc0e";
   md5.doc = "8e771eacd58ebfe736d45f1921c005e1";
   md5.source = "37fc065cffea6f0e85f488de9c5de5f7";
@@ -26106,6 +26378,12 @@ trash."ttfutils.x86_64-solaris" = {
   version = "2.03";
 };
 "tufte-latex" = {
+  deps."xifthen" = tl."xifthen";
+  deps."ifmtarg" = tl."ifmtarg";
+  deps."changepage" = tl."changepage";
+  deps."paralist" = tl."paralist";
+  deps."sauerj" = tl."sauerj";
+  deps."placeins" = tl."placeins";
   md5.run = "22caeb7293e1ddc6a7955a87567c86a0";
   md5.doc = "fcbd268b3344bdc2e239c97a619effa0";
   md5.source = "2d593157b3dc673a0a9b22d45a3221df";
@@ -26495,6 +26773,7 @@ trash."ulqda.x86_64-solaris" = {
   version = "0.2";
 };
 "unicode-math" = {
+  deps."fontspec" = tl."fontspec";
   md5.run = "3a923e3c07c8461b7cf764ca6e6a9b2b";
   md5.doc = "0cdc53cb751cab4fceac52d9ce2590fe";
   md5.source = "e3c99d2b118f7caac38b2ffab2c3c37d";
@@ -26569,6 +26848,13 @@ trash."ulqda.x86_64-solaris" = {
   version = "v1.3";
 };
 "uptex" = {
+  deps."ptex" = tl."ptex";
+  deps."hyph-utf8" = tl."hyph-utf8";
+  deps."adobemapping" = tl."adobemapping";
+  deps."convbkmk" = tl."convbkmk";
+  deps."ipaex" = tl."ipaex";
+  deps."japanese" = tl."japanese";
+  deps."japanese-otf" = tl."japanese-otf";
   md5.run = "2c00e444c6caebc1237f0b9f02298ba0";
   md5.doc = "b97d4d7b3bbc094382045b9100f779ae";
   md5.source = "ca117a21311685b175b4db7374a6d88f";
@@ -26810,6 +27096,7 @@ trash."urlbst.x86_64-solaris" = {
   version = "1.0";
 };
 "velthuis" = {
+  deps."xetex-devanagari" = tl."xetex-devanagari";
   md5.run = "18b54d4588f090859c3793d7dc535456";
   md5.doc = "388f9bae6dd533bbde6d39d0d48d9a98";
   version = "2.15.1";
@@ -27107,6 +27394,7 @@ trash."vpe.x86_64-solaris" = {
   md5.doc = "b3fb49c687dea97bc3a5644b6c5a9b20";
 };
 "wasy2-ps" = {
+  deps."wasy" = tl."wasy";
   md5.run = "783e699762e004d66b96762d5176ec85";
   md5.doc = "ae97ac8fff883bfc6d0f9a456b54c10c";
 };
@@ -27117,6 +27405,7 @@ trash."vpe.x86_64-solaris" = {
   version = "2.0";
 };
 "web" = {
+  deps."kpathsea" = tl."kpathsea";
   md5.run = "30ad40a85e7968923016834400ccc6a4";
   md5.doc = "c45c3d563d0c5dae3e7ccaa320eafdc4";
   version = "4.5";
@@ -27396,6 +27685,7 @@ trash."xecyr.win32" = {
   version = "1.2";
 };
 "xetex" = {
+  deps."xetexconfig" = tl."xetexconfig";
   md5.run = "2385f7ceb17537b8e2a50867ff672377";
   md5.doc = "724ee7c2c72996e103b2199382e32018";
   version = "0.9999";
@@ -27608,12 +27898,17 @@ trash."xindy.x86_64-linux" = {
   version = "0.25";
 };
 "xltxtra" = {
+  deps."metalogo" = tl."metalogo";
   md5.run = "d39af5721200823a2d85cc0c78d17494";
   md5.doc = "c03f87cd451777ad4344806fe64de1b9";
   md5.source = "76149aa4ce6fec0527363d37bb8121ff";
   version = "0.5e";
 };
 "xmltex" = {
+  deps."latex" = tl."latex";
+  deps."pdftex" = tl."pdftex";
+  deps."tex" = tl."tex";
+  deps."xmltexconfig" = tl."xmltexconfig";
   md5.run = "cf20e768dbf3392fc8655d53b677ec74";
   md5.doc = "ae0581add33351c5098a161a37c0507d";
   version = "0.8";
@@ -27758,6 +28053,7 @@ trash."xmltex.x86_64-solaris" = {
   version = "2.3f";
 };
 "xunicode" = {
+  deps."tipa" = tl."tipa";
   md5.run = "d003ef4ee3feff19956aa1a2ad3cf094";
   md5.doc = "844685c1ff80d794128be83f39097c3f";
   version = "0.981";

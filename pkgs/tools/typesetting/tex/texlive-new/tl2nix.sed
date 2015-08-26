@@ -23,6 +23,6 @@ s/^srccontainermd5 (.*)/  md5.source = "\1";/p
 /^catalogue-version/s/[\#,:\(\)]//g
 s/^catalogue-version_(.*)/  version = "\1";/p
 
-# extract deps for collections and schemes
-/^category (Collection|Scheme)/,/^$/s/^depend ([^.]*)$/  deps."\1" = tl."\1";/p
+# extract deps
+s/^depend ([^.]*)$/  deps."\1" = tl."\1";/p
 
