@@ -32,6 +32,8 @@ stdenv.mkDerivation rec {
     sha256 = "ed9bcd7bdce899c3c27c16a8c5c3017c4f09e1d7fd097038351b72497e9d4669";
   };
 
+  outputs = [ "out" "doc" ];
+
   buildInputs = with xorg; [
     pkgconfig
     harfbuzz icu /*teckit*/ graphite2 zziplib poppler mpfr gmp
@@ -120,7 +122,12 @@ stdenv.mkDerivation rec {
   postInstall = ''
     mkdir "$out/share/texmf-dist/scripts/texlive/TeXLive/"
     cp ../texk/tests/TeXLive/*.pm "$out/share/texmf-dist/scripts/texlive/TeXLive/"
+  '' + /* doc location identical with individual TeX pkgs */ ''
+    mkdir -p "$doc/doc"
+    mv "$out"/share/{man,info} "$doc"/doc
+  '';
 
+  ignore2 = ''
     perlFlags="-I$out/share/texmf-dist/scripts/texlive"
     find "$out/share/texmf-dist/scripts/texlive/" -type f -executable | while read fn; do
       first=$(dd if="$fn" count=2 bs=1 2> /dev/null)
@@ -188,6 +195,7 @@ stdenv.mkDerivation rec {
       wrapProgram "$prog" --prefix DYLD_LIBRARY_PATH : "${poppler}/lib"
     done
   '';
+
 
   meta = with stdenv.lib; {
     description = "A TeX distribution";

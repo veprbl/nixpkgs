@@ -9,7 +9,18 @@ let
 
   /* curl ftp://tug.ctan.org/pub/tex/historic/systems/texlive/2015/tlnet-final/tlpkg/texlive.tlpdb.xz \
     | xzcat | sed -rn -f ./tl2nix.sed > ./pkgs.nix */
-  tl-clean = removeAttrs (import ./pkgs.nix tl-flatDeps) [ "trash" ];
+  tl-clean = removeAttrs (import ./pkgs.nix tl-flatDeps) [ "trash" ]
+    // {
+      # overrides on texlive.tlpdb
+
+      "tetex" = { # 2015.08.07 as we need version with mktexlsr.pl
+        md5.run = "2016b5ac0393732abb90546136b77b35";
+        md5.doc = "b25e79ae27b6f3bd1622043cc79aca23";
+        version = "3.0";
+      };
+      "dvidvi" = { }; # only contains docs that's in bin.doc already
+    };
+
   tl-flatDeps = lib.mapAttrs flatDeps tl-clean;
 
   flatDeps = name: attrs:
@@ -17,33 +28,35 @@ let
       then let mkPkgV = mkPkg (attrs.version or bin.year);
         in {
           # TL pkg contains three lists of packages: runtime files, docs, and sources
-          pkgs.run = [ (mkPkgV name attrs.md5.run) ];
+          pkgs.run =
+            # TODO: modular overrides
+            if name == "dvidvi" then [] else 
+            [ (mkPkgV name attrs.md5.run) ];
           pkgs.doc = lib.optional (attrs.md5 ? "doc")
             (mkPkgV "${name}.doc" attrs.md5.doc);
           pkgs.src = lib.optional (attrs.md5 ? "src")
             (mkPkgV "${name}.source" attrs.md5.src);
         }
-      else
+      else # tarball of a collection/scheme itself only contains a tlobj file
         combinePkgs attrs.deps;
 
   mkPkg = version: name: md5:
     let src = fetchurl {
       /* TODOs:
           - how to patch shebangs?
-            even ${coreutils}/bin/env would make a hash-dependency on stdenv
+            even ${coreutils}/bin/env would make a hash-dependency on stdenv;
+            posted a question
+            -> make fixed-output *after* unpacking
+              (to have same derivation even when stdenv/platform changes)
+              for that we would need to download all and generate hashes on our own
           - "historic" isn't mirrored; posted a question at #287
           - deal with empty packages (scan for runfiles?)
-          - make fixed-output *after* unpacking
-            (to have same derivation even when stdenv/platform changes)
-            for that we would need to download all and generate hashes on our own
           - maybe cache (some) collections? (they don't overlap)
       */
         #url = "http://mirror.ctan.org/
         url = "ftp://tug.ctan.org/pub/tex/historic/systems/texlive/${bin.year}/tlnet-final/archive/${name}.tar.xz";
         # also works: ftp.math.utah.edu/pub/tex/historic
-
-        # TODO: this is hacky fix
-        md5 = if name != "tetex" then md5 else "2016b5ac0393732abb90546136b77b35"; # 2015.08.07
+        inherit md5;
       };
     in runCommand "texlive-${name}-${version}"
         { # lots of derivations, not meant to be cached
@@ -66,13 +79,16 @@ let
 
   # combine a set of TL packages into a single TL meta-package
   combinePkgs = pkgSet:
-    let getFlat = attrName: lib.concatLists # uniqueness is handled in `combine`
+    let
+      #getAttrOr = default: attr: set:
+      #  if lib.hasAttr attr set then lib.getAttr attr set else default;
+      makeFlat = attrName: lib.concatLists # uniqueness is handled in `combine`
         (map (dep: lib.getAttr attrName dep.pkgs)
           (lib.mapAttrsToList (_n: a: a) pkgSet));
-    in { # tarball of a collection/scheme itself only contains a tlobj file
-      pkgs.run = getFlat "run";
-      pkgs.doc = getFlat "doc";
-      pkgs.src = getFlat "src";
+    in {
+      pkgs.run = makeFlat "run";
+      pkgs.doc = makeFlat "doc";
+      pkgs.src = makeFlat "src";
     };
 
   /*
@@ -91,6 +107,7 @@ in
    tl-flatDeps // rec {
     inherit bin;
 
+    # TODO: remove
     mine = combine { pkgSet = {
       inherit (tl-flatDeps)
         scheme-basic scheme-tetex
@@ -105,8 +122,12 @@ in
           scheme-context scheme-gust scheme-tetex scheme-xml;
       };
 
-    combine = { pkgSet, pkgFilter ? (type: _n: type == "run") }:
-      let metaPkg = combinePkgs pkgSet;
+    combine = { pkgSet, pkgFilter ? (type: path: type == "run" || path == bin.doc) }:
+      let
+        metaPkg = combinePkgs (pkgSet // {
+          # include a fake "bin" package with docs for binaries
+          bin.pkgs = { run = []; doc = [ bin.doc ]; src = []; };
+        });
       in buildEnv {
         name = "texlive-combined-${bin.year}";
 
@@ -140,13 +161,13 @@ in
           echo -e "\\n\\nBeware: fmtutil will try building even those formats for which files aren't installed\\n"
           perl `type -P fmtutil.pl` --sys --refresh
         '' +
-        # TODO: also ${bin}/share/{man,info}
+        # TODO: a context trigger https://www.preining.info/blog/2015/06/debian-tex-live-2015-the-new-layout/
+          # http://wiki.contextgarden.net/ConTeXt_Standalone#Unix-like_platforms_.28Linux.2FMacOS_X.2FFreeBSD.2FSolaris.29
         ''
           ln -s texmf/doc/{man,info} "$out/share/"
         '';
-        #*/
       };
-      # TODO: some testing http://tug.org/texlive/doc/texlive-en/texlive-en.html#x1-380003.5
+      # TODO: more testing http://tug.org/texlive/doc/texlive-en/texlive-en.html#x1-380003.5
   }
   /*
   tl-srcs // {
