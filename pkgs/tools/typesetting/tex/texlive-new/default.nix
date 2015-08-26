@@ -117,6 +117,11 @@ let
       withIcu = true; withGraphite2 = true;
     };
   };
+
+  fastUnique = list: with lib;
+    let un_adj = l: if length l < 2 then l
+      else optional (head l != elemAt l 1) (head l) ++ un_adj (tail l);
+    in un_adj (lib.sort (a: b: a < b) list);
 in
    tl-flatDeps // rec {
     inherit bin;
@@ -148,11 +153,12 @@ in
         extraPrefix = "/share/texmf";
 
         ignoreCollisions = false;
-        paths = lib.unique # TODO: efficiency!
-          ( [ ]
+        paths = fastUnique (map builtins.toPath (
+          [ ]
           ++ lib.filter (pkgFilter "run"   ) metaPkg.pkgs.run
           ++ lib.filter (pkgFilter "doc"   ) metaPkg.pkgs.doc
-          ++ lib.filter (pkgFilter "source") metaPkg.pkgs.source );
+          ++ lib.filter (pkgFilter "source") metaPkg.pkgs.source
+        ));
 
         buildInputs = [ makeWrapper ];
 
