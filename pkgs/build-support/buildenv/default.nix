@@ -33,6 +33,7 @@
 runCommand name
   { inherit manifest ignoreCollisions passthru
       pathsToLink extraPrefix preBuild postBuild;
+    pkgs = builtins.toJSON (map (drv: {
       paths = [ drv ]; # FIXME: handle multiple outputs
       priority = drv.meta.priority or 5;
     }) paths);
