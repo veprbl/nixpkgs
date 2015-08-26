@@ -1,6 +1,6 @@
 { stdenv, lib, fetchurl, runCommand, buildEnv
 , callPackage, ghostscriptX, harfbuzz
-, perl
+, perl, makeWrapper
 }:
 let
   # TODO: fixup scripts in individual packages
@@ -35,7 +35,7 @@ let
 
         in {
           # TL pkg contains three lists of packages: runtime files, docs, and sources
-          pkgs = if false then
+          pkgs = if false then # TODO: fix and finish the refactoring
             mkPkgVx "run" //
             mkPkgVx "doc" //
             mkPkgVx "source"
@@ -78,7 +78,7 @@ let
           mkdir "$out"
           tar -xf '${src}' -C "$out" --anchored --exclude=tlpkg \
             --keep-old-files
-        '' + /* WTF? nesting depth differs among tarballs */ ''
+        '' + /* nesting depth differs among tarballs :-/ */ ''
           if [[ -d "$out/texmf-dist" ]]; then
             mv "$out"/{texmf-dist/*,}
             rmdir "$out/texmf-dist/"
@@ -145,18 +145,20 @@ in
         extraPrefix = "/share/texmf";
 
         ignoreCollisions = false;
-        paths = lib.unique #( "${bin}/share/texmf-dist" ]
+        paths = lib.unique # TODO: efficiency!
           ( [ ]
           ++ lib.filter (pkgFilter "run"   ) metaPkg.pkgs.run
           ++ lib.filter (pkgFilter "doc"   ) metaPkg.pkgs.doc
           ++ lib.filter (pkgFilter "source") metaPkg.pkgs.source );
+
+        buildInputs = [ makeWrapper ];
 
         postBuild = ''
           cd "$out"
           mkdir -p ./bin
           ln -s '${bin}'/bin/{kpsewhich,kpseaccess,mktexfmt} ./bin/
 
-          export PATH="$out/share/texmf/scripts/texlive:$out/bin:${perl}/bin:$PATH"
+          export PATH="$out/bin:$out/share/texmf/scripts/texlive:${perl}/bin:$PATH"
           export TEXMFDIST="$out/share/texmf"
           export TEXMFSYSCONFIG="$out/share/texmf-config"
           export TEXMFSYSVAR="$out/share/texmf-var"
@@ -177,7 +179,27 @@ in
           # http://wiki.contextgarden.net/ConTeXt_Standalone#Unix-like_platforms_.28Linux.2FMacOS_X.2FFreeBSD.2FSolaris.29
         ''
           ln -s texmf/doc/{man,info} "$out/share/"
-        '';
+        '' +
+        # wrap created executables with required env vars
+        ''
+          for link in ./bin/*; do
+            [ -L "$link" -a -x "$link" ] || (echo -n Error:; ls -l "$link"; false)
+            target=$(readlink "$link")
+            case "$target" in
+              /*)
+                rm "$link";
+                makeWrapper "$target" "$link" \
+                  --prefix PATH : "$out/bin:$out/share/texmf/scripts/texlive:${perl}/bin" \
+                  --prefix TEXMFDIST : "$out/share/texmf" \
+                  --prefix TEXMFSYSCONFIG : "$out/share/texmf-config" \
+                  --prefix TEXMFSYSVAR : "$out/share/texmf-var" \
+                  --prefix PERL5LIB : "$out/share/texmf/scripts/texlive"
+                ;;
+              *) echo ,"$link", is OK;;
+            esac
+          done
+        ''
+        ;
       };
       # TODO: more testing http://tug.org/texlive/doc/texlive-en/texlive-en.html#x1-380003.5
   }

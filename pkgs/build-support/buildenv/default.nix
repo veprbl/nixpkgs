@@ -27,12 +27,15 @@
 , # Shell commands to run befor and after building the symlink tree.
   preBuild ? "", postBuild ? ""
 
+,
+  buildInputs ? []
+
 , passthru ? {}
 }:
 
 runCommand name
   { inherit manifest ignoreCollisions passthru
-      pathsToLink extraPrefix preBuild postBuild;
+      pathsToLink extraPrefix preBuild postBuild buildInputs;
     pkgs = builtins.toJSON (map (drv: {
       paths = [ drv ]; # FIXME: handle multiple outputs
       priority = drv.meta.priority or 5;
