@@ -45,8 +45,9 @@ stdenv.mkDerivation rec {
     "--disable-missing" "--disable-native-texlive-build"
     "--enable-shared" # "--enable-cxx-runtime-hack" # static runtime
     "--enable-tex-synctex"
-
     "-C" # use configure cache to speed up
+    # TODO: ghostscript questions?
+    # https://www.tug.org/texlive/doc/tlbuild.html#Program_002dspecific-configure-options
   ]
     ++ map (libname: "--with-system-${libname}") [
     # see "from TL tree" vs. "Using installed"  in configure output
@@ -62,6 +63,8 @@ stdenv.mkDerivation rec {
     # FAIL: tests/dvisvgm
     "--disable-dvisvgm"
   ];
+
+    # TODO: clean compile-time paths.h
 
   passthru = { inherit year /*texmfSrc langTexmfSrc*/; };
 
@@ -117,8 +120,6 @@ stdenv.mkDerivation rec {
   postInstall = ''
     mkdir "$out/share/texmf-dist/scripts/texlive/TeXLive/"
     cp ../texk/tests/TeXLive/*.pm "$out/share/texmf-dist/scripts/texlive/TeXLive/"
-
-    patchShebangs "$out/share/texmf-dist/scripts"
 
     perlFlags="-I$out/share/texmf-dist/scripts/texlive"
     find "$out/share/texmf-dist/scripts/texlive/" -type f -executable | while read fn; do
