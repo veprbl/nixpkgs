@@ -107,7 +107,6 @@ in
 
     combine = { pkgSet, pkgFilter ? (type: _n: type == "run") }:
       let metaPkg = combinePkgs pkgSet;
-        # TODO: using multi-dir ls-R is likely usable to avoid symlinking most files
       in buildEnv {
         name = "texlive-combined-${bin.year}";
 
@@ -119,7 +118,7 @@ in
           ++ lib.filter (pkgFilter "run") metaPkg.pkgs.run
           ++ lib.filter (pkgFilter "doc") metaPkg.pkgs.doc
           ++ lib.filter (pkgFilter "src") metaPkg.pkgs.src );
-        #/*
+
         postBuild = ''
           cd "$out"
           mkdir -p ./bin
@@ -136,8 +135,10 @@ in
           perl `type -P mktexlsr.pl`
           yes | perl `type -P updmap.pl` --sys --syncwithtrees || true
           yes | perl `type -P updmap.pl` --sys --syncwithtrees || true
-          perl `type -P fmtutil.pl` --sys --all
-          texlinks.sh
+          texlinks.sh "$out/bin"
+
+          echo -e "\\n\\nBeware: fmtutil will try building even those formats for which files aren't installed\\n"
+          perl `type -P fmtutil.pl` --sys --refresh
         '' +
         # TODO: also ${bin}/share/{man,info}
         ''
