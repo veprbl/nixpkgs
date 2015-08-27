@@ -4,21 +4,26 @@
 }:
 let
   # TODOs:
-  #   - mainly fix the hyphenation problems; otherwise only huge envs are usable
   #   - maybe fixup scripts in individual packages
 
   /* curl ftp://tug.ctan.org/pub/tex/historic/systems/texlive/2015/tlnet-final/tlpkg/texlive.tlpdb.xz \
     | xzcat | sed -rn -f ./tl2nix.sed > ./pkgs.nix */
-  tl-clean = removeAttrs (import ./pkgs.nix tl-flatDeps) [ "trash" ]
-    // {
-      # overrides on texlive.tlpdb
+  tl-clean =
+    let orig = removeAttrs (import ./pkgs.nix tl-flatDeps) [ "trash" ];
+    in orig // {
+      # overrides of texlive.tlpdb
 
-      "tetex" = { # 2015.08.07 as we need version with mktexlsr.pl
+      tetex = { # 2015.08.07 as we need version with mktexlsr.pl
         md5.run = "2016b5ac0393732abb90546136b77b35";
         md5.doc = "b25e79ae27b6f3bd1622043cc79aca23";
         version = "3.0";
       };
-      "dvidvi".md5 = { }; # only contains docs that's in bin.doc already
+      dvidvi.md5 = { # only contains docs that's in bin.doc already
+      };
+      hyphen-base = orig.hyphen-base // {
+        # hacky fixup for: I can't find file `dehypht-x-2014-05-21.tex'
+        postUnpack = ''rm "$out"/tex/generic/config/language*.{def,dat}'';
+      };
     };
 
   tl-flatDeps = lib.mapAttrs flatDeps tl-clean;
