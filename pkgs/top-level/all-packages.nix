@@ -8808,7 +8808,10 @@ let
 
   R = callPackage ../applications/science/math/R {
     inherit (xlibs) libX11 libXt;
-    texLive = texLiveAggregationFun { paths = [ texLive texLiveExtra ]; };
+    # TODO: split docs into a separate output
+    texLive = texlive.combine {
+      inherit (texlive) scheme-small inconsolata helvetic texinfo fancyvrb cm-super;
+    };
     openblas = openblasCompat;
     withRecommendedPackages = false;
   };
