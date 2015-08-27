@@ -142,18 +142,19 @@ in
     }; };
 
     combined = lib.mapAttrs
-      (name: attrs: combine { pkgSet.${name} = attrs; })
+      (name: attrs: combine { ${name} = attrs; })
       { inherit (tl-flatDeps)
           scheme-full scheme-medium scheme-small scheme-basic scheme-minimal
           scheme-context scheme-gust scheme-tetex scheme-xml;
       };
 
-    combine = { pkgSet, pkgFilter ? (type: path: type == "run" || path == bin.doc) }:
+    combine = args@{ pkgFilter ? (type: path: type == "run" || path == bin.doc), ... }:
       let
-        metaPkg = combinePkgs (pkgSet // {
+        pkgSet = removeAttrs args ["pkgFilter"] // {
           # include a fake "bin" package with docs for binaries
           bin.pkgs = { run = []; doc = [ bin.doc ]; source = []; };
-        });
+        };
+        metaPkg = combinePkgs pkgSet;
       in buildEnv {
         name = "texlive-combined-${bin.year}";
 
