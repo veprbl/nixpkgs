@@ -3,9 +3,9 @@
 , perl, makeWrapper
 }:
 let
-  # TODO: fixup scripts in individual packages
-  # but first try through setting env vars in bin/ aggregate,
-  # as that would be needed anyway
+  # TODOs:
+  #   - mainly fix the hyphenation problems; otherwise only huge envs are usable
+  #   - maybe fixup scripts in individual packages
 
   /* curl ftp://tug.ctan.org/pub/tex/historic/systems/texlive/2015/tlnet-final/tlpkg/texlive.tlpdb.xz \
     | xzcat | sed -rn -f ./tl2nix.sed > ./pkgs.nix */
@@ -25,7 +25,7 @@ let
 
   flatDeps = name: attrs:
         let
-            mkPkgV = mkPkg (attrs.version or bin.year);
+            mkPkgV = name: md5: mkPkg (attrs // { inherit name md5; });
 
             mkPkgVx = type: {
               ${type} = lib.optional (isSingle && attrs.md5 ? type)
@@ -54,8 +54,13 @@ let
           };
         };
 
-  mkPkg = version: name: md5:
-    let src = fetchurl {
+  mkPkg =
+    { name, version ? bin.year
+    , url ? "ftp://tug.ctan.org/pub/tex/historic/systems/texlive/${bin.year}/tlnet-final/archive/${name}.tar.xz"
+        # "http://mirror.ctan.org/
+        # also works: ftp.math.utah.edu/pub/tex/historic
+    , md5, postUnpack ? "", ...
+    }:
       /* TODOs:
           - how to patch shebangs?
             even ${coreutils}/bin/env would make a hash-dependency on stdenv;
@@ -67,26 +72,22 @@ let
           - deal with empty packages (scan for runfiles?)
           - maybe cache (some) collections? (they don't overlap)
       */
-        #url = "http://mirror.ctan.org/
-        url = "ftp://tug.ctan.org/pub/tex/historic/systems/texlive/${bin.year}/tlnet-final/archive/${name}.tar.xz";
-        # also works: ftp.math.utah.edu/pub/tex/historic
-        inherit md5;
-      };
-    in runCommand "texlive-${name}-${version}"
+      runCommand "texlive-${name}-${version}"
         { # lots of derivations, not meant to be cached
           preferLocalBuild = true; allowSubstitutes = false;
           passthru = { inherit version; pName = name; };
         }
         (''
           mkdir "$out"
-          tar -xf '${src}' -C "$out" --anchored --exclude=tlpkg \
-            --keep-old-files
+          tar -xf '${ fetchurl { inherit url md5; } }' \
+            -C "$out" --anchored --exclude=tlpkg --keep-old-files
         '' + /* nesting depth differs among tarballs :-/ */ ''
           if [[ -d "$out/texmf-dist" ]]; then
             mv "$out"/{texmf-dist/*,}
             rmdir "$out/texmf-dist/"
           fi
-        '');
+        '' + postUnpack
+        );
 
   isSinglePackage = name: _attrs:
     (!lib.hasPrefix "collection-" name) && (!lib.hasPrefix "scheme-" name);
@@ -118,6 +119,7 @@ let
     };
   };
 
+  # TODO: replace by buitin once it exists
   fastUnique = list: with lib;
     let un_adj = l: if length l < 2 then l
       else optional (head l != elemAt l 1) (head l) ++ un_adj (tail l);
@@ -211,5 +213,6 @@ in
         ;
       };
       # TODO: more testing http://tug.org/texlive/doc/texlive-en/texlive-en.html#x1-380003.5
+      # TODO: make TeX fonts visible by fontconfig: it should be enough to install an appropriate file
   }
 
