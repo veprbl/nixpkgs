@@ -63,16 +63,12 @@ let
     { url ? "ftp://tug.ctan.org/pub/tex/historic/systems/texlive/${bin.year}/tlnet-final/archive/${pname}.tar.xz"
         # "http://mirror.ctan.org/
         # also works: ftp.math.utah.edu/pub/tex/historic
-    , md5, pname, postUnpack ? "", ...
+    , md5, pname, postUnpack ? "", stripPrefix ? 1, ...
     }:
         ''
           tar -xf '${ fetchurl { inherit url md5; } }' \
+            '--strip-components=${toString stripPrefix}' \
             -C "$out" --anchored --exclude=tlpkg --keep-old-files
-        '' + /* nesting depth differs among tarballs :-/ */ ''
-          if [[ -d "$out/texmf-dist" ]]; then
-            mv "$out"/{texmf-dist/*,}
-            rmdir "$out/texmf-dist/"
-          fi
         '' + postUnpack;
 
   mkPkg = { pname, version ? bin.year, ... } @ attrs:
