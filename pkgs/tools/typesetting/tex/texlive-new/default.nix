@@ -84,7 +84,6 @@ let
               (to have same derivation even when stdenv/platform changes)
               for that we would need to download all and generate hashes on our own
           - "historic" isn't mirrored; posted a question at #287
-          - deal with empty packages (scan for runfiles?)
           - maybe cache (some) collections? (they don't overlap)
       */
       runCommand "texlive-${pname}-${version}"
@@ -202,18 +201,40 @@ in
         ''
           for link in ./bin/*; do
             [ -L "$link" -a -x "$link" ] || (echo -n Error:; ls -l "$link"; false)
-            target=$(readlink "$link")
+            local target=$(readlink "$link")
             case "$target" in
               /*)
-                rm "$link";
+                echo -n "Wrapping '$link'"
+                rm "$link"
                 makeWrapper "$target" "$link" \
                   --prefix PATH : "$out/bin:$out/share/texmf/scripts/texlive:${perl}/bin" \
                   --prefix TEXMFDIST : "$out/share/texmf" \
                   --prefix TEXMFSYSCONFIG : "$out/share/texmf-config" \
                   --prefix TEXMFSYSVAR : "$out/share/texmf-var" \
                   --prefix PERL5LIB : "$out/share/texmf/scripts/texlive"
+
+                # avoid using non-nix shebang in $target by calling interpreter
+                if [[ "$(head -c 2 $target)" = "#!" ]]; then
+                  local interp="$(head -n 1 $target | sed 's/^\#\! *//;s/ *$//')"
+                  local newInterp=""
+                  case "$interp" in
+                    /bin/sh)
+                      newInterp="$(echo -n ${stdenv.shell} | sed 's/bash$/sh/' )";;
+                    /usr/bin/env\ perl|/usr/bin/perl)
+                      newInterp='${perl}/bin/perl';;
+                    '${perl}/bin/perl')
+                      echo
+                      continue;;
+                    *)
+                      echo "Unknown shebang '$interp' in '$target'"
+                      false
+                  esac
+                  echo " and patching shebang '$interp'"
+                  sed "s|^exec |exec $newInterp |" -i "$link"
+                else
+                  echo
+                fi
                 ;;
-              *) echo ,"$link", is OK;;
             esac
           done
         ''
