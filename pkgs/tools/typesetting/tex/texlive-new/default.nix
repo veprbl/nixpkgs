@@ -33,11 +33,13 @@ let
 
   flatDeps = pname: attrs:
         let
-            mkPkgV = pname: md5: mkPkg (attrs // { inherit pname md5; });
+            mkPkgV = pname: md5: let pkg = attrs // { inherit pname md5; };
+              in mkPkgs { inherit pname; pkgList = [ pkg ]; }
+                // { inherit md5; };
 
             mkPkgVx = type: {
               ${type} = lib.optional (attrs.md5 ? type)
-                (mkPkg (attrs.version or bin.year) "${pname}.${type}" attrs.md5.${type});
+                (mkPkgs (attrs.version or bin.year) "${pname}.${type}" attrs.md5.${type});
             };
             combDeps = (combinePkgs (attrs.deps or {})).pkgs;
         in {
@@ -47,7 +49,7 @@ let
             mkPkgVx "run" //
             mkPkgVx "doc" //
             mkPkgVx "source"
-          else  {
+          else {
             # tarball of a collection/scheme itself only contains a tlobj file
             run = lib.optional (attrs.hasRunfiles or false)
                 (mkPkgV pname attrs.md5.run)
@@ -73,7 +75,7 @@ let
             -C "$out" --anchored --exclude=tlpkg --keep-old-files
         '' + postUnpack;
 
-  mkPkg = { pname, version ? bin.year, ... } @ attrs:
+  mkPkgs = { pname, version ? bin.year, pkgList }:
       /* TODOs:
           - how to patch shebangs?
             even ${coreutils}/bin/env would make a hash-dependency on stdenv;
@@ -92,7 +94,7 @@ let
         }
         ( ''
           mkdir "$out"
-          '' + unpackPkg attrs
+          '' + lib.concatMapStrings unpackPkg (fastUnique (a: b: a.md5 < b.md5) pkgList)
         );
 
   # combine a set of TL packages into a single TL meta-package
@@ -123,10 +125,11 @@ let
   };
 
   # TODO: replace by buitin once it exists
-  fastUnique = list: with lib;
+  fastUnique = comparator: list: with lib;
     let un_adj = l: if length l < 2 then l
       else optional (head l != elemAt l 1) (head l) ++ un_adj (tail l);
-    in un_adj (lib.sort (a: b: a < b) list);
+    in un_adj (lib.sort comparator list);
+
 in
    tl-flatDeps // rec {
     inherit bin;
@@ -159,7 +162,7 @@ in
         extraPrefix = "/share/texmf";
 
         ignoreCollisions = false;
-        paths = fastUnique (map builtins.toPath (
+        paths = fastUnique (a: b: a < b) (map builtins.toPath (
           [ ]
           ++ lib.filter (pkgFilter "run"   ) metaPkg.pkgs.run
           ++ lib.filter (pkgFilter "doc"   ) metaPkg.pkgs.doc
