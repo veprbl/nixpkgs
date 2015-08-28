@@ -35,8 +35,10 @@ let
   flatDeps = pname: attrs:
         let
             mkPkgV = pname: md5: let pkg = attrs // { inherit pname md5; };
-              in mkPkgs { inherit pname; pkgList = [ pkg ]; }
-                // { inherit md5; };
+              in mkPkgs {
+                inherit pname; pkgList = [ pkg ];
+                version = attrs.version or bin.year;
+              };
 
             mkPkgVx = type: {
               ${type} = lib.optional (attrs.md5 ? type)
@@ -76,7 +78,7 @@ let
             -C "$out" --anchored --exclude=tlpkg --keep-old-files
         '' + postUnpack;
 
-  mkPkgs = { pname, version ? bin.year, pkgList }:
+  mkPkgs = { pname, version, pkgList }:
       /* TODOs:
           - how to patch shebangs?
             even ${coreutils}/bin/env would make a hash-dependency on stdenv;
@@ -204,9 +206,9 @@ in
                 rm "$link"
                 makeWrapper "$target" "$link" \
                   --prefix PATH : "$out/bin:${perl}/bin" \
-                  --prefix TEXMFDIST : "$out/share/texmf" \
-                  --prefix TEXMFSYSCONFIG : "$out/share/texmf-config" \
-                  --prefix TEXMFSYSVAR : "$out/share/texmf-var" \
+                  --set TEXMFDIST "$out/share/texmf" \
+                  --set TEXMFSYSCONFIG "$out/share/texmf-config" \
+                  --set TEXMFSYSVAR "$out/share/texmf-var" \
                   --prefix PERL5LIB : "$out/share/texmf/scripts/texlive"
 
                 # avoid using non-nix shebang in $target by calling interpreter
@@ -239,6 +241,11 @@ in
         ''
           mkdir -p "$out/share/texmf/scripts/texlive/"
           ln -s '${bin}/share/texmf-dist/scripts/texlive/TeXLive' "$out/share/texmf/scripts/texlive/"
+
+          for tool in updmap fmtutil; do
+            ln -s "$out/share/texmf/scripts/texlive/$tool."* "$out/bin/$tool"
+          done
+          ln -s fmtutil "$out/bin/mktexfmt"
 
           perl `type -P mktexlsr.pl` ./share/texmf
           texlinks.sh "$out/bin" && wrapBin
