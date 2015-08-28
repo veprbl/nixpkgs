@@ -14831,8 +14831,6 @@ let
 
   keynav = callPackage ../tools/X11/keynav { };
 
-  lazylist = callPackage ../tools/typesetting/tex/lazylist { };
-
   lilypond = callPackage ../misc/lilypond { guile = guile_1_8; };
 
   mailcore2 = callPackage ../development/libraries/mailcore2 { };
@@ -14932,8 +14930,6 @@ let
   physlock = callPackage ../misc/screensavers/physlock { };
 
   pjsip = callPackage ../applications/networking/pjsip { };
-
-  polytable = callPackage ../tools/typesetting/tex/polytable { };
 
   PPSSPP = callPackage ../misc/emulators/ppsspp { SDL = SDL2; };
 
