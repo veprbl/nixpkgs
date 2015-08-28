@@ -175,7 +175,7 @@ in
         postBuild = ''
           cd "$out"
           mkdir -p ./bin
-          ln -s '${bin}'/bin/{kpsewhich,kpseaccess,mktexfmt} ./bin/
+          ln -s '${bin}'/bin/{kpsewhich,kpseaccess} ./bin/
 
           export PATH="$out/bin:$out/share/texmf/scripts/texlive:${perl}/bin:$PATH"
           export TEXMFDIST="$out/share/texmf"

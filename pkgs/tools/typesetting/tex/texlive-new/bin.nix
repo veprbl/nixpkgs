@@ -23,6 +23,27 @@ let
   };
 
   year = "2015";
+
+  commonConfig = [
+    "--with-banner-add=/NixOS.org"
+    "--disable-missing" "--disable-native-texlive-build"
+    "--enable-shared" # "--enable-cxx-runtime-hack" # static runtime
+    "--enable-tex-synctex"
+    "-C" # use configure cache to speed up
+    # TODO: ghostscript questions?
+    # https://www.tug.org/texlive/doc/tlbuild.html#Program_002dspecific-configure-options
+  ]
+    ++ map (libname: "--with-system-${libname}") [
+    # see "from TL tree" vs. "Using installed"  in configure output
+    "zziplib" "xpdf" "poppler" "mpfr" "gmp"
+    "pixman" "potrace" "gd" "freetype2" "libpng" "libpaper" "zlib"
+      # beware: xpdf means to use stuff from poppler :-/
+  ];
+
+  removeBundledLibs = ''
+    rm -r libs/{cairo,freetype2,gd,gmp,graphite2,harfbuzz,icu,libpaper,libpng} \
+      libs/{mpfr,pixman,poppler,potrace,xpdf,zlib,zziplib}
+  '';
 in
 stdenv.mkDerivation rec {
   name = "texlive-bin-${year}";
@@ -34,187 +55,78 @@ stdenv.mkDerivation rec {
 
   outputs = [ "out" "doc" ];
 
-  buildInputs = with xorg; [
+  buildInputs = [
     pkgconfig
-    harfbuzz icu /*teckit*/ graphite2 zziplib poppler mpfr gmp
-    cairo pixman potrace gd freetype libpng libpaper zlib /*ptexenc kpathsea*/
-    libXmu libXaw
+    /*teckit*/ zziplib poppler mpfr gmp
+    pixman potrace gd freetype libpng libpaper zlib /*ptexenc kpathsea*/
     perl
   ];
 
-  configureFlags = [
-    "--with-banner-add=/NixOS.org"
-    "--disable-missing" "--disable-native-texlive-build"
-    "--enable-shared" # "--enable-cxx-runtime-hack" # static runtime
-    "--enable-tex-synctex"
-    "-C" # use configure cache to speed up
-    # TODO: ghostscript questions?
-    # https://www.tug.org/texlive/doc/tlbuild.html#Program_002dspecific-configure-options
-  ]
-    ++ map (libname: "--with-system-${libname}") [
-    # see "from TL tree" vs. "Using installed"  in configure output
-    "harfbuzz" "icu" "graphite2" "zziplib" "xpdf" "poppler" "mpfr" "gmp"
-    "cairo" "pixman" "potrace" "gd" "freetype2" "libpng" "libpaper" "zlib"
-      # beware: xpdf means to use stuff from poppler :-/
-  ]
+  configureFlags = commonConfig
+    ++ [ "--without-x" ] # disable xdvik and xpdfopen
+    ++ map (what: "--disable-${what}") [
+      "dvisvgm" "dvipng" # ghostscript dependency
+      "luatex" "luajittex" "mp" "pmp" "upmp" "mf" # cairo would bring in X and more
+      "xetex" "bibtexu" "bibtex8" "bibtex-x" # ICU isn't small
+    ]
+    ++ [ "--without-system-harfbuzz" "--without-system-icu" ] # bogus configure
+
     ++ lib.optionals stdenv.isDarwin [
     # TODO: We should be able to fix these tests
     "--disable-devnag"
-
-    # jww (2014-06-02): The following fails with:
-    # FAIL: tests/dvisvgm
-    "--disable-dvisvgm"
   ];
 
-    # TODO: clean compile-time paths.h
-
-  passthru = { inherit year /*texmfSrc langTexmfSrc*/; };
-
-  setupHook = ./setup-hook.sh;
-
-  enableParallelBuilding = true;
-
   ## doMainBuild
-  preConfigure = ""
-  /*
-    + ''
-    mkdir "$out"
-    tar xf ${texmfSrc} -C $out --strip-components=1
-    tar xf ${langTexmfSrc} -C $out --strip-components=1
-    sed -e s@/usr/bin/@@g -i $(grep /usr/bin/ -rl . )
-
-    sed -e 's@dehypht-x-2013-05-26@dehypht-x-2014-05-21@' -i $(grep 'dehypht-x' -rl $out )
-    sed -e 's@dehyphn-x-2013-05-26@dehyphn-x-2014-05-21@' -i $(grep 'dehyphn-x' -rl $out )
-
-    sed -e 's@\<env ruby@${ruby}/bin/ruby@' -i $(grep 'env ruby' -rl . )
-    sed -e 's@\<env perl@${perl}/bin/perl@' -i $(grep 'env perl' -rl . )
-    sed -e 's@\<env python@${python}/bin/python@' -i $(grep 'env python' -rl . )
-
-    sed -e '/ubidi_open/i#include <unicode/urename.h>' -i $(find . -name configure)
-    sed -e 's/-lttf/-lfreetype/' -i $(find . -name configure)
-
-    # sed -e s@ncurses/curses.h@curses.h@g -i $(grep ncurses/curses.h -rl . )
-    sed -e '1i\#include <string.h>\n\#include <stdlib.h>' -i $( find libs/teckit -name '*.cpp' -o -name '*.c' )
-
-    #NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE -I${icu}/include/layout";
-
-    #./Build --prefix="$out" --datadir="$out/share" --mandir="$out/share/man" --infodir="$out/share/info" \
-    #  ${stdenv.lib.concatStringsSep " " configureFlags}
-
-  ''
-  */
-    + ''
+  preConfigure = removeBundledLibs + ''
     mkdir Work
     cd Work
   '' + lib.optionalString stdenv.isDarwin ''
     export DYLD_LIBRARY_PATH="${poppler}/lib"
   '';
+  /*
+    sed -e 's@\<env ruby@${ruby}/bin/ruby@' -i $(grep 'env ruby' -rl . )
+    sed -e 's@\<env perl@${perl}/bin/perl@' -i $(grep 'env perl' -rl . )
+    sed -e 's@\<env python@${python}/bin/python@' -i $(grep 'env python' -rl . )
+  */
 
   configureScript = "../configure";
 
-  #doCheck = true;
-  # ../../../texk/web2c/../../build-aux/test-driver: ../../../texk/web2c/tests/write18-quote-test.pl: /usr/bin/env: bad interpreter: No such file or directory
+  enableParallelBuilding = true;
+
+  doCheck = false; # triptest fails, likely due to missing TEXMF tree
+  preCheck = "patchShebangs ../texk/web2c";
 
   installTargets = [ "install" "texlinks" ];
 
-    #mv "$out"/share/texmf{-dist,}
-    # perl patching taken from buildPerlPackage and simplified
-  postInstall = ''
-    mkdir "$out/share/texmf-dist/scripts/texlive/TeXLive/"
+  # TODO: perhaps improve texmf.cnf search locations
+  postInstall = /* the perl modules are useful; take the rest from pkgs */ ''
+    mv "$out/share/texmf-dist/web2c/texmf.cnf" .
+    rm -r "$out/share/texmf-dist"
+    mkdir -p "$out"/share/texmf-dist/{web2c,scripts/texlive/TeXLive}
+    mv ./texmf.cnf "$out/share/texmf-dist/web2c/"
     cp ../texk/tests/TeXLive/*.pm "$out/share/texmf-dist/scripts/texlive/TeXLive/"
   '' + /* doc location identical with individual TeX pkgs */ ''
     mkdir -p "$doc/doc"
     mv "$out"/share/{man,info} "$doc"/doc
-  '';
-
-  ignore2 = ''
-    perlFlags="-I$out/share/texmf-dist/scripts/texlive"
-    find "$out/share/texmf-dist/scripts/texlive/" -type f -executable | while read fn; do
-      first=$(dd if="$fn" count=2 bs=1 2> /dev/null)
-      if test "$first" = "#!"; then
-        echo "patching $fn..."
-        sed -e "s|^#\!\(.*/perl.*\)$|#\! \1$perlFlags|" -i "$fn"
-      fi
+  '' +  /* clean broken links to stuff not built */ ''
+    for f in bin/*; do
+      if [[ ! -x "$f" ]]; then rm "$f"; fi
     done
-  '';
-
-  ignore = ''
-  '' + /*promoteLibexec*/ ''
-    mkdir -p $out/libexec/
-    mv $out/bin $out/libexec/$(uname -m)
-    mkdir -p $out/bin
-    for i in "$out/libexec/"* "$out/libexec/"*/* ; do
-        test \( \! -d "$i" \) -a \( -x "$i" -o -L "$i" \) || continue
-
-      if [ -x "$i" ]; then
-          echo -ne "#! $SHELL\\nexec $i \"\$@\"" >$out/bin/$(basename $i)
-                chmod a+x $out/bin/$(basename $i)
-      else
-          mv "$i" "$out/libexec"
-          ln -s "$(readlink -f "$out/libexec/$(basename "$i")")" "$out/bin/$(basename "$i")";
-          ln -sf "$(readlink -f "$out/libexec/$(basename "$i")")" "$out/libexec/$(uname -m)/$(basename "$i")";
-          rm "$out/libexec/$(basename "$i")"
-      fi;
-    done
-  ''
-
-    + /*patchShebangsInterim*/ /* ''
-    for p in "$out"/{bin,libexec,share/texmf-dist/scripts,texmf-dist/scripts}; do
-      patchShebangs "$p"
-    done
-  ''
-    + */ /*doPostInstall*/ ''
-    cp -r "$out/"texmf* "$out/share/" || true
-    rm -rf "$out"/texmf*
-    [ -d $out/share/texmf-config ] || ln -s $out/share/texmf-dist $out/share/texmf-config
-    ln -s "$out"/share/texmf* "$out"/
-  ''
-/*
-    PATH=$PATH:$out/bin mktexlsr $out/share/texmf*
-
-    HOME=. PATH=$PATH:$out/bin updmap-sys --syncwithtrees
-
-    # Prebuild the format files, as it used to be done with TeXLive 2007.
-    # Luatex currently fails this way:
-    #
-    #   This is a summary of all `failed' messages:
-    #   `luatex -ini  -jobname=luatex -progname=luatex luatex.ini' failed
-    #   `luatex -ini  -jobname=dviluatex -progname=dviluatex dviluatex.ini' failed
-    #
-    # I find it acceptable, hence the "|| true".
-    echo "building format files..."
-    mkdir -p "$out/share/texmf-var/web2c"
-    ln -sf "$out"/out/share/texmf* "$out"/
-    PATH="$PATH:$out/bin" fmtutil-sys --all || true
-
-    PATH=$PATH:$out/bin mktexlsr $out/share/texmf*
-  ''
-*/
-    + stdenv.lib.optionalString stdenv.isDarwin ''
+  '' + stdenv.lib.optionalString stdenv.isDarwin ''
     for prog in $out/bin/*; do
       wrapProgram "$prog" --prefix DYLD_LIBRARY_PATH : "${poppler}/lib"
     done
   '';
 
+  setupHook = ./setup-hook.sh; # TODO: maybe texmf-nix -> texmf (and all references)
+  passthru = { inherit year; };
 
   meta = with stdenv.lib; {
-    description = "A TeX distribution";
+    description = "Basic binaries for TeX Live";
     homepage    = http://www.tug.org/texlive;
     license     = stdenv.lib.licenses.gpl2;
-    maintainers = with maintainers; [ lovek323 raskin jwiegley ];
-    platforms   = platforms.unix;
-    hydraPlatforms = [];
+    maintainers = with maintainers; [ vcunat lovek323 raskin jwiegley ];
+    platforms   = platforms.all;
   };
 }
-
-/* TODOs:
-  - patch/inspect kpathsea
-
-  - let fontconfig search TeX fonts?
-  <dir>/usr/share/texmf-dist/fonts/opentype</dir>
-  <dir>/usr/share/texmf-dist/fonts/truetype</dir>
-  <dir>/usr/local/share/texmf/fonts/opentype</dir>
-  <dir>/usr/local/share/texmf/fonts/truetype</dir>
-
-*/
 
