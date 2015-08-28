@@ -180,17 +180,6 @@ in
           export TEXMFSYSCONFIG="$out/share/texmf-config"
           export TEXMFSYSVAR="$out/share/texmf-var"
           export PERL5LIB="$out/share/texmf/scripts/texlive"
-
-          mkdir -p "$out/share/texmf/scripts/texlive/"
-          ln -s '${bin}/share/texmf-dist/scripts/texlive/TeXLive' "$out/share/texmf/scripts/texlive/"
-
-          perl `type -P mktexlsr.pl`
-          yes | perl `type -P updmap.pl` --sys --syncwithtrees || true
-          perl `type -P updmap.pl` --sys --syncwithtrees
-          texlinks.sh "$out/bin"
-
-          echo -e "\\n\\nBeware: fmtutil will try building even those formats for which files aren't installed\\n"
-          perl `type -P fmtutil.pl` --sys --refresh
         '' +
         # TODO: a context trigger https://www.preining.info/blog/2015/06/debian-tex-live-2015-the-new-layout/
           # http://wiki.contextgarden.net/ConTeXt_Standalone#Unix-like_platforms_.28Linux.2FMacOS_X.2FFreeBSD.2FSolaris.29
@@ -199,15 +188,16 @@ in
         '' +
         # wrap created executables with required env vars
         ''
+          wrapBin() {
           for link in ./bin/*; do
-            [ -L "$link" -a -x "$link" ] || (echo -n Error:; ls -l "$link"; false)
+            [ -L "$link" -a -x "$link" ] || continue # if not link, assume OK
             local target=$(readlink "$link")
             case "$target" in
               /*)
                 echo -n "Wrapping '$link'"
                 rm "$link"
                 makeWrapper "$target" "$link" \
-                  --prefix PATH : "$out/bin:$out/share/texmf/scripts/texlive:${perl}/bin" \
+                  --prefix PATH : "$out/bin:${perl}/bin" \
                   --prefix TEXMFDIST : "$out/share/texmf" \
                   --prefix TEXMFSYSCONFIG : "$out/share/texmf-config" \
                   --prefix TEXMFSYSVAR : "$out/share/texmf-var" \
@@ -237,6 +227,24 @@ in
                 ;;
             esac
           done
+          }
+        '' +
+        # texlive post-install actions
+        ''
+          mkdir -p "$out/share/texmf/scripts/texlive/"
+          ln -s '${bin}/share/texmf-dist/scripts/texlive/TeXLive' "$out/share/texmf/scripts/texlive/"
+
+          perl `type -P mktexlsr.pl` ./share/texmf
+          texlinks.sh "$out/bin" && wrapBin
+          perl `type -P fmtutil.pl` --sys --all | grep '^fmtutil' # too verbose
+          #texlinks.sh "$out/bin" && wrapBin # may we need to run again?
+          yes | perl `type -P updmap.pl` --sys --syncwithtrees || true
+          yes | perl `type -P updmap.pl` --sys --syncwithtrees || true
+        '' +
+        # TODO: a context trigger https://www.preining.info/blog/2015/06/debian-tex-live-2015-the-new-layout/
+          # http://wiki.contextgarden.net/ConTeXt_Standalone#Unix-like_platforms_.28Linux.2FMacOS_X.2FFreeBSD.2FSolaris.29
+        ''
+          ln -s texmf/doc/{man,info} "$out/share/"
         ''
         ;
       };
