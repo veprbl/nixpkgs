@@ -1,6 +1,6 @@
-{ stdenv, fetchurl, fetchpatch, pkgconfig, libiconv, libintlOrEmpty
+{ stdenv, lib, fetchurl, fetchpatch, pkgconfig, libiconv, libintlOrEmpty
 , zlib, curl, cairo, freetype, fontconfig, lcms, libjpeg, openjpeg
-, qt4Support ? false, qt4 ? null, qt5Support ? false, qt5 ? null
+, supportX ? true, qt4Support ? false, qt4 ? null, qt5Support ? false, qt5 ? null
 , utils ? false, suffix ? "glib"
 }:
 
@@ -18,24 +18,27 @@ stdenv.mkDerivation rec {
 
   patches = [ ./datadir_env.patch ];
 
+  # TODO: reduce propagation to necessary libs
   propagatedBuildInputs = with stdenv.lib;
-    [ zlib cairo freetype fontconfig libjpeg lcms curl openjpeg ]
+    [ zlib freetype fontconfig libjpeg lcms curl openjpeg ]
+    ++ optional supportX cairo
     ++ optional qt4Support qt4
     ++ optional qt5Support qt5.base;
 
   nativeBuildInputs = [ pkgconfig libiconv ] ++ libintlOrEmpty;
 
-  configureFlags =
+  configureFlags = with lib;
     [
       "--enable-xpdf-headers"
       "--enable-libcurl"
       "--enable-zlib"
     ]
-    ++ stdenv.lib.optional (!utils) "--disable-utils";
+    ++ optionals (!supportX) [ "--disable-poppler-glib" "--disable-poppler-cpp" ]
+    ++ optional (!utils) "--disable-utils";
 
   enableParallelBuilding = true;
 
-  meta = {
+  meta = with lib; {
     homepage = http://poppler.freedesktop.org/;
     description = "A PDF rendering library";
 
@@ -43,8 +46,8 @@ stdenv.mkDerivation rec {
       Poppler is a PDF rendering library based on the xpdf-3.0 code base.
     '';
 
-    license = stdenv.lib.licenses.gpl2;
-    platforms = stdenv.lib.platforms.all;
-    maintainers = with stdenv.lib.maintainers; [ ttuegel ];
+    license = licenses.gpl2;
+    platforms = platforms.all;
+    maintainers = with maintainers; [ ttuegel ];
   };
 }

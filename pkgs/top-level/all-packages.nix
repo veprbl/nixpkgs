@@ -7867,6 +7867,11 @@ let
 
   poppler = callPackage ../development/libraries/poppler { lcms = lcms2; };
 
+  poppler_nox = poppler.override { # TODO: maybe reduce even more
+    supportX = false;
+    suffix = "nox";
+  };
+
   poppler_qt4 = poppler.override {
     inherit qt4;
     qt4Support = true;

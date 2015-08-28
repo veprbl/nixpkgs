@@ -1,5 +1,5 @@
 { stdenv, lib, fetchurl, runCommand, buildEnv
-, callPackage, ghostscriptX, harfbuzz
+, callPackage, ghostscriptX, harfbuzz, poppler_nox
 , perl, makeWrapper
 }:
 let
@@ -118,6 +118,7 @@ let
   */
 
   bin = callPackage ./bin.nix {
+    poppler = poppler_nox; # otherwise depend on various X stuff
     ghostscript = ghostscriptX;
     harfbuzz = harfbuzz.override {
       withIcu = true; withGraphite2 = true;
