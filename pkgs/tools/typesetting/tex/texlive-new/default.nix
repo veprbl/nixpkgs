@@ -22,6 +22,7 @@ let
       };
       hyphen-base = orig.hyphen-base // {
         # hacky fixup for: I can't find file `dehypht-x-2014-05-21.tex'
+        # now we have missing language.def instead
         postUnpack = ''rm "$out"/tex/generic/config/language*.{def,dat}'';
       };
       texlive-msg-translations = orig.texlive-msg-translations // {
@@ -181,10 +182,14 @@ in
           export TEXMFSYSVAR="$out/share/texmf-var"
           export PERL5LIB="$out/share/texmf/scripts/texlive"
         '' +
-        # TODO: a context trigger https://www.preining.info/blog/2015/06/debian-tex-live-2015-the-new-layout/
-          # http://wiki.contextgarden.net/ConTeXt_Standalone#Unix-like_platforms_.28Linux.2FMacOS_X.2FFreeBSD.2FSolaris.29
+          # patch texmf-dist -> texmf to be sure
+          # TODO: cleanup the search paths incl. SELFAUTOLOC, and perhaps do lua actions?
+          # tried inspiration from install-tl, sub do_texmf_cnf
         ''
-          ln -s texmf/doc/{man,info} "$out/share/"
+          local cnfPath=./share/texmf/web2c/texmf.cnf
+          local cnfOrig="$(realpath $cnfPath)"
+          rm $cnfPath
+          cat "$cnfOrig" | sed 's/texmf-dist/texmf/g' > $cnfPath
         '' +
         # wrap created executables with required env vars
         ''
