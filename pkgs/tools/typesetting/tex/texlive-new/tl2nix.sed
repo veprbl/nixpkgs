@@ -17,9 +17,10 @@ s/^name (.*)/name "\1"/
 s/^containermd5 (.*)/  md5.run = "\1";/p
 s/^doccontainermd5 (.*)/  md5.doc = "\1";/p
 s/^srccontainermd5 (.*)/  md5.source = "\1";/p
+/^runfiles /i\  hasRunfiles = true;
 
 # number of path components to strip, defaulting to 1 ("texmf-dist/")
-s/^relocated 1/  stripPrefix = 0;/p
+/^relocated 1/i\  stripPrefix = 0;
 
 # extract version and clean unwanted chars from it
 /^catalogue-version/y/ \/~/_--/

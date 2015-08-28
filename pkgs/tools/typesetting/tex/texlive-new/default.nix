@@ -13,16 +13,19 @@ let
     in orig // {
       # overrides of texlive.tlpdb
 
-      tetex = { # 2015.08.07 as we need version with mktexlsr.pl
+      tetex = orig.tetex // { # 2015.08.07 as we need version with mktexlsr.pl
         md5.run = "2016b5ac0393732abb90546136b77b35";
         md5.doc = "b25e79ae27b6f3bd1622043cc79aca23";
-        version = "3.0";
+        version = "3.0"; # it's the same
       };
       dvidvi.md5 = { # only contains docs that's in bin.doc already
       };
       hyphen-base = orig.hyphen-base // {
         # hacky fixup for: I can't find file `dehypht-x-2014-05-21.tex'
         postUnpack = ''rm "$out"/tex/generic/config/language*.{def,dat}'';
+      };
+      texlive-msg-translations = orig.texlive-msg-translations // {
+        hasRunfiles = false; # only *.po for tlmgr
       };
     };
 
@@ -33,10 +36,9 @@ let
             mkPkgV = pname: md5: mkPkg (attrs // { inherit pname md5; });
 
             mkPkgVx = type: {
-              ${type} = lib.optional (isSingle && attrs.md5 ? type)
+              ${type} = lib.optional (attrs.md5 ? type)
                 (mkPkg (attrs.version or bin.year) "${pname}.${type}" attrs.md5.${type});
             };
-            isSingle = isSinglePackage pname attrs;
             combDeps = (combinePkgs (attrs.deps or {})).pkgs;
         in {
           # TL pkg contains three lists of packages: runtime files, docs, and sources
@@ -47,13 +49,13 @@ let
             mkPkgVx "source"
           else  {
             # tarball of a collection/scheme itself only contains a tlobj file
-            run = lib.optional (isSingle && attrs.md5 ? "run")
+            run = lib.optional (attrs.hasRunfiles or false)
                 (mkPkgV pname attrs.md5.run)
               ++ (combDeps.run or []);
-            doc = lib.optional (isSingle && attrs.md5 ? "doc")
+            doc = lib.optional (attrs.md5 ? "doc")
                 (mkPkgV "${pname}.doc" attrs.md5.doc)
               ++ (combDeps.doc or []);
-            source = lib.optional (isSingle && attrs.md5 ? "source")
+            source = lib.optional (attrs.md5 ? "source")
                 (mkPkgV "${pname}.source" attrs.md5.source)
               ++ (combDeps.source or []);
           };
@@ -92,9 +94,6 @@ let
           mkdir "$out"
           '' + unpackPkg attrs
         );
-
-  isSinglePackage = pname: _attrs:
-    (!lib.hasPrefix "collection-" pname) && (!lib.hasPrefix "scheme-" pname);
 
   # combine a set of TL packages into a single TL meta-package
   combinePkgs = pkgSet:
