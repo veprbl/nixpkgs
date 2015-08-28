@@ -28,15 +28,15 @@ let
 
   tl-flatDeps = lib.mapAttrs flatDeps tl-clean;
 
-  flatDeps = name: attrs:
+  flatDeps = pname: attrs:
         let
-            mkPkgV = name: md5: mkPkg (attrs // { inherit name md5; });
+            mkPkgV = pname: md5: mkPkg (attrs // { inherit pname md5; });
 
             mkPkgVx = type: {
               ${type} = lib.optional (isSingle && attrs.md5 ? type)
-                (mkPkg (attrs.version or bin.year) "${name}.${type}" attrs.md5.${type});
+                (mkPkg (attrs.version or bin.year) "${pname}.${type}" attrs.md5.${type});
             };
-            isSingle = isSinglePackage name attrs;
+            isSingle = isSinglePackage pname attrs;
             combDeps = (combinePkgs (attrs.deps or {})).pkgs;
         in {
           # TL pkg contains three lists of packages: runtime files, docs, and sources
@@ -48,24 +48,34 @@ let
           else  {
             # tarball of a collection/scheme itself only contains a tlobj file
             run = lib.optional (isSingle && attrs.md5 ? "run")
-                (mkPkgV name attrs.md5.run)
+                (mkPkgV pname attrs.md5.run)
               ++ (combDeps.run or []);
             doc = lib.optional (isSingle && attrs.md5 ? "doc")
-                (mkPkgV "${name}.doc" attrs.md5.doc)
+                (mkPkgV "${pname}.doc" attrs.md5.doc)
               ++ (combDeps.doc or []);
             source = lib.optional (isSingle && attrs.md5 ? "source")
-                (mkPkgV "${name}.source" attrs.md5.source)
+                (mkPkgV "${pname}.source" attrs.md5.source)
               ++ (combDeps.source or []);
           };
         };
 
-  mkPkg =
-    { name, version ? bin.year
-    , url ? "ftp://tug.ctan.org/pub/tex/historic/systems/texlive/${bin.year}/tlnet-final/archive/${name}.tar.xz"
+  unpackPkg =
+    { url ? "ftp://tug.ctan.org/pub/tex/historic/systems/texlive/${bin.year}/tlnet-final/archive/${pname}.tar.xz"
         # "http://mirror.ctan.org/
         # also works: ftp.math.utah.edu/pub/tex/historic
-    , md5, postUnpack ? "", ...
+    , md5, pname, postUnpack ? "", ...
     }:
+        ''
+          tar -xf '${ fetchurl { inherit url md5; } }' \
+            -C "$out" --anchored --exclude=tlpkg --keep-old-files
+        '' + /* nesting depth differs among tarballs :-/ */ ''
+          if [[ -d "$out/texmf-dist" ]]; then
+            mv "$out"/{texmf-dist/*,}
+            rmdir "$out/texmf-dist/"
+          fi
+        '' + postUnpack;
+
+  mkPkg = { pname, version ? bin.year, ... } @ attrs:
       /* TODOs:
           - how to patch shebangs?
             even ${coreutils}/bin/env would make a hash-dependency on stdenv;
@@ -77,25 +87,18 @@ let
           - deal with empty packages (scan for runfiles?)
           - maybe cache (some) collections? (they don't overlap)
       */
-      runCommand "texlive-${name}-${version}"
+      runCommand "texlive-${pname}-${version}"
         { # lots of derivations, not meant to be cached
           preferLocalBuild = true; allowSubstitutes = false;
-          passthru = { inherit version; pName = name; };
+          passthru = { inherit pname version; };
         }
-        (''
+        ( ''
           mkdir "$out"
-          tar -xf '${ fetchurl { inherit url md5; } }' \
-            -C "$out" --anchored --exclude=tlpkg --keep-old-files
-        '' + /* nesting depth differs among tarballs :-/ */ ''
-          if [[ -d "$out/texmf-dist" ]]; then
-            mv "$out"/{texmf-dist/*,}
-            rmdir "$out/texmf-dist/"
-          fi
-        '' + postUnpack
+          '' + unpackPkg attrs
         );
 
-  isSinglePackage = name: _attrs:
-    (!lib.hasPrefix "collection-" name) && (!lib.hasPrefix "scheme-" name);
+  isSinglePackage = pname: _attrs:
+    (!lib.hasPrefix "collection-" pname) && (!lib.hasPrefix "scheme-" pname);
 
   # combine a set of TL packages into a single TL meta-package
   combinePkgs = pkgSet:
@@ -142,7 +145,7 @@ in
     }; };
 
     combined = lib.mapAttrs
-      (name: attrs: combine { ${name} = attrs; })
+      (pname: attrs: combine { ${pname} = attrs; })
       { inherit (tl-flatDeps)
           scheme-full scheme-medium scheme-small scheme-basic scheme-minimal
           scheme-context scheme-gust scheme-tetex scheme-xml;
@@ -186,7 +189,7 @@ in
 
           perl `type -P mktexlsr.pl`
           yes | perl `type -P updmap.pl` --sys --syncwithtrees || true
-          yes | perl `type -P updmap.pl` --sys --syncwithtrees || true
+          perl `type -P updmap.pl` --sys --syncwithtrees
           texlinks.sh "$out/bin"
 
           echo -e "\\n\\nBeware: fmtutil will try building even those formats for which files aren't installed\\n"
@@ -218,7 +221,6 @@ in
         ''
         ;
       };
-      # TODO: more testing http://tug.org/texlive/doc/texlive-en/texlive-en.html#x1-380003.5
       # TODO: make TeX fonts visible by fontconfig: it should be enough to install an appropriate file
   }
 
