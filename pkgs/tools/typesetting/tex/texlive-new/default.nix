@@ -177,7 +177,7 @@ in
         postBuild = ''
           cd "$out"
           mkdir -p ./bin
-          ln -s '${bin}'/bin/{kpsewhich,kpseaccess} ./bin/
+          ln -s '${bin}'/bin/* ./bin/
 
           export PATH="$out/bin:$out/share/texmf/scripts/texlive:${perl}/bin:$PATH"
           export TEXMFDIST="$out/share/texmf"
@@ -220,7 +220,7 @@ in
                       newInterp="$(echo -n ${stdenv.shell} | sed 's/bash$/sh/' )";;
                     /usr/bin/env\ perl|/usr/bin/perl)
                       newInterp='${perl}/bin/perl';;
-                    '${perl}/bin/perl')
+                    /nix/store/*)
                       echo
                       continue;;
                     *)
@@ -243,9 +243,9 @@ in
           ln -s '${bin}/share/texmf-dist/scripts/texlive/TeXLive' "$out/share/texmf/scripts/texlive/"
 
           for tool in updmap fmtutil; do
-            ln -s "$out/share/texmf/scripts/texlive/$tool."* "$out/bin/$tool"
+            ln -sf "$out/share/texmf/scripts/texlive/$tool."* "$out/bin/$tool"
           done
-          ln -s fmtutil "$out/bin/mktexfmt"
+          ln -sf fmtutil "$out/bin/mktexfmt"
 
           perl `type -P mktexlsr.pl` ./share/texmf
           texlinks.sh "$out/bin" && wrapBin
