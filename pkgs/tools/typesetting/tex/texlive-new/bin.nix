@@ -10,59 +10,87 @@
 
 
 let
-  texmfVersion = "2014.20141024";
-  texmfSrc = fetchurl {
-    url = "mirror://debian/pool/main/t/texlive-base/texlive-base_${texmfVersion}.orig.tar.xz";
-    sha256 = "1a6968myfi81s76n9p1qljgpwia9mi55pkkz1q6lbnwybf97akj1";
+
+  common = {
+    year = "2015";
+    src = fetchurl {
+      url = ftp://tug.org/historic/systems/texlive/2015/texlive-20150521-source.tar.xz;
+      sha256 = "ed9bcd7bdce899c3c27c16a8c5c3017c4f09e1d7fd097038351b72497e9d4669";
+    };
+
+    configureFlags = [
+      "--with-banner-add=/NixOS.org"
+      "--disable-missing" "--disable-native-texlive-build"
+      "--enable-shared" # "--enable-cxx-runtime-hack" # static runtime
+      "--enable-tex-synctex"
+      "-C" # use configure cache to speed up
+      # TODO: ghostscript questions?
+      # https://www.tug.org/texlive/doc/tlbuild.html#Program_002dspecific-configure-options
+    ]
+      ++ map (libname: "--with-system-${libname}") [
+      # see "from TL tree" vs. "Using installed"  in configure output
+      "zziplib" "xpdf" "poppler" "mpfr" "gmp"
+      "pixman" "potrace" "gd" "freetype2" "libpng" "libpaper" "zlib"
+        # beware: xpdf means to use stuff from poppler :-/
+    ];
+
+    removeBundledLibs = ''
+      rm -r libs/{cairo,freetype2,gd,gmp,graphite2,harfbuzz,icu,libpaper,libpng} \
+        libs/{mpfr,pixman,poppler,potrace,xpdf,zlib,zziplib}
+    '';
+    preConfigure = common.removeBundledLibs + ''
+      mkdir Work
+      cd Work
+    '' + lib.optionalString stdenv.isDarwin ''
+      export DYLD_LIBRARY_PATH="${poppler}/lib"
+    '';
+    configureScript = "../configure";
+
+    # clean broken links to stuff not built
+    cleanBrokenLinks = ''
+      for f in "$out"/bin/*; do
+        if [[ ! -x "$f" ]]; then rm "$f"; fi
+      done
+    '';
+
+
+
+    buildInputs = [
+      pkgconfig
+      /*teckit*/ zziplib poppler mpfr gmp
+      pixman potrace gd freetype libpng libpaper zlib /*ptexenc kpathsea*/
+      perl
+    ];
   };
+in rec { # un-indented
 
-  langTexmfVersion = "2014.20141024";
-  langTexmfSrc = fetchurl {
-    url = "mirror://debian/pool/main/t/texlive-lang/texlive-lang_${langTexmfVersion}.orig.tar.xz";
-    sha256 = "1ydz5m1v40n34g1l31r3vqg74rbr01x2f80drhz4igh21fm7zzpa";
-  };
+inherit (common) cleanBrokenLinks year;
 
-  year = "2015";
+dvisvgm = stdenv.mkDerivation {
+  name = "texlive-dvisvgm.bin-${year}";
 
-  commonConfig = [
-    "--with-banner-add=/NixOS.org"
-    "--disable-missing" "--disable-native-texlive-build"
-    "--enable-shared" # "--enable-cxx-runtime-hack" # static runtime
-    "--enable-tex-synctex"
-    "-C" # use configure cache to speed up
-    # TODO: ghostscript questions?
-    # https://www.tug.org/texlive/doc/tlbuild.html#Program_002dspecific-configure-options
-  ]
-    ++ map (libname: "--with-system-${libname}") [
-    # see "from TL tree" vs. "Using installed"  in configure output
-    "zziplib" "xpdf" "poppler" "mpfr" "gmp"
-    "pixman" "potrace" "gd" "freetype2" "libpng" "libpaper" "zlib"
-      # beware: xpdf means to use stuff from poppler :-/
-  ];
+  inherit (common) src;
 
-  removeBundledLibs = ''
-    rm -r libs/{cairo,freetype2,gd,gmp,graphite2,harfbuzz,icu,libpaper,libpng} \
-      libs/{mpfr,pixman,poppler,potrace,xpdf,zlib,zziplib}
+  buildInputs = [ pkgconfig core/*kpathsea*/ ghostscript zlib freetype potrace ];
+
+  preConfigure = ''
+    cd texk/dvisvgm
   '';
-in
-stdenv.mkDerivation rec {
+
+  configureFlags = common.configureFlags
+    ++ [ "--with-system-libgs" "--with-system-kpathsea" ];
+
+  enableParallelBuilding = true;
+};
+
+core = stdenv.mkDerivation {
   name = "texlive-bin-${year}";
 
-  src = assert config.allowTexliveBuilds or true; fetchurl {
-    url = ftp://tug.org/historic/systems/texlive/2015/texlive-20150521-source.tar.xz;
-    sha256 = "ed9bcd7bdce899c3c27c16a8c5c3017c4f09e1d7fd097038351b72497e9d4669";
-  };
+  inherit (common) src buildInputs preConfigure configureScript;
 
   outputs = [ "out" "doc" ];
 
-  buildInputs = [
-    pkgconfig
-    /*teckit*/ zziplib poppler mpfr gmp
-    pixman potrace gd freetype libpng libpaper zlib /*ptexenc kpathsea*/
-    perl
-  ];
-
-  configureFlags = commonConfig
+  configureFlags = common.configureFlags
     ++ [ "--without-x" ] # disable xdvik and xpdfopen
     ++ map (what: "--disable-${what}") [
       "dvisvgm" "dvipng" # ghostscript dependency
@@ -77,19 +105,11 @@ stdenv.mkDerivation rec {
   ];
 
   ## doMainBuild
-  preConfigure = removeBundledLibs + ''
-    mkdir Work
-    cd Work
-  '' + lib.optionalString stdenv.isDarwin ''
-    export DYLD_LIBRARY_PATH="${poppler}/lib"
-  '';
   /*
     sed -e 's@\<env ruby@${ruby}/bin/ruby@' -i $(grep 'env ruby' -rl . )
     sed -e 's@\<env perl@${perl}/bin/perl@' -i $(grep 'env perl' -rl . )
     sed -e 's@\<env python@${python}/bin/python@' -i $(grep 'env python' -rl . )
   */
-
-  configureScript = "../configure";
 
   enableParallelBuilding = true;
 
@@ -108,11 +128,8 @@ stdenv.mkDerivation rec {
   '' + /* doc location identical with individual TeX pkgs */ ''
     mkdir -p "$doc/doc"
     mv "$out"/share/{man,info} "$doc"/doc
-  '' +  /* clean broken links to stuff not built */ ''
-    for f in bin/*; do
-      if [[ ! -x "$f" ]]; then rm "$f"; fi
-    done
-  '' + stdenv.lib.optionalString stdenv.isDarwin ''
+  '' + cleanBrokenLinks
+    + stdenv.lib.optionalString stdenv.isDarwin ''
     for prog in $out/bin/*; do
       wrapProgram "$prog" --prefix DYLD_LIBRARY_PATH : "${poppler}/lib"
     done
@@ -128,5 +145,7 @@ stdenv.mkDerivation rec {
     maintainers = with maintainers; [ vcunat lovek323 raskin jwiegley ];
     platforms   = platforms.all;
   };
-}
+};
+
+} # un-indented
 

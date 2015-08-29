@@ -119,13 +119,14 @@ let
   '');
   */
 
-  bin = callPackage ./bin.nix {
+  bin-all = callPackage ./bin.nix {
     poppler = poppler_nox; # otherwise depend on various X stuff
     ghostscript = ghostscriptX;
     harfbuzz = harfbuzz.override {
       withIcu = true; withGraphite2 = true;
     };
   };
+  bin = bin-all.core;
 
   # TODO: replace by buitin once it exists
   fastUnique = comparator: list: with lib;
@@ -135,7 +136,7 @@ let
 
 in
    tl-flatDeps // rec {
-    inherit bin;
+    inherit bin bin-all;
 
     # TODO: remove
     mine = combine { pkgSet = {
@@ -259,6 +260,7 @@ in
         ''
           ln -s texmf/doc/{man,info} "$out/share/"
         ''
+          + bin-all.cleanBrokenLinks
         ;
       };
       # TODO: make TeX fonts visible by fontconfig: it should be enough to install an appropriate file
