@@ -73,14 +73,32 @@ dvisvgm = stdenv.mkDerivation {
 
   buildInputs = [ pkgconfig core/*kpathsea*/ ghostscript zlib freetype potrace ];
 
-  preConfigure = ''
-    cd texk/dvisvgm
-  '';
+  preConfigure = "cd texk/dvisvgm";
 
   configureFlags = common.configureFlags
     ++ [ "--with-system-libgs" "--with-system-kpathsea" ];
 
   enableParallelBuilding = true;
+};
+
+dvipng = stdenv.mkDerivation {
+  name = "texlive-dvipng.bin-${year}";
+
+  inherit (common) src;
+
+  buildInputs = [ pkgconfig core/*kpathsea*/ zlib libpng freetype gd ghostscript makeWrapper ];
+
+  preConfigure = "cd texk/dvipng";
+
+  configureFlags = common.configureFlags
+    ++ [ "--with-gs=yes" "--with-system-kpathsea" "--disable-debug" ];
+
+  enableParallelBuilding = true;
+
+  # I didn't manage to hardcode gs location by configureFlags
+  postInstall = ''
+    wrapProgram "$out/bin/dvipng" --prefix PATH : '${ghostscript}/bin'
+  '';
 };
 
 core = stdenv.mkDerivation {
