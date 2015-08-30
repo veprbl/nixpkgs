@@ -30,6 +30,14 @@ let
       texlive-msg-translations = orig.texlive-msg-translations // {
         hasRunfiles = false; # only *.po for tlmgr
       };
+
+      # luatex and metafont are heavy, so remove it from the basic stuff
+      collection-basic = orig.collection-basic // {
+        deps = removeAttrs orig.collection-basic.deps [ "luatex" "metafont" ];
+      };
+      latex = orig.latex // {
+        deps = removeAttrs orig.latex.deps [ "luatex" ];
+      };
     };
 
   tl-flatDeps = lib.mapAttrs flatDeps tl-clean;
