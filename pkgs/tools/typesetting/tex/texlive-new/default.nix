@@ -13,10 +13,12 @@ let
     in orig // {
       # overrides of texlive.tlpdb
 
-      tetex = orig.tetex // { # 2015.08.07 as we need version with mktexlsr.pl
-        md5.run = "2016b5ac0393732abb90546136b77b35";
-        md5.doc = "b25e79ae27b6f3bd1622043cc79aca23";
+      tetex = orig.tetex // { # 2015.08.27 as we need version with mktexlsr.pl
+        # TODO: URL to fetch from
+        md5.run = "4b4c0208124dfc9c8244c24421946d36";
+        md5.doc = "983f5e5b5f4e407760b4ec176cf6a58f";
         version = "3.0"; # it's the same
+        postUnpack = "cd $out && patch -p2 < ${./texlinks.patch}";
       };
       dvidvi.md5 = { # only contains docs that's in bin.doc already
       };
@@ -44,7 +46,7 @@ let
               ${type} = lib.optional (attrs.md5 ? type)
                 (mkPkgs (attrs.version or bin.year) "${pname}.${type}" attrs.md5.${type});
             };
-            combDeps = (combinePkgs (attrs.deps or {})).pkgs;
+            combDeps = (combinePkgs (attrs.deps or {}));
         in {
           # TL pkg contains three lists of packages: runtime files, docs, and sources
           pkgs = if false then # TODO: fix and finish the refactoring
@@ -56,13 +58,15 @@ let
             # tarball of a collection/scheme itself only contains a tlobj file
             run = lib.optional (attrs.hasRunfiles or false)
                 (mkPkgV pname attrs.md5.run)
-              ++ (combDeps.run or []);
+              ++ combDeps.run;
             doc = lib.optional (attrs.md5 ? "doc")
                 (mkPkgV "${pname}.doc" attrs.md5.doc)
-              ++ (combDeps.doc or []);
+              ++ combDeps.doc;
             source = lib.optional (attrs.md5 ? "source")
                 (mkPkgV "${pname}.source" attrs.md5.source)
-              ++ (combDeps.source or []);
+              ++ combDeps.source;
+            bin = lib.optional (bin-all ? ${pname}) bin-all.${pname}
+              ++ combDeps.bin;
           };
         };
 
@@ -108,9 +112,10 @@ let
         (map (dep: lib.getAttr attrName dep.pkgs)
           (lib.mapAttrsToList (_n: a: a) pkgSet));
     in {
-      pkgs.run = makeFlat "run";
-      pkgs.doc = makeFlat "doc";
-      pkgs.source = makeFlat "source";
+      run = makeFlat "run";
+      doc = makeFlat "doc";
+      source = makeFlat "source";
+      bin = makeFlat "bin";
     };
 
   /*
@@ -153,32 +158,50 @@ in
           scheme-context scheme-gust scheme-tetex scheme-xml;
       };
 
-    combine = args@{ pkgFilter ? (type: path: type == "run" || path == bin.doc), ... }:
+    combine = args@{ pkgFilter ? (type: path: type == "run" || type == "bin" || path == bin.doc), ... }:
       let
         pkgSet = removeAttrs args ["pkgFilter"] // {
           # include a fake "bin" package with docs for binaries
-          bin.pkgs = { run = []; doc = [ bin.doc ]; source = []; };
+          bin.pkgs = { run = []; doc = [ bin.doc ]; source = []; bin = [ bin.out ]; };
         };
         metaPkg = combinePkgs pkgSet;
+
+        mkUniquePkgs = pkgs: fastUnique (a: b: a < b) (map builtins.toPath pkgs);
       in buildEnv {
         name = "texlive-combined-${bin.year}";
 
         extraPrefix = "/share/texmf";
 
         ignoreCollisions = false;
-        paths = fastUnique (a: b: a < b) (map builtins.toPath (
+        paths = mkUniquePkgs (
           [ ]
-          ++ lib.filter (pkgFilter "run"   ) metaPkg.pkgs.run
-          ++ lib.filter (pkgFilter "doc"   ) metaPkg.pkgs.doc
-          ++ lib.filter (pkgFilter "source") metaPkg.pkgs.source
-        ));
+          ++ lib.filter (pkgFilter "run"   ) metaPkg.run
+          ++ lib.filter (pkgFilter "doc"   ) metaPkg.doc
+          ++ lib.filter (pkgFilter "source") metaPkg.source
+        );
 
         buildInputs = [ makeWrapper ];
 
         postBuild = ''
           cd "$out"
           mkdir -p ./bin
-          ln -s '${bin}'/bin/* ./bin/
+          ls -l ./bin
+        '' +
+          lib.concatMapStrings
+            (path: ''
+              for f in '${path}'/bin/*; do
+                ls -l "$f"
+                if [[ -L "$f" ]]; then
+                  cp "$f" ./bin/
+                else
+                  ln -s "$f" ./bin/
+                fi
+              done
+            '')
+            (mkUniquePkgs (lib.filter (pkgFilter "bin") metaPkg.bin))
+          +
+        ''
+          ls -l ./bin/
 
           export PATH="$out/bin:$out/share/texmf/scripts/texlive:${perl}/bin:$PATH"
           export TEXMFDIST="$out/share/texmf"

@@ -156,6 +156,17 @@ core-big = stdenv.mkDerivation {
     mv "$out/bin"/{*tomp,mfplain,*mpost} "$metapost/bin/"
     mv "$out/bin"/{luatex,luajittex,texlua*} "$luatex/bin/"
     mv "$out/bin"/xetex "$xetex/bin/"
+  '' + ''
+    cd ../../libs/lua52
+    make install
+    cd ../luajit
+    make install
+    mkdir -p "$luatex/lib"
+    mv "$out"/lib/libtexlua*.so* "$luatex/lib/"
+
+    for prog in "$luatex"/bin/*; do
+      patchelf --set-rpath $(patchelf --print-rpath "$prog" | sed "s@$out@$luatex@g") "$prog"
+    done
   '';
 };
 
