@@ -185,24 +185,16 @@ in
         postBuild = ''
           cd "$out"
           mkdir -p ./bin
-          ls -l ./bin
         '' +
           lib.concatMapStrings
             (path: ''
               for f in '${path}'/bin/*; do
-                ls -l "$f"
-                if [[ -L "$f" ]]; then
-                  cp "$f" ./bin/
-                else
-                  ln -s "$f" ./bin/
-                fi
+                ln -s "$f" ./bin/
               done
             '')
             (mkUniquePkgs (lib.filter (pkgFilter "bin") metaPkg.bin))
           +
         ''
-          ls -l ./bin/
-
           export PATH="$out/bin:$out/share/texmf/scripts/texlive:${perl}/bin:$PATH"
           export TEXMFDIST="$out/share/texmf"
           export TEXMFSYSCONFIG="$out/share/texmf-config"
