@@ -10,6 +10,7 @@
 
 
 let
+  withSystemLibs = map (libname: "--with-system-${libname}");
 
   common = {
     year = "2015";
@@ -24,10 +25,8 @@ let
       "--enable-shared" # "--enable-cxx-runtime-hack" # static runtime
       "--enable-tex-synctex"
       "-C" # use configure cache to speed up
-      # TODO: ghostscript questions?
-      # https://www.tug.org/texlive/doc/tlbuild.html#Program_002dspecific-configure-options
     ]
-      ++ map (libname: "--with-system-${libname}") [
+      ++ withSystemLibs [
       # see "from TL tree" vs. "Using installed"  in configure output
       "zziplib" "xpdf" "poppler" "mpfr" "gmp"
       "pixman" "potrace" "gd" "freetype2" "libpng" "libpaper" "zlib"
@@ -53,12 +52,10 @@ let
       done
     '';
 
-
-
     buildInputs = [
       pkgconfig
       /*teckit*/ zziplib poppler mpfr gmp
-      pixman potrace gd freetype libpng libpaper zlib /*ptexenc kpathsea*/
+      pixman potrace gd freetype libpng libpaper zlib
       perl
     ];
   };
@@ -76,7 +73,7 @@ dvisvgm = stdenv.mkDerivation {
   preConfigure = "cd texk/dvisvgm";
 
   configureFlags = common.configureFlags
-    ++ [ "--with-system-libgs" "--with-system-kpathsea" ];
+    ++ [ "--with-system-kpathsea" "--with-system-libgs" ];
 
   enableParallelBuilding = true;
 };
@@ -91,13 +88,74 @@ dvipng = stdenv.mkDerivation {
   preConfigure = "cd texk/dvipng";
 
   configureFlags = common.configureFlags
-    ++ [ "--with-gs=yes" "--with-system-kpathsea" "--disable-debug" ];
+    ++ [ "--with-system-kpathsea" "--with-gs=yes" "--disable-debug" ];
 
   enableParallelBuilding = true;
 
   # I didn't manage to hardcode gs location by configureFlags
   postInstall = ''
     wrapProgram "$out/bin/dvipng" --prefix PATH : '${ghostscript}/bin'
+  '';
+};
+
+bibtexu = bibtex8;
+bibtex8 = stdenv.mkDerivation {
+  name = "texlive-bibtex-x.bin-${year}";
+
+  inherit (common) src;
+
+  buildInputs = [ pkgconfig core/*kpathsea*/ icu ];
+
+  preConfigure = "cd texk/bibtex-x";
+
+  configureFlags = common.configureFlags
+    ++ [ "--with-system-kpathsea" "--with-system-icu" ];
+
+  enableParallelBuilding = true;
+};
+
+inherit (core-big) metafont metapost luatex xetex;
+core-big = stdenv.mkDerivation {
+  name = "texlive-core-big.bin-${year}";
+
+  inherit (common) src;
+
+  buildInputs = common.buildInputs ++ [ core cairo harfbuzz icu graphite2 ];
+
+  configureFlags = common.configureFlags
+    ++ withSystemLibs [ "kpathsea" "ptexenc" "cairo" "harfbuzz" "icu" "graphite2" ]
+    ++ map (prog: "--disable-${prog}") # don't build things we already have
+      [ "tex" "ptex" "eptex" "uptex" "euptex" "aleph" "pdftex"
+        "web-progs" "synctex"
+      ];
+
+  configureScript = ":";
+
+  postConfigure = ''
+    mkdir ./Work && cd ./Work
+    for path in libs/{teckit,lua52,luajit} texk/web2c; do
+      (
+        mkdir -p "$path" && cd "$path"
+        "../../../$path/configure" $configureFlags
+      )
+    done
+  '';
+
+  preBuild = "cd texk/web2c";
+  enableParallelBuilding = true;
+
+  # now distribute stuff into outputs, roughly as upstream TL
+  # (uninteresting stuff remains in $out, typically duplicates from `core`)
+  outputs = [ "out" "metafont" "metapost" "luatex" "xetex" ];
+  postInstall = ''
+    for output in $outputs; do
+      mkdir -p "''${!output}/bin"
+    done
+
+    mv "$out/bin"/{inimf,mf,mf-nowin} "$metafont/bin/"
+    mv "$out/bin"/{*tomp,mfplain,*mpost} "$metapost/bin/"
+    mv "$out/bin"/{luatex,luajittex,texlua*} "$luatex/bin/"
+    mv "$out/bin"/xetex "$xetex/bin/"
   '';
 };
 
