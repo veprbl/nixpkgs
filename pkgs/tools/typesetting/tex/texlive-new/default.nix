@@ -153,10 +153,6 @@ let
 
 in
   tl // rec {
-    # TODO: remove
-    mine = combine {
-      inherit (tl) scheme-small units algorithms cm-super;
-    };
     inherit bin;
 
     combined = lib.mapAttrs
