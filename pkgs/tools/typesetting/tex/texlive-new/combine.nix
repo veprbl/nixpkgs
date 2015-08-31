@@ -9,15 +9,16 @@ let
       (bin.core.out // { pname = "core"; tlType = "bin"; })
     ];
   };
-  pkgList = let
+  pkgList = rec {
     all = lib.filter pkgFilter (combinePkgs pkgSet);
     splitBin = lib.partition (p: p.tlType == "bin") all;
-  in rec {
     bin = mkUniquePkgs splitBin.right;
     nonbin = mkUniquePkgs splitBin.wrong;
   };
 
-  mkUniquePkgs = pkgs: fastUnique (a: b: a < b) (map builtins.toPath pkgs);
+  mkUniquePkgs = pkgs: fastUnique (a: b: a < b)
+    # here we deal with those dummy packages needed for hyphenation filtering
+    (map (p: if lib.isDerivation p then builtins.toPath p else "") pkgs);
 in buildEnv {
   name = "texlive-combined-${bin.version}";
 
@@ -52,11 +53,33 @@ in buildEnv {
     # TODO: cleanup the search paths incl. SELFAUTOLOC, and perhaps do lua actions?
     # tried inspiration from install-tl, sub do_texmf_cnf
   ''
-    local cnfPath=./share/texmf/web2c/texmf.cnf
-    local cnfOrig="$(realpath $cnfPath)"
-    rm $cnfPath
-    cat "$cnfOrig" | sed 's/texmf-dist/texmf/g' > $cnfPath
+    (
+      cd ./share/texmf/web2c/
+      local cnfOrig="$(realpath ./texmf.cnf)"
+      rm ./texmf.cnf
+      cat "$cnfOrig" | sed 's/texmf-dist/texmf/g' > ./texmf.cnf
+
+      rm updmap.cfg
+    )
   '' +
+    # updmap.cfg seems like not needing changes
+
+    # now filter hyphenation patterns, in a hacky way ATM
+  ''
+    (
+      if [[ -e ./share/texmf/tex/generic/config/language.dat ]]; then
+        cd ./share/texmf/tex/generic/config/
+        cnfOrig="$(realpath ./language.dat)"
+        rm ./language.dat
+        local script='${
+          lib.concatMapStrings (pkg: "/^\% from ${pkg.pname}/,/^\%/p;\n")
+            pkgList.splitBin.wrong
+        }'
+        cat "$cnfOrig" | sed -n "$script" > ./language.dat
+      fi
+    )
+  '' +
+
   # wrap created executables with required env vars
   ''
     wrapBin() {
@@ -118,10 +141,10 @@ in buildEnv {
 
     perl `type -P mktexlsr.pl` ./share/texmf
     texlinks.sh "$out/bin" && wrapBin
-    perl `type -P fmtutil.pl` --sys --all | grep '^fmtutil' # too verbose
+    perl `type -P fmtutil.pl` --sys --refresh | grep '^fmtutil' # too verbose
     #texlinks.sh "$out/bin" && wrapBin # may we need to run again?
-    yes | perl `type -P updmap.pl` --sys --syncwithtrees || true
-    yes | perl `type -P updmap.pl` --sys --syncwithtrees || true
+    perl `type -P updmap.pl` --sys --syncwithtrees --force
+    perl `type -P mktexlsr.pl` ./share/texmf-* # to make sure
   '' +
   # TODO: a context trigger https://www.preining.info/blog/2015/06/debian-tex-live-2015-the-new-layout/
     # http://wiki.contextgarden.net/ConTeXt_Standalone#Unix-like_platforms_.28Linux.2FMacOS_X.2FFreeBSD.2FSolaris.29

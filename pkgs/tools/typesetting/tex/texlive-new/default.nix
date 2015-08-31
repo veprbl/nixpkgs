@@ -20,7 +20,6 @@
     * luatex executables segfault since the time they were split from others
     * xetex is likely to have problems finding fonts
     * some apps aren't packaged/tested yet (xdvi, asymptote, biber, etc.)
-    * adding hyphenations look like not working ATM; it's possible font maps also
 */
 
 { stdenv, lib, fetchurl, runCommand, buildEnv
@@ -61,12 +60,9 @@ let
         postUnpack = "cd $out && patch -p2 < ${./texlinks.patch} || true";
         # TODO: postUnpack per tlType instead of these hacks
       };
-      dvidvi.md5 = { # only contains docs that's in bin.core.doc already
-      };
-      hyphen-base = orig.hyphen-base // {
-        # hacky fixup for: I can't find file `dehypht-x-2014-05-21.tex'
-        # now we have missing language.def instead
-        postUnpack = ''rm -f "$out"/tex/generic/config/language*.{def,dat}'';
+
+      dvidvi = orig.dvidvi // {
+        hasRunfiles = false; # only contains docs that's in bin.core.doc already
       };
       texlive-msg-translations = orig.texlive-msg-translations // {
         hasRunfiles = false; # only *.po for tlmgr
@@ -86,10 +82,11 @@ let
 
   flatDeps = pname: attrs:
     let
+      version = attrs.version or bin.version;
       mkPkgV = tlType: let
-        pkg = { version = bin.version; } // attrs // {
+        pkg = attrs // {
           md5 = attrs.md5.${tlType};
-          inherit pname tlType;
+          inherit pname tlType version;
         };
         in mkPkgs {
           inherit (pkg) pname tlType version;
@@ -99,7 +96,10 @@ let
       # TL pkg contains lists of packages: runtime files, docs, sources, binaries
       pkgs =
         # tarball of a collection/scheme itself only contains a tlobj file
-        lib.optional (attrs.hasRunfiles or false) (mkPkgV "run")
+        [( if (attrs.hasRunfiles or false) then mkPkgV "run"
+            # the fake derivations are used for filtering of hyphenation patterns
+          else { inherit pname version; tlType = "run"; }
+        )]
         ++ lib.optional (attrs.md5 ? "doc") (mkPkgV "doc")
         ++ lib.optional (attrs.md5 ? "source") (mkPkgV "source")
         ++ lib.optional (bin ? ${pname}) (bin.${pname} // { tlType = "bin"; })
