@@ -57,15 +57,15 @@ let
         md5.run = "4b4c0208124dfc9c8244c24421946d36";
         md5.doc = "983f5e5b5f4e407760b4ec176cf6a58f";
         version = "3.0"; # it's the same
-        postUnpack = "cd $out && patch -p2 < ${./texlinks.patch}";
-        # TODO: postUnpack per tlType
+        postUnpack = "cd $out && patch -p2 < ${./texlinks.patch} || true";
+        # TODO: postUnpack per tlType instead of these hacks
       };
       dvidvi.md5 = { # only contains docs that's in bin.core.doc already
       };
       hyphen-base = orig.hyphen-base // {
         # hacky fixup for: I can't find file `dehypht-x-2014-05-21.tex'
         # now we have missing language.def instead
-        postUnpack = ''rm "$out"/tex/generic/config/language*.{def,dat}'';
+        postUnpack = ''rm -f "$out"/tex/generic/config/language*.{def,dat}'';
       };
       texlive-msg-translations = orig.texlive-msg-translations // {
         hasRunfiles = false; # only *.po for tlmgr
