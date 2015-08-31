@@ -20,6 +20,7 @@
     * luatex executables segfault since the time they were split from others
     * xetex is likely to have problems finding fonts
     * some apps aren't packaged/tested yet (xdvi, asymptote, biber, etc.)
+    * adding hyphenations look like not working ATM; it's possible font maps also
 */
 
 { stdenv, lib, fetchurl, runCommand, buildEnv
