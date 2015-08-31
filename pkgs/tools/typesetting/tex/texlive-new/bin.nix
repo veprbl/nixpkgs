@@ -12,10 +12,11 @@
 let
   withSystemLibs = map (libname: "--with-system-${libname}");
 
-  common = {
+  common = rec {
     year = "2015";
+    version = year; # keep names simple for now
     src = fetchurl {
-      url = ftp://tug.org/historic/systems/texlive/2015/texlive-20150521-source.tar.xz;
+      url = "ftp://tug.org/historic/systems/texlive/${year}/texlive-20150521-source.tar.xz";
       sha256 = "ed9bcd7bdce899c3c27c16a8c5c3017c4f09e1d7fd097038351b72497e9d4669";
     };
 
@@ -61,10 +62,10 @@ let
   };
 in rec { # un-indented
 
-inherit (common) cleanBrokenLinks year;
+inherit (common) cleanBrokenLinks version year;
 
 dvisvgm = stdenv.mkDerivation {
-  name = "texlive-dvisvgm.bin-${year}";
+  name = "texlive-dvisvgm.bin-${version}";
 
   inherit (common) src;
 
@@ -79,7 +80,7 @@ dvisvgm = stdenv.mkDerivation {
 };
 
 dvipng = stdenv.mkDerivation {
-  name = "texlive-dvipng.bin-${year}";
+  name = "texlive-dvipng.bin-${version}";
 
   inherit (common) src;
 
@@ -100,7 +101,7 @@ dvipng = stdenv.mkDerivation {
 
 bibtexu = bibtex8;
 bibtex8 = stdenv.mkDerivation {
-  name = "texlive-bibtex-x.bin-${year}";
+  name = "texlive-bibtex-x.bin-${version}";
 
   inherit (common) src;
 
@@ -116,7 +117,7 @@ bibtex8 = stdenv.mkDerivation {
 
 inherit (core-big) metafont metapost luatex xetex;
 core-big = stdenv.mkDerivation {
-  name = "texlive-core-big.bin-${year}";
+  name = "texlive-core-big.bin-${version}";
 
   inherit (common) src;
 
@@ -171,7 +172,7 @@ core-big = stdenv.mkDerivation {
 };
 
 core = stdenv.mkDerivation {
-  name = "texlive-bin-${year}";
+  name = "texlive-bin-${version}";
 
   inherit (common) src buildInputs preConfigure configureScript;
 
@@ -223,7 +224,7 @@ core = stdenv.mkDerivation {
   '';
 
   setupHook = ./setup-hook.sh; # TODO: maybe texmf-nix -> texmf (and all references)
-  passthru = { inherit year; };
+  passthru = { inherit version; };
 
   meta = with stdenv.lib; {
     description = "Basic binaries for TeX Live";

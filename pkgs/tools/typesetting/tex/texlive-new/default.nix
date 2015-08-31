@@ -1,3 +1,27 @@
+/* (new) TeX Live user docs
+  - Basic usage: just pull texlive.combined.scheme-basic
+  for an environment with basic LaTeX support.
+  There are all the schemes as defined upstream (with tiny differences, perhaps).
+  - You can compose your own collection like this:
+    texlive.combine {
+      inherit (texlive) scheme-small collection-langkorean algorithms cm-super;
+    }
+  - By default you only get executables and files needed during runtime,
+  and a little documentation for the core packages.
+  To change that, you need to add `pkgFilter` function to `combine`.
+    texlive.combine {
+      # inherit (texlive) whatever-you-want;
+      pkgFilter = pkg:
+        pkg.tlType == "run" || pkg.tlType == "bin" || pkg.pname == "cm-super";
+     # elem tlType [ "run" "bin" "doc" "source" ]
+     # there are also other attributes: version, name
+    }
+  - Known bugs:
+    * luatex executables segfault since the time they were split from others
+    * xetex is likely to have problems finding fonts
+    * some apps aren't packaged/tested yet (xdvi, asymptote, biber, etc.)
+*/
+
 { stdenv, lib, fetchurl, runCommand, buildEnv
 , callPackage, ghostscriptX, harfbuzz, poppler_nox
 , perl, makeWrapper
@@ -62,10 +86,9 @@ let
   flatDeps = pname: attrs:
     let
       mkPkgV = tlType: let
-        pkg = { version = bin.year; } // attrs // {
+        pkg = { version = bin.version; } // attrs // {
           md5 = attrs.md5.${tlType};
-          inherit tlType;
-          pname = pname + lib.optionalString (tlType != "run") ".${tlType}";
+          inherit pname tlType;
         };
         in mkPkgs {
           inherit (pkg) pname tlType version;
@@ -82,19 +105,25 @@ let
         ++ combinePkgs (attrs.deps or {});
     };
 
+  mkUrlName = { pname, tlType, ... }:
+    pname + lib.optionalString (tlType != "run") ".${tlType}";
+
   unpackPkg =
-    { url ? "ftp://tug.ctan.org/pub/tex/historic/systems/texlive/${bin.year}/tlnet-final/archive/${pname}.tar.xz"
-        # "http://mirror.ctan.org/
-        # also works: ftp.math.utah.edu/pub/tex/historic
-    , md5, pname, postUnpack ? "", stripPrefix ? 1, ...
-    }:
-        ''
-          tar -xf '${ fetchurl { inherit url md5; } }' \
+    { url ? null
+    , md5, pname, tlType, postUnpack ? "", stripPrefix ? 1, ...
+    }@args: let
+      nurl = if url != null then url else
+        "${mirror}/pub/tex/historic/systems/texlive/${bin.year}"
+        + "/tlnet-final/archive/${mkUrlName args}.tar.xz";
+      # beware: standard mirrors http://mirror.ctan.org/ don't have releases
+      mirror = "ftp://tug.ctan.org"; # also works: ftp.math.utah.edu
+    in  ''
+          tar -xf '${ fetchurl { url = nurl; inherit md5; } }' \
             '--strip-components=${toString stripPrefix}' \
             -C "$out" --anchored --exclude=tlpkg --keep-old-files
         '' + postUnpack;
 
-  mkPkgs = { pname, tlType, version, pkgList }:
+  mkPkgs = { pname, tlType, version, pkgList }@args:
       /* TODOs:
           - make fixed-output *after* unpacking
             (to have same derivation even when stdenv/platform changes)
@@ -102,7 +131,7 @@ let
           - "historic" isn't mirrored; posted a question at #287
           - maybe cache (some) collections? (they don't overlap)
       */
-      runCommand "texlive-${pname}-${version}"
+      runCommand "texlive-${mkUrlName args}-${version}"
         { # lots of derivations, not meant to be cached
           preferLocalBuild = true; allowSubstitutes = false;
           passthru = { inherit pname tlType version; };
@@ -128,6 +157,7 @@ in
     mine = combine {
       inherit (tl) scheme-small units algorithms cm-super;
     };
+    inherit bin;
 
     combined = lib.mapAttrs
       (pname: attrs: combine { ${pname} = attrs; })

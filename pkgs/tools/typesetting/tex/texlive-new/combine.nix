@@ -1,12 +1,12 @@
 params: with params;
 # combine =
-args@{ pkgFilter ? (pkg: pkg.tlType == "run" || pkg.tlType == "bin" || pkg.name == "core"), ... }:
+args@{ pkgFilter ? (pkg: pkg.tlType == "run" || pkg.tlType == "bin" || pkg.pname == "core"), ... }:
 let
   pkgSet = removeAttrs args ["pkgFilter"] // {
     # include a fake "core" package
     core.pkgs = [
-      (bin.core.doc // { tlType = "doc"; })
-      (bin.core.out // { tlType = "bin"; })
+      (bin.core.doc // { pname = "core"; tlType = "doc"; })
+      (bin.core.out // { pname = "core"; tlType = "bin"; })
     ];
   };
   pkgList = let
@@ -19,7 +19,7 @@ let
 
   mkUniquePkgs = pkgs: fastUnique (a: b: a < b) (map builtins.toPath pkgs);
 in buildEnv {
-  name = "texlive-combined-${bin.year}";
+  name = "texlive-combined-${bin.version}";
 
   extraPrefix = "/share/texmf";
 
