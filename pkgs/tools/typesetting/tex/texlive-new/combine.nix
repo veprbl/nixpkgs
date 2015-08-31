@@ -106,9 +106,14 @@ in buildEnv {
     mkdir -p "$out/share/texmf/scripts/texlive/"
     ln -s '${bin.core.out}/share/texmf-dist/scripts/texlive/TeXLive' "$out/share/texmf/scripts/texlive/"
 
-    for tool in updmap fmtutil; do
+    for tool in updmap; do
       ln -sf "$out/share/texmf/scripts/texlive/$tool."* "$out/bin/$tool"
     done
+  '' +
+    # now hack to preserve "$0" for mktexfmt
+  ''
+    cp "$out"/share/texmf/scripts/texlive/fmtutil.pl "$out/bin/fmtutil"
+    patchShebangs "$out/bin/fmtutil"
     ln -sf fmtutil "$out/bin/mktexfmt"
 
     perl `type -P mktexlsr.pl` ./share/texmf
