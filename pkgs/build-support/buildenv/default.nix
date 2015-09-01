@@ -21,11 +21,11 @@
   # directories in the list is not symlinked.
   pathsToLink ? ["/"]
 
-, # , e.g. "/share"
+, # Root the result in directory "$out${extraPrefix}", e.g. "/share"
   extraPrefix ? ""
 
-, # Shell commands to run befor and after building the symlink tree.
-  preBuild ? "", postBuild ? ""
+, # Shell commands to run after building the symlink tree.
+  postBuild ? ""
 
 ,
   buildInputs ? []
@@ -34,8 +34,7 @@
 }:
 
 runCommand name
-  { inherit manifest ignoreCollisions passthru
-      pathsToLink extraPrefix preBuild postBuild buildInputs;
+  { inherit manifest ignoreCollisions passthru pathsToLink extraPrefix postBuild buildInputs;
     pkgs = builtins.toJSON (map (drv: {
       paths = [ drv ]; # FIXME: handle multiple outputs
       priority = drv.meta.priority or 5;
@@ -43,7 +42,6 @@ runCommand name
     preferLocalBuild = true;
   }
   ''
-    eval "$preBuild"
     ${perl}/bin/perl -w ${./builder.pl}
     eval "$postBuild"
   ''

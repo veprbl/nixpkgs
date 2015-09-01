@@ -153,20 +153,17 @@ self: super: {
   hspec-discover = dontHaddock super.hspec-discover;
   http-client-conduit = dontHaddock super.http-client-conduit;
   http-client-multipart = dontHaddock super.http-client-multipart;
-  hxt = dontHaddock super.hxt;                                  # https://github.com/UweSchmidt/hxt/issues/38
   markdown-unlit = dontHaddock super.markdown-unlit;
   network-conduit = dontHaddock super.network-conduit;
   shakespeare-js = dontHaddock super.shakespeare-js;
   shakespeare-text = dontHaddock super.shakespeare-text;
-  types-compat = dontHaddock super.types-compat;                # https://github.com/philopon/apiary/issues/15
   wai-test = dontHaddock super.wai-test;
   zlib-conduit = dontHaddock super.zlib-conduit;
-  record = dontHaddock super.record;                            # https://github.com/nikita-volkov/record/issues/22
 
   # Jailbreak doesn't get the job done because the Cabal file uses conditionals a lot.
   darcs = (overrideCabal super.darcs (drv: {
     doCheck = false;            # The test suite won't even start.
-    patchPhase = "sed -i -e 's|attoparsec .*,|attoparsec,|' -e 's|vector .*,|vector,|' darcs.cabal";
+    postPatch = "sed -i -e 's|attoparsec .*,|attoparsec,|' -e 's|vector .*,|vector,|' darcs.cabal";
   })).overrideScope (self: super: { zlib = self.zlib_0_5_4_2; });
 
   # https://github.com/massysett/rainbox/issues/1
@@ -195,8 +192,9 @@ self: super: {
     else super.hfsevents;
 
   # FSEvents API is very buggy and tests are unreliable. See
-  # http://openradar.appspot.com/10207999 and similar issues
-  fsnotify = if pkgs.stdenv.isDarwin then dontCheck super.fsnotify else super.fsnotify;
+  # http://openradar.appspot.com/10207999 and similar issues.
+  # https://github.com/haskell-fswatch/hfsnotify/issues/62
+  fsnotify = dontCheck super.fsnotify; # if pkgs.stdenv.isDarwin then dontCheck super.fsnotify else super.fsnotify;
 
   # the system-fileio tests use canonicalizePath, which fails in the sandbox
   system-fileio = if pkgs.stdenv.isDarwin then dontCheck super.system-fileio else super.system-fileio;
@@ -206,7 +204,7 @@ self: super: {
   x509-system = if pkgs.stdenv.isDarwin && !pkgs.stdenv.cc.nativeLibc
     then let inherit (pkgs.darwin) security_tool;
       in pkgs.lib.overrideDerivation (addBuildDepend super.x509-system security_tool) (drv: {
-        patchPhase = (drv.patchPhase or "") + ''
+        postPatch = (drv.postPatch or "") + ''
           substituteInPlace System/X509/MacOS.hs --replace security ${security_tool}/bin/security
         '';
       })
@@ -216,7 +214,7 @@ self: super: {
     then super.double-conversion
     else overrideCabal super.double-conversion (drv:
       {
-        patchPhase = ''
+        postPatch = ''
           substituteInPlace double-conversion.cabal --replace stdc++ c++
         '';
       });
@@ -238,15 +236,6 @@ self: super: {
 
   # tests don't compile for some odd reason
   jwt = dontCheck super.jwt;
-
-  # https://github.com/liamoc/wizards/issues/5
-  wizards = doJailbreak super.wizards;
-
-  # https://github.com/tibbe/ekg-core/commit/c986d9750d026a0c049cf6e6610d69fc1f23121f, not yet in hackage
-  ekg-core = doJailbreak super.ekg-core;
-
-  # https://github.com/tibbe/ekg/commit/95018646f48f60d9ccf6209cc86747e0f132e737, not yet in hackage
-  ekg = doJailbreak super.ekg;
 
   # https://github.com/NixOS/cabal2nix/issues/136
   glib = addBuildDepends super.glib [pkgs.pkgconfig pkgs.glib];
@@ -401,7 +390,6 @@ self: super: {
   ghc-events-parallel = dontCheck super.ghc-events-parallel;    # http://hydra.cryp.to/build/496828/log/raw
   ghcid = dontCheck super.ghcid;
   ghc-imported-from = dontCheck super.ghc-imported-from;
-  ghc-mod = dontCheck super.ghc-mod;                    # http://hydra.cryp.to/build/499674/log/raw
   ghc-parmake = dontCheck super.ghc-parmake;
   gitlib-cmdline = dontCheck super.gitlib-cmdline;
   git-vogue = dontCheck super.git-vogue;
@@ -681,6 +669,10 @@ self: super: {
     '';
   });
 
+  # Tests attempt to use NPM to install from the network into
+  # /homeless-shelter. Disabled.
+  purescript = dontCheck super.purescript;
+
   # Broken by GLUT update.
   Monadius = markBroken super.Monadius;
 
@@ -722,7 +714,7 @@ self: super: {
 
   # Already fixed in upstream darcs repo.
   xmonad-contrib = overrideCabal super.xmonad-contrib (drv: {
-    patchPhase = ''
+    postPatch = ''
       sed -i -e '24iimport Control.Applicative' XMonad/Util/Invisible.hs
       sed -i -e '22iimport Control.Applicative' XMonad/Hooks/DebugEvents.hs
     '';
@@ -733,7 +725,7 @@ self: super: {
 
   # Hardcoded include path
   poppler = overrideCabal super.poppler (drv: {
-    patchPhase = ''
+    postPatch = ''
       sed -i -e 's,glib/poppler.h,poppler.h,' poppler.cabal
       sed -i -e 's,glib/poppler.h,poppler.h,' Graphics/UI/Gtk/Poppler/Structs.hsc
     '';
@@ -770,9 +762,7 @@ self: super: {
   # https://github.com/nushio3/doctest-prop/issues/1
   doctest-prop = dontCheck super.doctest-prop;
 
-  # https://github.com/goldfirere/singletons/issues/116
   # https://github.com/goldfirere/singletons/issues/117
-  # https://github.com/goldfirere/singletons/issues/118
   clash-lib = dontDistribute super.clash-lib;
   clash-verilog = dontDistribute super.clash-verilog;
   Frames = dontDistribute super.Frames;
@@ -826,14 +816,8 @@ self: super: {
   # FPCO's fork of Cabal won't succeed its test suite.
   Cabal-ide-backend = dontCheck super.Cabal-ide-backend;
 
-  # https://github.com/DanielG/cabal-helper/issues/2
-  cabal-helper = overrideCabal super.cabal-helper (drv: { preCheck = "export HOME=$TMPDIR"; });
-
   # https://github.com/ekmett/comonad/issues/25
   comonad = dontCheck super.comonad;
-
-  # https://github.com/ekmett/semigroupoids/issues/35
-  semigroupoids = disableCabalFlag super.semigroupoids "doctests";
 
   # https://github.com/jaspervdj/websockets/issues/104
   websockets = dontCheck super.websockets;
@@ -901,8 +885,7 @@ self: super: {
   # https://github.com/liyang/thyme/issues/36
   thyme = dontCheck super.thyme;
 
-  # https://github.com/k0ral/hbro/issues/15
-  hbro = markBroken super.hbro;
+  # https://github.com/k0ral/hbro-contrib/issues/1
   hbro-contrib = dontDistribute super.hbro-contrib;
 
   # https://github.com/aka-bash0r/multi-cabal/issues/4
@@ -923,23 +906,107 @@ self: super: {
   # https://github.com/GaloisInc/HaNS/pull/8
   hans = appendPatch super.hans ./patches/hans-disable-webserver.patch;
 
-  # https://github.com/yi-editor/yi/issues/776
-  yi = markBroken super.yi;
-  yi-monokai = dontDistribute super.yi-monokai;
-  yi-snippet = dontDistribute super.yi-snippet;
-  yi-solarized = dontDistribute super.yi-solarized;
-  yi-spolsky = dontDistribute super.yi-spolsky;
-
-  # https://github.com/athanclark/commutative/issues/1
-  commutative = dontCheck super.commutative;
-
-  # https://github.com/athanclark/set-with/issues/1
-  set-with = dontCheck super.set-with;
-
-  # https://github.com/athanclark/sets/issues/1
+  # https://github.com/athanclark/sets/issues/2
   sets = dontCheck super.sets;
 
   # https://github.com/lens/lens-aeson/issues/18
   lens-aeson = dontCheck super.lens-aeson;
 
+  # Byte-compile elisp code for Emacs.
+  ghc-mod = overrideCabal super.ghc-mod (drv: {
+    preCheck = "export HOME=$TMPDIR";
+    testToolDepends = drv.testToolDepends or [] ++ [self.cabal-install];
+    doCheck = false;            # https://github.com/kazu-yamamoto/ghc-mod/issues/335
+    executableToolDepends = drv.executableToolDepends or [] ++ [pkgs.emacs];
+    postInstall = ''
+      local lispdir=( "$out/share/"*"-${self.ghc.name}/${drv.pname}-${drv.version}/elisp" )
+      make -C $lispdir
+      mkdir -p $out/share/emacs/site-lisp
+      ln -s "$lispdir/"*.el{,c} $out/share/emacs/site-lisp/
+    '';
+  });
+
+  # Byte-compile elisp code for Emacs.
+  structured-haskell-mode = overrideCabal super.structured-haskell-mode (drv: {
+    executableToolDepends = drv.executableToolDepends or [] ++ [pkgs.emacs];
+    postInstall = ''
+      local lispdir=( "$out/share/"*"-${self.ghc.name}/${drv.pname}-${drv.version}/elisp" )
+      pushd >/dev/null $lispdir
+      for i in *.el; do
+        emacs -Q -L . -L ${pkgs.emacs24Packages.haskellMode}/share/emacs/site-lisp \
+          --batch --eval "(byte-compile-disable-warning 'cl-functions)" \
+          -f batch-byte-compile $i
+      done
+      popd >/dev/null
+      mkdir -p $out/share/emacs
+      ln -s $lispdir $out/share/emacs/site-lisp
+    '';
+  });
+
+  # Byte-compile elisp code for Emacs.
+  hindent = overrideCabal super.hindent (drv: {
+    executableToolDepends = drv.executableToolDepends or [] ++ [pkgs.emacs];
+    postInstall = ''
+      local lispdir=( "$out/share/"*"-${self.ghc.name}/${drv.pname}-${drv.version}/elisp" )
+      pushd >/dev/null $lispdir
+      for i in *.el; do
+        emacs -Q -L . -L ${pkgs.emacs24Packages.haskellMode}/share/emacs/site-lisp \
+          --batch --eval "(byte-compile-disable-warning 'cl-functions)" \
+          -f batch-byte-compile $i
+      done
+      popd >/dev/null
+      mkdir -p $out/share/emacs
+      ln -s $lispdir $out/share/emacs/site-lisp
+    '';
+  });
+
+  # https://github.com/yesodweb/Shelly.hs/issues/106
+  # https://github.com/yesodweb/Shelly.hs/issues/108
+  shelly = dontCheck super.shelly;
+
+  # https://github.com/bos/configurator/issues/22
+  configurator = dontCheck super.configurator;
+
+  # https://github.com/thoughtpolice/hs-ed25519/issues/9
+  ed25519 = markBroken super.ed25519;
+  hackage-repo-tool = dontDistribute super.hackage-repo-tool;
+  hackage-security = dontDistribute super.hackage-security;
+  hackage-security-HTTP = dontDistribute super.hackage-security-HTTP;
+
+  # The cabal files for these libraries do not list the required system dependencies.
+  SDL-image = overrideCabal super.SDL-image (drv: {
+    librarySystemDepends = [ pkgs.SDL pkgs.SDL_image ] ++ drv.librarySystemDepends or [];
+  });
+  SDL-ttf = overrideCabal super.SDL-ttf (drv: {
+    librarySystemDepends = [ pkgs.SDL pkgs.SDL_ttf ];
+  });
+  SDL-mixer = overrideCabal super.SDL-mixer (drv: {
+    librarySystemDepends = [ pkgs.SDL pkgs.SDL_mixer ];
+  });
+  SDL-gfx = overrideCabal super.SDL-gfx (drv: {
+    librarySystemDepends = [ pkgs.SDL pkgs.SDL_gfx ];
+  });
+  SDL-mpeg = overrideCabal super.SDL-mpeg (drv: {
+    configureFlags = (drv.configureFlags or []) ++ [
+      "--extra-lib-dirs=${pkgs.smpeg}/lib"
+      "--extra-include-dirs=${pkgs.smpeg}/include/smpeg"
+    ];
+  });
+
+  # https://github.com/chrisdone/freenect/pull/11
+  freenect = overrideCabal super.freenect (drv: {
+    libraryPkgconfigDepends = [ pkgs.freenect ];
+    prePatch = '' echo "  Pkgconfig-Depends: libfreenect" >> freenect.cabal '';
+  });
+
+  # https://github.com/ivanperez-keera/hcwiid/pull/4
+  hcwiid = overrideCabal super.hcwiid (drv: {
+    configureFlags = (drv.configureFlags or []) ++ [
+      "--extra-lib-dirs=${pkgs.bluez}/lib"
+      "--extra-lib-dirs=${pkgs.cwiid}/lib"
+      "--extra-include-dirs=${pkgs.cwiid}/include"
+      "--extra-include-dirs=${pkgs.bluez}/include"
+    ];
+    prePatch = '' sed -i -e "/Extra-Lib-Dirs/d" -e "/Include-Dirs/d" "hcwiid.cabal" '';
+  });
 }

@@ -1556,7 +1556,7 @@ let
 
     patches = [ ../development/python-modules/box2d/disable-test.patch ];
 
-    propagatedBuildInputs = [ pkgs.swig pkgs.box2d ];
+    propagatedBuildInputs = [ pkgs.swig2 pkgs.box2d ];
 
     meta = {
       homepage = https://code.google.com/p/pybox2d/;
@@ -2994,11 +2994,11 @@ let
   };
 
   docker = buildPythonPackage rec {
-    name = "docker-py-1.1.0";
+    name = "docker-py-1.3.1";
 
     src = pkgs.fetchurl {
       url = "https://pypi.python.org/packages/source/d/docker-py/${name}.tar.gz";
-      md5 = "b44f34530a21ed1129887f9a8b01ecec";
+      md5 = "07a5f41fd3f8cc72d05deed628700e99";
     };
 
     propagatedBuildInputs = with self; [ six requests websocket_client ];
@@ -3014,12 +3014,14 @@ let
   };
 
   dockerpty = buildPythonPackage rec {
-    name = "dockerpty-0.3.2";
+    name = "dockerpty-0.3.4";
 
     src = pkgs.fetchurl {
       url = "https://pypi.python.org/packages/source/d/dockerpty/${name}.tar.gz";
-      md5 = "1f97b24d2f4b2c345f176f91655002dd";
+      md5 = "92fb66d28aa19bf5268e7e3935670e5d";
     };
+
+    propagatedBuildInputs = with self; [ six ];
 
     meta = {
       description = "Functionality needed to operate the pseudo-tty (PTY) allocated to a docker container";
@@ -5073,8 +5075,9 @@ let
       pyGtkGlade pkgs.libtorrentRasterbar twisted Mako chardet pyxdg self.pyopenssl modules.curses
     ];
 
+    nativeBuildInputs = [ pkgs.intltool ];
+
     postInstall = ''
-       cp -R deluge/data/share $out/share
        cp -R deluge/data/pixmaps $out/share/
        cp -R deluge/data/icons $out/share/
     '';
@@ -5127,12 +5130,12 @@ let
 
   django_1_8 = buildPythonPackage rec {
     name = "Django-${version}";
-    version = "1.8.3";
+    version = "1.8.4";
     disabled = pythonOlder "2.7";
 
     src = pkgs.fetchurl {
       url = "http://www.djangoproject.com/m/releases/1.8/${name}.tar.gz";
-      sha256 = "1fjv63rdm45j5057zb7qj4ya4pjwig1jpbwcr0bk1mazq3y59dib";
+      sha256 = "1n3hb80v7wl5j2mry5pfald6i9z42a9c3m9405877iqw3v49csc2";
     };
 
     # error: invalid command 'test'
@@ -5152,12 +5155,12 @@ let
 
   django_1_7 = buildPythonPackage rec {
     name = "Django-${version}";
-    version = "1.7.9";
+    version = "1.7.10";
     disabled = pythonOlder "2.7";
 
     src = pkgs.fetchurl {
       url = "http://www.djangoproject.com/m/releases/1.7/${name}.tar.gz";
-      sha256 = "0q3q46yjjsqwp0ywrkbqwiac13rdvzrd5dchdbnzh3yjwpj9ygsg";
+      sha256 = "0xbwg6nyvwcbp2hvk0x3s5y823k5kizn0za1bl2rf6g6xcn7sddr";
     };
 
     # error: invalid command 'test'
@@ -5222,11 +5225,11 @@ let
 
   django_1_4 = buildPythonPackage rec {
     name = "Django-${version}";
-    version = "1.4.21";
+    version = "1.4.22";
 
     src = pkgs.fetchurl {
       url = "http://www.djangoproject.com/m/releases/1.4/${name}.tar.gz";
-      sha256 = "1x5wk3yh6ydbp4sgsxl4qjmdvcazphwkmmm99lfdb04645sijkwk";
+      sha256 = "110p1mgdcf87kyr64mr2jgmyapyg27kha74yq3wjrazwfbbwkqnh";
     };
 
     # error: invalid command 'test'
@@ -5663,32 +5666,22 @@ let
   };
 
   docker_compose = buildPythonPackage rec {
-    name = "docker-compose-1.2.0rc2";
+    version = "1.4.0";
+    name = "docker-compose-${version}";
+    namePrefix = "";
     disabled = isPy3k || isPyPy;
 
     src = pkgs.fetchurl {
       url = "https://pypi.python.org/packages/source/d/docker-compose/${name}.tar.gz";
-      md5 = "311ec5023e51097ca3acbf37fac062bd";
+      md5 = "a93e801ebe829c2f869cb23d0b606272";
     };
 
     propagatedBuildInputs = with self; [
-      six requests pyyaml texttable docopt docker
+      six requests pyyaml texttable docopt docker dockerpty websocket_client
       (requests2.override {
         src = pkgs.fetchurl {
-          url = "https://pypi.python.org/packages/source/r/requests/requests-2.5.3.tar.gz";
-          md5 = "23bf4fcc89ea8d353eb5353bb4a475b1";
-        };
-      })
-      (dockerpty.override {
-        src = pkgs.fetchurl {
-          url = "https://pypi.python.org/packages/source/d/dockerpty/dockerpty-0.3.2.tar.gz";
-          md5 = "1f97b24d2f4b2c345f176f91655002dd";
-        };
-      })
-      (websocket_client.override {
-        src = pkgs.fetchurl {
-          url = "https://pypi.python.org/packages/source/w/websocket-client/websocket-client-0.11.0.tar.gz";
-          md5 = "fcffbb5ac10941d9ace416d14d1e3ec8";
+          url = "https://pypi.python.org/packages/source/r/requests/requests-2.6.1.tar.gz";
+          md5 = "da6e487f89e6a531699b7fd97ff182af";
         };
       })
     ];
@@ -8080,6 +8073,25 @@ let
     };
   });
 
+  plover = pythonPackages.buildPythonPackage rec {
+    name = "plover-${version}";
+    version = "2.5.8";
+    
+    meta = {
+      description = "OpenSteno Plover stenography software";
+      maintainers = [ maintainers.twey ];
+      license = licenses.gpl2;
+    };
+    
+    src = pkgs.fetchurl {
+      url = "https://github.com/openstenoproject/plover/archive/v${version}.tar.gz";
+      sha256 = "23f7824a715f93eb2c41d5bafd0c6f3adda92998e9321e1ee029abe7a6ab41e5";
+    };
+    
+    propagatedBuildInputs = with self; [ wxPython pyserial xlib appdirs pkgs.wmctrl ];
+    preConfigure = "substituteInPlace setup.py --replace /usr/share usr/share";
+  };
+  
   pymysql = buildPythonPackage rec {
     name = "pymysql-${version}";
     version = "0.6.6";
@@ -9344,16 +9356,14 @@ let
   };
 
 
-  pexpect = buildPythonPackage {
-    name = "pexpect-2.3";
+  pexpect = buildPythonPackage rec {
+    version = "3.3";
+    name = "pexpect-${version}";
 
     src = pkgs.fetchurl {
-      url = "mirror://sourceforge/pexpect/pexpect-2.3.tar.gz";
-      sha256 = "0x8bfjjqygriry1iyygm5048ykl5qpbpzqfp6i8dhkslm3ryf5fk";
+      url = "https://pypi.python.org/packages/source/p/pexpect/${name}.tar.gz";
+      sha256 = "dfea618d43e83cfff21504f18f98019ba520f330e4142e5185ef7c73527de5ba";
     };
-
-    # error: invalid command 'test'
-    doCheck = false;
 
     meta = {
       homepage = http://www.noah.org/wiki/Pexpect;
@@ -9403,12 +9413,16 @@ let
       sha256 = "1r34bbqbd4h72cl0cxi9w6q2nwx806wpxq220mzyiy8g45xv0ghj";
       rev = "v${version}";
       repo = "pgcli";
-      owner = "amjith";
+      owner = "dbcli";
     };
 
     propagatedBuildInputs = with self; [
       click configobj prompt_toolkit psycopg2 pygments sqlparse
     ];
+
+    postPatch = ''
+      substituteInPlace setup.py --replace "==" ">="
+    '';
 
     meta = {
       inherit version;
@@ -9420,6 +9434,33 @@ let
       homepage = http://pgcli.com;
       license = licenses.bsd3;
       maintainers = with maintainers; [ nckx ];
+    };
+  };
+
+  mycli = buildPythonPackage rec {
+    name = "mycli-${version}";
+    version = "1.3.0";
+
+    src = pkgs.fetchFromGitHub {
+      sha256 = "109jz84m29v4fjhk2ngsfc1b6zw4w6dbjlr2izvib63ylcz7b5nh";
+      rev = "v${version}";
+      repo = "mycli";
+      owner = "dbcli";
+    };
+
+    propagatedBuildInputs = with self; [
+      pymysql configobj sqlparse prompt_toolkit0_45 pygments click
+    ];
+
+    meta = {
+      inherit version;
+      description = "Command-line interface for MySQL";
+      longDescription = ''
+        Rich command-line interface for MySQL with auto-completion and
+        syntax highlighting.
+      '';
+      homepage = http://mycli.net;
+      license = licenses.bsd3;
     };
   };
 
@@ -9740,6 +9781,32 @@ let
 
   prompt_toolkit = buildPythonPackage rec {
     name = "prompt_toolkit-${version}";
+    version = "0.47";
+
+    src = pkgs.fetchurl {
+      sha256 = "1xkrbz7d2mzd5r5a8aqbnhym57fkpri9x73cql5vb573glzwddla";
+      url = "https://pypi.python.org/packages/source/p/prompt_toolkit/${name}.tar.gz";
+    };
+
+    buildInputs = with self; [ jedi ipython pygments ];
+    propagatedBuildInputs = with self; [ docopt six wcwidth ];
+
+    meta = {
+      description = "Python library for building powerful interactive command lines";
+      longDescription = ''
+        prompt_toolkit could be a replacement for readline, but it can be
+        much more than that. It is cross-platform, everything that you build
+        with it should run fine on both Unix and Windows systems. Also ships
+        with a nice interactive Python shell (called ptpython) built on top.
+      '';
+      homepage = https://github.com/jonathanslenders/python-prompt-toolkit;
+      license = licenses.bsd3;
+      maintainers = with maintainers; [ nckx ];
+    };
+  };
+
+  prompt_toolkit0_45 = buildPythonPackage rec {
+    name = "prompt_toolkit-${version}";
     version = "0.45";
 
     src = pkgs.fetchurl {
@@ -9867,6 +9934,12 @@ let
     src = pkgs.fetchurl {
       url = "https://pypi.python.org/packages/source/p/py/${name}.tar.gz";
       md5 = "a904aabfe4765cb754f2db84ec7bb03a";
+    };
+
+    meta = {
+      description = "Library with cross-python path, ini-parsing, io, code, log facilities";
+      homepage = http://pylib.readthedocs.org/;
+      license = licenses.mit;
     };
   };
 
@@ -12445,11 +12518,11 @@ let
 
   setuptools_scm = buildPythonPackage rec {
     name = "setuptools_scm-${version}";
-    version = "1.5.4";
+    version = "1.7.0";
 
     src = pkgs.fetchurl {
-      url = "https://bitbucket.org/pypa/setuptools_scm/get/v${version}.tar.bz2";
-      sha256 = "0vd6xsl7r0vn5gpw87d31s195j33sqw5c26zdagimy9qzydgq6y6";
+      url = "https://pypi.python.org/packages/source/s/setuptools_scm/${name}.tar.gz";
+      sha256 = "f2f69c782b4f549003edf5b75b356b37f40a4e880b615996c5d9c117913d6f9c";
     };
 
     buildInputs = with self; [ pip ];
@@ -15672,11 +15745,11 @@ let
 
 
   websocket_client = buildPythonPackage rec {
-    name = "websocket-client-0.17.0";
+    name = "websocket_client-0.32.0";
 
     src = pkgs.fetchurl {
       url = "https://pypi.python.org/packages/source/w/websocket-client/${name}.tar.gz";
-      md5 = "c86591719085eaf4a01c2275e0c834fc";
+      md5 = "b07a897511a3c585251fe2ea85a9d9d9";
     };
 
     propagatedBuildInputs = with self; [ six backports_ssl_match_hostname_3_4_0_2 unittest2 argparse ];
