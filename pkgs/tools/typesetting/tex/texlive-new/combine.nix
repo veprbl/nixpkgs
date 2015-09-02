@@ -148,8 +148,18 @@ in buildEnv {
   '' +
   # TODO: a context trigger https://www.preining.info/blog/2015/06/debian-tex-live-2015-the-new-layout/
     # http://wiki.contextgarden.net/ConTeXt_Standalone#Unix-like_platforms_.28Linux.2FMacOS_X.2FFreeBSD.2FSolaris.29
+
+    # I would just create links from "$out"/share/{man,info},
+    #   but buildenv has problems with merging symlinks with directories;
+    #   note: it's possible we might need deepen the work-around to man/*.
   ''
-    ln -s texmf/doc/{man,info} "$out/share/"
+    for d in {man,info}; do
+      [[ -e "./share/texmf/doc/$d" ]] || continue;
+      (
+        mkdir -p "./share/$d" && cd "./share/$d"
+        ln -s -t . ../texmf/doc/"$d"/*
+      )
+    done
   ''
     + bin.cleanBrokenLinks
   ;
