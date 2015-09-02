@@ -102,7 +102,8 @@ let
         )]
         ++ lib.optional (attrs.md5 ? "doc") (mkPkgV "doc")
         ++ lib.optional (attrs.md5 ? "source") (mkPkgV "source")
-        ++ lib.optional (bin ? ${pname}) (bin.${pname} // { tlType = "bin"; })
+        ++ lib.optional (bin ? ${pname})
+            ( bin.${pname} // { inherit pname; tlType = "bin"; } )
         ++ combinePkgs (attrs.deps or {});
     };
 
