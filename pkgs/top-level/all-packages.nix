@@ -15299,10 +15299,13 @@ let
 
 };
 
+  ### Deprecated attributes;
+
   addInstantiationTrace = msg: pkg:
     pkg // {
       drvPath = builtins.trace msg pkg.drvPath;
-      outPath = builtins.trace msg pkg.outPath;
+      # otherwise warns with `-s` paramter to `nix-env -q`
+      #outPath = builtins.trace msg pkg.outPath;
     };
 
   alias = source: target: with lib; {
@@ -15315,7 +15318,7 @@ let
       );
     };
 in { }
-  # Deprecated attributes; instantiating them causes warnings.
+  # Instantiating these aliases causes nix to show warnings.
   // alias "adobeReader" "adobe-reader"
   // alias "arduino_core" "arduino-core"  # added 2015-02-04
   // alias "asciidocFull" "asciidoc-full"  # added 2014-06-22
