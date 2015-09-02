@@ -56,7 +56,8 @@ let
       # overrides of texlive.tlpdb
 
       tetex = orig.tetex // { # 2015.08.27 as we need version with mktexlsr.pl
-        # TODO: URL to fetch from
+        # TODO: official hashed mirror
+        urlPrefix = "http://lipa.ms.mff.cuni.cz/~cunav5am/nix";
         md5.run = "4b4c0208124dfc9c8244c24421946d36";
         md5.doc = "983f5e5b5f4e407760b4ec176cf6a58f";
         version = "3.0"; # it's the same
@@ -114,16 +115,16 @@ let
     pname + lib.optionalString (tlType != "run") ".${tlType}";
 
   unpackPkg =
-    { url ? null
-    , md5, pname, tlType, postUnpack ? "", stripPrefix ? 1, ...
+    { # url ? null, urlPrefix ? null
+      md5, pname, tlType, postUnpack ? "", stripPrefix ? 1, ...
     }@args: let
-      nurl = if url != null then url else
-        "${mirror}/pub/tex/historic/systems/texlive/${bin.year}"
-        + "/tlnet-final/archive/${mkUrlName args}.tar.xz";
+      url = args.url or "${urlPrefix}/${mkUrlName args}.tar.xz";
+      urlPrefix = args.urlPrefix or
+        ("${mirror}/pub/tex/historic/systems/texlive/${bin.year}/tlnet-final/archive");
       # beware: standard mirrors http://mirror.ctan.org/ don't have releases
       mirror = "ftp://tug.ctan.org"; # also works: ftp.math.utah.edu
     in  ''
-          tar -xf '${ fetchurl { url = nurl; inherit md5; } }' \
+          tar -xf '${ fetchurl { inherit url md5; } }' \
             '--strip-components=${toString stripPrefix}' \
             -C "$out" --anchored --exclude=tlpkg --keep-old-files
         '' + postUnpack;
