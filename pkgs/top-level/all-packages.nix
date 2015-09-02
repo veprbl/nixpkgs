@@ -15297,31 +15297,50 @@ let
 
   mg = callPackage ../applications/editors/mg { };
 
+};
 
-  # Attributes for backward compatibility.
-  adobeReader = adobe-reader;
-  arduino_core = arduino-core;  # added 2015-02-04
-  asciidocFull = asciidoc-full;  # added 2014-06-22
-  bridge_utils = bridge-utils;  # added 2015-02-20
-  buildbotSlave = buildbot-slave;  # added 2014-12-09
-  cheetahTemplate = pythonPackages.cheetah; # 2015-06-15
-  clangAnalyzer = clang-analyzer;  # added 2015-02-20
-  cool-old-term = cool-retro-term; # added 2015-01-31
-  haskell-ng = haskell;                 # 2015-04-19
-  haskellngPackages = haskellPackages;  # 2015-04-19
-  htmlTidy = html-tidy;  # added 2014-12-06
-  inherit (haskell.compiler) jhc uhc;   # 2015-05-15
-  inotifyTools = inotify-tools;
-  jquery_ui = jquery-ui;  # added 2014-09-07
-  libtidy = html-tidy;  # added 2014-12-21
-  lttngTools = lttng-tools;  # added 2014-07-31
-  lttngUst = lttng-ust;  # added 2014-07-31
-  nfsUtils = nfs-utils;  # added 2014-12-06
-  rdiff_backup = rdiff-backup;  # added 2014-11-23
-  rssglx = rss-glx; #added 2015-03-25
-  speedtest_cli = speedtest-cli;  # added 2015-02-17
-  sqliteInteractive = sqlite-interactive;  # added 2014-12-06
-  youtube-dl = pythonPackages.youtube-dl; # added 2015-06-07
-  youtubeDL = youtube-dl;  # added 2014-10-26
+  addInstantiationTrace = msg: pkg:
+    pkg // {
+      drvPath = builtins.trace msg pkg.drvPath;
+      outPath = builtins.trace msg pkg.outPath;
+    };
 
-}; in self; in pkgs
+  alias = source: target: with lib; {
+    ${source} = addInstantiationTrace
+      ( "Warning: attribute '${source}' has been deprecated."
+        + " Please, use '${target}' instead."
+      ) (
+        # now get the path in case there are dots in ${target}
+        foldl (flip getAttr) self (splitString "." target)
+      );
+    };
+in { }
+  # Deprecated attributes; instantiating them causes warnings.
+  // alias "adobeReader" "adobe-reader"
+  // alias "arduino_core" "arduino-core"  # added 2015-02-04
+  // alias "asciidocFull" "asciidoc-full"  # added 2014-06-22
+  // alias "bridge_utils" "bridge-utils"  # added 2015-02-20
+  // alias "buildbotSlave" "buildbot-slave"  # added 2014-12-09
+  // alias "cheetahTemplate" "pythonPackages.cheetah" # 2015-06-15
+  // alias "clangAnalyzer" "clang-analyzer"  # added 2015-02-20
+  // alias "cool-old-term" "cool-retro-term" # added 2015-01-31
+  // alias "haskell-ng" "haskell"                 # 2015-04-19
+  // alias "haskellngPackages" "haskellPackages"  # 2015-04-19
+  // alias "htmlTidy" "html-tidy"  # added 2014-12-06
+  // alias "jhc" "haskell.compiler.jhc" # 2015-05-15
+  // alias "uhc" "haskell.compiler.uhc" # 2015-05-15
+  // alias "inotifyTools" "inotify-tools" # 2015-09
+  // alias "jquery_ui" "jquery-ui"  # added 2014-09-07
+  // alias "libtidy" "html-tidy"  # added 2014-12-21
+  // alias "lttngTools" "lttng-tools"  # added 2014-07-31
+  // alias "lttngUst" "lttng-ust"  # added 2014-07-31
+  // alias "nfsUtils" "nfs-utils"  # added 2014-12-06
+  // alias "rdiff_backup" "rdiff-backup"  # added 2014-11-23
+  // alias "rssglx" "rss-glx" #added 2015-03-25
+  // alias "speedtest_cli" "speedtest-cli"  # added 2015-02-17
+  // alias "sqliteInteractive" "sqlite-interactive"  # added 2014-12-06
+  // alias "youtube-dl" "pythonPackages.youtube-dl" # added 2015-06-07
+  // alias "youtubeDL" "pythonPackages.youtube-dl"  # added 2014-10-26
+
+  // self; in pkgs
+
