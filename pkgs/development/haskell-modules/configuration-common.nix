@@ -314,6 +314,7 @@ self: super: {
   concurrent-dns-cache = dontCheck super.concurrent-dns-cache;
   dbus = dontCheck super.dbus;                          # http://hydra.cryp.to/build/498404/log/raw
   digitalocean-kzs = dontCheck super.digitalocean-kzs;  # https://github.com/KazumaSATO/digitalocean-kzs/issues/1
+  github-types = dontCheck super.github-types;          # http://hydra.cryp.to/build/1114046/nixlog/1/raw
   hadoop-rpc = dontCheck super.hadoop-rpc;              # http://hydra.cryp.to/build/527461/nixlog/2/raw
   hasql = dontCheck super.hasql;                        # http://hydra.cryp.to/build/502489/nixlog/4/raw
   hjsonschema = overrideCabal super.hjsonschema (drv: { testTarget = "local"; });
@@ -429,6 +430,7 @@ self: super: {
   language-slice = dontCheck super.language-slice;
   lensref = dontCheck super.lensref;
   liquidhaskell = dontCheck super.liquidhaskell;
+  lucid = dontCheck super.lucid; #https://github.com/chrisdone/lucid/issues/25
   lvmrun = dontCheck super.lvmrun;
   memcache = dontCheck super.memcache;
   milena = dontCheck super.milena;
@@ -464,6 +466,7 @@ self: super: {
   static-resources = dontCheck super.static-resources;
   strive = dontCheck super.strive;                      # fails its own hlint test with tons of warnings
   svndump = dontCheck super.svndump;
+  tar = dontCheck super.tar; #http://hydra.nixos.org/build/25088435/nixlog/2 (fails only on 32-bit)
   thumbnail-plus = dontCheck super.thumbnail-plus;
   tickle = dontCheck super.tickle;
   tpdb = dontCheck super.tpdb;
@@ -572,9 +575,6 @@ self: super: {
   # This packages compiles 4+ hours on a fast machine. That's just unreasonable.
   CHXHtml = dontDistribute super.CHXHtml;
 
-  # https://github.com/bos/bloomfilter/issues/7
-  bloomfilter = overrideCabal super.bloomfilter (drv: { broken = !pkgs.stdenv.is64bit; });
-
   # https://github.com/NixOS/nixpkgs/issues/6350
   paypal-adaptive-hoops = overrideCabal super.paypal-adaptive-hoops (drv: { testTarget = "local"; });
 
@@ -590,9 +590,9 @@ self: super: {
   # https://github.com/vincenthz/hs-asn1/issues/12
   asn1-encoding = dontCheck super.asn1-encoding;
 
-  # wxc supports wxGTX >= 2.9, but our current default version points to 2.8.
-  wxc = super.wxc.override { wxGTK = pkgs.wxGTK29; };
-  wxcore = super.wxcore.override { wxGTK = pkgs.wxGTK29; };
+  # wxc supports wxGTX >= 3.0, but our current default version points to 2.8.
+  wxc = super.wxc.override { wxGTK = pkgs.wxGTK30; };
+  wxcore = super.wxcore.override { wxGTK = pkgs.wxGTK30; };
 
   # Depends on QuickCheck 1.x.
   HaVSA = super.HaVSA.override { QuickCheck = self.QuickCheck_1_2_0_1; };
@@ -816,9 +816,6 @@ self: super: {
   # FPCO's fork of Cabal won't succeed its test suite.
   Cabal-ide-backend = dontCheck super.Cabal-ide-backend;
 
-  # https://github.com/ekmett/comonad/issues/25
-  comonad = dontCheck super.comonad;
-
   # https://github.com/jaspervdj/websockets/issues/104
   websockets = dontCheck super.websockets;
 
@@ -1009,4 +1006,14 @@ self: super: {
     ];
     prePatch = '' sed -i -e "/Extra-Lib-Dirs/d" -e "/Include-Dirs/d" "hcwiid.cabal" '';
   });
+
+  # https://github.com/basvandijk/concurrent-extra/issues/12
+  concurrent-extra = dontCheck super.concurrent-extra;
+
+  # https://github.com/GaloisInc/DSA/issues/1
+  DSA = dontCheck super.DSA;
+
+  # https://github.com/bos/bloomfilter/issues/7
+  bloomfilter = appendPatch super.bloomfilter ./patches/bloomfilter-fix-on-32bit.patch;
+
 }

@@ -721,6 +721,8 @@ let
 
   bc = callPackage ../tools/misc/bc { };
 
+  bdf2psf = callPackage ../tools/misc/bdf2psf { };  
+
   bcache-tools = callPackage ../tools/filesystems/bcache-tools { };
 
   bchunk = callPackage ../tools/cd-dvd/bchunk { };
@@ -818,13 +820,13 @@ let
 
   clib = callPackage ../tools/package-management/clib { };
 
-  consul = goPackages.consul;
+  consul = goPackages.consul.bin // { outputs = [ "bin" ]; };
 
   consul-ui = callPackage ../servers/consul/ui.nix { };
 
-  consul-alerts = goPackages.consul-alerts;
+  consul-alerts = goPackages.consul-alerts.bin // { outputs = [ "bin" ]; };
 
-  consul-template = goPackages.consul-template;
+  consul-template = goPackages.consul-template.bin // { outputs = [ "bin" ]; };
 
   corosync = callPackage ../servers/corosync { };
 
@@ -881,6 +883,8 @@ let
   enca = callPackage ../tools/text/enca { };
 
   ent = callPackage ../tools/misc/ent { };
+
+  facter = callPackage ../tools/system/facter {};
 
   fasd = callPackage ../tools/misc/fasd { };
 
@@ -948,7 +952,7 @@ let
 
   mcrypt = callPackage ../tools/misc/mcrypt { };
 
-  mongodb-tools = goPackages.mongo-tools;
+  mongodb-tools = goPackages.mongo-tools.bin // { outputs = [ "bin" ]; };
 
   mstflint = callPackage ../tools/misc/mstflint { };
 
@@ -1066,7 +1070,6 @@ let
   libceph = ceph.lib;
   ceph-0_80 = callPackage ../tools/filesystems/ceph/0.80.nix { };
   ceph-0_94 = callPackage ../tools/filesystems/ceph/0.94.nix { };
-  ceph-0_94-pre = callPackage ../tools/filesystems/ceph/0.94-pre.nix { };
   ceph = callPackage ../tools/filesystems/ceph { };
   ceph-dev = lowPrio (callPackage ../tools/filesystems/ceph/dev.nix { });
   ceph-git = lowPrio (callPackage ../tools/filesystems/ceph/git.nix { });
@@ -1242,6 +1245,8 @@ let
 
   cutter = callPackage ../tools/networking/cutter { };
 
+  cvs_fast_export = callPackage ../applications/version-management/cvs-fast-export { };
+
   dadadodo = callPackage ../tools/text/dadadodo { };
 
   daemonize = callPackage ../tools/system/daemonize { };
@@ -1344,7 +1349,7 @@ let
 
   doomseeker = callPackage ../applications/misc/doomseeker { };
 
-  drive = callPackage ../applications/networking/drive { };
+  drive = callPackage ../applications/networking/drive { goPackages = go14Packages; };
 
   driftnet = callPackage ../tools/networking/driftnet {};
 
@@ -1573,6 +1578,8 @@ let
 
   fsfs = callPackage ../tools/filesystems/fsfs { };
 
+  fuseiso = callPackage ../tools/filesystems/fuseiso { };
+
   fuse_zip = callPackage ../tools/filesystems/fuse-zip { };
 
   fuse_exfat = callPackage ../tools/filesystems/fuse-exfat { };
@@ -1700,7 +1707,8 @@ let
 
   gptfdisk = callPackage ../tools/system/gptfdisk { };
 
-  grafana = callPackage ../development/tools/misc/grafana { };
+  grafana-frontend = callPackage ../development/tools/misc/grafana { };
+  grafana-backend = pkgs.goPackages.grafana.bin // { outputs = [ "bin" ]; };
 
   grafx2 = callPackage ../applications/graphics/grafx2 {};
 
@@ -2079,7 +2087,7 @@ let
 
   iojsPackages = callPackage ./node-packages.nix { self = iojsPackages; nodejs = iojs; };
 
-  npm2nix = nodePackages_0_10.npm2nix;
+  npm2nix = nodePackages.npm2nix;
 
   ldapvi = callPackage ../tools/misc/ldapvi { };
 
@@ -2152,7 +2160,7 @@ let
   lshw = callPackage ../tools/system/lshw { };
 
   lxc = callPackage ../os-specific/linux/lxc { };
-  lxd = goPackages.lxd;
+  lxd = goPackages.lxd.bin // { outputs = [ "bin" ]; };
 
   lzip = callPackage ../tools/compression/lzip { };
 
@@ -2534,6 +2542,8 @@ let
 
   opentracker = callPackage ../applications/networking/p2p/opentracker { };
 
+  opentsdb = callPackage ../tools/misc/opentsdb {};
+
   openvpn = callPackage ../tools/networking/openvpn { };
 
   openvpn_learnaddress = callPackage ../tools/networking/openvpn/openvpn_learnaddress.nix { };
@@ -2781,6 +2791,8 @@ let
 
   ocz-ssd-guru = callPackage ../tools/misc/ocz-ssd-guru { };
 
+  qalculate-gtk = callPackage ../applications/science/math/qalculate-gtk { };
+
   qastools = callPackage ../tools/audio/qastools {
     qt = qt4;
   };
@@ -2839,6 +2851,8 @@ let
   renameutils = callPackage ../tools/misc/renameutils { };
 
   replace = callPackage ../tools/text/replace { };
+
+  reposurgeon = callPackage ../applications/version-management/reposurgeon { };
 
   reptyr = callPackage ../os-specific/linux/reptyr {};
 
@@ -3240,6 +3254,8 @@ let
 
   txt2man = callPackage ../tools/misc/txt2man { };
 
+  txt2tags = callPackage ../tools/text/txt2tags { };
+
   u9fs = callPackage ../servers/u9fs { };
 
   ucl = callPackage ../development/libraries/ucl { };
@@ -3449,6 +3465,11 @@ let
   unzipNLS = lowPrio (unzip.override { enableNLS = true; });
 
   uptimed = callPackage ../tools/system/uptimed { };
+
+  urjtag = callPackage ../tools/misc/urjtag {
+    jedecSupport = true;
+    pythonBindings = true;
+  };
 
   urlwatch = callPackage ../tools/networking/urlwatch { };
 
@@ -4066,7 +4087,7 @@ let
 
   go-repo-root = callPackage ../development/tools/misc/go-repo-root { };
 
-  gox = goPackages.gox;
+  gox = goPackages.gox.bin // { outputs = [ "bin" ]; };
 
   gprolog = callPackage ../development/compilers/gprolog { };
 
@@ -5615,7 +5636,7 @@ let
 
   ino = callPackage ../development/arduino/ino { };
 
-  inotifyTools = callPackage ../development/tools/misc/inotify-tools { };
+  inotify-tools = callPackage ../development/tools/misc/inotify-tools { };
 
   intel-gpu-tools = callPackage ../development/tools/misc/intel-gpu-tools {
     inherit (xorg) libpciaccess dri2proto libX11 libXext libXv libXrandr;
@@ -6974,7 +6995,6 @@ let
 
   libev = callPackage ../development/libraries/libev { };
 
-  libevent14 = callPackage ../development/libraries/libevent/1.4.nix { };
   libevent = callPackage ../development/libraries/libevent { };
 
   libewf = callPackage ../development/libraries/libewf { };
@@ -7425,7 +7445,7 @@ let
   libusbmuxd = callPackage ../development/libraries/libusbmuxd { };
 
   libunwind = if stdenv.isDarwin
-    then callPackage ../development/libraries/libunwind/native.nix {}
+    then libunwindNative
     else callPackage ../development/libraries/libunwind { };
 
   libunwindNative = callPackage ../development/libraries/libunwind/native.nix {};
@@ -7695,7 +7715,6 @@ let
 
   nethack = callPackage ../games/nethack { };
 
-  nettle27 = callPackage ../development/libraries/nettle/27.nix { };
   nettle = callPackage ../development/libraries/nettle { };
 
   newt = callPackage ../development/libraries/newt { };
@@ -7766,6 +7785,8 @@ let
   opencv_2_1 = callPackage ../development/libraries/opencv/2.1.nix {
     libpng = libpng12;
   };
+
+  opencv3 = callPackage ../development/libraries/opencv/3.x.nix { };
 
   # this ctl version is needed by openexr_viewers
   openexr_ctl = ctl;
@@ -7973,11 +7994,6 @@ let
     developerBuild = true;
   });
 
-  qt4SDK = qtcreator.override {
-    sdkBuild = true;
-    qtLib = qt48Full;
-  };
-
   qt53 = callPackage ../development/libraries/qt-5/5.3 {
     mesa = mesa_noglu;
     cups = if stdenv.isLinux then cups else null;
@@ -7990,21 +8006,15 @@ let
 
   qt5 = qt54;
 
-  qt5Full = appendToName "full" (qt53.override {
-    buildDocs = true;
-    buildExamples = true;
-    buildTests = true;
-    developerBuild = true;
+  qtEnv = callPackage ../development/libraries/qt-5/qt-env.nix {};
+
+  qt5Full = appendToName "full" (qtEnv {
+    qtbase = qt5.base;
+    paths = lib.filter (x: !(builtins.isFunction x)) (lib.attrValues qt5);
   });
 
-  qt5SDK = qtcreator.override {
-    sdkBuild = true;
-    qtLib = qt5Full;
-    withDocumentation = true;
-  };
-
   qtcreator = callPackage ../development/qtcreator {
-    qtLib = qt5Full; # 3.4 only supports qt5; TODO: use modularized qt>=5.4
+    qtLib = qt54;
     withDocumentation = true;
   };
 
@@ -8661,8 +8671,8 @@ let
     go = go_1_4;
     buildGoPackage = import ../development/go-modules/generic {
       go = go_1_4;
-      govers = go14Packages.govers;
-      inherit lib;
+      govers = go14Packages.govers.bin;
+      inherit parallel lib;
     };
     overrides = (config.goPackageOverrides or (p: {})) pkgs;
   });
@@ -8671,8 +8681,8 @@ let
     go = go_1_5;
     buildGoPackage = import ../development/go-modules/generic {
       go = go_1_5;
-      govers = go15Packages.govers;
-      inherit lib;
+      govers = go15Packages.govers.bin;
+      inherit parallel lib;
     };
     overrides = (config.goPackageOverrides or (p: {})) pkgs;
   });
@@ -8918,8 +8928,8 @@ let
 
   bird = callPackage ../servers/bird { };
 
-  bosun = callPackage ../servers/monitoring/bosun {};
-  scollector = callPackage ../servers/monitoring/bosun/scollector.nix {};
+  bosun = callPackage ../servers/monitoring/bosun { goPackages = go14Packages; };
+  scollector = callPackage ../servers/monitoring/bosun/scollector.nix { goPackages = go14Packages; };
 
   charybdis = callPackage ../servers/irc/charybdis {};
 
@@ -8958,7 +8968,7 @@ let
 
   dovecot_pigeonhole = callPackage ../servers/mail/dovecot-pigeonhole { };
 
-  etcd = goPackages.etcd;
+  etcd = goPackages.etcd.bin // { outputs = [ "bin" ]; };
 
   ejabberd = callPackage ../servers/xmpp/ejabberd {
     erlang = erlangR16;
@@ -8975,7 +8985,7 @@ let
     v8 = v8_3_24_10;
   };
 
-  etcdctl = goPackages.etcd;
+  etcdctl = etcd;
 
   exim = callPackage ../servers/mail/exim { };
 
@@ -8999,6 +9009,8 @@ let
   ghostOne = callPackage ../servers/games/ghost-one { };
 
   groovebasin = callPackage ../applications/audio/groovebasin { };
+
+  hbase = callPackage ../servers/hbase {};
 
   ircdHybrid = callPackage ../servers/irc/ircd-hybrid { };
 
@@ -9206,28 +9218,18 @@ let
 
   postgresql_jdbc = callPackage ../servers/sql/postgresql/jdbc { };
 
-  prom2json = callPackage ../servers/monitoring/prometheus/prom2json { };
-  prometheus = callPackage ../servers/monitoring/prometheus { };
-  prometheus-alertmanager =
-    callPackage ../servers/monitoring/prometheus/alertmanager { };
-  prometheus-cli =
-    callPackage ../servers/monitoring/prometheus/cli { };
-  prometheus-collectd-exporter =
-    callPackage ../servers/monitoring/prometheus/collectd_exporter { };
-  prometheus-haproxy-exporter =
-    callPackage ../servers/monitoring/prometheus/haproxy_exporter { };
-  prometheus-mesos-exporter =
-    callPackage ../servers/monitoring/prometheus/mesos_exporter { };
-  prometheus-mysqld-exporter =
-    callPackage ../servers/monitoring/prometheus/mysqld_exporter { };
-  prometheus-nginx-exporter =
-    callPackage ../servers/monitoring/prometheus/nginx_exporter { };
-  prometheus-node-exporter =
-    callPackage ../servers/monitoring/prometheus/node_exporter { };
-  prometheus-pushgateway =
-    callPackage ../servers/monitoring/prometheus/pushgateway { };
-  prometheus-statsd-bridge =
-    callPackage ../servers/monitoring/prometheus/statsd_bridge { };
+  prom2json = goPackages.prometheus.prom2json.bin;
+  prometheus = goPackages.prometheus.prometheus.bin;
+  prometheus-alertmanager = goPackages.prometheus.alertmanager.bin;
+  prometheus-cli = goPackages.prometheus.cli.bin;
+  prometheus-collectd-exporter = goPackages.prometheus.collectd-exporter.bin;
+  prometheus-haproxy-exporter = goPackages.prometheus.haproxy-exporter.bin;
+  prometheus-mesos-exporter = goPackages.prometheus.mesos-exporter.bin;
+  prometheus-mysqld-exporter = goPackages.prometheus.mysqld-exporter.bin;
+  prometheus-nginx-exporter = goPackages.prometheus.nginx-exporter.bin;
+  prometheus-node-exporter = goPackages.prometheus.node-exporter.bin;
+  prometheus-pushgateway = goPackages.prometheus.pushgateway.bin;
+  prometheus-statsd-bridge = goPackages.prometheus.statsd-bridge.bin;
 
   psqlodbc = callPackage ../servers/sql/postgresql/psqlodbc { };
 
@@ -9374,7 +9376,7 @@ let
   xorg = recurseIntoAttrs (import ../servers/x11/xorg/default.nix {
     inherit clangStdenv fetchurl fetchgit fetchpatch stdenv pkgconfig intltool freetype fontconfig
       libxslt expat libpng zlib perl mesa_drivers spice_protocol
-      dbus libuuid openssl gperf m4 libevdev tradcpp libinput makeWrapper autoreconfHook
+      dbus libuuid openssl gperf m4 libevdev tradcpp libinput mcpp makeWrapper autoreconfHook
       autoconf automake libtool xmlto asciidoc flex bison python mtdev pixman;
     bootstrap_cmds = if stdenv.isDarwin then darwin.bootstrap_cmds else null;
     mesa = mesa_noglu;
@@ -9796,6 +9798,16 @@ let
       ];
   };
 
+  linux_4_2 = makeOverridable (import ../os-specific/linux/kernel/linux-4.2.nix) {
+    inherit fetchurl stdenv perl buildLinux;
+    kernelPatches = [ kernelPatches.bridge_stp_helper ]
+      ++ lib.optionals ((platform.kernelArch or null) == "mips")
+      [ kernelPatches.mips_fpureg_emu
+        kernelPatches.mips_fpu_sigill
+        kernelPatches.mips_ext3_n32
+      ];
+  };
+
   linux_testing = makeOverridable (import ../os-specific/linux/kernel/linux-testing.nix) {
     inherit fetchurl stdenv perl buildLinux;
     kernelPatches = [ kernelPatches.bridge_stp_helper ]
@@ -9961,7 +9973,7 @@ let
   linux = linuxPackages.kernel;
 
   # Update this when adding the newest kernel major version!
-  linuxPackages_latest = pkgs.linuxPackages_4_1;
+  linuxPackages_latest = pkgs.linuxPackages_4_2;
   linux_latest = linuxPackages_latest.kernel;
 
   # Build the kernel modules for the some of the kernels.
@@ -9973,6 +9985,7 @@ let
   linuxPackages_3_18 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_3_18 linuxPackages_3_18);
   linuxPackages_4_0 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_4_0 linuxPackages_4_0);
   linuxPackages_4_1 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_4_1 linuxPackages_4_1);
+  linuxPackages_4_2 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_4_2 linuxPackages_4_2);
   linuxPackages_testing = recurseIntoAttrs (linuxPackagesFor pkgs.linux_testing linuxPackages_testing);
   linuxPackages_custom = {version, src, configfile}:
                            let linuxPackages_self = (linuxPackagesFor (pkgs.linuxManualConfig {inherit version src configfile;
@@ -10084,7 +10097,7 @@ let
 
   gotags = callPackage ../development/tools/gotags { };
 
-  golint = goPackages.lint;
+  golint = goPackages.lint.bin // { outputs = [ "bin" ]; };
 
   godep = callPackage ../development/tools/godep { };
 
@@ -10267,7 +10280,7 @@ let
   ubootJetsonTK1 = callPackage ../misc/uboot {
     defconfig = "jetson-tk1_defconfig";
     targetPlatforms = ["armv7l-linux"];
-    filesToInstall = ["u-boot-dtb-tegra.bin"];
+    filesToInstall = ["u-boot" "u-boot.dtb" "u-boot-dtb-tegra.bin" "u-boot-nodtb-tegra.bin"];
   };
 
   ubootPcduino3Nano = callPackage ../misc/uboot {
@@ -10506,13 +10519,13 @@ let
 
   docbook_xml_ebnf_dtd = callPackage ../data/sgml+xml/schemas/xml-dtd/docbook-ebnf { };
 
+  inherit (callPackages ../data/sgml+xml/stylesheets/xslt/docbook-xsl { })
+    docbook_xsl
+    docbook_xsl_ns;
+
   docbook_xml_xslt = docbook_xsl;
 
-  docbook_xsl = callPackage ../data/sgml+xml/stylesheets/xslt/docbook-xsl { };
-
   docbook5_xsl = docbook_xsl_ns;
-
-  docbook_xsl_ns = callPackage ../data/sgml+xml/stylesheets/xslt/docbook-xsl-ns { };
 
   dosemu_fonts = callPackage ../data/fonts/dosemu-fonts { };
 
@@ -10775,6 +10788,8 @@ let
 
   arora = callPackage ../applications/networking/browsers/arora { };
 
+  artha = callPackage ../applications/misc/artha { };
+
   atom = callPackage ../applications/editors/atom {
     gconf = gnome.GConf;
   };
@@ -10797,6 +10812,7 @@ let
     callPackage = newScope { boost = boost157; };
   } );
   bitcoin = altcoins.bitcoin;
+  bitcoin-xt = altcoins.bitcoin-xt;
 
   aumix = callPackage ../applications/audio/aumix {
     gtkGUI = false;
@@ -11415,9 +11431,7 @@ let
     fftw = fftwFloat;
   };
 
-  gnuradio-wrapper = callPackage ../applications/misc/gnuradio/wrapper.nix { };
-
-  gnuradio-full = gnuradio-wrapper.override {
+  gnuradio-with-packages = callPackage ../applications/misc/gnuradio/wrapper.nix {
     extraPackages = [ gnuradio-osmosdr ];
   };
 
@@ -12216,6 +12230,8 @@ let
     inherit (lua51Packages) luafilesystem lrexlib luazip luasqlite3;
   };
 
+  multimarkdown = callPackage ../tools/typesetting/multimarkdown { };
+
   multimon-ng = callPackage ../applications/misc/multimon-ng { };
 
   multisync = callPackage ../applications/misc/multisync {
@@ -12330,6 +12346,8 @@ let
   ncdu = callPackage ../tools/misc/ncdu { };
 
   ncdc = callPackage ../applications/networking/p2p/ncdc { };
+
+  ne = callPackage ../applications/editors/ne { };
 
   nedit = callPackage ../applications/editors/nedit {
     motif = lesstif;
@@ -12544,6 +12562,8 @@ let
 
   QmidiNet = callPackage ../applications/audio/QmidiNet { };
 
+  qmidiroute = callPackage ../applications/audio/qmidiroute { };
+
   qmmp = callPackage ../applications/audio/qmmp { };
 
   qrcode = callPackage ../tools/graphics/qrcode {};
@@ -12684,6 +12704,8 @@ let
     unicode3Support = true;
   };
 
+  udevil = callPackage ../applications/misc/udevil {};
+
   # urxvt plugins
   urxvt_perl = callPackage ../applications/misc/rxvt_unicode-plugins/urxvt-perl { };
   urxvt_perls = callPackage ../applications/misc/rxvt_unicode-plugins/urxvt-perls { };
@@ -12806,6 +12828,8 @@ let
 
   cura = callPackage ../applications/misc/cura { };
 
+  curaLulzbot = callPackage ../applications/misc/cura/lulzbot.nix { };
+
   peru = callPackage ../applications/version-management/peru {};
 
   printrun = callPackage ../applications/misc/printrun { };
@@ -12901,7 +12925,7 @@ let
 
   symlinks = callPackage ../tools/system/symlinks { };
 
-  syncthing = callPackage ../applications/networking/syncthing { };
+  syncthing = (callPackage ../applications/networking/syncthing { }).bin // { outputs = [ "bin" ]; };
 
   # linux only by now
   synergy = callPackage ../applications/misc/synergy { };
@@ -13657,6 +13681,8 @@ let
 
   chessdb = callPackage ../games/chessdb { };
 
+  confd = pkgs.goPackages.confd.bin // { outputs = [ "bin" ]; };
+
   construoBase = lowPrio (callPackage ../games/construo {
     mesa = null;
     freeglut = null;
@@ -14409,8 +14435,6 @@ let
 
   ### SCIENCE/PROGRAMMING
 
-  kframework = callPackage ../applications/science/programming/kframework { };
-
   plm = callPackage ../applications/science/programming/plm { };
 
   ### SCIENCE/LOGIC
@@ -14520,6 +14544,8 @@ let
     camlp5 = ocamlPackages.camlp5_strict;
   };
 
+  hologram = pkgs.goPackages.hologram.bin // { outputs = [ "bin" ]; };
+
   isabelle = import ../applications/science/logic/isabelle {
     inherit (pkgs) stdenv fetchurl nettools perl polyml;
     inherit (pkgs.emacs24Packages) proofgeneral;
@@ -14603,6 +14629,8 @@ let
   eagle = callPackage_i686 ../applications/science/electronics/eagle { };
 
   caneda = callPackage ../applications/science/electronics/caneda { };
+
+  geda = callPackage ../applications/science/electronics/geda { };
 
   gtkwave = callPackage ../applications/science/electronics/gtkwave { };
 
@@ -15121,7 +15149,7 @@ let
 
   utf8proc = callPackage ../development/libraries/utf8proc { };
 
-  vault = goPackages.vault;
+  vault = goPackages.vault.bin // { outputs = [ "bin" ]; };
 
   vbam = callPackage ../misc/emulators/vbam {
     inherit (xlibs) libpthreadstubs;
@@ -15274,32 +15302,25 @@ let
   arduino_core = arduino-core;  # added 2015-02-04
   asciidocFull = asciidoc-full;  # added 2014-06-22
   bridge_utils = bridge-utils;  # added 2015-02-20
-  clangAnalyzer = clang-analyzer;  # added 2015-02-20
-  lttngTools = lttng-tools;  # added 2014-07-31
-  lttngUst = lttng-ust;  # added 2014-07-31
-  jquery_ui = jquery-ui;  # added 2014-09-07
-  youtubeDL = youtube-dl;  # added 2014-10-26
-  youtube-dl = pythonPackages.youtube-dl; # added 2015-06-07
-  rdiff_backup = rdiff-backup;  # added 2014-11-23
-  htmlTidy = html-tidy;  # added 2014-12-06
-  libtidy = html-tidy;  # added 2014-12-21
-  speedtest_cli = speedtest-cli;  # added 2015-02-17
-  sqliteInteractive = sqlite-interactive;  # added 2014-12-06
-  nfsUtils = nfs-utils;  # added 2014-12-06
   buildbotSlave = buildbot-slave;  # added 2014-12-09
+  cheetahTemplate = pythonPackages.cheetah; # 2015-06-15
+  clangAnalyzer = clang-analyzer;  # added 2015-02-20
   cool-old-term = cool-retro-term; # added 2015-01-31
-  rssglx = rss-glx; #added 2015-03-25
   haskell-ng = haskell;                 # 2015-04-19
   haskellngPackages = haskellPackages;  # 2015-04-19
+  htmlTidy = html-tidy;  # added 2014-12-06
   inherit (haskell.compiler) jhc uhc;   # 2015-05-15
-  cheetahTemplate = pythonPackages.cheetah; # 2015-06-15
-
-  opentsdb = callPackage ../tools/misc/opentsdb {};
-
-  hbase = callPackage ../servers/hbase {};
-
-  udevil = callPackage ../applications/misc/udevil {};
-
-  facter = callPackage ../tools/system/facter {};
+  inotifyTools = inotify-tools;
+  jquery_ui = jquery-ui;  # added 2014-09-07
+  libtidy = html-tidy;  # added 2014-12-21
+  lttngTools = lttng-tools;  # added 2014-07-31
+  lttngUst = lttng-ust;  # added 2014-07-31
+  nfsUtils = nfs-utils;  # added 2014-12-06
+  rdiff_backup = rdiff-backup;  # added 2014-11-23
+  rssglx = rss-glx; #added 2015-03-25
+  speedtest_cli = speedtest-cli;  # added 2015-02-17
+  sqliteInteractive = sqlite-interactive;  # added 2014-12-06
+  youtube-dl = pythonPackages.youtube-dl; # added 2015-06-07
+  youtubeDL = youtube-dl;  # added 2014-10-26
 
 }; in self; in pkgs
