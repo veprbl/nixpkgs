@@ -23,6 +23,7 @@
     * some apps aren't packaged/tested yet (xdvi, asymptote, biber, etc.)
     * feature/bug: when a package is rejected by pkgFilter,
       its dependencies are still propagated
+    * scheme-full is disabled ATM, as it didn't evaluate
 */
 
 { stdenv, lib, fetchurl, runCommand, buildEnv
@@ -51,7 +52,7 @@ let
   tl = let
     /* curl ftp://tug.ctan.org/pub/tex/historic/systems/texlive/2015/tlnet-final/tlpkg/texlive.tlpdb.xz \
       | xzcat | sed -rn -f ./tl2nix.sed > ./pkgs.nix */
-    orig = removeAttrs (import ./pkgs.nix tl) [ "trash" ];
+    orig = removeAttrs (import ./pkgs.nix tl) [ "trash" "scheme-full" ];
     clean = orig // {
       # overrides of texlive.tlpdb
 
@@ -79,10 +80,12 @@ let
       latex = orig.latex // {
         deps = removeAttrs orig.latex.deps [ "luatex" ];
       };
-    };
+    }; # overrides
+
     # tl =
     in lib.mapAttrs flatDeps clean;
     # TODO: texlive.infra for web2c config?
+
 
   flatDeps = pname: attrs:
     let
@@ -111,6 +114,7 @@ let
         ++ combinePkgs (attrs.deps or {});
     };
 
+  # the basename used by upstream (without ".tar.xz" suffix)
   mkUrlName = { pname, tlType, ... }:
     pname + lib.optionalString (tlType != "run") ".${tlType}";
 
@@ -163,9 +167,9 @@ in
 
     combined = lib.mapAttrs
       (pname: attrs: combine { ${pname} = attrs; })
-      { inherit (tl)
-          scheme-full scheme-medium scheme-small scheme-basic scheme-minimal
-          scheme-context scheme-gust scheme-tetex scheme-xml;
+      { inherit (tl) /*scheme-full*/
+          scheme-tetex scheme-medium scheme-small scheme-basic scheme-minimal
+          scheme-context scheme-gust scheme-xml;
       };
 
     inherit combine;
