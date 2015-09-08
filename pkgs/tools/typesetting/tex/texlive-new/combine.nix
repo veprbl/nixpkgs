@@ -96,6 +96,10 @@ in buildEnv {
     for link in ./bin/*; do
       [ -L "$link" -a -x "$link" ] || continue # if not link, assume OK
       local target=$(readlink "$link")
+
+      # skip simple local symlinks; mktexfmt in particular
+      echo "$target" | grep / > /dev/null || continue;
+
       echo -n "Wrapping '$link'"
       rm "$link"
       makeWrapper "$target" "$link" \
