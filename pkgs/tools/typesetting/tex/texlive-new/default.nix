@@ -51,8 +51,8 @@ let
   # the set of TeX Live packages, collections, and schemes; using upstream naming
   tl = let
     /* curl ftp://tug.ctan.org/pub/tex/historic/systems/texlive/2015/tlnet-final/tlpkg/texlive.tlpdb.xz \
-      | xzcat | sed -rn -f ./tl2nix.sed > ./pkgs.nix */
-    orig = removeAttrs (import ./pkgs.nix tl) [ "trash" "scheme-full" ];
+        | xzcat | uniq -u | sed -rn -f ./tl2nix.sed > ./pkgs.nix */
+    orig = removeAttrs (import ./pkgs.nix tl) [ "scheme-full" ];
     clean = orig // {
       # overrides of texlive.tlpdb
 

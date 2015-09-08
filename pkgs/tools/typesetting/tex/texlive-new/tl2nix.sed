@@ -2,12 +2,11 @@
 1itl: { # no indentation
 $a}
 
-# some packages start with a number :-/
-s/^name (.*)/name "\1"/
-#s/^depend (.*)/depend "\1"/
-
 # trash packages we don't want
-/^name .*\./s/^name (.*)/name trash.\1/
+/^name .*\./,/^$/d
+
+# quote package names, as some start with a number :-/
+s/^name (.*)/name "\1"/
 
 # form an attrmap per package
 /^name /s/^name (.*)/\1 = {/p
