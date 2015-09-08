@@ -28,11 +28,9 @@
 { stdenv, lib, fetchurl, runCommand, buildEnv
 , callPackage, ghostscriptX, harfbuzz, poppler_nox
 , makeWrapper, perl, python, ruby
+, useFixedHashes ? true
 }:
 let
-  # TODOs:
-  #   - maybe fixup scripts in individual packages
-
   # various binaries (compiled)
   bin = callPackage ./bin.nix {
     poppler = poppler_nox; # otherwise depend on various X stuff
@@ -41,6 +39,12 @@ let
       withIcu = true; withGraphite2 = true;
     };
   };
+
+  # map: name -> fixed-output hash
+  # sha1 in base32 was chosen as a compromise between security and length
+  # warning: the following generator command takes lots of resources
+  # nix-build -Q -A texlive.scheme-full.pkgs | ./fixHashes.sh > ./fixedHashes.nix
+  fixedHashes = lib.optionalAttrs useFixedHashes (import ./fixedHashes.nix);
 
   # function for creating a working environment from a set of TL packages
   combine = import ./combine.nix {
@@ -134,21 +138,26 @@ let
 
   mkPkgs = { pname, tlType, version, pkgList }@args:
       /* TODOs:
-          - make fixed-output *after* unpacking
-            (to have same derivation even when stdenv/platform changes)
-            for that we would need to download all and generate hashes on our own
           - "historic" isn't mirrored; posted a question at #287
           - maybe cache (some) collections? (they don't overlap)
       */
-      runCommand "texlive-${mkUrlName args}-${version}"
-        { # lots of derivations, not meant to be cached
+    let
+      tlName = "${mkUrlName args}-${version}";
+      fixedHash = fixedHashes.${tlName} or null; # be graceful about missing hashes
+    in runCommand "texlive-${tlName}"
+      ( { # lots of derivations, not meant to be cached
           preferLocalBuild = true; allowSubstitutes = false;
           passthru = { inherit pname tlType version; };
+        } // lib.optionalAttrs (fixedHash != null) {
+          outputHash = fixedHash;
+          outputHashAlgo = "sha1";
+          outputHashMode = "recursive";
         }
-        ( ''
+      )
+      ( ''
           mkdir "$out"
-          '' + lib.concatMapStrings unpackPkg (fastUnique (a: b: a.md5 < b.md5) pkgList)
-        );
+        '' + lib.concatMapStrings unpackPkg (fastUnique (a: b: a.md5 < b.md5) pkgList)
+      );
 
   # combine a set of TL packages into a single TL meta-package
   combinePkgs = pkgSet: lib.concatLists # uniqueness is handled in `combine`
