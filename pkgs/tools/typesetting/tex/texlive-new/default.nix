@@ -23,7 +23,6 @@
     * some apps aren't packaged/tested yet (xdvi, asymptote, biber, etc.)
     * feature/bug: when a package is rejected by pkgFilter,
       its dependencies are still propagated
-    * scheme-full is disabled ATM, as it didn't evaluate
 */
 
 { stdenv, lib, fetchurl, runCommand, buildEnv
@@ -52,7 +51,7 @@ let
   tl = let
     /* curl ftp://tug.ctan.org/pub/tex/historic/systems/texlive/2015/tlnet-final/tlpkg/texlive.tlpdb.xz \
         | xzcat | uniq -u | sed -rn -f ./tl2nix.sed > ./pkgs.nix */
-    orig = removeAttrs (import ./pkgs.nix tl) [ "scheme-full" ];
+    orig = import ./pkgs.nix tl;
     clean = orig // {
       # overrides of texlive.tlpdb
 
@@ -89,7 +88,7 @@ let
 
   flatDeps = pname: attrs:
     let
-      version = attrs.version or bin.version;
+      version = attrs.version or bin.texliveYear;
       mkPkgV = tlType: let
         pkg = attrs // {
           md5 = attrs.md5.${tlType};
@@ -124,7 +123,7 @@ let
     }@args: let
       url = args.url or "${urlPrefix}/${mkUrlName args}.tar.xz";
       urlPrefix = args.urlPrefix or
-        ("${mirror}/pub/tex/historic/systems/texlive/${bin.year}/tlnet-final/archive");
+        ("${mirror}/pub/tex/historic/systems/texlive/${bin.texliveYear}/tlnet-final/archive");
       # beware: standard mirrors http://mirror.ctan.org/ don't have releases
       mirror = "ftp://tug.ctan.org"; # also works: ftp.math.utah.edu
     in  ''
@@ -167,7 +166,7 @@ in
 
     combined = lib.mapAttrs
       (pname: attrs: combine { ${pname} = attrs; })
-      { inherit (tl) /*scheme-full*/
+      { inherit (tl) scheme-full
           scheme-tetex scheme-medium scheme-small scheme-basic scheme-minimal
           scheme-context scheme-gust scheme-xml;
       };

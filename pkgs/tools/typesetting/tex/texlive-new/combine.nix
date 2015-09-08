@@ -30,7 +30,7 @@ let
     (map (p: if lib.isDerivation p then builtins.toPath p else "") pkgs);
 
 in buildEnv {
-  name = "texlive-combined-${bin.version}";
+  name = "texlive-combined-${bin.texliveYear}";
 
   extraPrefix = "/share/texmf";
 

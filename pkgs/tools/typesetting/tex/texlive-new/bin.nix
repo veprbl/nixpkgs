@@ -12,9 +12,10 @@
 let
   withSystemLibs = map (libname: "--with-system-${libname}");
 
+  year = "2015";
+  version = year; # keep names simple for now
+
   common = rec {
-    year = "2015";
-    version = year; # keep names simple for now
     src = fetchurl {
       url = "ftp://tug.org/historic/systems/texlive/${year}/texlive-20150521-source.tar.xz";
       sha256 = "ed9bcd7bdce899c3c27c16a8c5c3017c4f09e1d7fd097038351b72497e9d4669";
@@ -62,7 +63,8 @@ let
   };
 in rec { # un-indented
 
-inherit (common) cleanBrokenLinks version year;
+inherit (common) cleanBrokenLinks;
+texliveYear = year;
 
 dvisvgm = stdenv.mkDerivation {
   name = "texlive-dvisvgm.bin-${version}";
