@@ -14,11 +14,21 @@ let
     splitBin = lib.partition (p: p.tlType == "bin") all;
     bin = mkUniquePkgs splitBin.right;
     nonbin = mkUniquePkgs splitBin.wrong;
+
+    # extra interpreters needed for shebangs, based on 2015 schemes "medium" and "tetex"
+    # (omitted tk needed in pname == "epspdf", bin/epspdftk)
+    pkgNeedsPython = pkg: pkg.tlType == "run" && lib.elem pkg.pname
+      [ "de-macro" "pythontex" "dviasm" "texliveonfly" ];
+    pkgNeedsRuby = pkg: pkg.tlType == "run" && pkg.pname == "match-parens";
+    extraInputs =
+      lib.optional (lib.any pkgNeedsPython splitBin.wrong) python
+      ++ lib.optional (lib.any pkgNeedsPython splitBin.wrong) ruby;
   };
 
   mkUniquePkgs = pkgs: fastUnique (a: b: a < b)
     # here we deal with those dummy packages needed for hyphenation filtering
     (map (p: if lib.isDerivation p then builtins.toPath p else "") pkgs);
+
 in buildEnv {
   name = "texlive-combined-${bin.version}";
 
@@ -27,7 +37,7 @@ in buildEnv {
   ignoreCollisions = false;
   paths = pkgList.nonbin;
 
-  buildInputs = [ makeWrapper ];
+  buildInputs = [ makeWrapper ] ++ pkgList.extraInputs;
 
   postBuild = ''
     cd "$out"
@@ -80,14 +90,12 @@ in buildEnv {
     )
   '' +
 
-  # wrap created executables with required env vars
+  # function to wrap created executables with required env vars
   ''
     wrapBin() {
     for link in ./bin/*; do
       [ -L "$link" -a -x "$link" ] || continue # if not link, assume OK
       local target=$(readlink "$link")
-      case "$target" in
-        /*)
           echo -n "Wrapping '$link'"
           rm "$link"
           makeWrapper "$target" "$link" \
@@ -100,27 +108,20 @@ in buildEnv {
 
           # avoid using non-nix shebang in $target by calling interpreter
           if [[ "$(head -c 2 $target)" = "#!" ]]; then
-            local interp="$(head -n 1 $target | sed 's/^\#\! *//;s/ *$//')"
-            local newInterp=""
-            case "$interp" in
-              /bin/sh)
-                newInterp="$(echo -n ${stdenv.shell} | sed 's/bash$/sh/' )";;
-              /usr/bin/env\ perl|/usr/bin/perl)
-                newInterp='${perl}/bin/perl';;
-              /nix/store/*)
-                echo
-                continue;;
-              *)
-                echo "Unknown shebang '$interp' in '$target'"
-                false
-            esac
-            echo " and patching shebang '$interp'"
-            sed "s|^exec |exec $newInterp |" -i "$link"
+            local cmdline="$(head -n 1 $target | sed 's/^\#\! *//;s/ *$//')"
+            local relative=`basename "$cmdline" | sed 's/^env //' `
+            local newInterp=`echo "$relative" | cut -d\  -f1`
+            local params=`echo "$relative" | cut -d\  -f2- -s`
+            local newPath="$(type -P $newInterp)"
+            if [[ -z "$newPath" ]]; then
+              echo " Warning: unknown shebang '$cmdline' in '$target'"
+              continue
+            fi
+            echo " and patching shebang '$cmdline'"
+            sed "s|^exec |exec $newPath $params |" -i "$link"
           else
             echo
           fi
-          ;;
-      esac
     done
     }
   '' +
@@ -143,9 +144,24 @@ in buildEnv {
     perl `type -P mktexlsr.pl` ./share/texmf
     texlinks.sh "$out/bin" && wrapBin
     perl `type -P fmtutil.pl` --sys --refresh | grep '^fmtutil' # too verbose
-    #texlinks.sh "$out/bin" && wrapBin # may we need to run again?
+    #texlinks.sh "$out/bin" && wrapBin # do we need to regenerate format links?
     perl `type -P updmap.pl` --sys --syncwithtrees --force
     perl `type -P mktexlsr.pl` ./share/texmf-* # to make sure
+  '' +
+    # install (wrappers for) scripts, based on a list from upstream texlive
+  ''
+    (
+      cd "$out/share/texmf/scripts"
+      source '${bin.core.out}/share/texmf-dist/scripts/texlive/scripts.lst'
+      for s in $texmf_scripts; do
+        [[ -x "./$s" ]] || continue
+        tName="$(basename $s | sed 's/\.[a-z]\+$//')" # remove extension
+        [[ ! -e "$out/bin/$tName" ]] || continue
+        ln -sv "$(realpath $s)" "$out/bin/$tName" # wrapped below
+      done
+    )
+    rm "$out"/bin/*-sys
+    wrapBin
   '' +
   # TODO: a context trigger https://www.preining.info/blog/2015/06/debian-tex-live-2015-the-new-layout/
     # http://wiki.contextgarden.net/ConTeXt_Standalone#Unix-like_platforms_.28Linux.2FMacOS_X.2FFreeBSD.2FSolaris.29

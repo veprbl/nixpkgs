@@ -207,12 +207,13 @@ core = stdenv.mkDerivation {
   installTargets = [ "install" "texlinks" ];
 
   # TODO: perhaps improve texmf.cnf search locations
-  postInstall = /* the perl modules are useful; take the rest from pkgs */ ''
+  postInstall = /* a few texmf-dist files are useful; take the rest from pkgs */ ''
     mv "$out/share/texmf-dist/web2c/texmf.cnf" .
     rm -r "$out/share/texmf-dist"
     mkdir -p "$out"/share/texmf-dist/{web2c,scripts/texlive/TeXLive}
     mv ./texmf.cnf "$out/share/texmf-dist/web2c/"
     cp ../texk/tests/TeXLive/*.pm "$out/share/texmf-dist/scripts/texlive/TeXLive/"
+    cp ../texk/texlive/linked_scripts/scripts.lst "$out/share/texmf-dist/scripts/texlive/"
   '' + /* doc location identical with individual TeX pkgs */ ''
     mkdir -p "$doc/doc"
     mv "$out"/share/{man,info} "$doc"/doc

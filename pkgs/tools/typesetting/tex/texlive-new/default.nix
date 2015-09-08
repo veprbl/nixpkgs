@@ -28,7 +28,7 @@
 
 { stdenv, lib, fetchurl, runCommand, buildEnv
 , callPackage, ghostscriptX, harfbuzz, poppler_nox
-, perl, makeWrapper
+, makeWrapper, perl, python, ruby
 }:
 let
   # TODOs:
@@ -45,7 +45,7 @@ let
 
   # function for creating a working environment from a set of TL packages
   combine = import ./combine.nix {
-    inherit bin combinePkgs buildEnv fastUnique lib makeWrapper perl stdenv;
+    inherit bin combinePkgs buildEnv fastUnique lib makeWrapper perl stdenv python ruby;
   };
 
   # the set of TeX Live packages, collections, and schemes; using upstream naming
