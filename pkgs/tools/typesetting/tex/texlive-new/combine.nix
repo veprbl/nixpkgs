@@ -84,7 +84,7 @@ in buildEnv {
         local script='${
           lib.concatMapStrings (pkg: "/^\% from ${pkg.pname}/,/^\%/p;\n")
             pkgList.splitBin.wrong
-        }'
+        } 1,/^\% from/p;'
         cat "$cnfOrig" | sed -n "$script" > ./language.dat
       fi
     )
