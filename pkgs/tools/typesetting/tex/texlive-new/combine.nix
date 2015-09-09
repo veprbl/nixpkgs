@@ -108,8 +108,7 @@ in buildEnv {
         --set TEXMFDIST "$out/share/texmf" \
         --set TEXMFSYSCONFIG "$out/share/texmf-config" \
         --set TEXMFSYSVAR "$out/share/texmf-var" \
-        --prefix PERL5LIB : "$out/share/texmf/scripts/texlive" \
-        --argv0 '"$0"'
+        --prefix PERL5LIB : "$out/share/texmf/scripts/texlive"
 
       # avoid using non-nix shebang in $target by calling interpreter
       if [[ "$(head -c 2 $target)" = "#!" ]]; then
@@ -125,6 +124,7 @@ in buildEnv {
         echo " and patching shebang '$cmdline'"
         sed "s|^exec |exec $newPath $params |" -i "$link"
       else
+        sed 's|^exec |exec -a "$0" |' -i "$link"
         echo
       fi
     done
