@@ -18,8 +18,6 @@
     }
   - Known bugs:
     * some tools are missing, e.g.: epstopdf
-    * luatex executables segfault since the time they were split from others
-    * xetex is likely to have problems finding fonts
     * some apps aren't packaged/tested yet (xdvi, asymptote, biber, etc.)
     * feature/bug: when a package is rejected by pkgFilter,
       its dependencies are still propagated

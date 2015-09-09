@@ -166,9 +166,11 @@ core-big = stdenv.mkDerivation {
     make install
     mkdir -p "$luatex/lib"
     mv "$out"/lib/libtexlua*.so* "$luatex/lib/"
+  '';
 
-    for prog in "$luatex"/bin/*; do
-      patchelf --set-rpath $(patchelf --print-rpath "$prog" | sed "s@$out@$luatex@g") "$prog"
+  postFixup = ''
+    for prog in "$luatex"/bin/{luatex,luajittex}; do
+      patchelf --set-rpath "$luatex/lib:$(patchelf --print-rpath "$prog")" "$prog"
     done
   '';
 };
