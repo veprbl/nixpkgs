@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   name = "rippled-${version}";
-  version = "0.28.1";
+  version = "0.29.0-hf1";
 
   src = fetchFromGitHub {
     owner = "ripple";
     repo = "rippled";
     rev = version;
-    sha256 = "0wh8dwdg0gp7smcx40cpqanl2m2hihmx3irqh692svakbl3df3vz";
+    sha256 = "057yz1834wa1w5xi9q4s2pmc9fj5xz1kvkwc59d2g20amgn37f5m";
   };
 
   postPatch = ''
@@ -27,7 +27,7 @@ stdenv.mkDerivation rec {
   meta = with stdenv.lib; {
     description = "Ripple P2P payment network reference server";
     homepage = https://ripple.com;
-    maintainers = [ maintainers.emery maintainers.offline ];
+    maintainers = with maintainers; [ emery offline ];
     license = licenses.isc;
     platforms = [ "x86_64-linux" ];
   };
