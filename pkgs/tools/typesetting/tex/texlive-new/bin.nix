@@ -178,9 +178,11 @@ core-big = stdenv.mkDerivation {
 core = stdenv.mkDerivation {
   name = "texlive-bin-${version}";
 
-  inherit (common) src buildInputs preConfigure configureScript;
+  inherit (common) src preConfigure configureScript;
 
   outputs = [ "out" "doc" ];
+
+  buildInputs = common.buildInputs ++ lib.optional stdenv.isDarwin makeWrapper;
 
   configureFlags = common.configureFlags
     ++ [ "--without-x" ] # disable xdvik and xpdfopen
