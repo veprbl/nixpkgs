@@ -165,7 +165,7 @@ core-big = stdenv.mkDerivation {
     cd ../luajit
     make install
     mkdir -p "$luatex/lib"
-    mv "$out"/lib/libtexlua*.so* "$luatex/lib/"
+    mv "$out"/lib/libtexlua*.${if stdenv.isDarwin then "dylib" else "so"}* "$luatex/lib/"
   '';
 
   postFixup = ''
