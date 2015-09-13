@@ -5,7 +5,7 @@
 , xextproto, perl, libSM, ruby, expat, curl, libjpeg, python, fontconfig, pkgconfig
 , poppler, libpaper, graphite2, lesstif, zziplib, harfbuzz, texinfo, potrace, gmp, mpfr
 , xpdf, cairo, pixman, xorg
-, makeWrapper
+, makeWrapper, patchelf
 }:
 
 
@@ -123,7 +123,8 @@ core-big = stdenv.mkDerivation {
 
   inherit (common) src;
 
-  buildInputs = common.buildInputs ++ [ core cairo harfbuzz icu graphite2 ];
+  buildInputs = common.buildInputs
+    ++ [ core cairo harfbuzz icu graphite2 patchelf ];
 
   configureFlags = common.configureFlags
     ++ withSystemLibs [ "kpathsea" "ptexenc" "cairo" "harfbuzz" "icu" "graphite2" ]
