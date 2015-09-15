@@ -5,7 +5,7 @@
 , xextproto, perl, libSM, ruby, expat, curl, libjpeg, python, fontconfig, pkgconfig
 , poppler, libpaper, graphite2, lesstif, zziplib, harfbuzz, texinfo, potrace, gmp, mpfr
 , xpdf, cairo, pixman, xorg
-, makeWrapper, patchelf
+, makeWrapper
 }:
 
 
@@ -123,24 +123,31 @@ core-big = stdenv.mkDerivation {
 
   inherit (common) src;
 
-  buildInputs = common.buildInputs
-    ++ [ core cairo harfbuzz icu graphite2 patchelf ];
+  buildInputs = common.buildInputs ++ [ core cairo harfbuzz icu graphite2 ];
 
   configureFlags = common.configureFlags
     ++ withSystemLibs [ "kpathsea" "ptexenc" "cairo" "harfbuzz" "icu" "graphite2" ]
     ++ map (prog: "--disable-${prog}") # don't build things we already have
       [ "tex" "ptex" "eptex" "uptex" "euptex" "aleph" "pdftex"
-        "web-progs" "synctex"
+        "web-progs" "synctex" "luajittex" # luajittex is mostly not needed, see:
+        # http://tex.stackexchange.com/questions/97999/when-to-use-luajittex-in-favour-of-luatex
       ];
 
   configureScript = ":";
 
+  # we use static libtexlua, because it's only used by a single binary
   postConfigure = ''
     mkdir ./Work && cd ./Work
-    for path in libs/{teckit,lua52,luajit} texk/web2c; do
+    for path in libs/{teckit,lua52} texk/web2c; do
       (
+        if [[ "$path" == "libs/lua52" ]]; then
+          extraConfig="--enable-static --disable-shared"
+        else
+          extraConfig=""
+        fi
+
         mkdir -p "$path" && cd "$path"
-        "../../../$path/configure" $configureFlags
+        "../../../$path/configure" $configureFlags $extraConfig
       )
     done
   '';
@@ -158,21 +165,8 @@ core-big = stdenv.mkDerivation {
 
     mv "$out/bin"/{inimf,mf,mf-nowin} "$metafont/bin/"
     mv "$out/bin"/{*tomp,mfplain,*mpost} "$metapost/bin/"
-    mv "$out/bin"/{luatex,luajittex,texlua*} "$luatex/bin/"
+    mv "$out/bin"/{luatex,texlua*} "$luatex/bin/"
     mv "$out/bin"/xetex "$xetex/bin/"
-  '' + ''
-    cd ../../libs/lua52
-    make install
-    cd ../luajit
-    make install
-    mkdir -p "$luatex/lib"
-    mv "$out"/lib/libtexlua*.${if stdenv.isDarwin then "dylib" else "so"}* "$luatex/lib/"
-  '';
-
-  postFixup = ''
-    for prog in "$luatex"/bin/{luatex,luajittex}; do
-      patchelf --set-rpath "$luatex/lib:$(patchelf --print-rpath "$prog")" "$prog"
-    done
   '';
 };
 
