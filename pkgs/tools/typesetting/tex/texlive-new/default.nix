@@ -17,10 +17,11 @@
      # there are also other attributes: version, name
     }
   - Known bugs:
-    * some tools are missing, e.g.: epstopdf
+    * some tools are still missing, e.g. luajittex
     * some apps aren't packaged/tested yet (xdvi, asymptote, biber, etc.)
     * feature/bug: when a package is rejected by pkgFilter,
       its dependencies are still propagated
+    * in case of any bugs or feature requests, file a github issue and /cc @vcunat
 */
 
 { stdenv, lib, fetchurl, runCommand, buildEnv
