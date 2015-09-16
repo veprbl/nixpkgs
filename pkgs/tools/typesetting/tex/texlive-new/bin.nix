@@ -35,85 +35,83 @@ let
         # beware: xpdf means to use stuff from poppler :-/
     ];
 
-    removeBundledLibs = ''
-      rm -r libs/{cairo,freetype2,gd,gmp,graphite2,harfbuzz,icu,libpaper,libpng} \
-        libs/{mpfr,pixman,poppler,potrace,xpdf,zlib,zziplib}
-    '';
-    preConfigure = common.removeBundledLibs + ''
-      mkdir Work
-      cd Work
-    '';
-    configureScript = "../configure";
-
     # clean broken links to stuff not built
     cleanBrokenLinks = ''
       for f in "$out"/bin/*; do
         if [[ ! -x "$f" ]]; then rm "$f"; fi
       done
     '';
-
-    buildInputs = [
-      pkgconfig
-      /*teckit*/ zziplib poppler mpfr gmp
-      pixman potrace gd freetype libpng libpaper zlib
-      perl
-    ];
   };
 in rec { # un-indented
 
 inherit (common) cleanBrokenLinks;
 texliveYear = year;
 
-dvisvgm = stdenv.mkDerivation {
-  name = "texlive-dvisvgm.bin-${version}";
+
+core = stdenv.mkDerivation rec {
+  name = "texlive-bin-${version}";
 
   inherit (common) src;
 
-  buildInputs = [ pkgconfig core/*kpathsea*/ ghostscript zlib freetype potrace ];
+  outputs = [ "out" "doc" ];
 
-  preConfigure = "cd texk/dvisvgm";
+  buildInputs = [
+    pkgconfig
+    /*teckit*/ zziplib poppler mpfr gmp
+    pixman potrace gd freetype libpng libpaper zlib
+    perl
+  ];
 
-  configureFlags = common.configureFlags
-    ++ [ "--with-system-kpathsea" "--with-system-libgs" ];
-
-  enableParallelBuilding = true;
-};
-
-dvipng = stdenv.mkDerivation {
-  name = "texlive-dvipng.bin-${version}";
-
-  inherit (common) src;
-
-  buildInputs = [ pkgconfig core/*kpathsea*/ zlib libpng freetype gd ghostscript makeWrapper ];
-
-  preConfigure = "cd texk/dvipng";
-
-  configureFlags = common.configureFlags
-    ++ [ "--with-system-kpathsea" "--with-gs=yes" "--disable-debug" ];
-
-  enableParallelBuilding = true;
-
-  # I didn't manage to hardcode gs location by configureFlags
-  postInstall = ''
-    wrapProgram "$out/bin/dvipng" --prefix PATH : '${ghostscript}/bin'
+  preConfigure = ''
+    rm -r libs/{cairo,freetype2,gd,gmp,graphite2,harfbuzz,icu,libpaper,libpng} \
+      libs/{mpfr,pixman,poppler,potrace,xpdf,zlib,zziplib}
+    mkdir Work
+    cd Work
   '';
-};
-
-bibtexu = bibtex8;
-bibtex8 = stdenv.mkDerivation {
-  name = "texlive-bibtex-x.bin-${version}";
-
-  inherit (common) src;
-
-  buildInputs = [ pkgconfig core/*kpathsea*/ icu ];
-
-  preConfigure = "cd texk/bibtex-x";
+  configureScript = "../configure";
 
   configureFlags = common.configureFlags
-    ++ [ "--with-system-kpathsea" "--with-system-icu" ];
+    ++ [ "--without-x" ] # disable xdvik and xpdfopen
+    ++ map (what: "--disable-${what}") [
+      "dvisvgm" "dvipng" # ghostscript dependency
+      "luatex" "luajittex" "mp" "pmp" "upmp" "mf" # cairo would bring in X and more
+      "xetex" "bibtexu" "bibtex8" "bibtex-x" # ICU isn't small
+    ]
+    ++ [ "--without-system-harfbuzz" "--without-system-icu" ] # bogus configure
+    ;
 
   enableParallelBuilding = true;
+
+  doCheck = false; # triptest fails, likely due to missing TEXMF tree
+  preCheck = "patchShebangs ../texk/web2c";
+
+  installTargets = [ "install" "texlinks" ];
+
+  # TODO: perhaps improve texmf.cnf search locations
+  postInstall = /* a few texmf-dist files are useful; take the rest from pkgs */ ''
+    mv "$out/share/texmf-dist/web2c/texmf.cnf" .
+    rm -r "$out/share/texmf-dist"
+    mkdir -p "$out"/share/texmf-dist/{web2c,scripts/texlive/TeXLive}
+    mv ./texmf.cnf "$out/share/texmf-dist/web2c/"
+    cp ../texk/tests/TeXLive/*.pm "$out/share/texmf-dist/scripts/texlive/TeXLive/"
+    cp ../texk/texlive/linked_scripts/scripts.lst "$out/share/texmf-dist/scripts/texlive/"
+  '' + /* doc location identical with individual TeX pkgs */ ''
+    mkdir -p "$doc/doc"
+    mv "$out"/share/{man,info} "$doc"/doc
+  '' + cleanBrokenLinks;
+
+  setupHook = ./setup-hook.sh; # TODO: maybe texmf-nix -> texmf (and all references)
+  passthru = { inherit version buildInputs; };
+
+  meta = with stdenv.lib; {
+    description = "Basic binaries for TeX Live";
+    homepage    = http://www.tug.org/texlive;
+    license     = stdenv.lib.licenses.gpl2;
+    maintainers = with maintainers; [ vcunat lovek323 raskin jwiegley ];
+    platforms   = platforms.all;
+  };
 };
+
 
 inherit (core-big) metafont metapost luatex xetex;
 core-big = stdenv.mkDerivation {
@@ -121,7 +119,7 @@ core-big = stdenv.mkDerivation {
 
   inherit (common) src;
 
-  buildInputs = common.buildInputs ++ [ core cairo harfbuzz icu graphite2 ];
+  buildInputs = core.buildInputs ++ [ core cairo harfbuzz icu graphite2 ];
 
   configureFlags = common.configureFlags
     ++ withSystemLibs [ "kpathsea" "ptexenc" "cairo" "harfbuzz" "icu" "graphite2" ]
@@ -168,56 +166,60 @@ core-big = stdenv.mkDerivation {
   '';
 };
 
-core = stdenv.mkDerivation {
-  name = "texlive-bin-${version}";
 
-  inherit (common) src preConfigure configureScript;
+dvisvgm = stdenv.mkDerivation {
+  name = "texlive-dvisvgm.bin-${version}";
 
-  outputs = [ "out" "doc" ];
+  inherit (common) src;
 
-  buildInputs = common.buildInputs;
+  buildInputs = [ pkgconfig core/*kpathsea*/ ghostscript zlib freetype potrace ];
+
+  preConfigure = "cd texk/dvisvgm";
 
   configureFlags = common.configureFlags
-    ++ [ "--without-x" ] # disable xdvik and xpdfopen
-    ++ map (what: "--disable-${what}") [
-      "dvisvgm" "dvipng" # ghostscript dependency
-      "luatex" "luajittex" "mp" "pmp" "upmp" "mf" # cairo would bring in X and more
-      "xetex" "bibtexu" "bibtex8" "bibtex-x" # ICU isn't small
-    ]
-    ++ [ "--without-system-harfbuzz" "--without-system-icu" ] # bogus configure
-    ;
+    ++ [ "--with-system-kpathsea" "--with-system-libgs" ];
+
+  enableParallelBuilding = true;
+};
+
+
+dvipng = stdenv.mkDerivation {
+  name = "texlive-dvipng.bin-${version}";
+
+  inherit (common) src;
+
+  buildInputs = [ pkgconfig core/*kpathsea*/ zlib libpng freetype gd ghostscript makeWrapper ];
+
+  preConfigure = "cd texk/dvipng";
+
+  configureFlags = common.configureFlags
+    ++ [ "--with-system-kpathsea" "--with-gs=yes" "--disable-debug" ];
 
   enableParallelBuilding = true;
 
-  doCheck = false; # triptest fails, likely due to missing TEXMF tree
-  preCheck = "patchShebangs ../texk/web2c";
-
-  installTargets = [ "install" "texlinks" ];
-
-  # TODO: perhaps improve texmf.cnf search locations
-  postInstall = /* a few texmf-dist files are useful; take the rest from pkgs */ ''
-    mv "$out/share/texmf-dist/web2c/texmf.cnf" .
-    rm -r "$out/share/texmf-dist"
-    mkdir -p "$out"/share/texmf-dist/{web2c,scripts/texlive/TeXLive}
-    mv ./texmf.cnf "$out/share/texmf-dist/web2c/"
-    cp ../texk/tests/TeXLive/*.pm "$out/share/texmf-dist/scripts/texlive/TeXLive/"
-    cp ../texk/texlive/linked_scripts/scripts.lst "$out/share/texmf-dist/scripts/texlive/"
-  '' + /* doc location identical with individual TeX pkgs */ ''
-    mkdir -p "$doc/doc"
-    mv "$out"/share/{man,info} "$doc"/doc
-  '' + cleanBrokenLinks;
-
-  setupHook = ./setup-hook.sh; # TODO: maybe texmf-nix -> texmf (and all references)
-  passthru = { inherit version; };
-
-  meta = with stdenv.lib; {
-    description = "Basic binaries for TeX Live";
-    homepage    = http://www.tug.org/texlive;
-    license     = stdenv.lib.licenses.gpl2;
-    maintainers = with maintainers; [ vcunat lovek323 raskin jwiegley ];
-    platforms   = platforms.all;
-  };
+  # I didn't manage to hardcode gs location by configureFlags
+  postInstall = ''
+    wrapProgram "$out/bin/dvipng" --prefix PATH : '${ghostscript}/bin'
+  '';
 };
+
+
+bibtexu = bibtex8;
+bibtex8 = stdenv.mkDerivation {
+  name = "texlive-bibtex-x.bin-${version}";
+
+  inherit (common) src;
+
+  buildInputs = [ pkgconfig core/*kpathsea*/ icu ];
+
+  preConfigure = "cd texk/bibtex-x";
+
+  configureFlags = common.configureFlags
+    ++ [ "--with-system-kpathsea" "--with-system-icu" ];
+
+  enableParallelBuilding = true;
+};
+
 
 } # un-indented
 
