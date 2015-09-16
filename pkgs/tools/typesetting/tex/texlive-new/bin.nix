@@ -42,8 +42,6 @@ let
     preConfigure = common.removeBundledLibs + ''
       mkdir Work
       cd Work
-    '' + lib.optionalString stdenv.isDarwin ''
-      export DYLD_LIBRARY_PATH="${poppler}/lib"
     '';
     configureScript = "../configure";
 
@@ -177,7 +175,7 @@ core = stdenv.mkDerivation {
 
   outputs = [ "out" "doc" ];
 
-  buildInputs = common.buildInputs ++ lib.optional stdenv.isDarwin makeWrapper;
+  buildInputs = common.buildInputs;
 
   configureFlags = common.configureFlags
     ++ [ "--without-x" ] # disable xdvik and xpdfopen
@@ -187,18 +185,7 @@ core = stdenv.mkDerivation {
       "xetex" "bibtexu" "bibtex8" "bibtex-x" # ICU isn't small
     ]
     ++ [ "--without-system-harfbuzz" "--without-system-icu" ] # bogus configure
-
-    ++ lib.optionals stdenv.isDarwin [
-    # TODO: We should be able to fix these tests
-    "--disable-devnag"
-  ];
-
-  ## doMainBuild
-  /*
-    sed -e 's@\<env ruby@${ruby}/bin/ruby@' -i $(grep 'env ruby' -rl . )
-    sed -e 's@\<env perl@${perl}/bin/perl@' -i $(grep 'env perl' -rl . )
-    sed -e 's@\<env python@${python}/bin/python@' -i $(grep 'env python' -rl . )
-  */
+    ;
 
   enableParallelBuilding = true;
 
@@ -218,12 +205,7 @@ core = stdenv.mkDerivation {
   '' + /* doc location identical with individual TeX pkgs */ ''
     mkdir -p "$doc/doc"
     mv "$out"/share/{man,info} "$doc"/doc
-  '' + cleanBrokenLinks
-    + stdenv.lib.optionalString stdenv.isDarwin ''
-    for prog in $out/bin/*; do
-      wrapProgram "$prog" --prefix DYLD_LIBRARY_PATH : "${poppler}/lib"
-    done
-  '';
+  '' + cleanBrokenLinks;
 
   setupHook = ./setup-hook.sh; # TODO: maybe texmf-nix -> texmf (and all references)
   passthru = { inherit version; };
