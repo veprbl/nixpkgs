@@ -28,6 +28,7 @@
 , callPackage, ghostscriptX, harfbuzz, poppler_nox
 , makeWrapper, perl, python, ruby
 , useFixedHashes ? true
+, recurseIntoAttrs
 }:
 let
   # various binaries (compiled)
@@ -169,16 +170,30 @@ let
     in un_adj (lib.sort comparator list);
 
 in
-  tl // rec {
-    inherit bin;
+  tl // {
+    inherit bin combine;
 
-    combined = lib.mapAttrs
-      (pname: attrs: combine { ${pname} = attrs; })
-      { inherit (tl) scheme-full
-          scheme-tetex scheme-medium scheme-small scheme-basic scheme-minimal
-          scheme-context scheme-gust scheme-xml;
-      };
-
-    inherit combine;
+    # Pre-defined combined packages for TeX Live schemes,
+    # to make nix-env usage more comfortable and build selected on Hydra.
+    combined = with lib; recurseIntoAttrs (
+      mapAttrs
+        (pname: attrs:
+          addMetaAttrs rec {
+            description = "TeX Live environment for ${pname}";
+            platforms = lib.platforms.all;
+            hydraPlatforms = lib.optionals
+              (lib.elem pname ["scheme-small" "scheme-basic"]) platforms;
+            maintainers = [ lib.maintainers.vcunat ];
+          }
+          (combine {
+            ${pname} = attrs;
+            extraName = "combined" + lib.removePrefix "scheme" pname;
+          })
+        )
+        { inherit (tl) scheme-full
+            scheme-tetex scheme-medium scheme-small scheme-basic scheme-minimal
+            scheme-context scheme-gust scheme-xml;
+        }
+    );
   }
 

@@ -1,5 +1,5 @@
 args : with args;
-builtins.trace "Warning: you're using the old TeX Live."
+
 rec {
   src = assert config.allowTexliveBuilds or true; fetchurl {
     url = mirror://debian/pool/main/t/texlive-bin/texlive-bin_2014.20140926.35254.orig.tar.xz;

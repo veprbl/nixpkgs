@@ -15069,7 +15069,7 @@ let
   texFunctions = import ../tools/typesetting/tex/nix pkgs;
 
   # All the new TeX Live is inside. See description in default.nix.
-  texlive = #recurseIntoAttrs
+  texlive = recurseIntoAttrs
     (callPackage ../tools/typesetting/tex/texlive-new { });
 
   texLive = builderDefsPackage (import ../tools/typesetting/tex/texlive) {
