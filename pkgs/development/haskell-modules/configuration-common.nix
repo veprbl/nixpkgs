@@ -12,7 +12,7 @@ self: super: {
   cabal-install_1_18_1_0 = (dontCheck super.cabal-install_1_18_1_0).overrideScope (self: super: { Cabal = self.Cabal_1_18_1_6; zlib = self.zlib_0_5_4_2; });
 
   # Link statically to avoid runtime dependency on GHC.
-  jailbreak-cabal = disableSharedExecutables super.jailbreak-cabal;
+  jailbreak-cabal = (disableSharedExecutables super.jailbreak-cabal).override { Cabal = dontJailbreak self.Cabal_1_20_0_3; };
 
   # Apply NixOS-specific patches.
   ghc-paths = appendPatch super.ghc-paths ./patches/ghc-paths-nix.patch;
@@ -53,7 +53,7 @@ self: super: {
     configureFlags = (drv.configureFlags or []) ++
       pkgs.lib.optional pkgs.stdenv.is64bit "--extra-lib-dirs=${pkgs.cudatoolkit}/lib64" ++ [
       "--extra-lib-dirs=${pkgs.cudatoolkit}/lib"
-      "--extra-include-dirs=${pkgs.cudatoolkit}/usr_include"
+      "--extra-include-dirs=${pkgs.cudatoolkit}/include"
     ];
     preConfigure = ''
       unset CC          # unconfuse the haskell-cuda configure script
@@ -88,6 +88,12 @@ self: super: {
   yices = dontDistribute super.yices;
   yices-easy = dontDistribute super.yices-easy;
   yices-painless = dontDistribute super.yices-painless;
+
+  # https://github.com/GaloisInc/RSA/issues/9
+  RSA = dontCheck super.RSA;
+
+  # https://github.com/froozen/kademlia/issues/2
+  kademlia = dontCheck super.kademlia;
 
   # Won't find it's header files without help.
   sfml-audio = appendConfigureFlag super.sfml-audio "--extra-include-dirs=${pkgs.openal}/include/AL";
@@ -289,21 +295,22 @@ self: super: {
   hakyll = dontCheck super.hakyll;
   Hclip = dontCheck super.Hclip;
   HList = dontCheck super.HList;
+  ide-backend = dontCheck super.ide-backend;
   marquise = dontCheck super.marquise;                  # https://github.com/anchor/marquise/issues/69
   memcached-binary = dontCheck super.memcached-binary;
+  msgpack-rpc = dontCheck super.msgpack-rpc;
   persistent-zookeeper = dontCheck super.persistent-zookeeper;
   pocket-dns = dontCheck super.pocket-dns;
   postgresql-simple = dontCheck super.postgresql-simple;
   postgrest = dontCheck super.postgrest;
   snowball = dontCheck super.snowball;
+  sophia = dontCheck super.sophia;
   test-sandbox = dontCheck super.test-sandbox;
   users-postgresql-simple = dontCheck super.users-postgresql-simple;
   wai-middleware-hmac = dontCheck super.wai-middleware-hmac;
   wai-middleware-throttle = dontCheck super.wai-middleware-throttle; # https://github.com/creichert/wai-middleware-throttle/issues/1
   xkbcommon = dontCheck super.xkbcommon;
   xmlgen = dontCheck super.xmlgen;
-  ide-backend = dontCheck super.ide-backend;
-  msgpack-rpc = dontCheck super.msgpack-rpc;
 
   # These packages try to access the network.
   amqp = dontCheck super.amqp;
@@ -748,7 +755,9 @@ self: super: {
   zlib = dontCheck super.zlib;
 
   # Override the obsolete version from Hackage with our more up-to-date copy.
-  cabal2nix = self.callPackage ../tools/haskell/cabal2nix {};
+  cabal2nix = self.callPackage ../tools/haskell/cabal2nix/cabal2nix.nix {};
+  hackage2nix = self.callPackage ../tools/haskell/cabal2nix/hackage2nix.nix {};
+  distribution-nixpkgs = self.callPackage ../tools/haskell/cabal2nix/distribution-nixpkgs.nix {};
 
   # https://github.com/urs-of-the-backwoods/HGamer3D/issues/7
   HGamer3D-Bullet-Binding = dontDistribute super.HGamer3D-Bullet-Binding;
@@ -761,23 +770,6 @@ self: super: {
 
   # https://github.com/nushio3/doctest-prop/issues/1
   doctest-prop = dontCheck super.doctest-prop;
-
-  # https://github.com/goldfirere/singletons/issues/117
-  clash-lib = dontDistribute super.clash-lib;
-  clash-verilog = dontDistribute super.clash-verilog;
-  Frames = dontDistribute super.Frames;
-  hgeometry = dontDistribute super.hgeometry;
-  hipe = dontDistribute super.hipe;
-  hsqml-datamodel-vinyl = dontDistribute super.hsqml-datamodel-vinyl;
-  singleton-nats = dontDistribute super.singleton-nats;
-  singletons = markBroken super.singletons;
-  units-attoparsec = dontDistribute super.units-attoparsec;
-  ihaskell-widgets = dontDistribute super.ihaskell-widgets;
-  exinst-bytes = dontDistribute super.exinst-bytes;
-  exinst-deepseq = dontDistribute super.exinst-deepseq;
-  exinst-aeson = dontDistribute super.exinst-aeson;
-  exinst = dontDistribute super.exinst;
-  exinst-hashable = dontDistribute super.exinst-hashable;
 
   # https://github.com/anton-k/temporal-music-notation/issues/1
   temporal-music-notation = markBroken super.temporal-music-notation;
@@ -1010,10 +1002,26 @@ self: super: {
   # https://github.com/basvandijk/concurrent-extra/issues/12
   concurrent-extra = dontCheck super.concurrent-extra;
 
-  # https://github.com/GaloisInc/DSA/issues/1
-  DSA = dontCheck super.DSA;
-
   # https://github.com/bos/bloomfilter/issues/7
   bloomfilter = appendPatch super.bloomfilter ./patches/bloomfilter-fix-on-32bit.patch;
+
+  # https://github.com/pxqr/base32-bytestring/issues/4
+  base32-bytestring = dontCheck super.base32-bytestring;
+
+  # https://github.com/JohnLato/listlike/pull/6#issuecomment-137986095
+  ListLike = dontCheck super.ListLike;
+
+  # https://github.com/goldfirere/singletons/issues/122
+  singletons = dontCheck super.singletons;
+
+  # cabal2nix doesn't pick up some of the dependencies.
+  ginsu = let
+    g = addBuildDepend super.ginsu pkgs.perl;
+    g' = overrideCabal g (drv: {
+      executableSystemDepends = (drv.executableSystemDepends or []) ++ [
+        pkgs.ncurses
+      ];
+    });
+  in g';
 
 }
