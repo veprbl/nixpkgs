@@ -84,16 +84,17 @@ in buildEnv {
     # now filter hyphenation patterns, in a hacky way ATM
   ''
     (
-      if [[ -e ./share/texmf/tex/generic/config/language.dat ]]; then
-        cd ./share/texmf/tex/generic/config/
-        cnfOrig="$(realpath ./language.dat)"
-        rm ./language.dat
-        local script='${
-          lib.concatMapStrings (pkg: "/^\% from ${pkg.pname}/,/^\%/p;\n")
-            pkgList.splitBin.wrong
-        } 1,/^\% from/p;'
-        cat "$cnfOrig" | sed -n "$script" > ./language.dat
-      fi
+      local script='${
+        lib.concatMapStrings (pkg: "/^\% from ${pkg.pname}/,/^\%/p;\n")
+          pkgList.splitBin.wrong
+      } 1,/^\% from/p;'
+      cd ./share/texmf/tex/generic/config/
+      for fname in language.dat language.def; do
+        [ -e $fname ] || continue;
+        cnfOrig="$(realpath ./$fname)"
+        rm ./$fname
+        cat "$cnfOrig" | sed -n "$script" > ./$fname
+      done
     )
   '' +
 
