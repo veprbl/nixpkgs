@@ -49,7 +49,11 @@ in buildEnv {
     lib.concatMapStrings
       (path: ''
         for f in '${path}'/bin/*; do
-          ln -s "$f" ./bin/
+          if [[ -L "$f" ]]; then
+            cp -d "$f" ./bin/
+          else
+            ln -s "$f" ./bin/
+          fi
         done
       '')
       pkgList.bin
