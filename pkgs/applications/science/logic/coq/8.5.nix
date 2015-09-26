@@ -1,19 +1,19 @@
 # - coqide compilation can be disabled by setting lablgtk to null;
-# - The csdp program used for the Micromega tactic is statically referenced.
-#   However, coq can build without csdp by setting it to null.
-#   In this case some Micromega tactics will search the user's path for the csdp program and will fail if it is not found.
+# - The csdp program used for the Micromega tactic is statically referenced
+#   if the withCsdp parameter is set to true.
+#   Otherwise some Micromega tactics will search the user's path for the csdp program and will fail if it is not found.
 
-{stdenv, fetchurl, writeText, pkgconfig, ocaml, findlib, camlp5, ncurses, lablgtk ? null, csdp ? null}:
+{ stdenv, fetchurl, writeText, pkgconfig, ocaml, findlib, camlp5, ncurses, lablgtk ? null, csdp, withCsdp ? false }:
 
 let
   version = "8.5b2";
   coq-version = "8.5";
   buildIde = lablgtk != null;
   ideFlags = if buildIde then "-lablgtkdir ${lablgtk}/lib/ocaml/*/site-lib/lablgtk2 -coqide opt" else "";
-  csdpPatch = if csdp != null then ''
+  csdpPatch = stdenv.lib.optionalString withCsdp ''
     substituteInPlace plugins/micromega/sos.ml --replace "; csdp" "; ${csdp}/bin/csdp"
     substituteInPlace plugins/micromega/coq_micromega.ml --replace "System.is_in_system_path \"csdp\"" "true"
-  '' else "";
+  '';
 in
 
 stdenv.mkDerivation {
