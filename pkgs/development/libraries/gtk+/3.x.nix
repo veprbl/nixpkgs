@@ -5,7 +5,6 @@
 , cupsSupport ? stdenv.isLinux, cups ? null
 }:
 
-assert xineramaSupport -> xlibs.libXinerama != null;
 assert cupsSupport -> cups != null;
 
 let
@@ -26,12 +25,14 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkgconfig gettext gobjectIntrospection perl ];
 
-  buildInputs = [ libxkbcommon epoxy ];
-  propagatedBuildInputs = with xlibs; with stdenv.lib;
-    [ expat glib cairo pango gdk_pixbuf atk at_spi2_atk libXrandr libXrender libXcomposite libXi libXcursor ]
+  buildInputs = [ libxkbcommon epoxy json_glib ];
+  propagatedBuildInputs = with xorg; with stdenv.lib;
+    [ expat glib cairo pango gdk_pixbuf atk at_spi2_atk
+      libXrandr libXrender libXcomposite libXi libXcursor libSM libICE ]
     ++ optionals stdenv.isLinux [ wayland ]
     ++ optional xineramaSupport libXinerama
     ++ optional cupsSupport cups;
+  #TODO: colord?
 
   NIX_LDFLAGS = if stdenv.isDarwin then "-lintl" else null;
 
@@ -41,7 +42,6 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
 
   postInstall = ''
-    rm -rf $out/share/gtk-doc
     substituteInPlace "$out/lib/gtk-3.0/3.0.0/printbackends/libprintbackend-cups.la" \
       --replace '-L${gmp.dev}/lib' '-L${gmp.out}/lib'
   '';
