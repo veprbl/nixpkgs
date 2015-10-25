@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, m4, cxx ? true, withStatic ? true }:
+{ stdenv, fetchurl, m4, cxx ? true, withStatic ? false }:
 
 with { inherit (stdenv.lib) optional optionalString; };
 

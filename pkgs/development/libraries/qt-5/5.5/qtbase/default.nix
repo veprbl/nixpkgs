@@ -98,6 +98,9 @@ stdenv.mkDerivation {
     ++ optional decryptSslTraffic decrypt-ssl-traffic
     ++ optional mesaSupported mkspecs-libgl;
 
+  outputs = [ "dev" "out" ]; # docs are linked from libQtCore :-/
+  setOutputFlags = false;
+
   preConfigure = ''
     export LD_LIBRARY_PATH="$PWD/qtbase/lib:$PWD/qtbase/plugins/platforms:$PWD/qttools/lib:$LD_LIBRARY_PATH"
     export MAKEFLAGS=-j$NIX_BUILD_CORES
@@ -109,6 +112,7 @@ stdenv.mkDerivation {
 
     export configureFlags+="-plugindir $out/lib/qt5/plugins -importdir $out/lib/qt5/imports -qmldir $out/lib/qt5/qml"
     export configureFlags+=" -docdir $out/share/doc/qt5"
+    configureFlags+=" -bindir '$dev/bin' -headerdir '$dev/include' "
   '';
 
   prefixKey = "-prefix ";

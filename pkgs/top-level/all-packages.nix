@@ -7801,9 +7801,8 @@ let
     vtk = vtkWithQt4;
   };
 
-  pcre = callPackage ../development/libraries/pcre {
-    unicodeSupport = config.pcre.unicode or true;
-  };
+  pcre = callPackage ../development/libraries/pcre { };
+  pcrecpp = pcre.override { variant = "cpp"; };
 
   pdf2xml = callPackage ../development/libraries/pdf2xml {} ;
 
@@ -11546,9 +11545,7 @@ let
 
   inherit (gnome3) gitg;
 
-  giv = callPackage ../applications/graphics/giv {
-    pcre = pcre.override { unicodeSupport = true; };
-  };
+  giv = callPackage ../applications/graphics/giv { };
 
   gmrun = callPackage ../applications/misc/gmrun {};
 
