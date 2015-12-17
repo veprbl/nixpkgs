@@ -65,7 +65,7 @@ if [ "$NIX_DONT_SET_RPATH" != 1 ]; then
         case "$path" in
             *..*|*./*|*/.*|*//*)
                 local path2
-                if path2=$(readlink -f "$path"); then
+                if path2=$("@coreutils@"/bin/readlink -f "$path"); then
                     path="$path2"
                 fi
                 ;;
