@@ -118,7 +118,7 @@ if [ "$NIX_DONT_SET_RPATH" != 1 ]; then
         elif [[ "$p" =~ ^[^-].*\.so($|\.) ]]; then
             # This is a direct reference to a shared library, so add
             # its directory to the rpath.
-            path="$(dirname "$p")";
+            path="$("@coreutils@/bin/dirname" "$p")";
             addToRPath "${path}"
         fi
         n=$((n + 1))

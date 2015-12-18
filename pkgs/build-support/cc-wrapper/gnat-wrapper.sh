@@ -26,7 +26,7 @@ for i in "$@"; do
         nonFlagArgs=1
     elif [ "$i" = -m32 ]; then
         if [ -e @out@/nix-support/dynamic-linker-m32 ]; then
-            NIX_LDFLAGS="$NIX_LDFLAGS -dynamic-linker $(cat @out@/nix-support/dynamic-linker-m32)"
+            NIX_LDFLAGS="$NIX_LDFLAGS -dynamic-linker $("@coreutils@/bin/cat" @out@/nix-support/dynamic-linker-m32)"
         fi
     fi
 done
