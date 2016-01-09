@@ -64,7 +64,7 @@ let version = if isRelease then
       description = "A safe, concurrent, practical language";
       maintainers = with maintainers; [ madjar cstrahan wizeman globin havvy wkennington ];
       license = [ licenses.mit licenses.asl20 ];
-      platforms = platforms.linux;
+      platforms = platforms.linux ++ platforms.darwin;
     };
 
     snapshotHash = if stdenv.system == "i686-linux"
