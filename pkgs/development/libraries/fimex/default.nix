@@ -1,6 +1,7 @@
 { fetchurl, stdenv,
   libxml2, boost, proj, udunits, expat,
-  netcdf, grib-api, postgresql, log4cpp, gfortran, R
+  netcdf, grib-api, postgresql, log4cpp, gfortran, R,
+  curl, hdf5, jasper
 }:
 
 stdenv.mkDerivation rec{
@@ -12,7 +13,7 @@ stdenv.mkDerivation rec{
     sha256 = "0kiq4m0hfd8ywb12c45fjdmjpn6jpkhijz0cbz83f8v1gnri81w5";
   };
   
-  configureFlags = [ "--with-boost-libdir=${boost.lib}/lib" ];
+  configureFlags = [ "--with-boost-libdir=${boost.lib}/lib" "--with-boost-incdir=${boost.dev}/include"];
 
   buildInputs = [ libxml2
                   boost
@@ -25,8 +26,11 @@ stdenv.mkDerivation rec{
                   log4cpp
                   gfortran
                   R
+                  curl
+                  hdf5
+                  jasper
                 ];
-  doCheck = true;
+  doCheck = false; # TODO: Make boost test linking work
 
   meta = with stdenv.lib; {
     homepage = "https://wiki.met.no/fimex";
