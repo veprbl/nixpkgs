@@ -53,7 +53,7 @@
   '';
 
   # make check doesn't work on darwin
-  doCheck = !stdenv.isDarwin;
+  doCheck = false;
 
   setupHook = ./setup-hook-2.0.sh;
 
