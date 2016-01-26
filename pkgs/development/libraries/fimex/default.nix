@@ -25,7 +25,6 @@ stdenv.mkDerivation rec{
                   postgresql
                   log4cpp
                   gfortran
-                  R
                   curl
                   hdf5
                   jasper
