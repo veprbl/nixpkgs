@@ -2872,7 +2872,7 @@ let
 
   remarshal = (callPackage ../development/tools/remarshal { }).bin // { outputs = [ "bin" ]; };
 
-  openmpi = callPackage ../development/libraries/openmpi { };
+  openmpi = callPackage ../development/libraries/openmpi { enableSGE=true; enablePrefix=true; };
 
   openmodelica = callPackage ../applications/science/misc/openmodelica { };
 
