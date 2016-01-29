@@ -6483,6 +6483,8 @@ let
 
   filter-audio = callPackage ../development/libraries/filter-audio {};
 
+  fimex = callPackage ../development/libraries/fimex { };
+
   flann = callPackage ../development/libraries/flann { };
 
   flite = callPackage ../development/libraries/flite { };
