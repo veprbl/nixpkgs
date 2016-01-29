@@ -14,7 +14,6 @@ stdenv.mkDerivation rec{
   };
   
   configureFlags = [ "--with-boost-libdir=${boost.lib}/lib" 
-                     "--with-boost-incdir=${boost.dev}/include"
                      "--enable-openmp"
                      "--enable-log4cpp"
                      "--enable-fortran"
