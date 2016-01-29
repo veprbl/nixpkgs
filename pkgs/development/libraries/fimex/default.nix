@@ -13,7 +13,12 @@ stdenv.mkDerivation rec{
     sha256 = "0kiq4m0hfd8ywb12c45fjdmjpn6jpkhijz0cbz83f8v1gnri81w5";
   };
   
-  configureFlags = [ "--with-boost-libdir=${boost.lib}/lib" "--with-boost-incdir=${boost.dev}/include"];
+  configureFlags = [ "--with-boost-libdir=${boost.lib}/lib" 
+                     "--with-boost-incdir=${boost.dev}/include"
+                     "--enable-openmp"
+                     "--enable-log4cpp"
+                     "--enable-fortran"
+                   ];         
 
   buildInputs = [ libxml2
                   boost
