@@ -33,15 +33,8 @@ with lib;
 
     fonts.fonts = mkIf config.fonts.enableDefaultFonts
       [
-        pkgs.xorg.fontbhlucidatypewriter100dpi
-        pkgs.xorg.fontbhlucidatypewriter75dpi
-        pkgs.dejavu_fonts
-        pkgs.freefont_ttf
-        pkgs.liberation_ttf
-        pkgs.xorg.fontbh100dpi
-        pkgs.xorg.fontmiscmisc
-        pkgs.xorg.fontcursormisc
-        pkgs.unifont
+        pkgs.dejavu_fonts   # our default font; see ./fontconfig.nix
+        pkgs.liberation_ttf # metric-compatibles for classic corefonts
       ];
 
   };

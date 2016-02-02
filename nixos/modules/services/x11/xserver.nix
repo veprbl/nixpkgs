@@ -19,19 +19,6 @@ let
     modesetting = {};
   };
 
-  fontsForXServer =
-    config.fonts.fonts ++
-    # We don't want these fonts in fonts.conf, because then modern,
-    # fontconfig-based applications will get horrible bitmapped
-    # Helvetica fonts.  It's better to get a substitution (like Nimbus
-    # Sans) than that horror.  But we do need the Adobe fonts for some
-    # old non-fontconfig applications.  (Possibly this could be done
-    # better using a fontconfig rule.)
-    [ pkgs.xorg.fontadobe100dpi
-      pkgs.xorg.fontadobe75dpi
-    ];
-
-
   # Just enumerate all heads without discarding XRandR output information.
   xrandrHeads = let
     mkHead = num: output: {
@@ -80,7 +67,7 @@ let
         echo 'Section "Files"' >> $out
         echo $xfs >> $out
 
-        for i in ${toString fontsForXServer}; do
+        for i in ${toString config.fonts.fonts}; do
           if test "''${i:0:''${#NIX_STORE}}" == "$NIX_STORE"; then
             for j in $(find $i -name fonts.dir); do
               echo "  FontPath \"$(dirname $j)\"" >> $out
