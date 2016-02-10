@@ -1,7 +1,7 @@
 { fetchurl, stdenv,
   libxml2, boost, proj, udunits, expat,
-  netcdf, grib-api, postgresql, log4cpp, gfortran, R,
-  curl, hdf5, jasper
+  netcdf, grib-api, postgresql, gfortran, R,
+  curl, hdf5, jasper,
 }:
 
 stdenv.mkDerivation rec{
@@ -15,7 +15,6 @@ stdenv.mkDerivation rec{
   
   configureFlags = [ "--with-boost-libdir=${boost.lib}/lib" 
                      "--enable-openmp"
-                     "--enable-log4cpp"
                      "--enable-fortran"
                    ];         
 
@@ -27,12 +26,14 @@ stdenv.mkDerivation rec{
                   netcdf
                   grib-api
                   postgresql
-                  log4cpp
                   gfortran
                   curl
                   hdf5
                   jasper
                 ];
+
+  enableParallelBuilding = true;
+
   doCheck = false; # TODO: Make boost test linking work
 
   meta = with stdenv.lib; {
