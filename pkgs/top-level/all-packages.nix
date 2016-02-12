@@ -6210,6 +6210,8 @@ let
 
   babl = callPackage ../development/libraries/babl { };
 
+  bashdb = callPackage ../development/tools/misc/bashdb { };
+
   beecrypt = callPackage ../development/libraries/beecrypt { };
 
   belle-sip = callPackage ../development/libraries/belle-sip { };
