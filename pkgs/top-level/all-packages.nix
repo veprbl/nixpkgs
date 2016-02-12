@@ -6408,6 +6408,8 @@ let
 
   eigen2 = callPackage ../development/libraries/eigen/2.0.nix {};
 
+  emoslib = callPackage ../development/libraries/emoslib {};
+
   enchant = callPackage ../development/libraries/enchant { };
 
   enet = callPackage ../development/libraries/enet { };
