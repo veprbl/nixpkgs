@@ -1,5 +1,5 @@
 { stdenv, autoconf, automake, makeWrapper, pkgconfig, libtool, which, git
-, boost, python, pythonPackages, libxml2, zlib
+, boost, python, pythonPackages, libxml2, zlib, ensure1980SourcesHook
 
 # Optional Dependencies
 , snappy ? null, leveldb ? null, yasm ? null, fcgi ? null, expat ? null
@@ -112,6 +112,7 @@ stdenv.mkDerivation {
   ];
 
   nativeBuildInputs = [ autoconf automake makeWrapper pkgconfig libtool which git ]
+    ++ [ ensure1980SourcesHook ]
     ++ optionals (versionAtLeast version "9.0.2") [
       pythonPackages.setuptools pythonPackages.argparse
     ];

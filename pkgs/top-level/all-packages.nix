@@ -259,6 +259,8 @@ let
     { substitutions = { inherit autoconf automake gettext libtool; }; }
     ../build-support/setup-hooks/autoreconf.sh;
 
+  # python tends to zip stuff which isn't possible with 1970 timestamps
+  ensure1980SourcesHook = ensureNewerSourcesHook { year = "1980"; };
   ensureNewerSourcesHook = { year }: makeSetupHook {}
     (writeScript "ensure-newer-sources-hook.sh" ''
       postUnpackHooks+=(_ensureNewerSources)
