@@ -92,6 +92,7 @@ stdenv.mkDerivation rec {
 
   patches = [
     ./remove-tools-1.5.patch
+    ./ssl-cert-path-1.5.patch
   ]
   # -ldflags=-s is required to compile on Darwin, see
   # https://github.com/golang/go/issues/11994

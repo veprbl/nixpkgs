@@ -1,0 +1,33 @@
+diff --git a/src/crypto/x509/root_unix.go b/src/crypto/x509/root_unix.go
+index f77d6c0..6a20664 100644
+--- a/src/crypto/x509/root_unix.go
++++ b/src/crypto/x509/root_unix.go
+@@ -6,7 +6,10 @@
+ 
+ package x509
+ 
+-import "io/ioutil"
++import (
++	"io/ioutil"
++	"os"
++)
+ 
+ // Possible certificate files; stop after finding one.
+ var certFiles = []string{
+@@ -32,6 +35,16 @@ func (c *Certificate) systemVerify(opts *VerifyOptions) (chains [][]*Certificate
+ 
+ func initSystemRoots() {
+ 	roots := NewCertPool()
++
++	if file := os.Getenv("SSL_CERT_FILE"); file != "" {
++		data, err := ioutil.ReadFile(file)
++		if err == nil {
++			roots.AppendCertsFromPEM(data)
++			systemRoots = roots
++			return
++		}
++	}
++
+ 	for _, file := range certFiles {
+ 		data, err := ioutil.ReadFile(file)
+ 		if err == nil {
