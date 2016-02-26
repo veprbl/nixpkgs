@@ -1,5 +1,6 @@
 { fetchurl, stdenv, curl,
-  netcdf, jasper, openjpeg }:
+  netcdf, jasper, openjpeg,
+  gfortran}:
 
 stdenv.mkDerivation rec{
   name = "grib-api-${version}";
@@ -14,6 +15,7 @@ stdenv.mkDerivation rec{
                   jasper
                   openjpeg
                   curl     # Used for downloading during make test
+                  gfortran
                 ];
   doCheck = true;
 
