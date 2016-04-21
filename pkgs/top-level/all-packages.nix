@@ -15006,6 +15006,10 @@ in
   # You still can override by passing more arguments.
   spaceOrbit = callPackage ../games/orbit { };
 
+  space-nerds = callPackage ../games/space-nerds {
+    inherit (gnome2) gtkglext;
+  };
+
   spring = callPackage ../games/spring {
     boost = boost155;
     cmake = cmake-2_8;
