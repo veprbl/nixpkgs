@@ -10407,25 +10407,17 @@ in
 
   # -- Linux kernel expressions ------------------------------------------------
 
-  linuxHeaders = self.linuxHeaders_3_18;
+  linuxHeaders =
+    if (crossSystem.platform.kernelMajor or "2.6" == "2.6")
+      then self.linuxHeaders_3_18 # the usual case
+      else if (crossSystem.platform.kernelMajor == "2.4") then self.linuxHeaders24
+        else throw "Unknown kernel version '${crossSystem.platform.kernelMajor}'";
 
-  linuxHeaders24Cross = forceNativeDrv (callPackage ../os-specific/linux/kernel-headers/2.4.nix {
-    cross = assert crossSystem != null; crossSystem;
-  });
+  linuxHeaders24 = forceNativeDrv
+    (callPackage ../os-specific/linux/kernel-headers/2.4.nix { });
 
-  linuxHeaders26Cross = forceNativeDrv (callPackage ../os-specific/linux/kernel-headers/3.18.nix {
-    cross = assert crossSystem != null; crossSystem;
-  });
-
-  linuxHeaders_3_18 = callPackage ../os-specific/linux/kernel-headers/3.18.nix { };
-
-  # We can choose:
-  linuxHeadersCrossChooser = ver : if ver == "2.4" then self.linuxHeaders24Cross
-    else if ver == "2.6" then self.linuxHeaders26Cross
-    else throw "Unknown linux kernel version";
-
-  linuxHeadersCross = assert crossSystem != null;
-    self.linuxHeadersCrossChooser crossSystem.platform.kernelMajor;
+  linuxHeaders_3_18 = forceNativeDrv
+    (callPackage ../os-specific/linux/kernel-headers/3.18.nix { });
 
   kernelPatches = callPackage ../os-specific/linux/kernel/patches.nix { };
 

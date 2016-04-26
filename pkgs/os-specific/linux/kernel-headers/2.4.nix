@@ -1,14 +1,15 @@
-{stdenv, fetchurl, perl, cross ? null}:
-
-assert cross == null -> stdenv.isLinux;
+{stdenv, fetchurl, perl}:
 
 let
+  inherit (stdenv) cross;
   version = "2.4.37.9";
   kernelHeadersBaseConfig = if cross == null then
       stdenv.platform.kernelHeadersBaseConfig
     else
       cross.platform.kernelHeadersBaseConfig;
 in
+
+assert cross == null -> stdenv.isLinux;
 
 stdenv.mkDerivation {
   name = "linux-headers-${version}";
