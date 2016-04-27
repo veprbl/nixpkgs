@@ -55,11 +55,6 @@ in
 
   callPackage_i686 = lib.callPackageWith (pkgsi686Linux // pkgsi686Linux.xorg);
 
-  forceNativeDrv = drv : if crossSystem == null then drv else
-    (drv // { crossDrv = drv.nativeDrv; });
-
-  stdenvCross = lowPrio (makeStdenvCross defaultStdenv crossSystem binutilsCross gccCrossStageFinal);
-
   # A stdenv capable of building 32-bit binaries.  On x86_64-linux,
   # it uses GCC compiled with multilib support; on i686-linux, it's
   # just the plain stdenv.
@@ -4080,45 +4075,6 @@ in
 
   gccApple = throw "gccApple is no longer supported";
 
-  gccCrossStageStatic = let
-    libcCross1 =
-      if stdenv.cross.libc == "msvcrt" then windows.mingw_w64_headers
-      else if stdenv.cross.libc == "libSystem" then darwin.xcode
-      else null;
-    in wrapGCCCross {
-      gcc = forceNativeDrv (gcc.cc.override {
-        cross = crossSystem;
-        crossStageStatic = true;
-        langCC = false;
-        libcCross = libcCross1;
-        enableShared = false;
-      });
-      libc = libcCross1;
-      binutils = binutilsCross;
-      cross = crossSystem;
-  };
-
-  # Only needed for mingw builds
-  gccCrossMingw2 = wrapGCCCross {
-    gcc = gccCrossStageStatic.gcc;
-    libc = windows.mingw_headers2;
-    binutils = binutilsCross;
-    cross = assert crossSystem != null; crossSystem;
-  };
-
-  gccCrossStageFinal = wrapGCCCross {
-    gcc = forceNativeDrv (gcc.cc.override {
-      cross = crossSystem;
-      crossStageStatic = false;
-
-      # XXX: We have troubles cross-compiling libstdc++ on MinGW (see
-      # <http://hydra.nixos.org/build/4268232>), so don't even try.
-      langCC = crossSystem.config != "i686-pc-mingw32";
-    });
-    libc = libcCross;
-    binutils = binutilsCross;
-    cross = crossSystem;
-  };
 
   gcc45 = lowPrio (wrapCC (callPackage ../development/compilers/gcc/4.5 {
     inherit noSysDirs;
@@ -5743,13 +5699,6 @@ in
     gold = false;
   });
 
-  binutilsCross = assert crossSystem != null; lowPrio (forceNativeDrv (
-    if crossSystem.libc == "libSystem" then darwin.cctools_cross
-    else binutils.override {
-      noSysDirs = true;
-      cross = crossSystem;
-    }));
-
   bison2 = callPackage ../development/tools/parsing/bison/2.x.nix { };
   bison3 = callPackage ../development/tools/parsing/bison/3.x.nix { };
   bison = self.bison3;
@@ -6855,20 +6804,6 @@ in
     installLocales = false;
     withGd = true;
   };
-
-  glibcCross = forceNativeDrv (glibc.override {
-    gccCross = gccCrossStageStatic;
-    linuxHeaders = linuxHeadersCross;
-  });
-
-  # We can choose:
-  libcCrossChooser = name: if name == "glibc" then glibcCross
-    else if name == "uclibc" then uclibcCross
-    else if name == "msvcrt" then windows.mingw_w64
-    else if name == "libSystem" then darwin.xcode
-    else throw "Unknown libc";
-
-  libcCross = assert crossSystem != null; libcCrossChooser crossSystem.libc;
 
   # Only supported on Linux
   glibcLocales = if stdenv.isLinux then callPackage ../development/libraries/glibc/locales.nix { } else null;
