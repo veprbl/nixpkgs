@@ -13,14 +13,14 @@ let
 
   ver1 = "120";
   ver2 = "1";
-  ver3 = "1";
+  ver3 = "3";
   version =   "${ver1}.${ver2}.${ver3}";
   ver_dash =  "${ver1}-${ver2}-${ver3}";
   ver2_dash = "${ver1}-${ver2}";
 
   binary_src = fetchurl {
     url = "mirror://sourceforge/simutrans/simutrans/${ver_dash}/simutrans-src-${ver_dash}.zip";
-    sha256 = "00cyxbn17r9p1f08jvx1wrhydxknkrxj5wk6ld912yicfql998r0";
+    sha256 = "117vrkbz3l62swmw63vcwg5b5p8b4xvi67h9h02mmlirzi4vha9d";
   };
 
 
@@ -29,9 +29,8 @@ let
     (pakName: attrs: mkPak (attrs // {inherit pakName;}))
   {
     pak64 = {
-      # No release for 120.1 yet!
-      srcPath = "120-0/simupak64-120-0-1";
-      sha256 = "0y5v1ncpjyhjkkznqmk13kg5d0slhjbbvg1y8q5jxhmhlkghk9q2";
+      srcPath = "120-1/simupak64-120-1-2";
+      sha256 = "0m0xrj99xn5j3gx8nqylqkl27a06mywds7v5r8q0dfsi7b0sapqj";
     };
     "pak64.japan" = {
       # No release for 120.1 yet!
@@ -40,8 +39,8 @@ let
     };
 
     pak128 = {
-      srcPath = "pak128%20for%20ST%20120%20%282.5.3%2C%20minor%20changes%29/pak128-2.5.3--ST120";
-      sha256 = "19c66wvfg6rn7s9awi99cfp83hs9d8dmsjlmgn8m91a19fp9isdh";
+      srcPath = "pak128%20for%20ST%20120%20(2.6,%20completed%20elevated%20tracks)/pak128-2.6--ST120";
+      sha256 = "0kx9kppi8xnq7h7ryjmzqb8vni4wiajyh9p21acs503zcvzka25c";
     };
     "pak128.britain" = {
       srcPath = "pak128.Britain%20for%20${ver2_dash}/pak128.Britain.1.17-${ver2_dash}";
@@ -53,8 +52,8 @@ let
     };
     "pak128.german" = {
       url = "mirror://sourceforge/simutrans/PAK128.german/"
-        + "PAK128.german_0.8_${ver1}.x/PAK128.german_0.8.0_${ver1}.x.zip";
-      sha256 = "1a8pc88vi59zlvff9i1f8nphdmisqmgg03qkdvrf5ks46aw8j6s5";
+        + "PAK128.german_0.9_${ver1}x/PAK128.german_0.9_${ver1}.x.zip";
+      sha256 = "0h1x0565xy95f6h2pcrip8ybxv48jaa44d43hcml1h4ymgyh591l";
     };
 
     /* This release contains accented filenames that prevent unzipping.
