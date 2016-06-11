@@ -17001,6 +17001,8 @@ in
 
   hepmc = callPackage ../development/libraries/physics/hepmc { };
 
+  yoda = callPackage ../development/libraries/physics/yoda { };
+
   ### MISC
 
   antimicro = qt5.callPackage ../tools/misc/antimicro { };
