@@ -160,6 +160,7 @@ let version = "6.1.0";
           " --without-headers" +
           " --disable-threads " +
           " --disable-libgomp " +
+          " --disable-libmpx " +
           " --disable-libquadmath" +
           " --disable-shared" +
           " --disable-libatomic " +  # libatomic requires libc
