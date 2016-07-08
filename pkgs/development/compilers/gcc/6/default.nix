@@ -67,6 +67,7 @@ let version = "6.1.0";
 
     patches =
       [ ../use-source-date-epoch.patch ]
+      ++ optional (cross != null && cross.libc == "musl") ./gcc-6.1.0-musl-cpu.patch
       ++ optional (cross != null) ../libstdc++-target.patch
       ++ optional noSysDirs ../no-sys-dirs.patch
       # The GNAT Makefiles did not pay attention to CFLAGS_FOR_TARGET for its
