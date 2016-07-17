@@ -17001,9 +17001,13 @@ in
 
   hepmc = callPackage ../development/libraries/physics/hepmc { };
 
+  herwig = callPackage ../development/libraries/physics/herwig { };
+
   lhapdf = callPackage ../development/libraries/physics/lhapdf { };
 
   rivet = callPackage ../development/libraries/physics/rivet { };
+
+  thepeg = callPackage ../development/libraries/physics/thepeg { };
 
   yoda = callPackage ../development/libraries/physics/yoda { };
 
