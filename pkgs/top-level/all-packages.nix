@@ -16375,6 +16375,8 @@ in
   mathematica9 = callPackage ../applications/science/math/mathematica/9.nix { };
 
   metis = callPackage ../development/libraries/science/math/metis {};
+  
+  petsc = callPackage ../development/libraries/science/math/petsc {};
 
   sage = callPackage ../applications/science/math/sage { };
 
