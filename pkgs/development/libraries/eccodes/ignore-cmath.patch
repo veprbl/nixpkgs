@@ -1,0 +1,14 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -114,7 +114,7 @@ set( ECCODES_EXTRA_LIBRARIES    "" )
+ set( ECCODES_EXTRA_INCLUDE_DIRS "" )
+ set( ECCODES_EXTRA_DEFINITIONS  "" )
+ 
+-find_package( CMath )
++#find_package( CMath )
+ list( APPEND ECCODES_TPLS CMath )
+ 
+ ### JPG support
+-- 
+2.9.1
+
