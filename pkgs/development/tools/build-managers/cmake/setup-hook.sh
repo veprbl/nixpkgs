@@ -48,8 +48,14 @@ cmakeConfigurePhase() {
     cmakeFlags="-DCMAKE_INSTALL_INCLUDEDIR=${!outputDev}/include $cmakeFlags"
 
     # Avoid cmake resetting the rpath of binaries, on make install
-    # And build always Release, to ensure optimisation flags
-    cmakeFlags="-DCMAKE_BUILD_TYPE=Release -DCMAKE_SKIP_BUILD_RPATH=ON $cmakeFlags"
+    cmakeFlags="-DCMAKE_SKIP_BUILD_RPATH=ON $cmakeFlags"
+
+    # Allow to build debug version
+    if [ -z "$dontStrip" ] && [ -z "$separateDebugInfo" ]; then
+      cmakeFlags="-DCMAKE_BUILD_TYPE=Release $cmakeFlags"
+    else
+      cmakeFlags="-DCMAKE_BUILD_TYPE=Debug $cmakeFlags"
+    fi
 
     echo "cmake flags: $cmakeFlags ${cmakeFlagsArray[@]}"
 
