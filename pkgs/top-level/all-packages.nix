@@ -17005,6 +17005,8 @@ in
 
   lhapdf = callPackage ../development/libraries/physics/lhapdf { };
 
+  pythia = callPackage ../development/libraries/physics/pythia { };
+
   rivet = callPackage ../development/libraries/physics/rivet { };
 
   thepeg = callPackage ../development/libraries/physics/thepeg { };
