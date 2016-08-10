@@ -11134,6 +11134,7 @@ in
   muslCross = forceNativeDrv (musl.override {
     gccCross = gccCrossStageStatic;
     cross = assert crossSystem != null; crossSystem;
+    linuxHeaders = linuxHeadersCross;
   });
 
   nettools = callPackage ../os-specific/linux/net-tools { };

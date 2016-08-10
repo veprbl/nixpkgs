@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, cross ? null, gccCross ? null }:
+{ stdenv, fetchurl, cross ? null, gccCross ? null, linuxHeaders }:
 
 stdenv.mkDerivation rec {
   name    = "musl-${version}${stdenv.lib.optionalString (cross != null) ''-${cross.arch}''}";
@@ -29,6 +29,12 @@ stdenv.mkDerivation rec {
   dontSetConfigureCross = true;
   dontStrip = true;
   dontCrossStrip = true;
+
+  postInstall = ''
+    # Not sure why, but link in all but scsi directory as that's what uclibc/glibc do.
+    # Apparently glibc provides scsi itself?
+    (cd $dev/include && ln -s $(ls -d ${linuxHeaders}/include/* | grep -v "scsi$") .)
+  '';
 
   passthru = {
     # isMusl can be dropped when/if providing the dynamicLinker
