@@ -1,21 +1,22 @@
 { stdenv, fetchurl, fetchFromGitHub, docutils, makeWrapper, perl, pkgconfig
 , python, which, ffmpeg, freefont_ttf, freetype, libass, libpthreadstubs
 , lua, lua5_sockets
-, libuchardet, rubberband
+, libuchardet, libiconv ? null, darwin
+, rubberbandSupport ? !stdenv.isDarwin, rubberband ? null
 , x11Support ? true, libX11 ? null, libXext ? null, mesa ? null, libXxf86vm ? null
 , xineramaSupport ? true, libXinerama ? null
 , xvSupport ? true, libXv ? null
 , sdl2Support? true, SDL2 ? null
-, alsaSupport ? true, alsaLib ? null
+, alsaSupport ? !stdenv.isDarwin, alsaLib ? null
 , screenSaverSupport ? true, libXScrnSaver ? null
 , vdpauSupport ? true, libvdpau ? null
-, dvdreadSupport? true, libdvdread ? null
-, dvdnavSupport ? true, libdvdnav ? null
+, dvdreadSupport? !stdenv.isDarwin, libdvdread ? null
+, dvdnavSupport ? dvdreadSupport, libdvdnav ? null
 , bluraySupport ? true, libbluray ? null
 , speexSupport ? true, speex ? null
 , theoraSupport ? true, libtheora ? null
 , jackaudioSupport ? false, libjack2 ? null
-, pulseSupport ? true, libpulseaudio ? null
+, pulseSupport ? !stdenv.isDarwin, libpulseaudio ? null
 , bs2bSupport ? true, libbs2b ? null
 # For screenshots
 , libpngSupport ? true, libpng ? null
@@ -33,6 +34,7 @@ assert xineramaSupport -> (libXinerama != null && x11Support);
 assert xvSupport -> (libXv != null && x11Support);
 assert sdl2Support -> SDL2 != null;
 assert alsaSupport -> alsaLib != null;
+assert rubberbandSupport -> rubberband != null;
 assert screenSaverSupport -> libXScrnSaver != null;
 assert vdpauSupport -> libvdpau != null;
 assert dvdreadSupport -> libdvdread != null;
@@ -95,10 +97,14 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ docutils makeWrapper perl pkgconfig python which ];
 
   buildInputs = [
-    ffmpeg freetype libass libpthreadstubs lua lua5_sockets libuchardet rubberband
+    ffmpeg freetype libass libpthreadstubs lua lua5_sockets libuchardet
   ] ++ optionals x11Support [ libX11 libXext mesa libXxf86vm ]
+    ++ optional stdenv.isDarwin libiconv
+    ++ optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
+       Cocoa CoreAudio ])
     ++ optional alsaSupport alsaLib
     ++ optional xvSupport libXv
+    ++ optional rubberbandSupport rubberband
     ++ optional theoraSupport libtheora
     ++ optional xineramaSupport libXinerama
     ++ optional dvdreadSupport libdvdread
@@ -141,7 +147,7 @@ stdenv.mkDerivation rec {
     homepage = http://mpv.io;
     license = licenses.gpl2Plus;
     maintainers = with maintainers; [ AndersonTorres fuuzetsu ];
-    platforms = platforms.linux;
+    platforms = platforms.darwin ++ platforms.linux;
 
     longDescription = ''
       mpv is a free and open-source general-purpose video player,
