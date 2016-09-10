@@ -16962,6 +16962,8 @@ in
 
   lhapdf = callPackage ../development/libraries/physics/lhapdf { };
 
+  nlojet = callPackage ../development/libraries/physics/nlojet { };
+
   pythia = callPackage ../development/libraries/physics/pythia { };
 
   rivet = callPackage ../development/libraries/physics/rivet { };
