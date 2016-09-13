@@ -4557,6 +4557,7 @@ in modules // {
     preCheck = ''
       # don't test bash builtins
       rm testing/test_argcomplete.py
+      rm testing/test_cache.py
     '';
 
     propagatedBuildInputs = with self; [ py ]

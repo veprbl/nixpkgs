@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ boost python ];
 
-  configureFlags = "--with-boost=${boost}";
+  configureFlags = "--with-boost=${boost.dev}";
 
   enableParallelBuilding = true;
 
