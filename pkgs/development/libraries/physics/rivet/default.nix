@@ -24,7 +24,8 @@ stdenv.mkDerivation rec {
     xcolor
     xkeyval
     ;};
-  buildInputs = [ fastjet ghostscript gsl hepmc imagemagick python latex yoda makeWrapper ];
+  buildInputs = [ ghostscript hepmc imagemagick python latex makeWrapper ];
+  propagatedBuildInputs = [ fastjet gsl yoda ];
 
   preInstall = ''
     substituteInPlace bin/make-plots \
