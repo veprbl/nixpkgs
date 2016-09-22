@@ -11,9 +11,15 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ boost python ];
 
+  patches = [ ./distutils-c++.patch ];
+
   configureFlags = "--with-boost=${boost.dev}";
 
   enableParallelBuilding = true;
+
+  passthru = {
+    pdf_sets = import ./pdf_sets.nix { inherit stdenv fetchurl; };
+  };
 
   meta = {
     description = "A general purpose interpolator, used for evaluating Parton Distribution Functions from discretised data files";

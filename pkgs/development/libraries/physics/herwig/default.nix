@@ -1,15 +1,17 @@
-{ stdenv, fetchurl, boost, fastjet, gfortran, gsl, thepeg, zlib }:
+{ stdenv, fetchurl, boost, fastjet, gfortran, gsl, lhapdf, thepeg, zlib }:
 
 stdenv.mkDerivation rec {
   name = "herwig-${version}";
-  version = "7.0.2";
+  version = "7.0.3";
 
   src = fetchurl {
     url = "http://www.hepforge.org/archive/herwig/Herwig-${version}.tar.bz2";
-    sha256 = "0phs97swfjlchg2vma8461cwyw3d07igvzzfl6nks7gyx52rf4sq";
+    sha256 = "0v7b84n0v3dhjpx0vfk5p8g87kivgg9svfivnih1yrfm749269m2";
   };
 
-  buildInputs = [ boost fastjet gfortran gsl thepeg zlib ];
+  buildInputs = [ boost fastjet gfortran gsl thepeg zlib ]
+    # There is a bug that requires for MMHT PDF's to be presend during the build
+    ++ (with lhapdf.pdf_sets; [ MMHT2014lo68cl MMHT2014nlo68cl ]);
 
   configureFlags = [
     "--with-thepeg=${thepeg}"
