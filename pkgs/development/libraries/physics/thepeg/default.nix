@@ -9,7 +9,9 @@ stdenv.mkDerivation rec {
     sha256 = "16vqjihyv0bphdihl83p65rxkgdhvwp2sa9k0x9cgma3jl0rw96l";
   };
 
-  buildInputs = [ boost fastjet gsl hepmc lhapdf rivet zlib ];
+  buildInputs = [ boost fastjet gsl hepmc lhapdf rivet zlib ]
+    # There is a bug that requires for MMHT PDF's to be presend during the build
+    ++ (with lhapdf.pdf_sets; [ MMHT2014lo68cl MMHT2014nlo68cl ]);
 
   configureFlags = [
     "--with-hepmc=${hepmc}"
