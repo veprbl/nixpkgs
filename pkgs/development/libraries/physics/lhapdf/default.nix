@@ -17,6 +17,10 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
+  passthru = {
+    pdf_sets = import ./pdf_sets.nix { inherit stdenv fetchurl; };
+  };
+
   meta = {
     description = "A general purpose interpolator, used for evaluating Parton Distribution Functions from discretised data files";
     license     = stdenv.lib.licenses.gpl2;
