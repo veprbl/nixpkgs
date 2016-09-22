@@ -11,6 +11,8 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ boost python ];
 
+  patches = [ ./distutils-c++.patch ];
+
   configureFlags = "--with-boost=${boost.dev}";
 
   enableParallelBuilding = true;
