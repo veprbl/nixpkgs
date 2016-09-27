@@ -1,55 +1,67 @@
-{ stdenv, fetchFromGitHub, which, go, makeWrapper, iptables, rsync, utillinux, coreutils, e2fsprogs, procps-ng }:
+{ stdenv, lib, fetchFromGitHub, which, go, makeWrapper, rsync
+, iptables, coreutils
+, components ? [
+    "cmd/kubectl"
+    "cmd/hyperkube"
+    "cmd/kube-dns"
+  ]
+}:
+
+with lib;
 
 stdenv.mkDerivation rec {
   name = "kubernetes-${version}";
-  version = "1.2.4";
+  version = "1.3.5";
 
   src = fetchFromGitHub {
     owner = "kubernetes";
     repo = "kubernetes";
     rev = "v${version}";
-    sha256 = "1a3y0f1l008ywkwwygg9vn2rb722c54i3pbgqks38gw1yyvgbiih";
+    sha256 = "028a67760il768r316b2qsc20hjkch0xm0aaj2x2h09ja5c2zfbc";
   };
 
-  buildInputs = [ makeWrapper which go iptables rsync ];
+  buildInputs = [ makeWrapper which go rsync ];
+
+  outputs = ["out" "man""pause"];
+
+  postPatch = ''
+    mkdir -p $(pwd)/Godeps/_workspace/src/k8s.io
+    ln -s $(pwd) $(pwd)/Godeps/_workspace/src/k8s.io/kubernetes
+    substituteInPlace "hack/lib/golang.sh" --replace "_cgo" ""
+    patchShebangs ./hack
+  '';
 
   buildPhase = ''
     GOPATH=$(pwd):$(pwd)/Godeps/_workspace
-    mkdir -p $(pwd)/Godeps/_workspace/src/k8s.io
-    ln -s $(pwd) $(pwd)/Godeps/_workspace/src/k8s.io/kubernetes
 
-    substituteInPlace "hack/lib/golang.sh" --replace "_cgo" ""
-    patchShebangs ./hack
-    hack/build-go.sh --use_go_build
-
-    (cd cluster/addons/dns/kube2sky && go build ./kube2sky.go)
+    GOLDFLAGS="-s" hack/build-go.sh --use_go_build ${concatStringsSep " " components}
+    (cd build/pause && gcc pause.c -o pause)
   '';
 
   installPhase = ''
-    mkdir -p "$out/bin" "$out"/libexec/kubernetes/cluster
-    cp _output/local/go/bin/{kube*,hyperkube} "$out/bin/"
-    cp cluster/addons/dns/kube2sky/kube2sky "$out/bin/"
-    cp cluster/saltbase/salt/helpers/safe_format_and_mount "$out/libexec/kubernetes"
-    cp -R hack "$out/libexec/kubernetes"
-    cp cluster/update-storage-objects.sh "$out/libexec/kubernetes/cluster"
-    makeWrapper "$out"/libexec/kubernetes/cluster/update-storage-objects.sh "$out"/bin/kube-update-storage-objects \
-      --prefix KUBE_BIN : "$out/bin"
+    mkdir -p "$out/bin" "$man/share/man" "$pause/bin"
+
+    cp _output/local/go/bin/* "$out/bin/"
+    cp build/pause/pause "$pause/bin/pause"
+    cp -R docs/man/man1 "$man/share/man"
   '';
 
   preFixup = ''
-    wrapProgram "$out/bin/kube-proxy" --prefix PATH : "${iptables}/bin"
-    wrapProgram "$out/bin/kubelet" --prefix PATH : "${stdenv.lib.makeBinPath [ utillinux procps-ng ]}"
-    chmod +x "$out/libexec/kubernetes/safe_format_and_mount"
-    wrapProgram "$out/libexec/kubernetes/safe_format_and_mount" --prefix PATH : "${stdenv.lib.makeBinPath [ e2fsprogs utillinux ]}"
-    substituteInPlace "$out"/libexec/kubernetes/cluster/update-storage-objects.sh \
-      --replace KUBE_OUTPUT_HOSTBIN KUBE_BIN
+    wrapProgram "$out/bin/hyperkube" --prefix PATH : "${iptables}/bin:${coreutils}/bin"
+
+    # Remove references to go compiler
+    while read file; do
+      cat $file | sed "s,${go},$(echo "${go}" | sed "s,$NIX_STORE/[^-]*,$NIX_STORE/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee,"),g" > $file.tmp
+      mv $file.tmp $file
+      chmod +x $file
+    done < <(find $out/bin $pause/bin -type f 2>/dev/null)
   '';
 
-  meta = with stdenv.lib; {
+  meta = {
     description = "Production-Grade Container Scheduling and Management";
     license = licenses.asl20;
     homepage = http://kubernetes.io;
     maintainers = with maintainers; [offline];
-    platforms = [ "x86_64-linux" ];
+    platforms = platforms.linux;
   };
 }

@@ -186,7 +186,7 @@
       opentsdb = 159;
       scollector = 160;
       bosun = 161;
-      kubernetes = 162;
+      #kubernetes = 162; unused
       peerflix = 163;
       chronos = 164;
       gitlab = 165;
@@ -441,7 +441,7 @@
       opentsdb = 159;
       scollector = 160;
       bosun = 161;
-      kubernetes = 162;
+      #kubernetes = 162; #ununsed
       #peerflix = 163; # unused
       #chronos = 164; # unused
       gitlab = 165;

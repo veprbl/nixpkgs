@@ -29468,4 +29468,97 @@ in modules // {
       sha256 = "14kb9gxw39zhvrijhp066b4bm6bgv35iw56c394y4dyczpha0dij";
     };
   };
+
+  pycalico = buildPythonPackage rec {
+    version = "0.16.0";
+    name = "pycalico-v${version}";
+    disabled = isPy3k;
+
+    src = pkgs.fetchFromGitHub {
+      owner = "projectcalico";
+      repo = "libcalico";
+      rev = "v${version}";
+      sha256 = "0yxmdislw07wnv29xh81lp3d7gkq7176wa4ip91jpxsq5kiskga9";
+    };
+
+    doCheck = false;
+
+    propagatedBuildInputs = with self; [ netaddr python-etcd subprocess32 ];
+  };
+
+  calico = buildPythonPackage rec {
+    version = "1.4.0";
+    name = "calico-v${version}";
+    disabled = isPy3k;
+
+    src = pkgs.fetchFromGitHub {
+      owner = "projectcalico";
+      repo = "calico";
+      rev = "${version}";
+      sha256 = "1n7jijx05gys831acw41mwp5yfjlcjfvs80v58r7m18zvjddclys";
+    };
+
+    doCheck = false;
+
+    buildInputs = [ pkgs.makeWrapper ];
+
+    propagatedBuildInputs = with self; [
+      gevent greenlet netaddr python-etcd datrie ijson
+      msgpack pyparsing urllib3 posix-spawn prometheus_client
+    ];
+
+    patchPhase = ''
+      makeWrapper "${self.python}/bin/python" "$out/bin/felix-python" \
+        --set PYTHONPATH $out/${self.python.sitePackages}:$PYTHONPATH
+      substituteInPlace calico/felix/fetcd.py \
+        --replace 'sys.executable' "\"$out/bin/felix-python\""
+    '';
+  };
+
+  datrie = buildPythonPackage rec {
+    name = "datrie-${version}";
+    version = "0.7.1";
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/d/datrie/${name}.tar.gz";
+      sha256 = "08r0if7dry2q7p34gf7ffyrlnf4bdvnprxgydlfxgfnvq8f3f4bs";
+    };
+
+    buildInputs = with self; [hypothesis pytest];
+    propagatedBuildInputs = [self.pytestrunner];
+  };
+
+  ijson = buildPythonPackage rec {
+    name = "ijson-${version}";
+    version = "2.3";
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/i/ijson/${name}.tar.gz";
+      sha256 = "0x7l9k2dvxzd5mjgiq15nl9b0sxcqy1cqaz744bjwkz4z5mrypzg";
+    };
+  };
+
+  posix-spawn = buildPythonPackage rec {
+    name = "posix-spawn-${version}";
+    version = "0.2.post7";
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/p/posix-spawn/${name}.tar.gz";
+      sha256 = "15bfq7xqbs9049swk52yqgbkc1phfr0qx2hf1h9cgjxfb61mpi2l";
+    };
+
+    propagatedBuildInputs = [self.cffi];
+  };
+
+  prometheus_client = buildPythonPackage rec {
+    name = "prometheus_client-${version}";
+    version = "0.0.14";
+
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/p/prometheus_client/${name}.tar.gz";
+      sha256 = "023ixcnrdac378jh3z36ni8a5rrrvk0g67m15r01870j8wfxgj1l";
+    };
+
+    doCheck = false;
+  };
 }

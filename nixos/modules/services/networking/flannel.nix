@@ -139,6 +139,12 @@ in {
           sleep 1
         done
       '';
+      postStart = ''
+        while [ ! -f /run/flannel/subnet.env ]
+        do
+          sleep 1
+        done
+      '';
       serviceConfig.ExecStart = "${cfg.package}/bin/flannel";
     };
 

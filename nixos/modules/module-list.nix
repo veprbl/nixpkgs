@@ -319,6 +319,7 @@
   ./services/networking/bird.nix
   ./services/networking/bitlbee.nix
   ./services/networking/btsync.nix
+  ./services/networking/calico.nix
   ./services/networking/charybdis.nix
   ./services/networking/chrony.nix
   ./services/networking/cjdns.nix
