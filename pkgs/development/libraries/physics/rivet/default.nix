@@ -2,16 +2,19 @@
 
 stdenv.mkDerivation rec {
   name = "rivet-${version}";
-  version = "2.5.0";
+  version = "2.5.2";
 
   src = fetchurl {
     url = "http://www.hepforge.org/archive/rivet/Rivet-${version}.tar.bz2";
-    sha256 = "1bylkdbyshxsnsgh9wjqfxz6y3xdmlxqp05ssrjsy35y2mbz77y5";
+    sha256 = "01agf0bswqvci8nwp67kvrlwc2k0sg1s0lxpq2a9q58l99v2gakh";
   };
 
   pythonPath = []; # python wrapper support
 
-  patches = [ ./ns_fix.patch ];
+  patches = [
+    ./ns_fix.patch
+    ./key_val.patch
+  ];
 
   latex = texlive.combine { inherit (texlive)
     scheme-basic
@@ -65,5 +68,6 @@ stdenv.mkDerivation rec {
     description = "A framework for comparison of experimental measurements from high-energy particle colliders to theory predictions";
     license     = stdenv.lib.licenses.gpl2;
     homepage    = https://rivet.hepforge.org;
+    platforms   = stdenv.lib.platforms.unix;
   };
 }
