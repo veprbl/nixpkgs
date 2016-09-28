@@ -12,7 +12,6 @@ stdenv.mkDerivation rec {
   pythonPath = []; # python wrapper support
 
   patches = [
-    ./ns_fix.patch
     ./key_val.patch
   ];
 
