@@ -8982,12 +8982,15 @@ in
       inherit (darwin) apple_sdk;
     }
     else alternative;
-  mesa_noglu = mesaDarwinOr (callPackage ../development/libraries/mesa {
+
+  mesa_noglu = opengl.gl;
+
+  mesa_original = callPackage ../development/libraries/mesa {
     # makes it slower, but during runtime we link against just mesa_drivers
     # through /run/opengl-driver*, which is overriden according to config.grsecurity
     grsecEnabled = true;
     llvmPackages = llvmPackages_39;
-  });
+  };
   mesa_glu =  mesaDarwinOr (callPackage ../development/libraries/mesa-glu { });
   mesa_drivers = mesaDarwinOr (
     let mo = mesa_noglu.override {
@@ -9005,6 +9008,13 @@ in
       platforms = lib.platforms.unix;
     };
   });
+
+  libglvnd = callPackage ../development/libraries/libglvnd { };
+
+  opengl = mesaDarwinOr {
+    gl = libglvnd
+      // { inherit (mesa_original) driverLink; };
+  };
 
   meterbridge = callPackage ../applications/audio/meterbridge { };
 

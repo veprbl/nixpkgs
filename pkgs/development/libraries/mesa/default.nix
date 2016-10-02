@@ -2,7 +2,7 @@
 , pkgconfig, intltool, autoreconfHook, substituteAll
 , file, expat, libdrm, xorg, wayland, systemd
 , llvmPackages, libffi, libomxil-bellagio, libva
-, libelf, libvdpau, python
+, libelf, libvdpau, libglvnd, python
 , grsecEnabled ? false
 , enableTextureFloats ? false # Texture floats are patented, see docs/patents.txt
 }:
@@ -66,6 +66,7 @@ stdenv.mkDerivation {
 
   # TODO: Figure out how to enable opencl without having a runtime dependency on clang
   configureFlags = [
+    "--enable-libglvnd"
     "--sysconfdir=/etc"
     "--localstatedir=/var"
     "--with-dri-driverdir=$(drivers)/lib/dri"
@@ -111,7 +112,7 @@ stdenv.mkDerivation {
     autoreconfHook intltool expat llvmPackages.llvm
     glproto dri2proto dri3proto presentproto
     libX11 libXext libxcb libXt libXfixes libxshmfence
-    libffi wayland libvdpau libelf libXvMC
+    libffi wayland libvdpau libglvnd libelf libXvMC
     libomxil-bellagio libva libpthreadstubs
     (python.withPackages (ps: [ ps.Mako ]))
   ] ++ optional stdenv.isLinux systemd;
