@@ -28,7 +28,7 @@ else
 let
   version = "12.0.2";
   branch  = head (splitString "." version);
-  driverLink = "/run/opengl-driver" + optionalString stdenv.isi686 "-32";
+  inherit (libglvnd) driverLink;
 in
 
 stdenv.mkDerivation {

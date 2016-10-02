@@ -1,8 +1,17 @@
-{ stdenv, fetchFromGitHub, autoreconfHook, pkgconfig, python2
+{ stdenv, fetchFromGitHub, autoreconfHook, pkgconfig, python2, writeText
 , libXext, libX11, xproto, glproto
 }:
+let
+  driverLink = "/run/opengl-driver" + stdenv.lib.optionalString stdenv.isi686 "-32";
+  dri_pc = writeText "dri.pc" ''
+    dridriverdir=${driverLink}
+    Name: dri
+    Version: ${fakeVersion}
+    Description: Direct Rendering Infrastructure
+  '';
+  fakeVersion = "12.0.1";
 
-stdenv.mkDerivation rec {
+result = stdenv.mkDerivation rec {
   name = "libglvnd-${version}";
   #/*
   version = "0.2pre-${src.rev}";
@@ -32,10 +41,16 @@ stdenv.mkDerivation rec {
 
   doCheck = false; # need an X server etc.
 
-  # TODO: get up-to-date headers from Khronos instead
+  # 1: TODO: get up-to-date headers from Khronos instead.
+  # 2: Some packages (xorg-server) are sensitive to the version in gl.pc
+  # 3: and to dri.pc for dridriverdir.
   postInstall = ''
     find ./include/ -type d -maxdepth 1 | xargs cp -rv -t "$dev/include/"
+    sed 's/^Version:.*$/Version: ${fakeVersion}/' -i "$dev/lib/pkgconfig/gl.pc"
+    ln -s '${dri_pc}' "$dev/lib/pkgconfig/dri.pc"
   '';
+
+  passthru = { inherit driverLink; };
 
   meta = with stdenv.lib; {
     description = "OpenGL vendor-neutral dispatch libraries";
@@ -44,4 +59,7 @@ stdenv.mkDerivation rec {
     platforms = platforms.linux;
     maintainers = [ maintainers.vcunat ];
   };
-}
+};
+
+in result
+

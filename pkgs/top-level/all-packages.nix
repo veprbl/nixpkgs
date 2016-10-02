@@ -8993,7 +8993,7 @@ in
   };
   mesa_glu =  mesaDarwinOr (callPackage ../development/libraries/mesa-glu { });
   mesa_drivers = mesaDarwinOr (
-    let mo = mesa_noglu.override {
+    let mo = mesa_original.override {
       grsecEnabled = config.grsecurity or false;
     };
     in mo.drivers
@@ -9012,8 +9012,7 @@ in
   libglvnd = callPackage ../development/libraries/libglvnd { };
 
   opengl = mesaDarwinOr {
-    gl = libglvnd
-      // { inherit (mesa_original) driverLink; };
+    gl = libglvnd;
   };
 
   meterbridge = callPackage ../applications/audio/meterbridge { };

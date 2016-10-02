@@ -438,28 +438,28 @@ in
       if (!isDarwin)
       then {
         outputs = [ "out" "dev" ];
-        buildInputs = [ makeWrapper ] ++ commonBuildInputs;
-        propagatedBuildInputs = [ libpciaccess args.epoxy ] ++ commonPropagatedBuildInputs ++ lib.optionals stdenv.isLinux [
-          args.udev
-        ];
+        buildInputs = [ makeWrapper args.libdrm ] ++ commonBuildInputs;
+        propagatedBuildInputs = [ libpciaccess args.epoxy args.udev ] ++ commonPropagatedBuildInputs;
         patches = commonPatches;
         configureFlags = [
-          "--enable-kdrive"             # not built by default
-          "--enable-xephyr"
+          # glvnd TODO: fixup details
+          #"--enable-kdrive"             # not built by default
+          #"--enable-xephyr"
           "--enable-xcsecurity"         # enable SECURITY extension
           "--with-default-font-path="   # there were only paths containing "${prefix}",
                                         # and there are no fonts in this package anyway
-          "--enable-glamor"
+          #"--enable-glamor"
+          "--disable-glx"               # we'll use the one provided through libglvnd anyway
         ];
+        NIX_CFLAGS_COMPILE = "-I${args.libdrm.dev}/include/libdrm";
         postInstall = ''
           rm -fr $out/share/X11/xkb/compiled
           ln -s /var/tmp $out/share/X11/xkb/compiled
-          wrapProgram $out/bin/Xephyr \
-            --set XKB_BINDIR "${xorg.xkbcomp}/bin" \
-            --add-flags "-xkbdir ${xorg.xkeyboardconfig}/share/X11/xkb"
+          #wrapProgram $out/bin/Xephyr \
+          #  --set XKB_BINDIR "${xorg.xkbcomp}/bin" \
+          #  --add-flags "-xkbdir ${xorg.xkeyboardconfig}/share/X11/xkb"
           wrapProgram $out/bin/Xvfb \
             --set XKB_BINDIR "${xorg.xkbcomp}/bin" \
-            --set XORG_DRI_DRIVER_PATH ${args.mesa}/lib/dri \
             --add-flags "-xkbdir ${xorg.xkeyboardconfig}/share/X11/xkb"
           ( # assert() keeps runtime reference xorgserver-dev in xf86-video-intel and others
             cd "$dev"
