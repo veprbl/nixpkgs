@@ -11,10 +11,10 @@ let
     fi
   '';
 
-  gitRelease = { libName, version, rev, sha256 } : attrs : attrs // {
-    name = libName + "-" + version;
+  gitRelease = { xorgName, version, rev, sha256 } : attrs : attrs // {
+    name = (builtins.parseDrvName attrs.name).name + "-" + version;
     src = args.fetchgit {
-      url = git://anongit.freedesktop.org/xorg/lib/ + libName;
+      url = git://anongit.freedesktop.org/xorg/ + xorgName;
       inherit rev sha256;
     };
     buildInputs = attrs.buildInputs ++ [ xorg.utilmacros  ];
@@ -344,8 +344,11 @@ in
     configureFlags = [ "--with-xorg-conf-dir=$(out)/share/X11/xorg.conf.d" ];
   };
 
-  xf86videoati = attrs: attrs // {
-    NIX_CFLAGS_COMPILE = "-I${xorg.xorgserver.dev or xorg.xorgserver}/include/xorg";
+  xf86videoati = gitRelease {
+    xorgName = "driver/xf86-video-ati";
+    version = "git";
+    rev = "3fc839ff49f01";
+    sha256 = "072b0ma7vpa8msfafhlyqjdsqwmjwl9q88j5cam29k2pvz0hznsd";
   };
 
   xf86videonv = attrs: attrs // {
@@ -408,9 +411,9 @@ in
     in attrs //
     (let
       version = (builtins.parseDrvName attrs.name).version;
-      commonBuildInputs = attrs.buildInputs ++ [ xtrans ];
+      commonBuildInputs = attrs.buildInputs ++ [ xtrans libXfont2 ];
       commonPropagatedBuildInputs = [
-        args.zlib args.mesa args.dbus
+        args.zlib args.dbus
         xf86bigfontproto glproto xf86driproto
         compositeproto scrnsaverproto resourceproto
         xf86dgaproto
@@ -438,7 +441,7 @@ in
       if (!isDarwin)
       then {
         outputs = [ "out" "dev" ];
-        buildInputs = [ makeWrapper args.libdrm ] ++ commonBuildInputs;
+        buildInputs = [ makeWrapper args.libdrm args.mesa_drivers.dev ] ++ commonBuildInputs;
         propagatedBuildInputs = [ libpciaccess args.epoxy args.udev ] ++ commonPropagatedBuildInputs;
         patches = commonPatches;
         configureFlags = [
@@ -448,7 +451,7 @@ in
           "--enable-xcsecurity"         # enable SECURITY extension
           "--with-default-font-path="   # there were only paths containing "${prefix}",
                                         # and there are no fonts in this package anyway
-          #"--enable-glamor"
+          "--enable-glamor"
           "--disable-glx"               # we'll use the one provided through libglvnd anyway
         ];
         NIX_CFLAGS_COMPILE = "-I${args.libdrm.dev}/include/libdrm";

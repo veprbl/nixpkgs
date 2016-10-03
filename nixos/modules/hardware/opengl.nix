@@ -13,7 +13,7 @@ let
   makePackage = p: pkgs.buildEnv {
     name = "mesa-drivers+txc-${p.mesa_drivers.version}";
     paths =
-      [ p.mesa_drivers
+      [ p.libglvnd # for legacy stuff
         (if cfg.s3tcSupport then p.libtxc_dxtn else p.libtxc_dxtn_s2tc)
       ];
     postBuild = ''
@@ -22,6 +22,12 @@ let
         if [ -L "$f" ]; then
           cp "$f" "$out/lib/"
         else
+          ln -s "$f" "$out/lib/"
+        fi
+      done
+
+      for f in '${p.mesa_drivers}'/lib/*; do
+        if [ -d "$f" ]; then
           ln -s "$f" "$out/lib/"
         fi
       done
