@@ -1,17 +1,17 @@
-{ stdenv, fetchurl, python2, makeWrapper }:
+{ stdenv, fetchurl, python2Packages, makeWrapper }:
 
 stdenv.mkDerivation rec {
   name = "yoda-${version}";
-  version = "1.6.3";
+  version = "1.6.5";
 
   src = fetchurl {
     url = "http://www.hepforge.org/archive/yoda/YODA-${version}.tar.bz2";
-    sha256 = "06fsjwgj1cinl23h3mi9kv9fzidbjp9jgqnr27wmz82lzqsf7mqx";
+    sha256 = "1i8lmj63cd3qnxl9k2cb1abap2pirhx7ffinm834wbpy9iszwxql";
   };
 
   pythonPath = []; # python wrapper support
 
-  buildInputs = [ python2 makeWrapper ];
+  buildInputs = with python2Packages; [ python numpy matplotlib makeWrapper ];
 
   enableParallelBuilding = true;
 
