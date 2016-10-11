@@ -13,6 +13,7 @@ stdenv.mkDerivation rec {
 
   patches = [
     ./key_val.patch
+    ./zaxis_fix.patch
   ];
 
   latex = texlive.combine { inherit (texlive)
