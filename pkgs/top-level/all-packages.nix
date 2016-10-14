@@ -5503,7 +5503,7 @@ in
 
   # Python interpreters. All standard library modules are included except for tkinter, which is
   # available as `pythonPackages.tkinter` and can be used as any other Python package.
-  python = python2;
+  python = python3;
   python2 = python27;
   python3 = python35;
 
@@ -5514,7 +5514,7 @@ in
   python3Full = python3.override{x11Support=true;};
 
   # pythonPackages further below, but assigned here because they need to be in sync
-  pythonPackages = python2Packages;
+  pythonPackages = python3Packages;
   python2Packages = python27Packages;
   python3Packages = python35Packages;
 
