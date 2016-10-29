@@ -22,8 +22,11 @@ let
 
   sharedConfigureFlags = name: [
     "--shared-${name}"
-    "--shared-${name}-includes=${builtins.getAttr name deps}/include"
-    "--shared-${name}-libpath=${builtins.getAttr name deps}/lib"
+    "--shared-${name}-libpath=${stdenv.lib.getLib deps.${name}}/lib"
+    /** Closure notes: we explicitly avoid specifying --shared-*-includes,
+     *  as that would put the paths into bin/nodejs.
+     *  Including pkgconfig in build inputs would also have the same effect!
+     */
   ];
 
   inherit (stdenv.lib) concatMap optional optionals maintainers licenses platforms;
