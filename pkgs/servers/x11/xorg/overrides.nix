@@ -443,12 +443,15 @@ in
     in
       if (!isDarwin)
       then {
-        outputs = [ "out" "dev" ];
-        buildInputs = [ makeWrapper ] ++ commonBuildInputs;
-        propagatedBuildInputs = [ libpciaccess args.epoxy ] ++ commonPropagatedBuildInputs ++ lib.optionals stdenv.isLinux [
-          args.udev
-        ];
         patches = commonPatches;
+
+        outputs = [ "out" "dev" ];
+
+        buildInputs = [ makeWrapper ] ++ commonBuildInputs;
+        propagatedBuildInputs = [ libpciaccess args.epoxy ]
+          ++ commonPropagatedBuildInputs
+          ++ lib.optionals stdenv.isLinux [ args.udev ];
+
         configureFlags = [
           "--enable-kdrive"             # not built by default
           "--enable-xephyr"
@@ -458,6 +461,7 @@ in
           "--with-xkb-bin-directory=${xorg.xkbcomp}/bin"
           "--enable-glamor"
         ];
+
         postInstall = ''
           rm -fr $out/share/X11/xkb/compiled
           ln -s /var/tmp $out/share/X11/xkb/compiled
@@ -467,13 +471,16 @@ in
             --set XORG_DRI_DRIVER_PATH ${args.mesa}/lib/dri \
             --add-flags "-xkbdir ${xorg.xkeyboardconfig}/share/X11/xkb"
           ( # assert() keeps runtime reference xorgserver-dev in xf86-video-intel and others
+            # Note: relativize__FILE__ would *not* work in this case.
             cd "$dev"
             for f in include/xorg/*.h; do
               sed "1i#line 1 \"${attrs.name}/$f\"" -i "$f"
             done
           )
         '';
+
         passthru.version = version; # needed by virtualbox guest additions
+
       } else {
         buildInputs = commonBuildInputs ++ [
           args.bootstrap_cmds args.automake args.autoconf

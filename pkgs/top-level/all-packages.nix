@@ -322,6 +322,8 @@ in
 
   iconConvTools = callPackage ../build-support/icon-conv-tools {};
 
+  relativize__FILE__ = makeSetupHook { } ../build-support/setup-hooks/relativize__FILE__.sh;
+
 
   ### TOOLS
 

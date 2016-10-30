@@ -1,4 +1,5 @@
 { stdenv, fetchurl, icu, expat, zlib, bzip2, python, fixDarwinDylibNames, libiconv
+, relativize__FILE__
 , toolset ? if stdenv.cc.isClang then "clang" else null
 , enableRelease ? true
 , enableDebug ? false
@@ -103,14 +104,7 @@ let
     "--libdir=$(out)/lib"
   ];
 
-  fixup = ''
-    # Make boost header paths relative so that they are not runtime dependencies
-    (
-      cd "$dev"
-      find include \( -name '*.hpp' -or -name '*.h' -or -name '*.ipp' \) \
-        -exec sed '1i#line 1 "{}"' -i '{}' \;
-    )
-  '' + optionalString (stdenv.cross.libc or null == "msvcrt") ''
+  postFixup = optionalString (stdenv.cross.libc or null == "msvcrt") ''
     ${stdenv.cross.config}-ranlib "$out/lib/"*.a
   '';
 
@@ -146,6 +140,8 @@ stdenv.mkDerivation {
 
   enableParallelBuilding = true;
 
+  nativeBuildInputs = [ relativize__FILE__ ];
+
   buildInputs = [ expat zlib bzip2 libiconv ]
     ++ stdenv.lib.optionals (! stdenv ? cross) [ python icu ]
     ++ stdenv.lib.optional stdenv.isDarwin fixDarwinDylibNames;
@@ -160,7 +156,7 @@ stdenv.mkDerivation {
 
   installPhase = installer nativeB2Args;
 
-  postFixup = fixup;
+  inherit postFixup;
 
   outputs = [ "out" "dev" ];
   setOutputFlags = false;
@@ -176,7 +172,7 @@ stdenv.mkDerivation {
     '';
     buildPhase = builder crossB2Args;
     installPhase = installer crossB2Args;
-    postFixup = fixup;
+    inherit postFixup;
   } // optionalAttrs (stdenv.cross.libc == "msvcrt") {
     patches = fetchurl {
       url = "https://svn.boost.org/trac/boost/raw-attachment/ticket/7262/"
