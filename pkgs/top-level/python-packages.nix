@@ -7588,6 +7588,57 @@ in {
     };
   };
 
+  jottalib = buildPythonPackage rec {
+    version = "0.5.1";
+    name = "jottalib-${version}";
+    disabled = isPy3k;
+
+    src = pkgs.fetchFromGitHub {
+      owner = "havardgulldahl";
+      repo = "jottalib";
+      rev = "v${version}";
+      sha256 = "0lw81aqjfcxdv00wvaj179hsccy9wbi6mx12dh4m2nxy0k7z8akx";
+    };
+
+    # Optional parts
+    fuse = true;
+    monitor = true;
+    scanner = true;
+    # qt support requires a lot more space so is disabled by default
+    qt = false;
+
+    propagatedBuildInputs = with self; [
+        lxml
+        chardet
+        six
+        clint
+        dateutil
+        humanize
+        certifi
+        requests_toolbelt
+      ]
+      ++ optional fuse fusepy
+      ++ optional monitor watchdog
+      ++ optional scanner xattr
+      ++ optional qt pyqt4;
+
+    meta = {
+      homepage = https://github.com/havardgulldahl/jottalib;
+      description = "A library and cli tools to access files stored at jottacloud.com";
+      longDescription = ''
+        This is a rich, pythonic interface to the Jottacloud backup/cloud
+        storage service. The service itself exposes a nice and simple HTTP REST
+        api, and this library wraps that interface in a python module, in the
+        hope that it may be useful.
+
+        In addition to the general library, you'll also find different backup
+        tools, some different plugins as well as a FUSE implementation in here.
+      '';
+      maintainers = with maintainers; [ hedning ];
+      license     = licenses.gpl3;
+    };
+  };
+
   jsbeautifier = buildPythonApplication rec {
     name = "jsbeautifier-1.6.4";
 
