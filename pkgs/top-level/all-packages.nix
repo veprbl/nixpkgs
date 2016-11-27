@@ -2819,6 +2819,8 @@ in
 
   netcdfcxx4 = callPackage ../development/libraries/netcdf-cxx4 { };
 
+  netcdfcxx4legacy = callPackage ../development/libraries/netcdf-cxx4/legacy-netcdf3.nix { };
+
   netcdffortran = callPackage ../development/libraries/netcdf-fortran { };
 
   neural-style = callPackage ../tools/graphics/neural-style {};
@@ -6783,6 +6785,8 @@ in
 
   dxflib = callPackage ../development/libraries/dxflib {};
 
+  eccodes = callPackage ../development/libraries/eccodes { };
+
   eclib = callPackage ../development/libraries/eclib {};
 
   eigen = callPackage ../development/libraries/eigen {};
@@ -7761,6 +7765,8 @@ in
 
   libechonest = callPackage ../development/libraries/libechonest { };
 
+  libemos = callPackage ../development/libraries/libemos { };
+
   libev = callPackage ../development/libraries/libev {
     fetchurl = fetchurlBoot;
   };
@@ -8417,6 +8423,8 @@ in
   luabind_luajit = callPackage ../development/libraries/luabind { lua = luajit; };
 
   lzo = callPackage ../development/libraries/lzo { };
+
+  magics = callPackage ../development/libraries/magics { };
 
   mapnik = callPackage ../development/libraries/mapnik { };
 
@@ -16406,6 +16414,10 @@ in
   ipopt = callPackage ../development/libraries/science/math/ipopt { openblas = openblasCompat; };
 
   gmsh = callPackage ../applications/science/math/gmsh { };
+
+  ### SCIENCE/METEOROLOGY
+
+  metview = callPackage ../applications/science/meteorology/metview { };
 
   ### SCIENCE/MOLECULAR-DYNAMICS
 
