@@ -569,6 +569,16 @@ let
     meta.platforms = stdenv.lib.platforms.unix;
   }) // {inherit ;};
 
+  hsakmt = (mkDerivation "hsakmt" {
+    name = "hsakmt-1.0.0";
+    builder = ./builder.sh;
+    src = fetchurl {
+      url = mirror://xorg/individual/lib/hsakmt-1.0.0.tar.bz2;
+      sha256 = "0gbf99sljhd3kmd72rdbr7wgn75cd10vzg80p9jmv7adfsicwn7m";
+    };
+    buildInputs = [pkgconfig ];
+  }) // {inherit ;};
+
   iceauth = (mkDerivation "iceauth" {
     name = "iceauth-1.0.7";
     builder = ./builder.sh;
