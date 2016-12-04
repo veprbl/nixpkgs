@@ -1,21 +1,23 @@
 { stdenv, fetchurl, gdal, cmake, qt4, flex, bison, proj, geos, xlibsWrapper, sqlite, gsl
 , qwt, fcgi, python2Packages, libspatialindex, libspatialite, qscintilla, postgresql, makeWrapper
 , qjson, qca2, txt2tags, openssl
+, ApplicationServices, IOKit
 , withGrass ? false, grass
 }:
 
 stdenv.mkDerivation rec {
-  name = "qgis-2.16.2";
+  name = "qgis-2.18.1";
 
   buildInputs = [ gdal qt4 flex openssl bison proj geos xlibsWrapper sqlite gsl qwt qscintilla
     fcgi libspatialindex libspatialite postgresql qjson qca2 txt2tags ] ++
     (stdenv.lib.optional withGrass grass) ++
-    (with python2Packages; [ numpy psycopg2 requests2 python2Packages.qscintilla sip ]);
+    (with python2Packages; [ numpy psycopg2 requests2 python2Packages.qscintilla sip ])
+    ++ stdenv.lib.optionals (stdenv.isDarwin) [ ApplicationServices IOKit ];
 
   nativeBuildInputs = [ cmake makeWrapper ];
 
   # fatal error: ui_qgsdelimitedtextsourceselectbase.h: No such file or directory
-  #enableParallelBuilding = true;
+  enableParallelBuilding = false;
 
   # To handle the lack of 'local' RPATH; required, as they call one of
   # their built binaries requiring their libs, in the build process.
@@ -23,12 +25,20 @@ stdenv.mkDerivation rec {
     export LD_LIBRARY_PATH=`pwd`/output/lib:${stdenv.lib.makeLibraryPath [ openssl ]}:$LD_LIBRARY_PATH
   '';
 
+  patches = [ ./darwin-override-minimum-required-clang-version.patch ];
+
+  VERBOSE = 1;
+
+  postPatch = ''
+    substituteInPlace src/core/qgis.h --replace "[[clang::fallthrough]]" ""
+  '';
+
   src = fetchurl {
     url = "http://qgis.org/downloads/${name}.tar.bz2";
-    sha256 = "0dll8klz0qfba4c1y7mp9k4y4azlay0sypvryicggllk1hna4w0n";
+    sha256 = "052nxps2kxv4p98iikbmk7la1bv18a399mbcfycfl3qn0nf6ww6v";
   };
 
-  cmakeFlags = stdenv.lib.optional withGrass "-DGRASS_PREFIX7=${grass}/${grass.name}";
+  cmakeFlags = ["-DWITH_QTWEBKIT=FALSE"] ++stdenv.lib.optional withGrass "-DGRASS_PREFIX7=${grass}/${grass.name}";
 
   postInstall = ''
     wrapProgram $out/bin/qgis \

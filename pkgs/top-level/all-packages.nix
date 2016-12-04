@@ -8934,7 +8934,10 @@ in
 
   re2 = callPackage ../development/libraries/re2 { };
 
-  qca2 = callPackage ../development/libraries/qca2 { qt = qt4; };
+  qca2 = callPackage ../development/libraries/qca2 {
+    qt = qt4;
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
 
   qimageblitz = callPackage ../development/libraries/qimageblitz {};
 
@@ -14330,7 +14333,9 @@ in
     inherit (darwin.stubs) rez setfile;
   };
 
-  qgis = callPackage ../applications/gis/qgis {};
+  qgis = callPackage ../applications/gis/qgis {
+    inherit (darwin.apple_sdk.frameworks) ApplicationServices IOKit;
+  };
 
   qgroundcontrol = qt55.callPackage ../applications/science/robotics/qgroundcontrol { };
 
