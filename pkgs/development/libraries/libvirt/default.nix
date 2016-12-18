@@ -4,7 +4,7 @@
 , iproute, iptables, readline, lvm2, utillinux, systemd, libpciaccess, gettext
 , libtasn1, ebtables, libgcrypt, yajl, pmutils, libcap_ng
 , dnsmasq, libnl, libpcap, libxslt, xhtml1, numad, numactl, perlPackages
-, curl, libiconv, gmp, xen, zfs
+, curl, libiconv, gmp, xen, zfs, OVMF, pkgs
 }:
 # if you update, also bump pythonPackages.libvirt or it will break
 stdenv.mkDerivation rec {
@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
     libxslt xhtml1 perlPackages.XMLXPath curl libpcap
   ] ++ stdenv.lib.optionals stdenv.isLinux [
     libpciaccess devicemapper lvm2 utillinux systemd libcap_ng
-    libnl numad numactl xen zfs
+    libnl numad numactl xen zfs OVMF
   ] ++ stdenv.lib.optionals stdenv.isDarwin [
      libiconv gmp
   ];
@@ -54,6 +54,7 @@ stdenv.mkDerivation rec {
     "--with-virtualport"
     "--with-init-script=redhat"
     "--with-storage-zfs"
+    "--with-loader-nvram=${pkgs.OVMF}/FV/OVMF_CODE.fd:${pkgs.OVMF}/FV/OVMF_VARS.fd"
   ] ++ stdenv.lib.optionals stdenv.isDarwin [
     "--with-init-script=none"
   ];
@@ -67,6 +68,13 @@ stdenv.mkDerivation rec {
     sed -i 's/ON_SHUTDOWN=suspend/ON_SHUTDOWN=''${ON_SHUTDOWN:-suspend}/' $out/libexec/libvirt-guests.sh
     substituteInPlace $out/libexec/libvirt-guests.sh \
       --replace "$out/bin" "${gettext}/bin"
+    ${''
+      cat << NVRAM >> $out/var/lib/libvirt/qemu.conf
+      nvram = [
+          "${pkgs.OVMF}/FV/OVMF_CODE.fd:${pkgs.OVMF}/FV/OVMF_VARS.fd"
+      ]
+      NVRAM
+    ''}
   '' + stdenv.lib.optionalString stdenv.isLinux ''
     wrapProgram $out/sbin/libvirtd \
       --prefix PATH : ${stdenv.lib.makeBinPath [ iptables iproute pmutils numad numactl ]}
