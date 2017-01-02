@@ -1,6 +1,6 @@
 { stdenv, fetchurl, static ? false }:
 
-let version = "1.2.8"; in
+let version = "1.2.9"; in
 
 stdenv.mkDerivation rec {
   name = "zlib-${version}";
