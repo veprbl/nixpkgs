@@ -26,6 +26,8 @@ stdenv.mkDerivation (args // {
   # XXX: workaround for https://ghc.haskell.org/trac/ghc/ticket/11042.
   LD_LIBRARY_PATH = makeLibraryPath (LD_LIBRARY_PATH ++ buildInputs);
                     # ^^^ Internally uses `getOutput "lib"` (equiv. to getLib)
+  # Fixes https://github.com/NixOS/nixpkgs/issues/16357 for Stack builds
+  DYLD_LIBRARY_PATH = makeLibraryPath (LD_LIBRARY_PATH ++ buildInputs);
 
   preferLocalBuild = true;
 
