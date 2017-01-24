@@ -1,6 +1,6 @@
---- swift/utils/build-script-impl	2017-01-23 12:47:20.401326309 -0600
-+++ swift-pax/utils/build-script-impl	2017-01-23 13:24:10.339366996 -0600
-@@ -1823,6 +1823,16 @@ function set_lldb_xcodebuild_options() {
+--- swift/utils/build-script-impl	2017-01-24 11:02:03.697555830 -0600
++++ swift-pax/utils/build-script-impl	2017-01-24 11:02:26.773939163 -0600
+@@ -1755,6 +1755,16 @@ function set_swiftpm_bootstrap_command()
      fi
  }
  
@@ -17,10 +17,10 @@
  #
  # Configure and build each product
  #
-@@ -2624,6 +2634,12 @@ for host in "${ALL_HOSTS[@]}"; do
+@@ -2541,6 +2551,12 @@ for host in "${ALL_HOSTS[@]}"; do
              fi
  
-             call "${CMAKE_BUILD[@]}" "${build_dir}" $(cmake_config_opt ${product}) -- "${BUILD_ARGS[@]}" ${build_targets[@]}
+             call ${DISTCC_PUMP} "${CMAKE}" --build "${build_dir}" $(cmake_config_opt ${product}) -- "${BUILD_ARGS[@]}" ${build_targets[@]}
 +            
 +						while IFS= read -r -d $'\0' i; do
 +								if ! isELF "$i"; then continue; fi
