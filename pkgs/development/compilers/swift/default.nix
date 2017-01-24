@@ -122,8 +122,8 @@ sources = {
       sha256 = "0mdqa9w1p6cmli6976v4wi0sw9r4p5prkj7lzfd1877wk11c9c73";
     };
     fix_arrayref = fetchpatch {
-      url = "https://github.com/apple/swift/commit/8bedace29f7019ae92cca73210269a1f096db5f4";
-      sha256 = "0mdqa9w1p6cmli6976v4wi0sw9r4p5prkj7lzfd1877wk11c9c73";
+      url = "https://github.com/apple/swift/commit/8bedace29f7019ae92cca73210269a1f096db5f4.patch";
+      sha256 = "1kmwm92ppcb4vbv5d9gzv8xisar20jma1z97r1cr2f869m3wizmq";
     };
     pr5193 = fetchpatch {
       url = "https://patch-diff.githubusercontent.com/raw/apple/swift/pull/5193.patch";
