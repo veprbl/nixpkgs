@@ -36,7 +36,7 @@
 }:
 
 let
-  version = "DEVELOPMENT-SNAPSHOT-2017-01-23-a";
+  version = "3.0.2-RELEASE";
   tag = "refs/tags/swift-${version}";
   fetch = repo: sha256:
     fetchgit {
@@ -49,37 +49,37 @@ let
 sources = {
     clang = fetch
       "swift-clang"
-      "0gj0z12qdrahanfxb0ava05zab4117alhb3rm91z42y11bnxanhp";
+      "0775cv6qmbc1if5ji1c1zf53g3qi2j2kqp65izgk2fq0lya1bmgg";
     llvm = fetch
       "swift-llvm"
-      "1dv9nm2kkx175nh69jrcs46l6gh6nlmvjb2g1blvaaia3m2bc5f3";
+      "0m56c2z604llbs0ngh68gl9q1xkqlwxrjg3l89ihgs7pkp5arzhd";
     compilerrt = fetch
       "swift-compiler-rt"
-      "1d9r85sfvh2vhr4s6yh6mix1qcl0pl847zkvzclpl90mlpkbcv22";
+      "1rgi6ksc1i49d716k2bwg4r3ggabkz6q4rgqn9a24xprb3b8nd0w";
     cmark = fetch
       "swift-cmark"
-      "0qf2f3zd8lndkfbxbz6vkznzz8rvq5gigijh7pgmfx9fi4zcssqx";
+      "1167g3r6vw7nd7zshyywb3mggyq8mg8jd3b2v08nbl988l5wa1y2";
     lldb = fetch
       "swift-lldb"
-      "1zwbvnbfjv7bj88mqyrpspa2rclzxafzl00llp89a4wyn6zsnbdq";
+      "0bx5mdzj32scn4x1xxjsy2dmdjjxqvy651n27fi32xxg4ihkclyw";
     llbuild = fetch
       "swift-llbuild"
-      "18w73zh95y9ggd6z3x2jibhyqfvkmqczvgpllg5zaicfc11abqh5";
+      "0srm22xnc1sdaq1230lgzvrnmhh44ba8lnr19bkz8xprb6bb8c8y";
     pm = fetch
       "swift-package-manager"
-      "1zbpp9y1v8vmr72xgichv12mbbcdyhyj3b9vkgbwrbwyrpzrgc3i";
+      "0128vh7b67gijnlcra3vi99zxa3j9j16mqncifdpsg8803rl50fl";
     xctest = fetch
       "swift-corelibs-xctest"
-      "0cj5y7wanllfldag08ci567x12aw793c79afckpbsiaxmwy4xhnm";
+      "07q90zsrzwcqw5c823r8qhigak3svwdxj88iiaqv1sbzaj49nh38";
     foundation = fetch
       "swift-corelibs-foundation"
-      "05gjlp4mhp2iydhash84bzqfgayf9rzhdxvcqz8dfp8igz1vpqwy";
+      "08lzwalxcliaf29bgs3y9iiydp8i94nhq0rlbhynav3p0fl0dpwl";
     libdispatch = fetch
       "swift-corelibs-libdispatch"
-      "0gqs7ggkfjy15f2zxk6r15p9h8mp5027mxa6gjy7h5c10k5y3l22";
+      "1b9w4jp36dbdhdlnwg7lj8myb77bj89f4sbg37p8w2zzbv8za3vd";
     swift = fetch
       "swift"
-      "1n74lb0349l0b7z3wvffi4bz13ss737xj880nxkc9f3qrb2cs833";
+      "0pdlvnkv7y539k37f4msa75rmppx84d0272pm614jcnlyzdd8cfi";
   };
 
   devInputs = [
