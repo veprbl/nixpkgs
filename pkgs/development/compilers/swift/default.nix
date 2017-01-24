@@ -112,6 +112,16 @@ sources = {
       install_destdir=$SWIFT_INSTALL_DIR \
       extra_cmake_options="${stdenv.lib.concatStringsSep "," cmakeFlags}"'';
 
+  patches = {
+    build_script = fetchpatch {
+      url = "https://aur.archlinux.org/cgit/aur.git/plain/build-script.patch?h=swift-language";
+      sha256 = "1vahdqm040chsm1kqcbcvqgzhlx6imid2k5zwgjzi7gnwy80i2z2";
+    };
+    swift_init_CachedVFile = fetchpatch {
+      url = "https://aur.archlinux.org/cgit/aur.git/tree/swift-init-CachedVFile.patch?h=swift-language";
+      sha256 = "0mdqa9w1p6cmli6976v4wi0sw9r4p5prkj7lzfd1877wk11c9c73";
+    };
+  };
 in
 stdenv.mkDerivation rec {
   name = "swift-${version}";
@@ -190,6 +200,8 @@ stdenv.mkDerivation rec {
     substituteInPlace swift/utils/build-script-impl \
       --replace '/usr/include/c++' "${clang.cc.gcc}/include/c++"
     patch -p1 -d swift -i ${./build-script-pax.patch}
+    patch -p1 -d swift -i ${patches.build_script}
+    patch -p1 -d swift -i ${patches.swift_init_CachedVFile}
 
     substituteInPlace clang/lib/Driver/ToolChains.cpp \
       --replace '  addPathIfExists(D, SysRoot + "/usr/lib", Paths);' \
