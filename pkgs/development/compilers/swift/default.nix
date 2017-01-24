@@ -125,6 +125,10 @@ sources = {
       url = "https://github.com/apple/swift/commit/8bedace29f7019ae92cca73210269a1f096db5f4";
       sha256 = "0mdqa9w1p6cmli6976v4wi0sw9r4p5prkj7lzfd1877wk11c9c73";
     };
+    pr5193 = fetchpatch {
+      url = "https://patch-diff.githubusercontent.com/raw/apple/swift/pull/5193.patch";
+      sha256 = "1j21ap62jk40152khfvhx1hrda6admwawlryiamj5a39fp1j8d6f";
+    };
   };
 in
 stdenv.mkDerivation rec {
@@ -207,6 +211,7 @@ stdenv.mkDerivation rec {
     patch -p1 -d swift -i ${patches.build_script}
     patch -p1 -d swift -i ${patches.swift_init_CachedVFile}
     patch -p1 -d swift -i ${patches.fix_arrayref}
+    patch -p1 -d swift -i ${patches.pr5193}
 
     substituteInPlace clang/lib/Driver/ToolChains.cpp \
       --replace '  addPathIfExists(D, SysRoot + "/usr/lib", Paths);' \
