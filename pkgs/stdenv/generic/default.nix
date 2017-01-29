@@ -48,7 +48,10 @@ let
     , propagatedNativeBuildInputs ? []
     , crossConfig ? null
     , passthru ? {}
-    , pos ? null # position used in error messages and for meta.position
+    , pos ? # position used in error messages and for meta.position
+        (if attrs.meta.description or null != null
+          then builtins.unsafeGetAttrPos "description" attrs.meta
+          else builtins.unsafeGetAttrPos "name" attrs)
     , separateDebugInfo ? false
     , outputs ? [ "out" ]
     , __impureHostDeps ? []
@@ -81,14 +84,6 @@ let
       propagatedBuildInputs' = lib.chooseDevOutputs propagatedBuildInputs;
       propagatedNativeBuildInputs' = lib.chooseDevOutputs propagatedNativeBuildInputs;
 
-      pos' =
-        if pos != null then
-          pos
-        else if attrs.meta.description or null != null then
-          builtins.unsafeGetAttrPos "description" attrs.meta
-        else
-          builtins.unsafeGetAttrPos "name" attrs;
-
       # The meta attribute is passed in the resulting attribute set,
       # but it's not part of the actual derivation, i.e., it's not
       # passed to the builder and is not a dependency.  But since we
@@ -108,8 +103,8 @@ let
         }
         // attrs.meta or {}
           # Fill `meta.position` to identify the source location of the package.
-        // lib.optionalAttrs (pos' != null)
-          { position = pos'.file + ":" + toString pos'.line; }
+        // lib.optionalAttrs (pos != null)
+          { position = pos.file + ":" + toString pos.line; }
         ;
 
       derivationArg =
