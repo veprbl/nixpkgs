@@ -15,6 +15,8 @@ let
   profile = "${ihaskell.pname}-${ihaskell.version}/profile/profile.tar";
 in
 buildEnv {
+  meta.broken = true; # https://github.com/NixOS/nixpkgs/issues/22047
+
   name = "ihaskell-with-packages";
   paths = [ ihaskellEnv ipython ];
   postBuild = ''
