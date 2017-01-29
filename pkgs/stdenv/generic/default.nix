@@ -128,13 +128,6 @@ let
       propagatedBuildInputs = map getCrossDrv propagatedBuildInputs__;
       propagatedNativeBuildInputs = map getNativeDrv propagatedNativeBuildInputs__;
     in let
-      pos' =
-        if pos != null then
-          pos
-        else if attrs.meta.description or null != null then
-          builtins.unsafeGetAttrPos "description" attrs.meta
-        else
-          builtins.unsafeGetAttrPos "name" attrs;
       pos'' = if pos' != null then "‘" + pos'.file + ":" + toString pos'.line + "’" else "«unknown-file»";
 
       throwEvalHelp = { reason, errormsg }:
@@ -184,15 +177,38 @@ let
       propagatedBuildInputs' = lib.chooseDevOutputs propagatedBuildInputs;
       propagatedNativeBuildInputs' = lib.chooseDevOutputs propagatedNativeBuildInputs;
 
-    in
+      pos' =
+        if pos != null then
+          pos
+        else if attrs.meta.description or null != null then
+          builtins.unsafeGetAttrPos "description" attrs.meta
+        else
+          builtins.unsafeGetAttrPos "name" attrs;
 
-      # Throw an error if trying to evaluate an non-valid derivation
-      assert let v = checkValidity attrs;
-             in if !v.valid
-               then throwEvalHelp (removeAttrs v ["valid"])
-               else true;
+      # The meta attribute is passed in the resulting attribute set,
+      # but it's not part of the actual derivation, i.e., it's not
+      # passed to the builder and is not a dependency.  But since we
+      # include it in the result, it *is* available to nix-env for queries.
+      meta = { }
+          # If the packager hasn't specified `outputsToInstall`, choose a default,
+          # which is the name of `p.bin or p.out or p`;
+          # if he has specified it, it will be overridden below in `// meta`.
+          #   Note: This default probably shouldn't be globally configurable.
+          #   Services and users should specify outputs explicitly,
+          #   unless they are comfortable with this default.
+        // { outputsToInstall =
+          let
+            outs = outputs'; # the value passed to derivation primitive
+            hasOutput = out: builtins.elem out outs;
+          in [( lib.findFirst hasOutput null (["bin" "out"] ++ outs) )];
+        }
+        // attrs.meta or {}
+          # Fill `meta.position` to identify the source location of the package.
+        // lib.optionalAttrs (pos' != null)
+          { position = pos'.file + ":" + toString pos'.line; }
+        ;
 
-      lib.addPassthru (derivation (
+      derivationArg =
         (removeAttrs attrs
           ["meta" "passthru" "crossAttrs" "pos"
            "__impureHostDeps" "__propagatedImpureHostDeps"
@@ -244,37 +260,24 @@ let
           __propagatedImpureHostDeps = computedPropagatedImpureHostDeps ++ __propagatedImpureHostDeps;
         } // (if outputs' != [ "out" ] then {
           outputs = outputs';
-        } else { })))) (
-      {
-        overrideAttrs = f: mkDerivation (attrs // (f attrs));
-        # The meta attribute is passed in the resulting attribute set,
-        # but it's not part of the actual derivation, i.e., it's not
-        # passed to the builder and is not a dependency.  But since we
-        # include it in the result, it *is* available to nix-env for queries.
-        meta = { }
-            # If the packager hasn't specified `outputsToInstall`, choose a default,
-            # which is the name of `p.bin or p.out or p`;
-            # if he has specified it, it will be overridden below in `// meta`.
-            #   Note: This default probably shouldn't be globally configurable.
-            #   Services and users should specify outputs explicitly,
-            #   unless they are comfortable with this default.
-          // { outputsToInstall =
-            let
-              outs = outputs'; # the value passed to derivation primitive
-              hasOutput = out: builtins.elem out outs;
-            in [( lib.findFirst hasOutput null (["bin" "out"] ++ outs) )];
-          }
-          // meta
-            # Fill `meta.position` to identify the source location of the package.
-          // lib.optionalAttrs (pos' != null)
-            { position = pos'.file + ":" + toString pos'.line; }
-          ;
-        inherit passthru;
-      } //
-      # Pass through extra attributes that are not inputs, but
-      # should be made available to Nix expressions using the
-      # derivation (e.g., in assertions).
-      passthru);
+        } else { }));
+    in
+
+      # Throw an error if trying to evaluate an non-valid derivation
+      assert let v = checkValidity attrs;
+             in if !v.valid
+               then throwEvalHelp (removeAttrs v ["valid"])
+               else true;
+
+      lib.addPassthru (derivation derivationArg) (
+        {
+          overrideAttrs = f: mkDerivation (attrs // (f attrs));
+          inherit meta passthru;
+        } //
+        # Pass through extra attributes that are not inputs, but
+        # should be made available to Nix expressions using the
+        # derivation (e.g., in assertions).
+        passthru);
 
   # The stdenv that we are producing.
   result =
