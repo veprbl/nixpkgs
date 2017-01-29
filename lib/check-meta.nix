@@ -8,8 +8,6 @@ in rec {
   #   applying the `derivation` primitive in order to "propagate to dependants".
   addMetaCheckInner = config: meta: drv:
     let
-      name = drv.name or "«name-missing»";
-      position = meta.position or "«unknown-file»";
       v = checkMetaValidity { inherit meta config; inherit (drv) system; };
     in
       # As a compromise, do the check when evaluating the name attribute;
@@ -17,7 +15,12 @@ in rec {
       #   while allowing to query meta (surprisingly even --no-name doesn't break that).
       drv // {
         name = if v.valid then drv.name
-          else throwEvalHelp (removeAttrs v ["valid"] // { inherit name position; });
+          else throwEvalHelp (
+            {
+              inherit (v) reason errormsg;
+              name = drv.name or "«name-missing»";
+              position = meta.position or "«unknown-file»";
+            });
       };
 
   # Make sure the dependencies are evaluted when accessing the name.

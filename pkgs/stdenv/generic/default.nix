@@ -47,7 +47,6 @@ let
     , propagatedBuildInputs ? []
     , propagatedNativeBuildInputs ? []
     , crossConfig ? null
-    , meta ? {}
     , passthru ? {}
     , pos ? null # position used in error messages and for meta.position
     , separateDebugInfo ? false
@@ -169,7 +168,8 @@ let
     in
 
       lib.addPassthru
-        (lib.addMetaCheckOuter (derivation (lib.addMetaCheckInner config meta derivationArg)))
+        (derivation
+            (lib.addMetaCheckInner config (attrs.meta or {}) derivationArg))
         ( {
             overrideAttrs = f: mkDerivation (attrs // (f attrs));
             inherit meta passthru;
