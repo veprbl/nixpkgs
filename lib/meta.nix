@@ -64,3 +64,5 @@ rec {
   hiPrioSet = set: mapDerivationAttrset hiPrio set;
 
 }
+  // (import ./check-meta.nix)
+
