@@ -2,17 +2,28 @@ let
   lib = import ./default.nix;
 in rec {
 
-  # Extend a derivation with a check for brokenness, license, etc.
-  # Throw a descriptive error when the check fails.
-  # Note: no dependencies are checked in this step.
-  addMetaCheck = config: meta: drv:
+  # Extend attributes to be passed to derivation (or similar) with a check
+  # for brokenness, license, etc.  Throw a descriptive error if the check fails.
+  # Note: no dependencies are checked in this step, but this should be done before
+  #   applying the `derivation` primitive in order to "propagate to dependants".
+  addMetaCheckInner = config: meta: drv:
     let
       name = drv.name or "«name-missing»";
       position = meta.position or "«unknown-file»";
       v = checkMetaValidity { inherit meta config; inherit (drv) system; };
     in
-      if v.valid then drv
+      # As a compromise, do the check when evaluating the name attribute;
+      #   the intention is to also catch any attempt to show in nix-env -qa,
+      #   while allowing to query meta (surprisingly even --no-name doesn't break that).
+      drv // {
+        name = if v.valid then drv.name
           else throwEvalHelp (removeAttrs v ["valid"] // { inherit name position; });
+      };
+
+  # Make sure the dependencies are evaluted when accessing the name.
+  # The input is a derivation, i.e. *after* applying the `derivation` primitive.
+  addMetaCheckOuter = drv:
+    drv // { name = assert drv.outPath != null; drv.name; };
 
   # Throw a descriptive error message for a failed evaluation check.
   throwEvalHelp = { reason, errormsg, name, position }:

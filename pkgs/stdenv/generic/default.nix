@@ -169,7 +169,7 @@ let
     in
 
       lib.addPassthru
-        (derivation (lib.addMetaCheck config meta derivationArg))
+        (lib.addMetaCheckOuter (derivation (lib.addMetaCheckInner config meta derivationArg)))
         ( {
             overrideAttrs = f: mkDerivation (attrs // (f attrs));
             inherit meta passthru;

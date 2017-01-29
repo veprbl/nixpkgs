@@ -85,6 +85,9 @@ rec {
   packagePlatforms = mapAttrs (name: value:
     let res = builtins.tryEval (
       if isDerivation value then
+        # Hopefully a reliable way to test whether the derivation evaluates,
+        # including brokenness/license checks in any dependencies.
+        assert value.outPath != null;
         value.meta.hydraPlatforms or (value.meta.platforms or [ "x86_64-linux" ])
       else if value.recurseForDerivations or false || value.recurseForRelease or false then
         packagePlatforms value
