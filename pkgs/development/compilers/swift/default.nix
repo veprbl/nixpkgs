@@ -37,7 +37,7 @@
 
 let
   v_major = "3.1";
-  v_date = "2017-01-22";
+  v_date = "2017-01-31";
   version = "${v_major}-DEVELOPMENT-SNAPSHOT-${v_date}-a";
   version_friendly = "${v_major}-${v_date}";
 
@@ -53,10 +53,10 @@ let
 sources = {
     clang = fetch
       "swift-clang"
-      "15zyn33rx1i7vvxsxsd5n884pb34cjg3hg16bmws35zrdzp3xz4v";
+      "0r7rqp00hg4v2j1vzq9bcwyn7c6sb2hzm7m3pn80in0my2jncc3g";
     llvm = fetch
       "swift-llvm"
-      "1gpia3dg1xaqi79an2apji7yrxvr9qyhfbl6w1yy4za28ff1981s";
+      "0v2dk4bzsyfhi473cgk4s2jqc4lmzh7i5cmi8a9j5sx43w300yzy";
     compilerrt = fetch
       "swift-compiler-rt"
       "1gjcr6g3ffs3nhf4a84iwg4flbd7rqcf9rvvclwyq96msa3mj950";
@@ -65,25 +65,25 @@ sources = {
       "0qf2f3zd8lndkfbxbz6vkznzz8rvq5gigijh7pgmfx9fi4zcssqx";
     lldb = fetch
       "swift-lldb"
-      "0zlfvgkmbaan6hk0b0y1msaggwzq8gscb388zrdag4w13rszz09v";
+      "023ikrahs5ly27cm1f4s4s8plgcglmv3vq848jcd5dmfyijgzxnb";
     llbuild = fetch
       "swift-llbuild"
-      "0bcyv4hsbkc7xm06s5d236g8rq63kdxw7h4r7apn6vzs0y333qg8";
+      "01bz8cbshfcf6ph3a5x808azi2fabjanjr8838jcldhbl2q7wx7b";
     pm = fetch
       "swift-package-manager"
-      "1zbpp9y1v8vmr72xgichv12mbbcdyhyj3b9vkgbwrbwyrpzrgc3i";
+      "1bgzv8xcm1jc754h3hzi42ax6brqikr8k25n5c6vjy76iw9zgbcf";
     xctest = fetch
       "swift-corelibs-xctest"
-      "0ra0d8a8nx8acbj426c2bd0zgdn3nvmmxfvsdpranidn2ijj4n6v";
+      "0cj5y7wanllfldag08ci567x12aw793c79afckpbsiaxmwy4xhnm";
     foundation = fetch
       "swift-corelibs-foundation"
-      "114pgrq7yrqrp6pgzz3yvlldx83h6506818vlvb05zz9yh5fa8h4";
+      "0dds1h2k97mxs6v5g5wd42yf3xpp075j95cygxh2lwirwnianqz3";
     libdispatch = fetch
       "swift-corelibs-libdispatch"
-      "0z11qb01k3qxk3h0af4a0000xdb2838lpvkl8i82lix07bdd27bb";
+      "1lq534nr72d1q4l5hzcpd8l586xdzxi97l4lyjdyl1ri05wylkc9";
     swift = fetch
       "swift"
-      "0v6l44mf8z17i6fiq9bmwbdgk4dy9m8msfl841q9d4a3frd223yc";
+      "1cg0b5mglmgp9wmd19w0nxigz1jgfnj3ymfm97zzawg07jx8b46n";
   };
 
   devInputs = [
