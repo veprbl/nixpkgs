@@ -45,7 +45,7 @@ in rec {
 
       b) For `nix-env`, `nix-build`, `nix-shell` or any other Nix command you can add
         { allow${up reason} = true; }
-      to ~/.nixpkgs/config.nix.
+      to ~/.config/nixpkgs/config.nix.
     ''));
 
   # Check if a derivation is valid, that is whether it passes checks for
