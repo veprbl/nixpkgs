@@ -9335,6 +9335,8 @@ with pkgs;
 
   oniguruma = callPackage ../development/libraries/oniguruma { };
 
+  onioncat = callPackage ../tools/security/onioncat { };
+
   openal = self.openalSoft;
 
   openalSoft = callPackage ../development/libraries/openal-soft {
