@@ -37,7 +37,7 @@
 
 let
   v_major = "3.1";
-  v_date = "2017-02-07";
+  v_date = "2017-02-09";
   version = "${v_major}-DEVELOPMENT-SNAPSHOT-${v_date}-a";
   version_friendly = "${v_major}-${v_date}";
 
@@ -83,7 +83,7 @@ sources = {
       "1lq534nr72d1q4l5hzcpd8l586xdzxi97l4lyjdyl1ri05wylkc9";
     swift = fetch
       "swift"
-      "1s1ynvxfgw78xfal2g29gflli9yr86ddfcbynqm3ygq5p0p26fia";
+      "0zvjghn73vlh8725pvm2nprm0mh8sgccc2f07gk05pidxa8f0ply";
   };
 
   devInputs = [
