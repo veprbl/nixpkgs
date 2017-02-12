@@ -144,9 +144,8 @@ stdenv.mkDerivation rec {
     python
     rsync
     which
-    paxctl
     findutils
-  ];
+  ] ++ stdenv.lib.optional stdenv.needsPax paxctl;
 
   # TODO: Revisit what's propagated and how
   propagatedBuildInputs = [
@@ -203,7 +202,9 @@ stdenv.mkDerivation rec {
       --replace '/usr/include' "${stdenv.cc.libc.dev}/include"
     substituteInPlace swift/utils/build-script-impl \
       --replace '/usr/include/c++' "${clang.cc.gcc}/include/c++"
+  '' + stdenv.lib.optionalString stdenv.needsPax ''
     patch -p1 -d swift -i ${./build-script-pax.patch}
+  '' + ''
 
     substituteInPlace clang/lib/Driver/ToolChains.cpp \
       --replace '  addPathIfExists(D, SysRoot + "/usr/lib", Paths);' \
