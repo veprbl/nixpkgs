@@ -682,6 +682,7 @@
   ./services/security/tor.nix
   ./services/security/torify.nix
   ./services/security/torsocks.nix
+  ./services/security/onioncat.nix
   ./services/security/usbguard.nix
   ./services/security/vault.nix
   ./services/system/cgmanager.nix
