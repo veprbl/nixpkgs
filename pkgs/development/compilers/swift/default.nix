@@ -35,7 +35,7 @@
 
 let
   v_major = "3.1";
-  v_date = "2017-02-11";
+  v_date = "2017-02-13";
   version = "${v_major}-DEVELOPMENT-SNAPSHOT-${v_date}-a";
   version_friendly = "${v_major}-${v_date}";
 
@@ -92,7 +92,7 @@ sources = {
     };
     swift = fetch {
       repo = "swift";
-      sha256 = "035a5h9vwa5gv6v24zy6qbifp7ar1a1xrz4kdq8v9xqi9fzavx53";
+      sha256 = "1zsayi6lqh9wyzb4rcnn0x5sb7hxngpdqlcv7kn51lfidc2haa6c";
     };
   };
 
