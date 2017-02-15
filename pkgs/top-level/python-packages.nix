@@ -26789,6 +26789,36 @@ EOF
 
   };
 
+  vpython = buildPythonPackage rec {
+    version = "6.11";
+    name = "vpython-${version}";
+
+    src = pkgs.fetchurl {
+      url = "http://sourceforge.net/projects/vpythonwx/files/6.11-release/vpython-wx-src.6.11.tgz";
+      sha256 = "0xhp5rbynyci2x2l7crvm07m4913kjxg2iybyssjjknj28qxpkyy";
+    };
+
+    disabled = isPy3k;
+
+    buildInputs = [ pkgs.boost ] ++
+      stdenv.lib.optional stdenv.isDarwin (with pkgs.darwin.apple_sdk.frameworks; [ Cocoa OpenGL ]);
+    propagatedBuildInputs = with self; [ numpy wxPython fonttools TTFQuery Polygon2 ];
+
+    setSourceRoot = "sourceRoot=`pwd`";
+    preConfigure = ''
+      # Prevent exceptions on gl errors
+      substituteInPlace src/core/util/errors.cpp \
+        --replace "#ifndef NDEBUG" "#if 0"
+    '';
+
+    meta = {
+      description = "VPython makes it easy to create navigable 3D displays and animations, even for those with limited programming experience";
+      homepage = http://vpython.org;
+      license = licenses.free;
+      platforms = platforms.all;
+    };
+  };
+
   vultr = buildPythonPackage rec {
     version = "0.1.2";
     name = "vultr-${version}";
