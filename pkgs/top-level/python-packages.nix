@@ -25986,6 +25986,23 @@ in {
     };
   };
 
+  TTFQuery = buildPythonPackage rec {
+    name = "TTFQuery-${version}";
+    version = "1.0.5";
+    disable = isPy3k;
+
+    src = pkgs.fetchurl {
+      url = "https://pypi.python.org/packages/dd/69/a6d5ba016f4e15a83e49471bcf91a7b8fbdf818e5acb002f554027d47650/TTFQuery-1.0.5.tar.gz";
+      sha256 = "0kbymjlxj0wmhsj3ckj84k8qcm53ivg2g7w1852pbqiyj1lx7f6m";
+    };
+
+    meta = {
+      description = "FontTools-based package for querying system fonts";
+      homepage = http://ttfquery.sourceforge.net;
+      license = licenses.bsd3;
+    };
+  };
+
   eggdeps  = buildPythonPackage rec {
      name = "eggdeps-${version}";
      version = "0.4";
