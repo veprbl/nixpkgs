@@ -8862,6 +8862,23 @@ in {
   };
 
 
+  Polygon2 = buildPythonPackage rec {
+    name = "Polygon2-${version}";
+    version = "2.0.8";
+    disabled = isPy3k;
+
+    src = pkgs.fetchurl {
+      url = "https://pypi.python.org/packages/73/9e/fe761e03de28b51b445ddf01ddae87441b7e7040df7d830b86db8f945808/Polygon2-2.0.8.tar.gz";
+      sha256 = "114wzv1zacmc7ff5f32863x7rmc1hjhyrg4ngab1xbrx90kv1qsa";
+    };
+
+    meta = {
+      description = "Polygon2 is a Python-2 package that handles polygonal shapes in 2D";
+      homepage = https://www.j-raedler.de/projects/polygon/;
+      license = licenses.unfreeRedistributable; # python code is LGPL, but gpc is free for non-commertial use http://www.cs.man.ac.uk/~toby/alan/software/
+    };
+  };
+
   poppler-qt4 = buildPythonPackage rec {
     name = "poppler-qt4-${version}";
     version = "0.18.1";
