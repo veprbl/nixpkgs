@@ -18490,21 +18490,15 @@ in {
   };
 
   pelican = buildPythonPackage rec {
-    name = "pelican-${version}";
-    version = "3.6.3";
+    pname = "pelican";
+    name = "${pname}-${version}";
+    version = "3.7.1";
     disabled = isPy26;
 
-    src = pkgs.fetchFromGitHub {
-      owner = "getpelican";
-      repo = "pelican";
-      rev = version;
-      sha256 = "1k572anw39rws67mvxl2w6y93y8w8q5smnwc0dd2gnnr16cc2vsh";
+    src = fetchPypi {
+      inherit pname version;
+      sha256 = "2a5347fe47464ee743bff99b6e81d1b5823f2e70e7be5bd6ed66a5bdd5f3578b";
     };
-
-    patches = [ ../development/python-modules/pelican-fix-tests-with-pygments-2.1.patch ];
-
-    # There's still some failing tests due to pygments 2.1.3
-    doCheck = false;
 
     buildInputs = with self; [
       pkgs.glibcLocales
@@ -20355,17 +20349,6 @@ in {
       description = "A generic syntax highlighter";
       license = licenses.bsd2;
       maintainers = with maintainers; [ nckx garbas ];
-    };
-  };
-
-  # For Pelican 3.6.3
-  pygments_2_0 = self.pygments.override rec {
-    version = "2.0.2";
-    name = "Pygments-${version}";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/P/Pygments/${name}.tar.gz";
-      sha256 = "7320919084e6dac8f4540638a46447a3bd730fca172afc17d2c03eed22cf4f51";
     };
   };
 
