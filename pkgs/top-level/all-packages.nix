@@ -14309,6 +14309,8 @@ in
 
   latencytop = callPackage ../os-specific/linux/latencytop { };
 
+  latrace = callPackage ../development/tools/misc/latrace { };
+
   ldm = callPackage ../os-specific/linux/ldm { };
 
   libaio = callPackage ../os-specific/linux/libaio { };
