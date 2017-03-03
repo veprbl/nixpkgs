@@ -86,6 +86,7 @@ stdenv.mkDerivation {
 
     makeWrapper "${browser}/bin/${browserName}" \
         "$out/bin/${browserName}${nameSuffix}" \
+        --argv0 "$out/bin/${browserName}${nameSuffix}" \
         --suffix-each MOZ_PLUGIN_PATH ':' "$plugins" \
         --suffix LD_LIBRARY_PATH ':' "$libs" \
         --suffix-each GTK_PATH ':' "$gtk_modules" \
