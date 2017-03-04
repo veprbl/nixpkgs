@@ -35,7 +35,7 @@
 
 let
   v_major = "3.1";
-  v_date = "2017-02-27";
+  v_date = "2017-03-03";
   version = "${v_major}-DEVELOPMENT-SNAPSHOT-${v_date}-a";
   version_friendly = "${v_major}-${v_date}";
 
@@ -51,7 +51,7 @@ let
 sources = {
     clang = fetch {
       repo = "swift-clang";
-      sha256 = "0byificwf138npblh9faxqk2w0qrh897dfyblclxh1prj3ry7paw";
+      sha256 = "0820mx1ghfnk4p5595r1f313y1699jwi61zghfbwak5wgwgy7n4x";
     };
     llvm = fetch {
       repo = "swift-llvm";
@@ -67,15 +67,15 @@ sources = {
     };
     lldb = fetch {
       repo = "swift-lldb";
-      sha256 = "0svagih2n9jjwhqlriya80jxqpis1nxfnd2ry4qnrkgiz5yzmrjb";
+      sha256 = "12fyviz4wflfklhbj8gz88hzvw0mwf2icdyakfr04xzkgyb58iv2";
     };
     llbuild = fetch {
       repo = "swift-llbuild";
-      sha256 = "01bz8cbshfcf6ph3a5x808azi2fabjanjr8838jcldhbl2q7wx7b";
+      sha256 = "1l3hnb2s01jby91k1ipbc3bhszq14vyx5pzdhf2chld1yhpg420d";
     };
     pm = fetch {
       repo = "swift-package-manager";
-      sha256 = "07ilmwivmayh1jkcrf33ylgn9flb004j4mji89k3lqhlq9lqq9ki";
+      sha256 = "1mzlpqg21l1zr3zf8pbrj0yq5diiayyb8bxwnk7h3knxgarpq808";
     };
     xctest = fetch {
       repo = "swift-corelibs-xctest";
@@ -83,7 +83,7 @@ sources = {
     };
     foundation = fetch {
       repo = "swift-corelibs-foundation";
-      sha256 = "01lxb32p4qdjsf72iygm0kmd11nkrd6w4by90lqlp0g159v57jgs";
+      sha256 = "0vc5xiifyvwcc6lrjcgfq9n2cfzhmhzx4lcmp2k2x3sg5ll10997";
     };
     libdispatch = fetch {
       repo = "swift-corelibs-libdispatch";
@@ -92,7 +92,7 @@ sources = {
     };
     swift = fetch {
       repo = "swift";
-      sha256 = "1gy4bp77k29dc1cxxapd3pqamr9vwvqv8vwfc4r4skpxp4zq810z";
+      sha256 = "13w9a653sc30g7kc462w2as246ib04qg1fda0clj1vqxvkfiqd92";
     };
   };
 
