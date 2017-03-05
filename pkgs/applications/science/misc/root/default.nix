@@ -3,11 +3,11 @@
 
 stdenv.mkDerivation rec {
   name = "root-${version}";
-  version = "6.08.02";
+  version = "6.08.06";
 
   src = fetchurl {
     url = "https://root.cern.ch/download/root_v${version}.source.tar.gz";
-    sha256 = "0530v1r4rvds52hgb13f00l3phhn76z6vii550mwv8bj3sl5070k";
+    sha256 = "14h5bhzwpzqm9wa15lmcriaa560lmyg38rr6645lph3gp93v0cga";
   };
 
   buildInputs = [ cmake pcre pkgconfig python2 zlib lzma gsl ]
