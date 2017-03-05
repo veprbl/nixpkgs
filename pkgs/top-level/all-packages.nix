@@ -16957,7 +16957,9 @@ in
 
   megam = callPackage ../applications/science/misc/megam { };
 
-  root = callPackage ../applications/science/misc/root { };
+  root = callPackage ../applications/science/misc/root {
+    inherit (darwin.apple_sdk.frameworks) Cocoa;
+  };
 
   simgrid = callPackage ../applications/science/misc/simgrid { };
 
