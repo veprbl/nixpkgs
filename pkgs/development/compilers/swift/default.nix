@@ -35,7 +35,7 @@
 
 let
   v_major = "3.1";
-  v_date = "2017-03-03";
+  v_date = "2017-03-05";
   version = "${v_major}-DEVELOPMENT-SNAPSHOT-${v_date}-a";
   version_friendly = "${v_major}-${v_date}";
 
@@ -75,7 +75,7 @@ sources = {
     };
     pm = fetch {
       repo = "swift-package-manager";
-      sha256 = "1mzlpqg21l1zr3zf8pbrj0yq5diiayyb8bxwnk7h3knxgarpq808";
+      sha256 = "03v8c2njzr1ralfq3590a9mlmz6ygkgdmv0372a4sc4f6aqz9zgh";
     };
     xctest = fetch {
       repo = "swift-corelibs-xctest";
@@ -92,7 +92,7 @@ sources = {
     };
     swift = fetch {
       repo = "swift";
-      sha256 = "13w9a653sc30g7kc462w2as246ib04qg1fda0clj1vqxvkfiqd92";
+      sha256 = "0dl1hyar4sr12f2303vra2yrv8h1a3iwnr5csn3z9iarjafjg84w";
     };
   };
 
