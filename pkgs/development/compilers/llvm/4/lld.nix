@@ -19,7 +19,7 @@ stdenv.mkDerivation {
 
   enableParallelBuilding = true;
 
-  doCheck = true;
+  # doCheck = true;
 
   postInstall = ''
     moveToOutput include "$dev"

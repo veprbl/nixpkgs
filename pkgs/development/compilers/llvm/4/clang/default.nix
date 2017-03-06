@@ -29,7 +29,7 @@ let
       sed -i -e 's/DriverArgs.hasArg(options::OPT_nostdlibinc)/true/' lib/Driver/ToolChains.cpp
     '';
 
-    doCheck = true;
+    # doCheck = true;
 
     # Clang expects to find LLVMgold in its own prefix
     # Clang expects to find sanitizer libraries in its own prefix
