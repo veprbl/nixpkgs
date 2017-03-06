@@ -16961,6 +16961,8 @@ in
     inherit (darwin.apple_sdk.frameworks) Cocoa;
   };
 
+  root5 = callPackage ../applications/science/misc/root/5.nix {};
+
   simgrid = callPackage ../applications/science/misc/simgrid { };
 
   spyder = pythonPackages.spyder;
