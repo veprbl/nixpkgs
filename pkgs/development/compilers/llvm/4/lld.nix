@@ -4,6 +4,7 @@
 , zlib
 , llvm
 , python
+, lit ? python.pkgs.lit
 , version
 }:
 
@@ -12,11 +13,13 @@ stdenv.mkDerivation {
 
   src = fetch "lld" "0kmyp7iyf4f76wgy87jczkyhvzhlwfydvxgggl74z0x89xgry745";
 
-  buildInputs = [ cmake llvm ];
+  buildInputs = [ cmake llvm lit ];
 
   outputs = [ "out" "dev" ];
 
   enableParallelBuilding = true;
+
+  doCheck = true;
 
   postInstall = ''
     moveToOutput include "$dev"
