@@ -8242,6 +8242,25 @@ in {
     };
   };
 
+  lit = buildPythonApplication rec {
+    version = "0.5";
+    name = "lit-${version}";
+
+    disabled = isPy3k;
+
+    src = pkgs.fetchurl {
+      url = "https://files.pythonhosted.org/packages/5b/a0/dbed2c8dfb220eb9a5a893257223cd0ff791c0fbc34ce2f1a957fa4b6c6f/lit-0.5.0.tar.gz";
+      sha256 = "3ea4251e78ebeb2e07be2feb33243d1f8931d956efc96ccc2b0846ced212b58c";
+    };
+
+    meta = {
+      description = "Portable tool for executing LLVM and Clang style test suites";
+      homepage = "http://llvm.org/docs/CommandGuide/lit.html";
+      license = licenses.ncsa;
+      maintainers = with maintainers; [ dtzWill ];
+    };
+  };
+
   lmdb = buildPythonPackage rec {
     pname = "lmdb";
     version = "0.92";
