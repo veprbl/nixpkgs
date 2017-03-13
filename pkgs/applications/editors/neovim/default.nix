@@ -1,6 +1,6 @@
 { stdenv, fetchFromGitHub, cmake, gettext, libmsgpack, libtermkey
 , libtool, libuv, luajit, luaPackages, man, ncurses, perl, pkgconfig
-, unibilium, makeWrapper, vimUtils, xsel
+, unibilium, makeWrapper, vimUtils, xsel, gperf
 
 , withPython ? true, pythonPackages, extraPythonPackages ? []
 , withPython3 ? true, python3Packages, extraPython3Packages ? []
@@ -60,13 +60,13 @@ let
 
   neovim = stdenv.mkDerivation rec {
     name = "neovim-${version}";
-    version = "0.1.5";
+    version = "0.1.7";
 
     src = fetchFromGitHub {
       owner = "neovim";
       repo = "neovim";
       rev = "v${version}";
-      sha256 = "1ihlgm2h7147xyd5wrwg61vsnmkqc9j3ghsida4g2ilr7gw9c85y";
+      sha256 = "0bk0raxlb1xsqyw9pmqmxvcq5szqhimidrasnvzrci84gld8cwz4";
     };
 
     enableParallelBuilding = true;
@@ -80,6 +80,7 @@ let
       unibilium
       luajit
       luaPackages.lua
+      gperf
     ] ++ optional withJemalloc jemalloc
       ++ lualibs;
 
