@@ -38,7 +38,7 @@ common = { pname, version, sha512, updateScript }: stdenv.mkDerivation rec {
       xorg.libXScrnSaver xorg.scrnsaverproto
       xorg.libXext xorg.xextproto sqlite unzip makeWrapper
       hunspell libevent libstartup_notification libvpx /* cairo */
-      icu libpng jemalloc
+      /*icu*/ libpng jemalloc
       libpulseaudio # only headers are needed
     ]
     ++ lib.optional enableGTK3 gtk3
@@ -56,7 +56,7 @@ common = { pname, version, sha512, updateScript }: stdenv.mkDerivation rec {
       "--with-system-libevent"
       "--with-system-libvpx"
       "--with-system-png" # needs APNG support
-      "--with-system-icu"
+      #"--with-system-icu" # temporarily
       "--enable-system-ffi"
       "--enable-system-hunspell"
       "--enable-system-pixman"
