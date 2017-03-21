@@ -91,7 +91,7 @@ in
         # Copy the database skeleton files to /var/lib/plex/.skeleton
         # See the the Nix expression for Plex's package for more information on
         # why this is done.
-        test -d "${cfg.dataDir}/.skeleton" || mkdir "${cfg.dataDir}/.skeleton"
+        test -d "${cfg.dataDir}/.skeleton" || (mkdir "${cfg.dataDir}/.skeleton" && chown ${cfg.user}:${cfg.group} "${cfg.dataDir}/.skeleton")
         for db in "com.plexapp.plugins.library.db"; do
             cp "${cfg.package}/usr/lib/plexmediaserver/Resources/base_$db" "${cfg.dataDir}/.skeleton/$db"
             chmod u+w "${cfg.dataDir}/.skeleton/$db"
