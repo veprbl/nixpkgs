@@ -48,6 +48,9 @@ in stdenv.mkDerivation rec {
       patchelf --set-rpath "$out/usr/lib/plexmediaserver" "$out/usr/lib/plexmediaserver/$bin"
     done
 
+    find $out/usr/lib/plexmediaserver -type f -name "*.so.*" -print -exec \
+      patchelf --set-rpath "$out/usr/lib/plexmediaserver" '{}' \;
+
     find $out/usr/lib/plexmediaserver/Resources -type f -a -perm -0100 \
         -print -exec patchelf --set-interpreter "${glibc.out}/lib/ld-linux-x86-64.so.2" '{}' \;
 
