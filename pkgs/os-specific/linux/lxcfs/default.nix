@@ -4,13 +4,13 @@ with stdenv.lib;
 stdenv.mkDerivation rec {
   # use unstable because it fixed some serious crashes,
   # stable should be reconsidered in future
-  name = "lxcfs-unstable-2017-03-02";
+  name = "lxcfs-unstable-2017-03-12";
 
   src = fetchFromGitHub {
     owner = "lxc";
     repo = "lxcfs";
-    sha256 = "1say5bf6gknzs0aymvrg2xiypc311gcdcfdmvb2vnz058pmianq9";
-    rev = "4a6707e130b4b65a33606ebc18a95ec471f4bf40";
+    sha256 = "1giwh8jdzzamnqsf2kdy01z969v2sq5v47sbr0dvdz9330jslvjs";
+    rev = "7ff2a1548ecee649f9591eb6d8fcc613726a7c7e";
   };
 
   nativeBuildInputs = [ pkgconfig help2man autoreconfHook ];
