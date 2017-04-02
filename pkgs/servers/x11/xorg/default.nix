@@ -577,6 +577,7 @@ let
       sha256 = "0gbf99sljhd3kmd72rdbr7wgn75cd10vzg80p9jmv7adfsicwn7m";
     };
     buildInputs = [pkgconfig ];
+    meta.platforms = stdenv.lib.platforms.unix;
   }) // {inherit ;};
 
   iceauth = (mkDerivation "iceauth" {
