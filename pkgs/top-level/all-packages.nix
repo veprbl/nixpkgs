@@ -17431,7 +17431,10 @@ with pkgs;
 
   thepeg = callPackage ../development/libraries/physics/thepeg { };
 
-  yoda = callPackage ../development/libraries/physics/yoda { };
+  yoda = callPackage ../development/libraries/physics/yoda {
+    root = null;
+  };
+  yoda-with-root = lowPrio (callPackage ../development/libraries/physics/yoda { });
 
   ### MISC
 
