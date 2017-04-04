@@ -1320,6 +1320,8 @@ in
 
   dtools = callPackage ../development/tools/dtools { };
 
+  dracut = callPackage ../os-specific/linux/dracut { };
+
   dtrx = callPackage ../tools/compression/dtrx { };
 
   dune = callPackage ../development/tools/ocaml/dune { };
