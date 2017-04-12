@@ -7052,7 +7052,7 @@ with pkgs;
 
   clucene_core = clucene_core_1;
 
-  clutter = callPackage ../development/libraries/clutter { };
+  clutter = callPackage ../development/libraries/clutter { waylandSupport=true; };
 
   clutter-gst = callPackage ../development/libraries/clutter-gst {
   };

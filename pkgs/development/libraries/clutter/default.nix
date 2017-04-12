@@ -1,12 +1,13 @@
-{ stdenv, fetchurl, glib, pkgconfig, mesa, libX11, libXext, libXfixes
-, libXdamage, libXcomposite, libXi, cogl, pango, atk, json_glib, 
-gobjectIntrospection 
+{ stdenv, lib, fetchurl, glib, pkgconfig, mesa, libX11, libXext, libXfixes
+, libXdamage, libXcomposite, libXi, cogl, pango, atk, json_glib,
+gobjectIntrospection, libinput, libxkbcommon, wayland, wayland-protocols, waylandSupport ? true
 }:
 
 let
   ver_maj = "1.26";
   ver_min = "0";
 in
+with lib;
 stdenv.mkDerivation rec {
   name = "clutter-${ver_maj}.${ver_min}";
 
@@ -19,9 +20,10 @@ stdenv.mkDerivation rec {
   propagatedBuildInputs =
     [ libX11 mesa libXext libXfixes libXdamage libXcomposite libXi cogl pango
       atk json_glib gobjectIntrospection
-    ];
+    ] ++ optionals waylandSupport [ wayland wayland-protocols libinput libxkbcommon ];
 
-  configureFlags = [ "--enable-introspection" ]; # needed by muffin AFAIK
+  configureFlags = [ "--enable-introspection" ] # needed by muffin AFAIK
+  ++ optionals waylandSupport [ "--enable-wayland-backend" "--enable-wayland-compositor" ];
 
   #doCheck = true; # no tests possible without a display
 
