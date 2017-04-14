@@ -84,6 +84,14 @@ in
           '';
       };
 
+    plugins = {
+      lvm.enable = mkOption {
+        description = "Whether to enable docker lvm plugin";
+        type = types.bool;
+        default = false;
+      };
+    };
+
     extraOptions =
       mkOption {
         type = types.separatedString " ";
@@ -98,7 +106,8 @@ in
 
   ###### implementation
 
-  config = mkIf cfg.enable (mkMerge [{
+  config = mkIf cfg.enable (mkMerge [
+    {
       environment.systemPackages = [ pkgs.docker ];
       users.extraGroups.docker.gid = config.ids.gids.docker;
       systemd.packages = [ pkgs.docker ];
@@ -138,6 +147,19 @@ in
         };
       };
     }
+    (mkIf cfg.plugins.lvm.enable {
+      systemd.services.docker-lvm-plugin = {
+        wantedBy = ["multi-user.target"];
+        after = ["docker.service"];
+
+        path = [pkgs.lvm2];
+
+        serviceConfig.ExecStart = "${pkgs.docker-lvm-plugin}/bin/docker-lvm-plugin";
+      };
+
+      systemd.sockets.docker-lvm-plugin.socketConfig.ListenStream = "/run/docker/plugins/lvm.sock";
+
+    })
   ]);
 
   imports = [
