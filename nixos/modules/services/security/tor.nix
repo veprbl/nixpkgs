@@ -17,6 +17,7 @@ let
       GeoIPv6File ${pkgs.tor.geoip}/share/tor/geoip6
     ''}
 
+    ControlSocket /var/run/tor/control GroupWritable RelaxDirModeCheck
     ${optint "ControlPort" cfg.controlPort}
   ''
   # Client connection config
@@ -341,10 +342,16 @@ in
         after    = [ "network.target" ];
         restartTriggers = [ torRcFile ];
 
+        preStart = ''
+          mkdir -p /var/run/tor
+          chown tor:tor /var/run/tor
+
+          ${pkgs.tor}/bin/tor -f ${torRcFile} --verify-config
+        '';
+
         # Translated from the upstream contrib/dist/tor.service.in
         serviceConfig =
           { Type         = "simple";
-            ExecStartPre = "${pkgs.tor}/bin/tor -f ${torRcFile} --verify-config";
             ExecStart    = "${pkgs.tor}/bin/tor -f ${torRcFile} --RunAsDaemon 0";
             ExecReload   = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
             KillSignal   = "SIGINT";
@@ -363,7 +370,7 @@ in
             DevicePolicy            = "closed";
             InaccessibleDirectories = "/home";
             ReadOnlyDirectories     = "/";
-            ReadWriteDirectories    = torDirectory;
+            ReadWriteDirectories    = [torDirectory "/var/run/tor"];
             NoNewPrivileges         = "yes";
           };
       };
