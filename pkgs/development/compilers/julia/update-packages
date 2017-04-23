@@ -1,0 +1,60 @@
+#!/usr/bin/env nix-shell
+#!nix-shell -p python3 -i python
+
+import urllib
+import urllib.request
+#import tarfile
+import zipfile
+
+import tempfile
+import os
+import glob
+import json
+
+URL = "https://github.com/JuliaLang/METADATA.jl/archive/metadata-v2.zip"
+OUTPUT = os.path.join(os.path.dirname(os.path.realpath(__file__)), "packages", "official-packages.json")
+
+def paths_and_files_to_dict(path):
+    d = {}
+    _fill(d, path)
+    return d
+
+def _fill(d, path):
+    key = os.path.basename(path)
+    if os.path.isdir(path):
+        d[key] = {}
+        for item in os.listdir(path):
+            if not item.startswith("."):
+                _fill(d[key], os.path.join(path, item))
+    if os.path.isfile(path):
+        d[key] = open(path).read().splitlines()
+
+print("Retrieving metadata...")
+archive = urllib.request.urlretrieve (URL)[0]
+
+with tempfile.TemporaryDirectory() as tmp:
+
+    print("Extracting archive...")
+    zip = zipfile.ZipFile(archive)
+    rev = zip.comment.decode()
+    zip.extractall(tmp)
+    zip.close()
+
+    # Get the main folder
+    unpacked = glob.glob(os.path.join(tmp, "*"))[0]
+
+    # Directory structure and contents of files as dicts and strings
+    print("Constructing package set...")
+    packages = paths_and_files_to_dict(unpacked)
+
+    # Get rid of main directory
+    packages = list(packages.values())[0]
+
+    data = {}
+    data['revision'] = rev
+    data['packages'] = packages
+
+
+print("Writing package info to {}".format(OUTPUT))
+with open(OUTPUT, 'w') as f:
+    json.dump(data, f, sort_keys=True, indent=4)

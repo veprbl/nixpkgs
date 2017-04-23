@@ -6380,6 +6380,9 @@ with pkgs;
 
   julia = julia_06;
 
+  juliaLang = callPackage ../development/compilers/julia/julia-lang.nix { };
+  juliaPackages = callPackage ../development/compilers/julia/packages/packages.nix { };
+
   jwasm =  callPackage ../development/compilers/jwasm { };
 
   kotlin = callPackage ../development/compilers/kotlin { };
