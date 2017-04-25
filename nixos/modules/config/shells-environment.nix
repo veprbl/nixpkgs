@@ -167,9 +167,6 @@ in
          ${exportedEnvVars}
 
          ${cfg.extraInit}
-
-         # ~/bin if it exists overrides other bin directories.
-         export PATH="$HOME/bin:$PATH"
        '';
 
     system.activationScripts.binsh = stringAfter [ "stdio" ]
