@@ -4,7 +4,7 @@
 , enablePNG       ? true, libpng
 , enableTIFF      ? true, libtiff
 , enableWebP      ? true, libwebp
-, enableEXR       ? true, openexr, ilmbase
+, enableEXR ? (!stdenv.isDarwin), openexr, ilmbase
 , enableJPEG2K    ? true, jasper
 
 , enableIpp       ? false
@@ -16,6 +16,7 @@
 , enableGStreamer ? false, gst_all_1
 , enableEigen     ? false, eigen
 , enableCuda      ? false, cudatoolkit, gcc5
+, darwin
 }:
 
 let
@@ -115,7 +116,7 @@ stdenv.mkDerivation rec {
     ++ lib.optional enableEigen eigen
     ++ lib.optionals enableCuda [ cudatoolkit gcc5 ]
     ++ lib.optional enableContrib protobuf3_1
-    ;
+    ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ AVFoundation Cocoa QTKit ]);
 
   propagatedBuildInputs = lib.optional enablePython pythonPackages.numpy;
 
@@ -125,6 +126,8 @@ stdenv.mkDerivation rec {
 
   cmakeFlags = [
     "-DWITH_IPP=${if enableIpp then "ON" else "OFF"}"
+    "-DWITH_OPENCL=OFF"
+    "-DWITH_LAPACK=OFF"
     (opencvFlag "TIFF" enableTIFF)
     (opencvFlag "JASPER" enableJPEG2K)
     (opencvFlag "WEBP" enableWebP)
@@ -147,6 +150,6 @@ stdenv.mkDerivation rec {
     homepage = http://opencv.org/;
     license = stdenv.lib.licenses.bsd3;
     maintainers = with stdenv.lib.maintainers; [viric flosse mdaiter];
-    platforms = with stdenv.lib.platforms; linux;
+    platforms = with stdenv.lib.platforms; linux ++ darwin;
   };
 }
