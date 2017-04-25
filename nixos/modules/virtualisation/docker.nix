@@ -146,6 +146,11 @@ in
           SocketGroup = "docker";
         };
       };
+
+      boot.kernelModules =
+        (optional (
+          cfg.storageDriver == "overlay" || cfg.storageDriver == "overlay2"
+        ) "overlay");
     }
     (mkIf cfg.plugins.lvm.enable {
       systemd.services.docker-lvm-plugin = {
