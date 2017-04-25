@@ -17467,6 +17467,8 @@ with pkgs;
 
   numix-gtk-theme = callPackage ../misc/themes/numix { };
 
+  numix-solarized-gtk-theme = callPackage ../misc/themes/gtk3/numix-solarized-gtk-theme {  };
+
   theme-vertex = callPackage ../misc/themes/vertex { };
 
   rox-filer = callPackage ../desktops/rox/rox-filer {
