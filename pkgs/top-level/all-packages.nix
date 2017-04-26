@@ -17366,7 +17366,7 @@ with pkgs;
   megam = callPackage ../applications/science/misc/megam { };
 
   root = callPackage ../applications/science/misc/root {
-    inherit (darwin.apple_sdk.frameworks) Cocoa;
+    inherit (darwin.apple_sdk.frameworks) Cocoa OpenGL;
   };
 
   root5 = lowPrio (callPackage ../applications/science/misc/root/5.nix {
