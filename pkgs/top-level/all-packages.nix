@@ -2572,6 +2572,8 @@ with pkgs;
 
   kismet = callPackage ../applications/networking/sniffers/kismet { };
 
+  klee = callPackage ../development/tools/analysis/klee { };
+
   klick = callPackage ../applications/audio/klick { };
 
   knockknock = callPackage ../tools/security/knockknock { };
