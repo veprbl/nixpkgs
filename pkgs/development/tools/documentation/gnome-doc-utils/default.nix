@@ -10,6 +10,10 @@ python2Packages.buildPythonApplication {
     sha256 = "19n4x25ndzngaciiyd8dd6s2mf9gv6nv3wv27ggns2smm7zkj1nb";
   };
 
+  postPatch = ''
+    substituteInPlace xml2po/xml2po/Makefile.in xml2po/xml2po/Makefile.am \
+      --replace "s+^#!.*python.*+#!\$(PYTHON)+" "s,^#!.*python.*,#!\$(PYTHON),"
+  '';
   configureFlags = "--disable-scrollkeeper";
   buildInputs = [ libxslt pkgconfig intltool ];
   propagatedBuildInputs = [ libxml2Python ];
