@@ -6849,6 +6849,8 @@ with pkgs;
 
   nant = callPackage ../development/tools/build-managers/nant { };
 
+  navc = callPackage ../development/tools/misc/navc { };
+
   ninja = callPackage ../development/tools/build-managers/ninja { };
 
   nixbang = callPackage ../development/tools/misc/nixbang {
