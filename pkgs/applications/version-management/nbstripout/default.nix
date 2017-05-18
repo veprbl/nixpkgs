@@ -1,6 +1,6 @@
-{lib, python2Packages, git, mercurial}:
+{lib, python3Packages, git, mercurial}:
 
-with python2Packages;
+with python3Packages;
 buildPythonApplication rec {
   name = "${pname}-${version}";
   version = "0.3.0";
