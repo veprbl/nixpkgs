@@ -13,9 +13,9 @@ stdenv.mkDerivation rec {
   pythonPath = []; # python wrapper support
 
   nativeBuildInputs = [ autoreconfHook ];
-  buildInputs = with python2Packages; [ cython python matplotlib makeWrapper ]
+  buildInputs = with python2Packages; [ cython python makeWrapper ]
     ++ stdenv.lib.optional withRootSupport root;
-  propagatedBuildInputs = with python2Packages; [ numpy ];
+  propagatedBuildInputs = with python2Packages; [ matplotlib numpy ];
 
   enableParallelBuilding = true;
 
