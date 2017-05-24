@@ -5708,7 +5708,7 @@ with pkgs;
 
   rust = rustStable;
   rustStable = callPackage ../development/compilers/rust {
-    inherit (llvmPackages_39) llvm;
+    inherit (llvmPackages_4) llvm;
   };
   rustBeta = lowPrio (recurseIntoAttrs (callPackage ../development/compilers/rust/beta.nix {}));
   rustNightly = lowPrio (recurseIntoAttrs (callPackage ../development/compilers/rust/nightly.nix {
