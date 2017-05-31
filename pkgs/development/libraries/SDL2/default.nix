@@ -8,6 +8,7 @@
 , ibusSupport ? false, ibus
 , pulseaudioSupport ? true, libpulseaudio
 , AudioUnit, Cocoa, CoreAudio, CoreServices, ForceFeedback, OpenGL
+, libiconv
 }:
 
 # OSS is no longer supported, for it's much crappier than ALSA and
@@ -43,7 +44,7 @@ stdenv.mkDerivation rec {
     lib.optionals waylandSupport [ wayland wayland-protocols libxkbcommon ] ++
     lib.optional pulseaudioSupport libpulseaudio;
 
-  buildInputs = [ audiofile ] ++
+  buildInputs = [ audiofile libiconv ] ++
     lib.optional openglSupport mesa_noglu ++
     lib.optional alsaSupport alsaLib ++
     lib.optional dbusSupport dbus ++
