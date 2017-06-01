@@ -257,7 +257,7 @@ let
         in
         {
           builder = attrs.realBuilder or shell;
-          args = attrs.args or ["--noprofile" "--norc" "-e" (attrs.builder or ./default-builder.sh)];
+          args = attrs.args or ["-e" (attrs.builder or ./default-builder.sh)];
           stdenv = result;
           system = result.system;
           userHook = config.stdenv.userHook or null;
@@ -333,7 +333,7 @@ let
 
       builder = shell;
 
-      args = ["--noprofile" "--norc" "-e" ./builder.sh];
+      args = ["-e" ./builder.sh];
 
       setup = setupScript;
 
