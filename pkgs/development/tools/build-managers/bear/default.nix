@@ -2,19 +2,23 @@
 
 stdenv.mkDerivation rec {
   name = "bear-${version}";
-  version = "2.2.1";
+  version = "2.3.5";
 
   src = fetchFromGitHub {
     owner = "rizsotto";
     repo = "Bear";
     rev = version;
-    sha256 = "1rwar5nvvhfqws4nwyifaysqs3nxpphp48lx9mdg5n6l4z7drz0n";
+    sha256 = "0rdjyn0v7d246q9y1dc2c0kmvlkpnc35q7j1al1hmdnhl3y05abs";
   };
 
   nativeBuildInputs = [ cmake ];
   buildInputs = [ python ]; # just for shebang of bin/bear
 
   doCheck = false; # all fail
+
+  postFixup = ''
+    sed -i -e "s!$out/$out!$out!" $out/bin/bear
+  '';
 
   patches = [ ./ignore_wrapper.patch ];
 
