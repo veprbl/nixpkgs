@@ -1,4 +1,4 @@
-commit 0f5782ecd1e2839d18d9ec92a933d9a747232a47
+commit f9cef729bcd4258ea0f46ac6e4959a5e19cdbb57
 Author: Dmitry Kalinkin <dmitry.kalinkin@gmail.com>
 Date:   Mon Jun 5 07:26:12 2017 -0400
 
@@ -166,6 +166,32 @@ index 0000000..be91a86
 +  fi
 +fi
 +])
+diff --git a/src/Reader.cc b/src/Reader.cc
+index 777a2ac..6d10222 100644
+--- a/src/Reader.cc
++++ b/src/Reader.cc
+@@ -7,6 +7,7 @@
+ #include "YODA/ReaderYODA.h"
+ #include "YODA/ReaderAIDA.h"
+ #include "YODA/ReaderFLAT.h"
++#include "YODA/Config/DummyConfig.h"
+ 
+ using namespace std;
+ 
+@@ -20,6 +21,13 @@ namespace YODA {
+     if (fmt == "yoda") return ReaderYODA::create();
+     if (fmt == "aida") return ReaderAIDA::create();
+     if (fmt == "dat" || fmt == "flat")  return ReaderFLAT::create();
++    if (fmt == "yoda.gz") {
++#ifdef HAVE_LIBZ
++        return ReaderYODA::create();
++#else
++        throw UserError("YODA was compiled without zlib support");
++#endif /* HAVE_LIBZ */
++    }
+     throw UserError("Format cannot be identified from string '" + name + "'");
+   }
+ 
 diff --git a/src/ReaderYODA.cc b/src/ReaderYODA.cc
 index c983e76..f3bc0d7 100644
 --- a/src/ReaderYODA.cc
