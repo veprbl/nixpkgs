@@ -1,4 +1,4 @@
-{ stdenv, fetchhg, autoreconfHook, python2Packages, root, makeWrapper, withRootSupport ? false }:
+{ stdenv, fetchhg, autoreconfHook, python2Packages, root, zlib, makeWrapper, withRootSupport ? false }:
 
 stdenv.mkDerivation rec {
   name = "yoda-${version}";
@@ -10,10 +10,12 @@ stdenv.mkDerivation rec {
     sha256 = "1adwl973i4k1nyji8rllvwbdd9vkizm7rwsgg8jqp45lpw0qwy3j";
   };
 
+  patches = [ ./zlib.patch ];
+
   pythonPath = []; # python wrapper support
 
   nativeBuildInputs = [ autoreconfHook ];
-  buildInputs = with python2Packages; [ cython python makeWrapper ]
+  buildInputs = with python2Packages; [ cython python makeWrapper zlib ]
     ++ stdenv.lib.optional withRootSupport root;
   propagatedBuildInputs = with python2Packages; [ matplotlib numpy ];
 
