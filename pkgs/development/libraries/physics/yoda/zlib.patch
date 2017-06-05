@@ -1,4 +1,4 @@
-commit 54cdf9ee305027b88eb515029d690bd2edb5edfc
+commit 16e24d2d9b54de1d6c0fb90bba6387f5492918d6
 Author: Dmitry Kalinkin <dmitry.kalinkin@gmail.com>
 Date:   Mon Jun 5 07:26:12 2017 -0400
 
@@ -166,6 +166,39 @@ index 0000000..be91a86
 +  fi
 +fi
 +])
+diff --git a/pyext/yoda/include/IO.pyx b/pyext/yoda/include/IO.pyx
+index b9de96b..e805f95 100644
+--- a/pyext/yoda/include/IO.pyx
++++ b/pyext/yoda/include/IO.pyx
+@@ -53,8 +53,8 @@ cdef dict _aobjects_to_dict(vector[c.AnalysisObject*]* aobjects, patterns, unpat
+     return out
+ 
+ ## Set a istringstream's string from a C/Python string
+-cdef void _make_iss(c.istringstream &iss, char* s):
+-    iss.str(string(s))
++cdef void _make_iss(c.istringstream &iss, string s):
++    iss.str(s)
+ 
+ ## Read a file's contents as a returned string
+ ## The file argument can either be a file object, filename, or special "-" reference to stdin
+@@ -64,7 +64,7 @@ def _str_from_file(file_or_filename):
+     elif file_or_filename == "-":
+         s = sys.stdin.read()
+     else:
+-        f = open(file_or_filename)
++        f = open(file_or_filename, "rb") # assume that linefeed conversion is to occur in C++ code
+         s = f.read()
+         f.close()
+     return s
+@@ -102,7 +102,7 @@ def read(filename, asdict=True, patterns=None, unpatterns=None):
+     """
+     cdef c.istringstream iss
+     cdef vector[c.AnalysisObject*] aobjects
+-    f = open(filename)
++    f = open(filename, "rb") # assume that linefeed conversion is to occur in C++ code
+     s = f.read()
+     f.close()
+     _make_iss(iss, s)
 diff --git a/src/Reader.cc b/src/Reader.cc
 index 777a2ac..7c31794 100644
 --- a/src/Reader.cc
