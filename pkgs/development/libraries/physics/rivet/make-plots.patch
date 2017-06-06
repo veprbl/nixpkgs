@@ -1,0 +1,34 @@
+diff --git a/bin/make-plots b/bin/make-plots
+index bda07e11..1a15849f 100755
+--- a/bin/make-plots
++++ b/bin/make-plots
+@@ -1838,10 +1838,10 @@ class Histogram(DrawableObject, Described):
+                         out += '(' + coors.strphys2frameX(self.data[0].xmin) + ', -0.1)\n'
+                     else:
+                         out += '(-0.1, -0.1)\n'
+-                for i, b in enumerate(self.data):
+-                    if isnan(b.val):
+-                        seen_nan = True
+-                        continue
++                data = filter(lambda b: not isnan(b.val), self.data)
++                if len(data) < len(self.data):
++                    seen_nan = True
++                for i, b in enumerate(data):
+                     if self.getSmoothLine():
+                         out += ('(' + coors.strphys2frameX(0.5*(b.xmin+b.xmax)) + ', ' \
+                                     + coors.strphys2frameY(b.val) + ')\n')
+@@ -1851,12 +1851,12 @@ class Histogram(DrawableObject, Described):
+                                     + coors.strphys2frameX(b.xmax)  + ', ' \
+                                     + coors.strphys2frameY(b.val) + ')\n')
+                         ## Join/separate data points, with vertical/diagonal lines
+-                        if i+1 < len(self.data): #< If this is not the last point
++                        if i+1 < len(data): #< If this is not the last point
+                             if self.description.get('ConnectBins', '1') != '1':
+                                 out += ('\\psline')
+                             else:
+                                 ## If bins are joined, but there is a gap in binning, choose whether to fill the gap
+-                                if (abs(coors.phys2frameX(b.xmax) - coors.phys2frameX(self.data[i+1].xmin)) > 1e-4):
++                                if (abs(coors.phys2frameX(b.xmax) - coors.phys2frameX(data[i+1].xmin)) > 1e-4):
+                                     if self.description.get('ConnectGaps', '0') != '1':
+                                         out += ('\\psline')
+                                         # TODO: Perhaps use a new dashed line to fill the gap?

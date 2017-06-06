@@ -15,6 +15,7 @@ stdenv.mkDerivation rec {
 
   patches = [
     ./darwin.patch # configure relies on impure sw_vers to -Dunix
+    ./make-plots.patch
   ];
 
   latex = texlive.combine { inherit (texlive)
