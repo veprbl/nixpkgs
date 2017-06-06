@@ -1,8 +1,19 @@
 diff --git a/bin/make-plots b/bin/make-plots
-index bda07e11..1a15849f 100755
+index bda07e11..e5cf3c56 100755
 --- a/bin/make-plots
 +++ b/bin/make-plots
-@@ -1838,10 +1838,10 @@ class Histogram(DrawableObject, Described):
+@@ -479,6 +479,10 @@ class Plot(object):
+                 previous = i
+ 
+     def set_histo_options(self,inputdata):
++        if inputdata.description.has_key('ConnectBins'):
++            for i in inputdata.histos.keys():
++                if not inputdata.histos[i].description.has_key('ConnectBins'):
++                    inputdata.histos[i].description['ConnectBins'] = inputdata.description['ConnectBins']
+         if inputdata.description.has_key('ConnectGaps'):
+             for i in inputdata.histos.keys():
+                 if not inputdata.histos[i].description.has_key('ConnectGaps'):
+@@ -1838,10 +1842,10 @@ class Histogram(DrawableObject, Described):
                          out += '(' + coors.strphys2frameX(self.data[0].xmin) + ', -0.1)\n'
                      else:
                          out += '(-0.1, -0.1)\n'
@@ -17,7 +28,7 @@ index bda07e11..1a15849f 100755
                      if self.getSmoothLine():
                          out += ('(' + coors.strphys2frameX(0.5*(b.xmin+b.xmax)) + ', ' \
                                      + coors.strphys2frameY(b.val) + ')\n')
-@@ -1851,12 +1851,12 @@ class Histogram(DrawableObject, Described):
+@@ -1851,12 +1855,12 @@ class Histogram(DrawableObject, Described):
                                      + coors.strphys2frameX(b.xmax)  + ', ' \
                                      + coors.strphys2frameY(b.val) + ')\n')
                          ## Join/separate data points, with vertical/diagonal lines
