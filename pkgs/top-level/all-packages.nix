@@ -7481,6 +7481,8 @@ in
   scalafix = callPackage ../development/tools/scalafix { };
   scalafmt = callPackage ../development/tools/scalafmt { };
 
+  scan-build = callPackage ../development/tools/scan-build { };
+
   sdcc = callPackage ../development/compilers/sdcc {
     gputils = null;
   };
