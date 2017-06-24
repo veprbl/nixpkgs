@@ -14,7 +14,6 @@ fi
 
 source @out@/nix-support/utils.sh
 
-
 # Optionally filter out paths not refering to the store.
 expandResponseParams "$@"
 if [ "$NIX_ENFORCE_PURITY" = 1 -a -n "$NIX_STORE" \
@@ -144,6 +143,51 @@ if [ "$NIX_DONT_SET_RPATH" != 1 ]; then
             fi
         done
     done
+
+    addAbsLib() {
+      local libname="$1"
+      for i in $libPath; do
+        local libpath="$i/lib${libname}.so"
+        if [ -f $libpath ]; then
+          rest+=("$libpath")
+          break
+        fi
+      done
+    }
+
+    rest=()
+    n=0
+    while [ $n -lt ${#params[*]} ]; do
+        p=${params[n]}
+        p2=${params[$((n+1))]}
+        if [ "${p:0:3}" = -L/ ]; then
+            #skip $p
+            rest=("${rest[@]}" "$p")
+        elif [ "$p" = -L ]; then
+            #n=$((n + 1)); skip $p2
+            rest=("${rest[@]}" "$p")
+        elif [ "$p" = -l ]; then
+            addAbsLib ${p2}
+            n=$((n + 1))
+        elif [ "${p:0:2}" = -l ]; then
+            addAbsLib ${p:2}
+        ##elif [ "$p" = -rpath ] && badPath "$p2"; then
+        ##    n=$((n + 1)); skip $p2
+        ##elif [ "$p" = -dynamic-linker ] && badPath "$p2"; then
+        ##    n=$((n + 1)); skip $p2
+        ##elif [ "${p:0:1}" = / ] && badPath "$p"; then
+        ##    # We cannot skip this; barf.
+        ##    echo "impure path \`$p' used in link" >&2
+        ##    exit 1
+        ##elif [ "${p:0:9}" = --sysroot ]; then
+        ##    # Our ld is not built with sysroot support (Can we fix that?)
+        ##    :
+        else
+            rest=("${rest[@]}" "$p")
+        fi
+        n=$((n + 1))
+    done
+    params=("${rest[@]}")
 
 
     # Finally, add `-rpath' switches.
