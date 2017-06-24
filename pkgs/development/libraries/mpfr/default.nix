@@ -20,7 +20,9 @@ stdenv.mkDerivation rec {
   # FIXME needs gcc 4.9 in bootstrap tools
   hardeningDisable = [ "stackprotector" ];
 
-  configureFlags =
+  configureFlags = [
+      "--with-gmp=${gmp}"
+    ] ++
     stdenv.lib.optional hostPlatform.isSunOS "--disable-thread-safe" ++
     stdenv.lib.optional hostPlatform.is64bit "--with-pic";
 
