@@ -150,14 +150,12 @@ if [ "$NIX_DONT_SET_RPATH" != 1 ]; then
         local libpath="$i/lib${libname}.so"
         if [ -f $libpath ]; then
           rest+=("$libpath")
-          return
+          break
         fi
-      done
-      for i in $libPath; do
         local libpath="$i/lib${libname}.a"
         if [ -f $libpath ]; then
           rest+=("$libpath")
-          return
+          break
         fi
       done
     }
