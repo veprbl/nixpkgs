@@ -215,8 +215,20 @@ in buildEnv {
         ln -sv "$(realpath $s)" "$out/bin/$tName" # wrapped below
       done
     )
+  '' +
+    # add a missing repstopdf link + patch its argv0 later;
+    # and do the final round of wrapping
+  ''
+    if [[ -L "$out"/bin/epstopdf ]]; then
+      cp -P "$out"/bin/{epstopdf,repstopdf}
+    fi
+
     rm "$out"/bin/*-sys
     wrapBin
+
+    if [[ -f "$out"/bin/repstopdf ]]; then
+      sed 's|^exec |exec -a "$0" |' -i "$out"/bin/repstopdf
+    fi
   '' +
   # TODO: a context trigger https://www.preining.info/blog/2015/06/debian-tex-live-2015-the-new-layout/
     # http://wiki.contextgarden.net/ConTeXt_Standalone#Unix-like_platforms_.28Linux.2FMacOS_X.2FFreeBSD.2FSolaris.29
