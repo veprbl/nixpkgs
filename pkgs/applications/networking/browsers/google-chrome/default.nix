@@ -95,7 +95,7 @@ in stdenv.mkDerivation rec {
       *)    appname=chrome           dist=stable   ;;
     esac
 
-    exe=$out/bin/google-chrome-$dist
+    exe=$out/bin/google-$appname
 
     mkdir -p $out/bin $out/share
 
