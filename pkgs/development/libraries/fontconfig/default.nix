@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, pkgconfig, freetype, expat, libxslt, dejavu_fonts
+{ stdenv, fetchurl, fetchpatch, pkgconfig, freetype, expat, gperf, libxslt, dejavu_fonts
 , substituteAll }:
 
 /** Font configuration scheme
@@ -16,11 +16,11 @@ let
   configVersion = "2.11"; # bump whenever fontconfig breaks compatibility with older configurations
 in
 stdenv.mkDerivation rec {
-  name = "fontconfig-2.12.1";
+  name = "fontconfig-2.12.4";
 
   src = fetchurl {
     url = "http://fontconfig.org/release/${name}.tar.bz2";
-    sha256 = "1wy7svvp7df6bjpg1m5vizb3ngd7rhb20vpclv3x3qa71khs6jdl";
+    sha256 = "0p7428wzhpj5qpz4vhnwks3w148hjh2ywp7frmjrgidkqky970k6";
   };
 
   patches = [
@@ -28,22 +28,12 @@ stdenv.mkDerivation rec {
       src = ./config-compat.patch;
       inherit configVersion;
     })
-    (fetchpatch {
-      name = "glibc-2.25.diff";
-      url = "https://cgit.freedesktop.org/fontconfig/patch/?id=1ab5258f7c";
-      sha256 = "0x2a4qx51j3gqcp1kp4lisdzmhrkw1zw0r851d82ksgjlc0vkbaz";
-    })
   ];
-  # additionally required for the glibc-2.25 patch; avoid requiring gperf
-  postPatch = ''
-    sed s/CHAR_WIDTH/CHARWIDTH/g -i src/fcobjshash.{h,gperf}
-    touch src/*
-  '';
 
   outputs = [ "bin" "dev" "lib" "out" ]; # $out contains all the config
 
   propagatedBuildInputs = [ freetype ];
-  buildInputs = [ pkgconfig expat ];
+  buildInputs = [ pkgconfig expat gperf ];
 
   configureFlags = [
     "--with-cache-dir=/var/cache/fontconfig" # otherwise the fallback is in $out/
