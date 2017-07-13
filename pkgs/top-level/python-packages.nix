@@ -23744,8 +23744,6 @@ in {
       sha256 = "051kafkndbniklxyf0drb360aiblnqcf9rqjbvmqh66zrfya1m28";
     };
 
-    disabled = isPy3k;
-
     buildInputs = [ self.cython pkgs.slurm ];
     setupPyBuildFlags = [ "--slurm-lib=${pkgs.slurm}/lib" "--slurm-inc=${pkgs.slurm.dev}/include" ];
 
