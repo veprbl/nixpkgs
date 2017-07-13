@@ -3,14 +3,14 @@
 stdenv.mkDerivation rec {
   # Inferno is a rolling release from a mercurial repository. For the verison number
   # of the package I'm using the mercurial commit number.
-  rev = "785";
+  rev = "832";
   name = "inferno-${rev}";
   host = "Linux";
   objtype = "386";
 
   src = fetchhg {
     url    = "https://bitbucket.org/inferno-os/inferno-os";
-    sha256 = "1b428ma9fi5skvfrxp91dr43a62kax89wmx7950ahc1cxyx90k7x";
+    sha256 = "18irka9qad8m1r2m9f56glv9d0gwk4ai7n7i0mzbi47vcmm60hdd";
   };
 
   buildInputs = [ makeWrapper ] ++ (with xorg; [ libX11 libXpm libXext xextproto ]);
