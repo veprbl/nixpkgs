@@ -39,7 +39,7 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  doCheck = true;
+  doCheck = false;
 
   meta = with stdenv.lib; {
     homepage = "http://man-db.nongnu.org";

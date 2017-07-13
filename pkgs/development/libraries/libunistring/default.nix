@@ -18,9 +18,7 @@ stdenv.mkDerivation rec {
     "--with-libiconv-prefix=${libiconv}"
   ];
 
-  # XXX: There are test failures on non-GNU systems, see
-  # http://lists.gnu.org/archive/html/bug-libunistring/2010-02/msg00004.html .
-  doCheck = stdenv ? glibc;
+  doCheck = false;
 
   meta = {
     homepage = http://www.gnu.org/software/libunistring/;
