@@ -6647,6 +6647,8 @@ in
 
   clasp-common-lisp = callPackage ../development/compilers/clasp {};
 
+  cling = callPackage ../development/tools/cling {};
+
   clean = callPackage ../development/compilers/clean { };
 
   closurecompiler = callPackage ../development/compilers/closure { };
