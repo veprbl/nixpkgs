@@ -7232,6 +7232,7 @@ with pkgs;
   snowman_qt4 = callPackage ../development/tools/analysis/snowman { };
   snowman_qt5 = qt5.callPackage ../development/tools/analysis/snowman { qt4 = null; };
   snowman = snowman_qt5;
+  snowman-tests = callPackage ../development/tools/analysis/snowman/tests.nix { };
 
   sparse = callPackage ../development/tools/analysis/sparse { };
 
