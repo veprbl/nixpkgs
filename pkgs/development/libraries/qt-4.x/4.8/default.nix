@@ -110,6 +110,7 @@ stdenv.mkDerivation rec {
     ++ stdenv.lib.optionals stdenv.isMusl [
         ./qt-musl.patch
         ./qt-musl-iconv-no-bom.patch
+        ./patch-qthread-stacksize.diff
       ];
 
   preConfigure = ''
