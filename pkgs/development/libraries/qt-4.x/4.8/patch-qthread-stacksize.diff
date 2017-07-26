@@ -8,7 +8,7 @@
  # ifdef qDebug
  #   define old_qDebug qDebug
  #   undef qDebug
-@@ -649,6 +650,45 @@
+@@ -649,6 +650,43 @@
  #endif // QT_HAS_THREAD_PRIORITY_SCHEDULING
  
  
