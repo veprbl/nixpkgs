@@ -1,10 +1,10 @@
---- src/corelib/thread/qthread_unix.cpp.orig	2015-11-23 19:05:40.000000000 +0100
-+++ src/corelib/thread/qthread_unix.cpp	2015-11-24 11:22:31.000000000 +0100
+--- a/src/corelib/thread/qthread_unix.cpp.orig	2015-11-23 19:05:40.000000000 +0100
++++ b/src/corelib/thread/qthread_unix.cpp	2015-11-24 11:22:31.000000000 +0100
 @@ -79,6 +79,7 @@
  #endif
  
- #if defined(Q_OS_MAC)
 +#include <sys/resource.h> // getrlimit/setrlimit
+ #if defined(Q_OS_MAC)
  # ifdef qDebug
  #   define old_qDebug qDebug
  #   undef qDebug
@@ -12,7 +12,6 @@
  #endif // QT_HAS_THREAD_PRIORITY_SCHEDULING
  
  
-+#if defined(Q_OS_MAC) && !defined(Q_OS_IOS)
 +    if (d->stackSize == 0) {
 +        // Fix the default (too small) stack size for threads on OS X,
 +        // which also affects the thread pool.
@@ -50,7 +49,6 @@
 +        }
 +        d->stackSize = default_stack_size;
 +    }
-+#endif
      if (d->stackSize > 0) {
  #if defined(_POSIX_THREAD_ATTR_STACKSIZE) && (_POSIX_THREAD_ATTR_STACKSIZE-0 > 0)
          int code = pthread_attr_setstacksize(&attr, d->stackSize);
