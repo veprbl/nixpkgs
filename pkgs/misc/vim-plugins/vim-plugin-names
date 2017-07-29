@@ -77,6 +77,7 @@
 "github:junegunn/limelight.vim"
 "github:junegunn/vim-peekaboo"
 "github:justincampbell/vim-eighties"
+"github:justmao945/vim-clang"
 "github:latex-box-team/latex-box"
 "github:leafgarland/typescript-vim"
 "github:lepture/vim-jinja"

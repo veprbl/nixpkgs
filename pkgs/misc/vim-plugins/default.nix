@@ -1004,6 +1004,16 @@ rec {
 
   };
 
+  vim-clang = buildVimPluginFrom2Nix { # created by nix#NixDerivation
+    name = "vim-clang-2016-10-17";
+    src = fetchgit {
+      url = "https://github.com/justmao945/vim-clang";
+      rev = "0076e0c64baa71c1c1f404e6a500e45190cdad5c";
+      sha256 = "04fbmlrvgl278hlrnhlxppy1dz5fdilj9rzrc1vvxrw9ih3knvr3";
+    };
+    dependencies = [];
+  };
+
   latex-box = buildVimPluginFrom2Nix { # created by nix#NixDerivation
     name = "latex-box-2015-06-01";
     src = fetchgit {
