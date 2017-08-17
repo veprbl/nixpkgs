@@ -111,6 +111,7 @@ stdenv.mkDerivation rec {
         ./qt-musl.patch
         ./qt-musl-iconv-no-bom.patch
         ./patch-qthread-stacksize.diff
+        ./qsettings-recursive-global-mutex.patch
       ];
 
   preConfigure = ''
