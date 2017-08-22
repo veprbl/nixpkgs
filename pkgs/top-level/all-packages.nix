@@ -19015,6 +19015,11 @@ with pkgs;
     pythonPackages = python3Packages;
   };
 
+  wineDarwin = callPackage ../misc/emulators/wine/darwin.nix {
+      inherit (darwin.apple_sdk.frameworks) CoreServices Foundation ForceFeedback AppKit OpenGL IOKit
+                                            DiskArbitration Security ApplicationServices AudioToolbox CoreAudio AudioUnit CoreMIDI OpenAL OpenCL Cocoa Carbon;
+    };
+
   winePackages = rec {
     minimal = callPackage ../misc/emulators/wine {
       wineRelease = config.wine.release or "stable";
