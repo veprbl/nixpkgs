@@ -7202,6 +7202,10 @@ with pkgs;
 
   peg = callPackage ../development/tools/parsing/peg { };
 
+  perf_data_converter = callPackage ../development/tools/profiling/perf_data_converter {
+    protobuf = protobuf3_2; # upstream would prefer 3.3 ATM
+  };
+
   pgcli = callPackage ../development/tools/database/pgcli {};
 
   phantomjs = callPackage ../development/tools/phantomjs { };
