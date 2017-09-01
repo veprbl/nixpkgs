@@ -2,13 +2,15 @@
 
 stdenv.mkDerivation rec {
   name = "yoda-${version}";
-  version = "3a1c29fcdca6";
+  version = "791a95f4453e";
 
   src = fetchhg {
     url = "https://yoda.hepforge.org/hg/yoda";
     rev = version;
-    sha256 = "0blymidv0mia59r0cpzl53b23sxm85lhzfd94xn6b54cilvzc9d3";
+    sha256 = "1adwl973i4k1nyji8rllvwbdd9vkizm7rwsgg8jqp45lpw0qwy3j";
   };
+
+  patches = [ ./zlib.patch ];
 
   pythonPath = []; # python wrapper support
 
