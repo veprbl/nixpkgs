@@ -10,7 +10,10 @@ stdenv.mkDerivation rec {
     sha256 = "1adwl973i4k1nyji8rllvwbdd9vkizm7rwsgg8jqp45lpw0qwy3j";
   };
 
-  patches = [ ./zlib.patch ];
+  patches = [
+    ./zlib.patch
+    ./root2yoda.patch
+  ];
 
   pythonPath = []; # python wrapper support
 
