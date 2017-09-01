@@ -14639,8 +14639,6 @@ with pkgs;
 
   kubernetes = callPackage ../applications/networking/cluster/kubernetes {  };
 
-  kube-dns = callPackage ../applications/networking/cluster/kubernetes/dns.nix { };
-
   lame = callPackage ../development/libraries/lame { };
 
   larswm = callPackage ../applications/window-managers/larswm { };
