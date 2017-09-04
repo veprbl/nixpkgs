@@ -1,12 +1,12 @@
-{ stdenv, fetchFromGitHub, git, perl, makeWrapper }:
+{ stdenv, buildGoPackage, fetchFromGitHub, git, perl, makeWrapper }:
 
 with stdenv.lib;
 
-stdenv.mkDerivation rec {
+buildGoPackage rec {
   name = "git-octopus-${version}";
-  version = "1.4";
+  version = "2.0beta.3";
 
-  installFlags = [ "prefix=$(out)" ];
+  goPackagePath = "github.com/lesfurets/git-octopus";
 
   buildInputs = [ makeWrapper ];
 
@@ -20,8 +20,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "lesfurets";
     repo = "git-octopus";
-    rev = "v${version}";
-    sha256 = "14p61xk7jankp6gc26xciag9fnvm7r9vcbhclcy23f4ghf4q4sj1";
+    rev = "v2.0-beta.3";
+    sha256 = "1hjmq2yyxagfx6dvycs31mwpg3f2nhy0ygxbzckcypc3dsvskzvm";
   };
 
   meta = {
