@@ -18735,6 +18735,58 @@ in {
     };
   });
 
+  progressbar2 = buildPythonPackage rec {
+    pname = "progressbar2";
+    version = "3.34.2";
+    name = "${pname}-${version}";
+
+    propagatedBuildInputs = with self; [ python-utils ];
+
+    src = fetchPypi {
+      inherit pname version;
+      sha256 = "10mdanqdncdgi7qg17crkxqpf7jf040341ar1vzmz3zl5cfrvy2k";
+    };
+
+    patchPhase = ''
+      substituteInPlace setup.py --replace ", 'pytest-runner>=2.8'" ""
+    '' + optionalString isPy3k ''
+      sed -i -e 's/open *(\([^)]*\))/open(\1, encoding="utf-8")/' setup.py
+    '';
+
+    # our pytest-runner isn't new enough, need >= 2.8
+    doCheck = false;
+
+    meta = {
+      homepage = https://pypi.python.org/pypi/progressbar2;
+      description = "A Python Progressbar library to provide visual (yet text based) progress to long running operations.";
+      license = licenses.bsd3;
+    };
+  };
+
+  python-utils = buildPythonPackage rec {
+    pname = "python-utils";
+    version = "2.1.0";
+    name = "${pname}-${version}";
+
+    buildInputs = with self; [ pytest ];
+    propagatedBuildInputs = with self; [ six ];
+
+    src = fetchPypi {
+      inherit pname version;
+      sha256 = "1mcsy6q5am4ya72rgkpb6kax6vv7c93cfkkas89xnpa4sj9zf28p";
+    };
+
+    patchPhase = ''
+      substituteInPlace setup.py --replace "setup_requires=['pytest-runner']," ""
+    '';
+
+    meta = {
+      homepage = https://github.com/WoLpH/python-utils;
+      description = "convenient utilities not included with the standard Python install";
+      license = licenses.bsd3;
+    };
+  };
+
   ldap = callPackage ../development/python-modules/ldap.nix {
     inherit (pkgs) openldap cyrus_sasl openssl;
   };
