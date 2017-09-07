@@ -14,8 +14,11 @@ stdenv.mkDerivation rec {
 
   sourceRoot = "${src_name}/src";
 
-  preConfigure = ''
-    ln -s Make.inc/Makefile.inc.x86-64_pc_linux2 Makefile.inc
+  preConfigure = stdenv.lib.optionalString stdenv.isLinux ''
+      ln -s Make.inc/Makefile.inc.x86-64_pc_linux2 Makefile.inc
+  '' + stdenv.lib.optionalString stdenv.isDarwin ''
+    ln -s Make.inc/Makefile.inc.i686_mac_darwin10 Makefile.inc
+    substituteInPlace Makefile.inc --replace gcc clang
   '';
 
   buildFlags = [ "scotch ptscotch" ];
@@ -30,7 +33,7 @@ stdenv.mkDerivation rec {
     homepage = http://www.labri.fr/perso/pelegrin/scotch;
     license = stdenv.lib.licenses.cecill-c;
     maintainers = [ stdenv.lib.maintainers.bzizou ];
-    platforms = stdenv.lib.platforms.linux;
+    platforms = with stdenv.lib.platforms; linux ++ darwin;
   };
 }
 
