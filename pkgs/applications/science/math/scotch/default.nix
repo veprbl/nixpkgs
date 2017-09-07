@@ -19,9 +19,13 @@ stdenv.mkDerivation rec {
   '' + stdenv.lib.optionalString stdenv.isDarwin ''
     ln -s Make.inc/Makefile.inc.i686_mac_darwin10 Makefile.inc
     substituteInPlace Makefile.inc --replace gcc clang
+  '' + ''
+    substituteInPlace Makefile --replace "./include/*scotch*.h" "./include/*.h"
+    substituteInPlace Makefile --replace "../lib/*scotch*$(LIB)" "../lib/*$(LIB)"
   '';
 
-  buildFlags = [ "scotch ptscotch" ];
+  installTargets = "ptesmumps install";
+
   installFlags = [ "prefix=\${out}" ];
 
   meta = {
