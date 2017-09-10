@@ -1,4 +1,4 @@
-{ fetchurl, stdenv, lib, precision ? "double" }:
+{ fetchurl, stdenv, lib, openmpi, precision ? "double" }:
 
 with lib;
 
@@ -21,9 +21,13 @@ stdenv.mkDerivation rec {
     ++ optional withDoc "info"; # it's dev-doc only
   outputBin = "dev"; # fftw-wisdom
 
+  buildInputs = [
+    openmpi
+  ];
+
   configureFlags =
     [ "--enable-shared" "--disable-static"
-      "--enable-threads"
+      "--enable-threads" "--enable-mpi"
     ]
     ++ optional (precision != "double") "--enable-${precision}"
     # all x86_64 have sse2
