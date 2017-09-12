@@ -4,10 +4,10 @@ index 3da8eb8..8360253 100755
 +++ b/bin/root2yoda
 @@ -24,7 +24,7 @@ if not in_out:
  import ROOT
-  for i, o in in_out:
-       rf = ROOT.TFile(i)
-   -    rootobjects_raw = yoda.root.getall(rf)
-   +    rootobjects_raw = list(yoda.root.getall(rf))
-        rootobjects     = [(path, ro) for (path, ro) in rootobjects_raw if not isinstance(ro, ROOT.TH1F)]
-             th1f            = [(path, ro) for (path, ro) in rootobjects_raw if     isinstance(ro, ROOT.TH1F)]
-                  # Conversion of TH1F into TH1D
+ for i, o in in_out:
+     rf = ROOT.TFile(i)
+-    rootobjects_raw = yoda.root.getall(rf)
++    rootobjects_raw = list(yoda.root.getall(rf))
+     rootobjects     = [(path, ro) for (path, ro) in rootobjects_raw if not isinstance(ro, ROOT.TH1F)]
+     th1f            = [(path, ro) for (path, ro) in rootobjects_raw if     isinstance(ro, ROOT.TH1F)]
+     # Conversion of TH1F into TH1D
