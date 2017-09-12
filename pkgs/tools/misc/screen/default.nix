@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, ncurses, utmp, pam ? null }:
+{ stdenv, fetchurl, fetchpatch, ncurses, utmp, pam ? null, texinfo }:
 
 stdenv.mkDerivation rec {
   name = "screen-${version}";
@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
     "--enable-colors256"
   ];
 
-  buildInputs = [ ncurses ] ++ stdenv.lib.optional stdenv.isLinux pam
+  buildInputs = [ ncurses texinfo ] ++ stdenv.lib.optional stdenv.isLinux pam
                             ++ stdenv.lib.optional stdenv.isDarwin utmp;
 
   doCheck = true;

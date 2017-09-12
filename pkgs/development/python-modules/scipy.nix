@@ -38,6 +38,8 @@ in buildPythonPackage (args // rec {
     runHook postCheck
   '';
 
+  doCheck = false;
+
   passthru = {
     blas = numpy.blas;
   };
