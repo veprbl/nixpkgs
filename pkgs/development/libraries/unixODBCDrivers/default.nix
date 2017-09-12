@@ -1,8 +1,16 @@
-{ fetchurl, stdenv, unixODBC, cmake, postgresql, mysql55, mariadb, sqlite, zlib, libxml2 }:
+{ fetchurl, stdenv, unixODBC, cmake, postgresql, mysql55, mariadb, freetds, sqlite, zlib, libxml2 }:
 
 # I haven't done any parameter tweaking.. So the defaults provided here might be bad
 
 {
+
+  freetds = freetds.override{ odbcSupport = true; unixODBC = unixODBC; }.overrideAttrs (oldAttrs: rec {
+    passthru = {
+      fancyName = "FreeTDS";
+      driver = "lib/libtdsodbc.so";
+    };
+  });
+
   psql = stdenv.mkDerivation rec {
     name = "psqlodbc-${version}";
     version = "09.05.0210";
