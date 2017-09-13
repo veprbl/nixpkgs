@@ -17525,12 +17525,15 @@ in {
 
 
   pyodbc = buildPythonPackage rec {
-    name = "pyodbc-3.0.7";
+    name = "pyodbc-${version}";
+    version = "4.0.17";
     disabled = isPyPy;  # use pypypdbc instead
 
-    src = pkgs.fetchurl {
-      url = "https://pyodbc.googlecode.com/files/${name}.zip";
-      sha256 = "0ldkm8xws91j7zbvpqb413hvdz8r66bslr451q3qc0xi8cnmydfq";
+    src = pkgs.fetchFromGitHub {
+      owner = "mkleehammer";
+      repo = "pyodbc";
+      rev = version;
+      sha256 = "01s3v6p1ja6yhwjxii7df2kdimavnr0xffsid1x9ii2zb06gmcwk";
     };
 
     buildInputs = with self; [ pkgs.libiodbc ];
