@@ -251,7 +251,7 @@ stdenv.mkDerivation {
       rm $out/nix-support/setup-hook.tmp
 
       # some linkers on some platforms don't support specific -z flags
-      hardening_unsupported_flags=""
+      hardening_unsupported_flags="${builtins.concatStringsSep " " (cc.hardeningUnsupportedFlags or [])}"
       if [[ "$($ldPath/ld -z now 2>&1 || true)" =~ "unknown option" ]]; then
         hardening_unsupported_flags+=" bindnow"
       fi
