@@ -13,6 +13,12 @@ stdenv.mkDerivation rec {
     perl openldap pam db cyrus_sasl libcap expat libxml2 openssl
   ];
 
+  prePatch = ''
+    sed -i '1i#include <sys/file.h>\n' src/base/File.h
+  '';
+
+  enableParallelBuilding = true;
+
   configureFlags = [
     "--enable-ipv6"
     "--disable-strict-error-checking"
