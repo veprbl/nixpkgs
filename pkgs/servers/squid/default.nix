@@ -19,12 +19,11 @@ stdenv.mkDerivation rec {
     "--disable-arch-native"
     "--with-openssl"
     "--enable-ssl-crtd"
-    "--enable-linux-netfilter"
     "--enable-storeio=ufs,aufs,diskd,rock"
     "--enable-removal-policies=lru,heap"
     "--enable-delay-pools"
     "--enable-x-accelerator-vary"
-  ];
+  ] ++ stdenv.lib.optional (!stdenv.isMusl) "--enable-linux-netfilter";
 
   meta = with stdenv.lib; {
     description = "A caching proxy for the Web supporting HTTP, HTTPS, FTP, and more";
