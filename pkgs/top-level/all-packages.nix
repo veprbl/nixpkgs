@@ -583,6 +583,8 @@ with pkgs;
 
   bmap-tools = callPackage ../tools/misc/bmap-tools { };
 
+  aview = callPackage ../tools/misc/aview { };
+
   bonnie = callPackage ../tools/filesystems/bonnie { };
 
   bonfire = callPackage ../tools/misc/bonfire { };
