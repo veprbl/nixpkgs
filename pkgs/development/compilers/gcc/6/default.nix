@@ -571,7 +571,7 @@ stdenv.mkDerivation ({
 
 // optionalAttrs (enableMultilib) { dontMoveLib64 = true; }
 
-// optionalAttrs (langJava) {
+// optionalAttrs (langJava && !stdenv.hostPlatform.isDarwin) {
      postFixup = ''
        target="$(echo "$out/libexec/gcc"/*/*/ecj*)"
        patchelf --set-rpath "$(patchelf --print-rpath "$target"):$out/lib" "$target"
