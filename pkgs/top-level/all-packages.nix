@@ -8676,8 +8676,7 @@ with pkgs;
   isocodes = callPackage ../development/libraries/iso-codes { };
 
   ispc = callPackage ../development/compilers/ispc {
-    llvmPackages = llvmPackages_4;
-    stdenv = llvmPackages_4.stdenv;
+    llvmPackages = llvmPackages_39;
   };
 
   itk = callPackage ../development/libraries/itk { };
