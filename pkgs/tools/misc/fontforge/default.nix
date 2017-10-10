@@ -19,9 +19,8 @@ stdenv.mkDerivation rec {
 
   patches = [(fetchpatch {
     name = "use-system-uthash.patch";
-    url = "http://pkgs.fedoraproject.org/cgit/fontforge.git/plain/"
-      + "fontforge-20140813-use-system-uthash.patch?id=8bdf933";
-    sha256 = "0n8i62qv2ygfii535rzp09vvjx4qf9zp5qq7qirrbzm1l9gykcjy";
+    url = "https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/tools/misc/fontforge/fontforge-20140813-use-system-uthash.patch";
+    sha256 = "1wrhkzig7wdhczxxz9ifa4ai8br18xmw6qmhkagkwakz0cfv42iq";
   })];
   patchFlags = "-p0";
 
