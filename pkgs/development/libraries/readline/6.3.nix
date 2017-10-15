@@ -16,6 +16,12 @@ stdenv.mkDerivation rec {
 
   patchFlags = "-p0";
 
+  configureFlags =
+    stdenv.lib.optional (stdenv.hostPlatform != stdenv.buildPlatform)
+    [ # This test requires running target code
+      "bash_cv_wcwidth_broken=no"
+    ];
+
   patches =
     [ ./link-against-ncurses.patch
       ./no-arch_only-6.3.patch
