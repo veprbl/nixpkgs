@@ -6756,7 +6756,11 @@ with pkgs;
 
   ocropus = callPackage ../applications/misc/ocropus { };
 
-  inherit (callPackages ../development/interpreters/perl {}) perl perl522 perl524 perl526;
+  inherit (
+    if stdenv.buildPlatform == stdenv.hostPlatform
+    then (callPackages ../development/interpreters/perl {})
+    else (callPackages ../development/interpreters/perl-cross {})
+  ) perl perl522 perl524 perl526;
 
   pachyderm = callPackage ../applications/networking/cluster/pachyderm { };
 
