@@ -1,4 +1,4 @@
-{stdenv, fetchurl, flex, readline, ed, texinfo}:
+{stdenv, autoreconfHook, buildPackages, fetchurl, flex, readline, ed, texinfo}:
 
 stdenv.mkDerivation rec {
   name = "bc-1.07.1";
@@ -9,9 +9,17 @@ stdenv.mkDerivation rec {
 
   configureFlags = [ "--with-readline" ];
 
-  buildInputs = [flex readline ed texinfo];
+  # As of 1.07 cross-compilation is quite complicated as the build system wants
+  # to build a code generator, bc/fbc, on the build machine.
+  patches = [ ./cross-bc.patch ];
+  nativeBuildInputs = [autoreconfHook flex ed.out texinfo] ++
+    stdenv.lib.optionals (stdenv.hostPlatform != stdenv.buildPlatform)
+    [buildPackages.stdenv.cc buildPackages.readline.out buildPackages.ncurses.out];
+  buildInputs = [readline];
 
-  doCheck = true;
+  makeFlags = ''HOST_READLINE=${buildPackages.readline.out.outPath}/lib HOST_NCURSES=${buildPackages.ncurses.out.outPath}/lib'';
+
+  doCheck = stdenv.hostPlatform == stdenv.buildPlatform;
 
   meta = {
     description = "GNU software calculator";
