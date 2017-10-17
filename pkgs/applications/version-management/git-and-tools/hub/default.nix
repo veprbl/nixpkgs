@@ -26,8 +26,8 @@ stdenv.mkDerivation rec {
     mkdir -p "$out/bin"
     cp bin/hub "$out/bin/"
 
-    mkdir -p "$out/share/man/man1"
-    cp "man/hub.1" "$out/share/man/man1/"
+    #  mkdir -p "$out/share/man/man1"
+    #  cp "man/hub.1" "$out/share/man/man1/"
 
     mkdir -p "$out/share/zsh/site-functions"
     cp "etc/hub.zsh_completion" "$out/share/zsh/site-functions/_hub"
