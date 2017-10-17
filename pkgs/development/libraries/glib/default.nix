@@ -76,7 +76,12 @@ stdenv.mkDerivation rec {
   configureFlags = [ "--with-pcre=system" ]
     ++ optional stdenv.isDarwin "--disable-compile-warnings"
     ++ optional (stdenv.isFreeBSD || stdenv.isSunOS) "--with-libiconv=gnu"
-    ++ optional stdenv.isSunOS "--disable-dtrace";
+    ++ optional stdenv.isSunOS "--disable-dtrace"
+    # Can't run this test when cross-compiling
+    ++ optionals (stdenv.hostPlatform != stdenv.buildPlatform)
+       [ "glib_cv_stack_grows=no" "glib_cv_uscore=no" ]
+    # GElf only supports elf64 hosts
+    ++ optional (!stdenv.hostPlatform.is64bit) "--disable-libelf";
 
   NIX_CFLAGS_COMPILE = optional stdenv.isDarwin "-lintl"
     ++ optional stdenv.isSunOS "-DBSD_COMP";
