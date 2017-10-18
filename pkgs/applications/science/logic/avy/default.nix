@@ -19,10 +19,10 @@ stdenv.mkDerivation rec {
     substituteInPlace abc/src/bdd/dsd/dsd.h --replace \
                '((Child = Dsd_NodeReadDec(Node,Index))>=0);' \
                '((intptr_t)(Child = Dsd_NodeReadDec(Node,Index))>=0);'
-    for d in minisat glucose; do
-      sed -e 's/fpu_control.h/fenv.h/' -i $d/utils/System.h
-      patch -p1 -d $d -i ${./minisat-fenv.patch}
-    done
+
+    sed -e 's/fpu_control.h/fenv.h/' -i {minisat,glucose}/utils/System.h
+    patch -p1 -d minisat -i ${./minisat-fenv.patch}
+    patch -p1 -d glucose -i ${./glucose-fenv.patch}
   '';
 
   patches =
