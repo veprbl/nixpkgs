@@ -9,7 +9,7 @@ stdenv.mkDerivation rec {
   };
 
   prePatch = ''
-    sed -i -e 's@mv lingeling\* lingeling@\0 \&\& sed -i -e "1i#include <stdint.h>" lingeling/lglib.c@' makefile
+    sed -i -e 's@mv lingeling\* lingeling@\0 \&\& sed -i -e "1i#include <stdint.h>" lingeling/lglib.h@' makefile
   '';
 
   installPhase = ''
