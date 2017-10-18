@@ -13,6 +13,13 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ cmake zlib boost.out boost.dev ];
   NIX_CFLAGS_COMPILE = [ "-Wno-narrowing" ];
+
+  prePatch = ''
+    substituteInPlace abc/src/bdd/dsd/dsd.h --replace \
+               '((Child = Dsd_NodeReadDec(Node,Index))>=0);' \
+               '((intptr_t)(Child = Dsd_NodeReadDec(Node,Index))>=0);'
+  '';
+
   patches =
     [ ./0001-no-static-boost-libs.patch
     ];
