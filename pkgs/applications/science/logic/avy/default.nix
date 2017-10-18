@@ -15,9 +15,11 @@ stdenv.mkDerivation rec {
   NIX_CFLAGS_COMPILE = [ "-Wno-narrowing" ];
 
   prePatch = ''
+    sed -i -e '1i#include <stdint.h>' abc/src/bdd/dsd/dsd.h
     substituteInPlace abc/src/bdd/dsd/dsd.h --replace \
                '((Child = Dsd_NodeReadDec(Node,Index))>=0);' \
                '((intptr_t)(Child = Dsd_NodeReadDec(Node,Index))>=0);'
+    sed -e 's/fpu_control.h/fenv.h/' -i minisat/utils/System.h
   '';
 
   patches =
