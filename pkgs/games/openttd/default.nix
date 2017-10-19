@@ -40,6 +40,12 @@ stdenv.mkDerivation rec {
   buildInputs = [ SDL libpng xz zlib freetype fontconfig ]
     ++ stdenv.lib.optionals withFluidSynth [ fluidsynth soundfont-fluid ];
 
+  # Ensure math.h is included before 'type' macro ('#define type...')
+  # Based on: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=222402
+  prePatch = ''
+    sed -i -e '1i#include <math.h>' src/3rdparty/squirrel/squirrel/sqvm.cpp
+  '';
+
   prefixKey = "--prefix-dir=";
 
   configureFlags = [

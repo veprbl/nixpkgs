@@ -15,6 +15,12 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ SDL2 SDL2_image curl libogg libvorbis mesa openal boost glew ];
 
+  # Ensure math.h is included before 'type' macro ('#define type...')
+  # Based on: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=222402
+  prePatch = ''
+    sed -i -e '1i#include <math.h>' external/squirrel/squirrel/sqvm.cpp
+  '';
+
   cmakeFlags = [ "-DENABLE_BOOST_STATIC_LIBS=OFF" ];
 
   postInstall = ''
