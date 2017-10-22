@@ -18,6 +18,10 @@ stdenv.mkDerivation rec {
   ] ++ stdenv.lib.optional enableGUI qtbase;
   nativeBuildInputs = [ cmake ];
 
+  prePatch = ''
+    sed -i '/#define nullptr/d' heimdall/source/Heimdall.h libpit/source/libpit.h
+  '';
+
   cmakeFlags = [
     "-DDISABLE_FRONTEND=${if enableGUI then "OFF" else "ON"}"
   ];
