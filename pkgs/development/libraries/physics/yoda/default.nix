@@ -1,18 +1,37 @@
-{ stdenv, fetchurl, fetchpatch, python2Packages, root, makeWrapper, withRootSupport ? false }:
+{ stdenv, fetchhg, autoreconfHook, python2Packages, root, zlib, makeWrapper, withRootSupport ? false }:
 
+let
+  cython25 = python2Packages.cython.overrideAttrs (_: rec {
+    pname = "Cython";
+    version = "0.25.2";
+
+    src = python2Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "01h3lrf6d98j07iakifi81qjszh6faa37ibx7ylva1vsqbwx2hgi";
+    };
+  });
+in
 stdenv.mkDerivation rec {
   name = "yoda-${version}";
-  version = "1.6.7";
+  version = "791a95f4453e";
 
-  src = fetchurl {
-    url = "http://www.hepforge.org/archive/yoda/YODA-${version}.tar.bz2";
-    sha256 = "05jyv5dypa6d4q1m8wm2qycgq1i0bgzwzzm9qqdj0b43ff2kggra";
+  src = fetchhg {
+    url = "https://yoda.hepforge.org/hg/yoda";
+    rev = version;
+    sha256 = "1adwl973i4k1nyji8rllvwbdd9vkizm7rwsgg8jqp45lpw0qwy3j";
   };
+
+  patches = [
+    ./zlib.patch
+    ./root2yoda.patch
+  ];
 
   pythonPath = []; # python wrapper support
 
-  buildInputs = with python2Packages; [ python numpy matplotlib makeWrapper ]
+  nativeBuildInputs = [ autoreconfHook ];
+  buildInputs = with python2Packages; [ cython25 python makeWrapper zlib ]
     ++ stdenv.lib.optional withRootSupport root;
+  propagatedBuildInputs = with python2Packages; [ matplotlib numpy ];
 
   enableParallelBuilding = true;
 
