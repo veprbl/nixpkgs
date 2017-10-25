@@ -1025,6 +1025,8 @@ with pkgs;
 
   et = callPackage ../applications/misc/et {};
 
+  etcher = callPackage ../tools/cd-dvd/etcher { };
+
   f3 = callPackage ../tools/filesystems/f3 { };
 
   facedetect = callPackage ../tools/graphics/facedetect { };
