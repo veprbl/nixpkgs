@@ -1113,6 +1113,8 @@ with pkgs;
 
   interlock = callPackage ../servers/interlock {};
 
+  iso-image-writer = callPackage ../tools/cd-dvd/iso-image-writer { };
+
   jbuilder = callPackage ../development/tools/ocaml/jbuilder { };
 
   kapacitor = callPackage ../servers/monitoring/kapacitor { };
