@@ -41,7 +41,9 @@ stdenv.mkDerivation rec {
   propagatedBuildInputs = [ findXMLCatalogs ];
 
   # TODO move cryptoSupport as last flag, when upgrading libxslt
-  configureFlags = optional (!cryptoSupport) "--without-crypto" ++ [
+  configureFlags = [
+    "--with-libxml-prefix=${libxml2.dev}"
+  ] ++ optional (!cryptoSupport) "--without-crypto" ++ [
     "--without-debug"
     "--without-mem-debug"
     "--without-debugger"
