@@ -16188,6 +16188,7 @@ with pkgs;
     inherit (darwin.apple_sdk.frameworks) CoreServices Cocoa;
     inherit (darwin.stubs) rez setfile;
   };
+  qemuGraphical = qemu.override { gtkSupport = true; };
 
   qgis = callPackage ../applications/gis/qgis {};
 

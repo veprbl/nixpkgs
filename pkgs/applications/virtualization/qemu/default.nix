@@ -8,6 +8,7 @@
 , seccompSupport ? stdenv.isLinux, libseccomp
 , pulseSupport ? !stdenv.isDarwin, libpulseaudio
 , sdlSupport ? !stdenv.isDarwin, SDL
+, gtkSupport ? false, gtk3, gettext
 , vncSupport ? true, libjpeg, libpng
 , spiceSupport ? !stdenv.isDarwin, spice, spice_protocol
 , usbredirSupport ? spiceSupport, usbredir
@@ -47,6 +48,7 @@ stdenv.mkDerivation rec {
     ++ optionals numaSupport [ numactl ]
     ++ optionals pulseSupport [ libpulseaudio ]
     ++ optionals sdlSupport [ SDL ]
+    ++ optionals gtkSupport [ gtk3 gettext ]
     ++ optionals vncSupport [ libjpeg libpng ]
     ++ optionals spiceSupport [ spice_protocol spice ]
     ++ optionals usbredirSupport [ usbredir ]
