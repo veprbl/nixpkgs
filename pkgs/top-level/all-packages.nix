@@ -14455,6 +14455,10 @@ with pkgs;
 
   exrtools = callPackage ../applications/graphics/exrtools { };
 
+  ezuce_srn = callPackage ../applications/networking/instant-messengers/ezuce_srn {
+    jre = oraclejdk8;
+  };
+
   fbpanel = callPackage ../applications/window-managers/fbpanel { };
 
   fbreader = callPackage ../applications/misc/fbreader { };
