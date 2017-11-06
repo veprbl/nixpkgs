@@ -63,6 +63,15 @@ following incompatible changes:</para>
       pass literal dollar signs through Postfix, double them.
     </para>
   </listitem>
+  <listitem>
+    <para>
+      The <literal>postage</literal> package (for web-based PostgreSQL
+      administration) has been renamed to <literal>pgmanage</literal>. The
+      corresponding module has also been renamed. To migrate please rename all
+      <option>services.postage</option> options to
+      <option>services.pgmanage</option>.
+    </para>
+  </listitem>
 </itemizedlist>
 
 </section>
@@ -79,6 +88,14 @@ following incompatible changes:</para>
     <para>
       ZNC option <option>services.znc.mutable</option> now defaults to <literal>true</literal>.
       That means that old configuration is not overwritten by default when update to the znc options are made.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      The option <option>services.xserver.desktopManager.default</option> is now <literal>none</literal> by default.
+      An assertion failure is thrown if WM's and DM's default are <literal>none</literal>.
+      To explicitly run a plain X session without and DM or WM, the newly introduced option <option>services.xserver.plainX</option>
+      must be set to true.
     </para>
   </listitem>
 </itemizedlist>

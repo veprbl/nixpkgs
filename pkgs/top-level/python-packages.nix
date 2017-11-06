@@ -2703,12 +2703,12 @@ in {
   };
 
   click-log = buildPythonPackage rec {
-    version = "0.1.3";
+    version = "0.2.1";
     name = "click-log-${version}";
 
     src = pkgs.fetchurl {
       url = "mirror://pypi/c/click-log/${name}.tar.gz";
-      sha256 = "0kdd1vminxpcfczxl2kkf285n0dr1gxh2cdbx1p6vkj7b7bci3gx";
+      sha256 = "1r1x85023cslb2pwldd089jjk573mk3w78cnashs77wrx7yz8fj9";
     };
 
     propagatedBuildInputs = with self; [ click ];
@@ -6110,31 +6110,7 @@ in {
 
   jsbeautifier = callPackage ../development/python-modules/jsbeautifier {};
 
-  jug = buildPythonPackage rec {
-    version = "1.6.1";
-    name = "jug-${version}";
-    buildInputs = with self; [ nose numpy ];
-    propagatedBuildInputs = with self; [
-      bottle
-      pyyaml
-      redis
-      six
-
-      pkgs.zlib
-    ];
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/J/Jug/Jug-${version}.tar.gz";
-      sha256 = "15lv998mz6kpp65kh8wsfnrl5ay02bk1lm07nbbdv2k455bhrn1i";
-    };
-
-    meta = {
-      description = "A Task-Based Parallelization Framework";
-      license = licenses.mit;
-      url = https://jug.readthedocs.io/;
-      maintainers = with maintainers; [ luispedro ];
-    };
-  };
+  jug = callPackage ../development/python-modules/jug {};
 
   jsmin = callPackage ../development/python-modules/jsmin { };
 
@@ -7367,24 +7343,7 @@ in {
     };
   };
 
-  raven = buildPythonPackage rec {
-    name = "raven-6.2.1";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/r/raven/${name}.tar.gz";
-      sha256 = "1zkh8llsfng5viz8cpf9j74v30705hv80vb5g6gha1ij7v60p8y0";
-    };
-
-    # way too many dependencies to run tests
-    # see https://github.com/getsentry/raven-python/blob/master/setup.py
-    doCheck = false;
-
-    propagatedBuildInputs = optionals (!isPy3k) [ self.contextlib2 ];
-
-    meta = {
-      maintainers = with maintainers; [ primeos ];
-    };
-  };
+  raven = callPackage ../development/python-modules/raven { };
 
   rethinkdb = buildPythonPackage rec {
     name = "rethinkdb-${version}";
@@ -10574,27 +10533,7 @@ in {
 
   keyring = callPackage ../development/python-modules/keyring { };
 
-  keyutils = buildPythonPackage rec {
-    name = "${pname}-${version}";
-    pname = "keyutils";
-    version = "0.5";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/k/${pname}/${name}.tar.gz";
-      sha256 = "0dskys71vkn59vlsfs1ljli0qnzk7b10iv4pawxawnk2hvyjrf10";
-    };
-
-    buildInputs = with self; [ pkgs.keyutils pytestrunner ];
-
-    doCheck = false;
-
-    meta = {
-      description = "A set of python bindings for keyutils";
-      homepage = https://github.com/sassoftware/python-keyutils;
-      license = licenses.asl20;
-      maintainers = with maintainers; [ primeos ];
-    };
-  };
+  keyutils = callPackage ../development/python-modules/keyutils { };
 
   klaus = buildPythonPackage rec {
     version = "0.9.1";
@@ -11641,39 +11580,9 @@ in {
     };
   };
 
-  hyperframe = buildPythonPackage rec {
-    name = "hyperframe-${version}";
-    version = "4.0.1";
+  hyperframe = callPackage ../development/python-modules/hyperframe { };
 
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/h/hyperframe/${name}.tar.gz";
-      sha256 = "0hsfq0jigwa0i58z7vbnp62l7za49gmlg75vnygq2ijhkidkcmwa";
-    };
-
-    meta = {
-      description = "HTTP/2 framing layer for Python";
-      homepage = "http://hyper.rtfd.org/";
-      license = licenses.mit;
-    };
-  };
-
-  h2 = buildPythonPackage rec {
-    name = "h2-${version}";
-    version = "2.5.1";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/h/h2/${name}.tar.gz";
-      sha256 = "0xhzm5vcfhdq3mihynwh4ljwi0r06lvzk3ypr0gmmbcp1x43ffb7";
-    };
-
-    propagatedBuildInputs = with self; [ enum34 hpack hyperframe ];
-
-    meta = {
-      description = "HTTP/2 State-Machine based protocol implementation";
-      homepage = "http://hyper.rtfd.org/";
-      license = licenses.mit;
-    };
-  };
+  h2 = callPackage ../development/python-modules/h2 { };
 
   editorconfig = buildPythonPackage rec {
     name = "EditorConfig-${version}";
@@ -13879,21 +13788,7 @@ in {
 
   pecan = callPackage ../development/python-modules/pecan { };
 
-  kaitaistruct = buildPythonPackage rec {
-    name = "kaitaistruct-${version}";
-    version = "0.6";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/k/kaitaistruct/${name}.tar.gz";
-      sha256 = "0rwcrlz7f2bwmypqa38pag492bp71wp1bhz51hsaynjjyr9knr12";
-    };
-
-    meta = with stdenv.lib; {
-      description = "Kaitai Struct: runtime library for Python";
-      homepage = "https://github.com/kaitai-io/kaitai_struct_python_runtime";
-      license = licenses.mit;
-    };
-  };
+  kaitaistruct = callPackage ../development/python-modules/kaitaistruct { };
 
   Kajiki = buildPythonPackage rec {
     name = "Kajiki-${version}";
@@ -15151,6 +15046,7 @@ in {
   };
 
   pip-tools = callPackage ../development/python-modules/pip-tools {
+    git = pkgs.gitMinimal;
     glibcLocales = pkgs.glibcLocales;
   };
 
@@ -15501,7 +15397,7 @@ in {
 
     meta = {
       description = "Process and system utilization information interface for python";
-      homepage = http://code.google.com/p/psutil/;
+      homepage = https://github.com/giampaolo/psutil;
     };
   };
 
@@ -15605,41 +15501,9 @@ in {
   };
 
 
-  pyasn1 = buildPythonPackage rec {
-    name = "pyasn1-0.1.9";
+  pyasn1 = callPackage ../development/python-modules/pyasn1 { };
 
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/p/pyasn1/${name}.tar.gz";
-      sha256 = "0zraxni14bqi20kr4bi6nwsh32aibz0fq0xaczfisw0zdpcsqg45";
-    };
-
-    meta = {
-      description = "ASN.1 tools for Python";
-      homepage = http://pyasn1.sourceforge.net/;
-      license = "mBSD";
-      platforms = platforms.unix;  # arbitrary choice
-    };
-  };
-
-  pyasn1-modules = buildPythonPackage rec {
-    name = "pyasn1-modules-${version}";
-    version = "0.0.8";
-    disabled = isPyPy;
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/p/pyasn1-modules/${name}.tar.gz";
-      sha256 = "0drqgw81xd3fxdlg89kgd79zzrabvfncvkbybi2wr6w2y4s1jmhh";
-    };
-
-    propagatedBuildInputs = with self; [ pyasn1 ];
-
-    meta = {
-      description = "A collection of ASN.1-based protocols modules";
-      homepage = https://pypi.python.org/pypi/pyasn1-modules;
-      license = licenses.bsd3;
-      platforms = platforms.unix;  # same as pyasn1
-    };
-  };
+  pyasn1-modules = callPackage ../development/python-modules/pyasn1-modules { };
 
   pyaudio = buildPythonPackage rec {
     name = "python-pyaudio-${version}";
@@ -15986,12 +15850,12 @@ in {
 
 
   pycdio = buildPythonPackage rec {
-    name = "pycdio-0.20";
+    name = "pycdio-0.21";
     disabled = !isPy27;
 
     src = pkgs.fetchurl {
       url = "mirror://pypi/p/pycdio/${name}.tar.gz";
-      sha256 = "1mrh233pj584gf7la64d4xlmvdnfl4jwpxs95lnd3i4zd5drid14";
+      sha256 = "1bkcmg838l2yffsw5lln93ap5f8ks3vmqwg02mygmdmay647rc3v";
     };
 
     prePatch = ''
@@ -16005,8 +15869,6 @@ in {
     nativeBuildInputs = [ pkgs.pkgconfig ];
     buildInputs = [ self.setuptools self.nose pkgs.swig pkgs.libcdio ]
       ++ stdenv.lib.optional stdenv.isDarwin pkgs.libiconv;
-
-    patches = [ ../development/python-modules/pycdio/add-cdtext-toc.patch ];
 
     # Run tests using nosetests but first need to install the binaries
     # to the root source directory where they can be found.
@@ -16969,25 +16831,7 @@ in {
     inherit (pkgs) openldap cyrus_sasl openssl;
   };
 
-  ldap3 = buildPythonPackage rec {
-    version = "1.0.4";
-    name = "ldap3-${version}";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/l/ldap3/${name}.tar.gz";
-      sha256 = "0j4qqj9vq022hy7wfqn8s0j4vm2g6paabbzas1vbyspawvcfai98";
-    };
-
-    buildInputs = with self; [ gssapi ];
-
-    propagatedBuildInputs = with self; [ pyasn1 ];
-
-    meta = {
-      homepage = https://pypi.python.org/pypi/ldap3;
-      description = "A strictly RFC 4510 conforming LDAP V3 pure Python client library";
-      license = licenses.lgpl3;
-    };
-  };
+  ldap3 = callPackage ../development/python-modules/ldap3 {};
 
   ptest = buildPythonPackage rec {
     name = pname + "-" + version;
@@ -18344,24 +18188,7 @@ in {
 
   rpkg = callPackage ../development/python-modules/rpkg/default.nix {};
 
-  rply = buildPythonPackage rec {
-    name = "rply-${version}";
-    version = "0.7.4";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/r/rply/${name}.tar.gz";
-      sha256 = "12rp1d9ba7nvd5rhaxi6xzx1rm67r1k1ylsrkzhpwnphqpb06cvj";
-    };
-
-    buildInputs = with self; [ appdirs ];
-
-    meta = with pkgs.stdenv.lib; {
-      description = "A python Lex/Yacc that works with RPython";
-      homepage = https://github.com/alex/rply;
-      license = licenses.bsd3;
-      maintainers = with maintainers; [ nixy ];
-    };
-  };
+  rply = callPackage ../development/python-modules/rply/default.nix {};
 
   rpm = (pkgs.rpm.override{inherit python;});
 
@@ -21860,25 +21687,7 @@ EOF
     };
   });
 
-  zipstream = buildPythonPackage rec {
-    name = "${pname}-${version}";
-    pname = "zipstream";
-    version = "1.1.4";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/z/${pname}/${name}.tar.gz";
-      sha256 = "01im5anqdyggmwkigqcjg0qw2a5bnn84h33mfaqjjd69a28lpwif";
-    };
-
-    buildInputs = with self; [ nose ];
-
-    meta = {
-      description = "A zip archive generator";
-      homepage = "https://github.com/allanlei/python-zipstream";
-      license = licenses.gpl3Plus;
-      maintainers = with maintainers; [ primeos ];
-    };
-  };
+  zipstream = callPackage ../development/python-modules/zipstream { };
 
   zodb = callPackage ../development/python-modules/zodb {};
 
