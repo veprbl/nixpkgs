@@ -12,34 +12,32 @@ To make sure no one overrides our library paths, add NIX_LD_LIBRARY_PATH.
 _dl_fatal_printf doesn't report strerror(errno) because it causes compilation
 errors that, while can be fixed, require adding weak attribute to quite a few
 symbols which results in a much larger and thus less maintainable patch.
-
-diff -urNZ a/elf/rtld.c b/elf/rtld.c
---- a/elf/rtld.c	2017-02-05 15:28:43.000000000 +0000
-+++ b/elf/rtld.c	2017-11-05 17:27:36.638641450 +0000
-@@ -1170,9 +1170,34 @@
+--- a/elf/rtld.c
++++ b/elf/rtld.c
+@@ -1315,9 +1315,34 @@ of this helper program; chances are you did not intend to run this program.\n\
    DL_SYSDEP_OSCHECK (_dl_fatal_printf);
  #endif
-
+ 
 +  char *nix_library_path = getenv ("NIX_LD_LIBRARY_PATH");
-+  char *combined_library_path;
++  char *combined_library_path = NULL;
 +
-+  if (nix_library_path) {
-+    size_t library_path_len = strlen (library_path);
-+    size_t nix_library_path_len = strlen (nix_library_path);
++  size_t library_path_len = library_path ? strlen (library_path) : 0;
++  size_t nix_library_path_len = nix_library_path ? strlen (nix_library_path) : 0;
 +
++  if (!nix_library_path_len) {
++    combined_library_path = /*const-cast*/(char *) library_path;
++  } else if (!library_path_len) {
++    combined_library_path = nix_library_path;
++  } else {
 +    combined_library_path = malloc (library_path_len + nix_library_path_len + 2);
 +
 +    if (!combined_library_path)
 +      _dl_fatal_printf ("can't allocate combined_library_path\n");
 +
-+    strcpy (combined_library_path, library_path);
-+
-+    if (library_path_len > 0 && nix_library_path_len > 0)
-+      strcat (combined_library_path, ":");
-+
-+    strcat (combined_library_path, nix_library_path);
-+  } else {
-+    combined_library_path = (char *) library_path;
++    memcpy (combined_library_path, library_path, library_path_len);
++    combined_library_path[library_path_len] = ':';
++    memcpy (combined_library_path + library_path_len + 1, nix_library_path,
++            nix_library_path_len + 1 /*include the terminating zero*/);
 +  }
 +
    /* Initialize the data structures for the search paths for shared
@@ -47,19 +45,18 @@ diff -urNZ a/elf/rtld.c b/elf/rtld.c
 -  _dl_init_paths (library_path);
 +  _dl_init_paths (combined_library_path);
 +
-+  if (nix_library_path)
++  if (nix_library_path_len && library_path_len)
 +    free (combined_library_path);
-
+ 
    /* Initialize _r_debug.  */
    struct r_debug *r = _dl_debug_initialize (GL(dl_rtld_map).l_addr,
-diff -urNZ a/sysdeps/generic/unsecvars.h b/sysdeps/generic/unsecvars.h
---- a/sysdeps/generic/unsecvars.h	2017-02-05 15:28:43.000000000 +0000
-+++ b/sysdeps/generic/unsecvars.h	2017-11-05 15:04:32.859036638 +0000
-@@ -17,6 +17,7 @@
-   "LD_DEBUG_OUTPUT\0"							      \
+--- a/sysdeps/generic/unsecvars.h
++++ b/sysdeps/generic/unsecvars.h
+@@ -18,6 +18,7 @@
    "LD_DYNAMIC_WEAK\0"							      \
+   "LD_HWCAP_MASK\0"							      \
    "LD_LIBRARY_PATH\0"							      \
-+  "NIX_LD_LIBRARY_PATH\0"                                                     \
++  "NIX_LD_LIBRARY_PATH\0"						      \
    "LD_ORIGIN_PATH\0"							      \
    "LD_PRELOAD\0"							      \
    "LD_PROFILE\0"							      \
