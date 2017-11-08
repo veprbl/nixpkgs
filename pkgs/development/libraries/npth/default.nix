@@ -8,6 +8,8 @@ stdenv.mkDerivation rec {
     sha256 = "0am86vblapwz84254qpmhz0chk70g6qzh3wdxcs0gvba8d01ka5w";
   };
 
+  doCheck = true;
+
   meta = with stdenv.lib; {
     description = "The New GNU Portable Threads Library";
     longDescription = ''
