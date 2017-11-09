@@ -8,6 +8,8 @@ stdenv.mkDerivation rec {
     sha256 = "0gkss3zclm23zwpqfhddca8278id7pk6qx1mydpimdrrcndwgpz8";
   };
 
+  patches = [ ./remove-U64-typedef.patch ];
+
   preConfigure =
     ''
       perlversion=$(perl -e 'use Config; print $Config{version};')
