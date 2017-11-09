@@ -11,6 +11,8 @@ stdenv.mkDerivation rec {
   patches = [
     ./CVE-2015-5621.patch
     ./fix-Makefile-PL.patch
+    ./fix-includes.patch
+    ./netsnmp-swinst-crash.patch
     ./remove-U64-typedef.patch
   ];
 
