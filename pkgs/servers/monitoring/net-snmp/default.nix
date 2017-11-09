@@ -8,7 +8,11 @@ stdenv.mkDerivation rec {
     sha256 = "0gkss3zclm23zwpqfhddca8278id7pk6qx1mydpimdrrcndwgpz8";
   };
 
-  patches = [ ./remove-U64-typedef.patch ];
+  patches = [
+    ./CVE-2015-5621.patch
+    ./fix-Makefile-PL.patch
+    ./remove-U64-typedef.patch
+  ];
 
   preConfigure =
     ''
