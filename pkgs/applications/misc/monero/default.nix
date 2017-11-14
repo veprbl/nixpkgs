@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, cmake, boost, miniupnpc, openssl, pkgconfig, unbound }:
+{ stdenv, fetchFromGitHub, cmake, boost, miniupnpc, openssl, pkgconfig, unbound, libexecinfo }:
 
 let
   version = "0.11.1.0";
@@ -15,7 +15,7 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [ cmake pkgconfig ];
 
-  buildInputs = [ boost miniupnpc openssl unbound ];
+  buildInputs = [ boost miniupnpc openssl unbound ] ++ stdenv.lib.optional stdenv.isMusl libexecinfo;
 
   # these tests take a long time and don't
   # always complete in the build environment
