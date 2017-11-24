@@ -22821,12 +22821,13 @@ in {
   };
 
   rootpy = buildPythonPackage rec {
-    version = "0.8.3";
+    version = "0.9.1";
     name = "rootpy-${version}";
 
-    src = pkgs.fetchurl {
-      url = "https://pypi.python.org/packages/d5/40/feddb2c9d1cadfe05d1d9aea1a71be093dc700879c9f6af40a10b1330f34/rootpy-0.8.3.tar.gz";
-      sha256 = "14q9bhs2a53598571x8yikj68x2iyl6090wbvdrpbwr238799b0z";
+    src = pkgs.fetchgit {
+      url = "https://github.com/rootpy/rootpy.git";
+      rev = "2542dddd17c83ce453f71019782f8f2fafdeda52";
+      sha256 = "1z5l3r51xdj1b9fcyf1kqki3qn4qhy2svk1kwh502q0ywk0qhmlz";
     };
 
     disabled = isPy3k;
