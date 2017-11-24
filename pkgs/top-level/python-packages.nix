@@ -16253,6 +16253,14 @@ in {
     };
   };
 
+  numpy_1_13 = self.buildNumpyPackage rec {
+    version = "1.13.1";
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/n/numpy/numpy-${version}.zip";
+      sha256 = "1fsgkhh1vdkhmlz8vmdgxnj9n9yaanckxxzz9s0b4p08fqvjic69";
+    };
+  };
+
   numpydoc = buildPythonPackage rec {
     pname = "numpydoc";
     name = "${pname}-${version}";
