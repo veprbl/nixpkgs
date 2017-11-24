@@ -22353,11 +22353,11 @@ in {
   };
 
   redis = buildPythonPackage rec {
-    name = "redis-2.10.5";
+    name = "redis-2.10.6";
 
     src = pkgs.fetchurl {
       url = "mirror://pypi/r/redis/${name}.tar.gz";
-      sha256 = "0csmrkxb29x7xs9b51zplwkkq2hwnbh9jns1g85dykn5rxmaxysx";
+      sha256 = "03vcgklykny0g0wpvqmy8p6azi2s078317wgb2xjv5m2rs9sjb52";
     };
 
     # tests require a running redis
