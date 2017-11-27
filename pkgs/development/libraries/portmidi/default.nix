@@ -1,4 +1,6 @@
-{ stdenv, fetchurl, unzip, cmake, /*jdk,*/ alsaLib }:
+{ stdenv, fetchurl, unzip, cmake, /*jdk,*/ alsaLib, apple_sdk, openjdk7, CF, Carbon, CoreServices, CoreAudio, CoreMIDI }:
+
+with stdenv.lib;
 
 stdenv.mkDerivation rec {
   name = "portmidi-${version}";
@@ -40,18 +42,44 @@ stdenv.mkDerivation rec {
         pm_java/CMakeLists.txt
   '';
 
-  postInstall = ''
-    ln -s libportmidi.so "$out/lib/libporttime.so"
+  postInstall = let extension = stdenv.hostPlatform.extensions.sharedLibrary; in ''
+    ln -s libportmidi${extension} "$out/lib/libporttime${extension}"
   '';
 
-  buildInputs = [ unzip cmake /*jdk*/ alsaLib ];
+  preConfigure = optional stdenv.isDarwin ''
+    substituteInPlace ./CMakeLists.txt --replace "i386 ppc x86_64" "x86_64"
+    substituteInPlace ./pm_common/CMakeLists.txt --replace "/Developer/SDKs/MacOSX10.5.sdk" \
+      "${apple_sdk.sdk}"
+    for path in pm_common pm_dylib
+    do
+      substituteInPlace $path/CMakeLists.txt \
+        --replace '"''${FRAMEWORK_PATH}/CoreAudio.framework' \
+                  '"${CoreAudio}/Library/Frameworks/CoreAudio.framework'
+      substituteInPlace $path/CMakeLists.txt \
+        --replace '"''${FRAMEWORK_PATH}/CoreFoundation.framework' \
+                  '"${CF}/Library/Frameworks/CoreFoundation.framework'
+      substituteInPlace $path/CMakeLists.txt \
+        --replace '"''${FRAMEWORK_PATH}/CoreMIDI.framework' \
+                  '"${CoreMIDI}/Library/Frameworks/CoreMIDI.framework'
+      substituteInPlace $path/CMakeLists.txt \
+        --replace '"''${FRAMEWORK_PATH}/CoreServices.framework' \
+                  '"${CoreServices}/Library/Frameworks/CoreServices.framework'
+    done
+  '';
+
+  buildInputs = [ unzip cmake /*jdk*/ ]
+                ++ optional stdenv.isLinux alsaLib
+                ++ optionals stdenv.isDarwin [ Carbon CoreAudio CoreServices CoreMIDI ];
+
+  NIX_LDFLAGS = optionalString stdenv.isDarwin
+    "-framework CoreAudio -framework CoreServices -framework CoreMIDI";
 
   hardeningDisable = [ "format" ];
 
   meta = {
-    homepage = http://portmedia.sourceforge.net/portmidi/;
+    homepage = "http://portmedia.sourceforge.net/portmidi/";
     description = "Platform independent library for MIDI I/O";
-    license = stdenv.lib.licenses.mit;
-    platforms = stdenv.lib.platforms.linux;
+    license = licenses.mit;
+    platforms = platforms.linux ++ platforms.darwin;
   };
 }
