@@ -7,7 +7,7 @@
 
 { name ? "", stdenvNoCC, nativeTools, noLibc ? false, nativeLibc, nativePrefix ? ""
 , cc ? null, libc ? null, binutils ? null, coreutils ? null, shell ? stdenvNoCC.shell
-, zlib ? null, extraPackages ? [], extraBuildCommands ? ""
+, zlib ? null, extraPackages ? [], extraBuildCommands ? "", detectLD ? false
 , isGNU ? false, isClang ? cc.isClang or false, gnugrep ? null
 , buildPackages ? {}
 , useMacosReexportHack ? false
@@ -60,7 +60,7 @@ let
 
   # The dynamic linker has different names on different platforms. This is a
   # shell glob that ought to match it.
-  dynamicLinker =
+  dynamicLinker = if detectLD then null else
     /**/ if libc == null then null
     else if targetPlatform.system == "i686-linux"     then "${libc_lib}/lib/ld-linux.so.2"
     else if targetPlatform.system == "x86_64-linux"   then "${libc_lib}/lib/ld-linux-x86-64.so.2"
