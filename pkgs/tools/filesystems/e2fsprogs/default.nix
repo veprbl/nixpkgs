@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgconfig, libuuid, gettext, texinfo }:
+{ stdenv, buildPackages, fetchurl, pkgconfig, libuuid, gettext, texinfo }:
 
 stdenv.mkDerivation rec {
   name = "e2fsprogs-1.43.7";
@@ -10,14 +10,8 @@ stdenv.mkDerivation rec {
 
   outputs = [ "bin" "dev" "out" "man" "info" ];
 
-  nativeBuildInputs = [ pkgconfig texinfo ];
+  nativeBuildInputs = [ pkgconfig texinfo buildPackages.stdenv.cc ];
   buildInputs = [ libuuid ] ++ stdenv.lib.optional (!stdenv.isLinux) gettext;
-
-  crossAttrs = {
-    preConfigure = ''
-      export CC=$crossConfig-gcc
-    '';
-  };
 
   configureFlags =
     if stdenv.isLinux then [
@@ -26,6 +20,8 @@ stdenv.mkDerivation rec {
       "--disable-libuuid" "--disable-uuidd" "--disable-libblkid" "--disable-fsck"
     ] else [
       "--enable-libuuid --disable-e2initrd-helper"
+    ] ++ [
+      "BUILD_CC=${buildPackages.stdenv.cc.targetPrefix}gcc"
     ]
   ;
 
