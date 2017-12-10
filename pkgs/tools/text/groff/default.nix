@@ -42,6 +42,8 @@ stdenv.mkDerivation rec {
     "--without-x"
   ] ++ stdenv.lib.optionals (ghostscript != null) [
     "--with-gs=${ghostscript}/bin/gs"
+  ] ++ stdenv.lib.optionals (stdenv.buildPlatform != stdenv.hostPlatform) [
+    "ac_cv_path_PERL=${perl}/bin/perl"
   ];
 
   doCheck = true;
