@@ -18265,6 +18265,10 @@ with pkgs;
     withJava = config.steam.java or false;
     withPrimus = config.steam.primus or false;
   };
+  steam-primus = steam.override {
+    withPrimus = true;
+    defaultPrimus = true;
+  };
 
   steam-run = steam.run;
   steam-run-native = (steam.override {

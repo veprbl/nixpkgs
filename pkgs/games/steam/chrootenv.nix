@@ -2,10 +2,13 @@
 , steam-runtime-wrapped, steam-runtime-wrapped-i686 ? null
 , withJava ? false
 , withPrimus ? false
+, defaultPrimus ? false
 , extraPkgs ? pkgs: [ ] # extra packages to add to targetPkgs
 , nativeOnly ? false
 , runtimeOnly ? false
 }:
+
+assert defaultPrimus -> withPrimus;
 
 let
   commonTargetPkgs = pkgs: with pkgs;
@@ -52,7 +55,7 @@ let
   '';
 
 in buildFHSUserEnv rec {
-  name = "steam";
+  name = "steam" + lib.optionalString defaultPrimus "-primus";
 
   targetPkgs = pkgs: with pkgs; [
     steamPackages.steam
@@ -103,7 +106,7 @@ in buildFHSUserEnv rec {
     export TZDIR=/etc/zoneinfo
   '';
 
-  runScript = "steam";
+  runScript = lib.optionalString defaultPrimus "primusrun " + "steam";
 
   passthru.run = buildFHSUserEnv {
     name = "steam-run";
