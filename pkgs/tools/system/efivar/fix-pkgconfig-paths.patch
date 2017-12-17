@@ -1,0 +1,59 @@
+--- a/Make.defaults
++++ b/Make.defaults
+@@ -1,10 +1,11 @@
+-prefix	?= /usr/
+-libdir	?= $(prefix)/lib64/
+-datadir	?= $(prefix)/share/
+-mandir	?= $(datadir)/man/
+-includedir ?= $(prefix)/include/
+-bindir	?= $(prefix)/bin/
+-PCDIR	?= $(libdir)/pkgconfig/
++prefix	?= /usr
++exec_prefix	?= $(prefix)
++libdir	?= $(exec_prefix)/lib64
++datadir	?= $(prefix)/share
++mandir	?= $(datadir)/man
++includedir ?= $(prefix)/include
++bindir	?= $(exec_prefix)/bin
++PCDIR	?= $(libdir)/pkgconfig
+ DESTDIR	?=
+ 
+ INSTALL ?= install
+--- a/Make.rules
++++ b/Make.rules
+@@ -46,6 +46,9 @@
+ 	sed						\
+ 		-e "s,@@VERSION@@,$(VERSION),g"		\
+ 		-e "s,@@LIBDIR@@,$(libdir),g"		\
++		-e "s,@@PREFIX@@,$(prefix),g"		\
++		-e "s,@@EXEC_PREFIX@@,$(exec_prefix),g"		\
++		-e "s,@@INCLUDEDIR@@,$(includedir),g"		\
+ 		$(1) > $(2)
+ endef
+ 
+--- a/src/efiboot.pc.in
++++ b/src/efiboot.pc.in
+@@ -1,7 +1,7 @@
+-prefix=/usr
+-exec_prefix=/usr
++prefix=@@PREFIX@@
++exec_prefix=@@EXEC_PREFIX@@
+ libdir=@@LIBDIR@@
+-includedir=/usr/include
++includedir=@@INCLUDEDIR@@
+ 
+ Name: efiboot
+ Description: UEFI Boot variable support
+--- a/src/efivar.pc.in
++++ b/src/efivar.pc.in
+@@ -1,7 +1,7 @@
+-prefix=/usr
+-exec_prefix=/usr
++prefix=@@PREFIX@@
++exec_prefix=@@EXEC_PREFIX@@
+ libdir=@@LIBDIR@@
+-includedir=/usr/include
++includedir=@@INCLUDEDIR@@
+ 
+ Name: efivar
+ Description: UEFI Variable Management

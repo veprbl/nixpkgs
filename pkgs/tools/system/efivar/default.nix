@@ -14,15 +14,18 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ pkgconfig ];
   buildInputs = [ popt ];
 
+  patches = [
+    # https://github.com/rhboot/efivar/pull/94
+    ./fix-pkgconfig-paths.patch
+  ];
+
   postPatch = ''
      substituteInPlace src/Makefile --replace "-static" ""
   '';
 
-  installFlags = [
+  makeFlags = [
+    "prefix=$(out)"
     "libdir=$(out)/lib"
-    "mandir=$(out)/share/man"
-    "includedir=$(out)/include"
-    "bindir=$(out)/bin"
   ];
 
   meta = with stdenv.lib; {
