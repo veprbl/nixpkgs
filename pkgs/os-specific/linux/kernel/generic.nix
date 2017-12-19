@@ -128,4 +128,4 @@ let
   #    features = passthru.features; # Ensure we know of all extra patches, etc.
   #  };
 
-in addPassthru' kernel;
+in addPassthru' kernel
