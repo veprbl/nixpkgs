@@ -52,6 +52,7 @@ rec {
           then builtins.unsafeGetAttrPos "description" attrs.meta
           else builtins.unsafeGetAttrPos "name" attrs)
     , separateDebugInfo ? false
+    , outputHash ? null
     , outputs ? [ "out" ]
     , __impureHostDeps ? []
     , __propagatedImpureHostDeps ? []
@@ -131,9 +132,19 @@ rec {
               (lib.concatLists propagatedDependencies));
         in
         {
-          name = name + lib.optionalString
-            (stdenv.hostPlatform != stdenv.buildPlatform)
-            ("-" + stdenv.hostPlatform.config);
+          name =
+            let
+              # Fixed-output derivations like source tarballs shouldn't get a
+              # host suffix. See #32986.
+              isHostSensitive =
+                stdenv.hostPlatform != stdenv.buildPlatform &&
+                (builtins.length buildInputs != 0 ||
+                 builtins.length propagatedBuildInputs != 0) &&
+                 outputHash == null;
+              hostSuffix =
+                lib.optionalString isHostSensitive ("-" + stdenv.hostPlatform.config);
+            in
+              name + hostSuffix;
           builder = attrs.realBuilder or stdenv.shell;
           args = attrs.args or ["-e" (attrs.builder or ./default-builder.sh)];
           inherit stdenv;
