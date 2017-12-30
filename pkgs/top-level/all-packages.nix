@@ -19473,6 +19473,8 @@ with pkgs;
 
   illum = callPackage ../tools/system/illum { };
 
+  intel-software-development-emulator = callPackage ../misc/emulators/intel-software-development-emulator { };
+
   # using the new configuration style proposal which is unstable
   jack1 = callPackage ../misc/jackaudio/jack1.nix { };
 
