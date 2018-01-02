@@ -26,7 +26,7 @@ stdenv.mkDerivation rec {
     patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
       --set-rpath "${lpath}" \
       $out/oldbin/IceSL-slicer
-    makeWrapper $out/oldbin/IceSL-slicer $out/bin/icesl --set PATH "$PATH:${dialog}/bin" 
+    makeWrapper $out/oldbin/IceSL-slicer $out/bin/icesl --prefix PATH : ${dialog}/bin
   '';
 
   meta = with lib; {
