@@ -1,6 +1,6 @@
-{ stdenv, lib, fetchzip, patchelf, freeglut, libX11, libICE, mesa, libSM, libXext, dialog, makeWrapper }:
+{ stdenv, lib, fetchzip, patchelf, freeglut, libXmu, libXi, libX11, libICE, mesa, libSM, libXext, dialog, makeWrapper }:
 let
-  lpath = stdenv.lib.makeLibraryPath [ libX11 freeglut libICE mesa libSM libXext ];
+  lpath = stdenv.lib.makeLibraryPath [ libXmu libXi libX11 freeglut libICE mesa libSM libXext ];
 in
 stdenv.mkDerivation rec {
   name = "iceSL-${version}";
