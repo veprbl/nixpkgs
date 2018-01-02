@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
     sha256 = "0dv3mq6wy46xk9blzzmgbdxpsjdaxid3zadfrysxlhmgl7zb2cn2";
   } else if stdenv.system == "i686-linux" then fetchzip {
     url = "https://gforge.inria.fr/frs/download.php/file/37267/icesl${version}-i386.zip";
-    sha256 = "0xr9zba2vjgsp5yrpbv9vj3l3fj5djpf8496l8wsy0rv71rfvrdq";
+    sha256 = "0sl54fsb2gz6dy0bwdscpdq1ab6ph5b7zald3bwzgkqsvna7p1jr";
   } else throw "Unsupported architecture";
 
   buildInputs = [ makeWrapper ];
