@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchzip, patchelf, freeglut, libX11, libICE, mesa, libSM, libXext }:
+{ stdenv, lib, fetchzip, patchelf, freeglut, libX11, libICE, mesa, libSM, libXext, dialog, makeWrapper }:
 let
   lpath = stdenv.lib.makeLibraryPath [ libX11 freeglut libICE mesa libSM libXext ];
 in
@@ -6,29 +6,34 @@ stdenv.mkDerivation rec {
   name = "iceSL-${version}";
   version = "2.1.10";
 
-  src = fetchzip {
+  src =  if stdenv.system == "x86_64-linux" then fetchzip {
     url = "https://gforge.inria.fr/frs/download.php/file/37268/icesl${version}-amd64.zip";
     sha256 = "0dv3mq6wy46xk9blzzmgbdxpsjdaxid3zadfrysxlhmgl7zb2cn2";
-  };
+  } else if stdenv.system == "i686-linux" then fetchzip {
+    url = "https://gforge.inria.fr/frs/download.php/file/37267/icesl${version}-i386.zip";
+    sha256 = "0xr9zba2vjgsp5yrpbv9vj3l3fj5djpf8496l8wsy0rv71rfvrdq";
+  } else throw "Unsupported architecture";
 
+  buildInputs = [ makeWrapper ];
   installPhase = ''
     cp -r ./ $out
-    chmod +x $out/bin/IceSL-slicer
+    mkdir $out/oldbin
+    mv $out/bin/IceSL-slicer $out/oldbin/IceSL-slicer
     runHook postInstall 
   '';
 
   postInstall = ''
     patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
       --set-rpath "${lpath}" \
-      $out/bin/IceSL-slicer
-
+      $out/oldbin/IceSL-slicer
+    makeWrapper $out/oldbin/IceSL-slicer $out/bin/icesl --set PATH "$PATH:${dialog}/bin" 
   '';
 
   meta = with lib; {
     description = "IceSL is a GPU-accelerated procedural modeler and slicer for 3D printing.";
     homepage = http://shapeforge.loria.fr/icesl/index.html;
     license = licenses.inria-icesl;
-    platforms = platforms.linux;
+    platforms = [ "i686-linux" "x86_64-linux" ];
     maintainers = with maintainers; [ mgttlinger ];
   };
 }
