@@ -98,6 +98,7 @@ rec {
     androideabi = {};
     gnueabi = {};
     gnueabihf = {};
+    musl = {};
 
     unknown = {};
   };
