@@ -119,6 +119,7 @@ in
     mpg123 = nativePlatforms;
   });
 
+  musl = mapTestOnCross lib.systems.examples.musl64 linuxCommon;
 
   /* Cross-built bootstrap tools for every supported platform */
   bootstrapTools = let
