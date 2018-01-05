@@ -86,6 +86,7 @@ in with pkgs; rec {
         rm -rf $out/include/mtd $out/include/rdma $out/include/sound $out/include/video
         find $out/include -name .install -exec rm {} \;
         find $out/include -name ..install.cmd -exec rm {} \;
+        mv $out/include $out/include-libc
     '' else throw "unsupported libc for bootstrap tools")
     + ''
         # Copy coreutils, bash, etc.
@@ -137,6 +138,8 @@ in with pkgs; rec {
         cp -d ${libmpc.out}/lib/libmpc*.so* $out/lib
         cp -d ${zlib.out}/lib/libz.so* $out/lib
         cp -d ${libelf}/lib/libelf.so* $out/lib
+      '' + lib.optionalString (targetPlatform.libc == "musl") ''
+        cp -d ${libiconv.out}/lib/libiconv*.so* $out/lib
 
       '' + lib.optionalString (hostPlatform != buildPlatform) ''
         # These needed for cross but not native tools because the stdenv
@@ -200,10 +203,17 @@ in with pkgs; rec {
     bootstrapTools = runCommand "bootstrap-tools.tar.xz" {} "cp ${build}/on-server/bootstrap-tools.tar.xz $out";
   };
 
-  bootstrapTools = import ./bootstrap-tools {
-    inherit (hostPlatform) system;
-    inherit bootstrapFiles;
-  };
+  bootstrapTools = if (targetPlatform.libc == "glibc") then
+    import ./bootstrap-tools {
+      inherit (hostPlatform) system;
+      inherit bootstrapFiles;
+    }
+    else if (targetPlatform.libc == "musl") then
+    import ./bootstrap-tools-musl {
+      inherit (hostPlatform) system;
+      inherit bootstrapFiles;
+    }
+    else throw "unsupported libc";
 
   test = derivation {
     name = "test-bootstrap-tools";
@@ -226,10 +236,17 @@ in with pkgs; rec {
       grep --version
       gcc --version
 
+    '' + lib.optionalString (targetPlatform.libc == "glibc") ''
       ldlinux=$(echo ${bootstrapTools}/lib/ld-linux*.so.?)
       export CPP="cpp -idirafter ${bootstrapTools}/include-glibc -B${bootstrapTools}"
       export CC="gcc -idirafter ${bootstrapTools}/include-glibc -B${bootstrapTools} -Wl,-dynamic-linker,$ldlinux -Wl,-rpath,${bootstrapTools}/lib"
       export CXX="g++ -idirafter ${bootstrapTools}/include-glibc -B${bootstrapTools} -Wl,-dynamic-linker,$ldlinux -Wl,-rpath,${bootstrapTools}/lib"
+    '' + lib.optionalString (targetPlatform.libc == "musl") ''
+      ldmusl=$(echo ${bootstrapTools}/lib/ld-musl*.so.?)
+      export CPP="cpp -idirafter ${bootstrapTools}/include-libc -B${bootstrapTools}"
+      export CC="gcc -idirafter ${bootstrapTools}/include-libc -B${bootstrapTools} -Wl,-dynamic-linker,$ldmusl -Wl,-rpath,${bootstrapTools}/lib"
+      export CXX="g++ -idirafter ${bootstrapTools}/include-libc -B${bootstrapTools} -Wl,-dynamic-linker,$ldmusl -Wl,-rpath,${bootstrapTools}/lib"
+    '' + ''
 
       echo '#include <stdio.h>' >> foo.c
       echo '#include <limits.h>' >> foo.c
