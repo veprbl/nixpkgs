@@ -1,4 +1,5 @@
 { stdenv
+, buildPackages
 , fetch
 , fetchpatch
 , perl
@@ -27,6 +28,17 @@ let
   # Used when creating a version-suffixed symlink of libLLVM.dylib
   shortVersion = with stdenv.lib;
     concatStringsSep "." (take 2 (splitString "." release_version));
+
+  crossCompiling = stdenv.buildPlatform != stdenv.hostPlatform;
+  llvmArch =
+    let target = stdenv.targetPlatform;
+    in if target.isArm
+       then "ARM"
+       else
+       if target.isx86_64
+       then "X86"
+       else throw "unknown platform";
+
 in stdenv.mkDerivation rec {
   name = "llvm-${version}";
 
@@ -43,7 +55,9 @@ in stdenv.mkDerivation rec {
     ++ stdenv.lib.optional enableManpages "man";
 
   nativeBuildInputs = [ perl groff cmake python ]
-    ++ stdenv.lib.optional enableManpages python.pkgs.sphinx;
+    ++ stdenv.lib.optional enableManpages python.pkgs.sphinx
+       # for build tablegen
+    ++ stdenv.lib.optional crossCompiling buildPackages.llvm;
 
   buildInputs = [ libxml2 libffi ]
     ++ stdenv.lib.optionals stdenv.isDarwin [ libcxxabi ];
@@ -113,6 +127,14 @@ in stdenv.mkDerivation rec {
   ++ stdenv.lib.optionals (isDarwin) [
     "-DLLVM_ENABLE_LIBCXX=ON"
     "-DCAN_TARGET_i386=false"
+  ]
+  ++ stdenv.lib.optionals crossCompiling [
+    "-DCMAKE_CROSSCOMPILING=True"
+    "-DLLVM_TABLEGEN=${buildPackages.llvm}/tablegen"
+    "-DCLANG_TABLEGEN=${buildPackages.llvm}/tablegen"
+    "-DLLVM_DEFAULT_TARGET_TRIPLE=${stdenv.targetPlatform.config}"
+    "-DLLVM_TARGET_ARCH=${llvmArch}"
+    #"-DLLVM_TARGETS_TO_BUILD=${llvmArch}"
   ];
 
   postBuild = ''
