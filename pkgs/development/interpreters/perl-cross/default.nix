@@ -105,7 +105,7 @@ let
 
     meta = {
       homepage = https://arsv.github.io/perl-cross;
-      description = "Cross-compilation standard implementation of the Perl 5 programmming language";
+      description = "Configure and build perl with a cross-compiling toolchain";
       maintainers = [ ];
       platforms = platforms.all;
     };
