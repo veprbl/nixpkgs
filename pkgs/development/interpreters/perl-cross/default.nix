@@ -4,7 +4,7 @@ let common = {perlVersion, perlSha256}:
   stdenv.mkDerivation rec {
     name = "perl-cross";
     version = perlVersion;
-    crossVersion = "1.1.7";
+    crossVersion = "1.1.8";
 
     srcs = [
       (fetchurl {
@@ -14,7 +14,7 @@ let common = {perlVersion, perlSha256}:
 
       (fetchurl {
         url = "https://github.com/arsv/perl-cross/releases/download/${crossVersion}/${name}-${crossVersion}.tar.gz";
-        sha256 = "0ps1x7wxi3b52igywhx4d6xyr26s87aqdjvkgsnjgxdmcvbyk75p";
+        sha256 = "072j491rpz2qx2sngbg4flqh4lx5865zyql7b9lqm6s1kknjdrh8";
       })
     ];
     sourceRoot = "perl-${perlVersion}";
