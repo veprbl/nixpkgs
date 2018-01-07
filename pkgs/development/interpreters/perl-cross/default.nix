@@ -36,19 +36,21 @@ let common = {perlVersion, perlSha256}:
       platforms = lib.platforms.all;
     };
   };
-
 in rec {
-
   perl = perl524;
 
-  perl524 = common {
-    perlVersion = "5.24.2";
-    perlSha256 = "1x4yj814a79lcarwb3ab6bbcb36hvb5n4ph4zg3yb0nabsjfi6v0";
-  };
-
   perl522 = common {
-    perlVersion = "5.22.2";
+    perlVersion = "5.22.4";
     perlSha256 = "1yk1xn4wmnrf2ph02j28khqarpyr24qwysjzkjnjv7vh5dygb7ms";
   };
 
+  perl524 = common {
+    perlVersion = "5.24.3";
+    perlSha256 = "1m2px85kq2fyp2d4rx3bw9kg3car67qfqwrs5vlv96dx0x8rl06b";
+  };
+
+  perl526 = common {
+    perlVersion = "5.26.1";
+    perlSha256 = "1p81wwvr5jb81m41d07kfywk5gvbk0axdrnvhc2aghcdbr4alqz7";
+  };
 }
