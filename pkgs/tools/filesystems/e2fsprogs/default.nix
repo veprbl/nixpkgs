@@ -20,8 +20,6 @@ stdenv.mkDerivation rec {
       "--disable-libuuid" "--disable-uuidd" "--disable-libblkid" "--disable-fsck"
     ] else [
       "--enable-libuuid --disable-e2initrd-helper"
-    ] ++ [
-      "BUILD_CC=${buildPackages.stdenv.cc.targetPrefix}gcc"
     ]
   ;
 
