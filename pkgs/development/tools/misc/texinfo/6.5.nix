@@ -1,8 +1,10 @@
-{ stdenv, fetchurl, ncurses, perl, xz, libiconv, gawk, procps, interactive ? false }:
+{ stdenv, buildPackages, fetchurl, ncurses, perl, xz, libiconv, gawk, procps, interactive ? false }:
 
 with stdenv.lib;
 
-stdenv.mkDerivation rec {
+let
+  crossCompiling = stdenv.buildPlatform != stdenv.hostPlatform;
+in stdenv.mkDerivation rec {
   name = "texinfo-6.5";
 
   src = fetchurl {
@@ -10,12 +12,22 @@ stdenv.mkDerivation rec {
     sha256 = "0qjzvbvnv9003xdrcpi3jp7y68j4hq2ciw9frh2hghh698zlnxvp";
   };
 
-  buildInputs = [ perl xz ]
+  nativeBuildInputs = [ perl ]
+    # We need a native compiler to build perl XS extensions
+    # when cross-compiling.
+    ++ optionals crossCompiling [buildPackages.stdenv.cc];
+
+  buildInputs = [ xz ]
     ++ optionals stdenv.isSunOS [ libiconv gawk ]
     ++ optional interactive ncurses
     ++ optional doCheck procps; # for tests
 
-  configureFlags = stdenv.lib.optional stdenv.isSunOS "AWK=${gawk}/bin/awk";
+  configureFlags =
+    stdenv.lib.optional stdenv.isSunOS "AWK=${gawk}/bin/awk"
+    ++ optionals crossCompiling [
+      "PERL=${buildPackages.perl}/bin/perl"
+      "BUILD_CC=${buildPackages.stdenv.cc.targetPrefix}gcc"
+    ];
 
   preInstall = ''
     installFlags="TEXMF=$out/texmf-dist";

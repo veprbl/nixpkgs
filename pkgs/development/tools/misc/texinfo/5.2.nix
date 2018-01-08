@@ -1,14 +1,21 @@
-{ stdenv, fetchurl, ncurses, perl, xz, procps, interactive ? false }:
+{ stdenv, buildPackages, fetchurl, ncurses, perl, xz, procps, interactive ? false }:
 
 with stdenv.lib;
 
-stdenv.mkDerivation rec {
+let
+  crossCompiling = stdenv.buildPlatform != stdenv.hostPlatform;
+in stdenv.mkDerivation rec {
   name = "texinfo-5.2";
 
   src = fetchurl {
     url = "mirror://gnu/texinfo/${name}.tar.xz";
     sha256 = "1njfwh2z34r2c4r0iqa7v24wmjzvsfyz4vplzry8ln3479lfywal";
   };
+
+  nativeBuildInputs = [ perl ]
+    # We need a native compiler to build perl XS extensions
+    # when cross-compiling.
+    ++ optionals crossCompiling [buildPackages.stdenv.cc];
 
   buildInputs = [ perl xz.bin ]
     ++ optional interactive ncurses
@@ -18,6 +25,13 @@ stdenv.mkDerivation rec {
     installFlags="TEXMF=$out/texmf-dist";
     installTargets="install install-tex";
   '';
+
+  configureFlags =
+    stdenv.lib.optional stdenv.isSunOS "AWK=${gawk}/bin/awk"
+    ++ optionals crossCompiling [
+      "PERL=${buildPackages.perl}/bin/perl"
+      "BUILD_CC=${buildPackages.stdenv.cc.targetPrefix}gcc"
+    ];
 
   doCheck = !stdenv.isDarwin;
 
