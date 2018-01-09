@@ -74,6 +74,10 @@ stdenv.mkDerivation rec {
   dontUseCmakeConfigure = true;
   enableParallelBuilding = true;
 
+  # This isn't an autoconf configure script; triples are passed via
+  # CMAKE_SYSTEM_NAME, etc.
+  configurePlatforms = [ ];
+
   meta = with stdenv.lib; {
     homepage = http://www.cmake.org/;
     description = "Cross-Platform Makefile Generator";
