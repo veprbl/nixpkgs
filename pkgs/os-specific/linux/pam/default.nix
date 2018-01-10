@@ -62,7 +62,7 @@ stdenv.mkDerivation rec {
   preConfigure = ''
     configureFlags="$configureFlags --includedir=$out/include/security"
   '' + stdenv.lib.optionalString (targetPlatform.libc == "musl") ''
-      export ac_cv_search_crypt=no
+      # export ac_cv_search_crypt=no
       # (taken from Alpine linux, apparently insecure but also doesn't build O:))
       # disable insecure modules
       # sed -e 's/pam_rhosts//g' -i modules/Makefile.am
