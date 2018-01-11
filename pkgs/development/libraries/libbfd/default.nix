@@ -28,6 +28,7 @@ stdenv.mkDerivation rec {
     "--enable-install-libbfd"
     "--enable-shared"
     "--with-system-zlib"
+    "CC_FOR_BUILD=$(CC)"
   ];
 
   postInstall = stdenv.lib.optionalString (stdenv.hostPlatform != stdenv.targetPlatform) ''
