@@ -17,7 +17,8 @@ stdenv.mkDerivation rec {
     sha256 = "b080f276cc868670540b2c03cee06cc14d2faf9da7bec0f15058d1b402c94507";
   };
 
-  buildInputs = [ python wrapPython unzip ];
+  nativeBuildInputs = [ unzip wrapPython ];
+  buildInputs = [ python ];
   doCheck = false;  # requires pytest
   installPhase = ''
       dst=$out/${python.sitePackages}
