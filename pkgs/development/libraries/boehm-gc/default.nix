@@ -20,9 +20,9 @@ stdenv.mkDerivation rec {
   outputs = [ "out" "dev" "doc" ];
   separateDebugInfo = stdenv.isLinux;
 
-  preConfigure = if (stdenv.cc.libc == "musl") then ''
+  preConfigure = stdenv.lib.optionalString (stdenv.cc.libc == "musl") ''
     export NIX_CFLAGS_COMPILE+="-D_GNU_SOURCE -DUSE_MMAP -DHAVE_DL_ITERATE_PHDR"
-  '' else null;
+  '';
 
   patches = [ (fetchpatch {
     url = "https://raw.githubusercontent.com/gentoo/musl/85b6a600996bdd71162b357e9ba93d8559342432/dev-libs/boehm-gc/files/boehm-gc-7.6.0-sys_select.patch";
@@ -31,7 +31,8 @@ stdenv.mkDerivation rec {
 
   configureFlags =
     [ "--enable-cplusplus" ]
-    ++ lib.optional enableLargeConfig "--enable-large-config";
+    ++ lib.optional enableLargeConfig "--enable-large-config"
+    ++ lib.optional (stdenv.cc.libc == "musl") "--disable-static";
 
   doCheck = true; # not cross;
 
