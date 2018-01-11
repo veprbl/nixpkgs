@@ -6,7 +6,8 @@
 { lib
 , localSystem, crossSystem, config, overlays
 
-, bootstrapFiles ? { # switch
+, bootstrapFiles ? if localSystem.libc == "musl" then import ./bootstrap-files/musl64.nix
+else { # switch
     "i686-linux" = import ./bootstrap-files/i686.nix;
     "x86_64-linux" = import ./bootstrap-files/x86_64.nix;
     "armv5tel-linux" = import ./bootstrap-files/armv5tel.nix;
@@ -40,7 +41,7 @@ let
 
 
   # Download and unpack the bootstrap tools (coreutils, GCC, Glibc, ...).
-  bootstrapTools = import ./bootstrap-tools { inherit system bootstrapFiles; };
+  bootstrapTools = import (if localSystem.libc == "musl" then ./bootstrap-tools-musl else ./bootstrap-tools) { inherit system bootstrapFiles; };
 
 
   # This function builds the various standard environments used during
