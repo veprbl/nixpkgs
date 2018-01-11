@@ -3,8 +3,8 @@
 
 {
   bootstrapTools = import <nix/fetchurl.nix> {
-    url = https://gravity.cs.illinois.edu/build/2177106/download/1/bootstrap-tools.tar.xz;
-    sha256 = "848c23d43a7c597b52529901003ef651630cc42af5650ba68368caa076088014";
-    # path: /nix/store/fh4d1aq2mrzy84qxyki60b3pwj3m6zm1-stdenv-bootstrap-tools/on-server/bootstrap-tools.tar.xz
+    url = https://gravity.cs.illinois.edu/build/2177137/download/1/bootstrap-tools.tar.xz;
+    sha256 = "eab723b47e516671c52fef9b11ac909d55a7745ed04dcc5ae294a1d974b144e0";
+    # path: /nix/store/y4w65vk57lrf8z3li3dqzz6bsq6761lb-stdenv-bootstrap-tools/on-server/bootstrap-tools.tar.xz
   };
 }
