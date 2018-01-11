@@ -14,7 +14,7 @@ stdenv.mkDerivation rec {
   ];
 
   # We just want to build libbfd
-  postPatch = ''
+  preConfigure = ''
     cd bfd
   '';
 
