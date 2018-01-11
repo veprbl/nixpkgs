@@ -1,5 +1,5 @@
 { stdenv
-, fetchurl, autoreconfHook264, bison, binutils-raw
+, fetchurl, autoreconfHook264, buildPackages, bison, binutils-raw
 , libiberty, zlib
 }:
 
@@ -18,16 +18,24 @@ stdenv.mkDerivation rec {
     cd bfd
   '';
 
+  depsBuildBuilds = [ buildPackages.stdenv.cc ];
   nativeBuildInputs = [ autoreconfHook264 bison ];
   buildInputs = [ libiberty zlib ];
 
-  configurePlatforms = [ "build" "host" ];
+  configurePlatforms = [ "build" "host" "target" ];
   configureFlags = [
     "--enable-targets=all" "--enable-64-bit-bfd"
     "--enable-install-libbfd"
     "--enable-shared"
     "--with-system-zlib"
   ];
+
+  postInstall = stdenv.lib.optionalString (stdenv.hostPlatform != stdenv.targetPlatform) ''
+    # the build system likes to move things into atypical locations
+    mkdir -p $dev
+    mv $out/${stdenv.hostPlatform.config}/${stdenv.targetPlatform.config}/include $dev/include
+    mv $out/${stdenv.hostPlatform.config}/${stdenv.targetPlatform.config}/lib $out/lib
+  '';
 
   enableParallelBuilding = true;
 
