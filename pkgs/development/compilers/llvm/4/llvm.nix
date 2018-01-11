@@ -97,7 +97,7 @@ in stdenv.mkDerivation (rec {
   '' + stdenv.lib.optionalString stdenv.isAarch64 ''
     patch -p0 < ${../aarch64.patch}
   '' + stdenv.lib.optionalString (stdenv.targetPlatform.libc == "musl") ''
-    patch -p1 -i ${./TLI-musl.patch}
+    patch -p1 -i ${../TLI-musl.patch}
     patch -p1 -i ${./dynamiclibrary-musl.patch}
   '';
 
