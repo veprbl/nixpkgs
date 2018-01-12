@@ -41,7 +41,7 @@ stdenv.mkDerivation rec {
     done
   '';
 
-  postFixup = ''
+  postFixup = stdenv.lib.optionalString (buildPackages.groff != groff) ''
     # Check to make sure none of the outputs depend on build-time-only groff:
     for outName in $outputs; do
       out=''${!outName}
