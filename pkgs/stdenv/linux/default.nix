@@ -237,7 +237,7 @@ in
     };
     extraNativeBuildInputs = [ prevStage.patchelf prevStage.paxctl ] ++
       # Many tarballs come with obsolete config.sub/config.guess that don't recognize aarch64.
-      lib.optional localSystem.isAarch64 prevStage.updateAutotoolsGnuConfigScriptsHook;
+      lib.optional (localSystem.isAarch64 || localSystem.libc == "musl") prevStage.updateAutotoolsGnuConfigScriptsHook;
   })
 
 
@@ -279,7 +279,7 @@ in
     };
     extraNativeBuildInputs = [ prevStage.patchelf prevStage.xz ] ++
       # Many tarballs come with obsolete config.sub/config.guess that don't recognize aarch64.
-      lib.optional localSystem.isAarch64 prevStage.updateAutotoolsGnuConfigScriptsHook;
+      lib.optional (localSystem.isAarch64 || localSystem.libc == "musl") prevStage.updateAutotoolsGnuConfigScriptsHook;
   })
 
   # Construct the final stdenv.  It uses the Glibc and GCC, and adds
@@ -309,7 +309,7 @@ in
 
       extraNativeBuildInputs = [ prevStage.patchelf prevStage.paxctl ] ++
         # Many tarballs come with obsolete config.sub/config.guess that don't recognize aarch64.
-        lib.optional localSystem.isAarch64 prevStage.updateAutotoolsGnuConfigScriptsHook;
+        lib.optional (localSystem.isAarch64 || localSystem.libc == "musl") prevStage.updateAutotoolsGnuConfigScriptsHook;
 
       cc = prevStage.gcc;
 
@@ -340,7 +340,7 @@ in
         ++  [ /*propagated from .dev*/ linuxHeaders
             binutils gcc gcc.cc gcc.cc.lib gcc.expand-response-params
           ]
-          ++ lib.optionals localSystem.isAarch64
+          ++ lib.optionals (localSystem.isAarch64 || localSystem.libc == "musl")
             [ prevStage.updateAutotoolsGnuConfigScriptsHook prevStage.gnu-config ];
 
       overrides = self: super: {
