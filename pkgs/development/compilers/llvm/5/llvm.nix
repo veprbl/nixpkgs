@@ -74,7 +74,7 @@ in stdenv.mkDerivation (rec {
     patch -p1 -i ${./compiler-rt-codesign.patch} -d projects/compiler-rt
   '' + stdenv.lib.optionalString stdenv.isAarch64 ''
     patch -p0 < ${../aarch64.patch}
-  '' + stdenv.lib.optionalString (stdenv.targetPlatform.libc == "musl") ''
+  '' + stdenv.lib.optionalString (stdenv.hostPlatform.libc == "musl") ''
     patch -p1 -i ${../TLI-musl.patch}
   '';
 
@@ -106,7 +106,7 @@ in stdenv.mkDerivation (rec {
   ++ stdenv.lib.optionals (isDarwin) [
     "-DLLVM_ENABLE_LIBCXX=ON"
     "-DCAN_TARGET_i386=false"
-  ] ++ stdenv.lib.optionals (stdenv.targetPlatform.libc == "musl") [
+  ] ++ stdenv.lib.optionals (stdenv.hostPlatform.libc == "musl") [
     "-DCOMPILER_RT_BUILD_SANITIZERS=OFF"
     "-DCOMPILER_RT_BUILD_XRAY=OFF"
   ];
