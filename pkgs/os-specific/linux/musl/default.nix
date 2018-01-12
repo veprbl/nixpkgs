@@ -62,6 +62,8 @@ stdenv.mkDerivation rec {
     install -D ${tree_h} $dev/include/sys/tree.h
   '';
 
+  passthru.linuxHeaders = linuxHeaders;
+
   meta = {
     description = "An efficient, small, quality libc implementation";
     homepage    = "http://www.musl-libc.org";
