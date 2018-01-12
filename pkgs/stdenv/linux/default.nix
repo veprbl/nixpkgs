@@ -336,7 +336,8 @@ in
             ++ lib.optional (gawk.libsigsegv != null) gawk.libsigsegv
           )
         # More complicated cases
-        ++ glibc.all ++ [ /*propagated from .dev*/ linuxHeaders
+        ++ (map (x: getOutput x glibc) [ "out" "dev" "bin" ] )
+        ++  [ /*propagated from .dev*/ linuxHeaders
             binutils gcc gcc.cc gcc.cc.lib gcc.expand-response-params
           ]
           ++ lib.optionals localSystem.isAarch64
