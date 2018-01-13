@@ -48,6 +48,10 @@ let
       else if stdenv.system == "x86_64-solaris" then "./Configure solaris64-x86_64-gcc"
       else "./config";
 
+    preConfigure = ''
+      patchShebangs Configure
+    '';
+
     configureFlags = [
       "shared"
       "--libdir=lib"
@@ -92,10 +96,10 @@ let
 
     crossAttrs = {
       # upstream patch: https://rt.openssl.org/Ticket/Display.html?id=2558
-      postPatch = ''
+      postPatch = stdenv.lib.optionalString (postPatch != null) postPatch + ''
          sed -i -e 's/[$][(]CROSS_COMPILE[)]windres/$(WINDRES)/' Makefile.shared
       '';
-      preConfigure=''
+      preConfigure = preConfigure + ''
         # It's configure does not like --build or --host
         export configureFlags="${concatStringsSep " " (configureFlags ++ [ opensslCrossSystem ])}"
       '';
