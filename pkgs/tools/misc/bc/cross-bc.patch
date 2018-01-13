@@ -27,7 +27,7 @@ index d9d412e..fdef633 100644
 -libmath.h: libmath.b $(fbcOBJ) $(LIBBC)
 +fbcOBJ = $(addsuffix _host,main.o bc.o scan.o execute.o load.o storage.o util.o warranty.o)
 +
-+%.o_host : CC=$(CC_FOR_BUILD)
++%.o_host : CC:=$(CC_FOR_BUILD)
 +
 +%.o_host : %.c
 +	$(COMPILE) -c $(CFLAGS) $(INCLUDES) -o $@ $<
@@ -36,7 +36,7 @@ index d9d412e..fdef633 100644
  	echo '{0}' > libmath.h
 -	$(MAKE) global.o
 -	$(LINK) -o fbc $(fbcOBJ) global.o $(LIBBC) $(LIBL) $(READLINELIB) $(LIBS)
-+	$(MAKE) global.o CC=$(CC_FOR_BUILD)
++	$(MAKE) global.o CC:=$(CC_FOR_BUILD)
 +	$(CC_FOR_BUILD) -o fbc $(fbcOBJ) global.o $(LIBBC_HOST) $(LIBL) ${READLINELIB} -L$(HOST_READLINE) -L$(HOST_NCURSES) $(LIBS)
  	./fbc -c $(srcdir)/libmath.b </dev/null >libmath.h
  	$(srcdir)/fix-libmath_h
@@ -77,7 +77,7 @@ index ec4bf59..c670f5b 100644
  specialnumber: newnumber.o
  	cp newnumber.o number.o
 +
-+%.o_host : CC=$(CC_FOR_BUILD)
++%.o_host : CC:=$(CC_FOR_BUILD)
 +%.o_host : %.c
 +	$(COMPILE) -c $(CFLAGS) $(INCLUDES) -o $@ $<
 +
