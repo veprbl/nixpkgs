@@ -78,6 +78,7 @@ in stdenv.mkDerivation (rec {
     patch -p0 < ${../aarch64.patch}
   '' + stdenv.lib.optionalString stdenv.isMusl ''
     patch -p1 -i ${../TLI-musl.patch}
+    rm unittests/Support/DynamicLibrary/DynamicLibraryTest.cpp
   '';
 
   # hacky fix: created binaries need to be run before installation
