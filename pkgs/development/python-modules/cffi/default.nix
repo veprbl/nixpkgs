@@ -2,12 +2,12 @@
 
 if isPyPy then null else buildPythonPackage rec {
   pname = "cffi";
-  version = "1.11.2";
+  version = "1.11.4";
   name = "${pname}-${version}";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "ab87dd91c0c4073758d07334c1e5f712ce8fe48f007b86f8238773963ee700a6";
+    sha256 = "07fiy4wqg8g08x38r04ydjr8n6g0g74gb8si8b6jhymijalq746z";
   };
 
   patches = stdenv.lib.optional (isPy27 && stdenv.cc.isClang) ./clang.patch;
