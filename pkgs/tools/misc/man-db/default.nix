@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgconfig, libpipeline, db, groff, makeWrapper, buildPackages }:
+{ stdenv, fetchurl, pkgconfig, libpipeline, db, groff, libiconv, makeWrapper, buildPackages }:
 
 stdenv.mkDerivation rec {
   name = "man-db-2.7.5";
@@ -11,8 +11,10 @@ stdenv.mkDerivation rec {
   outputs = [ "out" "doc" ];
   outputMan = "out"; # users will want `man man` to work
 
-  nativeBuildInputs = [ pkgconfig makeWrapper groff ];
+  nativeBuildInputs = [ pkgconfig makeWrapper groff ]
+    ++ stdenv.lib.optionals doCheck checkInputs;
   buildInputs = [ libpipeline db groff ]; # (Yes, 'groff' is both native and build input)
+  checkInputs = [ libiconv /* for 'iconv' binary */ ];
 
   postPatch = ''
     substituteInPlace src/man_db.conf.in \
