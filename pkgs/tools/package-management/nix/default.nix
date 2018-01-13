@@ -34,7 +34,7 @@ let
 
     nativeBuildInputs =
       [ pkgconfig ]
-      ++ lib.optionals (!is112) [ perl ]
+      ++ lib.optionals (!is112) [ curl perl ]
       ++ lib.optionals fromGit [ autoreconfHook autoconf-archive bison flex libxml2 libxslt docbook5 docbook5_xsl ];
 
     buildInputs = [ curl openssl sqlite xz ]
