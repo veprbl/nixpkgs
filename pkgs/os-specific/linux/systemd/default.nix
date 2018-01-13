@@ -92,7 +92,38 @@ in stdenv.mkDerivation rec {
     "-Dsulogin-path=${utillinux}/bin/sulogin"
     "-Dmount-path=${utillinux}/bin/mount"
     "-Dumount-path=${utillinux}/bin/umount"
+  ] ++ stdenv.lib.optionals stdenv.hostPlatform.isMusl [
+    "-Dnss-systemd=false"
+    "-Dlocaled=false"
+    "-Dresolve=false"
+    "-Dutmp=false"
+    "-Dmyhostname=false"
   ];
+
+  patches = [
+    ./dont-hardcode-sigrt-relative.patch
+    (fetchpatch {
+      url = "https://github.com/systemd/systemd/pull/8648.patch";
+      sha256 = "0qc5wrrbib3fl19vjir7fkyk06wackzz6314aj3hdlmiplywqjwp";
+    })
+    # https://github.com/systemd/systemd/pull/8580
+    (fetchpatch {
+      url = https://github.com/systemd/systemd/pull/8580.patch;
+      sha256 = "1yp07hlpgqq0h2y0qc3kasswzkycz6p8d56d695ck1qa2f5bdfgn";
+    })
+  ] ++ stdenv.lib.optionals hostPlatform.isMusl (
+    let systemd_rev = "c58ab03f64890e7db88745a843bd4520e307099b"; # v238-stable
+  in [
+    (fetchpatch {
+      url = "https://github.com/dtzWill/systemd/compare/${systemd_rev}...238-musl-2.patch";
+      sha256 = "13v7yzyifilb41jjjmwh3vlfaw6la5ilhrxbmipif3p69pbm355f";
+    })
+  ]);
+
+  postPatch = ''
+    substituteInPlace ./src/basic/generate-af-list.sh \
+      --replace 'PF_' '[AP]F_'
+  '';
 
   preConfigure = ''
     mesonFlagsArray+=(-Dntp-servers="0.nixos.pool.ntp.org 1.nixos.pool.ntp.org 2.nixos.pool.ntp.org 3.nixos.pool.ntp.org")
@@ -144,14 +175,6 @@ in stdenv.mkDerivation rec {
       --replace "SYSTEMD_BINARY_PATH" "_SYSTEMD_BINARY_PATH" \
       --replace "SYSTEMD_CGROUP_AGENT_PATH" "_SYSTEMD_CGROUP_AGENT_PATH"
   '';
-
-  patches = [
-    # https://github.com/systemd/systemd/pull/8580
-    (fetchpatch {
-      url = https://github.com/systemd/systemd/pull/8580.patch;
-      sha256 = "1yp07hlpgqq0h2y0qc3kasswzkycz6p8d56d695ck1qa2f5bdfgn";
-    })
-  ];
 
   hardeningDisable = [ "stackprotector" ];
 
