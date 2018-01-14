@@ -89,7 +89,7 @@ stdenv.mkDerivation rec {
     wrapProgram $out/bin/rt2rtng --prefix PYTHONPATH : $PYTHONPATH
   '';
 
-  updateScript = latestGitHubRelease "radiotray-ng" srcinfo;
+  passthru.updateScript = latestGitHubRelease "radiotray-ng" srcinfo;
 
   meta = with stdenv.lib; {
     description = "An internet radio player for linux";
