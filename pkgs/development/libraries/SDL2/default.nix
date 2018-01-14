@@ -42,9 +42,10 @@ stdenv.mkDerivation rec {
   # Since `libpulse*.la' contain `-lgdbm', PulseAudio must be propagated.
   propagatedBuildInputs = lib.optionals x11Support [ libICE libXi libXScrnSaver libXcursor libXinerama libXext libXrandr libXxf86vm ] ++
     lib.optionals waylandSupport [ wayland wayland-protocols libxkbcommon ] ++
-    lib.optional pulseaudioSupport libpulseaudio;
+    lib.optional pulseaudioSupport libpulseaudio
+    ++ [ libiconv ];
 
-  buildInputs = [ audiofile libiconv ] ++
+  buildInputs = [ audiofile ] ++
     lib.optional openglSupport mesa_noglu ++
     lib.optional alsaSupport alsaLib ++
     lib.optional dbusSupport dbus ++
