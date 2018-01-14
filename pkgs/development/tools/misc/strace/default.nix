@@ -13,12 +13,6 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ libunwind ]; # support -k
 
-  # Kludge to fix conflict with kernel headers, libc-compat.h only checks for GLIBC
-  # http://www.openwall.com/lists/musl/2015/10/08/2
-  postPatch = stdenv.lib.optionalString stdenv.isMusl ''
-    sed -i -e 's@# include <netinet/in.h>@\0\n#define __GLIBC__ 1\n@' rtnl_mdb.c
-  '';
-
   meta = with stdenv.lib; {
     homepage = http://strace.sourceforge.net/;
     description = "A system call tracer for Linux";
