@@ -236,6 +236,12 @@ with pkgs;
       ) // passthruAttrs // { inherit name; };
   in fetcher fetcherArgs // { meta.homepage = baseUrl; inherit rev; };
 
+  fetchFromGitHubWithUpdater = import ../applications/audio/radiotray-ng/update.nix {
+    inherit (stdenv) lib;
+    inherit common-updater-scripts writeScript;
+    inherit fetchFromGitHub;
+  };
+
   fetchFromBitbucket = {
     owner, repo, rev, name ? "source",
     ... # For hash agility
@@ -16727,10 +16733,6 @@ with pkgs;
 
   renoise = callPackage ../applications/audio/renoise {};
 
-  latestGitHubRelease = import ../applications/audio/radiotray-ng/update.nix {
-    inherit common-updater-scripts writeScript;
-    inherit (stdenv) lib;
-  };
   radiotray-ng = callPackage ../applications/audio/radiotray-ng {
     wxGTK = wxGTK30;
   };

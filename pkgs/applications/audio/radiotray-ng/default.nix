@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, latestGitHubRelease
+{ stdenv, fetchFromGitHubWithUpdater
 , cmake, pkgconfig
 # Transport
 , curl
@@ -38,19 +38,16 @@ let
   # For the rt2rtng utility for converting bookmark file to -ng format
   pythonInputs = with python2.pkgs; [ python2 lxml ];
 
-  srcinfo = {
+in
+stdenv.mkDerivation rec {
+  name = "radiotray-ng-${version}";
+  version = "0.2.0";
+  src = fetchFromGitHubWithUpdater {
     owner = "ebruck";
     repo = "radiotray-ng";
     rev = "v${version}";
     sha256 = "12mhi0q137cjdpmpczvrcr7szq1ja1r8bm0gh03b925y8xyrqp5z";
   };
-  version = "0.2.0";
-in
-stdenv.mkDerivation rec {
-  name = "radiotray-ng-${version}";
-  inherit version;
-
-  src = fetchFromGitHub srcinfo;
 
   nativeBuildInputs = [ cmake pkgconfig wrapGAppsHook makeWrapper ];
 
@@ -89,7 +86,7 @@ stdenv.mkDerivation rec {
     wrapProgram $out/bin/rt2rtng --prefix PYTHONPATH : $PYTHONPATH
   '';
 
-  passthru.updateScript = latestGitHubRelease "radiotray-ng" srcinfo;
+  passthru.updateScript = src.updateScript;
 
   meta = with stdenv.lib; {
     description = "An internet radio player for linux";
