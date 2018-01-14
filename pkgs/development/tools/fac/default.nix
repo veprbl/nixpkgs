@@ -1,12 +1,12 @@
 { stdenv, buildGoPackage, fetchFromGitHub, makeWrapper, git, latestGitHubRelease }:
 
 let
-  version = "1.0.1";
+  version = "1.0.4";
   srcinfo = {
     owner = "mkchoi212";
     repo = "fac";
     rev = "v${version}";
-    sha256 = "1j5kip3l3p9qlly03pih905sdz3ncvpj7135jpnfhckbk1s5x9dc";
+    sha256 = "0jhx80jbkxfxj95hmdpb9wwwya064xpfkaa218l1lwm3qwfbpk95";
   };
 
 in buildGoPackage rec {
