@@ -1,23 +1,20 @@
-{ stdenv, fetchFromGitHub, cmake, boost, qt4 ? null, qtbase ? null, latestGitHubRelease }:
+{ stdenv, fetchFromGitHubWithUpdater, cmake, boost, qt4 ? null, qtbase ? null }:
 
 # Only one qt
 assert qt4 != null -> qtbase == null;
 assert qtbase != null -> qt4 == null;
 
-let
+
+stdenv.mkDerivation rec {
+  name = "snowman-${version}";
   version = "0.1.2";
-  srcinfo = {
+
+  src = fetchFromGitHubWithUpdater {
     owner = "yegord";
     repo = "snowman";
     rev = "v${version}";
     sha256 = "1ry14n8jydg6rzl52gyn0qhmv6bvivk7iwssp89lq5qk8k183x3k";
   };
-
-in stdenv.mkDerivation rec {
-  name = "snowman-${version}";
-  inherit version;
-
-  src = fetchFromGitHub srcinfo;
   nativeBuildInputs = [ cmake ];
 
   buildInputs = [ boost qt4 qtbase ];
@@ -28,7 +25,7 @@ in stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  # passthru.updateScript = latestGitHubRelease "snowman" srcinfo;
+  # passthru.updateScript = src.updateScript;
 
   meta = with stdenv.lib; {
     description = "Native code to C/C++ decompiler";

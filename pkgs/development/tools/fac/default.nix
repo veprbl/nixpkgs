@@ -1,21 +1,18 @@
-{ stdenv, buildGoPackage, fetchFromGitHub, makeWrapper, git, latestGitHubRelease }:
+{ stdenv, buildGoPackage, fetchFromGitHubWithUpdater, makeWrapper, git }:
 
-let
+
+buildGoPackage rec {
+  name = "fac-${version}";
   version = "1.0.4";
-  srcinfo = {
+
+  goPackagePath = "github.com/mkchoi212/fac";
+
+  src = fetchFromGitHubWithUpdater {
     owner = "mkchoi212";
     repo = "fac";
     rev = "v${version}";
     sha256 = "0jhx80jbkxfxj95hmdpb9wwwya064xpfkaa218l1lwm3qwfbpk95";
   };
-
-in buildGoPackage rec {
-  name = "fac-${version}";
-  inherit version;
-
-  goPackagePath = "github.com/mkchoi212/fac";
-
-  src = fetchFromGitHub srcinfo;
   nativeBuildInputs = [ makeWrapper ];
 
   postInstall = ''
@@ -23,7 +20,7 @@ in buildGoPackage rec {
       --prefix PATH : ${git}/bin
   '';
 
-  passthru.updateScript = latestGitHubRelease "fac" srcinfo;
+  passthru.updateScript = src.updateScript;
 
   meta = with stdenv.lib; {
     description = "CUI for fixing git conflicts";
