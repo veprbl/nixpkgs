@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, cmake, makeWrapper
+{ stdenv, fetchFromGitHubWithUpdater, cmake, makeWrapper
 , llvm, clang-unwrapped
 , flex
 , zlib
@@ -12,9 +12,11 @@ stdenv.mkDerivation rec {
   name = "creduce-${version}";
   version = "2.7.0";
 
-  src = fetchurl {
-    url = "http://embed.cs.utah.edu/creduce/${name}.tar.gz";
-    sha256 = "0h8s4d54q6cl6i45x3143l2xmr29b2yhr3m0n5qqx63sr5csip1n";
+  src = fetchFromGitHubWithUpdater {
+    owner = "csmith-project";
+    repo = "creduce";
+    rev = "creduce-${version}";
+    sha256 = "1aiinq3s887is8zgs1702w48fn6cy246i2xcn6h6spfa59ggfda0";
   };
 
   buildInputs = [
@@ -41,6 +43,8 @@ stdenv.mkDerivation rec {
   postInstall = ''
     wrapProgram $out/bin/creduce --prefix PERL5LIB : "$PERL5LIB"
   '';
+
+  passthru.updateScript = src.updateScript;
 
   meta = with stdenv.lib; {
     description = "A C program reducer";
