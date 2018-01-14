@@ -237,7 +237,6 @@ with pkgs;
   in fetcher fetcherArgs // { meta.homepage = baseUrl; inherit rev; };
 
   fetchFromGitHubWithUpdater = import ../applications/audio/radiotray-ng/update.nix {
-    inherit (stdenv) lib;
     inherit common-updater-scripts writeScript;
     inherit fetchFromGitHub;
   };
