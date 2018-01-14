@@ -5,12 +5,12 @@ assert qt4 != null -> qtbase == null;
 assert qtbase != null -> qt4 == null;
 
 let
-  version = "0.1.1";
+  version = "0.1.2";
   srcinfo = {
     owner = "yegord";
     repo = "snowman";
     rev = "v${version}";
-    sha256 = "0bzqp3zc101dzvybf57bj4dvnybvds0lmn1w2xjb19wkzm9liskn";
+    sha256 = "1ry14n8jydg6rzl52gyn0qhmv6bvivk7iwssp89lq5qk8k183x3k";
   };
 
 in stdenv.mkDerivation rec {
@@ -28,7 +28,7 @@ in stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  passthru.updateScript = latestGitHubRelease "snowman" srcinfo;
+  # passthru.updateScript = latestGitHubRelease "snowman" srcinfo;
 
   meta = with stdenv.lib; {
     description = "Native code to C/C++ decompiler";
