@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub
+{ stdenv, fetchFromGitHub, latestGitHubRelease
 , cmake, pkgconfig
 # Transport
 , curl
@@ -27,9 +27,6 @@
 # Fixup
 , wrapGAppsHook
 , makeWrapper
-# Update
-, writeScript
-, common-updater-scripts
 }:
 
 let
@@ -48,11 +45,6 @@ let
     sha256 = "12mhi0q137cjdpmpczvrcr7szq1ja1r8bm0gh03b925y8xyrqp5z";
   };
   version = "0.2.0";
-
-  latestGitHubRelease = import ./update.nix {
-    inherit common-updater-scripts writeScript;
-    inherit (stdenv) lib;
-  };
 in
 stdenv.mkDerivation rec {
   name = "radiotray-ng-${version}";

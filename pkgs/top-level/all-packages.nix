@@ -16727,6 +16727,10 @@ with pkgs;
 
   renoise = callPackage ../applications/audio/renoise {};
 
+  latestGitHubRelease = import ../applications/audio/radiotray-ng/update.nix {
+    inherit common-updater-scripts writeScript;
+    inherit (stdenv) lib;
+  };
   radiotray-ng = callPackage ../applications/audio/radiotray-ng {
     wxGTK = wxGTK30;
   };
