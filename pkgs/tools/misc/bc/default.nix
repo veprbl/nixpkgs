@@ -12,14 +12,15 @@ stdenv.mkDerivation rec {
   # As of 1.07 cross-compilation is quite complicated as the build system wants
   # to build a code generator, bc/fbc, on the build machine.
   patches = [ ./cross-bc.patch ];
-  nativeBuildInputs = [autoreconfHook flex ed.out texinfo] ++
-    stdenv.lib.optionals (stdenv.hostPlatform != stdenv.buildPlatform)
-    [buildPackages.stdenv.cc buildPackages.readline.out buildPackages.ncurses.out];
+  depsBuildBuild = [ buildPackages.stdenv.cc ];
+  nativeBuildInputs = [autoreconfHook flex ed.out texinfo]
+    ++ # needed for cross, see makeFlags below
+    [buildPackages.readline.out buildPackages.ncurses.out];
   buildInputs = [readline];
 
   makeFlags = ''HOST_READLINE=${buildPackages.readline.out.outPath}/lib HOST_NCURSES=${buildPackages.ncurses.out.outPath}/lib'';
 
-  doCheck = stdenv.hostPlatform == stdenv.buildPlatform;
+  doCheck = true;
 
   meta = {
     description = "GNU software calculator";
