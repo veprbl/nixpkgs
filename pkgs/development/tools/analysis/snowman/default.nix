@@ -28,7 +28,7 @@ in stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  updateScript = latestGitHubRelease "snowman" srcinfo;
+  passthru.updateScript = latestGitHubRelease "snowman" srcinfo;
 
   meta = with stdenv.lib; {
     description = "Native code to C/C++ decompiler";
