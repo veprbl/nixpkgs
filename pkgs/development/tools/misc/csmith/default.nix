@@ -1,12 +1,14 @@
-{ stdenv, fetchurl, m4, makeWrapper, libbsd, perl, SysCPU }:
+{ stdenv, fetchFromGitHubWithUpdater, m4, makeWrapper, libbsd, perl, SysCPU }:
 
 stdenv.mkDerivation rec {
   name = "csmith-${version}";
   version = "2.3.0";
 
-  src = fetchurl {
-    url = "http://embed.cs.utah.edu/csmith/${name}.tar.gz";
-    sha256 = "1mb5zgixsyf86slggs756k8a5ddmj980md3ic9sa1y75xl5cqizj";
+  src = fetchFromGitHubWithUpdater {
+    owner = "csmith-project";
+    repo = "csmith";
+    rev = "csmith-${version}";
+    sha256 = "0dlwv3xip2jchllm7sc0x7hxvggcprjqh0irfc2rch912h1c6xgv";
   };
 
   nativeBuildInputs = [ m4 makeWrapper ];
@@ -30,6 +32,8 @@ stdenv.mkDerivation rec {
   '';
 
   enableParallelBuilding = true;
+
+  passthru.updateScript = src.updateScript;
 
   meta = with stdenv.lib; {
     description = "A random generator of C programs";
