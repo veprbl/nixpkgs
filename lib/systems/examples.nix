@@ -82,14 +82,7 @@ rec {
     openssl.system = "linux-generic32";
   };
 
-  musl64 = rec {
-    config = "x86_64-unknown-linux-musl";
-    platform = platforms.pc64;
-    libc = "musl";
-    arch = "x86_64";
-    openssl.system = "linux-generic64";
-    withTLS = true;
-  };
+  muslpi = raspberryPi // { libc = "musl"; };
 
   #
   # Darwin
