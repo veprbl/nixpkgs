@@ -1,4 +1,4 @@
-{ lib, stdenv, fetch, cmake, llvm, libcxxabi, fixDarwinDylibNames, version }:
+{ lib, stdenv, fetch, cmake, python, llvm, libcxxabi, fixDarwinDylibNames, version }:
 
 stdenv.mkDerivation rec {
   name = "libc++-${version}";
@@ -19,9 +19,10 @@ stdenv.mkDerivation rec {
   preConfigure = ''
     # Get headers from the cxxabi source so we can see private headers not installed by the cxxabi package
     cmakeFlagsArray=($cmakeFlagsArray -DLIBCXX_CXX_ABI_INCLUDE_PATHS="$LIBCXXABI_INCLUDE_DIR")
+  '' + lib.optionalString stdenv.isMusl ''
+    patchShebangs utils/cat_files.py
   '';
-
-  nativeBuildInputs = [ cmake ];
+  nativeBuildInputs = [ cmake ] ++ stdenv.lib.optional stdenv.isMusl python;
 
   buildInputs = [ libcxxabi ] ++ lib.optional stdenv.isDarwin fixDarwinDylibNames;
 
