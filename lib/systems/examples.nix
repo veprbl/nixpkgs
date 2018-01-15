@@ -87,6 +87,16 @@ rec {
     libc = "musl";
   };
 
+  aarch64-multiplatform-musl = rec {
+    config = "aarch64-unknown-linux-musl";
+    libc = "musl";
+  };
+
+  musl = raspberryPi // {
+    config = "armv6l-unknown-linux-musleabihf";
+    libc = "musl";
+  };
+
   musl64 = rec {
     config = "x86_64-unknown-linux-musl";
     platform = platforms.pc64;
