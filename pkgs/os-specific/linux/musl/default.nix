@@ -3,7 +3,7 @@
 , hostPlatform
 , buildPackages
 , linuxHeaders ? null
-, useBSDCompatHeaders ? false
+, useBSDCompatHeaders ? true
 }:
 let
   cdefs_h = fetchurl {
