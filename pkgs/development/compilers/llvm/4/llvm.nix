@@ -2,7 +2,6 @@
 , buildPackages
 , fetch
 , fetchpatch
-, perl
 , cmake
 , python
 , libffi
@@ -52,7 +51,7 @@ in stdenv.mkDerivation (rec {
   outputs = [ "out" ]
     ++ stdenv.lib.optional enableSharedLibraries "lib";
 
-  nativeBuildInputs = [ perl cmake python ]
+  nativeBuildInputs = [ cmake python ]
     ++ stdenv.lib.optional enableManpages python.pkgs.sphinx
        # for build tablegen
     ++ stdenv.lib.optional crossCompiling buildPackages.llvm;
