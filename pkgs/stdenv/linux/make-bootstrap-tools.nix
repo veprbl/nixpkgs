@@ -23,7 +23,7 @@ in with pkgs; rec {
   busyboxMinimal = busybox.override {
     useMusl = true;
     enableStatic = true;
-    enableMinimal = true;
+    #enableMinimal = true;
     extraConfig = ''
       CONFIG_ASH y
       CONFIG_ASH_ECHO y
