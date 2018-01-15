@@ -1,4 +1,4 @@
-{ fetchurl, fetchgit, stdenv, lib, flex, bison, db, iptables, pkgconfig }:
+{ fetchurl, fetchgit, stdenv, lib, flex, bash, bison, db, iptables, pkgconfig }:
 
 stdenv.mkDerivation rec {
   name = "iproute2-${version}";
@@ -13,6 +13,8 @@ stdenv.mkDerivation rec {
   preConfigure = ''
     patchShebangs ./configure
     sed -e '/ARPDDIR/d' -i Makefile
+    # Don't build netem tools--they're not installed and require HOSTCC
+    substituteInPlace Makefile --replace " netem " " "
   '';
 
   makeFlags = [
@@ -33,10 +35,14 @@ stdenv.mkDerivation rec {
     "CONFDIR=$(out)/etc/iproute2"
   ];
 
-  buildInputs = [ db iptables ];
+  buildInputs = [ bash db iptables ];
   nativeBuildInputs = [ bison flex pkgconfig ];
 
   enableParallelBuilding = true;
+
+  postInstall = ''
+    PATH=${bash}/bin:$PATH patchShebangs $out/sbin
+  '';
 
   meta = with stdenv.lib; {
     homepage = https://wiki.linuxfoundation.org/networking/iproute2;
