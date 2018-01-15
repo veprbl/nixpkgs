@@ -1,4 +1,4 @@
-{ lib, stdenv, fetch, cmake, llvm, libcxxabi, fixDarwinDylibNames, version }:
+{ lib, stdenv, fetch, cmake, python, llvm, libcxxabi, fixDarwinDylibNames, version }:
 
 stdenv.mkDerivation rec {
   name = "libc++-${version}";
@@ -29,8 +29,9 @@ stdenv.mkDerivation rec {
     cmakeFlagsArray=($cmakeFlagsArray -DLIBCXX_CXX_ABI_INCLUDE_PATHS="$LIBCXXABI_INCLUDE_DIR")
   '' + lib.optionalString stdenv.isMusl ''
     export NIX_CXXSTDLIB_COMPILE+=" -D_LIBCPP_HAS_MUSL_LIBC=1"
+    patchShebangs utils/cat_files.py
   '';
-  nativeBuildInputs = [ cmake ];
+  nativeBuildInputs = [ cmake ] ++ stdenv.lib.optional stdenv.isMusl python;
 
   buildInputs = [ libcxxabi ] ++ lib.optional stdenv.isDarwin fixDarwinDylibNames;
 
