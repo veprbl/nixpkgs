@@ -1,7 +1,9 @@
-{ stdenv }:
+{ stdenv, file }:
 
 stdenv.mkDerivation {
   name = "cc-wrapper-test";
+
+  nativeBuildInputs = [ file ];
 
   buildCommand = ''
     NIX_DEBUG=1 $CC -v
@@ -10,10 +12,12 @@ stdenv.mkDerivation {
     printf "checking whether compiler builds valid C binaries... " >&2
     $CC -o cc-check ${./cc-main.c}
     ./cc-check
+    file ./cc-check
 
     printf "checking whether compiler builds valid C++ binaries... " >&2
     $CXX -o cxx-check ${./cxx-main.cc}
     ./cxx-check
+    file ./cxx-check
 
     ${stdenv.lib.optionalString (stdenv.isDarwin && stdenv.cc.isClang) ''
       printf "checking whether compiler can build with CoreFoundation.framework... " >&2
