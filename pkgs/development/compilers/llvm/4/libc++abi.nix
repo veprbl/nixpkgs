@@ -14,6 +14,8 @@ stdenv.mkDerivation {
     export cmakeFlags="-DLLVM_PATH=$PWD/$(ls -d llvm-*) -DLIBCXXABI_LIBCXX_PATH=$PWD/$(ls -d libcxx-*)"
   '' + stdenv.lib.optionalString stdenv.isDarwin ''
     export TRIPLE=x86_64-apple-darwin
+  '' + stdenv.lib.optionalString stdenv.isMusl ''
+    export NIX_CFLAGS_COMPILE+=" -D_LIBCPP_HAS_MUSL_LIBC=1"
   '';
 
   installPhase = if stdenv.isDarwin
