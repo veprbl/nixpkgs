@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
     ./pthread_mach_thread_np.patch
     # glibc 2.26 fix
     ./xlocale-glibc-2.26.patch
-  ];
+  ] ++ stdenv.lib.optional stdenv.isMusl ./libcxx-0001-musl-hacks.patch;
 
   prePatch = ''
     substituteInPlace lib/CMakeLists.txt --replace "/usr/lib/libc++" "\''${LIBCXX_LIBCXXABI_LIB_PATH}/libc++"
@@ -24,8 +24,9 @@ stdenv.mkDerivation rec {
   preConfigure = ''
     # Get headers from the cxxabi source so we can see private headers not installed by the cxxabi package
     cmakeFlagsArray=($cmakeFlagsArray -DLIBCXX_CXX_ABI_INCLUDE_PATHS="$LIBCXXABI_INCLUDE_DIR")
+  '' + lib.optionalString stdenv.isMusl ''
+    export NIX_CXXSTDLIB_COMPILE+=" -D_LIBCPP_HAS_MUSL_LIBC=1"
   '';
-
   nativeBuildInputs = [ cmake ];
 
   buildInputs = [ libcxxabi ] ++ lib.optional stdenv.isDarwin fixDarwinDylibNames;
