@@ -34,8 +34,8 @@ stdenv.mkDerivation rec {
       --replace "@PNMTOPS_NOSETPAGE@" "${netpbm}/bin/pnmtops -nosetpage"
   '';
 
-  buildInputs = [ ghostscript psutils netpbm perl ];
-  nativeBuildInputs = [ autoreconfHook ];
+  buildInputs = [ ghostscript psutils netpbm ];
+  nativeBuildInputs = [ autoreconfHook perl ];
 
   # Builds running without a chroot environment may detect the presence
   # of /usr/X11 in the host system, leading to an impure build of the
@@ -47,7 +47,7 @@ stdenv.mkDerivation rec {
   ] ++ stdenv.lib.optionals (ghostscript != null) [
     "--with-gs=${ghostscript}/bin/gs"
   ] ++ stdenv.lib.optionals (stdenv.buildPlatform != stdenv.hostPlatform) [
-    "ac_cv_path_PERL=${perl}/bin/perl"
+    "ac_cv_path_PERL=${buildPackages.perl}/bin/perl"
   ];
 
   doCheck = true;
@@ -103,6 +103,7 @@ stdenv.mkDerivation rec {
     substituteInPlace $perl/bin/grog \
       --replace $out/lib/groff/grog $perl/lib/groff/grog
 
+    PATH=${perl}/bin:$PATH patchShebangs $perl
   '';
 
   meta = with stdenv.lib; {
