@@ -38,7 +38,7 @@ stdenv.mkDerivation rec {
     "-DLIBCXX_LIBCXXABI_LIB_PATH=${libcxxabi}/lib"
     "-DLIBCXX_LIBCPPABI_VERSION=2"
     "-DLIBCXX_CXX_ABI=libcxxabi"
-  ];
+  ] ++ stdenv.lib.optional stdenv.isMusl "-DLIBCXX_HAS_MUSL_LIBC=1";
 
   enableParallelBuilding = true;
 
