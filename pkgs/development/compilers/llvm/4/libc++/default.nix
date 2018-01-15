@@ -15,7 +15,10 @@ stdenv.mkDerivation rec {
     ./pthread_mach_thread_np.patch
     # glibc 2.26 fix
     ./xlocale-glibc-2.26.patch
-  ] ++ stdenv.lib.optional stdenv.isMusl ./libcxx-0001-musl-hacks.patch;
+  ] ++ stdenv.lib.optionals stdenv.isMusl [
+    ./libcxx-0001-musl-hacks.patch
+    ./max_align_t.patch
+  ];
 
   prePatch = ''
     substituteInPlace lib/CMakeLists.txt --replace "/usr/lib/libc++" "\''${LIBCXX_LIBCXXABI_LIB_PATH}/libc++"
