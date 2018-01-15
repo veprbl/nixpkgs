@@ -9,7 +9,7 @@ stdenv.mkDerivation {
 
   unpackPhase = ":";
 
-  buildPhase = ''cc $src -o getent'';
+  buildPhase = ''$CC $src -o getent'';
   installPhase = ''
     mkdir -p $out/bin
     cp getent $out/bin/

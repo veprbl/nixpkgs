@@ -9,7 +9,7 @@ stdenv.mkDerivation {
 
   unpackPhase = ":";
 
-  buildPhase = ''cc $src -o getconf'';
+  buildPhase = ''$CC $src -o getconf'';
   installPhase = ''
     mkdir -p $out/bin
     cp getconf $out/bin/
