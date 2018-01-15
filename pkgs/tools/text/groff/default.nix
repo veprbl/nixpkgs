@@ -43,7 +43,7 @@ stdenv.mkDerivation rec {
   '';
 
   buildInputs = [ ghostscript psutils netpbm perl ];
-  nativeBuildInputs = [ autoreconfHook perl ];
+  nativeBuildInputs = [ autoreconfHook ];
 
   # Builds running without a chroot environment may detect the presence
   # of /usr/X11 in the host system, leading to an impure build of the
@@ -55,7 +55,6 @@ stdenv.mkDerivation rec {
   ] ++ stdenv.lib.optionals (ghostscript != null) [
     "--with-gs=${ghostscript}/bin/gs"
   ] ++ stdenv.lib.optionals (stdenv.buildPlatform != stdenv.hostPlatform) [
-    "--with-doc=no"
     "ac_cv_path_PERL=${perl}/bin/perl"
   ];
 
