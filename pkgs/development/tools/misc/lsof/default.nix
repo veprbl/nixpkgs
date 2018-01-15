@@ -35,7 +35,7 @@ stdenv.mkDerivation rec {
 
   # Stop build scripts from searching global include paths
   LSOF_INCLUDE = "${stdenv.cc.libc}/include";
-  configurePhase = "./Configure -n ${dialect}";
+  configurePhase = "LSOF_CC=$CC LSOF_AR=\"$AR cr\" LSOF_RANLIB=$RANLIB ./Configure -n ${dialect}";
   preBuild = ''
     sed -i Makefile -e 's/^CFGF=/&	-DHASIPv6=1/;' -e 's/-lcurses/-lncurses/'
     for filepath in $(find dialects/${dialect} -type f); do
