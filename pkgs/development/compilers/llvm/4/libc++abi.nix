@@ -17,6 +17,7 @@ stdenv.mkDerivation {
   '' + stdenv.lib.optionalString stdenv.isMusl ''
     export NIX_CFLAGS_COMPILE+=" -D_LIBCPP_HAS_MUSL_LIBC=1"
     patch -p1 -d $(ls -d libcxx-*) -i ${./libc++/libcxx-0001-musl-hacks.patch}
+    patch -p1 -d $(ls -d libcxx-*) -i ${./libc++/max_align_t.patch}
   '';
 
   installPhase = if stdenv.isDarwin
