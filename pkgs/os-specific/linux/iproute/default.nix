@@ -1,12 +1,13 @@
-{ fetchurl, stdenv, lib, flex, bison, db, iptables, pkgconfig }:
+{ fetchurl, fetchgit, stdenv, lib, flex, bison, db, iptables, pkgconfig }:
 
 stdenv.mkDerivation rec {
   name = "iproute2-${version}";
-  version = "4.14.1";
+  version = "4.14.99";
 
-  src = fetchurl {
-    url = "mirror://kernel/linux/utils/net/iproute2/${name}.tar.xz";
-    sha256 = "0rq0n7yxb0hmk0s6wx5awzjgf7ikjbibd0a5ix20ldfcmxlc0fnl";
+  src = fetchgit {
+    url = "git://git.kernel.org/pub/scm/linux/kernel/git/shemminger/iproute2.git";
+    rev = "9bed02a5d576f2d3cb3c8b250d8938f4978343f3";
+    sha256 = "113f9ypwaibk0xwm1sgq9yhr9dp1z2c59zfsafxxhwl58b5zi8jg";
   };
 
   preConfigure = ''
