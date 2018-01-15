@@ -11,7 +11,6 @@ stdenv.mkDerivation rec {
   '';
   patches = stdenv.lib.optionals stdenv.isMusl [
     ./libcxx-0001-musl-hacks.patch
-    ./max_align_t.patch
   ];
   prePatch = ''
     substituteInPlace lib/CMakeLists.txt --replace "/usr/lib/libc++" "\''${LIBCXX_LIBCXXABI_LIB_PATH}/libc++"
