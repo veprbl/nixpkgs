@@ -9,7 +9,7 @@ stdenv.mkDerivation rec {
     unpackFile ${libcxxabi.src}
     export LIBCXXABI_INCLUDE_DIR="$PWD/$(ls -d libcxxabi-${version}*)/include"
   '';
-  patches stdenv.lib.optionals stdenv.isMusl [
+  patches = stdenv.lib.optionals stdenv.isMusl [
     ./libcxx-0001-musl-hacks.patch
     ./max_align_t.patch
   ];
