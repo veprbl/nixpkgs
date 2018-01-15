@@ -28,7 +28,6 @@ stdenv.mkDerivation rec {
     # Get headers from the cxxabi source so we can see private headers not installed by the cxxabi package
     cmakeFlagsArray=($cmakeFlagsArray -DLIBCXX_CXX_ABI_INCLUDE_PATHS="$LIBCXXABI_INCLUDE_DIR")
   '' + lib.optionalString stdenv.isMusl ''
-    export NIX_CXXSTDLIB_COMPILE+=" -D_LIBCPP_HAS_MUSL_LIBC=1"
     patchShebangs utils/cat_files.py
   '';
   nativeBuildInputs = [ cmake ] ++ stdenv.lib.optional stdenv.isMusl python;
