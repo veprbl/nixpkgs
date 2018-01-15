@@ -32,6 +32,14 @@ stdenv.mkDerivation rec {
       --replace "pnmcrop" "${netpbm}/bin/pnmcrop" \
       --replace "pngtopnm" "${netpbm}/bin/pngtopnm" \
       --replace "@PNMTOPS_NOSETPAGE@" "${netpbm}/bin/pnmtops -nosetpage"
+  '' + stdenv.lib.optionalString (stdenv.buildPlatform != stdenv.hostPlatform) ''
+    # perl version is checked by trying to run '$PERL --version',
+    # but since that's hard to patch around instead change
+    # version check to warn instead of give error if it's wrong
+    # We're definitely not using a perl too old for groff :)
+    substituteInPlace m4/groff.m4 --replace \
+      "AC_MSG_ERROR([perl version is too old]" \
+      "AC_MSG_WARN([perl version is maybe too old who can say]"
   '';
 
   buildInputs = [ ghostscript psutils netpbm perl ];
