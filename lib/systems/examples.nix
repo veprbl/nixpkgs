@@ -82,7 +82,10 @@ rec {
     openssl.system = "linux-generic32";
   };
 
-  muslpi = raspberryPi // { libc = "musl"; };
+  muslpi = raspberryPi // {
+    config = "armv6l-unknown-linux-musleabihf";
+    libc = "musl";
+  };
 
   musl64 = rec {
     config = "x86_64-unknown-linux-musl";
