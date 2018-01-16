@@ -74,6 +74,9 @@ let
     libcxxabi = callPackage ./libc++abi.nix {};
 
     openmp = callPackage ./openmp.nix {};
+
+    llvm-tblgen = callPackage ./tblgen.nix { };
+
   };
 
 in self

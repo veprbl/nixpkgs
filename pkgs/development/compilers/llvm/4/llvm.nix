@@ -4,6 +4,7 @@
 , fetchpatch
 , cmake
 , python
+, llvm-tblgen
 , libffi
 , libbfd
 , libxml2
@@ -51,8 +52,7 @@ in stdenv.mkDerivation (rec {
 
   nativeBuildInputs = [ cmake python ]
     ++ stdenv.lib.optional enableManpages python.pkgs.sphinx
-       # for build tablegen
-    ++ stdenv.lib.optional crossCompiling buildPackages.llvm_4;
+    ++ stdenv.lib.optional crossCompiling llvm-tblgen;
 
   buildInputs = [ libxml2 libffi ]
     ++ stdenv.lib.optionals stdenv.isDarwin [ libcxxabi ];
@@ -133,8 +133,8 @@ in stdenv.mkDerivation (rec {
   ]
   ++ stdenv.lib.optionals crossCompiling [
     "-DCMAKE_CROSSCOMPILING=True"
-    "-DLLVM_TABLEGEN=${buildPackages.llvm_4}/bin/llvm-tblgen"
-    "-DCLANG_TABLEGEN=${buildPackages.llvm_4}/bin/llvm-tblgen"
+    "-DLLVM_TABLEGEN=${llvm-tblgen}/bin/llvm-tblgen"
+    "-DCLANG_TABLEGEN=${llvm-tblgen}/bin/llvm-tblgen"
     "-DLLVM_TARGET_ARCH=${llvmArch}"
     #"-DLLVM_TARGETS_TO_BUILD=${llvmArch}"
   ]
