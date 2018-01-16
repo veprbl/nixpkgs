@@ -87,7 +87,7 @@ rec {
     libc = "musl";
   };
 
-  aarch64-multiplatform-musl = rec {
+  aarch64-multiplatform-musl = aarch64-multiplatform // rec {
     config = "aarch64-unknown-linux-musl";
     libc = "musl";
   };
