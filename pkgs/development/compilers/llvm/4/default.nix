@@ -75,7 +75,7 @@ let
 
     openmp = callPackage ./openmp.nix {};
 
-    llvm-tblgen = callPackage ./tblgen.nix { };
+    llvm-tblgen = callPackage ../tblgen.nix { };
 
   };
 

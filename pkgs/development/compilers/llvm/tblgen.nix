@@ -31,7 +31,7 @@ stdenv.mkDerivation {
     description = "Tablegen utility from LLVM";
     homepage    = http://llvm.org/;
     license     = stdenv.lib.licenses.ncsa;
-    maintainers = with stdenv.lib.maintainers; [ lovek323 raskin viric dtzWill ];
+    maintainers = with stdenv.lib.maintainers; [ dtzWill ];
     platforms   = stdenv.lib.platforms.all;
   };
 }

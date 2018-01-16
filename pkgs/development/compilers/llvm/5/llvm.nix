@@ -4,6 +4,7 @@
 , fetchpatch
 , cmake
 , python
+, llvm-tblgen
 , libffi
 , libbfd
 , libxml2
@@ -28,6 +29,7 @@ let
     concatStringsSep "." (take 2 (splitString "." release_version));
 
   crossCompiling = stdenv.buildPlatform != stdenv.hostPlatform;
+  buildTblgen = buildPackages.llvmPackages_4.llvm-tblgen;
   llvmArch =
     let target = stdenv.targetPlatform;
     in     if target.isAarch64 then "AARCH64"
@@ -51,8 +53,7 @@ in stdenv.mkDerivation (rec {
 
   nativeBuildInputs = [ cmake python ]
     ++ stdenv.lib.optional enableManpages python.pkgs.sphinx
-       # for build tablegen
-    ++ stdenv.lib.optional crossCompiling buildPackages.llvm_5;
+    ++ stdenv.lib.optional crossCompiling buildTblgen;
 
   buildInputs = [ libxml2 libffi ]
     ++ stdenv.lib.optionals stdenv.isDarwin [ libcxxabi ];
@@ -129,8 +130,8 @@ in stdenv.mkDerivation (rec {
   ]
   ++ stdenv.lib.optionals crossCompiling [
     "-DCMAKE_CROSSCOMPILING=True"
-    "-DLLVM_TABLEGEN=${buildPackages.llvm_5}/bin/llvm-tblgen"
-    "-DCLANG_TABLEGEN=${buildPackages.llvm_5}/bin/llvm-tblgen"
+    "-DLLVM_TABLEGEN=${buildTblgen}/bin/llvm-tblgen"
+    "-DCLANG_TABLEGEN=${buildTblgen}/bin/llvm-tblgen"
     "-DLLVM_TARGET_ARCH=${llvmArch}"
     #"-DLLVM_TARGETS_TO_BUILD=${llvmArch}"
   ]
