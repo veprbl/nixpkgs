@@ -90,6 +90,7 @@ rec {
   aarch64-multiplatform-musl = aarch64-multiplatform // rec {
     config = "aarch64-unknown-linux-musl";
     libc = "musl";
+    openssl.system = "linux-generic64";
   };
 
   musl = raspberryPi // {
