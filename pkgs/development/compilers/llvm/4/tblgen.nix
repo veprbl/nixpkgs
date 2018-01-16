@@ -13,6 +13,13 @@ stdenv.mkDerivation {
 
   buildFlags = [ "llvm-tblgen" ];
 
+  cmakeFlags = [
+    "-DCOMPILER_RT_CAN_EXECUTE_TESTS=OFF"
+    "-DLLVM_BUILD_TESTS=OFF"
+    "-DLLVM_ENABLE_TERMINFO=OFF"
+    "-DLLVM_TARGETS_TO_BUILD=host"
+  ];
+
   installPhase = ''
     mkdir -p $out/bin
     cp bin/llvm-tblgen $out/bin/
