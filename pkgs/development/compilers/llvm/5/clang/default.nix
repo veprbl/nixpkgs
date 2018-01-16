@@ -8,7 +8,7 @@
 let
   gcc = if stdenv.cc.isGNU then stdenv.cc.cc else stdenv.cc.cc.gcc;
   crossCompiling = stdenv.buildPlatform != stdenv.hostPlatform;
-  buildTblgen = buildPackages.llvmPackages_5.llvm-tblgen;
+  buildTblgen = buildPackages.llvmPackages_5.clang-tblgen;
   self = stdenv.mkDerivation ({
     name = "clang-${version}";
 
@@ -41,7 +41,7 @@ let
     ++ stdenv.lib.optional (stdenv.cc.libc != null) "-DC_INCLUDE_DIRS=${stdenv.cc.libc}/include"
     ++ stdenv.lib.optionals crossCompiling [
       "-DLLVM_CONFIG=${llvm-config-dummy}/bin/llvm-config"
-      "-DCLANG_TABLEGEN=${buildTblgen}/bin/llvm-tblgen"
+      "-DCLANG_TABLEGEN=${buildTblgen}/bin/clang-tblgen"
     ];
 
 
