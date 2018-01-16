@@ -29,7 +29,7 @@ let
     concatStringsSep "." (take 2 (splitString "." release_version));
 
   crossCompiling = stdenv.buildPlatform != stdenv.hostPlatform;
-  buildTblgen = buildPackages.llvmPackages_4.llvm-tblgen;
+  buildTblgen = buildPackages.llvmPackages_5.llvm-tblgen;
   llvmArch =
     let target = stdenv.targetPlatform;
     in     if target.isAarch64 then "AARCH64"
