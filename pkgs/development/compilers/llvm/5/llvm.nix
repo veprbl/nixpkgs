@@ -131,6 +131,7 @@ in stdenv.mkDerivation (rec {
   ++ stdenv.lib.optionals crossCompiling [
     "-DCMAKE_CROSSCOMPILING=True"
     "-DLLVM_TABLEGEN=${buildTblgen}/bin/llvm-tblgen"
+    # XXX: Needs to be set in clang again, so should be removed
     "-DCLANG_TABLEGEN=${buildTblgen}/bin/llvm-tblgen"
     "-DLLVM_TARGET_ARCH=${llvmArch}"
     #"-DLLVM_TARGETS_TO_BUILD=${llvmArch}"

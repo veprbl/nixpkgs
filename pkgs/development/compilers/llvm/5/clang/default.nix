@@ -1,11 +1,14 @@
 { stdenv, fetch, cmake, libxml2, libedit, llvm, version, release_version, clang-tools-extra_src, python3
-, fixDarwinDylibNames, llvm-config-dummy
+, fixDarwinDylibNames
+, buildPackages
+, llvm-config-dummy
 , enableManpages ? false
 }:
 
 let
   gcc = if stdenv.cc.isGNU then stdenv.cc.cc else stdenv.cc.cc.gcc;
   crossCompiling = stdenv.buildPlatform != stdenv.hostPlatform;
+  buildTblgen = buildPackages.llvmPackages_5.llvm-tblgen;
   self = stdenv.mkDerivation ({
     name = "clang-${version}";
 
@@ -36,7 +39,11 @@ let
     # Maybe with compiler-rt this won't be needed?
     ++ stdenv.lib.optional stdenv.isLinux "-DGCC_INSTALL_PREFIX=${gcc}"
     ++ stdenv.lib.optional (stdenv.cc.libc != null) "-DC_INCLUDE_DIRS=${stdenv.cc.libc}/include"
-    ++ stdenv.lib.optional crossCompiling "-DLLVM_CONFIG=${llvm-config-dummy}/bin/llvm-config";
+    ++ stdenv.lib.optionals crossCompiling [
+      "-DLLVM_CONFIG=${llvm-config-dummy}/bin/llvm-config"
+      "-DCLANG_TABLEGEN=${buildTblgen}/bin/llvm-tblgen"
+    ];
+
 
     patches = [ ./purity.patch ];
 
