@@ -166,7 +166,7 @@ in stdenv.mkDerivation (rec {
     ln -s $lib/lib/libLLVM.dylib $lib/lib/libLLVM-${release_version}.dylib
   '';
 
-  doCheck = stdenv.isLinux && (!stdenv.isi686) && (!stdenv.isArm);
+  doCheck = stdenv.isLinux && stdenv.isx86_64;
 
   checkTarget = "check-all";
 
