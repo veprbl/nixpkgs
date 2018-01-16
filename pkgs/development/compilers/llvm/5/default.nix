@@ -20,7 +20,7 @@ let
   # Add man output without introducing extra dependencies.
   buildManPages = stdenv.buildPlatform == stdenv.hostPlatform && !stdenv.isMusl;
   overrideManOutput = drv:
-    if buildManPages then drv else
+    if (!buildManPages) then drv else
     let drv-manpages = drv.override { enableManpages = true; }; in
     drv // { man = drv-manpages.out; /*outputs = drv.outputs ++ ["man"];*/ };
 
