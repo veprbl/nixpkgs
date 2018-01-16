@@ -53,5 +53,7 @@ let
     libcxx = callPackage ./libc++ {};
 
     libcxxabi = callPackage ./libc++abi.nix {};
+
+    llvm-tblgen = callPackage ../tblgen.nix {};
   };
 in self
