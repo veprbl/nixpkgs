@@ -4,6 +4,18 @@ let
 in
 [
   {
+    url = "${prefix}/stop_defining_mandir";
+    sha256 = "1mqbgf703xks0vhvbv1a35z1x9ff160jp0hqsc5kcj6fy8i1s3xn";
+  }
+  {
+    url = "${prefix}/define_path_max";
+    sha256 = "04k237xh12ib8kaxci5vp9mrzjz94pwwsz08dihs1k5ihg48x6c4";
+  }
+  {
+    url = "${prefix}/fix_xxy";
+    sha256 = "1gv8fmj9x5xfnwx9lwk38q7kind9l69fr9avgvvf3ihc8swywq39";
+  }
+  {
     url = "${prefix}/ncurses_internals";
     sha256 = "134l7wklyg6z3bgfkl2myp2v8adm8zr5an6h7xmfx21aa06gmxbn";
   }
