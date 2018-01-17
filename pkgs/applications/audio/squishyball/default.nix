@@ -1,4 +1,4 @@
-{ stdenv, autoreconfHook, fetchsvn, flac, libao, libvorbis, ncurses
+{ stdenv, autoreconfHook, fetchsvn, fetchurl, flac, libao, libvorbis, ncurses
 , opusfile, pkgconfig
 }:
 
@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ flac libao libvorbis ncurses opusfile ];
 
-  patches = [ ./gnu-screen.patch ];
+  patches = [ ./gnu-screen.patch ] ++ map fetchurl (import ./debian-patches.nix);
 
   postInstall = ''
     # Why doesn’t this happen automagically?
