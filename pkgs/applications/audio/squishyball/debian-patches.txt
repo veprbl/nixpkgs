@@ -1,4 +1,4 @@
-squishyball/0.1~svn19085-5/
+squishyball/0.1~svn19085-5
 stop_defining_mandir
 define_path_max
 fix_xxy
