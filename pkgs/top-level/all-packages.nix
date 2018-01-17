@@ -3604,9 +3604,15 @@ with pkgs;
 
   nbd = callPackage ../tools/networking/nbd { };
 
-  nccl = callPackage ../development/libraries/science/math/nccl {
+  nccl = callPackage ../development/libraries/science/math/nccl/v1.3.4.nix {
     cudatoolkit = cudatoolkit8;
   };
+
+  inherit (callPackages ../development/libraries/science/math/nccl { })
+    nccl2_cudatoolkit8
+    nccl2_cudatoolkit9;
+
+  nccl2 = nccl2_cudatoolkit9;
 
   ndjbdns = callPackage ../tools/networking/ndjbdns { };
 
