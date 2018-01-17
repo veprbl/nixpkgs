@@ -18,12 +18,6 @@ stdenv.mkDerivation rec {
 
   patches = [ ./gnu-screen.patch ] ++ map fetchurl (import ./debian-patches.nix);
 
-  postInstall = ''
-    # Why doesn’t this happen automagically?
-    mkdir -p $out/share/man/man1
-    cp squishyball.1 $out/share/man/man1
-  '';
-
   meta = with stdenv.lib; {
     description = "A tool to perform sample comparison testing on the command line";
     longDescription = ''
