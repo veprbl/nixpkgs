@@ -1,7 +1,8 @@
-{ stdenv, python, buildPythonPackage
+{ stdenv, lib, python, buildPythonPackage
 , fetchPypi, isPy3k, linuxPackages, gcc5
 , fastrlock, numpy, six, wheel, pytest, mock
-, cudatoolkit, cudnn, nccl
+, cudatoolkit, cudatoolkit8, cudnn, cudnn_cudatoolkit8, nccl
+, cudnnSupport ? true, ncclSupport ? false
 }:
 
 buildPythonPackage rec {
@@ -20,17 +21,27 @@ buildPythonPackage rec {
 
   nativeBuildInputs = [
     gcc5
+  ] ++ lib.optionals ncclSupport [
+    cudatoolkit8
+  ] ++ lib.optionals (!ncclSupport) [
+    cudatoolkit
   ];
 
   propagatedBuildInputs = [
-    cudatoolkit
-    cudnn
     linuxPackages.nvidia_x11
-    nccl
     fastrlock
     numpy
     six
     wheel
+  ] ++ lib.optionals ncclSupport [
+    nccl
+    cudatoolkit8
+  ] ++ lib.optionals (ncclSupport && cudnnSupport) [
+    cudnn_cudatoolkit8
+  ] ++ lib.optionals (!ncclSupport && cudnnSupport) [
+    cudnn
+  ] ++ lib.optionals (!ncclSupport) [
+    cudatoolkit
   ];
 
   # In python3, test was failed...

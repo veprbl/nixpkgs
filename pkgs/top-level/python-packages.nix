@@ -1457,8 +1457,8 @@ in {
   cufflinks = callPackage ../development/python-modules/cufflinks { };
 
   cupy = callPackage ../development/python-modules/cupy {
-    cudatoolkit = pkgs.cudatoolkit8;
-    cudnn = pkgs.cudnn6_cudatoolkit8;
+    cudatoolkit = pkgs.cudatoolkit;
+    cudnn = pkgs.cudnn;
     nccl = pkgs.nccl;
   };
 
