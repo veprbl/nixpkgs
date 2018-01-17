@@ -1459,7 +1459,7 @@ in {
   cupy = callPackage ../development/python-modules/cupy {
     cudatoolkit = pkgs.cudatoolkit;
     cudnn = pkgs.cudnn;
-    nccl = pkgs.nccl;
+    nccl = pkgs.nccl2;
   };
 
   cx_Freeze = callPackage ../development/python-modules/cx_freeze {};
