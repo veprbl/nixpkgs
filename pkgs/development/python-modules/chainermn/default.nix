@@ -25,12 +25,12 @@ buildPythonPackage rec {
   propagatedBuildInputs = [
     (chainer.override {
       cudaSupport = true;
+      cudnnSupport = cudnnSupport;
+      cudatoolkit = cudatoolkit;
+      cudnn = cudnn;
       cupy = cupy.override {
-        cudnnSupport = cudnnSupport;
         ncclSupport = true;
-        cudatoolkit = cudatoolkit;
         nccl = nccl;
-        cudnn = cudnn;
       };
     })
     (mpi4py.override {
