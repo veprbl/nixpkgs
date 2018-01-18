@@ -1357,6 +1357,13 @@ in {
     cudaSupport = pkgs.config.cudaSupport or false;
   };
 
+  chainermn = callPackage ../development/python-modules/chainermn {
+    mpi = pkgs.openmpi;
+    cudatoolkit = pkgs.cudatoolkit;
+    cudnn = pkgs.cudnn;
+    nccl = pkgs.nccl2;
+  };
+
   channels = callPackage ../development/python-modules/channels {};
 
   cheroot = callPackage ../development/python-modules/cheroot {};
