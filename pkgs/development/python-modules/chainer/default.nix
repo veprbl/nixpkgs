@@ -1,7 +1,8 @@
 { stdenv, lib, python
 , buildPythonPackage, fetchPypi, isPy3k
 , filelock, protobuf, numpy, pytest, mock
-, cupy, cudaSupport ? false
+, cupy, cudatoolkit, cudnn
+, cudaSupport ? false, cudnnSupport ? false
 }:
 
 buildPythonPackage rec {
@@ -22,7 +23,13 @@ buildPythonPackage rec {
     filelock
     protobuf
     numpy
-  ] ++ lib.optionals cudaSupport [ cupy ];
+  ] ++ lib.optionals cudaSupport [
+    (cupy.override {
+      cudnnSupport = cudnnSupport;
+      cudatoolkit = cudatoolkit;
+      cudnn = cudnn;
+    })
+  ];
 
   # In python3, test was failed...
   doCheck = !isPy3k;

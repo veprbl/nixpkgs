@@ -1355,6 +1355,8 @@ in {
 
   chainer = callPackage ../development/python-modules/chainer {
     cudaSupport = pkgs.config.cudaSupport or false;
+    cudatoolkit = pkgs.cudatoolkit;
+    cudnn = pkgs.cudnn;
   };
 
   chainermn = callPackage ../development/python-modules/chainermn {

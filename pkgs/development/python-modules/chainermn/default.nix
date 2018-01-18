@@ -28,6 +28,7 @@ buildPythonPackage rec {
       cupy = cupy.override {
         cudnnSupport = cudnnSupport;
         ncclSupport = true;
+        cudatoolkit = cudatoolkit;
         nccl = nccl;
         cudnn = cudnn;
       };
@@ -36,6 +37,7 @@ buildPythonPackage rec {
       mpi = mpi;
     })
     cffi
+    mpi
   ];
 
   # In python3, test was failed...
