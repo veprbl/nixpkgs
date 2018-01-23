@@ -184,7 +184,7 @@ in stdenv.mkDerivation (rec {
 
   enableParallelBuilding = true;
 
-  separateDebugInfo = true;
+  # separateDebugInfo = true;
 
   passthru.src = src;
 
