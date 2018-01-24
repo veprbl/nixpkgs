@@ -117,7 +117,7 @@ let
       fi
 
       ${optionalString config.networking.usePredictableInterfaceNames ''
-        cp ${./80-net-setup-link.rules} $out/80-net-setup-link.rules
+        cp ${udev}/lib/udev/rules.d/80-net-setup-link.rules $out/80-net-setup-link.rules
       ''}
 
       # If auto-configuration is disabled, then remove
