@@ -1,11 +1,11 @@
 { stdenv, fetchurl, pkgconfig, libpipeline, db, groff, makeWrapper }:
 
 stdenv.mkDerivation rec {
-  name = "man-db-2.7.5";
+  name = "man-db-2.7.6.1";
 
   src = fetchurl {
     url = "mirror://savannah/man-db/${name}.tar.xz";
-    sha256 = "056a3il7agfazac12yggcg4gf412yq34k065im0cpfxbcw6xskaw";
+    sha256 = "0gqgs4zc3r87apns0k5qp689p2ylxx2596s2mkmkxjjay99brv88";
   };
 
   outputs = [ "out" "doc" ];
@@ -21,6 +21,7 @@ stdenv.mkDerivation rec {
   '';
 
   configureFlags = [
+    "--disable-cache-owner"
     "--disable-setuid"
     "--localstatedir=/var"
     # Don't try /etc/man_db.conf by default, so we avoid error messages.
