@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgconfig, libpipeline, db, groff, makeWrapper }:
+{ stdenv, fetchurl, fetchpatch, pkgconfig, libpipeline, db, groff, makeWrapper }:
 
 stdenv.mkDerivation rec {
   name = "man-db-2.7.6.1";
@@ -14,6 +14,13 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ pkgconfig makeWrapper ];
   buildInputs = [ libpipeline db groff ];
 
+  patches = [
+    (fetchpatch {
+      url = "https://git.savannah.gnu.org/cgit/man-db.git/patch/?id=1ae081b91783802f71dc927482afab0c96f1b033";
+      sha256 = "13hyaw5b2wvnyspzya4c0dnqzsimny7sgdckx7bqcdcp7v862l5p";
+    })
+  ];
+
   postPatch = ''
     substituteInPlace src/man_db.conf.in \
       --replace "/usr/local/share" "/run/current-system/sw/share" \
@@ -28,10 +35,6 @@ stdenv.mkDerivation rec {
     "--with-config-file=\${out}/etc/man_db.conf"
     "--with-systemdtmpfilesdir=\${out}/lib/tmpfiles.d"
   ];
-
-  preConfigure = ''
-    configureFlagsArray+=("--with-sections=1 n l 8 3 0 2 5 4 9 6 7")
-  '';
 
   postInstall = ''
     # apropos/whatis uses program name to decide whether to act like apropos or whatis
