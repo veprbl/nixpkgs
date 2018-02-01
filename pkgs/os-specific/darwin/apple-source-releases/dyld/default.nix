@@ -12,7 +12,7 @@ appleDerivation {
   meta = with stdenv.lib; {
     description = "Impure primitive symlinks to the Mac OS native dyld, along with headers";
     maintainers = with maintainers; [ copumpkin ];
-    platforms   = platforms.darwin;
+    platforms   = platforms.unix;
     license     = licenses.apsl20;
   };
 }

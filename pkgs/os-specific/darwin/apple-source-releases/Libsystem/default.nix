@@ -120,7 +120,7 @@ appleDerivation rec {
   meta = with stdenv.lib; {
     description = "The Mac OS libc/libSystem (impure symlinks to binaries with pure headers)";
     maintainers = with maintainers; [ copumpkin gridaphobe ];
-    platforms   = platforms.darwin;
+    platforms   = platforms.unix;
     license     = licenses.apsl20;
   };
 }

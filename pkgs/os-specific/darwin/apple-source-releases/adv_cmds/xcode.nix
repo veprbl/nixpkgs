@@ -52,7 +52,7 @@ appleDerivation {
   buildInputs = [ xcbuild ncurses libutil-new ];
 
   meta = {
-    platforms = stdenv.lib.platforms.darwin;
+    platforms = stdenv.lib.platforms.unix;
     maintainers = with stdenv.lib.maintainers; [ matthewbauer ];
   };
 }

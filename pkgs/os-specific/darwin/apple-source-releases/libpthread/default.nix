@@ -18,6 +18,6 @@ appleDerivation {
   '';
 
   meta = {
-    platforms = stdenv.lib.platforms.darwin;
+    platforms = stdenv.lib.platforms.unix;
   };
 }
