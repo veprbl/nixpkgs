@@ -17,7 +17,8 @@ stdenv.mkDerivation {
   '';
 
   NIX_CFLAGS_COMPILE = "-I${libcxx}/include/c++/v1";
-  buildInputs = [ clang libcxx ];
+  #  nativeBuildInputs = [ clang ];
+  buildInputs = [ clang.cc.lib libcxx ];
   buildFlags = [ "USE_LIBCXX=1" "release" ];
 
   installPhase = ''
