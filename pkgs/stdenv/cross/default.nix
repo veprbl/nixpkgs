@@ -35,7 +35,8 @@ in bootStages ++ [
       targetPlatform = crossSystem;
       cc = if crossSystem.useiOSCross or false
            then buildPackages.darwin.ios-cross
-           else buildPackages.gcc;
+           #else buildPackages.gcc;
+           else if crossSystem.isDarwin then buildPackages.llvmPackages.libcxxClang else buildPackages.gcc;
     };
   })
 
