@@ -17,7 +17,7 @@ appleDerivation {
 
   meta = with stdenv.lib; {
     maintainers = with maintainers; [ copumpkin ];
-    platforms   = platforms.darwin;
+    platforms   = platforms.all;
     license     = licenses.apsl20;
   };
 }

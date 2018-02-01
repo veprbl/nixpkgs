@@ -85,7 +85,7 @@ in appleDerivation {
   setOutputFlags = false;
 
   meta = {
-    platforms = stdenv.lib.platforms.darwin;
+    platforms = stdenv.lib.platforms.all;
     maintainers = with stdenv.lib.maintainers; [ gridaphobe ];
   };
 }

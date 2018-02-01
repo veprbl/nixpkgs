@@ -146,9 +146,9 @@ let
     inherit version;
     name = "${name}-${version}";
     enableParallelBuilding = true;
-    meta = {
-      platforms = stdenv.lib.platforms.darwin;
-    };
+    #meta = {
+    #  platforms = stdenv.lib.platforms.darwin ++ stdenv.lib.platforms.linux;
+    #};
   } // (if attrs ? srcs then {} else {
     src  = fetchApple version sha256 name;
   }) // attrs);
