@@ -434,7 +434,7 @@ stdenv.mkDerivation ({
   # compiler (after the specs for the cross-gcc are created). Having
   # LIBRARY_PATH= makes gcc read the specs from ., and the build breaks.
 
-  CPATH = optionals (targetPlatform == hostPlatform) (makeSearchPathOutput "dev" "include" ([]
+  CPATH = optionals (targetPlatform == hostPlatform && hostPlatform == buildPlatform) (makeSearchPathOutput "dev" "include" ([]
     ++ optional (zlib != null) zlib
     ++ optional langJava boehmgc
     ++ optionals javaAwtGtk xlibs
@@ -448,7 +448,7 @@ stdenv.mkDerivation ({
                  libcCross.propagatedBuildInputs
   ));
 
-  LIBRARY_PATH = optionals (targetPlatform == hostPlatform) (makeLibraryPath ([]
+  LIBRARY_PATH = optionals (targetPlatform == hostPlatform && hostPlatform == buildPlatform) (makeLibraryPath ([]
     ++ optional (zlib != null) zlib
     ++ optional langJava boehmgc
     ++ optionals javaAwtGtk xlibs
