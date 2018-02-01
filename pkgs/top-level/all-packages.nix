@@ -6630,7 +6630,7 @@ with pkgs;
     # Others should instead delegate to the next stage's choice with
     # `targetPackages.stdenv.cc.bintools`. This one is different just to
     # provide the default choice, avoiding infinite recursion.
-    bintools = if targetPlatform.isDarwin then darwin.binutils else binutils;
+    bintools = if (builtins.trace targetPlatform.config targetPlatform.isDarwin) then darwin.binutils else binutils;
     libc = if targetPlatform != hostPlatform then libcCross else stdenv.cc.libc;
   };
   # legacy version, used for gnat bootstrapping
