@@ -1,4 +1,4 @@
-{ stdenv, hostPlatform, fetchurl, m4, perl, help2man }:
+{ stdenv, hostPlatform, buildPlatform, fetchurl, m4, perl, help2man }:
 
 stdenv.mkDerivation rec {
   name = "bison-3.0.4";
@@ -8,7 +8,7 @@ stdenv.mkDerivation rec {
     sha256 = "b67fd2daae7a64b5ba862c66c07c1addb9e6b1b05c5f2049392cfd8a2172952e";
   };
 
-  patches = stdenv.lib.optional hostPlatform.isDarwin stdenv.secure-format-patch;
+  patches = stdenv.lib.optional (hostPlatform.isDarwin && buildPlatform.isDarwin) stdenv.secure-format-patch;
 
   nativeBuildInputs = [ m4 perl ] ++ stdenv.lib.optional stdenv.isSunOS help2man;
   propagatedBuildInputs = [ m4 ];
