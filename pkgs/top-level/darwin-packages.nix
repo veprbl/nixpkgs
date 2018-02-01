@@ -22,7 +22,7 @@ in
 
   cctools = callPackage ../os-specific/darwin/cctools/port.nix {
     inherit (darwin) libobjc maloader;
-    stdenv = if stdenv.isDarwin then stdenv else pkgs.libcxxStdenv;
+    #stdenv = if stdenv.isDarwin then stdenv else pkgs.libcxxStdenv;
     xctoolchain = darwin.xcode.toolchain;
   };
 
