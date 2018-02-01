@@ -1,4 +1,4 @@
-{ stdenv, fetchgit, opencflite, clang, libcxx }:
+{ stdenv, fetchgit, opencflite }:
 
 stdenv.mkDerivation {
   name = "maloader-0git";
@@ -16,9 +16,6 @@ stdenv.mkDerivation {
       ld-mac.cc
   '';
 
-  NIX_CFLAGS_COMPILE = "-I${libcxx}/include/c++/v1";
-  #  nativeBuildInputs = [ clang ];
-  buildInputs = [ clang.cc.lib libcxx ];
   buildFlags = [ "USE_LIBCXX=1" "release" ];
 
   installPhase = ''
