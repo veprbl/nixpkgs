@@ -1,6 +1,14 @@
 # For maintainer use!
 # This automates gathering information about dependencies
 # to make it easier to track across updates.
+
+# Point nix at this file with something like:
+# $ nix build -f /path/to/find_externals.nix
+# or if you're using Nix < 2.0:
+# $ nix-build /path/to/find_externals.nix
+#
+# If this runs successfully, inspect the "deps.nix" file
+# generated and drop it in the retdec directory.
 { pkgs ? import ../../../../.. { }, src ? pkgs.retdec.src }:
 
 # External dependencies are in deps/, each having a directory
