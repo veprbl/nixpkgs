@@ -20,7 +20,8 @@ withPEPatterns ? false,
 }:
 
 let
-  release = "3.0";
+  version = "2018-01-31";
+  support-version = "2017-12-15";
 
   rapidjson = fetchFromGitHub {
     owner = "Tencent";
@@ -56,25 +57,24 @@ let
   };
 
   retdec-support = fetchzip {
-    url = "https://github.com/avast-tl/retdec-support/releases/download/2017-12-12/retdec-support_2017-12-12.tar.xz";
-    sha256 = if withPEPatterns then "0pchl7hb42dm0sdbmpr8d3c6xc0lm6cs4p6g6kdb2cr9c99gjzn3"
-                               else "1hcyq6bf4wk739kb53ic2bs71gsbx6zd07pc07lzfnxf8k497mhv";
+    url = "https://github.com/avast-tl/retdec-support/releases/download/${support-version}/retdec-support_${support-version}.tar.xz";
+    sha256 = if withPEPatterns then "16pmrjmlr3sacf4dasi7lxhbsv3fwp78wbr4s48y01r99jlsnbqg"
+                               else "0g1hklrpbsmsy9y4jcrlc221lk42ad607ydcrd8p77nr885kqyzg";
     # Removing PE signatures reduces this from 3.8GB -> 642MB (uncompressed)
     extraPostFetch = stdenv.lib.optionalString (!withPEPatterns) ''
       rm -rf $out/generic/yara_patterns/static-code/pe
     '';
+    stripRoot = false;
   };
 in stdenv.mkDerivation rec {
   name = "retdec-${version}";
-  version = "${release}.0";
+  inherit version;
 
   src = fetchFromGitHub {
     owner = "avast-tl";
     repo = "retdec";
-    name = "retdec-${release}";
-    rev = "refs/tags/v${release}";
-    sha256 = "0cpc5lxg8qphdzl3gg9dx992ar35r8ik8wyysr91l2qvfhx93wks";
-    fetchSubmodules = true;
+    rev = "6489bd2d36a090fbdc645aa864f0782a23c9555b";
+    sha256 = "1mmcv9adl8ksdndbpi1yy3zq7hy8i47cpcajfxr8dyk2hq2sc7zc";
   };
 
   nativeBuildInputs = [ cmake autoconf automake libtool pkgconfig bison flex groff perl python ];
