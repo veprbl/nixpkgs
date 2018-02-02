@@ -8,12 +8,12 @@
 stdenv.mkDerivation rec {
   version = "${major}.${minor}";
   major = "0.27";
-  minor = "2";
+  minor = "3";
   name = "shotwell-${version}";
 
   src = fetchurl {
     url = "mirror://gnome/sources/shotwell/${major}/${name}.tar.xz";
-    sha256 = "0bxc15gk2306fvxg6bg1s6c706yd89i66ldng0z102mcfi98warb";
+    sha256 = "1jacan61l3dci5rix0b8f16k3cbhck2s80b1d4bzarh3x34w4yza";
   };
 
   nativeBuildInputs = [
