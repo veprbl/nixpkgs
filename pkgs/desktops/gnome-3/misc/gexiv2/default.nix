@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, meson, ninja, pkgconfig, exiv2, glib, gnome3 }:
+{ stdenv, fetchurl, meson, ninja, pkgconfig, exiv2, glib, gnome3, vala, gobjectIntrospection }:
 
 let
   majorVersion = "0.10";
@@ -18,13 +18,19 @@ stdenv.mkDerivation rec {
       url = https://bugzilla.gnome.org/attachment.cgi?id=365969;
       sha256 = "06w744acgnz3hym7sm8c245yzlg05ldkmwgiz3yz4pp6h72brizj";
     })
+    # https://bugzilla.gnome.org/show_bug.cgi?id=792431
+    # https://github.com/NixOS/nixpkgs/issues/34512
+    (fetchurl {
+      url = https://github.com/GNOME/gexiv2/commit/d4b55f20ba6b90b56cb84fd5272f59b4853b8bac.patch;
+      sha256 = "038xlq7czcp0kkrnyg1i6n7xawhda2518sk61vfl4s9z7c03nan3";
+    })
   ];
 
   preConfigure = ''
     patchShebangs .
   '';
 
-  nativeBuildInputs = [ meson ninja pkgconfig ];
+  nativeBuildInputs = [ meson ninja pkgconfig vala gobjectIntrospection ];
   buildInputs = [ glib ];
   propagatedBuildInputs = [ exiv2 ];
 
