@@ -9,6 +9,7 @@ groff,
 perl,
 python3,
 # Runtime tools
+coreutils,
 time,
 upx,
 # Build inputs
@@ -96,6 +97,10 @@ in stdenv.mkDerivation rec {
     EOF
     chmod +x cmake/*.sh
     patchShebangs cmake/*.sh
+  '';
+
+  postInstall = ''
+    sed -i -e '2iexport PATH=$PATH:''${PATH:+}${stdenv.lib.makeBinPath [ coreutils time upx ]}' $out/bin/*.sh
   '';
 
   enableParallelBuilding = true;
