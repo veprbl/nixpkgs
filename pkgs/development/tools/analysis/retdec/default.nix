@@ -1,6 +1,8 @@
-{ stdenv, fetchFromGitHub, fetchurl, fetchzip,
+{ stdenv, writeShellScriptBin,
+fetchFromGitHub, fetchurl, fetchzip,
 # Native build inputs
 cmake, pkgconfig,
+autoreconfHook,
 autoconf, automake, libtool, m4,
 bison, flex,
 groff,
@@ -33,6 +35,38 @@ let
     '';
     stripRoot = false;
   };
+
+  deps = (import ./deps.nix);
+
+  genPatchCmd = n: v: ''
+    echo "Patching in prefetched archive for '${n}'..."
+    f=deps/${n}/CMakeLists.txt
+    grep -q "${v.sha256}" $f || (echo "ERROR: expected hash not found!"; exit 1)
+    sed -i -e 's|URL .*|URL ${fetchurl v}|' deps/${n}/CMakeLists.txt
+  '';
+
+  patch_to_use_prefetched_deps = with stdenv.lib;
+    concatStrings (mapAttrsToList genPatchCmd deps)
+    + ''
+    rm deps/yaracpp -rf
+    cp -a ${yaracpp_src} deps/yaracpp
+    chmod -R u+w deps/yaracpp
+    cat > deps/yaracpp/deps/CMakeLists.txt <<EOF
+      include(FindPkgConfig)
+      pkg_check_modules(REQUIRED IMPORTED_TARGET yara)
+    EOF
+
+    substituteInPlace deps/yaracpp/src/CMakeLists.txt \
+      --replace libyara yara
+  '';
+
+  yara = import ./yara.nix { inherit stdenv fetchurl autoreconfHook; };
+  #yaracpp = import ./yaracpp.nix { inherit stdenv fetchurl cmake pkgconfig yara; };
+  yaracpp_src = fetchzip {
+    url = "https://github.com/avast-tl/yaracpp/archive/v1.0.1.zip";
+    sha256 = "1gh8rv4p2pnl6dk7rch6p4lkcyg9v1l42mvrwl724iwa56dywri8";
+  };
+
 in stdenv.mkDerivation rec {
   name = "retdec-${version}";
   inherit version;
@@ -52,16 +86,9 @@ in stdenv.mkDerivation rec {
     python3
   ];
 
-  buildInputs = [ ncurses openssl libffi libxml2 zlib ];
+  buildInputs = [ ncurses openssl libffi libxml2 zlib yara ];
 
-  prePatch = with stdenv.lib;
-    concatStrings (mapAttrsToList (n: v: ''
-      echo "Patching in prefetched archive for '${n}'..."
-      f=deps/${n}/CMakeLists.txt
-      grep -q "${v.sha256}" $f || (echo "ERROR: expected hash not found!"; exit 1)
-      sed -i -e 's|URL .*|URL ${fetchurl v}|' deps/${n}/CMakeLists.txt
-    '') (import ./deps.nix))
-  + ''
+  postPatch = patch_to_use_prefetched_deps + ''
     cat > cmake/install-share.sh <<EOF
       #!/bin/sh
       mkdir -p $out/share/retdec/
