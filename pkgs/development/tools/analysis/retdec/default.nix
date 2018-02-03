@@ -1,15 +1,17 @@
-{ stdenv, writeShellScriptBin,
+{ stdenv,
 fetchFromGitHub, fetchurl, fetchzip,
 # Native build inputs
 cmake, pkgconfig,
 autoreconfHook,
-autoconf, automake, libtool, m4,
 bison, flex,
 groff,
 perl,
 python3,
 # Runtime tools
+bash, # specifically requires >= 4, ensure we have it
+bc,
 coreutils,
+graphviz,
 time,
 upx,
 # Build inputs
@@ -48,9 +50,13 @@ let
 
   patch_to_use_prefetched_deps = with stdenv.lib;
     concatStrings (mapAttrsToList genPatchCmd deps)
+    # Copy yaracpp source into tree instead of using as external project,
+    # avoids difficulties re-describing transitive dependencies on yara.
+    # Replace that brittle boilerplate with simple use of pkgconfig + import.
     + ''
     rm deps/yaracpp -rf
     cp -a ${yaracpp_src} deps/yaracpp
+
     chmod -R u+w deps/yaracpp
     cat > deps/yaracpp/deps/CMakeLists.txt <<EOF
       include(FindPkgConfig)
@@ -62,11 +68,12 @@ let
   '';
 
   yara = import ./yara.nix { inherit stdenv fetchurl autoreconfHook; };
-  #yaracpp = import ./yaracpp.nix { inherit stdenv fetchurl cmake pkgconfig yara; };
   yaracpp_src = fetchzip {
     url = "https://github.com/avast-tl/yaracpp/archive/v1.0.1.zip";
     sha256 = "1gh8rv4p2pnl6dk7rch6p4lkcyg9v1l42mvrwl724iwa56dywri8";
   };
+
+  binPath = stdenv.lib.makeBinPath [ bash bc coreutils graphviz time upx ];
 
 in stdenv.mkDerivation rec {
   name = "retdec-${version}";
@@ -81,13 +88,12 @@ in stdenv.mkDerivation rec {
 
   nativeBuildInputs = [
     cmake pkgconfig
-    autoconf automake libtool m4
     bison flex
     groff perl
     python3
   ];
 
-  buildInputs = [ ncurses openssl libffi libxml2 zlib yara ];
+  buildInputs = [ libffi libxml2 ncurses openssl yara zlib ];
 
   postPatch = patch_to_use_prefetched_deps + ''
     cat > cmake/install-share.sh <<EOF
@@ -100,7 +106,7 @@ in stdenv.mkDerivation rec {
   '';
 
   postInstall = ''
-    sed -i -e '2iexport PATH=$PATH:''${PATH:+}${stdenv.lib.makeBinPath [ coreutils time upx ]}' $out/bin/*.sh
+    sed -i -e '2iexport PATH=${binPath}''${PATH:+:}$PATH' $out/bin/*.sh
   '';
 
   enableParallelBuilding = true;
