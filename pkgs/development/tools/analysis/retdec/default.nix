@@ -1,12 +1,11 @@
 { stdenv, fetchFromGitHub, fetchurl, fetchzip,
 # Native build inputs
-cmake,
-autoconf, automake, libtool,
-pkgconfig,
+cmake, pkgconfig,
+autoconf, automake, libtool, m4,
 bison, flex,
 groff,
 perl,
-python,
+python3,
 # Runtime tools
 time,
 upx,
@@ -45,7 +44,13 @@ in stdenv.mkDerivation rec {
     sha256 = "1mmcv9adl8ksdndbpi1yy3zq7hy8i47cpcajfxr8dyk2hq2sc7zc";
   };
 
-  nativeBuildInputs = [ cmake autoconf automake libtool pkgconfig bison flex groff perl python ];
+  nativeBuildInputs = [
+    cmake pkgconfig
+    autoconf automake libtool m4
+    bison flex
+    groff perl
+    python3
+  ];
 
   buildInputs = [ ncurses openssl libffi libxml2 zlib ];
 
