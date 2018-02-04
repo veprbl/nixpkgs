@@ -25,7 +25,7 @@ withPEPatterns ? false,
 }:
 
 let
-  version = "2018-01-31";
+  version = "2018-02-04";
   support-version = "2017-12-15";
 
   retdec-support = fetchzip {
@@ -82,8 +82,8 @@ in stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "avast-tl";
     repo = "retdec";
-    rev = "6489bd2d36a090fbdc645aa864f0782a23c9555b";
-    sha256 = "1mmcv9adl8ksdndbpi1yy3zq7hy8i47cpcajfxr8dyk2hq2sc7zc";
+    rev = "637632d26c9226985a812ce42db40cc7c36adb94";
+    sha256 = "0xi2hmd237m1hff849cnvh8s3dpp9fiyhl7nzk35z893kglqzghc";
   };
 
   nativeBuildInputs = [
