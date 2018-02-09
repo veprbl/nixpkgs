@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch }:
+{ stdenv, fetchurl, fetchpatch, fetchzip, useContribFonts ? true  }:
 
 stdenv.mkDerivation {
   name = "figlet-2.2.5";
@@ -20,6 +20,10 @@ stdenv.mkDerivation {
   makeFlags = [ "prefix=$(out)" "CC:=$(CC)" "LD:=$(CC)" ];
 
   doCheck = true;
+
+  postInstall = stdenv.lib.optionalString useContribFonts ''
+    cp -a ${fetchzip { url = ftp://ftp.figlet.org/pub/figlet/fonts/contributed.tar.gz; sha256 = "013a9m4riym0w0c94y4x7ckcmgy5l4bb8pq2ba59ga68rnhw0aq3"; }}/* $out/share/figlet/
+  '';
 
   meta = {
     description = "Program for making large letters out of ordinary text";
