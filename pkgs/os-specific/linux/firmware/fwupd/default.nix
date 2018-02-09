@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, gtk_doc, pkgconfig, gobjectIntrospection, intltool
+{ stdenv, fetchFromGitHub, gtk_doc, pkgconfig, gobjectIntrospection, intltool
 , libgudev, polkit, appstream-glib, gusb, sqlite, libarchive, glib_networking
 , libsoup, docbook2x, gpgme, libxslt, libelf, libsmbios, efivar, glibcLocales
 , fwupdate, libyaml, valgrind, meson, libuuid, pygobject3, colord
@@ -8,9 +8,11 @@ let
   version = "1.0.4";
 in stdenv.mkDerivation {
   name = "fwupd-${version}";
-  src = fetchurl {
-    url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
-    sha256 = "1n4d6fw3ffg051072hbxn106s52x2wlh5dh2kxwdfjsb5kh03ra3";
+  src = fetchFromGitHub {
+    owner = "hughsie";
+    repo = "fwupd";
+    rev = "1b907a7d253c96d2e5b03ad9bb8c4040a39d9060";
+    sha256 = "139v06k57761s3shq14kydsv26pawx8z2avibsdbpimx1sszkgyz";
   };
 
   nativeBuildInputs = [
