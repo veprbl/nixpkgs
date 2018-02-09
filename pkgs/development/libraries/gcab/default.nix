@@ -1,16 +1,23 @@
-{ stdenv, fetchurl, intltool, gobjectIntrospection, pkgconfig }:
+{ stdenv, fetchurl, intltool, gobjectIntrospection, pkgconfig, meson, ninja, glibcLocales, git, vala }:
 
 stdenv.mkDerivation rec {
   name = "gcab-${version}";
-  version = "0.7";
+  version = "1.1";
+
+  LC_ALL = "en_US.UTF-8";
 
   src = fetchurl {
     url = "mirror://gnome/sources/gcab/${version}/${name}.tar.xz";
-    sha256 = "1vxdsiky3492zlyrym02sdwf09y19rl2z5h5iin7qm0wizw5wvm1";
+    sha256 = "0l19sr6pg0cfcddmi5n79d08mjjbhn427ip5jlsy9zddq9r24aqr";
   };
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ meson ninja glibcLocales git pkgconfig vala ];
   buildInputs = [ intltool gobjectIntrospection ];
+
+  mesonFlags = [
+    "-Ddocs=false"
+    "-Dtests=false"
+  ];
 
   meta = with stdenv.lib; {
     platforms = platforms.linux;
