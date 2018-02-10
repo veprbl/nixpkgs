@@ -1,6 +1,6 @@
 { stdenv, fetchFromGitHub, pkgconfig, gettext, gtk3, glib
 , gtk_doc, libarchive, gobjectIntrospection
-, sqlite, libsoup, gcab, attr, acl, docbook_xsl
+, sqlite, libsoup, gcab, attr, acl, docbook_xsl, libxslt
 , libuuid, json_glib, meson, gperf, ninja
 }:
 stdenv.mkDerivation rec {
@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ meson pkgconfig ninja ];
   buildInputs = [ glib gtk_doc gettext sqlite libsoup
                   gcab attr acl docbook_xsl libuuid json_glib
-                  libarchive gobjectIntrospection gperf ];
+                  libarchive gobjectIntrospection gperf libxslt ];
   propagatedBuildInputs = [ gtk3 ];
   mesonFlags = [ "-Drpm=false" "-Dstemmer=false" "-Ddep11=false" ];
 
