@@ -82,6 +82,9 @@ stdenv.mkDerivation {
     # https://reviews.llvm.org/rL281650
     rm -vr src/test/run-pass/issue-36474.rs || true
 
+    # On Hydra: `TcpListener::bind(&addr)`: Address already in use (os error 98)'
+    sed '/^ *fn fast_rebind()/i#[ignore]' -i src/libstd/net/tcp.rs
+
     # Disable some failing gdb tests. Try re-enabling these when gdb
     # is updated past version 7.12.
     rm src/test/debuginfo/basic-types-globals.rs
@@ -97,6 +100,10 @@ stdenv.mkDerivation {
 
     # Useful debugging parameter
     # export VERBOSE=1
+  ''
+  + optionalString (stdenv ? glibc) ''
+    # Disable failing test because of glibc-2.25 patch.
+    rm -vr src/test/run-pass/out-of-stack.rs
   ''
   + optionalString stdenv.isDarwin ''
     # Disable all lldb tests.

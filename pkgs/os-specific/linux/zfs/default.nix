@@ -38,6 +38,8 @@ let
 
       patches = extraPatches;
 
+      nativeBuildInputs = [ autoreconfHook nukeReferences ]
+         ++ optional buildKernel kernel.moduleBuildDependencies;
       buildInputs = [ autoreconfHook nukeReferences ]
         ++ optionals buildKernel [ spl ]
         ++ optionals buildUser [ zlib libuuid python attr ];
@@ -123,7 +125,7 @@ let
           Copy-On-Write filesystem with data integrity detection and repair,
           snapshotting, cloning, block devices, deduplication, and more.
         '';
-        home = http://zfsonlinux.org/;
+        homepage = http://zfsonlinux.org/;
         license = licenses.cddl;
         platforms = platforms.linux;
         maintainers = with maintainers; [ jcumming wizeman wkennington fpletz globin ];
@@ -138,9 +140,9 @@ in {
     incompatibleKernelVersion = null;
 
     # this package should point to the latest release.
-    version = "0.7.2";
+    version = "0.7.6";
 
-    sha256 = "1dl6i4sg7z0k4p1dmfcm9arx62x30lqsr9hycvhhs3pf58ks8z2v";
+    sha256 = "1k3a69zfdk4ia4z2l69lbz0mj26bwdanxd2wynkdpm2kl3zjj18h";
 
     extraPatches = [
       (fetchpatch {

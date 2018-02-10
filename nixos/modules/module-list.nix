@@ -191,6 +191,7 @@
   ./services/databases/openldap.nix
   ./services/databases/opentsdb.nix
   ./services/databases/postage.nix
+  ./services/databases/pgmanage.nix
   ./services/databases/postgresql.nix
   ./services/databases/redis.nix
   ./services/databases/riak.nix
@@ -346,6 +347,7 @@
   ./services/misc/synergy.nix
   ./services/misc/taskserver
   ./services/misc/uhub.nix
+  ./services/misc/xmr-stak.nix
   ./services/misc/zookeeper.nix
   ./services/monitoring/apcupsd.nix
   ./services/monitoring/arbtt.nix
@@ -409,6 +411,7 @@
   ./services/networking/asterisk.nix
   ./services/networking/atftpd.nix
   ./services/networking/avahi-daemon.nix
+  ./services/networking/babeld.nix
   ./services/networking/bind.nix
   ./services/networking/autossh.nix
   ./services/networking/bird.nix
@@ -578,6 +581,7 @@
   ./services/system/cloud-init.nix
   ./services/system/dbus.nix
   ./services/system/earlyoom.nix
+  ./services/system/localtime.nix
   ./services/system/kerberos.nix
   ./services/system/nscd.nix
   ./services/system/saslauthd.nix

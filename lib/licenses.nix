@@ -195,6 +195,11 @@ lib.mapAttrs (n: v: v // { shortName = n; }) rec {
     fullName = "Eclipse Public License 1.0";
   };
 
+  epl20 = spdx {
+    spdxId = "EPL-2.0";
+    fullName = "Eclipse Public License 2.0";
+  };
+
   epson = {
     fullName = "Seiko Epson Corporation Software License Agreement for Linux";
     url = https://download.ebz.epson.net/dsc/du/02/eula/global/LINUX_EN.html;
@@ -219,6 +224,7 @@ lib.mapAttrs (n: v: v // { shortName = n; }) rec {
   ffsl = {
     fullName = "Floodgap Free Software License";
     url = http://www.floodgap.com/software/ffsl/license.html;
+    free = false;
   };
 
   free = {

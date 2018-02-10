@@ -4,7 +4,15 @@
 , enableCurl ? true, curl, openssl
 }:
 
-stdenv.mkDerivation rec {
+let
+
+  # OpenJPEG version is hardcoded in package source
+  openJpegVersion = with stdenv;
+    lib.concatStringsSep "." (lib.lists.take 2
+      (lib.splitString "." (lib.getVersion openjpeg)));
+
+
+in stdenv.mkDerivation rec {
   version = "1.11";
   name = "mupdf-${version}";
 
@@ -16,9 +24,9 @@ stdenv.mkDerivation rec {
   patches = [
     # Compatibility with new openjpeg
     (fetchpatch {
-      name = "mupdf-1.11-openjpeg-2.1.1.patch";
-      url = "https://git.archlinux.org/svntogit/community.git/plain/trunk/0001-mupdf-openjpeg.patch?h=packages/mupdf&id=3d997e7ff2ac20c44856ede22760ba6fbca81a5c";
-      sha256 = "1vr12kpzmmfr8pp3scwfhrm5laqwd58xm6vx971c4y8bxy60b2ig";
+      name = "mupdf-1.11-openjpeg-version.patch";
+      url = "https://git.archlinux.org/svntogit/community.git/plain/trunk/0001-mupdf-openjpeg.patch?h=packages/mupdf&id=c19349f42838e4dca02e564b97e0a5ab3e1b943f";
+      sha256 = "0sx7jq84sr8bj6sg2ahg9cdgqz8dh4w6r0ah2yil8vrsznn4la8r";
     })
 
     (fetchurl {
@@ -32,7 +40,41 @@ stdenv.mkDerivation rec {
       url = "https://ftp.osuosl.org/pub/blfs/conglomeration/mupdf/mupdf-1.11-shared_libs-1.patch";
       sha256 = "127x8jhyj3i9cn3mxw9mm5barw2yk43rvmghg54bhn4rjalx857j";
     })
+
+    (fetchurl {
+      name = "mupdf-1.11-CVE-2017-14685.patch";
+      url = "http://git.ghostscript.com/?p=mupdf.git;a=patch;h=ab1a420613dec93c686acbee2c165274e922f82a";
+      sha256 = "120xapwj0af333n3a32ypxk0jmjv2ia476jg8pzsfqk9a5qqkx46";
+    })
+
+    (fetchurl {
+      name = "mupdf-1.11-CVE-2017-14686.patch";
+      url = "http://git.ghostscript.com/?p=mupdf.git;a=patch;h=0f0fbc07d9be31f5e83ec5328d7311fdfd8328b1";
+      sha256 = "0pkn7mfqhmnsyia4rh4mw4q435bzvlc22crqa1bxpaa0gcyky51c";
+    })
+
+    (fetchurl {
+      name = "mupdf-1.11-CVE-2017-14687.patch";
+      url = "http://git.ghostscript.com/?p=mupdf.git;a=patch;h=2b16dbd8f73269cb15ca61ece75cf8d2d196ed28";
+      sha256 = "01v41cwrdnz3k32fcadk2gk4knqrm3mavzp6pxhn19nwgmqkshjd";
+    })
+
+    (fetchurl {
+      name = "mupdf-1.11-CVE-2017-15587.patch";
+      url = "http://git.ghostscript.com/?p=mupdf.git;a=patch;h=82df2631d7d0446b206ea6b434ea609b6c28b0e8";
+      sha256 = "04kfww7y0wazg6372g44fa2k5kiiigq4616ihkvmp18rz86903n9";
+    })
+
+    (fetchurl {
+      name = "mupdf-1.11-CVE-2017-15369.patch";
+      url = "http://git.ghostscript.com/?p=mupdf.git;a=patch;h=c2663e51238ec8256da7fc61ad580db891d9fe9a";
+      sha256 = "0xx2mrbjcymi3gh0l3cq81m6bygp9dv79v1kyrbcvpl5z6wgl71y";
+    })
   ];
+
+  postPatch = ''
+    sed -i "s/__OPENJPEG__VERSION__/${openJpegVersion}/" source/fitz/load-jpx.c
+  '';
 
   makeFlags = [ "prefix=$(out)" ];
   nativeBuildInputs = [ pkgconfig ];
@@ -79,7 +121,7 @@ stdenv.mkDerivation rec {
     homepage = http://mupdf.com;
     repositories.git = git://git.ghostscript.com/mupdf.git;
     description = "Lightweight PDF, XPS, and E-book viewer and toolkit written in portable C";
-    license = licenses.gpl3Plus;
+    license = licenses.agpl3Plus;
     maintainers = with maintainers; [ viric vrthra fpletz ];
     platforms = platforms.linux;
   };

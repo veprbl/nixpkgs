@@ -134,7 +134,7 @@ with
 ```nix
 with import <nixpkgs> {};
 
-python35.withPackages (ps: [ps.numpy ps.toolz])
+(python35.withPackages (ps: [ps.numpy ps.toolz])).env
 ```
 Executing `nix-shell` gives you again a Nix shell from which you can run Python.
 
@@ -530,7 +530,6 @@ Based on the packages defined in `pkgs/top-level/python-packages.nix` an
 attribute set is created for each available Python interpreter. The available
 sets are
 
-* `pkgs.python26Packages`
 * `pkgs.python27Packages`
 * `pkgs.python34Packages`
 * `pkgs.python35Packages`
@@ -540,7 +539,7 @@ sets are
 and the aliases
 
 * `pkgs.python2Packages` pointing to `pkgs.python27Packages`
-* `pkgs.python3Packages` pointing to `pkgs.python35Packages`
+* `pkgs.python3Packages` pointing to `pkgs.python36Packages`
 * `pkgs.pythonPackages` pointing to `pkgs.python2Packages`
 
 #### `buildPythonPackage` function

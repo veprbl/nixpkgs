@@ -13,14 +13,17 @@ let
 
   apcu40 = assert !isPhp7; buildPecl {
     name = "apcu-4.0.7";
-
     sha256 = "1mhbz56mbnq7dryf2d64l84lj3fpr5ilmg2424glans3wcg772hp";
+    buildInputs = [ pkgs.pcre ];
   };
 
   apcu51 = assert isPhp7; buildPecl {
-    name = "apcu-5.1.2";
-
-    sha256 = "0r5pfbjbmdj46h20jm3iqmy969qd27ajyf0phjhgykv6j0cqjlgd";
+    name = "apcu-5.1.8";
+    sha256 = "01dfbf0245d8cc0f51ba16467a60b5fad08e30b28df7846e0dd213da1143ecce";
+    buildInputs = [ pkgs.pcre ];
+    doCheck = true;
+    checkTarget = "test";
+    checkFlagsArray = ["REPORT_EXIT_STATUS=1" "NO_INTERACTION=1"];
   };
 
   ast = assert isPhp7; buildPecl {
@@ -33,7 +36,7 @@ let
     name = "couchbase-${version}";
     version = "2.3.4";
 
-    buildInputs = [ pkgs.libcouchbase pcs ];
+    buildInputs = [ pkgs.libcouchbase pkgs.zlib igbinary pcs ];
 
     src = pkgs.fetchFromGitHub {
       owner = "couchbase";
@@ -57,8 +60,29 @@ let
                if test -r $i/include/libcouchbase/couchbase.h; then
                  LIBCOUCHBASE_DIR=$i
                  AC_MSG_RESULT(found in $i)
+        @@ -154,6 +154,8 @@ COUCHBASE_FILES=" \
+             igbinary_inc_path="$phpincludedir"
+           elif test -f "$phpincludedir/ext/igbinary/igbinary.h"; then
+             igbinary_inc_path="$phpincludedir"
+        +  elif test -f "${igbinary.dev}/include/ext/igbinary/igbinary.h"; then
+        +    igbinary_inc_path="${igbinary.dev}/include"
+           fi
+           if test "$igbinary_inc_path" = ""; then
+             AC_MSG_WARN([Cannot find igbinary.h])
       '')
     ];
+  };
+
+  igbinary = buildPecl {
+    name = "igbinary-2.0.4";
+
+    configureFlags = [ "--enable-igbinary" ];
+
+    makeFlags = [ "phpincludedir=$(dev)/include" ];
+
+    outputs = [ "out" "dev" ];
+
+    sha256 = "0a55l4f0bgbf3f6sh34njd14niwagg829gfkvb8n5fs69xqab67d";
   };
 
   imagick = buildPecl {
@@ -66,6 +90,7 @@ let
     sha256 = "0siyxpszjz6s095s2g2854bhprjq49rf22v6syjiwvndg1pc9fsh";
     configureFlags = "--with-imagick=${pkgs.imagemagick.dev}";
     nativeBuildInputs = [ pkgs.pkgconfig ];
+    buildInputs = [ pkgs.pcre ];
   };
 
   # No support for PHP 7 yet
@@ -250,22 +275,16 @@ let
     buildInputs = [ pkgs.geoip ];
   };
 
-  redis = if isPhp7 then redisPhp7 else redis22;
+  redis = if isPhp7 then redis31 else redis22;
 
   redis22 = assert !isPhp7; buildPecl {
     name = "redis-2.2.7";
     sha256 = "00n9dpk9ak0bl35sbcd3msr78sijrxdlb727nhg7f2g7swf37rcm";
   };
 
-  # Not released yet
-  redisPhp7 = assert isPhp7; buildPecl rec {
-    name = "redis-php7";
-
-    src = fetchgit {
-      url = "https://github.com/phpredis/phpredis";
-      rev = "4a37e47d0256581ce2f7a3b15b5bb932add09f36";
-      sha256 = "1qm2ifa0zf95l1g967iiabmja17srpwz73lfci7z13ffdw1ayhfd";
-    };
+  redis31 = assert isPhp7; buildPecl {
+    name = "redis-3.1.4";
+    sha256 = "0rgjdrqfif8pfn3ipk1v4gyjkkdcdrdk479qbpda89w25vaxzsxd";
   };
 
   v8 = assert isPhp7; buildPecl rec {

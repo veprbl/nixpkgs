@@ -4,7 +4,7 @@
 
 let
 
-  version = "2.8.0";
+  version = "2.9.0";
 
   rpath = stdenv.lib.makeLibraryPath [
     alsaLib
@@ -46,7 +46,7 @@ let
     if stdenv.system == "x86_64-linux" then
       fetchurl {
         url = "https://downloads.slack-edge.com/linux_releases/slack-desktop-${version}-amd64.deb";
-        sha256 = "02khqi0qf8ryj6bkfla95mr3scvb99zrhihwdprdjqpgvy06wqhm";
+        sha256 = "1ddfvsy4lr7hcnzxbk4crczylj1qwm9av02xms4w2p0k0c8nhvvc";
       }
     else
       throw "Slack is not supported on ${stdenv.system}";

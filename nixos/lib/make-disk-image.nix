@@ -33,7 +33,8 @@
 
 , name ? "nixos-disk-image"
 
-, format ? "raw"
+, # Disk image format, one of qcow2, vpc, raw.
+  format ? "raw"
 }:
 
 with lib;
@@ -45,7 +46,7 @@ let
     raw   = "img";
   };
 
-  nixpkgs = lib.cleanSource pkgs.path;
+  nixpkgs = cleanSource pkgs.path;
 
   channelSources = pkgs.runCommand "nixos-${config.system.nixosVersion}" {} ''
     mkdir -p $out
@@ -73,7 +74,7 @@ let
   targets = map (x: x.target) contents;
 
   prepareImage = ''
-    export PATH=${pkgs.lib.makeSearchPathOutput "bin" "bin" prepareImageInputs}
+    export PATH=${makeSearchPathOutput "bin" "bin" prepareImageInputs}
 
     mkdir $out
     diskImage=nixos.raw
@@ -87,7 +88,7 @@ let
     ''}
 
     mkfs.${fsType} -F -L nixos -E offset=$offset $diskImage
-  
+
     root="$PWD/root"
     mkdir -p $root
 
@@ -122,6 +123,9 @@ let
 
     # TODO: Nix really likes to chown things it creates to its current user...
     fakeroot nixos-prepare-root $root ${channelSources} ${config.system.build.toplevel} closure
+
+    # fakeroot seems to always give the owner write permissions, which we do not want
+    find $root/nix/store -mindepth 1 -maxdepth 1 -type f -o -type d | xargs chmod -R a-w
 
     echo "copying staging root to image..."
     cptofs ${pkgs.lib.optionalString partitioned "-P 1"} -t ${fsType} -i $diskImage $root/* /

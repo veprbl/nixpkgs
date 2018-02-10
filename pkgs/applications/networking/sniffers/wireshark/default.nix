@@ -12,7 +12,7 @@ assert withQt  -> !withGtk && qt5  != null;
 with stdenv.lib;
 
 let
-  version = "2.4.1";
+  version = "2.4.4";
   variant = if withGtk then "gtk" else if withQt then "qt" else "cli";
 
 in stdenv.mkDerivation {
@@ -20,10 +20,13 @@ in stdenv.mkDerivation {
 
   src = fetchurl {
     url = "http://www.wireshark.org/download/src/all-versions/wireshark-${version}.tar.xz";
-    sha256 = "1k8zj44pkb2ny2x46f100y7cxddm1kh0zh7f6qggm78gn7wvrp82";
+    sha256 = "0n3g28hrhifnchlz4av0blq4ykm4zaxwwxbzdm9wsba27677b6h4";
   };
 
-  cmakeFlags = optional withGtk "-DBUILD_wireshark_gtk=TRUE";
+  cmakeFlags = [
+    "-DBUILD_wireshark_gtk=${if withGtk then "ON" else "OFF"}"
+    "-DBUILD_wireshark=${if withQt then "ON" else "OFF"}"
+  ];
 
   nativeBuildInputs = [
     bison cmake extra-cmake-modules flex

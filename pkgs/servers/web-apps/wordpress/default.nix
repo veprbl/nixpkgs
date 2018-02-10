@@ -2,8 +2,8 @@
 { fetchFromGitHub, lib } : fetchFromGitHub {
   owner = "WordPress";
   repo = "WordPress";
-  rev = "4.7.4";
-  sha256 = "1ia9d3n085x2r6pvdrv4rk6gdp6xhjhpsq5g7a6448xzv9hf14ri";
+  rev = "4.7.8";
+  sha256 = "1fm82xba6scmivjds8jplr31z6xd5n456kjdl50l87rps0anqjbm";
   meta = {
     homepage = https://wordpress.org;
     description = "WordPress is open source software you can use to create a beautiful website, blog, or app.";

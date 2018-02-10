@@ -1,6 +1,8 @@
+# pcre functionality is tested in nixos/tests/php-pcre.nix
+
 { lib, stdenv, fetchurl, composableDerivation, autoconf, automake, flex, bison
 , mysql, libxml2, readline, zlib, curl, postgresql, gettext
-, openssl, pkgconfig, sqlite, config, libjpeg, libpng, freetype
+, openssl, pcre, pkgconfig, sqlite, config, libjpeg, libpng, freetype
 , libxslt, libmcrypt, bzip2, icu, openldap, cyrus_sasl, libmhash, freetds
 , uwimap, pam, gmp, apacheHttpd, libiconv, systemd }:
 
@@ -20,7 +22,8 @@ let
 
       enableParallelBuilding = true;
 
-      buildInputs = [ flex bison pkgconfig ]
+      nativeBuildInputs = [ pkgconfig ];
+      buildInputs = [ flex bison pcre ]
         ++ lib.optional stdenv.isLinux systemd;
 
       flags = {
@@ -282,6 +285,7 @@ let
 
       configureFlags = [
         "--with-config-file-scan-dir=/etc/php.d"
+        "--with-pcre-regex=${pcre.dev} PCRE_LIBDIR=${pcre}"
       ] ++ lib.optional stdenv.isDarwin "--with-iconv=${libiconv}"
         ++ lib.optional stdenv.isLinux  "--with-fpm-systemd";
 
@@ -325,17 +329,17 @@ let
 
 in {
   php56 = generic {
-    version = "5.6.31";
-    sha256 = "03xixkvfp64bqp97p8vlj3hp63bpjw7hc16b7fgm7w35rdlp2fcg";
+    version = "5.6.33";
+    sha256 = "1k1ip1slk89hkp57qiqp8k2m5yrg9lx5rja542g87k8xfslrdxh7";
   };
 
   php70 = generic {
-    version = "7.0.24";
-    sha256 = "06fgpljz6xpxxkpf4cv9rqz8g504l9ikbw5aq0hqh5sgd611kycv";
+    version = "7.0.27";
+    sha256 = "0ca174kp2l3fjcp8z0mqnkbjfhijjzz7rs7bkzg1qk2cpdijbylr";
   };
 
   php71 = generic {
-    version = "7.1.9";
-    sha256 = "1blvzm2js8mrdbmwks0v6nlb5wj4789ixzmlxm1l8z6xvw8cqk9i";
+    version = "7.1.13";
+    sha256 = "18cqry8jy7q9fp82p3n9ndxffyba6f6q3maz3100jq245lfsbz9m";
   };
 }

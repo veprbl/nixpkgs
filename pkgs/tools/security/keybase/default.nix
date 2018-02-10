@@ -2,7 +2,7 @@
 
 buildGoPackage rec {
   name = "keybase-${version}";
-  version = "1.0.33";
+  version = "1.0.39";
 
   goPackagePath = "github.com/keybase/client";
   subPackages = [ "go/keybase" ];
@@ -13,12 +13,8 @@ buildGoPackage rec {
     owner  = "keybase";
     repo   = "client";
     rev    = "v${version}";
-    sha256 = "1zgvriyir2ga0p4ah9ia1sbl9ydnrnw5ggq4c1ya8gcfgn8vzdsf";
+    sha256 = "0b64h536xp8r1q7fa23mf1p8ybnh0fz1n468fp56mvh98vmqys5b";
   };
-
-  postInstall = stdenv.lib.optionalString stdenv.isDarwin ''
-    install_name_tool -delete_rpath $out/lib $bin/bin/keybase
-  '';
 
   buildFlags = [ "-tags production" ];
 
