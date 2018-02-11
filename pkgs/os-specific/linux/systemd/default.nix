@@ -141,11 +141,12 @@ in
         --replace "SYSTEMD_CGROUP_AGENT_PATH" "_SYSTEMD_CGROUP_AGENT_PATH"
     '';
 
+    hardeningDisable = [ "stackprotector" ];
+
     NIX_CFLAGS_COMPILE =
       [ # Can't say ${polkit.bin}/bin/pkttyagent here because that would
         # lead to a cyclic dependency.
         "-UPOLKIT_AGENT_BINARY_PATH" "-DPOLKIT_AGENT_BINARY_PATH=\"/run/current-system/sw/bin/pkttyagent\""
-        "-fno-stack-protector"
 
         # Set the release_agent on /sys/fs/cgroup/systemd to the
         # currently running systemd (/run/current-system/systemd) so
