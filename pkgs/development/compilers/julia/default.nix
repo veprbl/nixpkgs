@@ -165,7 +165,7 @@ in stdenv.mkDerivation rec {
 
   passthru = {
     inherit majorVersion minorVersion maintenanceVersion;
-    site = "share/julia/v${majorVersion}.${minorVersion}";
+    site = "share/julia/site/v${majorVersion}.${minorVersion}";
   };
 
   meta = {

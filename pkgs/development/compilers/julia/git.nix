@@ -50,7 +50,12 @@ let
   };
 in
 
-stdenv.mkDerivation rec {
+let
+  majorVersion = "0";
+  minorVersion = "6";
+  maintenanceVersion = "0";
+  version = "${majorVersion}.${minorVersion}.${maintenanceVersion}";
+in stdenv.mkDerivation rec {
   pname = "julia";
   version = "0.6.0-dev-2016-11-25";
   name = "${pname}-${version}";
@@ -168,6 +173,11 @@ stdenv.mkDerivation rec {
             --prefix PATH : "${stdenv.lib.makeBinPath [ curl ]}"
     done
   '';
+
+  passthru = {
+    inherit majorVersion minorVersion maintenanceVersion;
+    site = "share/julia/site/v${majorVersion}.${minorVersion}";
+  };
 
   meta = {
     description = "High-level performance-oriented dynamical language for technical computing";
