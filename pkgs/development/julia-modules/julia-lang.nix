@@ -14,6 +14,6 @@ rec {
   withPackages = f:
     let p = f pkgs; in buildEnv { extraLibs = p; };
 
-  pkgs = callPackage ./packages/packages.nix { };
+  pkgs = callPackage ./packages.nix { };
 }
 

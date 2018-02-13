@@ -12,7 +12,7 @@ import glob
 import json
 
 URL = "https://github.com/JuliaLang/METADATA.jl/archive/metadata-v2.zip"
-OUTPUT = os.path.join(os.path.dirname(os.path.realpath(__file__)), "packages", "official-packages.json")
+OUTPUT = os.path.join(os.path.dirname(os.path.realpath(__file__)), "official-packages.json")
 
 def paths_and_files_to_dict(path):
     d = {}
