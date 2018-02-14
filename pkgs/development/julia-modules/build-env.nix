@@ -8,7 +8,7 @@
 , makeJuliaPath
 }:
 
-{ extraLibs ? []
+{ packages ? []
 }:
 
 let
@@ -16,7 +16,7 @@ let
   name = "${julia.name}-env";
 
   # Julia packages
-  dependencies = stdenv.lib.filter isJuliaPackage (stdenv.lib.closePropagation extraLibs);
+  dependencies = stdenv.lib.filter isJuliaPackage (stdenv.lib.closePropagation packages);
 
   JULIA_LOAD_PATH = makeJuliaPath dependencies;
 

@@ -11,10 +11,10 @@ let
   inherit (stdenv.lib) fix' extends;
 
 
-  base-packages = pkgs.callPackage ./base-packages.nix {};
+  lib = pkgs.callPackage ./lib.nix {};
 
   official-packages = self: super: {};
 
   common-overrides = pkgs.callPackage ./common-overrides.nix {};
 
-in fix' (extends overrides (extends common-overrides (extends official-packages base-packages)))
+in fix' (extends overrides (extends common-overrides (extends official-packages lib)))

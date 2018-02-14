@@ -6381,7 +6381,7 @@ with pkgs;
   julia = julia_06;
 
   juliaLang = callPackage ../development/julia-modules/julia-lang.nix { };
-  juliaPackages = callPackage ../development/julia-modules/packages.nix { };
+  juliaPackages = callPackage ../development/julia-modules { };
 
   jwasm =  callPackage ../development/compilers/jwasm { };
 
