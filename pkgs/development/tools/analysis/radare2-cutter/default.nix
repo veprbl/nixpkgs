@@ -26,6 +26,10 @@ stdenv.mkDerivation rec {
 
   postUnpack = "export sourceRoot=$sourceRoot/src";
 
+  postPatch = ''
+    substituteInPlace cutter.desktop --replace "Exec=cutter" "Exec=Cutter"
+  '';
+
   nativeBuildInputs = [ qmake pkgconfig ];
   buildInputs = [ qtbase qtsvg r2-git ];
 
