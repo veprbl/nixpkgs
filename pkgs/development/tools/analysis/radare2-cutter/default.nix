@@ -1,13 +1,14 @@
 { stdenv, fetchFromGitHub, fetchpatch, qmake, pkgconfig, qtbase, qtsvg, radare2 }:
 
 let
-  r2-git = radare2.overrideAttrs(o: {
-    version = "2018-02-11";
+  r2-git = radare2.overrideAttrs(o: rec {
+    name = "radare2-for-cutter-${version}";
+    version = "2018-02-18";
     src = fetchFromGitHub {
       owner = "radare";
       repo = "radare2";
-      rev = "145b7aceac7807a0df515d959551dae99344cd1c";
-      sha256 = "1z6vh2wcn2i4pq0nfvmwi9kfgzm321z4hqssq69r7wk3cajbnq86";
+      rev = "0e247959123aaac5247c885fed0a68d3a327a493";
+      sha256 = "15s7b8z05a15b7dbhgrx7s7fiyxxpwi60371cbr6kpzjhscn77b5";
     };
   });
 in
