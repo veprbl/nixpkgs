@@ -20,5 +20,11 @@ self:
   # Generic function for building Julia packages
   buildJuliaPackage = self.callPackage ./lib/build-julia-package.nix { };
 
+  # Build official Julia packages
+  buildOfficialJuliaPackage = self.callPackage ./lib/build-official-julia-package.nix { };
 
+  # Parse REQUIRE file
+  parseRequires = self.callPackage ./lib/parse-requires.nix {
+    inherit self;
+  };
 }

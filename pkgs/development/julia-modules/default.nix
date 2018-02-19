@@ -5,15 +5,12 @@
 }:
 
 let
-
-#   official-packages = map buildOfficialJuliaPackage builtins.fromJSON (builtins.readFile ./packages.json);
-
   inherit (stdenv.lib) fix' extends;
 
 
   lib = pkgs.callPackage ./lib.nix {};
 
-  official-packages = self: super: {};
+  official-packages = pkgs.callPackage ./official-packages.nix {};
 
   common-overrides = pkgs.callPackage ./common-overrides.nix {};
 

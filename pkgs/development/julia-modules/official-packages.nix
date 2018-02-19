@@ -1,21 +1,12 @@
-{ stdenv
-, julia
-, pkgs
+{ lib
 }:
 
 self:
 super:
 
 let
-  srcs = builtins.fromJSON (builtins.readFile ./packages.json);
+  metadata = builtins.fromJSON (builtins.readFile ./official-packages.json);
 
-  create_packages = name: data:
-
-
-  packages = lib.mapAttrs create_packages srcs;
+  packages = lib.mapAttrs (_: pkg: self.buildOfficialJuliaPackage pkg) metadata.packages;
 
 in packages
-
-
-
-
