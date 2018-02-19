@@ -1,4 +1,4 @@
-# Function that creates a Julia environment with specified packages on LOAD_JULIA_PATH.
+# Function that creates a Julia environment with specified packages on JULIA_LOAD_PATH.
 
 { stdenv
 , julia

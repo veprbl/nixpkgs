@@ -6,21 +6,21 @@
 { pname
 , version
 , buildInputs ? []
-, propagatedbuildInputs ? []
+, propagatedBuildInputs ? []
 , checkInputs ? []
 , doCheck ? true
 , ... } @ attrs:
 
 let
 
-  JULIA_LOAD_PATH = makeJuliaPath propagatedbuildInputs;
+  JULIA_LOAD_PATH = makeJuliaPath propagatedBuildInputs;
 
 in  stdenv.mkDerivation (attrs // {
 
   name = "julia-${julia.version}-${pname}-${version}";
 
   buildInputs = [ julia ] ++ buildInputs ++ stdenv.lib.optionals doCheck checkInputs;
-  propagatedbuildInputs = [ julia ] ++ propagatedbuildInputs;
+  propagatedBuildInputs = [ julia ] ++ propagatedBuildInputs;
 
   phases = [ "unpackPhase" "patchPhase" "buildPhase" "installPhase" "fixupPhase" "checkPhase" ];
 
