@@ -8,7 +8,7 @@
 rec {
 
   buildEnv = callPackage ./build-env.nix {
-    inherit (pkgs) isJuliaPackage makeJuliaPath;
+    inherit (pkgs) isJuliaPackage makeJuliaPath deepReq;
   };
 
   withPackages = f:

@@ -1,11 +1,13 @@
 { stdenv
 , julia
 , makeJuliaPath
+, deepReq
 }:
 
 lib.makeOverridable (
 { pname
 , version
+, requires ? []
 , buildInputs ? []
 , propagatedBuildInputs ? []
 , checkInputs ? []
@@ -13,14 +15,17 @@ lib.makeOverridable (
 , ... } @ attrs:
 
 let
+  _buildInputs = [ julia ] ++ buildInputs ++ stdenv.lib.optionals doCheck checkInputs;
 
-  JULIA_LOAD_PATH = makeJuliaPath propagatedBuildInputs;
+  # All ancestral packages in the dependency graph are required
+  _allRequires = deepReq requires;
+  JULIA_LOAD_PATH = makeJuliaPath _allRequires;
 
 in  stdenv.mkDerivation (attrs // {
 
   name = "julia-${julia.version}-${pname}-${version}";
 
-  buildInputs = [ julia ] ++ buildInputs ++ stdenv.lib.optionals doCheck checkInputs;
+  buildInputs = _buildInputs ++ _allRequires;
   propagatedBuildInputs = [ julia ] ++ propagatedBuildInputs;
 
   phases = [ "unpackPhase" "patchPhase" "buildPhase" "installPhase" "fixupPhase" "checkPhase" ];

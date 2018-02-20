@@ -43,8 +43,6 @@ let
   then newestRelease
   else lib.findFirst (matchVersion version) error versions;
 
-  propagatedBuildInputs = parseRequires identifiedVersion.requires;
-
 in buildJuliaPackage {
   inherit pname;
   version = toVersionString identifiedVersion.ver;
@@ -54,5 +52,5 @@ in buildJuliaPackage {
     inherit (identifiedVersion) sha256;
   };
 
-  inherit propagatedBuildInputs;
+  requires = parseRequires identifiedVersion.requires;
 }
