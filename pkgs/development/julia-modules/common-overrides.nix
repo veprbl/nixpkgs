@@ -12,6 +12,11 @@ super:
     Compat = { version = "0.53.0"; };
   };
 
+  Cairo = super.Cairo.override {
+    buildInputs = with pkgs;
+    [ fontconfig glib libpng gettext freetype libffi pixman cairo pango ];
+  };
+
   MbedTLS = super.MbedTLS.override {
     buildInputs = [ pkgs.mbedtls ];
   };
