@@ -6,4 +6,7 @@
 self:
 super:
 {
+  pinnedPackages = {
+    Compat = { version = "0.53.0"; };
+  };
 }
