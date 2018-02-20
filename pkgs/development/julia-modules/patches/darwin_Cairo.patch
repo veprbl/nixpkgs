@@ -1,0 +1,17 @@
+diff --git a/deps/build.jl b/deps/build.jl
+index 7d93002..0ad64cc 100644
+--- a/deps/build.jl
++++ b/deps/build.jl
+@@ -45,12 +45,6 @@ if is_apple()
+     end
+     using Homebrew
+     provides( Homebrew.HB, "cairo", cairo, os = :Darwin )
+-    provides( Homebrew.HB, "pango", [pango, pangocairo], os = :Darwin, onload =
+-    """
+-    function __init__()
+-        ENV["PANGO_SYSCONFDIR"] = joinpath("$(Homebrew.prefix())", "etc")
+-    end
+-    """ )
+     provides( Homebrew.HB, "fontconfig", fontconfig, os = :Darwin )
+     provides( Homebrew.HB, "glib", gobject, os = :Darwin )
+     provides( Homebrew.HB, "libpng", libpng, os = :Darwin )

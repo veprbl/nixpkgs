@@ -15,6 +15,7 @@ super:
   Cairo = super.Cairo.override {
     buildInputs = with pkgs;
     [ fontconfig glib libpng gettext freetype libffi pixman cairo pango ];
+    patches = lib.optionals stdenv.isDarwin [ ./patches/darwin_Cairo.patch ];
   };
 
   MbedTLS = super.MbedTLS.override {

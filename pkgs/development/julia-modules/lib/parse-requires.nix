@@ -32,7 +32,9 @@ let
   parsePackageName = tokens:
   if tokens == [] then parseEnd {} else
   let token = builtins.head tokens; tokens' = builtins.tail tokens; in
-  parseEnd { pname = token; };  # do not parse version constraints for now
+  if stdenv.isDarwin && token == "Homebrew"
+  then parseEnd {}
+  else parseEnd { pname = token; };  # do not parse version constraints for now
 
   parseEnd = state:
   if builtins.hasAttr "pname" state

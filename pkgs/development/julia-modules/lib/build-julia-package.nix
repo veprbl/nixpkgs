@@ -14,6 +14,7 @@ lib.makeOverridable (
 , propagatedBuildInputs ? []
 , checkInputs ? []
 , doCheck ? true
+, postPatch ? ""
 , ... } @ attrs:
 
 let
@@ -32,6 +33,17 @@ in stdenv.mkDerivation (attrs // {
   propagatedBuildInputs = [ julia ] ++ propagatedBuildInputs;
 
   inherit LD_LIBRARY_PATH JULIA_LOAD_PATH;
+
+  # TODO: To prohibit homebrew is necessary for Darwin but this is fragile
+  postPatch = postPatch + lib.optionalString stdenv.isDarwin ''
+    # sed -i REQUIRE -e '/@osx\s\+Homebrew/d'
+    if [ -f deps/build.jl ]; then
+        sed -i deps/build.jl \
+            -e '/using\s\+Homebrew/d' \
+            -e '/provides(\s*Homebrew\.HB/d' \
+            -e '/if\s\+Pkg\.installed(\s*"Homebrew"/,/end/d'
+    fi
+  '';
 
   configurePhase = ''
     runHook preConfigure
