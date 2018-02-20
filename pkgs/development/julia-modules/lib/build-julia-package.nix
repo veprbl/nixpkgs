@@ -3,6 +3,7 @@
 , makeJuliaPath
 }:
 
+lib.makeOverridable (
 { pname
 , version
 , buildInputs ? []
@@ -63,4 +64,4 @@ in  stdenv.mkDerivation (attrs // {
     inherit julia;
   };
 
-})
+}))

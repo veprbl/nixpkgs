@@ -1,0 +1,22 @@
+diff --git a/deps/build.jl b/deps/build.jl
+index 838a42a..9730529 100644
+--- a/deps/build.jl
++++ b/deps/build.jl
+@@ -1,8 +1,3 @@
+-if Sys.KERNEL === :Darwin && (!success(`command -v xcode-select`) || isempty(readchomp(`xcode-select -p`)))
+-    error("Building Rmath on macOS requires the Xcode command line tools to be installed.\n",
+-          "You can install them from the command line using `xcode-select --install`.")
+-end
+-
+ using BinDeps, Compat.Libdl
+ 
+ @BinDeps.setup
+@@ -39,7 +34,7 @@ provides(SimpleBuild,
+         CreateDirectory(joinpath(prefix, "lib"))
+         @build_steps begin
+             ChangeDirectory(srcdir)
+-            MAKE_CMD
++            `make USECLANG=1`
+             `mv src/libRmath-julia.$(Libdl.dlext) "$prefix/lib"`
+         end
+     end), [libRmath], os = :Unix)
