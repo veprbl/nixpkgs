@@ -1,4 +1,6 @@
 { stdenv
+, lib
+, cacert
 , julia
 , makeJuliaPath
 , deepReq
@@ -15,22 +17,32 @@ lib.makeOverridable (
 , ... } @ attrs:
 
 let
-  _buildInputs = [ julia ] ++ buildInputs ++ stdenv.lib.optionals doCheck checkInputs;
+  _buildInputs = [ julia ] ++ buildInputs ++ lib.optionals doCheck checkInputs;
+  LD_LIBRARY_PATH = lib.makeLibraryPath _buildInputs;
 
   # All ancestral packages in the dependency graph are required
   _allRequires = deepReq requires;
   JULIA_LOAD_PATH = makeJuliaPath _allRequires;
 
-in  stdenv.mkDerivation (attrs // {
+in stdenv.mkDerivation (attrs // {
 
   name = "julia-${julia.version}-${pname}-${version}";
 
   buildInputs = _buildInputs ++ _allRequires;
   propagatedBuildInputs = [ julia ] ++ propagatedBuildInputs;
 
-  phases = [ "unpackPhase" "patchPhase" "buildPhase" "installPhase" "fixupPhase" "checkPhase" ];
+  inherit LD_LIBRARY_PATH JULIA_LOAD_PATH;
 
-  inherit JULIA_LOAD_PATH;
+  configurePhase = ''
+    runHook preConfigure
+
+    export SSL_CERT_FILE="${cacert}/etc/ssl/certs/ca-bundle.crt"
+    export JULIA_LOAD_PATH="${JULIA_LOAD_PATH}"
+    export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}"
+    export JULIA_PKGDIR="$out/share/julia/site"
+
+    runHook postConfigure
+  '';
 
   # We only need to build when deps/build.jl exists. Otherwise, we have a pure Julia package
   # that can be used straight away.
