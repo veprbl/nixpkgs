@@ -62,15 +62,15 @@ let
   };
 in releaseTools.nixBuild rec {
   name = "hydra-${version}";
-  version = "2017-11-21";
+  version = "2018-02-23";
 
   inherit stdenv;
 
   src = fetchFromGitHub {
     owner = "NixOS";
     repo = "hydra";
-    rev = "b7bc4384b7b471d1ddf892cb03f16189a66d5a0d";
-    sha256 = "05g37z3ilazzqa5rqj5zljndwxjbvpc18xibh6jlwjwpvg3kpbbh";
+    rev = "3ec73c93e2cdf58750ab183746627892ced55c4f";
+    sha256 = "1832x38nzcq3sv41vn6idacw2algp4bbyr0skim81sd8c5zfgnhs";
   };
 
   buildInputs =
@@ -79,18 +79,6 @@ in releaseTools.nixBuild rec {
       guile # optional, for Guile + Guix support
       perlDeps perl nixUnstable
       postgresql # for running the tests
-      ((aws-sdk-cpp.override {
-        apis = ["s3"];
-        customMemoryManagement = false;
-      }).overrideAttrs (attrs: {
-        src = fetchFromGitHub {
-          owner = "edolstra";
-          repo = "aws-sdk-cpp";
-          rev = "local";
-          sha256 = "1vhgsxkhpai9a7dk38q4r239l6dsz2jvl8hii24c194lsga3g84h";
-        };
-        patches = attrs.patches or [] ++ [ ./aws-sdk-cpp-gcc7.patch ];
-      }))
     ];
 
   hydraPath = lib.makeBinPath (
