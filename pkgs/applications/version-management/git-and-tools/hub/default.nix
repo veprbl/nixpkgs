@@ -2,14 +2,14 @@
 
 stdenv.mkDerivation rec {
   name = "hub-${version}";
-  version = "2017-10-17";
+  version = "2018-02-22";
 
   src = fetchgit {
     url = https://github.com/github/hub.git;
     #rev = "refs/tags/v${version}";
     #sha256 = "195ckp1idz2azv0mm1q258yjz2n51sia9xdcjnqlprmq9aig5ldh";
-    rev = "5ce945e74713efe782cc10dc2fc08ea0b4fe099d";
-    sha256 = "17s2nfvbpg8zcqg959znmgjym893xxpgrdndpnv9m81mpgqc9nf3";
+    rev = "dbe8a5d7a0310725489003671c44a074074d3fc4";
+    sha256 = "00iv91f32lgj18a8xhjnz06jwzljgmh51ppw1nspkgy1866239d9";
   };
 
 
@@ -35,8 +35,8 @@ stdenv.mkDerivation rec {
     mkdir -p "$out/etc/bash_completion.d"
     cp "etc/hub.bash_completion.sh" "$out/etc/bash_completion.d/"
 
-# Should we also install provided git-hooks?
-# ?
+    # Should we also install provided git-hooks?
+    # ?
   '';
 
   meta = with stdenv.lib; {
