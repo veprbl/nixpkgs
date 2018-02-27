@@ -100,12 +100,13 @@ in rec {
       "-Wno-error=format-overflow" # newly detected by gcc7
     ];
     buildPhase = ''
-      cp -dpR ${openjdk8} writable-copy-of-jdk
+      cp -rL ${openjdk8} writable-copy-of-jdk
+      find writable-copy-of-jdk
       chmod +w -R writable-copy-of-jdk
 
       export MX_ALT_OUTPUT_ROOT=$NIX_BUILD_TOP/mxbuild
       export MX_CACHE_DIR=${makeMxCache jvmci8-mxcache}
-      mx --java-home $(pwd)/writable-copy-of-jdk build
+      mx --java-home $(pwd)/writable-copy-of-jdk/lib/openjdk build
     '';
     installPhase = ''
       mv jdk1.8.0_*/product $out
