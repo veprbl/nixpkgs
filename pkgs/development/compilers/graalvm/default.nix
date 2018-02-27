@@ -70,7 +70,7 @@ in rec {
     meta = with stdenv.lib; {
       homepage = https://github.com/graalvm/mx;
       description = "Command-line tool used for the development of Graal projects";
-      license = licenses.unfree;
+      license = licenses.gpl2;
       platforms = python27.meta.platforms;
     };
   };
@@ -198,7 +198,7 @@ in rec {
     meta = with stdenv.lib; {
       homepage = https://github.com/oracle/graal;
       description = "High-Performance Polyglot VM";
-      license = licenses.unfree;
+      license = licenses.gpl2;
       maintainers = with maintainers; [ volth ];
       platforms = [ "x86_64-linux" ];
     };
