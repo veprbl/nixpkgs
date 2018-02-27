@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchFromGitHub, fetchhg, fetchurl, mercurial, python27, zlib, makeWrapper, oraclejdk8 }:
+{ stdenv, lib, fetchFromGitHub, fetchhg, fetchurl, mercurial, python27, zlib, makeWrapper, openjdk8 }:
 
 let
   # pre-download some cache entries ('mx' will not be able to download under nixbld1)
@@ -77,12 +77,13 @@ in rec {
 
   # copy of pkgs.oraclejvm8 with JVMCI interface (TODO: it should work with pkgs.openjdk8 too)
   jvmci8 = stdenv.mkDerivation rec {
-    version = "0.36";
+    version = "0.41";
     name = "jvmci8-${version}";
-    src = fetchhg {
-      url    = http://hg.openjdk.java.net/graal/graal-jvmci-8;
+    src = fetchFromGitHub {
+      owner = "graalvm";
+      repo = "graal-jvmci-8";
       rev    = "jvmci-${version}";
-      sha256 = "143190adlzxvs5wfr54hmh5bpn6myz7jypi3jp0ag32lvr4nhskp";
+      sha256 = "0pajf114l8lzczfdzz968c3s1ardiy4q5ya8p2kmwxl06giy95qr";
     };
     buildInputs = [ mx mercurial ];
     postUnpack = ''
@@ -99,7 +100,7 @@ in rec {
       "-Wno-error=format-overflow" # newly detected by gcc7
     ];
     buildPhase = ''
-      cp -dpR ${oraclejdk8} writable-copy-of-jdk
+      cp -dpR ${openjdk8} writable-copy-of-jdk
       chmod +w -R writable-copy-of-jdk
 
       export MX_ALT_OUTPUT_ROOT=$NIX_BUILD_TOP/mxbuild
@@ -111,12 +112,12 @@ in rec {
 
       # overide references to unpatched JDK
       find $out -type f -perm -0100 \
-        -exec bash -c 'patchelf --set-rpath "$(patchelf --print-rpath {} | sed -r "s#${oraclejdk8}#$out#g")" {}' \;
-      sed -i -r "s#${oraclejdk8}#$out#g" $out/bin/jmc
-      sed -i -r "s#${oraclejdk8}#$out#g" $out/nix-support/setup-hook
+        -exec bash -c 'patchelf --set-rpath "$(patchelf --print-rpath {} | sed -r "s#${openjdk8}#$out#g")" {}' \;
+      sed -i -r "s#${openjdk8}#$out#g" $out/bin/jmc
+      sed -i -r "s#${openjdk8}#$out#g" $out/nix-support/setup-hook
     '';
     dontStrip = true; # why? see in oraclejdk derivation
-    inherit (oraclejdk8) meta;
+    inherit (openjdk8) meta;
   };
 
   graalvm8 = stdenv.mkDerivation rec {
