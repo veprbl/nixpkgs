@@ -145,7 +145,7 @@ in rec {
     buildPhase = ''
       export MX_ALT_OUTPUT_ROOT=$NIX_BUILD_TOP/mxbuild
       export MX_CACHE_DIR=${makeMxCache graal-mxcache}
-      ( cd substratevm; mx build --no-daemon )
+      ( cd substratevm; mx --java-home ${jvmci8} build )
     '';
     installPhase = ''
       # make a copy of jvmci8
