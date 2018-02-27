@@ -147,14 +147,14 @@ in rec {
       export MX_CACHE_DIR=${makeMxCache graal-mxcache}
       ( cd substratevm; mx --java-home ${jvmci8} build )
     '';
+      ## sed -i -r "s#${jvmci8}#$out#g" $out/bin/jmc
+      ## sed -i -r "s#${jvmci8}#$out#g" $out/nix-support/setup-hook
     installPhase = ''
       # make a copy of jvmci8
       cp -dpR ${jvmci8} $out
       chmod +w -R $out
       find $out -type f -perm -0100 \
         -exec bash -c 'patchelf --set-rpath "$(patchelf --print-rpath {} | sed -r "s#${jvmci8}#$out#g")" {}' \;
-      sed -i -r "s#${jvmci8}#$out#g" $out/bin/jmc
-      sed -i -r "s#${jvmci8}#$out#g" $out/nix-support/setup-hook
 
       # add graal files
       mkdir -p $out/jre/tools/{profiler,chromeinspector}
