@@ -109,14 +109,15 @@ in rec {
       mx --java-home $(pwd)/writable-copy-of-jdk/lib/openjdk build
     '';
     installPhase = ''
-      mv jdk1.8.0_*/product $out
-
-      # overide references to unpatched JDK
-      find $out -type f -perm -0100 \
-        -exec bash -c 'patchelf --set-rpath "$(patchelf --print-rpath {} | sed -r "s#${openjdk8}#$out#g")" {}' \;
-      sed -i -r "s#${openjdk8}#$out#g" $out/bin/jmc
-      sed -i -r "s#${openjdk8}#$out#g" $out/nix-support/setup-hook
+      mv openjdk*/*/product $out
     '';
+
+    # TODO:
+      # overide references to unpatched JDK
+      ## find $out -type f -perm -0100 \
+      ##   -exec bash -c 'patchelf --set-rpath "$(patchelf --print-rpath {} | sed -r "s#${openjdk8}#$out#g")" {}' \;
+      ## sed -i -r "s#${openjdk8}#$out#g" $out/bin/jmc
+      ## sed -i -r "s#${openjdk8}#$out#g" $out/nix-support/setup-hook
     dontStrip = true; # why? see in oraclejdk derivation
     inherit (openjdk8) meta;
   };
@@ -201,5 +202,7 @@ in rec {
       maintainers = with maintainers; [ volth ];
       platforms = [ "x86_64-linux" ];
     };
+
+    passthru.jvmci8 = jvmci8;
   };
 }
