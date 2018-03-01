@@ -3,18 +3,23 @@
 stdenv.mkDerivation rec {
   name = "${pname}-${version}";
   pname = "deepin-icon-theme";
-  version = "15.12.52";
+  version = "2018-02-23";
 
   src = fetchFromGitHub {
     owner = "linuxdeepin";
     repo = pname;
-    rev = version;
-    sha256 = "0fgmii3qzdl9n9vh7zq54n75d200w6xw7gbgzdaxjxm3b10bjl38";
+    rev = "19cbaa5c4929876cebe2162838e23246869d0fca";
+    sha256 = "0lwca5nav4rfkd76fr5pcb17q2cr7cz2z42wybqsl73iwszn4h6v";
   };
 
-  nativeBuildInputs = [ gtk3 papirus-icon-theme ];
+  nativeBuildInputs = [ gtk3 ];
+  propagatedUserEnvPkgs = [ papirus-icon-theme ];
 
-  makeFlags = [ "PREFIX=$(out)" ];
+  postPatch = ''
+    substituteInPlace Makefile --replace "install-cursors hicolor-links" "install-cursors"
+  '';
+
+  makeFlags = [ "PREFIX:=$(out)" ];
 
   postFixup = ''
     for theme in $out/share/icons/*; do
