@@ -3301,6 +3301,8 @@ with pkgs;
     boost = boost165;
   };
 
+  ispell = callPackage ../tools/text/ispell {};
+
   kindlegen = callPackage ../tools/typesetting/kindlegen { };
 
   latex2html = callPackage ../tools/misc/latex2html { };
@@ -5139,6 +5141,8 @@ with pkgs;
   unrtf = callPackage ../tools/text/unrtf { };
 
   untex = callPackage ../tools/text/untex { };
+
+  untrunc = callPackage ../tools/video/untrunc { };
 
   upx = callPackage ../tools/compression/upx { };
 
@@ -16235,7 +16239,10 @@ with pkgs;
     bluez5 = bluez5_28;
     fontsConf = makeFontsConf {
       fontDirectories = [
+        carlito dejavu_fonts
         freefont_ttf xorg.fontmiscmisc
+        liberation_ttf_v1_binary
+        liberation_ttf_v2_binary
       ];
     };
     clucene_core = clucene_core_2;
