@@ -1,14 +1,17 @@
-{ stdenv, fetchurl, getopt, makeWrapper }:
+{ stdenv, fetchFromGitHub, getopt, makeWrapper, autoreconfHook }:
 
 stdenv.mkDerivation rec {
   name = "libseccomp-${version}";
-  version = "2.3.3";
+  version = "2018-01-25";
 
-  src = fetchurl {
-    url = "https://github.com/seccomp/libseccomp/releases/download/v${version}/libseccomp-${version}.tar.gz";
-    sha256 = "0mdiyfljrkfl50q1m3ws8yfcyfjwf1zgkvcva8ffcwncji18zhkz";
+  src = fetchFromGitHub {
+    owner = "seccomp";
+    repo = "libseccomp";
+    rev = "a6cc6331923430ea08711bcdfd5684394fab1a6b";
+    sha256 = "1pxmvshn5l3c2g5hqj56gnp54mv43j7nq2wwkrgvbdsn84viapca";
   };
 
+  nativeBuildInputs = [ autoreconfHook ];
   buildInputs = [ getopt makeWrapper ];
 
   patchPhase = ''
