@@ -1,34 +1,30 @@
 { stdenv, fetchFromGitHub, fetchpatch, qmake, pkgconfig, qtbase, qtsvg, radare2 }:
 
 let
+  # Pinned version, submodule
   r2-git = radare2.overrideAttrs(o: rec {
     name = "radare2-for-cutter-${version}";
-    version = "2018-02-18";
+    version = "2018-02-26";
     src = fetchFromGitHub {
       owner = "radare";
       repo = "radare2";
-      rev = "0e247959123aaac5247c885fed0a68d3a327a493";
-      sha256 = "15s7b8z05a15b7dbhgrx7s7fiyxxpwi60371cbr6kpzjhscn77b5";
+      rev = "70bd99da259438fbe552b7debfe68c571cdcd2da";
+      sha256 = "1x08xskcz0skhkbgfd98sm7qq6jkniaayavxqjh20gxxcmyhhzfx";
     };
   });
 in
 stdenv.mkDerivation rec {
   name = "radare2-cutter-${version}";
-  version = "2018-02-18";
+  version = "2018-03-03";
 
   src = fetchFromGitHub {
     owner = "radareorg";
     repo = "cutter";
-    rev = "0e9be6343b60b2725b3a07b171df55e10a22e933";
-    sha256 = "08svpk81shhjygm20z469ydvlsk4kj6nv3imqaki32drr5xxm5qs";
-    # fetchSubmodules = true;
+    rev = "78c3e5f1e3113a4ff567f4afb4d317a2eb5ee9e3";
+    sha256 = "1ckixifzjd02vd16cr72sbbxzh862y1l1q8malp7a1zj4ca38530";
   };
 
   postUnpack = "export sourceRoot=$sourceRoot/src";
-
-  postPatch = ''
-    substituteInPlace cutter.desktop --replace "Exec=cutter" "Exec=Cutter"
-  '';
 
   nativeBuildInputs = [ qmake pkgconfig ];
   buildInputs = [ qtbase qtsvg r2-git ];
