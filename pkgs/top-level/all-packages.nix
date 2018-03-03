@@ -2922,6 +2922,8 @@ with pkgs;
 
   inetutils = callPackage ../tools/networking/inetutils { };
 
+  infiniband-diags = callPackage ../tools/networking/infiniband-diags { };
+
   inform7 = callPackage ../development/compilers/inform7 { };
 
   infamousPlugins = callPackage ../applications/audio/infamousPlugins { };
@@ -4786,6 +4788,8 @@ with pkgs;
   stdman = callPackage ../data/documentation/stdman { };
 
   storebrowse = callPackage ../tools/system/storebrowse { };
+
+  stubby = callPackage ../tools/networking/stubby { };
 
   syntex = callPackage ../tools/graphics/syntex {};
 
@@ -9460,7 +9464,7 @@ with pkgs;
   libb2 = callPackage ../development/libraries/libb2 { };
 
   libbap = callPackage ../development/libraries/libbap {
-    inherit (ocamlPackages_4_02) bap ocaml findlib ctypes;
+    inherit (ocamlPackages) bap ocaml findlib ctypes;
   };
 
   libbass = (callPackage ../development/libraries/audio/libbass { }).bass;
@@ -13936,7 +13940,7 @@ with pkgs;
 
   caladea = callPackage ../data/fonts/caladea {};
 
-  cantarell_fonts = callPackage ../data/fonts/cantarell-fonts { };
+  cantarell-fonts = callPackage ../data/fonts/cantarell-fonts { };
 
   carlito = callPackage ../data/fonts/carlito {};
 
@@ -13959,6 +13963,8 @@ with pkgs;
   cm_unicode = callPackage ../data/fonts/cm-unicode {};
 
   crimson = callPackage ../data/fonts/crimson {};
+
+  deepin-icon-theme = callPackage ../data/icons/deepin-icon-theme { };
 
   dejavu_fonts = lowPrio (callPackage ../data/fonts/dejavu-fonts {
     inherit (perlPackages) FontTTF;
@@ -16824,6 +16830,8 @@ with pkgs;
   openjump = callPackage ../applications/misc/openjump { };
 
   openscad = callPackage ../applications/graphics/openscad {};
+
+  opentx = callPackage ../applications/misc/opentx { };
 
   opera = callPackage ../applications/networking/browsers/opera {};
 
@@ -20478,8 +20486,6 @@ with pkgs;
   tetex = callPackage ../tools/typesetting/tex/tetex { libpng = libpng12; };
 
   tewi-font = callPackage ../data/fonts/tewi  {};
-
-  tex4ht = callPackage ../tools/typesetting/tex/tex4ht { tetex = ""; };
 
   texFunctions = callPackage ../tools/typesetting/tex/nix pkgs;
 
