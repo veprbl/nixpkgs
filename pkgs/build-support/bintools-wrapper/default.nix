@@ -109,6 +109,12 @@ stdenv.mkDerivation {
 
   installPhase =
     ''
+      set +x
+      echo SHELL=$SHELL
+      echo PATH=$PATH
+      echo $$
+      ls -l /proc/$$/exe
+
       set -u
 
       mkdir -p $out/bin {$out,$info,$man}/nix-support
@@ -190,9 +196,16 @@ stdenv.mkDerivation {
 
   setupHook = ./setup-hook.sh;
 
+  preFixup = ''
+    set -x
+  '';
+
   postFixup =
     ''
       set -u
+      set -x
+      echo SHELL=$SHELL
+      ls -l /proc/$$/exe
     ''
 
     + optionalString (libc != null) (''
