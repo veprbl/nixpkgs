@@ -2,9 +2,8 @@
 (import ./i686.nix) //
 
 {
-  bootstrapTools = /nix/store/s8fd64hw3s9v9s1r0cvh5qv3i6wr6kk5-stdenv-bootstrap-tools/on-server/bootstrap-tools.tar.xz;
-  #bootstrapTools = import <nix/fetchurl.nix> {
-  #  url = http://tarballs.nixos.org/stdenv-linux/x86_64/4907fc9e8d0d82b28b3c56e3a478a2882f1d700f/bootstrap-tools.tar.xz;
-  #  sha256 = "abe3f0727dd771a60b7922892d308da1bc7b082afc13440880862f0c8823c09f";
-  #};
+  bootstrapTools = import <nix/fetchurl.nix> {
+    url = http://tarballs.nixos.org/stdenv-linux/x86_64/4907fc9e8d0d82b28b3c56e3a478a2882f1d700f/bootstrap-tools.tar.xz;
+    sha256 = "abe3f0727dd771a60b7922892d308da1bc7b082afc13440880862f0c8823c09f";
+  };
 }
