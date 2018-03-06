@@ -42,16 +42,6 @@ self: super: {
   unix = null;
   xhtml = null;
 
-  # Undo the override in `configuration-common.nix`: GHC 8.4 bumps Cabal to 2.1:
-  # Distribution/Simple/CCompiler.hs:64:10: error:
-  #  • No instance for (Semigroup CDialect)
-  #      arising from the superclasses of an instance declaration
-  #  • In the instance declaration for ‘Monoid CDialect’
-  #     |
-  #  64 | instance Monoid CDialect where
-  #     |          ^^^^^^^^^^^^^^^
-  jailbreak-cabal = super.jailbreak-cabal.override { Cabal = self.Cabal; }; #pkgs.haskell.packages.ghc822.jailbreak-cabal;
-
   ## Shadowed:
 
   ## Needs bump to a versioned attribute
@@ -66,7 +56,7 @@ self: super: {
     ## Setup: Encountered missing dependencies:
     ## ghc >=7.0 && <8.4
     ##
-    ##        uncaught exception: IOException of type NoSuchThing (test/integration/testImport: changeWorkingDirectory: does not exist (No such file or directory))
+    ##        uncaught exception: IOException of type NoSuchThing (cabal: rawSystem: runInteractiveProcess: exec: does not exist (No such file or directory))
     doCheck         = false;
   });
 
@@ -77,6 +67,8 @@ self: super: {
   free = super.free_5;
 
   ## Needs bump to a versioned attribute
+  ## Setup: Encountered missing dependencies:
+  ## base >=3 && <4.11
   ## Needed for (<>) in prelude
   funcmp = super.funcmp_1_9;
 
@@ -107,18 +99,14 @@ self: super: {
   });
 
   ## Needs bump to a versioned attribute
-  ## breaks hspec:
   ## Setup: Encountered missing dependencies:
-  ## hspec-discover ==2.4.7
+  ## hspec-discover ==2.4.8
   hspec-discover = super.hspec-discover_2_4_8;
 
   ## Needs bump to a versioned attribute
   ## Setup: Encountered missing dependencies:
   ## free ==4.*, template-haskell >=2.4 && <2.13
   lens = super.lens_4_16;
-
-  ## Needs bump to a versioned attribute
-  QuickCheck = super.QuickCheck_2_11_3;
 
   ## Needs bump to a versioned attribute
   ## Setup: Encountered missing dependencies:
@@ -385,6 +373,23 @@ self: super: {
     };
   });
 
+  ## Unmerged.  PR: https://github.com/sol/hpack/pull/277
+  ## Issue: https://github.com/sol/hpack/issues/276
+  hpack = overrideCabal super.hpack (drv: {
+    ##     • No instance for (Semigroup Dependencies)
+    ##         arising from the 'deriving' clause of a data type declaration
+    ##       Possible fix:
+    src = pkgs.fetchFromGitHub {
+      owner  = "deepfire";
+      repo   = "hpack";
+      rev    = "acce0cffcc1d165a0fd9f0b83878dfbd622ea0d6";
+      sha256 = "1wv0ya1gb1hwd9w8g4z5aig694q3arsqhxv0d4wcp270xnq9ja8y";
+    };
+    ## Setup: Encountered missing dependencies:
+    ## http-client -any, http-client-tls -any, http-types -any
+    libraryHaskellDepends = drv.libraryHaskellDepends ++ (with self; [ http-client http-client-tls http-types ]);
+  });
+
   ## Unmerged.  PR: https://github.com/hanshoglund/monadplus/pull/3
   monadplus = overrideCabal super.monadplus (drv: {
     ##     • No instance for (Semigroup (Partial a b))
@@ -558,6 +563,13 @@ self: super: {
     jailbreak       = true;
   });
 
+  cabal2nix = super.cabal2nix.override {
+    ##     • No instance for (Semigroup (List a))
+    ##         arising from the 'deriving' clause of a data type declaration
+    ##       Possible fix:
+    hpack = self.hpack;
+  };
+
   cabal-doctest = overrideCabal super.cabal-doctest (drv: {
     ## Setup: Encountered missing dependencies:
     ## Cabal >=1.10 && <2.1, base >=4.3 && <4.11
@@ -571,6 +583,8 @@ self: super: {
   });
 
   deepseq-generics = overrideCabal super.deepseq-generics (drv: {
+    ## Setup: Encountered missing dependencies:
+    ## base >=4.5 && <4.11
     ## https://github.com/haskell-hvr/deepseq-generics/pull/4
     jailbreak       = true;
   });
@@ -618,6 +632,14 @@ self: super: {
     jailbreak       = true;
   });
 
+  jailbreak-cabal = super.jailbreak-cabal.override {
+    ##     • No instance for (Semigroup CDialect)
+    ##         arising from the superclasses of an instance declaration
+    ##     • In the instance declaration for ‘Monoid CDialect’
+    ## Undo the override in `configuration-common.nix`: GHC 8.4 bumps Cabal to 2.1:
+    Cabal = self.Cabal;
+  };
+
   kan-extensions = overrideCabal super.kan-extensions (drv: {
     ## Setup: Encountered missing dependencies:
     ## free ==4.*
@@ -654,13 +676,6 @@ self: super: {
     jailbreak       = true;
   });
 
-  ## Issue: https://github.com/pcapriotti/optparse-applicative/issues/288
-  optparse-applicative = overrideCabal super.optparse-applicative (drv: {
-    ## Setup: Encountered missing dependencies:
-    ## QuickCheck >=2.8 && <2.11
-    doCheck         = false;
-  });
-
   quickcheck-instances = overrideCabal super.quickcheck-instances (drv: {
     ## Setup: Encountered missing dependencies:
     ## base >=4.5 && <4.11
@@ -687,7 +702,7 @@ self: super: {
 
   tasty-hedgehog = overrideCabal super.tasty-hedgehog (drv: {
     ## Setup: Encountered missing dependencies:
-    ## base >=4.8 && <4.11, tasty ==0.11.*
+    ## base >=4.8 && <4.11
     jailbreak       = true;
   });
 
@@ -711,12 +726,6 @@ self: super: {
     doCheck         = false;
     ## Setup: Encountered missing dependencies:
     ## extra >=1.4.10 && <1.5, lens ==4.14.*
-    jailbreak       = true;
-  });
-
-  th-abstraction = overrideCabal super.th-abstraction (drv: {
-    ## Setup: Encountered missing dependencies:
-    ## template-haskell >=2.5 && <2.13
     jailbreak       = true;
   });
 

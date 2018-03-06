@@ -42,6 +42,7 @@ mapAliases (rec {
   bridge_utils = bridge-utils;  # added 2015-02-20
   btrfsProgs = btrfs-progs; # added 2016-01-03
   bundler_HEAD = bundler; # added 2015-11-15
+  cantarell_fonts = cantarell-fonts; # added 2018-03-03
   checkbashism = checkbashisms; # added 2016-08-16
   cifs_utils = cifs-utils; # added 2016-08
   clangAnalyzer = clang-analyzer;  # added 2015-02-20
@@ -103,7 +104,6 @@ mapAliases (rec {
   inotifyTools = inotify-tools;
   joseki = apache-jena-fuseki; # added 2016-02-28
   json_glib = json-glib; # added 2018-02-25
-  jquery_ui = jquery-ui;  # added 2014-09-07
   kdiff3-qt5 = kdiff3; # added 2017-02-18
   keepassx2-http = keepassx-reboot; # added 2016-10-17
   keepassx-reboot = keepassx-community; # added 2017-02-01
@@ -132,6 +132,7 @@ mapAliases (rec {
   m3d-linux = m33-linux; # added 2016-08-13
   manpages = man-pages; # added 2015-12-06
   man_db = man-db; # added 2016-05
+  piwik = matomo; # added 2018-01-16
   midoriWrapper = midori; # added 2015-01
   minc_tools = minc-tools; # 2017-12
   mlt-qt5 = libsForQt5.mlt;  # added 2015-12-19

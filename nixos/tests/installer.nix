@@ -207,7 +207,6 @@ let
 
             virtualisation.diskSize = 8 * 1024;
             virtualisation.memorySize = 1024;
-            virtualisation.writableStore = true;
 
             # Use a small /dev/vdb as the root disk for the
             # installer. This ensures the target disk (/dev/vda) is
@@ -244,6 +243,11 @@ let
               ++ optionals (bootLoader == "grub" && grubVersion == 2) [ pkgs.grub2 pkgs.grub2_efi ];
 
             nix.binaryCaches = mkForce [ ];
+            nix.extraOptions =
+              ''
+                hashed-mirrors =
+                connect-timeout = 1
+              '';
           };
 
       };
