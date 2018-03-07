@@ -1800,6 +1800,7 @@ with pkgs;
     sslSupport = zlibSupport;
     scpSupport = zlibSupport && !stdenv.isSunOS && !stdenv.isCygwin;
     gssSupport = true;
+    openssl = openssl_1_1_0;
   };
 
   curl_unix_socket = callPackage ../tools/networking/curl-unix-socket rec { };
