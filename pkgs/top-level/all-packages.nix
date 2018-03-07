@@ -1800,7 +1800,7 @@ with pkgs;
     sslSupport = zlibSupport;
     scpSupport = zlibSupport && !stdenv.isSunOS && !stdenv.isCygwin;
     gssSupport = true;
-    openssl = openssl_1_1_0;
+    #openssl = openssl_1_1_0;
   };
 
   curl_unix_socket = callPackage ../tools/networking/curl-unix-socket rec { };
@@ -10735,7 +10735,8 @@ with pkgs;
 
   wolfssl = callPackage ../development/libraries/wolfssl { };
 
-  openssl = openssl_1_0_2;
+  # openssl = openssl_1_0_2;
+  openssl = openssl_1_1_0;
 
   inherit (callPackages ../development/libraries/openssl {
       fetchurl = fetchurlBoot;
