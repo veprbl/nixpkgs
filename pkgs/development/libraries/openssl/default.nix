@@ -30,6 +30,8 @@ let
                   '!defined(__ANDROID__) && !defined(__OpenBSD__) && 0'
     '' else null;
 
+    NIX_CFLAGS_COMPILE = if (!stdenv.hostPlatform.isMusl) then null else "-DOPENSSL_NO_BUF_FREELISTS";
+
     outputs = [ "bin" "dev" "out" "man" ];
     setOutputFlags = false;
     separateDebugInfo = hostPlatform.isLinux;
