@@ -4001,6 +4001,7 @@ with pkgs;
       hpnSupport = false;
       etcDir = "/etc/ssh";
       pam = if stdenv.isLinux then pam else null;
+      openssl = openssl_1_0_2; # doesn't support 1.1.0 yet
     };
 
   openssh_hpn = pkgs.appendToName "with-hpn" (openssh.override { hpnSupport = true; });
