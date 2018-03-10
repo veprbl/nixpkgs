@@ -57,7 +57,9 @@ stdenv.mkDerivation rec {
       url = https://raw.githubusercontent.com/openwrt/openwrt/87606e25afac6776d1bbc67ed284434ec5a832b4/toolchain/musl/patches/300-relative.patch;
       sha256 = "0hfadrycb60sm6hb6by4ycgaqc9sgrhh42k39v8xpmcvdzxrsq2n";
     })
+    ./malloc.patch
   ];
+
   preConfigure = ''
     configureFlagsArray+=("--syslibdir=$out/lib")
   '';
