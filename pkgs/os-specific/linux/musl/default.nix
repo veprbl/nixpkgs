@@ -41,6 +41,8 @@ stdenv.mkDerivation rec {
       --replace -fno-asynchronous-unwind-tables ""
   '';
 
+  patches = [ ./malloc.patch ];
+
   preConfigure = ''
     configureFlagsArray+=("--syslibdir=$out/lib")
   '';
