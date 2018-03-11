@@ -5,7 +5,7 @@ let
   name = "doit";
   version = "0.30.3";
 
-in python3Packages.buildPythonApplication {
+in with python3Packages; buildPythonApplication {
   name = "${name}-${version}";
 
   src = fetchurl {
@@ -13,9 +13,12 @@ in python3Packages.buildPythonApplication {
     sha256 = "1fcsslc3mc4bszq5xdqbxv37720s1s31d6pbfwc2iyxk1x2wi219";
   };
 
-  buildInputs = with python3Packages; [ mock pytest ];
+  buildInputs = [ mock pytest ];
 
-  propagatedBuildInputs = with python3Packages; [ cloudpickle pyinotify ];
+  propagatedBuildInputs = [ cloudpickle ] ++
+    stdenv.lib.optional stdenv.isLinux pyinotify ++
+    stdenv.lib.optional stdenv.isDarwin macfsevents;
+
 
   # Tests fail due to mysterious gdbm.open() resource temporarily
   # unavailable errors.
