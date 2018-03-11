@@ -70,6 +70,8 @@ let version = "7.3.0";
         url = "https://git.busybox.net/buildroot/plain/package/gcc/7.1.0/0900-remove-selftests.patch?id=11271540bfe6adafbc133caf6b5b902a816f5f02";
         sha256 = "0mrvxsdwip2p3l17dscpc1x8vhdsciqw1z5q9i6p5g9yg1cqnmgs";
       })
+      # http://www.openwall.com/lists/musl/2016/12/04/2
+      ++ optional (hostPlatform.libc == "musl") ../ssp_nonshared.patch
       # The GNAT Makefiles did not pay attention to CFLAGS_FOR_TARGET for its
       # target libraries and tools.
       ++ optional langAda ../gnat-cflags.patch
