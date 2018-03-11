@@ -79,6 +79,8 @@ stdenv.mkDerivation rec {
     moveToOutput lib/musl-gcc.specs $dev
     substituteInPlace $dev/bin/musl-gcc \
       --replace $out/lib/musl-gcc.specs $dev/lib/musl-gcc.specs
+
+    $STRIP -S $out/lib/libc.a
   '' + lib.optionalString useBSDCompatHeaders ''
     install -D ${queue_h} $dev/include/sys/queue.h
     install -D ${cdefs_h} $dev/include/sys/cdefs.h
