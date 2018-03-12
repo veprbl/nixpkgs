@@ -1,12 +1,12 @@
-From bbaff3024115b0c4acb91f21925754eeecd52d45 Mon Sep 17 00:00:00 2001
+From b609eb4c406ff245902c02c35d88a542a6fa4955 Mon Sep 17 00:00:00 2001
 From: Will Dietz <w@wdtz.org>
 Date: Fri, 9 Mar 2018 18:17:36 -0600
 Subject: [PATCH] kludge together fork locking
 
 ---
  src/malloc/malloc.c | 28 ++++++++++++++++++++++++++++
- src/process/fork.c  |  8 ++++++++
- 2 files changed, 36 insertions(+)
+ src/process/fork.c  | 10 ++++++++++
+ 2 files changed, 38 insertions(+)
 
 diff --git a/src/malloc/malloc.c b/src/malloc/malloc.c
 index 9e05e1d6..83d007c8 100644
@@ -48,10 +48,10 @@ index 9e05e1d6..83d007c8 100644
  {
  #if 1
 diff --git a/src/process/fork.c b/src/process/fork.c
-index da074ae9..5588b2d8 100644
+index da074ae9..ebccccd5 100644
 --- a/src/process/fork.c
 +++ b/src/process/fork.c
-@@ -11,11 +11,16 @@ static void dummy(int x)
+@@ -11,12 +11,19 @@ static void dummy(int x)
  
  weak_alias(dummy, __fork_handler);
  
@@ -64,11 +64,14 @@ index da074ae9..5588b2d8 100644
  	pid_t ret;
  	sigset_t set;
  	__fork_handler(-1);
-+	prefork_lock();
  	__block_all_sigs(&set);
++  // Important that we can't become MT while acquiring locks
++  // (last paragraph here: http://www.openwall.com/lists/musl/2017/06/18/9 )
++	prefork_lock();
  #ifdef SYS_fork
  	ret = __syscall(SYS_fork);
-@@ -28,6 +33,9 @@ pid_t fork(void)
+ #else
+@@ -28,6 +35,9 @@ pid_t fork(void)
  		self->robust_list.off = 0;
  		self->robust_list.pending = 0;
  		libc.threads_minus_1 = 0;
