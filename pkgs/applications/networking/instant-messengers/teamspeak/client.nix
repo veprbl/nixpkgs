@@ -34,10 +34,10 @@ stdenv.mkDerivation rec {
   version = "3.1.8";
 
   src = fetchurl {
-    urls = [
-      "http://dl.4players.de/ts/releases/${version}/TeamSpeak3-Client-linux_${arch}-${version}.run"
-      "http://teamspeak.gameserver.gamed.de/ts3/releases/${version}/TeamSpeak3-Client-linux_${arch}-${version}.run"
-    ];
+    url =
+      "http://dl.4players.de/ts/releases/${version}/TeamSpeak3-Client-linux_${arch}-${version}.run";
+      #      "http://teamspeak.gameserver.gamed.de/ts3/releases/${version}/TeamSpeak3-Client-linux_${arch}-${version}.run"
+      #];
     sha256 = if stdenv.is64bit
                 then "0yav71sfklqg2k3ayd0bllsixd486l0587s5ygjlc9gnchw3zg6z"
                 else "1agf6jf5hkyxazxqcnvcjfb263p5532ahi7h4rkifnnvqay36v5i";
