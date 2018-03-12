@@ -87,7 +87,7 @@ in
 
   # Passthru information, if any.
 , passthru ? {}
-}:
+} @ args:
 
 assert sha512 != "" -> builtins.compareVersions "1.11" builtins.nixVersion <= 0;
 
@@ -110,6 +110,12 @@ let
 
 in
 
+#if (!showURLs && netrcPhase == null && netrcImpureEnvVars == null && postFetch == ""
+#  && !downloadToTemp && meta == {} && passthru == {})
+if (!(args ? urls || args ? postFetch))
+  then
+    import <nix/fetchurl.nix> args
+  else
 stdenvNoCC.mkDerivation {
   name =
     if showURLs then "urls"
