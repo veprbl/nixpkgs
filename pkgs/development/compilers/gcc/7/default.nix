@@ -71,7 +71,7 @@ let version = "7.3.0";
         sha256 = "0mrvxsdwip2p3l17dscpc1x8vhdsciqw1z5q9i6p5g9yg1cqnmgs";
       })
       # http://www.openwall.com/lists/musl/2016/12/04/2
-      ++ optional (hostPlatform.libc == "musl") ../ssp_nonshared.patch
+      ++ optional (targetPlatform.libc == "musl") ../ssp_nonshared.patch
       # The GNAT Makefiles did not pay attention to CFLAGS_FOR_TARGET for its
       # target libraries and tools.
       ++ optional langAda ../gnat-cflags.patch
@@ -407,7 +407,7 @@ stdenv.mkDerivation ({
       # On Illumos/Solaris GNU as is preferred
       "--with-gnu-as" "--without-gnu-ld"
     ] ++
-    optionals (hostPlatform.libc == "musl") [
+    optionals (targetPlatform.libc == "musl") [
       # https://github.com/richfelker/musl-cross-make/commit/0291cc44eee410270a97efb6258394c1f1f8352a
       "--enable-tls"
       "--disable-libmudflap"
