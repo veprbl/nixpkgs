@@ -65,7 +65,7 @@ stdenv.mkDerivation rec {
     # Create 'ldd' symlink, builtin
     ln -s $out/lib/libc.so $out/bin/ldd
 
-    strip -S $out/lib/libc.a
+    $STRIP -S $out/lib/libc.a
   '' + lib.optionalString useBSDCompatHeaders ''
     install -D ${queue_h} $dev/include/sys/queue.h
     install -D ${cdefs_h} $dev/include/sys/cdefs.h
