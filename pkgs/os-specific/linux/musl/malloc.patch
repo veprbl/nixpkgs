@@ -1,18 +1,18 @@
-From d164759a297266721db5fbcca3fef8a99151bd7d Mon Sep 17 00:00:00 2001
+From bbaff3024115b0c4acb91f21925754eeecd52d45 Mon Sep 17 00:00:00 2001
 From: Will Dietz <w@wdtz.org>
 Date: Fri, 9 Mar 2018 18:17:36 -0600
 Subject: [PATCH] kludge together fork locking
 
 ---
- src/malloc/malloc.c | 31 +++++++++++++++++++++++++++++++
+ src/malloc/malloc.c | 28 ++++++++++++++++++++++++++++
  src/process/fork.c  |  8 ++++++++
- 2 files changed, 39 insertions(+)
+ 2 files changed, 36 insertions(+)
 
 diff --git a/src/malloc/malloc.c b/src/malloc/malloc.c
-index 9e05e1d6..062bcbdb 100644
+index 9e05e1d6..83d007c8 100644
 --- a/src/malloc/malloc.c
 +++ b/src/malloc/malloc.c
-@@ -84,6 +84,37 @@ static inline void unlock_bin(int i)
+@@ -84,6 +84,34 @@ static inline void unlock_bin(int i)
  	unlock(mal.bins[i].lock);
  }
  
@@ -20,12 +20,10 @@ index 9e05e1d6..062bcbdb 100644
 +	int i;
 +	for (i = 0; i < 64; ++i)
 +		lock_bin(i);
-+	lock(mal.free_lock);
 +}
 +
 +void postfork_unlock_parent() {
 +	int i;
-+	unlock(mal.free_lock);
 +	for (i = 63; i >= 0; --i)
 +		unlock_bin(i);
 +}
@@ -42,7 +40,6 @@ index 9e05e1d6..062bcbdb 100644
 +	//
 +	// This is probably terrible.
 +	int i;
-+	clear_lock(mal.free_lock);
 +	for (i = 63; i >= 0; --i)
 +		clear_lock(mal.bins[i].lock);
 +}
