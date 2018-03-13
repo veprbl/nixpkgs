@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgconfig, meson, ninja, valadoc
+{ stdenv, fetchurl, pkgconfig, meson, ninja, makeFontsConf
 , gnome3, glib, json-glib, libarchive, libsoup, gobjectIntrospection }:
 
 let
@@ -12,14 +12,18 @@ in stdenv.mkDerivation rec {
     sha256 = "0vcnimlfcscyvjbh845xbnjb9qc8x0mliaqz2gczxxpakxrbl3gh";
   };
 
-  nativeBuildInputs = [ gnome3.vala gobjectIntrospection meson ninja pkgconfig valadoc ];
+  nativeBuildInputs = [ gnome3.vala gobjectIntrospection meson ninja pkgconfig ];
   buildInputs = [ glib gnome3.libgee json-glib libsoup libarchive ];
 
   mesonFlags = [ "-Denable_valadoc=true" ];
 
-  doCheck = true;
+  doInstallCheck = true;
 
-  checkPhase = "./httpseverywhere_test";
+  installCheckPhase = ''
+    XDG_DATA_DIRS=$out/share:$XDG_DATA_DIRS ./test/httpseverywhere_test
+  '';
+
+  FONTCONFIG_FILE = makeFontsConf { fontDirectories = [ ]; };
 
   outputs = [ "out" "devdoc" ];
 
