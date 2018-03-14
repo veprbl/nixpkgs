@@ -5,15 +5,15 @@
 }:
 
 stdenv.mkDerivation rec {
-  version = "1.9.0";
+  version = "1.9.3";
   name = "cdo-${version}";
 
   # Dependencies
   buildInputs = [ curl netcdf hdf5 ];
 
   src = fetchurl {
-    url = "https://code.mpimet.mpg.de/attachments/download/15187/${name}.tar.gz";
-    sha256 = "024hsr6qfg2dicwvm0vvkg3fr998bchf0qgwpj2v0jmz7a67ydnz";
+    url = "https://code.mpimet.mpg.de/attachments/download/16435/${name}.tar.gz";
+    sha256 = "0gwzb70zk47s1qd5cg4xf7wky4vdsdrq1waxk86hqq02nkkksfp8";
   };
 
  # Configure phase
