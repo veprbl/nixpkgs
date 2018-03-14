@@ -75,7 +75,8 @@ stdenv.mkDerivation rec {
     mv $out/nim/*     $out/     && rmdir $out/nim
     wrapProgram $out/bin/nim \
       --suffix PATH : ${lib.makeBinPath [ stdenv.cc ]} \
-      --set hardeningDisable all
+      --set hardeningDisable all \
+      --set NIX_LDFLAGS "$NIX_LDFLAGS"
   '';
 
   checkPhase = "./koch tests";
