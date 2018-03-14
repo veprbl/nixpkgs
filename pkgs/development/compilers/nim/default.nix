@@ -1,4 +1,5 @@
-{ stdenv, lib, fetchurl, makeWrapper, nodejs, openssl, pcre, readline, sqlite }:
+{ stdenv, lib, fetchurl, makeWrapper
+, boehmgc, nodejs, openssl, pcre, readline, sfml, sqlite }:
 
 stdenv.mkDerivation rec {
   name = "nim-${version}";
@@ -18,6 +19,7 @@ stdenv.mkDerivation rec {
     "-lpcre"
     "-lreadline"
     "-lsqlite3"
+    "-lgc"
   ];
 
   # 1. nodejs is only needed for tests
@@ -27,7 +29,7 @@ stdenv.mkDerivation rec {
 
   buildInputs  = [
     makeWrapper nodejs
-    openssl pcre readline sqlite
+    boehmgc openssl pcre readline sfml sqlite
   ];
 
   buildPhase   = ''
