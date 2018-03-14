@@ -1,5 +1,5 @@
 { stdenv, lib, fetchurl, makeWrapper
-, boehmgc, nodejs, openssl, pcre, readline, sfml, sqlite }:
+, boehmgc, coreutils, nodejs, openssl, pcre, readline, sfml, sqlite, tzdata }:
 
 stdenv.mkDerivation rec {
   name = "nim-${version}";
@@ -31,8 +31,25 @@ stdenv.mkDerivation rec {
 
   buildInputs  = [
     makeWrapper nodejs
-    boehmgc openssl pcre readline sfml sqlite
+    boehmgc openssl pcre readline sfml sqlite tzdata
   ];
+
+  postPatch = ''
+    # Fixup paths used in tests
+    substituteInPlace tests/osproc/tworkingdir.nim --replace /usr/bin ${coreutils}/bin
+    substituteInPlace tests/async/tioselectors.nim --replace /bin/sleep ${coreutils}/bin/sleep
+    substituteInPlace tests/async/tupcoming_async.nim --replace /bin/sleep ${coreutils}/bin/sleep
+
+    # Remove tests that need to fetch remote packages
+    rm tests/manyloc/nake/nakefile.nim
+    rm tests/manyloc/named_argument_bug/main.nim
+    rm tests/manyloc/keineschweine/keineschweine.nim
+    rm tests/cpp/tasync_cpp.nim
+    rm tests/niminaction/Chapter7/Tweeter/src/tweeter.nim
+
+    # Remove test that needs network
+    rm tests/stdlib/thttpclient.nim
+  '';
 
   buildPhase   = ''
     sh build.sh
