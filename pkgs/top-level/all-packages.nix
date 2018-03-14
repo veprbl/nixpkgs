@@ -6638,7 +6638,7 @@ with pkgs;
   mozart-binary = callPackage ../development/compilers/mozart/binary.nix { };
   mozart = mozart-binary;
 
-  nim = callPackage ../development/compilers/nim { };
+  nim = callPackage ../development/compilers/nim { nodejs = nodejs-9_x; };
   nrpl = callPackage ../development/tools/nrpl { };
 
   neko = callPackage ../development/compilers/neko { };
