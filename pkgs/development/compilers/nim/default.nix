@@ -44,11 +44,9 @@ stdenv.mkDerivation rec {
     rm tests/osproc/tworkingdir.nim
 
     # Remove tests that need to fetch remote packages
-    rm tests/manyloc/nake/nakefile.nim
-    rm tests/manyloc/named_argument_bug/main.nim
-    rm tests/manyloc/keineschweine/keineschweine.nim
     rm tests/cpp/tasync_cpp.nim
 
+    # These tests need a bit more intrusive work to disable
     sed -i tests/testament/categories.nim -e 's@.*Tweeter.*@# \0@'
     substituteInPlace tests/testament/categories.nim \
       --replace "manyLoc r, cat, options" \
