@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgconfig, gnome3, gtk3, wrapGAppsHook, gjs
+{ stdenv, fetchurl, pkgconfig, gnome3, gtk3, wrapGAppsHook, gjs, gobjectIntrospection
 , libgweather, intltool, itstool, geoclue2 }:
 
 stdenv.mkDerivation rec {
@@ -10,13 +10,9 @@ stdenv.mkDerivation rec {
     sha256 = "965cc0d1b4d4e53c06d494db96f0b124d232af5c0e731ca900edd10f77a74c78";
   };
 
-  passthru = {
-    updateScript = gnome3.updateScript { packageName = "gnome-weather"; attrPath = "gnome3.gnome-weather"; };
-  };
-
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig intltool itstool wrapGAppsHook ];
   buildInputs = [
-    gtk3 wrapGAppsHook gjs intltool itstool
+    gtk3 gjs gobjectIntrospection
     libgweather gnome3.defaultIconTheme geoclue2 gnome3.gsettings-desktop-schemas
   ];
 
@@ -29,6 +25,13 @@ stdenv.mkDerivation rec {
         --replace "Exec=@pkgdatadir@/@PACKAGE_NAME@.Application" \
                   "Exec=$out/bin/gnome-weather"
   '';
+
+  passthru = {
+    updateScript = gnome3.updateScript {
+      packageName = "gnome-weather";
+      attrPath = "gnome3.gnome-weather";
+    };
+  };
 
   meta = with stdenv.lib; {
     homepage = https://wiki.gnome.org/Apps/Weather;
