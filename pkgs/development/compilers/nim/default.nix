@@ -51,7 +51,7 @@ stdenv.mkDerivation rec {
 
     sed -i tests/testament/categories.nim -e 's@.*Tweeter.*@# \0@'
     substituteInPlace tests/testament/categories.nim \
-      --replace "anyLoc r, cat, options" \
+      --replace "manyLoc r, cat, options" \
                 discard
 
     # Remove test that needs network
