@@ -49,7 +49,8 @@ stdenv.mkDerivation rec {
     mv $out/nim/bin/* $out/bin/ && rmdir $out/nim/bin
     mv $out/nim/*     $out/     && rmdir $out/nim
     wrapProgram $out/bin/nim \
-      --suffix PATH : ${lib.makeBinPath [ stdenv.cc ]}
+      --suffix PATH : ${lib.makeBinPath [ stdenv.cc ]} \
+      --set hardeningDisable all
   '';
 
   checkPhase = "./koch tests";
