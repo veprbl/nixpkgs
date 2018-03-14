@@ -22,6 +22,8 @@ stdenv.mkDerivation rec {
     "-lgc"
   ];
 
+  hardeningDisable = [ "all" ];
+
   # 1. nodejs is only needed for tests
   # 2. we could create a separate derivation for the "written in c" version of nim
   #    used for bootstrapping, but koch insists on moving the nim compiler around
