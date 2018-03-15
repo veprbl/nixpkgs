@@ -33,6 +33,7 @@
 , gnused ? null
 , cloog # unused; just for compat with gcc4, as we override the parameter on some places
 , darwin ? null
+, vtableVerify ? stdenv.isLinux
 , buildPlatform, hostPlatform, targetPlatform
 , buildPackages
 }:
@@ -395,6 +396,9 @@ stdenv.mkDerivation ({
 
     # Ada
     optional langAda "--enable-libada" ++
+
+    # vtable-verify
+    optional vtableVerify "--enable-vtable-verify" ++
 
     platformFlags ++
     optional (targetPlatform != hostPlatform) crossConfigureFlags ++
