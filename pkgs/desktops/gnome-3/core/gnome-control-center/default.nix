@@ -1,24 +1,25 @@
-{ fetchurl, stdenv, substituteAll, pkgconfig, gnome3, ibus, intltool, upower, wrapGAppsHook
+{ fetchurl, stdenv, substituteAll, meson, ninja, pkgconfig, gnome3, ibus, gettext, upower, wrapGAppsHook
 , libcanberra-gtk3, accountsservice, libpwquality, libpulseaudio
 , gdk_pixbuf, librsvg, libnotify, libgudev, gnome-color-manager
 , libxml2, polkit, libxslt, libgtop, libsoup, colord, colord-gtk
 , cracklib, libkrb5, networkmanagerapplet, networkmanager, glibc
 , libwacom, samba, shared-mime-info, tzdata, libtool, libgnomekbd
-, docbook_xsl, docbook_xsl_ns, modemmanager, clutter, clutter-gtk
+, docbook_xsl, modemmanager, clutter, clutter-gtk, cheese
 , fontconfig, sound-theme-freedesktop, grilo }:
 
 let
+  pname = "gnome-control-center";
   version = "3.28.0";
 in stdenv.mkDerivation rec {
-  name = "gnome-control-center-${version}";
+  name = "${pname}-${version}";
 
   src = fetchurl {
-    url = "mirror://gnome/sources/gnome-control-center/${gnome3.versionBranch version}/${name}.tar.xz";
+    url = "mirror://gnome/sources/${pname}/${gnome3.versionBranch version}/${name}.tar.xz";
     sha256 = "0nyx5nl2rky0249rdcy0hsccnxf3angpya0q859rrbrwaixqnxh3";
   };
 
   nativeBuildInputs = [
-    pkgconfig intltool wrapGAppsHook libtool libxslt docbook_xsl docbook_xsl_ns
+    meson ninja pkgconfig gettext wrapGAppsHook libtool libxslt docbook_xsl
     shared-mime-info
   ];
 
@@ -28,7 +29,7 @@ in stdenv.mkDerivation rec {
     gnome-online-accounts libsoup colord libpulseaudio fontconfig colord-gtk
     accountsservice libkrb5 networkmanagerapplet libwacom samba libnotify
     grilo libpwquality cracklib vino libcanberra-gtk3 libgudev
-    gdk_pixbuf defaultIconTheme librsvg clutter clutter-gtk
+    gdk_pixbuf defaultIconTheme librsvg clutter clutter-gtk cheese
     networkmanager modemmanager gnome-bluetooth tracker
   ];
 
@@ -39,6 +40,11 @@ in stdenv.mkDerivation rec {
       inherit glibc libgnomekbd tzdata;
     })
   ];
+
+  postPatch = ''
+    chmod +x meson_post_install.py # patchShebangs requires executable file
+    patchShebangs meson_post_install.py
+  '';
 
   preFixup = ''
     gappsWrapperArgs+=(
@@ -54,8 +60,8 @@ in stdenv.mkDerivation rec {
 
   passthru = {
     updateScript = gnome3.updateScript {
-      packageName = "gnome-control-center";
-      attrPath = "gnome3.gnome-control-center";
+      packageName = pname;
+      attrPath = "gnome3.${pname}";
     };
   };
 
