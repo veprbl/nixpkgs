@@ -316,9 +316,7 @@ stdenv.mkDerivation ({
     ;
 
   # This should be an array but preserve string-ness to avoid rebuilds
-  NIX_LDFLAGS = if hostPlatform.isSunOS then "-lm -ldl"
-                else if hostPlatform.isMusl then [ "-lssp_nonshared" ]
-                else "";
+  NIX_LDFLAGS = stdenv.lib.optionalString hostPlatform.isSunOS "-lm -ldl";
 
   preConfigure = stdenv.lib.optionalString (hostPlatform.isSunOS && hostPlatform.is64bit) ''
     export NIX_LDFLAGS=`echo $NIX_LDFLAGS | sed -e s~$prefix/lib~$prefix/lib/amd64~g`
@@ -497,7 +495,8 @@ stdenv.mkDerivation ({
     ]) ++ optionals (libpthreadCross != null) [
       "-L${libpthreadCross}/lib"
       "-Wl,${libpthreadCross.TARGET_LDFLAGS}"
-    ]);
+    ])
+    ++ optional hostPlatform.isMusl "-lssp_nonshared";
 
   passthru =
     { inherit langC langCC langObjC langObjCpp langAda langFortran langVhdl langGo version; isGNU = true; };
