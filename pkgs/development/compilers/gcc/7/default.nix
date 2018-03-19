@@ -315,8 +315,10 @@ stdenv.mkDerivation ({
     ++ (optional hostPlatform.isDarwin targetPackages.stdenv.cc.bintools)
     ;
 
-  NIX_LDFLAGS = stdenv.lib.optionalString  hostPlatform.isSunOS "-lm -ldl"
-    + stdenv.lib.optionalString hostPlatform.isMusl "-lssp_nonshared";
+  # This should be an array but preserve string-ness to avoid rebuilds
+  NIX_LDFLAGS = if hostPlatform.isSunOS then "-lm -ldl"
+                else if hostPlatform.isMusl then [ "-lssp_nonshared" ]
+                else "";
 
   preConfigure = stdenv.lib.optionalString (hostPlatform.isSunOS && hostPlatform.is64bit) ''
     export NIX_LDFLAGS=`echo $NIX_LDFLAGS | sed -e s~$prefix/lib~$prefix/lib/amd64~g`
