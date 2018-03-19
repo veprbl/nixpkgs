@@ -416,10 +416,6 @@ stdenv.mkDerivation ({
       "--enable-libstdcxx-time"
       # https://git.buildroot.net/buildroot/commit/?id=873d4019f7fb00f6a80592224236b3ba7d657865
       "--disable-libmpx"
-      # Use provided libssp_nonshared.a
-      "--disable-libssp"
-      # Not supported
-      "--disable-symvers"
     ]
   ;
 
