@@ -1,14 +1,14 @@
 { stdenv, fetchFromGitHub, cmake, llvmPackages }:
 
 stdenv.mkDerivation rec {
-  version = "0.1.1";
+  version = "0.2.0";
   name = "zig-${version}";
 
   src = fetchFromGitHub {
     owner = "zig-lang";
     repo = "zig";
     rev = "${version}";
-    sha256 = "01yqjyi25f99bfmxxwyh45k7j84z0zg7n9jl8gg0draf96mzdh06";
+    sha256 = "0lym28z9mj6hfiq78x1fsd8y89h8xyfc1jgqyazi1g9r72427n07";
   };
 
   buildInputs = [ cmake llvmPackages.clang-unwrapped llvmPackages.llvm ];
@@ -26,7 +26,7 @@ stdenv.mkDerivation rec {
 
   meta = with stdenv.lib; {
     description = "Programming languaged designed for robustness, optimality, and clarity";
-    homepage = http://ziglang.org/;
+    homepage = https://ziglang.org/;
     license = licenses.mit;
     platforms = platforms.unix;
     maintainers = [ maintainers.andrewrk ];
