@@ -47,8 +47,8 @@ let
   '' + stdenv.lib.optionalString enableIntegerSimple ''
     INTEGER_LIBRARY = integer-simple
   '' + stdenv.lib.optionalString (targetPlatform != hostPlatform) ''
-    BuildFlavour = perf-cross
-    Stage1Only = YES
+    Stage1Only = ${if targetPlatform.system == hostPlatform.system then "NO" else "YES"}
+    CrossCompilePrefix = ${targetPrefix}
     HADDOCK_DOCS = NO
     BUILD_SPHINX_HTML = NO
     BUILD_SPHINX_PDF = NO
@@ -88,6 +88,27 @@ stdenv.mkDerivation rec {
     (fetchpatch { # Fix STRIP to be substituted from configure
       url = "https://git.haskell.org/ghc.git/commitdiff_plain/2fc8ce5f0c8c81771c26266ac0b150ca9b75c5f3";
       sha256 = "03253ci40np1v6k0wmi4aypj3nmj3rdyvb1k6rwqipb30nfc719f";
+    })
+  ] ++ stdenv.lib.optionals (hostPlatform != targetPlatform) [
+    (fetchpatch {
+      url = "https://raw.githubusercontent.com/gentoo/gentoo/08a41d2dff99645af6ac5a7bb4774f5f193b6f20/dev-lang/ghc/files/ghc-8.2.1_rc1-unphased-cross.patch";
+      sha256 = "1hxj80bjx0x3w0f35cj3k2wipppr1ald03jwfy5q0xlxygdha17w";
+    })
+    (fetchpatch {
+      url = "https://raw.githubusercontent.com/gentoo/gentoo/08a41d2dff99645af6ac5a7bb4774f5f193b6f20/dev-lang/ghc/files/ghc-8.2.1_rc1-staged-cross.patch";
+      sha256 = "12xsln3zyfpvml8bwdpbc003h6zl1qh2qcq1rhdrw02n45dz8lvc";
+    })
+    (fetchpatch {
+      url = "https://raw.githubusercontent.com/gentoo/gentoo/08a41d2dff99645af6ac5a7bb4774f5f193b6f20/dev-lang/ghc/files/ghc-8.2.1_rc1-ghci-cross.patch";
+      sha256 = "03dcqf5af3vjhrky3f2z26j4d9h8qd9nkv76xp0l97h4cqk7vfqb";
+    })
+    (fetchpatch {
+      url = "https://raw.githubusercontent.com/gentoo/gentoo/08a41d2dff99645af6ac5a7bb4774f5f193b6f20/dev-lang/ghc/files/ghc-8.2.1_rc1-stage2-cross.patch";
+      sha256 = "0pi2m85wjxaaablq6n4q5vyn9qxvry5d7nmja4b28i68yb4ly9g1";
+    })
+    (fetchpatch {
+      url = "https://raw.githubusercontent.com/gentoo/gentoo/08a41d2dff99645af6ac5a7bb4774f5f193b6f20/dev-lang/ghc/files/ghc-8.2.1_rc1-hp2ps-cross.patch";
+      sha256 = "1fszfavf1cvrf02x500mi7jykcpvpl2i7i4qzr2qz9sbmyq063f0";
     })
   ] ++ stdenv.lib.optional deterministicProfiling
     (fetchpatch { # Backport of https://phabricator.haskell.org/D4388 for more determinism
@@ -129,7 +150,6 @@ stdenv.mkDerivation rec {
   # `--with` flags for libraries needed for RTS linker
   configureFlags = [
     "--datadir=$doc/share/doc/ghc"
-    "--with-curses-includes=${ncurses.dev}/include" "--with-curses-libraries=${ncurses.out}/lib"
   ] ++ stdenv.lib.optional (targetPlatform == hostPlatform && ! enableIntegerSimple) [
     "--with-gmp-includes=${gmp.dev}/include" "--with-gmp-libraries=${gmp.out}/lib"
   ] ++ stdenv.lib.optional (targetPlatform == hostPlatform && hostPlatform.libc != "glibc") [
