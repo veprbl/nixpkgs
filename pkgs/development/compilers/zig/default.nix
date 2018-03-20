@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, cmake, llvmPackages }:
+{ stdenv, fetchFromGitHub, cmake, llvmPackages, libxml2 }:
 
 stdenv.mkDerivation rec {
   version = "0.2.0";
@@ -11,7 +11,8 @@ stdenv.mkDerivation rec {
     sha256 = "0lym28z9mj6hfiq78x1fsd8y89h8xyfc1jgqyazi1g9r72427n07";
   };
 
-  buildInputs = [ cmake llvmPackages.clang-unwrapped llvmPackages.llvm ];
+  nativeBuildInputs = [ cmake ];
+  buildInputs = [ llvmPackages.clang-unwrapped llvmPackages.llvm libxml2 ];
 
   cmakeFlags = [
     "-DZIG_LIBC_INCLUDE_DIR=${stdenv.cc.libc_dev}/include"
