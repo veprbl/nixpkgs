@@ -1,5 +1,5 @@
 { stdenv, gettext, fetchurl, libxml2, libgdata
-, pkgconfig, gtk3, glib, tracker
+, pkgconfig, gtk3, glib, tracker, tracker-miners
 , itstool, gegl, babl, libdazzle, gfbgraph, grilo-plugins
 , grilo, gnome-online-accounts
 , desktop-file-utils, wrapGAppsHook
@@ -27,6 +27,7 @@ in stdenv.mkDerivation rec {
     gfbgraph grilo-plugins grilo
     gnome-online-accounts tracker
     gexiv2 geocode-glib dleyna-renderer
+    tracker-miners # For 'org.freedesktop.Tracker.Miner.Files' GSettings schema
   ];
 
 
