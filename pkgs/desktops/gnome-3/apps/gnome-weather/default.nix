@@ -1,5 +1,5 @@
 { stdenv, fetchurl, pkgconfig, gnome3, gtk3, wrapGAppsHook, gjs, gobjectIntrospection
-, libgweather, intltool, itstool, geoclue2 }:
+, libgweather, intltool, itstool, geoclue2, gnome-desktop }:
 
 stdenv.mkDerivation rec {
   name = "gnome-weather-${version}";
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkgconfig intltool itstool wrapGAppsHook ];
   buildInputs = [
-    gtk3 gjs gobjectIntrospection
+    gtk3 gjs gobjectIntrospection gnome-desktop
     libgweather gnome3.defaultIconTheme geoclue2 gnome3.gsettings-desktop-schemas
   ];
 
