@@ -38,7 +38,7 @@ let
     gnome-calculator gnome-contacts gnome-font-viewer gnome-screenshot
     gnome-system-log gnome-system-monitor simple-scan
     gnome-terminal gnome-user-docs evolution file-roller gedit
-    gnome-clocks gnome-music gnome-tweak-tool gnome-photos
+    gnome-clocks gnome-music gnome-tweaks gnome-photos
     nautilus-sendto dconf-editor vinagre gnome-weather gnome-logs
     gnome-maps gnome-characters gnome-calendar accerciser gnome-nettool
     gnome-getting-started-docs gnome-packagekit gnome-software
@@ -394,7 +394,7 @@ let
 
   gexiv2 = callPackage ./misc/gexiv2 { };
 
-  gnome-tweak-tool = callPackage ./misc/gnome-tweak-tool { };
+  gnome-tweaks = callPackage ./misc/gnome-tweaks { };
 
   gpaste = callPackage ./misc/gpaste { };
 
