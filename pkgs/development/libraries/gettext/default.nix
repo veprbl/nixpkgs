@@ -23,6 +23,8 @@ stdenv.mkDerivation rec {
             "gt_cv_func_CFLocaleCopyCurrent=no"
         ]
      # Force included gettext on musl
+     # https://github.com/pullmoll/void-packages/commit/c739240fd25e8378fe0467cd51ab483427337410
+     # https://gitweb.gentoo.org/repo/gentoo.git/tree/dev-libs/libintl/libintl-0.19.8.1.ebuild?id=332e48712b6521697f992f923c9c985482dd1c36#n41
      ++ lib.optionals stdenv.hostPlatform.isMusl [
             "--enable-nls"
             "--with-included-gettext"
