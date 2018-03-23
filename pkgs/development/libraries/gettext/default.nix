@@ -21,7 +21,13 @@ stdenv.mkDerivation rec {
      ++ lib.optionals stdenv.isDarwin [
             "gt_cv_func_CFPreferencesCopyAppValue=no"
             "gt_cv_func_CFLocaleCopyCurrent=no"
+        ]
+     # Force included gettext on musl
+     ++ lib.optionals stdenv.hostPlatform.isMusl [
+            "--enable-nls"
+            "--with-included-gettext"
         ];
+
 
   postPatch = ''
    substituteAllInPlace gettext-runtime/src/gettext.sh.in
