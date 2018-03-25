@@ -97,6 +97,9 @@ in stdenv.mkDerivation (rec {
     "-Dlocaled=false"
     "-Dresolve=false"
     "-Dmyhostname=false"
+    "-Dsmack=false"
+    "-Dldconfig=false"
+    "-Dutmp=false"
   ];
 
   preConfigure = ''
