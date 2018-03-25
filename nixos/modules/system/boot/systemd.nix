@@ -83,7 +83,7 @@ let
 
       # Kernel module loading.
       "systemd-modules-load.service"
-     # "kmod-static-nodes.service"
+      "kmod-static-nodes.service"
 
       # Filesystems.
       "systemd-fsck@.service"
@@ -127,7 +127,7 @@ let
       "final.target"
       "kexec.target"
       "systemd-kexec.service"
-      #"systemd-update-utmp.service"
+      "systemd-update-utmp.service"
 
       # Password entry.
       "systemd-ask-password-console.path"
@@ -144,10 +144,10 @@ let
       "systemd-nspawn@.service"
 
       # Temporary file creation / cleanup.
-#      "systemd-tmpfiles-clean.service"
-#      "systemd-tmpfiles-clean.timer"
-#      "systemd-tmpfiles-setup.service"
-#      "systemd-tmpfiles-setup-dev.service"
+      "systemd-tmpfiles-clean.service"
+      "systemd-tmpfiles-clean.timer"
+      "systemd-tmpfiles-setup.service"
+      "systemd-tmpfiles-setup-dev.service"
 
       # Misc.
       "systemd-sysctl.service"
@@ -883,7 +883,7 @@ in
     systemd.services.systemd-journal-flush.restartIfChanged = false;
     systemd.services.systemd-random-seed.restartIfChanged = false;
     systemd.services.systemd-remount-fs.restartIfChanged = false;
-    #systemd.services.systemd-update-utmp.restartIfChanged = false;
+    systemd.services.systemd-update-utmp.restartIfChanged = false;
     systemd.services.systemd-user-sessions.restartIfChanged = false; # Restart kills all active sessions.
     # Restarting systemd-logind breaks X11
     # - upstream commit: https://cgit.freedesktop.org/xorg/xserver/commit/?id=dc48bd653c7e101
