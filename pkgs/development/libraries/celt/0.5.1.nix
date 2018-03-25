@@ -1,4 +1,4 @@
-{ callPackage, fetchurl, ... } @ args:
+{ callPackage, fetchurl, fetchpatch, ... } @ args:
 
 callPackage ./generic.nix (args // rec{
   version = "0.5.1.3";

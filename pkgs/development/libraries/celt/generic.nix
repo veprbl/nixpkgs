@@ -16,6 +16,7 @@ stdenv.mkDerivation rec {
   buildInputs = []
     ++ stdenv.lib.optional liboggSupport libogg;
 
+
   meta = with stdenv.lib; {
     description = "Ultra-low delay audio codec";
     homepage    = http://www.celt-codec.org/;
