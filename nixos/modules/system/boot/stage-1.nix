@@ -37,7 +37,7 @@ let
     declare -A seen
     declare -a left
 
-    patchelf="${pkgs.buildPackages.patchelfUnstable}/bin/patchelf"
+    patchelf="${pkgs.buildPackages.patchelf}/bin/patchelf"
 
     function add_needed {
       rpath="$($patchelf --print-rpath $1)"
@@ -143,7 +143,6 @@ let
 
       # Copy ld manually since it isn't detected correctly
       cp -pv ${pkgs.stdenv.cc.libc.out}/lib/ld*.so.? $out/lib
-      ln -frs $out/lib/libc.so $out/bin/ldd
       cp -pv ${pkgs.getent}/bin/getent $out/bin/
 
       # Copy all of the needed libraries
@@ -172,7 +171,7 @@ let
       find $out/bin -type f | while read i; do
         if ! test -L $i; then
           echo "patching $i..."
-          ${pkgs.buildPackages.patchelfUnstable}/bin/patchelf --set-interpreter $out/lib/ld*.so.? --set-rpath $out/lib $i || true
+          patchelf --set-interpreter $out/lib/ld*.so.? --set-rpath $out/lib $i || true
         fi
       done
 

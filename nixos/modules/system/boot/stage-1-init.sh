@@ -3,8 +3,6 @@
 targetRoot=/mnt-root
 console=tty1
 
-# set -x
-
 extraUtils="@extraUtils@"
 export LD_LIBRARY_PATH=@extraUtils@/lib
 export PATH=@extraUtils@/bin
@@ -19,8 +17,7 @@ if [ -d "@extraUtils@/secrets" ]; then
 fi
 
 # Stop LVM complaining about fd3
-#bash -c "strace -tf -p $$ &"
-#export LVM_SUPPRESS_FD_WARNINGS=true
+export LVM_SUPPRESS_FD_WARNINGS=true
 
 fail() {
     if [ -n "$panicOnFail" ]; then exit 1; fi
@@ -184,12 +181,9 @@ echo "running udev..."
 mkdir -p /etc/udev
 ln -sfn @udevRules@ /etc/udev/rules.d
 mkdir -p /dev/.mdadm
-systemd-udevd --daemon -D
+systemd-udevd --daemon
 udevadm trigger --action=add
 udevadm settle
-
-echo "POINT A"
-ps aux
 
 
 # XXX: Use case usb->lvm will still fail, usb->luks->lvm is covered
@@ -218,9 +212,6 @@ onACPower() {
 checkFS() {
     local device="$1"
     local fsType="$2"
-
-    echo device=$device
-    echo fsType=$fsType
 
     # Only check block devices.
     if [ ! -b "$device" ]; then return 0; fi
@@ -267,37 +258,7 @@ checkFS() {
     if test "$fsType" != "btrfs"; then
         fsckFlags="-V -a"
     fi
-    #set -x
-    echo fsckFlags=$fsckFlags
-    echo device=$device
-
-    #find /
-    #echo $(command -v fsck)
-    #echo $(command -v e2fsck)
-    #echo $(command -v fsck.auto)
-    #echo $(command -v fsck.ext2)
-    #echo $(command -v fsck.ext4)
-    #ldd $(command -v fsck)
-    #ldd $(command -v fsck.ext4)
-    #ldd $(command -v mke2fs)
-    #ldd $(command -v blkid)
-    #du -h $(command -v fsck)
-    #fsck $fsckFlags "$device"
-    #ls -l /dev
-
-    #ls -l /dev/vda
-    echo "POINT B"
-    mount -vv
-    echo "FILESYSTEMS:"
-    cat /proc/filesystems
-    echo "EXIT"
-    sleep 3
-    #exit 2
-    #exit 1
-    #tail -n10000 /etc/fstab /etc/mtab
-    #sync; sync; sync;
     fsck $fsckFlags "$device"
-    #fsck.ext4 $fsckFlags "$device"
     fsckResult=$?
 
     if test $(($fsckResult | 2)) = $fsckResult; then
@@ -336,15 +297,6 @@ mountFS() {
     local optionsFiltered="$(IFS=,; for i in $options; do if [ "${i:0:2}" != "x-" ]; then echo -n $i,; fi; done)"
 
     echo "$device /mnt-root$mountPoint $fsType $optionsFiltered" >> /etc/fstab
-    sed -e 's/,$//' -i /etc/fstab
-    echo >> /etc/fstab
-    #tail -n1000 /etc/fstab
-    #tail -n10000 /etc/fstab /etc/mtab
-    echo options="$options"
-    command -v mount
-    #ps aux
-    #udevadm trigger --action=add
-    #udevadm settle
 
     checkFS "$device" "$fsType"
 
@@ -373,10 +325,7 @@ mountFS() {
     # For CIFS mounts, retry a few times before giving up.
     local n=0
     while true; do
-        # mount $device "/mnt-root$mountPoint" && break
-        mount -v "/mnt-root$mountPoint" && break
-        echo "ASDF"
-        exit 1
+        mount "/mnt-root$mountPoint" && break
         if [ "$fsType" != cifs -o "$n" -ge 10 ]; then fail; break; fi
         echo "retrying..."
         n=$((n + 1))
@@ -534,8 +483,6 @@ while read -u 3 mountPoint; do
     udevadm settle
 
     # If copytoram is enabled: skip mounting the ISO and copy its content to a tmpfs.
-    echo copytoram=$copytoram device=$device mountPoint=$mountPoint
-    echo pseudoDevice=$pseudoDevice
     if [ -n "$copytoram" ] && [ "$device" = /dev/root ] && [ "$mountPoint" = /iso ]; then
       fsType=$(blkid -o value -s TYPE "$device")
       fsSize=$(blockdev --getsize64 "$device")
