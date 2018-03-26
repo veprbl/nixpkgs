@@ -22,8 +22,8 @@ let
       "network.target"
       "network-pre.target"
       "network-online.target"
-      "nss-lookup.target"
-      "nss-user-lookup.target"
+      #"nss-lookup.target"
+      #"nss-user-lookup.target"
       "time-sync.target"
       #"cryptsetup.target"
       "sigpwr.target"
@@ -137,7 +137,6 @@ let
 
       # Slices / containers.
       "slices.target"
-      "system.slice"
       "user.slice"
       "machine.slice"
       "machines.target"
@@ -153,10 +152,14 @@ let
       # Misc.
       "systemd-sysctl.service"
       "dbus-org.freedesktop.timedate1.service"
+    ] ++ optionals (false && !pkgs.stdenv.hostPlatform.isMusl) [
       "dbus-org.freedesktop.locale1.service"
+    ] ++ [
       "dbus-org.freedesktop.hostname1.service"
       "systemd-timedated.service"
+    ] ++ optionals (false && !pkgs.stdenv.hostPlatform.isMusl) [
       "systemd-localed.service"
+    ] ++ [
       "systemd-hostnamed.service"
       "systemd-binfmt.service"
       "systemd-exit.service"
@@ -241,37 +244,37 @@ let
         }
         (mkIf (config.preStart != "")
           { serviceConfig.ExecStartPre = makeJobScript "${name}-pre-start" ''
-              #! ${pkgs.stdenv.shell} -e
+              #! ${pkgs.runtimeShell} -e
               ${config.preStart}
             '';
           })
         (mkIf (config.script != "")
           { serviceConfig.ExecStart = makeJobScript "${name}-start" ''
-              #! ${pkgs.stdenv.shell} -e
+              #! ${pkgs.runtimeShell} -e
               ${config.script}
             '' + " " + config.scriptArgs;
           })
         (mkIf (config.postStart != "")
           { serviceConfig.ExecStartPost = makeJobScript "${name}-post-start" ''
-              #! ${pkgs.stdenv.shell} -e
+              #! ${pkgs.runtimeShell} -e
               ${config.postStart}
             '';
           })
         (mkIf (config.reload != "")
           { serviceConfig.ExecReload = makeJobScript "${name}-reload" ''
-              #! ${pkgs.stdenv.shell} -e
+              #! ${pkgs.runtimeShell} -e
               ${config.reload}
             '';
           })
         (mkIf (config.preStop != "")
           { serviceConfig.ExecStop = makeJobScript "${name}-pre-stop" ''
-              #! ${pkgs.stdenv.shell} -e
+              #! ${pkgs.runtimeShell} -e
               ${config.preStop}
             '';
           })
         (mkIf (config.postStop != "")
           { serviceConfig.ExecStopPost = makeJobScript "${name}-post-stop" ''
-              #! ${pkgs.stdenv.shell} -e
+              #! ${pkgs.runtimeShell} -e
               ${config.postStop}
             '';
           })
@@ -821,7 +824,8 @@ in
 
     system.requiredKernelConfig = map config.lib.kernelConfig.isEnabled
       [ "DEVTMPFS" "CGROUPS" "INOTIFY_USER" "SIGNALFD" "TIMERFD" "EPOLL" "NET"
-        "SYSFS" "PROC_FS" "FHANDLE" "DMIID" "AUTOFS4_FS" "TMPFS_POSIX_ACL"
+        "SYSFS" "PROC_FS" "FHANDLE" "CRYPTO_USER_API_HASH" "CRYPTO_HMAC"
+        "CRYPTO_SHA256" "DMIID" "AUTOFS4_FS" "TMPFS_POSIX_ACL"
         "TMPFS_XATTR" "SECCOMP"
       ];
 

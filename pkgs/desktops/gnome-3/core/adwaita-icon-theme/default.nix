@@ -2,7 +2,17 @@
 , iconnamingutils, gtk, gdk_pixbuf, librsvg, hicolor-icon-theme }:
 
 stdenv.mkDerivation rec {
-  inherit (import ./src.nix fetchurl) name src;
+  name = "adwaita-icon-theme-${version}";
+  version = "3.28.0";
+
+  src = fetchurl {
+    url = "mirror://gnome/sources/adwaita-icon-theme/${gnome3.versionBranch version}/${name}.tar.xz";
+    sha256 = "0l114ildlb3lz3xymfxxi0wpr2x21rd3cg8slb8jyxynzwfqrbks";
+  };
+
+  passthru = {
+    updateScript = gnome3.updateScript { packageName = "adwaita-icon-theme"; attrPath = "gnome3.adwaita-icon-theme"; };
+  };
 
   # For convenience, we can specify adwaita-icon-theme only in packages
   propagatedBuildInputs = [ hicolor-icon-theme ];

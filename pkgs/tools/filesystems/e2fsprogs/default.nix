@@ -1,18 +1,18 @@
 { stdenv, buildPackages, fetchurl, pkgconfig, libuuid, gettext, texinfo }:
 
 stdenv.mkDerivation rec {
-  name = "e2fsprogs-1.43.8";
+  name = "e2fsprogs-1.44.0";
 
   src = fetchurl {
     url = "mirror://sourceforge/e2fsprogs/${name}.tar.gz";
-    sha256 = "1pn33rap3lcjm3gx07pmgyhx4j634gja63phmi4g5dq8yj0z8ciz";
+    sha256 = "1l8z17zfzhi00f56xl6c4f2g3fi9m4ixlmwpmaihm9y9qz1giaq4";
   };
 
   outputs = [ "bin" "dev" "out" "man" "info" ];
 
   depsBuildBuild = [ buildPackages.stdenv.cc ];
   nativeBuildInputs = [ pkgconfig texinfo ];
-  buildInputs = [ libuuid ] ++ stdenv.lib.optional (!stdenv.isLinux) gettext;
+  buildInputs = [ libuuid gettext ];
 
   configureFlags =
     if stdenv.isLinux then [

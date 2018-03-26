@@ -1,12 +1,12 @@
 {stdenv, fetchurl, cyrus_sasl, libevent}:
 
 stdenv.mkDerivation rec {
-  version = "1.5.4";
+  version = "1.5.6";
   name = "memcached-${version}";
 
   src = fetchurl {
     url = "http://memcached.org/files/${name}.tar.gz";
-    sha256 = "1m03fhzq1f9byk2agccsr0x458niqqjpips5mbcgzhm4kylczhz0";
+    sha256 = "00szy9d4szaixi260dcd4846zci04y0sd47ia2lzg0bxkn2ywxcn";
   };
 
   buildInputs = [cyrus_sasl libevent];

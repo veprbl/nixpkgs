@@ -3,7 +3,17 @@
 , gobjectIntrospection, makeWrapper, libxslt, vala, gnome3 }:
 
 stdenv.mkDerivation rec {
-  inherit (import ./src.nix fetchurl) name src;
+  name = "gcr-${version}";
+  version = "3.28.0";
+
+  src = fetchurl {
+    url = "mirror://gnome/sources/gcr/${gnome3.versionBranch version}/${name}.tar.xz";
+    sha256 = "02xgky22xgvhgd525khqh64l5i21ca839fj9jzaqdi3yvb8pbq8m";
+  };
+
+  passthru = {
+    updateScript = gnome3.updateScript { packageName = "gcr"; attrPath = "gnome3.gcr"; };
+  };
 
   outputs = [ "out" "dev" ];
 

@@ -4,7 +4,17 @@
 , gnome3, librsvg, gdk_pixbuf, file, libcanberra-gtk3 }:
 
 stdenv.mkDerivation rec {
-  inherit (import ./src.nix fetchurl) name src;
+  name = "gnome-user-share-${version}";
+  version = "3.27.90";
+
+  src = fetchurl {
+    url = "mirror://gnome/sources/gnome-user-share/${gnome3.versionBranch version}/${name}.tar.xz";
+    sha256 = "1wd183cjr1gmzpsq7bqwkwhmcdng0m105f6ymc89r17fz85f4jhy";
+  };
+
+  passthru = {
+    updateScript = gnome3.updateScript { packageName = "gnome-user-share"; attrPath = "gnome3.gnome-user-share"; };
+  };
 
   doCheck = true;
 

@@ -2,7 +2,17 @@
 , json-glib, qqwing, itstool, libxml2 }:
 
 stdenv.mkDerivation rec {
-  inherit (import ./src.nix fetchurl) name src;
+  name = "gnome-sudoku-${version}";
+  version = "3.28.0";
+
+  src = fetchurl {
+    url = "mirror://gnome/sources/gnome-sudoku/${gnome3.versionBranch version}/${name}.tar.xz";
+    sha256 = "07b4lzniaf3gjsss6zl1lslv18smwc4nrijykvn2z90f423q2xav";
+  };
+
+  passthru = {
+    updateScript = gnome3.updateScript { packageName = "gnome-sudoku"; attrPath = "gnome3.gnome-sudoku"; };
+  };
 
   nativeBuildInputs = [ pkgconfig ];
   buildInputs = [ intltool wrapGAppsHook gtk3 gnome3.libgee

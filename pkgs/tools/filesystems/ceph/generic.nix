@@ -37,8 +37,7 @@ with stdenv.lib;
 let
 
   shouldUsePkg = pkg_: let pkg = (builtins.tryEval pkg_).value;
-    in if lib.any (x: x == system) (pkg.meta.platforms or [])
-      then pkg else null;
+    in if pkg.meta.available or false then pkg else null;
 
   optYasm = shouldUsePkg yasm;
   optFcgi = shouldUsePkg fcgi;
@@ -86,12 +85,17 @@ let
   };
 
   ceph-python-env = python2Packages.python.withPackages (ps: [ 
-	ps.sphinx
-	ps.flask
-	ps.argparse
-	ps.cython 
-	ps.setuptools
-	ps.pip
+    ps.sphinx
+    ps.flask
+    ps.argparse
+    ps.cython 
+    ps.setuptools
+    ps.pip
+    # Libraries needed by the python tools
+    ps.Mako
+    ps.pecan
+    ps.prettytable
+    ps.webob
 	]);
 
 in
@@ -103,11 +107,13 @@ stdenv.mkDerivation {
   patches = [ 
  #	 ./ceph-patch-cmake-path.patch
     ./0001-kv-RocksDBStore-API-break-additional.patch   
+  ] ++ optionals stdenv.isLinux [
+    ./0002-fix-absolute-include-path.patch
   ];
 
   nativeBuildInputs = [
     cmake
-    pkgconfig which git
+    pkgconfig which git python2Packages.wrapPython
     (ensureNewerSourcesHook { year = "1980"; })
   ];
   
@@ -122,6 +128,7 @@ stdenv.mkDerivation {
   ] ++ optionals hasKinetic [
     optKinetic-cpp-client
   ];
+
   
   preConfigure =''
     # rip off submodule that interfer with system libs
@@ -148,6 +155,10 @@ stdenv.mkDerivation {
     "-DWITH_CEPHFS=OFF"
     "-DWITH_LIBCEPHFS=OFF"
   ];
+
+  postFixup = ''
+    wrapPythonPrograms
+  '';
 
   enableParallelBuilding = true;
   

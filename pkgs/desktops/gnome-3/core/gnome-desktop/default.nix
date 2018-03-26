@@ -3,7 +3,17 @@
 , libseccomp, bubblewrap, gobjectIntrospection }:
 
 stdenv.mkDerivation rec {
-  inherit (import ./src.nix fetchurl) name src;
+  name = "gnome-desktop-${version}";
+  version = "3.28.0";
+
+  src = fetchurl {
+    url = "mirror://gnome/sources/gnome-desktop/${gnome3.versionBranch version}/${name}.tar.xz";
+    sha256 = "17fm5z3kfm1m3420kjpvk1y0pc34p42rqfpmb1npy51jkv1p3pzi";
+  };
+
+  passthru = {
+    updateScript = gnome3.updateScript { packageName = "gnome-desktop"; attrPath = "gnome3.gnome-desktop"; };
+  };
 
   # this should probably be setuphook for glib
   NIX_CFLAGS_COMPILE = "-I${glib.dev}/include/gio-unix-2.0";

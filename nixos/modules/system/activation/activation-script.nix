@@ -16,7 +16,8 @@ let
     [ coreutils
       gnugrep
       findutils
-      glibc # needed for getent
+      #glibc # needed for getent
+      pkgs.getent
       shadow
       nettools # needed for hostname
       utillinux # needed for mount and mountpoint
@@ -61,7 +62,7 @@ in
       apply = set: {
         script =
           ''
-            #! ${pkgs.stdenv.shell}
+            #! ${pkgs.runtimeShell}
 
             systemConfig=@out@
 
@@ -117,14 +118,7 @@ in
 
   config = {
 
-    system.activationScripts.stdio =
-      ''
-        # Needed by some programs.
-        ln -sfn /proc/self/fd /dev/fd
-        ln -sfn /proc/self/fd/0 /dev/stdin
-        ln -sfn /proc/self/fd/1 /dev/stdout
-        ln -sfn /proc/self/fd/2 /dev/stderr
-      '';
+    system.activationScripts.stdio = ""; # obsolete
 
     system.activationScripts.var =
       ''

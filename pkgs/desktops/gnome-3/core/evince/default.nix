@@ -8,7 +8,17 @@
 }:
 
 stdenv.mkDerivation rec {
-  inherit (import ./src.nix fetchurl) name src;
+  name = "evince-${version}";
+  version = "3.28.0";
+
+  src = fetchurl {
+    url = "mirror://gnome/sources/evince/${gnome3.versionBranch version}/${name}.tar.xz";
+    sha256 = "1a3kcls18dcz1lj8hrx8skcli9xxfyi71c17xjwayh71cm5jc8zs";
+  };
+
+  passthru = {
+    updateScript = gnome3.updateScript { packageName = "evince"; };
+  };
 
   nativeBuildInputs = [
     pkgconfig gobjectIntrospection intltool itstool wrapGAppsHook yelp-tools autoreconfHook
@@ -16,7 +26,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     glib gtk3 pango atk gdk_pixbuf libxml2
-    gnome3.libgnome-keyring gnome3.gsettings-desktop-schemas
+    gnome3.gsettings-desktop-schemas
     poppler ghostscriptX djvulibre libspectre
     libsecret librsvg gnome3.adwaita-icon-theme
   ] ++ stdenv.lib.optional supportXPS gnome3.libgxps;

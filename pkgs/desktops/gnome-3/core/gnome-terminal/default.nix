@@ -3,7 +3,17 @@
 , desktop-file-utils, itstool, wrapGAppsHook, appdata-tools }:
 
 stdenv.mkDerivation rec {
-  inherit (import ./src.nix fetchurl) name src;
+  name = "gnome-terminal-${version}";
+  version = "3.28.0";
+
+  src = fetchurl {
+    url = "mirror://gnome/sources/gnome-terminal/${gnome3.versionBranch version}/${name}.tar.xz";
+    sha256 = "1i5wlcjb0aigm1lbmn16nmh9rkjqfdpzzgf6qw7mcrhgw7pdald5";
+  };
+
+  passthru = {
+    updateScript = gnome3.updateScript { packageName = "gnome-terminal"; attrPath = "gnome3.gnome-terminal"; };
+  };
 
   buildInputs = [ gnome3.gtk gnome3.gsettings-desktop-schemas gnome3.vte appdata-tools
                   gnome3.dconf itstool gnome3.nautilus ];

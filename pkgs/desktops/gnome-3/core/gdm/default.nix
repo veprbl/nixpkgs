@@ -4,7 +4,17 @@
 , librsvg, coreutils }:
 
 stdenv.mkDerivation rec {
-  inherit (import ./src.nix fetchurl) name src;
+  name = "gdm-${version}";
+  version = "3.28.0";
+
+  src = fetchurl {
+    url = "mirror://gnome/sources/gdm/${gnome3.versionBranch version}/${name}.tar.xz";
+    sha256 = "0i5rzr6fdvlm88gl85gvql1wf1yflkmg90x81dqjf39as3ixs81s";
+  };
+
+  passthru = {
+    updateScript = gnome3.updateScript { packageName = "gdm"; attrPath = "gnome3.gdm"; };
+  };
 
   # Only needed to make it build
   preConfigure = ''

@@ -30,7 +30,8 @@ in stdenv.mkDerivation rec {
 
   crossAttrs = {
     # Work around use of `AC_RUN_IFELSE'.
-    preConfigure = "export scanf_cv_type_modifier=ms";
+    preConfigure = "export scanf_cv_type_modifier=ms" + lib.optionalString (systemd != null)
+      "\nconfigureFlags+=\" --with-systemd --with-systemdsystemunitdir=$bin/lib/systemd/system/\"";
   };
 
   preConfigure = lib.optionalString (systemd != null) ''
@@ -49,7 +50,8 @@ in stdenv.mkDerivation rec {
     "--enable-fs-paths-default=/run/wrappers/bin:/var/run/current-system/sw/bin:/sbin"
     "--disable-makeinstall-setuid" "--disable-makeinstall-chown"
   ]
-    ++ lib.optional (ncurses == null) "--without-ncurses";
+    ++ lib.optional (ncurses == null) "--without-ncurses"
+    ++ lib.optional stdenv.hostPlatform.isMusl "--disable-fallocate";
 
   makeFlags = "usrbin_execdir=$(bin)/bin usrsbin_execdir=$(bin)/sbin";
 

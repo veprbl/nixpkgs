@@ -3,7 +3,17 @@
 , libxml2, sane-backends, vala, gnome3, gobjectIntrospection }:
 
 stdenv.mkDerivation rec {
-  inherit (import ./src.nix fetchurl) name src;
+  name = "simple-scan-${version}";
+  version = "3.28.0";
+
+  src = fetchurl {
+    url = "mirror://gnome/sources/simple-scan/${gnome3.versionBranch version}/${name}.tar.xz";
+    sha256 = "0ki95d0v9l0pb5jvk1v8k49vb7snp9j7bnxw3m8q63m00yl33qhz";
+  };
+
+  passthru = {
+    updateScript = gnome3.updateScript { packageName = "simple-scan"; };
+  };
 
   buildInputs = [ cairo gdk_pixbuf colord glib gnome3.defaultIconTheme gusb
                 gtk libwebp packagekit sane-backends vala ];
@@ -51,6 +61,7 @@ stdenv.mkDerivation rec {
     '';
     homepage = https://launchpad.net/simple-scan;
     license = licenses.gpl3Plus;
+    maintainers = gnome3.maintainers;
     platforms = platforms.linux;
   };
 }

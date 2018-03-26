@@ -18,13 +18,15 @@ let
 in
 stdenv.mkDerivation rec {
   name = "rocksdb-${version}";
-  version = "5.10.2";
+  version = "5.10.3";
+
+  outputs = [ "dev" "out" "static" ];
 
   src = fetchFromGitHub {
     owner = "facebook";
     repo = "rocksdb";
     rev = "v${version}";
-    sha256 = "00qnd56v4qyzxg0b3ya3flf2jhbbfaibj1y53bd5ciaw3af6zxnd";
+    sha256 = "19d8i8map8qz639mhflmxc0w9gp78fvkq1l46y5s6b5imwh0w7xq";
   };
   
   nativeBuildInputs = [ which perl ];
@@ -65,6 +67,8 @@ stdenv.mkDerivation rec {
     # Might eventually remove this when we are confident in the build process
     echo "BUILD CONFIGURATION FOR SANITY CHECKING"
     cat make_config.mk
+    mkdir -pv $static/lib/
+    mv -vi $out/lib/librocksdb.a $static/lib/
   '';
 
   enableParallelBuilding = true;
@@ -73,7 +77,7 @@ stdenv.mkDerivation rec {
     homepage = http://rocksdb.org;
     description = "A library that provides an embeddable, persistent key-value store for fast storage";
     license = licenses.bsd3;
-    platforms = platforms.allBut [ "i686-linux" ];
+    platforms = platforms.x86_64 ++ platforms.aarch64;
     maintainers = with maintainers; [ adev wkennington ];
   };
 }

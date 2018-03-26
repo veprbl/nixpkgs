@@ -6,7 +6,7 @@
 , openjpeg, libopus, librsvg
 , wildmidi, fluidsynth, libvdpau, wayland
 , libwebp, xvidcore, gnutls, mjpegtools
-, mesa, libintlOrEmpty, libgme
+, libGLU_combined, libintl, libgme
 , openssl, x265, libxml2
 }:
 
@@ -35,8 +35,12 @@ stdenv.mkDerivation rec {
       a real live maintainer, or some actual wide use.
     '';
     license     = licenses.lgpl2Plus;
-    platforms   = platforms.linux;
+    platforms   = platforms.linux ++ platforms.darwin;
   };
+
+  # TODO: Fix Cocoa build. The problem was ARC, which might be related to too
+  #       old version of Apple SDK's.
+  configureFlags = optional stdenv.isDarwin "--disable-cocoa";
 
   patchPhase = ''
     sed -i 's/openjpeg-2.2/openjpeg-${openJpegVersion}/' ext/openjpeg/*
@@ -57,19 +61,19 @@ stdenv.mkDerivation rec {
     libmodplug mpeg2dec mpg123
     openjpeg libopus librsvg
     fluidsynth libvdpau
-    libwebp xvidcore gnutls mesa
-    mjpegtools libgme openssl x265 libxml2
+    libwebp xvidcore gnutls libGLU_combined
+    libgme openssl x265 libxml2
+    libintl
   ]
-    ++ libintlOrEmpty
     ++ optional faacSupport faac
     # for gtksink
     ++ optional gtkSupport gtk3
     ++ optional stdenv.isLinux wayland
     # wildmidi requires apple's OpenAL
     # TODO: package apple's OpenAL, fix wildmidi, include on Darwin
-    ++ optional (!stdenv.isDarwin) wildmidi;
-
-  LDFLAGS = optionalString stdenv.isDarwin "-lintl";
+    ++ optional (!stdenv.isDarwin) wildmidi
+    # TODO: mjpegtools uint64_t is not compatible with guint64 on Darwin
+    ++ optional (!stdenv.isDarwin) mjpegtools;
 
   enableParallelBuilding = true;
 }
