@@ -11335,6 +11335,8 @@ with pkgs;
 
   sblim-sfcc = callPackage ../development/libraries/sblim-sfcc {};
 
+  selinux-sandbox = callPackage ../os-specific/linux/selinux-sandbox { };
+
   serd = callPackage ../development/libraries/serd {};
 
   serf = callPackage ../development/libraries/serf {};
@@ -20633,6 +20635,11 @@ with pkgs;
   seafile-shared = callPackage ../misc/seafile-shared { };
 
   serviio = callPackage ../servers/serviio {};
+  selinux-python = callPackage ../os-specific/linux/selinux-python {
+    # needs python3 bindings
+    libselinux = libselinux.override { python = python3; };
+    libsemanage = libsemanage.override { python = python3; };
+  };
 
   slock = callPackage ../misc/screensavers/slock {
     conf = config.slock.conf or null;
