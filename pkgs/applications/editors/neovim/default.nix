@@ -1,7 +1,13 @@
 { stdenv, fetchFromGitHub, cmake, gettext, libmsgpack, libtermkey
-, libtool, libuv, luaPackages, ncurses, perl, pkgconfig
+, libtool, libuv, ncurses, perl, pkgconfig
 , unibilium, vimUtils, xsel, gperf, callPackage
 , withJemalloc ? true, jemalloc
+, glibcLocales ? null, procps ? null
+, withDev ? true
+# TODO turn on upon next neovim release
+, doCheck ? false
+, lua
+, python
 }:
 
 with stdenv.lib;
@@ -16,12 +22,12 @@ let
     src = fetchFromGitHub {
       owner = "neovim";
       repo = "libvterm";
-      rev = "4ca7ebf7d25856e90bc9d9cc49412e80be7c4ea8";
-      sha256 = "05kyvvz8af90mvig11ya5xd8f4mbvapwyclyrihm9lwas706lzf6";
+      rev = "a9c7c6fd20fa35e0ad3e0e98901ca12dfca9c25c";
+      sha256 = "090pyf1n5asaw1m2l9bsbdv3zd753aq1plb0w0drbc2k43ds7k3g";
     };
 
-    buildInputs = [ perl ];
-    nativeBuildInputs = [ libtool ];
+    buildInputs = [ perl ] ;
+    nativeBuildInputs = [ libtool ] ;
 
     makeFlags = [ "PREFIX=$(out)" ]
       ++ stdenv.lib.optional stdenv.isDarwin "LIBTOOL=${libtool}/bin/libtool";
@@ -37,8 +43,17 @@ let
     };
   };
 
-  neovim = stdenv.mkDerivation rec {
-    name = "neovim-unwrapped-${version}";
+  neovimLuaEnv =
+    lua.withPackages(ps:
+    (with ps;
+    [ mpack lpeg luabitop ]
+    ++ optionals doCheck [ nvim-client luv coxpcall busted luafilesystem penlight  ]
+    ++ optionals withDev [ luacheck ]
+    ));
+in
+  stdenv.mkDerivation rec {
+    name = "${pname}-${version}";
+    pname = "neovim-unwrapped";
     version = "0.2.2";
 
     src = fetchFromGitHub {
@@ -57,25 +72,35 @@ let
       ncurses
       neovimLibvterm
       unibilium
-      luaPackages.lua
       gperf
+      neovimLuaEnv
     ] ++ optional withJemalloc jemalloc
-      ++ lualibs;
+    ++ optionals doCheck [ glibcLocales procps ]
+    ;
+
+    inherit doCheck;
+
+    # to be exhaustive, one could run
+    # make oldtests too
+    checkPhase = ''
+      make functionaltest
+    '';
 
     nativeBuildInputs = [
       cmake
       gettext
       pkgconfig
-    ];
-
-    LUA_PATH = stdenv.lib.concatStringsSep ";" (map luaPackages.getLuaPath lualibs);
-    LUA_CPATH = stdenv.lib.concatStringsSep ";" (map luaPackages.getLuaCPath lualibs);
-
-    lualibs = [ luaPackages.mpack luaPackages.lpeg luaPackages.luabitop ];
+    ]
+      ++ optional withDev python
+    ;
 
     cmakeFlags = [
-      "-DLUA_PRG=${luaPackages.lua}/bin/lua"
-    ];
+      "-DLUA_PRG=${neovimLuaEnv}/bin/lua"
+    ]
+    # for now don't support luajit
+    ++ optional (true) "-DPREFER_LUA=ON"
+    ++ optional doCheck "-DBUSTED_PRG=${neovimLuaEnv}/bin/busted"
+    ;
 
     # triggers on buffer overflow bug while running tests
     hardeningDisable = [ "fortify" ];
@@ -113,7 +138,4 @@ let
       maintainers = with maintainers; [ manveru garbas rvolosatovs ];
       platforms   = platforms.unix;
     };
-  };
-
-in
-  neovim
+  }

@@ -4817,7 +4817,7 @@ with pkgs;
   silc_server = callPackage ../servers/silc-server { };
 
   sile = callPackage ../tools/typesetting/sile {
-  inherit (lua52Packages) lua luaexpat luazlib luafilesystem lpeg;
+    lua=lua5_2;
   };
 
   silver-searcher = callPackage ../tools/text/silver-searcher { };
@@ -7019,31 +7019,77 @@ with pkgs;
   love = love_0_10;
 
   ### LUA MODULES
+  lua-setup-hook = callPackage ../development/interpreters/lua-5/setup-hook.nix { };
 
-  lua4 = callPackage ../development/interpreters/lua-4 { };
-  lua5_0 = callPackage ../development/interpreters/lua-5/5.0.3.nix { };
-  lua5_1 = callPackage ../development/interpreters/lua-5/5.1.nix { };
-  lua5_2 = callPackage ../development/interpreters/lua-5/5.2.nix { };
+  # don't add ./?.lua or if you do it change the checks
+  # else every folder is going to be added and generate
+  # "/bin/tar: Argument list too long'
+  getLuaPath = majorVersion: [
+     "lib/lua/${majorVersion}/?.lua" "share/lua/${majorVersion}/?.lua"
+    "share/lua/${majorVersion}/?/init.lua" "lib/lua/${majorVersion}/?/init.lua"
+  ];
+  getLuaCPath = majorVersion: [
+     "lib/lua/${majorVersion}/?.so" "share/lua/${majorVersion}/?.so" "share/lua/${majorVersion}/?/init.so"
+  ];
+  lua5_1 = callPackage ../development/interpreters/lua-5/5.1.nix {
+    self = lua5_1;
+    inherit getLuaPath getLuaCPath;
+  };
+  lua5_2 = callPackage ../development/interpreters/lua-5/5.2.nix {
+    self = lua5_2;
+    inherit getLuaPath getLuaCPath;
+  };
   lua5_2_compat = callPackage ../development/interpreters/lua-5/5.2.nix {
     compat = true;
+    self = lua5_2;
+    inherit getLuaPath getLuaCPath;
   };
-  lua5_3 = callPackage ../development/interpreters/lua-5/5.3.nix { };
+  lua5_3 = callPackage ../development/interpreters/lua-5/5.3.nix {
+    self = lua5_3;
+    inherit getLuaPath getLuaCPath;
+  };
   lua5_3_compat = callPackage ../development/interpreters/lua-5/5.3.nix {
     compat = true;
+    self = lua5_3;
+    inherit getLuaPath getLuaCPath;
   };
   lua5 = lua5_2_compat;
   lua = lua5;
 
-  lua51Packages = recurseIntoAttrs (callPackage ./lua-packages.nix { lua = lua5_1; });
-  lua52Packages = recurseIntoAttrs (callPackage ./lua-packages.nix { lua = lua5_2; });
-  luajitPackages = recurseIntoAttrs (callPackage ./lua-packages.nix { lua = luajit; });
+  lua51Packages = recurseIntoAttrs lua5_1.pkgs;
+  lua52Packages = recurseIntoAttrs lua5_2.pkgs;
+  lua53Packages = recurseIntoAttrs lua5_3.pkgs;
+  luajitPackages = recurseIntoAttrs luajit.pkgs;
 
   luaPackages = lua52Packages;
 
-  inherit (callPackages ../development/interpreters/luajit {})
-    luajit luajit_2_0 luajit_2_1;
+  # override instead ?
+  luajit_2_0 = callPackages ../development/interpreters/luajit {
+    self = luajit_2_0;
+    version = "2.0.5";
+    isStable = true;
+    sha256 = "0yg9q4q6v028bgh85317ykc9whgxgysp76qzaqgq55y6jy11yjw7";
+    extraMeta = {
+      platforms = lib.filter (p: p != "aarch64-linux") meta.platforms;
+    };
+  };
+
+  luajit_2_1 = callPackages ../development/interpreters/luajit {
+    self = luajit_2_1;
+    version = "2.1.0-beta3";
+    isStable = false;
+    sha256 = "1hyrhpkwjqsv54hnnx4cl8vk44h9d6c9w0fz1jfjz00w255y7lhs";
+  };
+
+  luajit = luajit_2_1;
 
   luarocks = luaPackages.luarocks;
+
+  # fork that adds the 'convert2nix' command to luarocks
+  # hopefully it can be installed as an addon once luarocks
+  # completes addon support
+  luarocks-nix = luaPackages.luarocks-nix;
+
 
   toluapp = callPackage ../development/tools/toluapp {
     lua = lua5_1; # doesn't work with any other :(
@@ -12284,8 +12330,7 @@ with pkgs;
 
   prosody = callPackage ../servers/xmpp/prosody {
     # _compat can probably be removed on next minor version after 0.10.0
-    lua5 = lua5_2_compat;
-    inherit (lua52Packages) luasocket luasec luaexpat luafilesystem luabitop luaevent luadbi;
+    lua5 = lua5_1;
   };
 
   biboumi = callPackage ../servers/xmpp/biboumi { };
@@ -14809,13 +14854,9 @@ with pkgs;
     ffmpeg = ffmpeg_2;
   };
 
-  awesome-3-5 = callPackage ../applications/window-managers/awesome/3.5.nix {
-    cairo = cairo.override { xcbSupport = true; };
-    luaPackages = luaPackages.override { inherit lua; };
-  };
   awesome-4-0 = callPackage ../applications/window-managers/awesome {
     cairo = cairo.override { xcbSupport = true; };
-    luaPackages = luaPackages.override { inherit lua; };
+    lua=lua5_2_compat;
   };
   awesome = awesome-4-0;
 
@@ -18168,8 +18209,9 @@ with pkgs;
 
   wrapNeovim = callPackage ../applications/editors/neovim/wrapper.nix { };
 
+  # neovim needs either lua5.1 or 5.2 with the compatibility flags
   neovim-unwrapped = callPackage ../applications/editors/neovim {
-    luaPackages = luajitPackages;
+    lua=lua5_1;
   };
 
   neovim = wrapNeovim neovim-unwrapped { };
@@ -18889,7 +18931,10 @@ with pkgs;
     tileMode = true;
   };
 
-  crawl = callPackage ../games/crawl { };
+  crawl = callPackage ../games/crawl {
+    # Still unstable with luajit
+    lua=lua5_1;
+  };
 
   crrcsim = callPackage ../games/crrcsim {};
 
@@ -19121,9 +19166,10 @@ with pkgs;
 
   mrrescue = callPackage ../games/mrrescue { };
 
-  mudlet = libsForQt5.callPackage ../games/mudlet {
-    inherit (lua51Packages) luafilesystem lrexlib luazip luasqlite3;
-  };
+  # mudlet = libsForQt5.callPackage ../games/mudlet {
+  #   # inherit (lua51Packages) luafilesystem lrexlib luazip luasqlite3;
+  #   lua=lua5_1;
+  # };
 
   n2048 = callPackage ../games/n2048 {};
 

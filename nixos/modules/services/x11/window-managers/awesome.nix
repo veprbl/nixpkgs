@@ -6,11 +6,6 @@ let
 
   cfg = config.services.xserver.windowManager.awesome;
   awesome = cfg.package;
-  getLuaPath = lib : dir : "${lib}/${dir}/lua/${pkgs.luaPackages.lua.luaversion}";
-  makeSearchPath = lib.concatMapStrings (path:
-    " --search " + (getLuaPath path "share") +
-    " --search " + (getLuaPath path "lib")
-  );
 in
 
 {
@@ -44,18 +39,22 @@ in
 
   ###### implementation
 
-  config = mkIf cfg.enable {
+  config = let
+      awesome_custom = awesome.override({inherit (cfg) luaModules;});
+    in
+    mkIf cfg.enable {
 
-    services.xserver.windowManager.session = singleton
+    services.xserver.windowManager.session =
+     singleton
       { name = "awesome";
         start =
           ''
-            ${awesome}/bin/awesome ${makeSearchPath cfg.luaModules} &
+            ${awesome_custom}/bin/awesome &
             waitPID=$!
           '';
       };
 
-    environment.systemPackages = [ awesome ];
+    environment.systemPackages = [ awesome_custom ];
 
   };
 }

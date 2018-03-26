@@ -81,6 +81,7 @@ let
              "http://www.freehackers.org/~tnagy/release/waf-${wafVersion}" ];
     sha256 = "0qrnlv91cb0v221w8a0fi4wxm99q2hpz10rkyyk4akcsvww6xrw5";
   };
+  luaEnv = lua.withPackages(ps: with ps; [ luasocket ]);
 in stdenv.mkDerivation rec {
   name = "mpv-${version}";
   version = "0.27.2";
@@ -131,8 +132,7 @@ in stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
-    ffmpeg freetype libass libpthreadstubs
-    lua luasocket libuchardet
+    ffmpeg freetype libass libpthreadstubs libuchardet
   ] ++ optional alsaSupport        alsaLib
     ++ optional xvSupport          libXv
     ++ optional theoraSupport      libtheora
@@ -170,12 +170,6 @@ in stdenv.mkDerivation rec {
   '';
 
   installPhase =
-  let
-    getPath  = type : "${luasocket}/lib/lua/${lua.luaversion}/?.${type};" +
-                      "${luasocket}/share/lua/${lua.luaversion}/?.${type}";
-    luaPath  = getPath "lua";
-    luaCPath = getPath "so";
-  in
   ''
     python3 ${waf} install
 
@@ -185,8 +179,6 @@ in stdenv.mkDerivation rec {
     # Ensure youtube-dl is available in $PATH for MPV
     wrapProgram $out/bin/mpv \
       --add-flags "--scripts=${concatStringsSep "," scripts}" \
-      --prefix LUA_PATH : "${luaPath}" \
-      --prefix LUA_CPATH : "${luaCPath}" \
   '' + optionalString youtubeSupport ''
       --prefix PATH : "${youtube-dl}/bin" \
   '' + optionalString vapoursynthSupport ''

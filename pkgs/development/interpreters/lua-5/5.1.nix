@@ -1,4 +1,10 @@
-{ stdenv, fetchurl, fetchpatch, readline }:
+{ stdenv, fetchurl, fetchpatch, readline
+, hostPlatform, makeWrapper
+, lua-setup-hook, callPackage
+, self
+, getLuaPath, getLuaCPath
+, luaPackages, packageOverrides ? (self: super: {})
+}:
 
 let
   dsoPatch = fetchurl {
@@ -9,8 +15,13 @@ let
 in
 stdenv.mkDerivation rec {
   name = "lua-${version}";
-  version = "5.1.5";
-  luaversion = "5.1";
+  majorVersion = "5.1";
+  version = "${majorVersion}.5";
+
+  # helper functions for dealing with LUA_PATH and LUA_CPATH
+  LuaPathSearchPaths    = getLuaPath majorVersion;
+  LuaCPathSearchPaths   = getLuaCPath majorVersion;
+  setupHook = lua-setup-hook LuaPathSearchPaths LuaCPathSearchPaths;
 
   src = fetchurl {
     url = "http://www.lua.org/ftp/${name}.tar.gz";
@@ -44,6 +55,17 @@ stdenv.mkDerivation rec {
     rmdir $out/{share,lib}/lua/5.1 $out/{share,lib}/lua
   '';
 
+  passthru = let
+    luaPackages = callPackage ../../../top-level/lua-packages.nix {lua=self; overrides=packageOverrides;};
+  in rec {
+    buildEnv = callPackage ./wrapper.nix { lua=self;
+    inherit (luaPackages) requiredLuaModules;
+    };
+    withPackages = import ./with-packages.nix { inherit buildEnv luaPackages;};
+    pkgs = luaPackages;
+    interpreter = "${self}/bin/lua";
+  };
+
   meta = {
     homepage = http://www.lua.org;
     description = "Powerful, fast, lightweight, embeddable scripting language";
@@ -56,6 +78,7 @@ stdenv.mkDerivation rec {
       for configuration, scripting, and rapid prototyping.
     '';
     license = stdenv.lib.licenses.mit;
+    platforms = stdenv.lib.platforms.linux;
     hydraPlatforms = stdenv.lib.platforms.linux;
   };
 }

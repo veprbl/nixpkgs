@@ -38,6 +38,8 @@ let
           (lib.concatMap (d : if d ? runtimeDeps then d.runtimeDeps else []) luadeps) ++
           [ lua coreutils ];
 
+        # some packages (sundown/optim) install themselves into INCDIR/LIBDIR
+        # so it needs to be $out else it is not writable
         mkcfg = ''
           export LUAROCKS_CONFIG=config.lua
           cat >config.lua <<EOF
@@ -48,8 +50,8 @@ let
 
             variables = {
               LUA_BINDIR = "$out/bin";
-              LUA_INCDIR = "$out/include";
-              LUA_LIBDIR = "$out/lib/lua/${lua.luaversion}";
+              LUA_INCDIR = "${lua}/include";
+              LUA_LIBDIR = "$out/lib/lua/${lua.majorVersion}";
             };
           EOF
         '';
@@ -76,9 +78,9 @@ let
               --suffix LD_LIBRARY_PATH ';' "${lib.makeLibraryPath runtimeDeps_}" \
               --suffix PATH ';' "${lib.makeBinPath runtimeDeps_}" \
               --suffix LUA_PATH ';' "\"$LUA_PATH\"" \
-              --suffix LUA_PATH ';' "\"$out/share/lua/${lua.luaversion}/?.lua;$out/share/lua/${lua.luaversion}/?/init.lua\"" \
+              --suffix LUA_PATH ';' "\"$out/share/lua/${lua.majorVersion}/?.lua;$out/share/lua/${lua.majorVersion}/?/init.lua\"" \
               --suffix LUA_CPATH ';' "\"$LUA_CPATH\"" \
-              --suffix LUA_CPATH ';' "\"$out/lib/lua/${lua.luaversion}/?.so;$out/lib/lua/${lua.luaversion}/?/init.so\""
+              --suffix LUA_CPATH ';' "\"$out/lib/lua/${lua.majorVersion}/?.so;$out/lib/lua/${lua.majorVersion}/?/init.so\""
           done
 
           eval "$postInstall"
@@ -127,10 +129,17 @@ let
       meta.broken = true;
     };
 
+    # look for lua.h
     sundown = buildLuaRocks rec {
       name = "sundown";
       src = "${distro_src}/pkg/sundown";
       rockspec = "rocks/${name}-scm-1.rockspec";
+      preBuild = ''
+        # export CFLAGS=-I${lua}/include
+        mkdir -p $out
+        cp -r ${lua}/include $out
+      '';
+      meta.broken = true;
     };
 
     cwrap = buildLuaRocks rec {
@@ -299,7 +308,7 @@ let
       };
 
       preConfigure = ''
-        cmakeFlags="-DLUA_LIBRARY=${lua}/lib/lua/${lua.luaversion} -DINSTALL_CMOD=$out/lib/lua/${lua.luaversion} -DINSTALL_MOD=$out/lib/lua/${lua.luaversion}"
+        cmakeFlags="-DLUA_LIBRARY=${lua}/lib/lua/${lua.majorVersion} -DINSTALL_CMOD=$out/lib/lua/${lua.majorVersion} -DINSTALL_MOD=$out/lib/lua/${lua.majorVersion}"
       '';
 
       buildInputs = [cmake libuuid lua];

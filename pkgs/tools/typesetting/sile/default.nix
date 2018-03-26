@@ -1,19 +1,14 @@
 { stdenv, darwin, fetchurl, makeWrapper, pkgconfig
-, harfbuzz, icu, lpeg, luaexpat, luazlib, luafilesystem
-, fontconfig, lua, libiconv
+, harfbuzz, icu
+, lua
+, fontconfig, libiconv
 }:
 
 with stdenv.lib;
 
 let
 
-  libs          = [lpeg luaexpat luazlib luafilesystem];
-  getPath       = lib : type : "${lib}/lib/lua/${lua.luaversion}/?.${type};${lib}/share/lua/${lua.luaversion}/?.${type}";
-  getLuaPath    = lib : getPath lib "lua";
-  getLuaCPath   = lib : getPath lib "so";
-  luaPath       = concatStringsSep ";" (map getLuaPath libs);
-  luaCPath      = concatStringsSep ";" (map getLuaCPath libs);
-
+  luaEnv = lua.withPackages(ps: with ps;[ lpeg luaexpat luazlib luafilesystem ]);
 in
 
 stdenv.mkDerivation rec {
@@ -26,7 +21,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [pkgconfig makeWrapper];
-  buildInputs = [ harfbuzz icu lua lpeg luaexpat luazlib luafilesystem fontconfig libiconv ]
+  buildInputs = [ harfbuzz icu luaEnv fontconfig libiconv ]
   ++ optional stdenv.isDarwin darwin.apple_sdk.frameworks.AppKit
   ;
 
@@ -35,15 +30,6 @@ stdenv.mkDerivation rec {
   '';
 
   NIX_LDFLAGS = optionalString stdenv.isDarwin "-framework AppKit";
-
-  LUA_PATH = luaPath;
-  LUA_CPATH = luaCPath;
-
-  postInstall = ''
-    wrapProgram $out/bin/sile \
-      --set LUA_PATH "${luaPath};" \
-      --set LUA_CPATH "${luaCPath};" \
-  '';
 
   # Hack to avoid TMPDIR in RPATHs.
   preFixup = ''rm -rf "$(pwd)" && mkdir "$(pwd)" '';
