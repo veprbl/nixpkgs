@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, autoreconfHook, pkgconfig, gtk-doc, libxslt, docbook_xsl
+{ stdenv, fetchFromGitHub, fetchpatch, autoreconfHook, pkgconfig, gtk-doc, libxslt, docbook_xsl
 , python3, gobjectIntrospection, glib, libudev, kmod, parted, cryptsetup
 , devicemapper, dmraid, utillinux, libbytesize, nss, volume_key
 }:
@@ -18,6 +18,13 @@ in stdenv.mkDerivation rec {
   outputs = [ "out" "dev" "devdoc" ];
   outputBin = "dev";
 
+  patches = [
+    (fetchpatch {
+      url = "https://github.com/storaged-project/libblockdev/commit/18fac90f3008fe046689d469629e7d84ccbd1e24.patch";
+      sha256 = "0b745ap0pl3yrd0g9bq9jmc2j573d5pnp0wpw5yiac5589sabwmh";
+    })
+  ];
+
   postPatch = ''
     patchShebangs scripts
   '';
@@ -29,6 +36,9 @@ in stdenv.mkDerivation rec {
   buildInputs = [
     glib libudev kmod parted cryptsetup devicemapper dmraid utillinux libbytesize nss volume_key
   ];
+
+  # https://github.com/storaged-project/libblockdev/issues/331
+  configureFlags  = stdenv.lib.optional stdenv.hostPlatform.isMusl "--without-dm";
 
   meta = with stdenv.lib; {
     description = "A library for manipulating block devices";
