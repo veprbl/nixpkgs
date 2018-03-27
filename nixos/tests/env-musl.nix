@@ -6,6 +6,10 @@ import ./make-test.nix ({ pkgs, ...} : {
 
   machine = { config, lib, pkgs, ... }:
     {
+      imports = [
+        ../modules/config/musl.nix
+      ];
+
       boot.kernelPackages = pkgs.linuxPackages;
       environment.etc."plainFile".text = ''
         Hello World
@@ -19,16 +23,6 @@ import ./make-test.nix ({ pkgs, ...} : {
         NIXCON = "awesome";
       };
 
-      # Musl
-      nixpkgs.localSystem.config = "x86_64-unknown-linux-musl";
-      i18n.glibcLocales = pkgs.musl; # blah
-      boot.initrd = {
-        extraUtilsCommands = ''
-          for BIN in ${pkgs.libuuid}/bin/*; do
-            copy_bin_and_libs $BIN
-          done
-        '';
-      };
     };
 
   testScript =
