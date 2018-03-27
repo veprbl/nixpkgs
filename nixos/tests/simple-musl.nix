@@ -5,40 +5,10 @@ import ./make-test.nix ({ pkgs, ...} : {
   };
 
   machine = { config, pkgs, ... }: {
-    imports = [ ../modules/profiles/minimal.nix ];
-
-    #nixpkgs.pkgs = import ../.. {
-    #  inherit (config.nixpkgs) config overlays;#  system;
-    #  localSystem.config = "x86_64-unknown-linux-musl";
-    #};
-    nixpkgs.localSystem.config = "x86_64-unknown-linux-musl";
-
-    #i18n.glibcLocales = pkgs.musl;
-    #i18n.glibcLocales = (import (fetchTarball channel:nixos-unstable) {}).glibcLocales;
-    i18n.glibcLocales = pkgs.musl;
-
-    boot.initrd = {
-        # copy_bin_and_libs ${pkgs.strace}/bin/strace
-        # copy_bin_and_libs ${pkgs.bash}/bin/bash
-        #for BIN in ${pkgs.utillinux}/bin/*; do
-        #  copy_bin_and_libs $BIN
-        #done
-      extraUtilsCommands = ''
-        for BIN in ${pkgs.libuuid}/bin/*; do
-          copy_bin_and_libs $BIN
-        done
-      '';
-      #extraUtilsCommandsTest = ''
-      #  find $out
-      #  ldd $out/bin/fsck
-      #  ldd $out/bin/fsck.ext4
-
-      #  $out/bin/systemd-udevd --help
-      #'';
-      #  #$out/bin/strace -V
-
-      #kernelModules = [ "ext4" ];
-    };
+    imports = [
+      ../modules/profiles/minimal.nix
+      ../modules/config/musl.nix
+    ];
   };
 
   testScript =
