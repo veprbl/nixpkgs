@@ -39,5 +39,8 @@ import ./make-test.nix ({ pkgs, ...} : {
 
     $webserver->waitForUnit("nginx");
     $webserver->waitForOpenPort("80");
+
+    # $webserver->succeed("ls -l /nix/store 1>&2");
+    # $webserver->succeed("nix-store -q --referrers /nix/store/c5yibg19qy7ygdgfj8355qjlbj4jcskl-glibc-2.27 1>&2");
   '';
 })
