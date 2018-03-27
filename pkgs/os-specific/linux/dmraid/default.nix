@@ -1,20 +1,22 @@
-{ stdenv, fetchurl, devicemapper }:
+{ stdenv, fetchurl, fetchpatch, devicemapper }:
 
 stdenv.mkDerivation rec {
-  name = "dmraid-1.0.0.rc16";
+  name = "dmraid-1.0.0.rc16-3";
 
   src = fetchurl {
-    url = "http://people.redhat.com/~heinzm/sw/dmraid/src/old/${name}.tar.bz2";
-    sha256 = "0m92971gyqp61darxbiri6a48jz3wq3gkp8r2k39320z0i6w8jgq";
+    url = "http://people.redhat.com/heinzm/sw/dmraid/src/${name}.tar.bz2";
+    sha256 = "1n7vsqvh7y6yvil682q129d21yhb0cmvd5fvsbkza7ypd78inhlk";
   };
 
-  patches = [ ./hardening-format.patch ];
+  patches = [
+    ./hardening-format.patch
+    (fetchpatch {
+      url = "https://raw.githubusercontent.com/MicrochipTech/buildroot/master/package/dmraid/0001-fix-compilation-under-musl.patch";
+      sha256 = "0cvnrf3mzapi0lvz6giq0rd3hk8ns1ywac5n7ng2zvsl6847bw6m";
+    })
+  ];
 
-  postPatch = ''
-    sed -i 's/\[\[[^]]*\]\]/[ "''$''${n##*.}" = "so" ]/' */lib/Makefile.in
-  '';
-
-  preConfigure = "cd */";
+  preConfigure = "cd */*/";
 
   buildInputs = [ devicemapper ];
 

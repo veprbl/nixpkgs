@@ -1,5 +1,5 @@
---- a/1.0.0.rc16/lib/events/libdmraid-events-isw.c	2016-01-29 05:16:57.455425454 +0000
-+++ b/1.0.0.rc16/lib/events/libdmraid-events-isw.c	2016-01-29 05:17:55.520564013 +0000
+--- a/1.0.0.rc16-3/dmraid/lib/events/libdmraid-events-isw.c	2016-01-29 05:16:57.455425454 +0000
++++ b/1.0.0.rc16-3/dmraid/lib/events/libdmraid-events-isw.c	2016-01-29 05:17:55.520564013 +0000
 @@ -838,13 +838,13 @@
  
  	sz = _log_all_devs(log_type, rs, NULL, 0);
