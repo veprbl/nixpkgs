@@ -197,6 +197,16 @@ in
         # /etc/protocols: IP protocol numbers.
         "protocols".source  = pkgs.iana-etc + "/etc/protocols";
 
+        # /etc/rpc: RPC program numbers.
+        # TODO: generate and bundle as part of iana-etc
+        "rpc".source =
+          if pkgs.stdenv.hostPlatform.libc == "glibc" then
+            pkgs.glibc.out + "/etc/rpc"
+            else builtins.fetchurl {
+              url = https://raw.githubusercontent.com/freebsd/freebsd/91f34482ca182b474992ae5c488e1c4099b921ed/etc/rpc;
+              sha256 = "0vnyrlazgjy0piw0cyd6qhw8mci3r9nx5ns3fr0bi1n7flqx1m3a";
+            };
+
         # /etc/hosts: Hostname-to-IP mappings.
         "hosts".text =
           let oneToString = set : ip : ip + " " + concatStringsSep " " ( getAttr ip set );
@@ -250,10 +260,6 @@ in
         "resolv.conf".source = "${pkgs.systemd}/lib/systemd/resolv.conf";
       } // optionalAttrs (config.services.resolved.enable && dnsmasqResolve) {
         "dnsmasq-resolv.conf".source = "/run/systemd/resolve/resolv.conf";
-      } // optionalAttrs (pkgs.stdenv.hostPlatform.libc == "glibc") {
-        # /etc/rpc: RPC program numbers.
-        "rpc".source = pkgs.glibc.out + "/etc/rpc";
-        # TODO: Is /etc/netconfig needed on musl (wfor libtirpc)?
       };
 
       networking.proxy.envVars =
