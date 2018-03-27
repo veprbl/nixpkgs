@@ -102,6 +102,8 @@ let
 
       # Copy some utillinux stuff.
       copy_bin_and_libs ${pkgs.utillinux}/sbin/blkid
+      copy_bin_and_libs ${pkgs.utillinux}/sbin/mount
+      copy_bin_and_libs ${pkgs.utillinux}/sbin/fsck
 
       # Copy dmsetup and lvm.
       copy_bin_and_libs ${pkgs.lvm2}/sbin/dmsetup
