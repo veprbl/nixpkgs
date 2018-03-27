@@ -8,7 +8,7 @@ with lib;
   i18n.glibcLocales = pkgs.musl; # blah
   boot.initrd = {
     extraUtilsCommands = ''
-      for BIN in ${pkgs.libuuid}/bin/*; do
+      for BIN in ${pkgs.utillinux}/bin/*; do
         copy_bin_and_libs $BIN
       done
     '';
