@@ -17,8 +17,6 @@ let
 
   platform =
     if stdenv.system == "i686-linux" || stdenv.system == "x86_64-linux" then stdenv.hostPlatform.config
-    else if stdenv.system == "x86_64-linux"
-    then "x86_64-unknown-linux-gnu"
     else if stdenv.system == "armv7l-linux"
     then "armv7-unknown-linux-gnueabihf"
     else if stdenv.system == "aarch64-linux"
@@ -29,10 +27,16 @@ let
     then "x86_64-apple-darwin"
     else throw "missing bootstrap url for platform ${stdenv.system}";
 
-  src = fetchurl {
+  src = if (!stdenv.hostPlatform.isMusl) then fetchurl {
      url = "https://static.rust-lang.org/dist/rust-${version}-${platform}.tar.gz";
      sha256 = hashes."${platform}";
-  };
+   } else fetchurl {
+     #url = "https://repo.voidlinux.eu/distfiles/rustc-${version}-x86_64-unknown-linux-musl.tar.gz";
+     #sha256 = "0d9h0f08797fg4wspb4846ld9gfmlyr2xvmyas27cg8106jak0ja";
+     url = "https://portage.smaeul.xyz/distfiles/rust-${version}-x86_64-unknown-linux-musl.tar.xz";
+     sha256 = "138iqd7g2x3ycyl4n55y98mcdkw0dpxq7p8i631qkjfjd5l5k9cp";
+   };
+
 
 in callPackage ./binaryBuild.nix
   { inherit version src platform;
