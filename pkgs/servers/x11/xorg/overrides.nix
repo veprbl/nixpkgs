@@ -518,6 +518,7 @@ in
           "--enable-dri3"
           "--enable-glx"
           "--enable-wayland"
+          "--disable-tls"
         ];
         postInstall = ''
           rm -fr $out/share/X11/xkb/compiled # otherwise X will try to write in it
