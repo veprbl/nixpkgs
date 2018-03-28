@@ -18,10 +18,10 @@ let
       ];
   };
 
-  package = pkgs.buildEnv {
+  package = let t =pkgs.buildEnv {
     name = "opengl-drivers";
     paths = [ cfg.package ] ++ cfg.extraPackages;
-  };
+  }; in builtins.trace "${cfg.package}" t;
 
   package32 = pkgs.buildEnv {
     name = "opengl-drivers-32bit";
