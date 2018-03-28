@@ -9988,9 +9988,11 @@ with pkgs;
   glibcIconv = libc: let
     inherit (builtins.parseDrvName libc.name) name version;
     libcDev = lib.getDev libc;
+    libcBin = lib.getBin libc;
   in runCommand "${name}-iconv-${version}" {} ''
-    mkdir -p $out/include
-    ln -sv ${libcDev}/include/iconv.h $out/include
+    mkdir -p $out/{include,bin}
+    ln -sv ${libcDev}/include/iconv.h $out/include/
+    ln -sv ${libcBin}/bin/iconv $out/bin/
   '';
 
   libiconvReal = callPackage ../development/libraries/libiconv {
