@@ -23,7 +23,7 @@ in stdenv.mkDerivation rec {
   ];
 
   # Indirectly: https://bugs.freedesktop.org/show_bug.cgi?id=35268
-  configureFlags  = stdenv.lib.optional stdenv.hostPlatform.isMusl "--disable-tls";
+  configureFlags  = stdenv.lib.optionals stdenv.hostPlatform.isMusl [ "--disable-tls" "--disable-asm" ];
 
   outputs = [ "out" "dev" ];
 
