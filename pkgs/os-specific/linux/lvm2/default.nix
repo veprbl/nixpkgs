@@ -75,9 +75,6 @@ stdenv.mkDerivation {
       cp scripts/blk_availability_systemd_red_hat.service $out/etc/systemd/system
       cp scripts/lvm2_activation_generator_systemd_red_hat $out/lib/systemd/system-generators
     '';
-    #+ stdenv.lib.optionalString stdenv.hostPlatform.isMusl ''
-    #  substituteInPlace $out/etc/lvm.conf --replace 
-    #'';
 
   meta = {
     homepage = http://sourceware.org/lvm2/;
