@@ -513,6 +513,11 @@ in
           "--with-xkb-path=${xorg.xkeyboardconfig}/share/X11/xkb"
           "--with-xkb-output=$out/share/X11/xkb/compiled"
           "--enable-glamor"
+        ] ++ stdenv.optionals stdenv.hostPlatform.isMusl [
+          "--enable-dri2"
+          "--enable-dri3"
+          "--enable-glx"
+          "--enable-wayland"
         ];
         postInstall = ''
           rm -fr $out/share/X11/xkb/compiled # otherwise X will try to write in it
