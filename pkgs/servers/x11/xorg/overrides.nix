@@ -477,7 +477,8 @@ in
         libXfont2
       ];
       # fix_segfault: https://bugs.freedesktop.org/show_bug.cgi?id=91316
-      commonPatches = [ ];
+      commonPatches = [ ./xorg-server-1.12-unloadsubmodule.patch ];
+
       # XQuartz requires two compilations: the first to get X / XQuartz,
       # and the second to get Xvfb, Xnest, etc.
       darwinOtherX = overrideDerivation xorgserver (oldAttrs: {
