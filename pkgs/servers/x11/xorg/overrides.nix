@@ -501,6 +501,7 @@ in
         patches = commonPatches;
         prePatch = stdenv.lib.optionalString stdenv.hostPlatform.isMusl ''
           export CFLAGS+=" -D__uid_t=uid_t -D__gid_t=gid_t"
+          export LDFLAGS+=" -Wl,-z,-lazy"
         '';
         configureFlags = [
           "--enable-kdrive"             # not built by default
