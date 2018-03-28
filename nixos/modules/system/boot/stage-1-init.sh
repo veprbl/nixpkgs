@@ -70,7 +70,7 @@ echo
 # Make several required directories.
 mkdir -p /etc/udev
 touch /etc/fstab # to shut up mount
-ln -s /proc/mounts /etc/mtab # to shut up mke2fs
+ln -s /proc/self/mounts /etc/mtab # to shut up mke2fs
 touch /etc/udev/hwdb.bin # to shut up udev
 touch /etc/initrd-release
 
