@@ -477,8 +477,7 @@ in
         libXfont2
       ];
       # fix_segfault: https://bugs.freedesktop.org/show_bug.cgi?id=91316
-      # driver paths: https://cgit.freedesktop.org/xorg/xserver/patch/?id=319af6f471912160ab3eb6395ef50f9950063d43
-      commonPatches = [ ./xorg-server-1.12-unloadsubmodule.patch ./driver-paths.patch ];
+      commonPatches = [ ./xorg-server-1.12-unloadsubmodule.patch ];
 
       # XQuartz requires two compilations: the first to get X / XQuartz,
       # and the second to get Xvfb, Xnest, etc.
