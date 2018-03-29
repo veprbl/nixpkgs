@@ -227,7 +227,7 @@ in stdenv.mkDerivation (rec {
   in [
     (fetchpatch {
       url = "https://github.com/dtzWill/systemd/compare/${systemd_rev}...238-musl-4.patch";
-      sha256 = "1bp6jcbhpwv2ivhqv1xgvyvyag3nrg4v25jaqab05aypld52cs4p";
+      sha256 = "0bg5hd8g8sryq2gsmp6fwjcnbv3dpy8x40fig618k3bhfprg97jb";
     })
   ];
   postPatch = ''
