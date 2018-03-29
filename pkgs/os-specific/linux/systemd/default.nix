@@ -95,7 +95,9 @@ in stdenv.mkDerivation (rec {
     "-Dmyhostname=false"
     #"-Dsmack=false"
     "-Dldconfig=false"
-    "-Dutmp=false"
+    "-Dutmp=true"
+    "-Dtmpfiles=true"
+    #"-Dutmp=false"
     #"-Dtmpfiles=false"
   ];
 
