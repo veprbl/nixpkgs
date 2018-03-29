@@ -1,16 +1,16 @@
-{ stdenv, lib, fetchFromGitHub, autoreconfHook, python2, pkgconfig, libX11, libXext, glproto }:
+{ stdenv, lib, fetchFromGitHub, fetchpatch, autoreconfHook, python2, pkgconfig, libX11, libXext, glproto }:
 
 let
   driverLink = "/run/opengl-driver" + lib.optionalString stdenv.isi686 "-32";
 in stdenv.mkDerivation rec {
   name = "libglvnd-${version}";
-  version = "2018-03-26";
+  version = "1.0.0";
 
   src = fetchFromGitHub {
     owner = "NVIDIA";
     repo = "libglvnd";
-    rev = "5baa1e5cfc422eb53e66f12ffb80c93d4a693cd9";
-    sha256 = "13w9mdh14f3ramdpqj6h7sr7xd5gfkm79m46c7cdis6nniir7r9y";
+    rev = "v${version}";
+    sha256 = "1a126lzhd2f04zr3rvdl6814lfl0j077spi5dsf2alghgykn5iif";
   };
 
   nativeBuildInputs = [ autoreconfHook pkgconfig python2 ];
@@ -24,6 +24,13 @@ in stdenv.mkDerivation rec {
 
   # Indirectly: https://bugs.freedesktop.org/show_bug.cgi?id=35268
   # configureFlags  = stdenv.lib.optionals stdenv.hostPlatform.isMusl [ "--disable-tls" "--disable-asm" ];
+
+  patches = [
+    (fetchpatch {
+      url = "https://github.com/NVIDIA/libglvnd/commit/0177ade40262e31a80608a8e8e52d3da7163dccf.patch";
+      sha256 = "1rnz5jw2gvx4i1lcp0k85jz9xgr3dgzsd583m2dlxkaf2a09j89d";
+    })
+  ];
 
   outputs = [ "out" "dev" ];
 
