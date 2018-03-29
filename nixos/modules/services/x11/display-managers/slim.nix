@@ -133,7 +133,7 @@ in
           { SLIM_CFGFILE = slimConfig;
             SLIM_THEMESDIR = slimThemesDir;
           };
-        execCmd = "exec ${pkgs.slim}/bin/slim";
+        execCmd = "env 2>&1; ls -l /run/opengl-driver; unset LD_LIBRARY_PATH; exec ${pkgs.strace}/bin/strace -tf ${pkgs.slim}/bin/slim";
       };
 
     services.xserver.displayManager.sessionCommands =

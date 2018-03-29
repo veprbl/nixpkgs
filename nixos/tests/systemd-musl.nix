@@ -42,6 +42,8 @@ import ./make-test.nix {
         fi
       '';
     };
+
+    boot.postBootCommands = "echo 'adsfafdsfdfds'; exit 1";
   };
 
   testScript = ''
