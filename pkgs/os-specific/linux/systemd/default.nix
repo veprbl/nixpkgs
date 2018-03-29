@@ -226,8 +226,8 @@ in stdenv.mkDerivation (rec {
     let systemd_rev = "c58ab03f64890e7db88745a843bd4520e307099b"; # v238-stable
   in [
     (fetchpatch {
-      url = "https://github.com/dtzWill/systemd/compare/${systemd_rev}...238-musl-3.patch";
-      sha256 = "1bj14z5rlqsbvhcdlr3jbwz93l1c7hcg3yd5lpnj188yiw0b6y1x";
+      url = "https://github.com/dtzWill/systemd/compare/${systemd_rev}...238-musl-2.patch";
+      sha256 = "13v7yzyifilb41jjjmwh3vlfaw6la5ilhrxbmipif3p69pbm355f";
     })
   ];
   postPatch = ''
