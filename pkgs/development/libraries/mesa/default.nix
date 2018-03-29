@@ -117,7 +117,7 @@ let self = stdenv.mkDerivation {
     (enableFeature enableTextureFloats "texture-float")
     (enableFeature grsecEnabled "glx-rts")
     (enableFeature stdenv.isLinux "dri3")
-    (enableFeature stdenv.isLinux "nine") # Direct3D in Wine
+    (enableFeature (stdenv.isLinux && !stdenv.hostPlatform.isMusl) "nine") # Direct3D in Wine
     "--enable-libglvnd"
     "--enable-dri"
     "--enable-driglx-direct"
