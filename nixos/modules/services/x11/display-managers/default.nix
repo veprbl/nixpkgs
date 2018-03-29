@@ -287,8 +287,6 @@ in
 
         preStart = mkOption {
           type = types.lines;
-          # default = "env; ${pkgs.pax-utils}/bin/lddtree /run/opengl-driver/lib/libEGL_mesa.so; exit 1";
-          #default = "env; ${pkgs.pax-utils}/bin/lddtree /run/opengl-driver/lib/libEGL_mesa.so; exit 1";
           default = "";
           example = "rm -f /var/log/my-display-manager.log";
           description = "Script executed before the display manager is started.";

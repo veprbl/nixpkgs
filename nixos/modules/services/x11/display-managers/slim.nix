@@ -133,7 +133,7 @@ in
           { SLIM_CFGFILE = slimConfig;
             SLIM_THEMESDIR = slimThemesDir;
           };
-        execCmd = "${pkgs.slim}/bin/slim";
+        execCmd = "exec ${pkgs.slim}/bin/slim";
       };
 
     services.xserver.displayManager.sessionCommands =
