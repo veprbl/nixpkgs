@@ -127,7 +127,7 @@ let
       "final.target"
       "kexec.target"
       "systemd-kexec.service"
-    ] ++ optionals (false && !pkgs.stdenv.hostPlatform.isMusl) [
+    ] ++ optionals (true) [ # (false && !pkgs.stdenv.hostPlatform.isMusl) [
       "systemd-update-utmp.service"
     ] ++ [
 
