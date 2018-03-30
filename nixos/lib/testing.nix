@@ -128,7 +128,7 @@ in rec {
           wrapProgram $out/bin/nixos-test-driver \
             --add-flags "''${vms[*]}" \
             ${lib.optionalString enableOCR
-              "--prefix PATH : '${ocrProg}/bin:${imagemagick}/bin'"} \
+              "--prefix PATH : '${ocrProg}/bin:${imagemagick_light}/bin'"} \
             --run "export testScript=\"\$(cat $out/test-script)\"" \
             --set VLANS '${toString vlans}'
           ln -s ${testDriver}/bin/nixos-test-driver $out/bin/nixos-run-vms
