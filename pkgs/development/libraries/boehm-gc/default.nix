@@ -28,9 +28,9 @@ stdenv.mkDerivation rec {
   outputs = [ "out" "dev" "doc" ];
   separateDebugInfo = stdenv.isLinux;
 
-  preConfigure = stdenv.lib.optionalString (stdenv.hostPlatform.libc == "musl") ''
-    export NIX_CFLAGS_COMPILE+="-D_GNU_SOURCE -DUSE_MMAP -DHAVE_DL_ITERATE_PHDR"
-  '';
+  #preConfigure = stdenv.lib.optionalString (stdenv.hostPlatform.libc == "musl") ''
+  #  export NIX_CFLAGS_COMPILE+="-D_GNU_SOURCE -DUSE_MMAP -DHAVE_DL_ITERATE_PHDR"
+  #'';
 
   patches = [ (fetchpatch {
     url = "https://raw.githubusercontent.com/gentoo/musl/85b6a600996bdd71162b357e9ba93d8559342432/dev-libs/boehm-gc/files/boehm-gc-7.6.0-sys_select.patch";
