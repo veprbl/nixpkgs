@@ -334,6 +334,8 @@ in rec {
   tests.netdata = callTest tests/netdata.nix { };
   tests.networking.networkd = callSubTests tests/networking.nix { networkd = true; };
   tests.networking.scripted = callSubTests tests/networking.nix { networkd = false; };
+  tests.networking-musl.networkd = callSubTests tests/networking-musl.nix { networkd = true; };
+  tests.networking-musl.scripted = callSubTests tests/networking-musl.nix { networkd = false; };
   # TODO: put in networking.nix after the test becomes more complete
   tests.networkingProxy = callTest tests/networking-proxy.nix {};
   tests.nfs3 = callTest tests/nfs.nix { version = 3; };
