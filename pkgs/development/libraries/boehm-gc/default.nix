@@ -1,21 +1,29 @@
-{ lib, stdenv, fetchurl, fetchpatch, pkgconfig, libatomic_ops, enableLargeConfig ? false
+{ lib, stdenv, fetchFromGitHub, fetchpatch, pkgconfig, libatomic_ops, enableLargeConfig ? false
 , buildPlatform, hostPlatform
+, autoreconfHook
 }:
 
 stdenv.mkDerivation rec {
   name = "boehm-gc-${version}";
-  version = "7.6.4";
+  version = "7.7.0-2018-03-29";
 
-  src = fetchurl {
-    urls = [
-      "http://www.hboehm.info/gc/gc_source/gc-${version}.tar.gz"
-      "https://github.com/ivmai/bdwgc/releases/download/v${version}/gc-${version}.tar.gz"
-    ];
-    sha256 = "076dzsqqyxd3nlzs0z277vvhqjp8nv5dqi763s0m90zr6ljiyk5r";
+  src = fetchFromGitHub {
+    owner = "ivmai";
+    repo = "bdwgc";
+    rev = "5e6cc59b0a9d8c3175802809549f79bf1cbc4282";
+    sha256 = "035brg0d75j7bvzd22as5k4xwmnd5jbw9ziypsn20kbsf97bxi4v";
   };
 
+  #src = fetchurl {
+  #  urls = [
+  #    "http://www.hboehm.info/gc/gc_source/gc-${version}.tar.gz"
+  #    "https://github.com/ivmai/bdwgc/releases/download/v${version}/gc-${version}.tar.gz"
+  #  ];
+  #  sha256 = "076dzsqqyxd3nlzs0z277vvhqjp8nv5dqi763s0m90zr6ljiyk5r";
+  #};
+
   buildInputs = [ libatomic_ops ];
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig autoreconfHook ];
 
   outputs = [ "out" "dev" "doc" ];
   separateDebugInfo = stdenv.isLinux;
