@@ -1,14 +1,50 @@
-From 7e8faf46f8bf3dffe1713a65486918792b87dce5 Mon Sep 17 00:00:00 2001
+From 699cff14110d00cbb8f9b4335be3b9a69c0cbc70 Mon Sep 17 00:00:00 2001
 From: Will Dietz <w@wdtz.org>
-Date: Thu, 29 Mar 2018 13:26:37 -0500
-Subject: [PATCH] systemd-musl: fix kill signal hardcoding >.<
+Date: Mon, 2 Apr 2018 14:45:40 -0500
+Subject: [PATCH] systemctl: support kill-user-manager alias
 
 ---
- units/user/systemd-exit.service.in | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ meson.build                        |  2 +-
+ src/systemctl/systemctl.c          | 10 ++++++++++
+ units/user/systemd-exit.service.in |  2 +-
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
+diff --git a/meson.build b/meson.build
+index b53dfaa94..2c317a403 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1725,7 +1725,7 @@ exe = executable('systemctl', 'src/systemctl/systemctl.c',
+                  install_dir : rootbindir)
+ public_programs += [exe]
+ 
+-foreach alias : ['halt', 'poweroff', 'reboot', 'runlevel', 'shutdown', 'telinit']
++foreach alias : ['halt', 'poweroff', 'reboot', 'runlevel', 'shutdown', 'telinit', 'kill-user-manager']
+         meson.add_install_script(meson_make_symlink,
+                                  join_paths(rootbindir, 'systemctl'),
+                                  join_paths(rootsbindir, alias))
+diff --git a/src/systemctl/systemctl.c b/src/systemctl/systemctl.c
+index 12fca4ef9..2ccc4e630 100644
+--- a/src/systemctl/systemctl.c
++++ b/src/systemctl/systemctl.c
+@@ -8175,6 +8175,16 @@ static int parse_argv(int argc, char *argv[]) {
+                 } else if (strstr(program_invocation_short_name, "runlevel")) {
+                         arg_action = ACTION_RUNLEVEL;
+                         return runlevel_parse_argv(argc, argv);
++                } else if (strstr(program_invocation_short_name, "kill-user-manager")) {
++                        if (argc != 2) {
++                          log_error("%s: require argument 'PID' missing, or too many arguments.", program_invocation_short_name);
++                          return -EINVAL;
++                        }
++                        uint32_t pid;
++                        int q = safe_atou32(argv[1], &pid);
++                        if (q < 0)
++                          return -EINVAL;
++                        return kill(pid, SIGRTMIN+24);
+                 }
+         }
+ 
 diff --git a/units/user/systemd-exit.service.in b/units/user/systemd-exit.service.in
-index 9ce6f1c2a..aa5d2b0b6 100644
+index 9ce6f1c2a..15fab0730 100644
 --- a/units/user/systemd-exit.service.in
 +++ b/units/user/systemd-exit.service.in
 @@ -16,4 +16,4 @@ After=shutdown.target
@@ -16,7 +52,7 @@ index 9ce6f1c2a..aa5d2b0b6 100644
  [Service]
  Type=oneshot
 -ExecStart=@KILL@ -s 58 $MANAGERPID
-+ExecStart=@KILL@ -RTMIN+24 $MANAGERPID
++ExecStart=kill-user-manager $MANAGERPID
 -- 
 2.16.3
 
