@@ -1,19 +1,27 @@
-From 699cff14110d00cbb8f9b4335be3b9a69c0cbc70 Mon Sep 17 00:00:00 2001
+From 1dcda48399b549193f62a265e4f9199b768200e0 Mon Sep 17 00:00:00 2001
 From: Will Dietz <w@wdtz.org>
 Date: Mon, 2 Apr 2018 14:45:40 -0500
 Subject: [PATCH] systemctl: support kill-user-manager alias
 
 ---
- meson.build                        |  2 +-
+ meson.build                        |  3 ++-
  src/systemctl/systemctl.c          | 10 ++++++++++
  units/user/systemd-exit.service.in |  2 +-
- 3 files changed, 12 insertions(+), 2 deletions(-)
+ 3 files changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index b53dfaa94..2c317a403 100644
+index b53dfaa94..a30454fd5 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -1725,7 +1725,7 @@ exe = executable('systemctl', 'src/systemctl/systemctl.c',
+@@ -273,6 +273,7 @@ substs.set('systemsleepdir',                                  systemsleepdir)
+ substs.set('VARLOGDIR',                                       varlogdir)
+ substs.set('CERTIFICATEROOT',                                 get_option('certificate-root'))
+ substs.set('SYSTEMCTL',                                       join_paths(rootbindir, 'systemctl'))
++substs.set('KILLUSERMANAGER',                                 join_paths(rootbindir, 'kill-user-manager'))
+ substs.set('RANDOM_SEED',                                     join_paths(randomseeddir, 'random-seed'))
+ substs.set('SYSTEM_SYSVINIT_PATH',                            sysvinit_path)
+ substs.set('SYSTEM_SYSVRCND_PATH',                            sysvrcnd_path)
+@@ -1725,7 +1726,7 @@ exe = executable('systemctl', 'src/systemctl/systemctl.c',
                   install_dir : rootbindir)
  public_programs += [exe]
  
@@ -44,7 +52,7 @@ index 12fca4ef9..2ccc4e630 100644
          }
  
 diff --git a/units/user/systemd-exit.service.in b/units/user/systemd-exit.service.in
-index 9ce6f1c2a..15fab0730 100644
+index 9ce6f1c2a..d56c0fcf9 100644
 --- a/units/user/systemd-exit.service.in
 +++ b/units/user/systemd-exit.service.in
 @@ -16,4 +16,4 @@ After=shutdown.target
@@ -52,7 +60,7 @@ index 9ce6f1c2a..15fab0730 100644
  [Service]
  Type=oneshot
 -ExecStart=@KILL@ -s 58 $MANAGERPID
-+ExecStart=kill-user-manager $MANAGERPID
++ExecStart=@KILLUSERMANAGER@ $MANAGERPID
 -- 
 2.16.3
 
