@@ -101,7 +101,6 @@ in stdenv.mkDerivation rec {
   ];
 
   patches = [
-    ./dont-hardcode-sigrt-relative.patch
     (fetchpatch {
       url = "https://github.com/systemd/systemd/pull/8648.patch";
       sha256 = "0qc5wrrbib3fl19vjir7fkyk06wackzz6314aj3hdlmiplywqjwp";
