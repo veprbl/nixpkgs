@@ -1,0 +1,15 @@
+Fix "No known features for CXX compiler", see
+https://cmake.org/pipermail/cmake/2016-December/064733.html and the note at
+https://cmake.org/cmake/help/v3.10/command/cmake_minimum_required.html
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,8 +1,8 @@
++cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
+ project(krita)
+ 
+ message(STATUS "Using CMake version: ${CMAKE_VERSION}")
+ 
+-cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
+ 
+ set(MIN_QT_VERSION 5.6.0)
+ option(OVERRIDE_QT_VERSION "Use this to make it possible to build with Qt < 5.6.0. There will be bugs." OFF)

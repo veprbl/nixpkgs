@@ -73,6 +73,6 @@ stdenv.mkDerivation rec {
   meta = {
     homepage = http://ftp.kernel.org/pub/linux/libs/pam/;
     description = "Pluggable Authentication Modules, a flexible mechanism for authenticating user";
-    platforms = stdenv.lib.platforms.linux;
+    platforms = stdenv.lib.platforms.unix;
   };
 }

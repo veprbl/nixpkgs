@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
     homepage = https://phonon.kde.org/;
     description = "Multimedia API for Qt";
     license = stdenv.lib.licenses.lgpl2;
-    platforms = stdenv.lib.platforms.linux;
+    platforms = stdenv.lib.platforms.unix;
     maintainers = with stdenv.lib.maintainers; [ ttuegel ];
   };
 

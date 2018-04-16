@@ -87,7 +87,7 @@ let
                 lgpl21Plus lgpl3Plus bsd2 mit gpl2Plus gpl3Plus fdl12
               ];
               maintainers = [ lib.maintainers.ttuegel ];
-              platforms = lib.platforms.linux;
+              platforms = lib.platforms.unix;
             } // (args.meta or {});
 
           in mkDerivation (args // {

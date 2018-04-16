@@ -16374,6 +16374,7 @@ with pkgs;
 
   krita = libsForQt5.callPackage ../applications/graphics/krita {
     openjpeg = openjpeg_1;
+    inherit (darwin.apple_sdk.frameworks) CoreFoundation CoreServices QuickLook;
   };
 
   krusader = libsForQt5.callPackage ../applications/misc/krusader { };
