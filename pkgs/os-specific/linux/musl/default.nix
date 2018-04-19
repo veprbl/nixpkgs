@@ -32,7 +32,22 @@ stdenv.mkDerivation rec {
 
   # Disable auto-adding stack protector flags,
   # so musl can selectively disable as needed
-  hardeningDisable = [ "stackprotector" ];
+  # hardeningDisable = [ "stackprotector" ];
+  hardeningDisable = [ "all" ];
+
+  # Leave these, be friendlier to debuggers/perf tools
+  # Don't force them on, but don't force off either
+  postPatch = ''
+    substituteInPlace configure \
+      --replace -fno-unwind-tables "" \
+      --replace -fno-asynchronous-unwind-tables ""
+  '';# +
+  # add __internal_free to dynamic.list too?
+  #''
+  #  sed -i dynamic.list \
+  #    -e '/free;/a__internal_free;' \
+  #    -e '/malloc;/a__internal_malloc;'
+  #'';
 
   preConfigure = ''
     configureFlagsArray+=("--syslibdir=$out/lib")
@@ -41,26 +56,37 @@ stdenv.mkDerivation rec {
   configureFlags = [
     "--enable-shared"
     "--enable-static"
+    "--enable-debug"
     "CFLAGS=-fstack-protector-strong"
-    # Fix cycle between outputs
-    "--disable-wrapper"
+    "--enable-wrapper=all"
   ];
+
+  patches = [ ./0001-Don-t-use-dynamic-list-back-to-symbolic-functions.patch ];
 
   outputs = [ "out" "dev" ];
 
   dontDisableStatic = true;
-  dontStrip = true;
+  separateDebugInfo = true;
 
-  postInstall =
-  ''
+  postInstall = ''
     # Not sure why, but link in all but scsi directory as that's what uclibc/glibc do.
     # Apparently glibc provides scsi itself?
     (cd $dev/include && ln -s $(ls -d ${linuxHeaders}/include/* | grep -v "scsi$") .)
-  '' +
-  ''
+
+    # Strip debug out of the static library
+    $STRIP -S $out/lib/libc.a
     mkdir -p $out/bin
+
     # Create 'ldd' symlink, builtin
     ln -s $out/lib/libc.so $out/bin/ldd
+
+    # (impure) cc wrapper around musl for interactive usuage
+    for i in musl-gcc musl-clang ld.musl-clang; do
+      moveToOutput bin/$i $dev
+    done
+    moveToOutput lib/musl-gcc.specs $dev
+    substituteInPlace $dev/bin/musl-gcc \
+      --replace $out/lib/musl-gcc.specs $dev/lib/musl-gcc.specs
   '' + lib.optionalString useBSDCompatHeaders ''
     install -D ${queue_h} $dev/include/sys/queue.h
     install -D ${cdefs_h} $dev/include/sys/cdefs.h

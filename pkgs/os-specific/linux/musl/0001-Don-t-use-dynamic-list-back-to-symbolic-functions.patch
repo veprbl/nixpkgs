@@ -1,0 +1,85 @@
+From 5de576be1b1fccc2d8fdace4d85c7c4eba4fd144 Mon Sep 17 00:00:00 2001
+From: Will Dietz <w@wdtz.org>
+Date: Thu, 19 Apr 2018 12:14:41 -0500
+Subject: [PATCH] Don't use dynamic list, back to symbolic functions...
+
+---
+ configure    | 10 ++++------
+ dynamic.list | 44 --------------------------------------------
+ 2 files changed, 4 insertions(+), 50 deletions(-)
+ delete mode 100644 dynamic.list
+
+diff --git a/configure b/configure
+index 09a0c436..1e59c461 100755
+--- a/configure
++++ b/configure
+@@ -590,12 +590,10 @@ tryldflag LDFLAGS_AUTO -Wl,--no-undefined
+ # versions built without shared library support and pcc are broken.
+ tryldflag LDFLAGS_AUTO -Wl,--exclude-libs=ALL
+ 
+-# Public data symbols must be interposable to allow for copy
+-# relocations, but otherwise we want to bind symbols at libc link
+-# time to eliminate startup relocations and PLT overhead. Use
+-# --dynamic-list rather than -Bsymbolic-functions for greater
+-# control over what symbols are left unbound.
+-tryldflag LDFLAGS_AUTO -Wl,--dynamic-list="$srcdir/dynamic.list"
++# Linking with -Bsymbolic-functions is no longer mandatory for
++# the dynamic linker to work, but enable it if it works as
++# a linking optimization.
++tryldflag LDFLAGS_AUTO -Wl,-Bsymbolic-functions
+ 
+ # Find compiler runtime library
+ test -z "$LIBCC" && tryldflag LIBCC -lgcc && tryldflag LIBCC -lgcc_eh
+diff --git a/dynamic.list b/dynamic.list
+deleted file mode 100644
+index 686f8eb4..00000000
+--- a/dynamic.list
++++ /dev/null
+@@ -1,44 +0,0 @@
+-{
+-environ;
+-__environ;
+-
+-stdin;
+-stdout;
+-stderr;
+-
+-malloc;
+-calloc;
+-realloc;
+-free;
+-memalign;
+-posix_memalign;
+-aligned_alloc;
+-malloc_usable_size;
+-
+-timezone;
+-daylight;
+-tzname;
+-__timezone;
+-__daylight;
+-__tzname;
+-
+-signgam;
+-__signgam;
+-
+-optarg;
+-optind;
+-opterr;
+-optreset;
+-__optreset;
+-
+-getdate_err;
+-
+-h_errno;
+-
+-program_invocation_name;
+-program_invocation_short_name;
+-__progname;
+-__progname_full;
+-
+-__stack_chk_guard;
+-};
+-- 
+2.17.0
+
