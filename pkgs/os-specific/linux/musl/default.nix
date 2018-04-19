@@ -61,8 +61,6 @@ stdenv.mkDerivation rec {
     "--enable-wrapper=all"
   ];
 
-  patches = [ ./0001-Don-t-use-dynamic-list-back-to-symbolic-functions.patch ];
-
   outputs = [ "out" "dev" ];
 
   dontDisableStatic = true;
