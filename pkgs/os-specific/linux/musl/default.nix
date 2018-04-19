@@ -44,7 +44,9 @@ stdenv.mkDerivation rec {
   '' +
   # add __internal_free to dynamic.list too?
   ''
-    sed -i '/free/a__internal_free;' dynamic.list
+    sed -i dynamic.list \
+      -e '/free;/a__internal_free;' \
+      -e '/malloc;/a__internal_malloc;'
   '';
 
   preConfigure = ''
