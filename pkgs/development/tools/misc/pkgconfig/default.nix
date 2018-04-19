@@ -28,8 +28,7 @@ stdenv.mkDerivation rec {
   dontStrip = true;
 
   configureFlags = [ "--with-internal-glib" ]
-    ++ optionals (stdenv.isSunOS) [ "--with-libiconv=gnu" "--with-system-library-path" "--with-system-include-path" "CFLAGS=-DENABLE_NLS" ]
-    ++ optional stdenv.hostPlatform.isMusl "--disable-Bsymbolic"
+    ++ optional (stdenv.isSunOS) [ "--with-libiconv=gnu" "--with-system-library-path" "--with-system-include-path" "CFLAGS=-DENABLE_NLS" ]
        # Can't run these tests while cross-compiling
     ++ optional (stdenv.hostPlatform != stdenv.buildPlatform)
        [ "glib_cv_stack_grows=no"
