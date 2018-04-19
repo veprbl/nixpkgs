@@ -22,6 +22,11 @@ stdenv.mkDerivation rec {
   preConfigure = ""; # TODO(@Ericson2314): Remove next mass rebuild
   buildInputs = optional (stdenv.isCygwin || stdenv.isDarwin || stdenv.isSunOS) libiconv;
 
+  #separateDebugInfo = true;
+  NIX_CFLAGS_COMPILE = [ "-g" "-O1" ];
+  hardeningDisable = [ "all" ];
+  dontStrip = true;
+
   configureFlags = [ "--with-internal-glib" ]
     ++ optional (stdenv.isSunOS) [ "--with-libiconv=gnu" "--with-system-library-path" "--with-system-include-path" "CFLAGS=-DENABLE_NLS" ]
        # Can't run these tests while cross-compiling
