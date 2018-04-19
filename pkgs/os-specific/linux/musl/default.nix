@@ -41,13 +41,13 @@ stdenv.mkDerivation rec {
     substituteInPlace configure \
       --replace -fno-unwind-tables "" \
       --replace -fno-asynchronous-unwind-tables ""
-  '' +
+  '';# +
   # add __internal_free to dynamic.list too?
-  ''
-    sed -i dynamic.list \
-      -e '/free;/a__internal_free;' \
-      -e '/malloc;/a__internal_malloc;'
-  '';
+  #''
+  #  sed -i dynamic.list \
+  #    -e '/free;/a__internal_free;' \
+  #    -e '/malloc;/a__internal_malloc;'
+  #'';
 
   preConfigure = ''
     configureFlagsArray+=("--syslibdir=$out/lib")
@@ -60,6 +60,8 @@ stdenv.mkDerivation rec {
     "CFLAGS=-fstack-protector-strong"
     "--enable-wrapper=all"
   ];
+
+  patches = [ ./0001-Don-t-use-dynamic-list-back-to-symbolic-functions.patch ];
 
   outputs = [ "out" "dev" ];
 
