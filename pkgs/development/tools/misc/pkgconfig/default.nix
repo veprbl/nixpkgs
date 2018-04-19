@@ -1,4 +1,4 @@
-{stdenv, fetchurl, automake, libiconv, vanilla ? false }:
+{stdenv, fetchurl, autoreconfHook, libiconv, vanilla ? false }:
 
 with stdenv.lib;
 
@@ -20,7 +20,9 @@ stdenv.mkDerivation rec {
     ++ optional stdenv.isCygwin ./2.36.3-not-win32.patch;
 
   preConfigure = ""; # TODO(@Ericson2314): Remove next mass rebuild
-  buildInputs = optional (stdenv.isCygwin || stdenv.isDarwin || stdenv.isSunOS) libiconv;
+
+  #nativeBuildInputs = [ autoreconfHook ];
+  buildInputs = [ libiconv ];
 
   #separateDebugInfo = true;
   NIX_CFLAGS_COMPILE = [ "-g" "-O1" ];
@@ -28,7 +30,8 @@ stdenv.mkDerivation rec {
   dontStrip = true;
 
   configureFlags = [ "--with-internal-glib" ]
-    ++ optional (stdenv.isSunOS) [ "--with-libiconv=gnu" "--with-system-library-path" "--with-system-include-path" "CFLAGS=-DENABLE_NLS" ]
+    ++ optionals (stdenv.isSunOS) [ "--with-libiconv=gnu" "--with-system-library-path" "--with-system-include-path" "CFLAGS=-DENABLE_NLS" ]
+    ++ optionals (stdenv.hostPlatform.isMusl) [ "--with-libiconv=gnu" ]
        # Can't run these tests while cross-compiling
     ++ optional (stdenv.hostPlatform != stdenv.buildPlatform)
        [ "glib_cv_stack_grows=no"
