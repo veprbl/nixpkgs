@@ -28,6 +28,9 @@ stdenv.mkDerivation rec {
     sed -e '/chmod /d' -i src/Imakefile
     sed -e '/InstallAppDefaults/d' -i src/Imakefile
   '';
+  preBuild = ''
+    substituteInPlace src/Imakefile --replace "CC = gcc" "CC = cc"
+  '';
 
   makeFlags = ["BINDIR=$(out)/bin"];
 
@@ -41,7 +44,7 @@ stdenv.mkDerivation rec {
     description = "A generic Sokoban game for X11";
     license = stdenv.lib.licenses.gpl2Plus;
     maintainers = [stdenv.lib.maintainers.raskin];
-    platforms = stdenv.lib.platforms.linux;
+    platforms = stdenv.lib.platforms.unix;
     homepage = https://tracker.debian.org/pkg/xsok;
   };
 }
