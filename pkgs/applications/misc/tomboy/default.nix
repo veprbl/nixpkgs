@@ -19,7 +19,12 @@ stdenv.mkDerivation {
   buildInputs = [ itstool intltool
     libxml2 gnome2.GConf atk gtk2
     mono mono-addins dbus-sharp-2_0 dbus-sharp-glib-2_0 gnome-sharp gtk-sharp-2_0
-    makeWrapper ];
+    makeWrapper
+  ];
+
+  MONO_ADDINS_LIBS = "-r:${mono-addins}/lib/dotnet/Mono.Addins/Mono.Addins.dll " +
+    "-r:${mono-addins}/lib/dotnet/Mono.Addins/Mono.Addins.Gui.dll " +
+    "-r:${mono-addins}/lib/dotnet/Mono.Addins/Mono.Addins.Setup.dll ";
 
   postInstall = ''
     makeWrapper "${mono}/bin/mono" "$out/bin/tomboy" \

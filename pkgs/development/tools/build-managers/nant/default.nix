@@ -2,12 +2,12 @@
 , targetVersion ? "4.5" }:
 
 let
-   version = "2015-11-15";
+   version = "2016-10-17";
 
   src = fetchFromGitHub {
     owner = "nant";
     repo = "nant";
-    rev = "19bec6eca205af145e3c176669bbd57e1712be2a";
+    rev = "e3644541bf083d8e33f450bfbd1a4147e494769c";
     sha256 = "11l5y76csn686p8i3kww9s0sxy659ny9l64krlqg3y2nxaz0fk6l";
   };
 

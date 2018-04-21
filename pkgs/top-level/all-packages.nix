@@ -1158,7 +1158,7 @@ with pkgs;
 
   elm-github-install = callPackage ../tools/package-management/elm-github-install { };
 
-  emby = callPackage ../servers/emby { };
+  emby = callPackage ../servers/emby {};
 
   enca = callPackage ../tools/text/enca { };
 
@@ -3083,9 +3083,7 @@ with pkgs;
 
   jaaa = callPackage ../applications/audio/jaaa { };
 
-  jackett = callPackage ../servers/jackett {
-    mono = mono50;
-  };
+  jackett = callPackage ../servers/jackett {};
 
   jade = callPackage ../tools/text/sgml/jade { };
 
@@ -4272,7 +4270,9 @@ with pkgs;
 
   fmodex = callPackage ../games/zandronum/fmod.nix { };
 
-  pdfmod = callPackage ../applications/misc/pdfmod { };
+  pdfmod = callPackage ../applications/misc/pdfmod {
+    mono = mono4;
+  };
 
   jbig2enc = callPackage ../tools/graphics/jbig2enc { };
 
@@ -6364,11 +6364,7 @@ with pkgs;
 
   falcon = callPackage ../development/interpreters/falcon { };
 
-  fsharp = callPackage ../development/compilers/fsharp { };
-
-  fsharp41 = callPackage ../development/compilers/fsharp41 {
-    mono = mono46;
-  };
+  fsharp = callPackage ../development/compilers/fsharp {};
 
   fstar = callPackage ../development/compilers/fstar {
     ocamlPackages = ocaml-ng.ocamlPackages_4_02;
@@ -6690,39 +6686,14 @@ with pkgs;
 
   mlton = callPackage ../development/compilers/mlton { };
 
-  mono = mono40;
+  mono = mono5;
 
-  mono40 = callPackage ../development/compilers/mono/4.0.nix {
-    inherit (darwin) libobjc;
-    inherit (darwin.apple_sdk.frameworks) Foundation;
-  };
-
-  mono44 = lowPrio (callPackage ../development/compilers/mono/4.4.nix {
+  mono4 = lowPrio (callPackage ../development/compilers/mono/4.nix {
     inherit (darwin) libobjc;
     inherit (darwin.apple_sdk.frameworks) Foundation;
   });
 
-  mono46 = lowPrio (callPackage ../development/compilers/mono/4.6.nix {
-    inherit (darwin) libobjc;
-    inherit (darwin.apple_sdk.frameworks) Foundation;
-  });
-
-  mono48 = lowPrio (callPackage ../development/compilers/mono/4.8.nix {
-    inherit (darwin) libobjc;
-    inherit (darwin.apple_sdk.frameworks) Foundation;
-  });
-
-  mono50 = lowPrio (callPackage ../development/compilers/mono/5.0.nix {
-    inherit (darwin) libobjc;
-    inherit (darwin.apple_sdk.frameworks) Foundation;
-  });
-
-  mono54 = lowPrio (callPackage ../development/compilers/mono/5.4.nix {
-    inherit (darwin) libobjc;
-    inherit (darwin.apple_sdk.frameworks) Foundation;
-  });
-
-  mono58 = lowPrio (callPackage ../development/compilers/mono/5.8.nix {
+  mono5 = lowPrio (callPackage ../development/compilers/mono/5.nix {
     inherit (darwin) libobjc;
     inherit (darwin.apple_sdk.frameworks) Foundation;
   });
@@ -8671,7 +8642,9 @@ with pkgs;
   dbus_java       = callPackage ../development/libraries/java/dbus-java { };
 
   dbus-sharp-1_0 = callPackage ../development/libraries/dbus-sharp/dbus-sharp-1.0.nix { };
-  dbus-sharp-2_0 = callPackage ../development/libraries/dbus-sharp { };
+  dbus-sharp-2_0 = callPackage ../development/libraries/dbus-sharp {
+    mono = mono4;
+  };
 
   dbus-sharp-glib-1_0 = callPackage ../development/libraries/dbus-sharp-glib/dbus-sharp-glib-1.0.nix { };
   dbus-sharp-glib-2_0 = callPackage ../development/libraries/dbus-sharp-glib { };
@@ -9258,7 +9231,9 @@ with pkgs;
 
   gdk_pixbuf = callPackage ../development/libraries/gdk-pixbuf { };
 
-  gnome-sharp = callPackage ../development/libraries/gnome-sharp {};
+  gnome-sharp = callPackage ../development/libraries/gnome-sharp {
+    mono = mono4;
+  };
 
   granite = callPackage ../development/libraries/granite { };
   elementary-cmake-modules = callPackage ../development/libraries/elementary-cmake-modules { };
@@ -10642,7 +10617,7 @@ with pkgs;
 
   mlt = callPackage ../development/libraries/mlt {};
 
-  mono-addins = callPackage ../development/libraries/mono-addins { };
+  mono-addins = dotnetPackages.MonoAddins;
 
   mono-zeroconf = callPackage ../development/libraries/mono-zeroconf { };
 
@@ -12343,7 +12318,6 @@ with pkgs;
   elasticmq = callPackage ../servers/elasticmq { };
 
   eventstore = callPackage ../servers/nosql/eventstore {
-    mono = mono46;
     v8 = v8_6_x;
   };
 
@@ -15589,7 +15563,7 @@ with pkgs;
   evolution-data-server = gnome3.evolution-data-server;
 
   keepass = callPackage ../applications/misc/keepass {
-    buildDotnetPackage = buildDotnetPackage.override { mono = mono54; };
+    buildDotnetPackage = buildDotnetPackage.override { mono = mono5; };
   };
 
   keepass-keeagent = callPackage ../applications/misc/keepass-plugins/keeagent { };
@@ -21253,9 +21227,7 @@ with pkgs;
 
   tomb = callPackage ../os-specific/linux/tomb {};
 
-  tomboy = callPackage ../applications/misc/tomboy {
-    mono = mono46;
-  };
+  tomboy = callPackage ../applications/misc/tomboy { };
 
   imatix_gsl = callPackage ../development/tools/imatix_gsl {};
 

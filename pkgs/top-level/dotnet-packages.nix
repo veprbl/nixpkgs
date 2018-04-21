@@ -731,7 +731,7 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
 
   MonoAddins = buildDotnetPackage rec {
     baseName = "Mono.Addins";
-    version = "1.2";
+    version = "1.3.3";
 
     xBuildFiles = [
       "Mono.Addins/Mono.Addins.csproj"
@@ -745,10 +745,17 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
       owner = "mono";
       repo = "mono-addins";
       rev = "mono-addins-${version}";
-      sha256 = "1hnn0a2qsjcjprsxas424bzvhsdwy0yc2jj5xbp698c0m9kfk24y";
+      sha256 = "018g3bd8afjc39h22h2j5r6ldsdn08ynx7wg889gdvnxg3hrxgl2";
     };
 
     buildInputs = [ pkgs.gtk-sharp-2_0 ];
+
+    postInstall = ''
+      # compatibility with tomboy
+      cp $out/lib/pkgconfig/Mono.Addins.pc $out/lib/pkgconfig/mono-addins.pc
+      cp $out/lib/pkgconfig/Mono.Addins.Gui.pc $out/lib/pkgconfig/mono-addins-gui.pc
+      cp $out/lib/pkgconfig/Mono.Addins.Setup.pc $out/lib/pkgconfig/mono-addins-setup.pc
+    '';
 
     meta = {
       description = "A generic framework for creating extensible applications";

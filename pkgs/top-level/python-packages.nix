@@ -11881,8 +11881,7 @@ in {
   };
 
   pythonnet = callPackage ../development/python-modules/pythonnet {
-    # `mono >= 4.6` required to prevent crashes encountered with earlier versions.
-    mono = pkgs.mono46;
+    inherit (pkgs) mono;
   };
 
   pytz = callPackage ../development/python-modules/pytz { };

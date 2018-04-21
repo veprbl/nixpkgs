@@ -1,5 +1,5 @@
-{ stdenv, lib, fetchurl, vscode-utils, unzip, dos2unix, mono46, clang-tools, writeScript
-, gdbUseFixed ? true, gdb # The gdb default setting will be fixed to specified. Use version from `PATH` otherwise. 
+{ stdenv, lib, fetchurl, vscode-utils, unzip, dos2unix, mono, clang-tools, writeScript
+, gdbUseFixed ? true, gdb # The gdb default setting will be fixed to specified. Use version from `PATH` otherwise.
 }:
 
 assert gdbUseFixed -> null != gdb;
@@ -68,7 +68,7 @@ let
           export PATH=''${PATH}''${PATH:+:}${gdb}/bin
         ''
         else ""}
-    ${mono46}/bin/mono $BIN_DIR/bin/OpenDebugAD7.exe $*
+    ${mono}/bin/mono $BIN_DIR/bin/OpenDebugAD7.exe $*
   '';
 in
 
@@ -85,7 +85,7 @@ vscode-utils.buildVscodeMarketplaceExtension {
   ];
 
   prePatch = ''
-    dos2unix package.json      
+    dos2unix package.json
   '';
 
   patches = [
@@ -121,7 +121,7 @@ vscode-utils.buildVscodeMarketplaceExtension {
     meta = with stdenv.lib; {
       license = licenses.unfree;
       maintainers = [ maintainers.jraygauthier ];
-      # A 32 bit linux would also be possible with some effort (specific download of binaries + 
+      # A 32 bit linux would also be possible with some effort (specific download of binaries +
       # patching of the elf files with 32 bit interpreter).
       platforms = [ "x86_64-linux" ];
     };
