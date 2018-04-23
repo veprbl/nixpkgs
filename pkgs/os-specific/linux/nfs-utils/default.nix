@@ -25,8 +25,8 @@ in stdenv.mkDerivation rec {
 
   buildInputs = [
     libtirpc libcap libevent libnfsidmap sqlite lvm2
-    libuuid keyutils kerberos
-  ] ++ stdenv.lib.optional (!stdenv.hostPlatform.isMusl) tcp_wrappers;
+    libuuid keyutils kerberos tcp_wrappers
+  ];
 
   enableParallelBuilding = true;
 
