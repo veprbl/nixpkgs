@@ -46,10 +46,6 @@ in stdenv.mkDerivation rec {
       sha256 = "0rrddrykz8prk0dcgfvmnz0vxn09dbgq8cb098yjjg19zz6d7vid";
     })
     (fetchpatch {
-      url = "https://raw.githubusercontent.com/alpinelinux/aports/cb880042d48d77af412d4688f24b8310ae44f55f/main/nfs-utils/musl-res_querydomain.patch";
-      sha256 = "17iy40hyhi8vfkcci2y5x5i48j33nwh372lg53fagkvngw1zlk1i";
-    })
-    (fetchpatch {
       url = "https://raw.githubusercontent.com/alpinelinux/aports/cb880042d48d77af412d4688f24b8310ae44f55f/main/nfs-utils/musl-getservbyport.patch";
       sha256 = "1fqws9dz8n1d9a418c54r11y3w330qgy2652dpwcy96cm44sqyhf";
     })
