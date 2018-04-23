@@ -36,7 +36,6 @@ in stdenv.mkDerivation rec {
       "--with-krb5=${kerberosEnv}"
       "--with-systemd=$(out)/etc/systemd/system"
       "--enable-libmount-mount"
-      "--without-tcp-wrappers"
     ]
     ++ lib.optional (stdenv ? glibc) "--with-rpcgen=${stdenv.glibc.bin}/bin/rpcgen";
 
