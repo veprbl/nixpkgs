@@ -66,7 +66,7 @@ in stdenv.mkDerivation rec {
       substituteInPlace systemd/nfs-utils.service \
         --replace "/bin/true" "${coreutils}/bin/true"
 
-      substituteInPlace utils/mount/Makefile.in \
+      substituteInPlace utils/mount/Makefile.am \
         --replace "chmod 4511" "chmod 0511"
 
       sed '1i#include <stdint.h>' -i support/nsm/rpc.c
