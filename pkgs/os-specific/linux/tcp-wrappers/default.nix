@@ -31,7 +31,7 @@ in stdenv.mkDerivation rec {
   postPatch = stdenv.lib.optionalString stdenv.hostPlatform.isMusl ''
     substituteInPlace Makefile \
       --replace '-lnsl' "" \
-      --replace '-DNETGROUP' '-DUSE_GETDOMAIN' \
+      --replace '-DNETGROUP' '-DUSE_GETDOMAIN'
   '';
 
   buildInputs = stdenv.lib.optional (!stdenv.hostPlatform.isMusl) libnsl;
