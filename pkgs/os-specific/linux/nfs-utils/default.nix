@@ -66,7 +66,6 @@ in stdenv.mkDerivation rec {
         --replace "chmod 4511" "chmod 0511"
 
       sed '1i#include <stdint.h>' -i support/nsm/rpc.c
-      sed '1i#include <limits.h>' -i support/misc/file.c
     '';
 
   makeFlags = [
