@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, libcap, libconfig, perl, tcp_wrappers, pcre }:
+{ stdenv, fetchurl, libcap, libconfig, perl, pcre, tcp_wrappers, useWrap ? !stdenv.hostPlatform.isMusl }:
 
 stdenv.mkDerivation rec {
   name = "sslh-${version}";
@@ -11,9 +11,10 @@ stdenv.mkDerivation rec {
 
   postPatch = "patchShebangs *.sh";
 
-  buildInputs = [ libcap libconfig perl tcp_wrappers pcre ];
+  buildInputs = [ libcap libconfig perl pcre ]
+    ++ stdenv.lib.optional useWrap tcp_wrappers;
 
-  makeFlags = "USELIBCAP=1 USELIBWRAP=1";
+  makeFlags = [ "USELIBCAP=1" ] ++ stdenv.lib.optional useWrap "USELIBWRAP=1";
 
   installFlags = "PREFIX=$(out)";
 
