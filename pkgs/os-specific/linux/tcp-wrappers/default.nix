@@ -22,7 +22,13 @@ in stdenv.mkDerivation rec {
     patches="$(cat debian/patches/series | sed 's,^,debian/patches/,') $patches"
   '';
 
-  buildInputs = [ libnsl ];
+  postPatch = stdenv.lib.optionalString stdenv.hostPlatform.isMusl ''
+    substituteInPlace Makefile \
+      --replace '-lnsl' "" \
+      --replace '-DNETGROUP' '-DUSE_GETDOMAIN' \
+  '';
+
+  buildInputs = stdenv.lib.optional (!stdenv.hostPlatform.isMusl) libnsl;
 
   makeFlags = [ "STRINGS=" "REAL_DAEMON_DIR=$(out)/bin" "linux" ];
 
