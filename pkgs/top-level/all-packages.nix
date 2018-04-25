@@ -4560,6 +4560,8 @@ with pkgs;
 
   rarcrack = callPackage ../tools/security/rarcrack { };
 
+  rarian = callPackage ../development/libraries/rarian { };
+
   ratools = callPackage ../tools/networking/ratools { };
 
   rawdog = callPackage ../applications/networking/feedreaders/rawdog { };
@@ -7592,7 +7594,9 @@ with pkgs;
   buildbot-ui = buildbot.withPlugins (with self.buildbot-plugins; [ www ]);
   buildbot-full = buildbot.withPlugins (with self.buildbot-plugins; [ www console-view waterfall-view grid-view wsgi-dashboards ]);
 
-  buildkite-agent = callPackage ../development/tools/continuous-integration/buildkite-agent { };
+  buildkite-agent = buildkite-agent2;
+  buildkite-agent2 = callPackage ../development/tools/continuous-integration/buildkite-agent/2.x.nix { };
+  buildkite-agent3 = callPackage ../development/tools/continuous-integration/buildkite-agent/3.x.nix { };
 
   byacc = callPackage ../development/tools/parsing/byacc { };
 
@@ -11153,7 +11157,7 @@ with pkgs;
       kservice ktexteditor ktextwidgets kunitconversion kwallet kwayland
       kwidgetsaddons kwindowsystem kxmlgui kxmlrpcclient modemmanager-qt
       networkmanager-qt plasma-framework prison solid sonnet syntax-highlighting
-      threadweaver kirigami2;
+      threadweaver kirigami2 kholidays;
 
     ### KDE PLASMA 5
 
@@ -11163,7 +11167,7 @@ with pkgs;
     ### KDE APPLICATIONS
 
     inherit (kdeApplications.override { libsForQt5 = self; })
-      kholidays libkdcraw libkexiv2 libkipi libkomparediff2 libksane;
+      libkdcraw libkexiv2 libkipi libkomparediff2 libksane;
 
     ### LIBRARIES
 
@@ -16403,6 +16407,7 @@ with pkgs;
         inherit stdenv lib libsForQt5 fetchurl recurseIntoAttrs;
         inherit plasma5;
         inherit attica phonon;
+        inherit okteta;
       };
     in
       recurseIntoAttrs (makeOverridable mkApplications attrs);
@@ -16411,7 +16416,9 @@ with pkgs;
     akonadi akregator ark dolphin ffmpegthumbs filelight gwenview k3b
     kaddressbook kate kcachegrind kcalc kcolorchooser kcontacts kdenlive kdf kdialog keditbookmarks
     kget kgpg khelpcenter kig kleopatra kmail kmix kolourpaint kompare konsole
-    kontact korganizer krdc krfb ksystemlog kwalletmanager marble minuet okteta okular spectacle;
+    kontact korganizer krdc krfb ksystemlog kwalletmanager marble minuet okular spectacle;
+
+  okteta = libsForQt5.callPackage ../applications/editors/okteta { };
 
   kdeconnect = libsForQt5.callPackage ../applications/misc/kdeconnect { };
 
