@@ -25,10 +25,6 @@ stdenv.mkDerivation rec {
 
   patches = [ ./recognize_nixos.patch ];
   postPatch = ''
-     # Build bugfix for 10.1.0, stolen from Arch PKGBUILD
-     mkdir -p common-agent/etc/config
-     sed -i 's|.*common-agent/etc/config/Makefile.*|\\|' configure.ac
-
      sed -i 's,^confdir = ,confdir = ''${prefix},' scripts/Makefile.am
      sed -i 's,etc/vmware-tools,''${prefix}/etc/vmware-tools,' services/vmtoolsd/Makefile.am
      sed -i 's,$(PAM_PREFIX),''${prefix}/$(PAM_PREFIX),' services/vmtoolsd/Makefile.am
