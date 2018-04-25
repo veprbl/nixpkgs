@@ -1,7 +1,7 @@
 { stdenv, lib, fetchFromGitHub, makeWrapper, autoreconfHook,
   fuse, libmspack, openssl, pam, xercesc, icu, libdnet, procps,
   libX11, libXext, libXinerama, libXi, libXrender, libXrandr, libXtst,
-  pkgconfig, glib, gtk3, gtkmm3, iproute, dbus, systemd, which,
+  pkgconfig, glib, gtk3, gtkmm3, iproute, dbus, systemd, which, udev, libdrm,
   withX ? true, cunit, doCheck ? true }:
 
 stdenv.mkDerivation rec {
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
   outputs = [ "out" "dev" ];
 
   nativeBuildInputs = [ autoreconfHook makeWrapper pkgconfig ];
-  buildInputs = [ fuse glib icu libdnet libmspack openssl pam procps xercesc ]
+  buildInputs = [ fuse glib icu libdnet libmspack openssl pam procps xercesc udev libdrm ]
       ++ lib.optionals withX [ gtk3 gtkmm3 libX11 libXext libXinerama libXi libXrender libXrandr libXtst ]
       ++ lib.optional doCheck cunit;
 
