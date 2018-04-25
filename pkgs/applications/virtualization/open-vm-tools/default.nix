@@ -33,9 +33,6 @@ stdenv.mkDerivation rec {
      sed -i 's,$(PAM_PREFIX),''${prefix}/$(PAM_PREFIX),' services/vmtoolsd/Makefile.am
      sed -i 's,$(UDEVRULESDIR),''${prefix}/$(UDEVRULESDIR),' udev/Makefile.am
 
-     # Avoid a glibc >= 2.25 deprecation warning that gets fatal via -Werror.
-     sed 1i'#include <sys/sysmacros.h>' -i lib/wiper/wiperPosix.c
-
      # Make reboot work, shutdown is not in /sbin on NixOS
      sed -i 's,/sbin/shutdown,shutdown,' lib/system/systemLinux.c
   '';
