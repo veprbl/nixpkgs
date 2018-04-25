@@ -2,7 +2,7 @@
   fuse, libmspack, openssl, pam, xercesc, icu, libdnet, procps,
   libX11, libXext, libXinerama, libXi, libXrender, libXrandr, libXtst,
   pkgconfig, glib, gtk3, gtkmm3, iproute, dbus, systemd, which,
-  withX ? true }:
+  withX ? true, cunit, doCheck ? true }:
 
 stdenv.mkDerivation rec {
   name = "open-vm-tools-${version}";
@@ -21,9 +21,12 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ autoreconfHook makeWrapper pkgconfig ];
   buildInputs = [ fuse glib icu libdnet libmspack openssl pam procps xercesc ]
-      ++ lib.optionals withX [ gtk3 gtkmm3 libX11 libXext libXinerama libXi libXrender libXrandr libXtst ];
+      ++ lib.optionals withX [ gtk3 gtkmm3 libX11 libXext libXinerama libXi libXrender libXrandr libXtst ]
+      ++ lib.optional doCheck cunit;
 
   patches = [ ./recognize_nixos.patch ];
+
+  # TODO: there are many hardcoded paths throughout the source
   postPatch = ''
      sed -i 's,^confdir = ,confdir = ''${prefix},' scripts/Makefile.am
      sed -i 's,etc/vmware-tools,''${prefix}/etc/vmware-tools,' services/vmtoolsd/Makefile.am
@@ -46,6 +49,8 @@ stdenv.mkDerivation rec {
     wrapProgram "$out/etc/vmware-tools/scripts/vmware/network" \
       --prefix PATH ':' "${lib.makeBinPath [ iproute dbus systemd which ]}"
   '';
+
+  inherit doCheck;
 
   meta = with stdenv.lib; {
     homepage = https://github.com/vmware/open-vm-tools;
