@@ -39,6 +39,8 @@ in stdenv.mkDerivation rec {
     ]
     ++ lib.optional (!stdenv.hostPlatform.isMusl && stdenv ? glibc) "--with-rpcgen=${stdenv.glibc.bin}/bin/rpcgen";
 
+  hardeningDisable = [ "format" ];
+
   patches = lib.optionals stdenv.hostPlatform.isMusl [
     (fetchpatch {
       url = "https://raw.githubusercontent.com/alpinelinux/aports/cb880042d48d77af412d4688f24b8310ae44f55f/main/nfs-utils/0011-exportfs-only-do-glibc-specific-hackery-on-glibc.patch";
