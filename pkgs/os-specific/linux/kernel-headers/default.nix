@@ -50,5 +50,13 @@ in {
   linuxHeaders = common {
     version = "4.16";
     sha256 = "1f91pf3lq3kmbg82k4v8bwxcl4r4iaixrx6nsmrh4flz7j7drxk3";
+
+    patches = [
+      # Limit glibc-specific workaround (including sysinfo from kernel) to glibc
+      (fetchurl {
+        url = https://raw.githubusercontent.com/openwrt/openwrt/e3c43ade0bae9491aeea50fa361e846bb5002dc0/target/linux/generic/pending-4.14/270-uapi-kernel.h-glibc-specific-inclusion-of-sysinfo.h.patch;
+        sha256 = "1knhg8hf4k1ylk8959421amsbw5myypbbmiqj1yr8k3qs5sw2ais";
+      })
+    ];
   };
 }
