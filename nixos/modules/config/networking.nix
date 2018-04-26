@@ -58,7 +58,7 @@ in
 
     networking.dnsSingleRequest = lib.mkOption {
       type = types.bool;
-      default = false;
+      default = true;
       description = ''
         Recent versions of glibc will issue both ipv4 (A) and ipv6 (AAAA)
         address queries at the same time, from the same port. Sometimes upstream
