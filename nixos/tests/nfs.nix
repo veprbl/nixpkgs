@@ -12,6 +12,13 @@ let
           }
         ];
       networking.firewall.enable = false; # FIXME: only open statd
+  boot.initrd = {
+    extraUtilsCommands = ''
+      for BIN in ${pkgs.utillinux}/bin/*; do
+        copy_bin_and_libs $BIN
+      done
+    '';
+  };
     };
 
 in
@@ -35,6 +42,13 @@ in
             '';
           services.nfs.server.createMountPoints = true;
           networking.firewall.enable = false; # FIXME: figure out what ports need to be allowed
+  boot.initrd = {
+    extraUtilsCommands = ''
+      for BIN in ${pkgs.utillinux}/bin/*; do
+        copy_bin_and_libs $BIN
+      done
+    '';
+  };
         };
     };
 
