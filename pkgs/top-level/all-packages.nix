@@ -13742,8 +13742,6 @@ with pkgs;
 
   musl = callPackage ../os-specific/linux/musl { };
   musl-fts = callPackage ../os-specific/linux/musl/fts.nix { };
-  musl-getconf = netbsd.getconf;
-  musl-getent = netbsd.getent;
 
   nettools = if stdenv.isLinux then callPackage ../os-specific/linux/net-tools { }
              else unixtools.nettools;

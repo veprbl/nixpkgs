@@ -49,12 +49,12 @@ in rec {
     linux = pkgs.utillinux;
   };
   getconf = singleBinary "getconf" {
-    linux = if hostPlatform.isMusl then pkgs.musl-getconf
+    linux = if hostPlatform.isMusl then pkgs.netbsd.getconf
             else lib.getBin stdenv.cc.libc;
     darwin = pkgs.darwin.system_cmds;
   };
   getent = singleBinary "getent" {
-    linux = if hostPlatform.isMusl then pkgs.musl-getent
+    linux = if hostPlatform.isMusl then pkgs.netbsd.getent
             # This may not be right on other platforms, but preserves existing behavior
             else /* if hostPlatform.libc == "glibc" then */ pkgs.glibc.bin;
   };
