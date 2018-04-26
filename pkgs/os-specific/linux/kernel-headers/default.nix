@@ -48,7 +48,7 @@ let
 in {
 
   linuxHeaders = common {
-    version = "4.15";
-    sha256 = "0sd7l9n9h7vf9c6gd6ciji28hawda60yj0llh17my06m0s4lf9js";
+    version = "4.16";
+    sha256 = "1f91pf3lq3kmbg82k4v8bwxcl4r4iaixrx6nsmrh4flz7j7drxk3";
   };
 }
