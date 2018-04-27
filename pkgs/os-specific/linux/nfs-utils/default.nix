@@ -1,5 +1,5 @@
 { stdenv, fetchurl, fetchpatch, lib, pkgconfig, utillinux, libcap, libtirpc, libevent, libnfsidmap
-, sqlite, kerberos, kmod, libuuid, keyutils, lvm2, systemd, coreutils, tcp_wrappers
+, sqlite, kerberos, kmod, libuuid, keyutils, lvm2, systemd, coreutils, tcp_wrappers, libnsl
 , buildEnv
 }:
 
@@ -25,7 +25,7 @@ in stdenv.mkDerivation rec {
 
   buildInputs = [
     libtirpc libcap libevent libnfsidmap sqlite lvm2
-    libuuid keyutils kerberos
+    libuuid keyutils kerberos libnsl
   ] ++ stdenv.lib.optional (!stdenv.hostPlatform.isMusl) tcp_wrappers;
 
   enableParallelBuilding = true;
