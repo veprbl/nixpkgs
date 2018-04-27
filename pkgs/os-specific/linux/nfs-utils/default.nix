@@ -55,8 +55,6 @@ in stdenv.mkDerivation rec {
     ./nfs-utils-1.2.3-sm-notify-res_init.patch
   ];
 
-  NIX_CFLAGS_COMPILE = [ "-D_GNU_SOURCE" ];
-
   postPatch =
     ''
       patchShebangs tests
