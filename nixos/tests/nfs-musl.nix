@@ -71,6 +71,7 @@ in
 
       # Test whether client 2 obtains the lock if we reset client 1.
       $client2->succeed("flock -x /data/lock -c 'echo acquired; touch locked; sleep 100000' >&2 &");
+      $client2->succeed("systemctl status >&2");
       $client1->crash;
       $client1->start;
       $client2->waitForFile("locked");
