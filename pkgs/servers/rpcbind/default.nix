@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
   };
 
   patches = [
-    ./sunrpc.patch
+    #./sunrpc.patch
     (fetchpatch {
       name = "CVE-2017-8779.patch";
       url = "https://raw.githubusercontent.com/guidovranken/rpcbomb/e6da9e489aa8ad000b0ad5ac9abc5b4eefc3a769/rpcbind_patch.txt";
