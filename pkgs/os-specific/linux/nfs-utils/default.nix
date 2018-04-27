@@ -25,8 +25,8 @@ in stdenv.mkDerivation rec {
 
   buildInputs = [
     libtirpc libcap libevent libnfsidmap sqlite lvm2
-    libuuid keyutils kerberos tcp_wrappers
-  ];
+    libuuid keyutils kerberos
+  ] ++ stdenv.lib.optional (!stdenv.hostPlatform.isMusl) tcp_wrappers;
 
   enableParallelBuilding = true;
 
@@ -37,7 +37,8 @@ in stdenv.mkDerivation rec {
       "--with-systemd=$(out)/etc/systemd/system"
       "--enable-libmount-mount"
     ]
-    ++ lib.optional (!stdenv.hostPlatform.isMusl && stdenv ? glibc) "--with-rpcgen=${stdenv.glibc.bin}/bin/rpcgen";
+    ++ lib.optional (!stdenv.hostPlatform.isMusl && stdenv ? glibc) "--with-rpcgen=${stdenv.glibc.bin}/bin/rpcgen"
+    ++ lib.optional stdenv.hostPlatform.isMusl "--without-tcp-wrappers";
 
   hardeningDisable = [ "format" ];
 
