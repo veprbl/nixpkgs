@@ -42,9 +42,9 @@ in
 
   testScript =
     ''
-      $server->waitForUnit("nfs-server");
-      $server->succeed("systemctl start network-online.target");
-      $server->waitForUnit("network-online.target");
+#      $server->waitForUnit("nfs-server");
+#      $server->succeed("systemctl start network-online.target");
+#      $server->waitForUnit("network-online.target");
 
       startAll;
 

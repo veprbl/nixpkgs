@@ -143,6 +143,19 @@ in
         preStart =
           ''
             mkdir -p /var/lib/nfs/v4recovery
+
+            ${optionalString cfg.createMountPoints
+              ''
+                # create export directories:
+                # skip comments, take first col which may either be a quoted
+                # "foo bar" or just foo (-> man export)
+                sed '/^#.*/d;s/^"\([^"]*\)".*/\1/;t;s/[ ].*//' ${exports} \
+                | xargs -d '\n' mkdir -p
+
+                echo "exports:"
+                cat ${exports}
+              ''
+            }
           '';
       };
 
@@ -161,6 +174,9 @@ in
                 # "foo bar" or just foo (-> man export)
                 sed '/^#.*/d;s/^"\([^"]*\)".*/\1/;t;s/[ ].*//' ${exports} \
                 | xargs -d '\n' mkdir -p
+
+                echo "exports:"
+                cat ${exports}
               ''
             }
           '';
