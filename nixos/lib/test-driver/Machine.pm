@@ -433,7 +433,7 @@ sub waitForFile {
     my ($self, $fileName) = @_;
     $self->nest("waiting for file ‘$fileName’", sub {
         retry sub {
-            my ($status, $out) = $self->execute("tree $PWD >&2; rpcinfo -p >&2; systemctl status >&2; lsof -p ; test -e $fileName >&2");
+            my ($status, $out) = $self->execute("tree `pwd` >&2; rpcinfo -p >&2; systemctl status >&2; lsof -p ; test -e $fileName >&2");
             return 1 if $status == 0;
         }
     });
