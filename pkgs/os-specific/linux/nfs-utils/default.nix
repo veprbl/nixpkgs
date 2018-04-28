@@ -1,6 +1,6 @@
 { stdenv, fetchurl, fetchpatch, lib, pkgconfig, utillinux, libcap, libtirpc, libevent, libnfsidmap
 , sqlite, kerberos, kmod, libuuid, keyutils, lvm2, systemd, coreutils, tcp_wrappers
-, buildEnv
+, buildEnv, autoreconfHook
 }:
 
 let
@@ -22,7 +22,7 @@ in stdenv.mkDerivation rec {
   #  sha256 = "02dvxphndpm8vpqqnl0zvij97dq9vsq2a179pzrjcv2i91ll2a0a";
   #};
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig autoreconfHook ];
 
   buildInputs = [
     libtirpc libcap libevent sqlite lvm2
@@ -54,6 +54,8 @@ in stdenv.mkDerivation rec {
     #  sha256 = "1fqws9dz8n1d9a418c54r11y3w330qgy2652dpwcy96cm44sqyhf";
     #})
     #./nfs-utils-1.2.3-sm-notify-res_init.patch
+    # res_querydomain:
+    (builtins.fetchurl https://raw.githubusercontent.com/alpinelinux/aports/cb880042d48d77af412d4688f24b8310ae44f55f/main/nfs-utils/musl-res_querydomain.patch)
   ];
 
   postPatch =
@@ -67,10 +69,12 @@ in stdenv.mkDerivation rec {
       substituteInPlace systemd/nfs-utils.service \
         --replace "/bin/true" "${coreutils}/bin/true"
 
-      substituteInPlace utils/mount/Makefile.in \
+      substituteInPlace utils/mount/Makefile.am \
         --replace "chmod 4511" "chmod 0511"
 
-      sed '1i#include <stdint.h>' -i support/nsm/rpc.c
+      sed -i -e '1i#include <limits.h>' support/misc/file.c
+
+      NIX_CFLAGS_COMPILE+=" -DHAVE_GETRPCBYNUMBER_R=0"
     '';
 
   makeFlags = [
