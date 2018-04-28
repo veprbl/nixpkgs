@@ -1,14 +1,15 @@
-{ fetchurl, stdenv, pkgconfig, libnsl, libtirpc, fetchpatch
+{ fetchurl, stdenv, pkgconfig, libnsl, libtirpc, fetchpatch, autoreconfHook
 , useSystemd ? true, systemd }:
 
 stdenv.mkDerivation rec {
   name = "rpcbind-${version}";
-  version = "0.2.4";
+  version = "0.2.5-git";
 
-  src = fetchurl {
-    url = "mirror://sourceforge/rpcbind/${version}/${name}.tar.bz2";
-    sha256 = "0rjc867mdacag4yqvs827wqhkh27135rp9asj06ixhf71m9rljh7";
-  };
+  src = fetchGit git://git.linux-nfs.org/projects/steved/rpcbind.git;
+  #src = fetchurl {
+  #  url = "mirror://sourceforge/rpcbind/${version}/${name}.tar.bz2";
+  #  sha256 = "0rjc867mdacag4yqvs827wqhkh27135rp9asj06ixhf71m9rljh7";
+  #};
 
   patches = [
     ./sunrpc.patch
@@ -30,7 +31,7 @@ stdenv.mkDerivation rec {
     "--enable-debug"
   ];
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig autoreconfHook ];
 
   meta = with stdenv.lib; {
     description = "ONC RPC portmapper";
