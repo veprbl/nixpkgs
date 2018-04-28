@@ -14,17 +14,18 @@ let
 
 in stdenv.mkDerivation rec {
   name = "nfs-utils-${version}";
-  version = "2.1.1";
+  version = "2.3.2-git";
 
-  src = fetchurl {
-    url = "mirror://sourceforge/nfs/${name}.tar.bz2";
-    sha256 = "02dvxphndpm8vpqqnl0zvij97dq9vsq2a179pzrjcv2i91ll2a0a";
-  };
+  src = fetchGit git://git.linux-nfs.org/projects/steved/nfs-utils.git;
+  #src = fetchurl {
+  #  url = "mirror://sourceforge/nfs/${name}.tar.bz2";
+  #  sha256 = "02dvxphndpm8vpqqnl0zvij97dq9vsq2a179pzrjcv2i91ll2a0a";
+  #};
 
   nativeBuildInputs = [ pkgconfig ];
 
   buildInputs = [
-    libtirpc libcap libevent libnfsidmap sqlite lvm2
+    libtirpc libcap libevent sqlite lvm2
     libuuid keyutils kerberos
   ] ++ stdenv.lib.optional (!stdenv.hostPlatform.isMusl) tcp_wrappers;
 
@@ -48,11 +49,11 @@ in stdenv.mkDerivation rec {
     #  sha256 = "0rrddrykz8prk0dcgfvmnz0vxn09dbgq8cb098yjjg19zz6d7vid";
     #})
     # http://openwall.com/lists/musl/2015/08/18/10
-    (fetchpatch {
-      url = "https://raw.githubusercontent.com/alpinelinux/aports/cb880042d48d77af412d4688f24b8310ae44f55f/main/nfs-utils/musl-getservbyport.patch";
-      sha256 = "1fqws9dz8n1d9a418c54r11y3w330qgy2652dpwcy96cm44sqyhf";
-    })
-    ./nfs-utils-1.2.3-sm-notify-res_init.patch
+    #(fetchpatch {
+    #  url = "https://raw.githubusercontent.com/alpinelinux/aports/cb880042d48d77af412d4688f24b8310ae44f55f/main/nfs-utils/musl-getservbyport.patch";
+    #  sha256 = "1fqws9dz8n1d9a418c54r11y3w330qgy2652dpwcy96cm44sqyhf";
+    #})
+    #./nfs-utils-1.2.3-sm-notify-res_init.patch
   ];
 
   postPatch =
