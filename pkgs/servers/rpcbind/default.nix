@@ -26,6 +26,7 @@ stdenv.mkDerivation rec {
     "--with-systemdsystemunitdir=${if useSystemd then "$(out)/etc/systemd/system" else "no"}"
     "--enable-warmstarts"
     "--with-rpcuser=rpc"
+    "--enable-debug"
   ];
 
   nativeBuildInputs = [ pkgconfig ];
