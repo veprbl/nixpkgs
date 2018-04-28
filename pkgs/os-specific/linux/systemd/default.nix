@@ -91,7 +91,7 @@ in stdenv.mkDerivation rec {
     "-Dsulogin-path=${utillinux}/bin/sulogin"
     "-Dmount-path=${utillinux}/bin/mount"
     "-Dumount-path=${utillinux}/bin/umount"
-  ] ++ (stdenv.lib.optionals stdenv.hostPlatform.isMusl || true)  [
+  ] ++ stdenv.lib.optionals (stdenv.hostPlatform.isMusl || true)  [
     "-Dnss-systemd=false"
     "-Dlocaled=false"
     "-Dresolve=false"
@@ -105,7 +105,7 @@ in stdenv.mkDerivation rec {
       url = "https://github.com/systemd/systemd/pull/8648.patch";
       sha256 = "0qc5wrrbib3fl19vjir7fkyk06wackzz6314aj3hdlmiplywqjwp";
     })
-  ] ++ (stdenv.lib.optionals hostPlatform.isMusl || true) (
+  ] ++ stdenv.lib.optionals (hostPlatform.isMusl || true) (
     let systemd_rev = "c58ab03f64890e7db88745a843bd4520e307099b"; # v238-stable
   in [
     (fetchpatch {
