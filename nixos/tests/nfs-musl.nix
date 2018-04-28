@@ -70,7 +70,7 @@ in
       $client2->fail("flock -n -s /data/lock true");
 
       # Test whether client 2 obtains the lock if we reset client 1.
-      $client2->succeed("command -v flock; flock -x /data/lock -c 'echo acquired; touch locked; sleep 100000' >&2 &");
+      $client2->succeed("command -v flock >&2; flock -x --verbose /data/lock -c 'echo acquired; touch locked; sleep 100000' >&2 &");
       $client2->succeed("systemctl status >&2");
       $client1->crash;
       $client1->start;
