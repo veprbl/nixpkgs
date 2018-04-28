@@ -78,6 +78,9 @@ in stdenv.mkDerivation rec {
 
       substituteInPlace configure.ac \
         --replace '-Werror=strict-prototypes' ""
+
+      substituteInPlace utils/mount/network.c \
+        --replace '#if defined(__GLIBC__)' "#if 0"
     '';
 
   makeFlags = [
