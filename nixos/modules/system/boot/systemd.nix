@@ -11,7 +11,7 @@ let
 
   systemd = cfg.package;
 
-  glibcOnlys = as: if (pkgs.stdenv.hostPlatform.libc == "glibc") then as else [];
+  glibcOnlys = as: if (pkgs.stdenv.hostPlatform.libc == "glibc" && false) then as else [];
 
   upstreamSystemUnits =
     [ # Targets.
