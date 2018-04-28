@@ -80,7 +80,7 @@ in stdenv.mkDerivation rec {
         --replace '-Werror=strict-prototypes' ""
 
       substituteInPlace utils/mount/network.c \
-        --replace '#if defined(__GLIBC__)' "#if 0"
+        --replace '#if defined(__GLIBC__) && (__GLIBC__ < 2) || (__GLIBC__ == 2 && __GLIBC_MINOR__ < 24)' "#if 0"
     '';
 
   makeFlags = [
