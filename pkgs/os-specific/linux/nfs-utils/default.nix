@@ -74,7 +74,10 @@ in stdenv.mkDerivation rec {
 
       sed -i -e '1i#include <limits.h>' support/misc/file.c
 
-      NIX_CFLAGS_COMPILE+=" -DHAVE_GETRPCBYNUMBER_R=0"
+      NIX_CFLAGS_COMPILE+=" -DHAVE_GETRPCBYNUMBER_R=0 -DHAVE_NAME_TO_HANDLE_AT=0"
+
+      substituteInPlace configure.ac \
+        --replace '-Werror=strict-prototypes' ""
     '';
 
   makeFlags = [
