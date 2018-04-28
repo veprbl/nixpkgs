@@ -20,5 +20,5 @@ with lib;
     '';
   };
 
-  environment.systemPackages = [ pkgs.lsof pkgs.utillinux ];
+  environment.systemPackages = [ pkgs.lsof pkgs.utillinux pkgs.tree ];
 }
