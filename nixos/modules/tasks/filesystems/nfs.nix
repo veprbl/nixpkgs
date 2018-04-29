@@ -20,8 +20,6 @@ let
     Nobody-User = nobody
     Nobody-Group = nogroup
 
-    [Translation]
-    Method = nsswitch
   '';
 
   nfsConfFile = pkgs.writeText "nfs.conf" cfg.extraConfig;
