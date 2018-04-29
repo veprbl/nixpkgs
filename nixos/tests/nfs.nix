@@ -1,4 +1,4 @@
-import ./make-test.nix ({ pkgs, version ? 4, ... }:
+import ./make-test.nix ({ pkgs, version ? 3, ... }:
 
 let
 
@@ -6,7 +6,7 @@ let
     { config, pkgs, ... }:
     { fileSystems = pkgs.lib.mkVMOverride
         [ { mountPoint = "/data";
-            device = "server:/";
+            device = "server:/data";
             fsType = "nfs";
             options = [ "vers=${toString version}" ];
           }
