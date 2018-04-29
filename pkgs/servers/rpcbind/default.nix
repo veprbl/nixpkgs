@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
       url = "https://raw.githubusercontent.com/guidovranken/rpcbomb/e6da9e489aa8ad000b0ad5ac9abc5b4eefc3a769/rpcbind_patch.txt";
       sha256 = "0w231w8fxihgrn526np078j3vbj3ylvjvxjmfpjvqhga5zg821ab";
     })
-    ./musl-sunrpc.patch
+    #./musl-sunrpc.patch
   ];
 
   buildInputs = [ libnsl libtirpc ]
