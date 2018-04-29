@@ -1,5 +1,5 @@
 { stdenv, fetch, cmake, libxml2, libedit, llvm, version, release_version, clang-tools-extra_src, python
-, fixDarwinDylibNames
+, fixDarwinDylibNames, compiler-rt
 , enableManpages ? false
 }:
 
@@ -19,7 +19,7 @@ let
     nativeBuildInputs = [ cmake python ]
       ++ stdenv.lib.optional enableManpages python.pkgs.sphinx;
 
-    buildInputs = [ libedit libxml2 llvm ]
+    buildInputs = [ libedit libxml2 llvm compiler-rt ]
       ++ stdenv.lib.optional stdenv.isDarwin fixDarwinDylibNames;
 
     cmakeFlags = [
@@ -51,10 +51,13 @@ let
     outputs = [ "out" "lib" "python" ];
 
     # Clang expects to find LLVMgold in its own prefix
-    # Clang expects to find sanitizer libraries in its own prefix
+    # Clang expects to find sanitizer libraries and headers in its own prefix
     postInstall = ''
       ln -sv ${llvm}/lib/LLVMgold.so $out/lib
-      ln -sv ${llvm}/lib/clang/${release_version}/lib $out/lib/clang/${release_version}/
+      ln -sv "${compiler-rt}/lib" "$out/lib/clang/${release_version}/"
+      for DIR in "${compiler-rt}"/include/*; do
+        ln -sv "$DIR" "$out/lib/clang/${release_version}/include/"
+      done
       ln -sv $out/bin/clang $out/bin/cpp
 
       # Move libclang to 'lib' output

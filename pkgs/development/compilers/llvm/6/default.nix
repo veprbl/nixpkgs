@@ -14,7 +14,6 @@ let
     inherit sha256;
   };
 
-  compiler-rt_src = fetch "compiler-rt" "16m7rvh3w6vq10iwkjrr1nn293djld3xm62l5zasisaprx117k6h";
   clang-tools-extra_src = fetch "clang-tools-extra" "1ll9v6r29xfdiywbn9iss49ad39ah3fk91wiv0sr6k6k9i544fq5";
 
   # Add man output without introducing extra dependencies.
@@ -23,7 +22,7 @@ let
     drv // { man = drv-manpages.out; /*outputs = drv.outputs ++ ["man"];*/ };
 
   llvm = callPackage ./llvm.nix {
-    inherit compiler-rt_src stdenv;
+    inherit stdenv;
   };
 
   clang-unwrapped = callPackage ./clang {
@@ -32,6 +31,7 @@ let
 
   self = {
     llvm = overrideManOutput llvm;
+    compiler-rt = callPackage ./compiler-rt.nix {};
     clang-unwrapped = overrideManOutput clang-unwrapped;
 
     libclang = self.clang-unwrapped.lib;
