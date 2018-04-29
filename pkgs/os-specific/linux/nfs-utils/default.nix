@@ -66,6 +66,7 @@ in stdenv.mkDerivation rec {
       sed -i "s,^PATH=.*,PATH=$out/bin:${statdPath}," utils/statd/start-statd
 
       configureFlags="--with-start-statd=$out/bin/start-statd $configureFlags"
+      configureFlags="--with-pluginpath=$(out)/lib/libnfsidmap $configureFlags"
 
       substituteInPlace systemd/nfs-utils.service \
         --replace "/bin/true" "${coreutils}/bin/true"
