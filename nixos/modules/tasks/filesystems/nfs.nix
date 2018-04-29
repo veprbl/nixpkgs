@@ -101,6 +101,14 @@ in
             mkdir -p /var/lib/nfs/{sm,sm.bak}
           '';
       };
+    systemd.services.rpc-statd-notify =
+      { #restartTriggers = [ nfsConfFile ];
+
+        preStart =
+          ''
+            mkdir -p /var/lib/nfs/{sm,sm.bak}
+          '';
+      };
 
   };
 }
