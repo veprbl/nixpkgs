@@ -16,7 +16,8 @@ in stdenv.mkDerivation rec {
   name = "nfs-utils-${version}";
   version = "2.3.2-git";
 
-  src = fetchGit git://git.linux-nfs.org/projects/steved/nfs-utils.git;
+  #src = fetchGit git://git.linux-nfs.org/projects/steved/nfs-utils.git;
+  src = fetchGit ~/cur/nfs-utils;
   #src = fetchurl {
   #  url = "mirror://sourceforge/nfs/${name}.tar.bz2";
   #  sha256 = "02dvxphndpm8vpqqnl0zvij97dq9vsq2a179pzrjcv2i91ll2a0a";
