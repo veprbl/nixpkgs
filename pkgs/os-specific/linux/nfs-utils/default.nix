@@ -37,7 +37,6 @@ in stdenv.mkDerivation rec {
       "--with-krb5=${kerberosEnv}"
       "--with-systemd=$(out)/etc/systemd/system"
       "--enable-libmount-mount"
-      "--with-pluginpath=$(out)/lib/libnfsidmap"
     ]
     ++ lib.optional (!stdenv.hostPlatform.isMusl && stdenv ? glibc) "--with-rpcgen=${stdenv.glibc.bin}/bin/rpcgen"
     ++ lib.optional stdenv.hostPlatform.isMusl "--without-tcp-wrappers";
