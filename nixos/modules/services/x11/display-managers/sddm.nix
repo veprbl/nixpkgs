@@ -61,7 +61,7 @@ let
     ServerPath=${xserverWrapper}
     XephyrPath=${pkgs.xorg.xorgserver.out}/bin/Xephyr
     SessionCommand=${dmcfg.session.script}
-    SessionDir=${dmcfg.session.desktops}
+    SessionDir=${dmcfg.session.desktops}/share/xsessions
     XauthPath=${pkgs.xorg.xauth}/bin/xauth
     DisplayCommand=${Xsetup}
     DisplayStopCommand=${Xstop}
