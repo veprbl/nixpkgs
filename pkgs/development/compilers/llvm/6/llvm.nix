@@ -79,6 +79,7 @@ in stdenv.mkDerivation (rec {
       --replace "add_subdirectory(DynamicLibrary)" ""
     rm unittests/Support/DynamicLibrary/DynamicLibraryTest.cpp
     patch -p1 -i ${./sanitizers-nongnu.patch} -d projects/compiler-rt
+    patch -p1 -i ${./sanitizers-nongnu-2.patch} -d projects/compiler-rt
   '';
 
   # hacky fix: created binaries need to be run before installation
