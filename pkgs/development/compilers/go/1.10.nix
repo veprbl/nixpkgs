@@ -114,6 +114,8 @@ stdenv.mkDerivation rec {
     sed -i 's/unrecognized/unknown/' src/cmd/link/internal/ld/lib.go
 
     touch $TMPDIR/group $TMPDIR/hosts $TMPDIR/passwd
+  '' + ''
+    cp ${import ./race.nix { inherit stdenv fetchFromGitHub; }}/* src/runtime/race/
   '';
 
   patches = [

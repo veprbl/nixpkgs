@@ -1,0 +1,57 @@
+From b2ec1e25f3344c374f89372adb79182f82ff67a9 Mon Sep 17 00:00:00 2001
+From: Will Dietz <w@wdtz.org>
+Date: Wed, 9 May 2018 16:07:43 -0500
+Subject: [PATCH] sanitizer_linux: fixups for musl
+
+---
+ lib/sanitizer_common/sanitizer_allocator.cc | 2 +-
+ lib/sanitizer_common/sanitizer_linux.cc     | 8 ++++++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/lib/sanitizer_common/sanitizer_allocator.cc b/lib/sanitizer_common/sanitizer_allocator.cc
+index fc4f7a75a..76cf4f769 100644
+--- a/lib/sanitizer_common/sanitizer_allocator.cc
++++ b/lib/sanitizer_common/sanitizer_allocator.cc
+@@ -23,7 +23,7 @@ namespace __sanitizer {
+ 
+ // ThreadSanitizer for Go uses libc malloc/free.
+ #if SANITIZER_GO || defined(SANITIZER_USE_MALLOC)
+-# if SANITIZER_LINUX && !SANITIZER_ANDROID
++# if SANITIZER_LINUX && !SANITIZER_ANDROID && !SANITIZER_NONGNU
+ extern "C" void *__libc_malloc(uptr size);
+ #  if !SANITIZER_GO
+ extern "C" void *__libc_memalign(uptr alignment, uptr size);
+diff --git a/lib/sanitizer_common/sanitizer_linux.cc b/lib/sanitizer_common/sanitizer_linux.cc
+index 6c83e8db4..542c4fe64 100644
+--- a/lib/sanitizer_common/sanitizer_linux.cc
++++ b/lib/sanitizer_common/sanitizer_linux.cc
+@@ -522,13 +522,13 @@ const char *GetEnv(const char *name) {
+ #endif
+ }
+ 
+-#if !SANITIZER_FREEBSD && !SANITIZER_NETBSD
++#if !SANITIZER_FREEBSD && !SANITIZER_NETBSD && !SANITIZER_NONGNU
+ extern "C" {
+   SANITIZER_WEAK_ATTRIBUTE extern void *__libc_stack_end;
+ }
+ #endif
+ 
+-#if !SANITIZER_GO && !SANITIZER_FREEBSD && !SANITIZER_NETBSD
++#if (!SANITIZER_GO || SANITIZER_NONGNU) && !SANITIZER_FREEBSD && !SANITIZER_NETBSD
+ static void ReadNullSepFileToArray(const char *path, char ***arr,
+                                    int arr_size) {
+   char *buff;
+@@ -569,6 +569,10 @@ static void GetArgsAndEnv(char ***argv, char ***envp) {
+ #elif SANITIZER_NETBSD
+   *argv = __ps_strings->ps_argvstr;
+   *argv = __ps_strings->ps_envstr;
++#elif SANITIZER_NONGNU
++    static const int kMaxArgv = 2000, kMaxEnvp = 2000;
++    ReadNullSepFileToArray("/proc/self/cmdline", argv, kMaxArgv);
++    ReadNullSepFileToArray("/proc/self/environ", envp, kMaxEnvp);
+ #else
+ #if !SANITIZER_GO
+   if (&__libc_stack_end) {
+-- 
+2.17.0
+
