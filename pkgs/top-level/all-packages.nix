@@ -20415,9 +20415,6 @@ with pkgs;
 
     # For enableQT.
     qt = null; # qt4SDK or qt5SDK
-
-    # For enableXM.
-    motif = null; # motif or lesstif
   };
 
   cernlib = callPackage ../development/libraries/physics/cernlib { };
