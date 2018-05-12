@@ -437,13 +437,10 @@ Additional information.
    <listitem>
     <para>
      Commits must be sufficiently tested before being merged, both for the
-     master and staging branches.
-    </para>
-   </listitem>
-   <listitem>
-    <para>
-     Hydra builds for master and staging should not be used as testing
-     platform, it's a build farm for changes that have been already tested.
+     master and staging branches. For potentially destabilizing changes it's
+     usually best to first superficially test locally and/or with the
+     @grahamcofborg bot, and then create a separate jobset on Hydra for the
+     feature branch.
     </para>
    </listitem>
    <listitem>
@@ -462,7 +459,8 @@ Additional information.
    <itemizedlist>
     <listitem>
      <para>
-      It should only see non-breaking commits that do not cause mass rebuilds.
+      This is the place for usual development, pull requests, etc. but note the
+      shared conditions above.
      </para>
     </listitem>
    </itemizedlist>
@@ -474,10 +472,9 @@ Additional information.
    <itemizedlist>
     <listitem>
      <para>
-      It's only for non-breaking mass-rebuild commits. That means it's not to
-      be used for testing, and changes must have been well tested already.
-      <link xlink:href="https://web.archive.org/web/20160528180406/http://comments.gmane.org/gmane.linux.distributions.nixos/13447">Read
-      policy here</link>.
+      It's only for non-breaking mass-rebuild commits. The "mass" threshold is
+      somewhat fuzzy, depending on security impact, etc. Github pull requests
+      get their rebuild amount estimated by the @grahamcofborg bot.
      </para>
     </listitem>
     <listitem>
@@ -488,6 +485,8 @@ Additional information.
       <link xlink:href="http://hydra.nixos.org/jobset/nixpkgs/staging#tabs-evaluations">Keep
       an eye on the staging evaluations here</link>. If any fixes for staging
       happen to be already in master, then master can be merged into staging.
+      See also <link xlink:href="https://github.com/NixOS/rfcs/pull/26"> rfc 26
+      discussion</link>.
      </para>
     </listitem>
    </itemizedlist>
