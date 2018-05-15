@@ -208,6 +208,9 @@ self: super: {
   # https://github.com/jputcu/serialport/issues/25
   serialport = dontCheck super.serialport;
 
+  serialise = dontCheck super.serialise;
+  cryptohash-sha512 = dontCheck super.cryptohash-sha512;
+
   # https://github.com/kazu-yamamoto/simple-sendfile/issues/17
   simple-sendfile = dontCheck super.simple-sendfile;
 
@@ -247,7 +250,17 @@ self: super: {
   digit = doJailbreak super.digit;
 
   # https://github.com/jwiegley/hnix/issues/98 - tied to an older deriving-compat
-  hnix = doJailbreak super.hnix;
+  hnix = doJailbreak (overrideCabal super.hnix (old: {
+    patches = old.patches or [] ++ [
+      # should land in hnix-5.2
+      (pkgs.fetchpatch {
+        url = "https://github.com/haskell-nix/hnix/commit/9cfe060a9dbe9e7c64867956a0523eed9661803a.patch";
+        sha256 = "0ci4n7nw2pzqw0gkmkp4szzvxjyb143a4znjm39jmb0s397a68sh";
+        name = "disable-hpack-test-by-default.patch";
+       })
+    ];
+    testHaskellDepends = old.testHaskellDepends or [] ++ [ pkgs.nix ];
+  }));
 
   # Fails for non-obvious reasons while attempting to use doctest.
   search = dontCheck super.search;
@@ -422,9 +435,11 @@ self: super: {
   # https://github.com/evanrinehart/mikmod/issues/1
   mikmod = addExtraLibrary super.mikmod pkgs.libmikmod;
 
-  # The doctest phase fails because it does not have a proper environment in
-  # which to run the commands it's ought to test.
-  haskell-gi = dontCheck super.haskell-gi;
+  # Version 0.21.2 calls its doctest suite with incorrect paths.
+  haskell-gi = appendPatch super.haskell-gi (pkgs.fetchpatch {
+    url = https://github.com/haskell-gi/haskell-gi/pull/163/commits/b876c4f351893370d4ae597aab6ecc0422e7f665.patch;
+    sha256 = "03vzpvnr3vnz2zgsr504iyf0n9aw6mkz8rkj6zhazfixl3dzfkyd";
+  });
 
   # https://github.com/basvandijk/threads/issues/10
   threads = dontCheck super.threads;

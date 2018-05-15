@@ -18,7 +18,8 @@
 , libcCross ? null
 , crossStageStatic ? false
 , libpthread ? null, libpthreadCross ? null  # required for GNU/Hurd
-, stripped ? true
+, # Strip kills static libs of other archs (hence no cross)
+  stripped ? hostPlatform == buildPlatform && targetPlatform == hostPlatform
 , gnused ? null
 , cloog # unused; just for compat with gcc4, as we override the parameter on some places
 , darwin ? null
@@ -51,22 +52,6 @@ let version = "7-20170409";
       ++ optional (targetPlatform != hostPlatform) ../libstdc++-target.patch
       ++ optional noSysDirs ../no-sys-dirs.patch
       ++ optional langFortran ../gfortran-driving.patch;
-
-    /* Platform flags */
-    platformFlags = let
-        gccArch = targetPlatform.platform.gcc.arch or null;
-        gccCpu = targetPlatform.platform.gcc.cpu or null;
-        gccAbi = targetPlatform.platform.gcc.abi or null;
-        gccFpu = targetPlatform.platform.gcc.fpu or null;
-        gccFloat = targetPlatform.platform.gcc.float or null;
-        gccMode = targetPlatform.platform.gcc.mode or null;
-      in
-        optional (gccArch != null) "--with-arch=${gccArch}" ++
-        optional (gccCpu != null) "--with-cpu=${gccCpu}" ++
-        optional (gccAbi != null) "--with-abi=${gccAbi}" ++
-        optional (gccFpu != null) "--with-fpu=${gccFpu}" ++
-        optional (gccFloat != null) "--with-float=${gccFloat}" ++
-        optional (gccMode != null) "--with-mode=${gccMode}";
 
     /* Cross-gcc settings (build == host != target) */
     crossMingw = targetPlatform != hostPlatform && targetPlatform.libc == "msvcrt";
@@ -153,11 +138,7 @@ stdenv.mkDerivation ({
   hardeningDisable = [ "format" ];
 
   postPatch =
-    if (hostPlatform.isHurd
-        || (libcCross != null                  # e.g., building `gcc.crossDrv'
-            && libcCross ? crossConfig
-            && libcCross.crossConfig == "i586-pc-gnu")
-        || (crossGNU && libcCross != null))
+    if targetPlatform.isHurd
     then
       # On GNU/Hurd glibc refers to Hurd & Mach headers and libpthread is not
       # in glibc, so add the right `-I' flags to the default spec string.
@@ -248,11 +229,7 @@ stdenv.mkDerivation ({
   dontDisableStatic = true;
 
   # TODO(@Ericson2314): Always pass "--target" and always prefix.
-  configurePlatforms =
-    # TODO(@Ericson2314): Figure out what's going wrong with Arm
-    if buildPlatform == hostPlatform && hostPlatform == targetPlatform && targetPlatform.isAarch32
-    then []
-    else [ "build" "host" ] ++ stdenv.lib.optional (targetPlatform != hostPlatform) "target";
+  configurePlatforms = [ "build" "host" ] ++ stdenv.lib.optional (targetPlatform != hostPlatform) "target";
 
   configureFlags =
     # Basic dependencies
@@ -299,7 +276,8 @@ stdenv.mkDerivation ({
     # Optional features
     optional (isl != null) "--with-isl=${isl}" ++
 
-    platformFlags ++
+
+    (import ../common/platform-flags.nix { inherit (stdenv) lib targetPlatform; }) ++
     optional (targetPlatform != hostPlatform) crossConfigureFlags ++
     optional (!bootstrap) "--disable-bootstrap" ++
 
@@ -318,16 +296,13 @@ stdenv.mkDerivation ({
     (if profiledCompiler then "profiledbootstrap" else "bootstrap")
     else "";
 
+  dontStrip = !stripped;
+  NIX_STRIP_DEBUG = !stripped;
+
   installTargets =
     if stripped
     then "install-strip"
     else "install";
-
-  /* For cross-built gcc (build != host == target) */
-  crossAttrs = {
-    dontStrip = true;
-    buildFlags = "";
-  };
 
   # http://gcc.gnu.org/install/specific.html#x86-64-x-solaris210
   ${if hostPlatform.system == "x86_64-solaris" then "CC" else null} = "gcc -m64";
@@ -416,9 +391,6 @@ stdenv.mkDerivation ({
   makeFlags = [ "all-gcc" "all-target-libgcc" ];
   installTargets = "install-gcc install-target-libgcc";
 }
-
-# Strip kills static libs of other archs (hence targetPlatform != hostPlatform)
-// optionalAttrs (!stripped || targetPlatform != hostPlatform) { dontStrip = true; NIX_STRIP_DEBUG = 0; }
 
 // optionalAttrs (enableMultilib) { dontMoveLib64 = true; }
 )

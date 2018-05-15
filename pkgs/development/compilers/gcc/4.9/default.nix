@@ -25,7 +25,8 @@
 , libcCross ? null
 , crossStageStatic ? false
 , libpthread ? null, libpthreadCross ? null  # required for GNU/Hurd
-, stripped ? true
+, # Strip kills static libs of other archs (hence no cross)
+  stripped ? hostPlatform == buildPlatform && targetPlatform == hostPlatform
 , gnused ? null
 , darwin ? null
 , buildPlatform, hostPlatform, targetPlatform
@@ -103,22 +104,6 @@ let version = "4.9.4";
     ];
 
     javaAwtGtk = langJava && x11Support;
-
-    /* Platform flags */
-    platformFlags = let
-        gccArch = targetPlatform.platform.gcc.arch or null;
-        gccCpu = targetPlatform.platform.gcc.cpu or null;
-        gccAbi = targetPlatform.platform.gcc.abi or null;
-        gccFpu = targetPlatform.platform.gcc.fpu or null;
-        gccFloat = targetPlatform.platform.gcc.float or null;
-        gccMode = targetPlatform.platform.gcc.mode or null;
-      in
-        optional (gccArch != null) "--with-arch=${gccArch}" ++
-        optional (gccCpu != null) "--with-cpu=${gccCpu}" ++
-        optional (gccAbi != null) "--with-abi=${gccAbi}" ++
-        optional (gccFpu != null) "--with-fpu=${gccFpu}" ++
-        optional (gccFloat != null) "--with-float=${gccFloat}" ++
-        optional (gccMode != null) "--with-mode=${gccMode}";
 
     /* Cross-gcc settings (build == host != target) */
     crossMingw = targetPlatform != hostPlatform && targetPlatform.libc == "msvcrt";
@@ -209,11 +194,7 @@ stdenv.mkDerivation ({
   libc_dev = stdenv.cc.libc_dev;
 
   postPatch =
-    if (hostPlatform.isHurd
-        || (libcCross != null                  # e.g., building `gcc.crossDrv'
-            && libcCross ? crossConfig
-            && libcCross.crossConfig == "i586-pc-gnu")
-        || (crossGNU && libcCross != null))
+    if targetPlatform.isHurd
     then
       # On GNU/Hurd glibc refers to Hurd & Mach headers and libpthread is not
       # in glibc, so add the right `-I' flags to the default spec string.
@@ -310,11 +291,7 @@ stdenv.mkDerivation ({
   dontDisableStatic = true;
 
   # TODO(@Ericson2314): Always pass "--target" and always prefix.
-  configurePlatforms =
-    # TODO(@Ericson2314): Figure out what's going wrong with Arm
-    if buildPlatform == hostPlatform && hostPlatform == targetPlatform && targetPlatform.isAarch32
-    then []
-    else [ "build" "host" ] ++ stdenv.lib.optional (targetPlatform != hostPlatform) "target";
+  configurePlatforms = [ "build" "host" ] ++ stdenv.lib.optional (targetPlatform != hostPlatform) "target";
 
   configureFlags =
     # Basic dependencies
@@ -378,7 +355,7 @@ stdenv.mkDerivation ({
     optional javaAwtGtk "--enable-java-awt=gtk" ++
     optional (langJava && javaAntlr != null) "--with-antlr-jar=${javaAntlr}" ++
 
-    platformFlags ++
+    (import ../common/platform-flags.nix { inherit (stdenv) lib targetPlatform; }) ++
     optional (targetPlatform != hostPlatform) crossConfigureFlags ++
     optional (!bootstrap) "--disable-bootstrap" ++
 
@@ -393,9 +370,11 @@ stdenv.mkDerivation ({
 
   targetConfig = if targetPlatform != hostPlatform then targetPlatform.config else null;
 
-  buildFlags = if bootstrap then
-    (if profiledCompiler then "profiledbootstrap" else "bootstrap")
-    else "";
+  buildFlags = optional
+    (bootstrap && hostPlatform == buildPlatform)
+    (if profiledCompiler then "profiledbootstrap" else "bootstrap");
+
+  dontStrip = !stripped;
 
   doCheck = false; # requires a lot of tools, causes a dependency cycle for stdenv
 
@@ -403,12 +382,6 @@ stdenv.mkDerivation ({
     if stripped
     then "install-strip"
     else "install";
-
-  /* For cross-built gcc (build != host == target) */
-  crossAttrs = {
-    dontStrip = true;
-    buildFlags = "";
-  };
 
   # http://gcc.gnu.org/install/specific.html#x86-64-x-solaris210
   ${if hostPlatform.system == "x86_64-solaris" then "CC" else null} = "gcc -m64";
@@ -506,9 +479,6 @@ stdenv.mkDerivation ({
   makeFlags = [ "all-gcc" "all-target-libgcc" ];
   installTargets = "install-gcc install-target-libgcc";
 }
-
-# Strip kills static libs of other archs (hence targetPlatform != hostPlatform)
-// optionalAttrs (!stripped || targetPlatform != hostPlatform) { dontStrip = true; }
 
 // optionalAttrs (enableMultilib) { dontMoveLib64 = true; }
 

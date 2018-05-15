@@ -22,7 +22,7 @@
 
 , # Whether to build dynamic libs for the standard library (on the target
   # platform). Static libs are always built.
-  enableShared ? true
+  enableShared ? !targetPlatform.useAndroidPrebuilt
 
 , version ? "8.5.20180118"
 }:
@@ -50,6 +50,8 @@ let
   '' + stdenv.lib.optionalString enableRelocatedStaticLibs ''
     GhcLibHcOpts += -fPIC
     GhcRtsHcOpts += -fPIC
+  '' + stdenv.lib.optionalString targetPlatform.useAndroidPrebuilt ''
+    EXTRA_CC_OPTS += -std=gnu99
   '';
 
   # Splicer will pull out correct variations
@@ -134,10 +136,8 @@ stdenv.mkDerivation rec {
     "--disable-large-address-space"
   ];
 
-  # Hack to make sure we never to the relaxation `$PATH` and hooks support for
-  # compatability. This will be replaced with something clearer in a future
-  # masss-rebuild.
-  crossConfig = true;
+  # Make sure we never relax`$PATH` and hooks support for compatability.
+  strictDeps = true;
 
   nativeBuildInputs = [ ghc perl autoconf automake happy alex python3 ];
 

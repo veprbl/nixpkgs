@@ -3,9 +3,9 @@
   removefile, libresolv, Libnotify, libplatform, libpthread, mDNSResponder, launchd, libutil, version }:
 
 appleDerivation rec {
-  nativeBuildInputs = [ cpio ];
+  phases = [ "unpackPhase" "installPhase" ];
 
-  outputs = [ "out" "dev" ];
+  nativeBuildInputs = [ cpio ];
 
   installPhase = ''
     export NIX_ENFORCE_PURITY=
@@ -22,6 +22,7 @@ appleDerivation rec {
                ${Libnotify} ${libplatform} ${mDNSResponder} ${launchd} ${libutil} ${libpthread}; do
       (cd $dep/include && find . -name '*.h' | cpio -pdm $out/include)
     done
+
 
     (cd ${cctools.dev}/include/mach-o && find . -name '*.h' | cpio -pdm $out/include/mach-o)
 

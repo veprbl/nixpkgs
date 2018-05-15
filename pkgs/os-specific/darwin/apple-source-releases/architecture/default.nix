@@ -3,10 +3,9 @@
 appleDerivation {
   dontBuild = true;
 
-  installPhase = ''
-    export DSTROOT=$out
-    make install
-  '';
+  installFlags = [ "EXPORT_DSTDIR=/include/architecture" ];
+
+  DSTROOT = "$(out)";
 
   meta = with stdenv.lib; {
     maintainers = with maintainers; [ copumpkin ];
