@@ -309,6 +309,10 @@ xindy = stdenv.mkDerivation {
   name = "texlive-xindy.bin-${version}";
 
   inherit (common) src;
+
+  # If unset, xindy will try to mkdir /homeless-shelter
+  HOME = "/tmp/homeless-shelter";
+
   prePatch = "cd utils/xindy";
   # hardcode clisp location
   postPatch = ''
@@ -335,5 +339,3 @@ xindy = stdenv.mkDerivation {
 };
 
 }
-
-
