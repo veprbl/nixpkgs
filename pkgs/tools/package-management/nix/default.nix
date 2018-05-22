@@ -34,7 +34,7 @@ let
       ++ lib.optional withLibseccomp libseccomp
       ++ lib.optional ((stdenv.isLinux || stdenv.isDarwin) && is20)
           (aws-sdk-cpp.override {
-            apis = ["s3"];
+            apis = ["s3" "transfer" ];
             customMemoryManagement = false;
           })
       ++ lib.optional fromGit boost;
