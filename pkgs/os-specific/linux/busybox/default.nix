@@ -47,6 +47,12 @@ stdenv.mkDerivation rec {
 
   patches = [
     ./busybox-in-store.patch
+
+    # Fix fsck wrapper, see:
+    #   https://github.com/NixOS/nixpkgs/issues/40174
+    # Submitted upstream:
+    #   http://lists.busybox.net/pipermail/busybox/2018-May/086417.html
+    ./fsck-Fix-incorrect-handling-of-child-exit-code.patch
   ];
 
   postPatch = "patchShebangs .";

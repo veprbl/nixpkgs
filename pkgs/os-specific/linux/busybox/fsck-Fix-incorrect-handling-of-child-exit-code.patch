@@ -1,0 +1,81 @@
+From b9dbf69a5ad0cb585392a88853a729ee159366c7 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Niklas=20Hamb=C3=BCchen?= <mail@nh2.me>
+Date: Tue, 8 May 2018 15:48:20 +0200
+Subject: [PATCH] fsck: Fix incorrect handling of child exit code.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+In commit
+
+  c4fb8c6a - fsck: do not use statics
+
+not only statics were changed but also a couple of
+statics-unrelated changes were made.
+
+This included the handling of the child termination status
+as follows:
+
+    - if (WIFEXITED(status))
+    -   status = WEXITSTATUS(status);
+    - else if (WIFSIGNALED(status)) {
+    + status = WEXITSTATUS(status);
+    + if (WIFSIGNALED(status)) {
+
+Change to unconditionally call WEXITSTATUS() was not semantics-preserving,
+since you can only reasonably call WEXITSTATUS() on status if
+you checked WIFEXITED() before; see `man 2 waitpid`:
+
+    WEXITSTATUS(status)
+      [...]
+      This macro should be employed only if WIFEXITED
+      returned true.
+
+`status = WEXITSTATUS(status)` unconditionally masks away the
+parts of status that indicate whether a signal was raised,
+so that afterwards WIFSIGNALED() is true even if no signal
+was raised.
+
+As a result, busybox's `fsck` wrapper set `status = EXIT_ERROR = 8`,
+thus not forwarding the exit code of the filesystem-specific
+fsck utility (such as fsck.ext4) to the caller and returning
+exit code 8 instead.
+
+The exit codes of fsck have well-specified meanings (see `man fsck`)
+that operating systems use in order to decide whether they should
+prompt the user due to unrecoverable errors, or continue booting
+after errors were successfully fixed automatically.
+
+Consequently, this regression in busybox's fsck stopped my server
+from booting though, and manual intervention via a keyboard was
+needed.
+
+Remark: Tracking down this issue would have been significantly
+less effort if unrelated code changes were not snuck into a
+commit labelled "fsck: do not use statics".
+
+This issue was found as part of the NixOS project
+(https://github.com/NixOS/nixpkgs/issues/40174#issuecomment-387405554)
+and this fix has been tested on it.
+
+Signed-off-by: Niklas Hambüchen <mail@nh2.me>
+---
+ e2fsprogs/fsck.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/e2fsprogs/fsck.c b/e2fsprogs/fsck.c
+index 1c285bb92..1a6f7d0df 100644
+--- a/e2fsprogs/fsck.c
++++ b/e2fsprogs/fsck.c
+@@ -448,8 +448,9 @@ static int wait_one(int flags)
+ 	}
+  child_died:
+ 
+-	status = WEXITSTATUS(status);
+-	if (WIFSIGNALED(status)) {
++	if (WIFEXITED(status))
++		status = WEXITSTATUS(status);
++	else if (WIFSIGNALED(status)) {
+ 		sig = WTERMSIG(status);
+ 		status = EXIT_UNCORRECTED;
+ 		if (sig != SIGINT) {
