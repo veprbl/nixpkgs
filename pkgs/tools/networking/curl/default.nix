@@ -81,6 +81,8 @@ stdenv.mkDerivation rec {
 
   doCheck = false; # expensive, fails
 
+  patches = [ ./fix-resolver-hangout.patch ];
+
   postInstall = ''
     moveToOutput bin/curl-config "$dev"
     sed '/^dependency_libs/s|${libssh2.dev}|${libssh2.out}|' -i "$out"/lib/*.la
