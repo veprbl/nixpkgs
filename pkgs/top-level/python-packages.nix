@@ -223,6 +223,8 @@ in {
 
   bugseverywhere = callPackage ../applications/version-management/bugseverywhere {};
 
+  cdecimal = callPackage ../development/python-modules/cdecimal { };
+
   dendropy = callPackage ../development/python-modules/dendropy { };
 
   dbf = callPackage ../development/python-modules/dbf { };
@@ -253,6 +255,8 @@ in {
 
   globus-sdk = callPackage ../development/python-modules/globus-sdk { };
 
+  goocalendar = callPackage ../development/python-modules/goocalendar { };
+
   gssapi = callPackage ../development/python-modules/gssapi { };
 
   h5py = callPackage ../development/python-modules/h5py {
@@ -276,6 +280,8 @@ in {
   lmtpd = callPackage ../development/python-modules/lmtpd { };
 
   logster = callPackage ../development/python-modules/logster { };
+
+  mail-parser = callPackage ../development/python-modules/mail-parser {  };
 
   mpi4py = callPackage ../development/python-modules/mpi4py {
     mpi = pkgs.openmpi;
@@ -312,6 +318,8 @@ in {
   py_stringmatching = callPackage ../development/python-modules/py_stringmatching { };
 
   pyaes = callPackage ../development/python-modules/pyaes { };
+
+  pyairvisual = callPackage ../development/python-modules/pyairvisual { };
 
   pyamf = callPackage ../development/python-modules/pyamf { };
 
@@ -538,6 +546,8 @@ in {
   astor = callPackage ../development/python-modules/astor {};
 
   asyncio = callPackage ../development/python-modules/asyncio {};
+
+  asyncssh = callPackage ../development/python-modules/asyncssh { };
 
   python-fontconfig = callPackage ../development/python-modules/python-fontconfig { };
 
@@ -2951,6 +2961,8 @@ in {
 
   };
 
+  hiro = callPackage ../development/python-modules/hiro {};
+
   hglib = callPackage ../development/python-modules/hglib {};
 
   humanize = buildPythonPackage rec {
@@ -3846,6 +3858,8 @@ in {
   plyfile = callPackage ../development/python-modules/plyfile { };
 
   podcastparser = callPackage ../development/python-modules/podcastparser { };
+
+  podcats = callPackage ../development/python-modules/podcats { };
 
   pomegranate = callPackage ../development/python-modules/pomegranate { };
 
@@ -5027,6 +5041,7 @@ in {
     };
   };
 
+  keyrings-alt = callPackage ../development/python-modules/keyrings-alt {};
 
   SPARQLWrapper = buildPythonPackage rec {
     name = "SPARQLWrapper-${version}";
@@ -5147,6 +5162,7 @@ in {
     };
   };
 
+  effect = callPackage ../development/python-modules/effect {};
 
   elpy = buildPythonPackage rec {
     name = "elpy-${version}";
@@ -5590,8 +5606,20 @@ in {
     };
   };
 
-  pytorch = callPackage ../development/python-modules/pytorch {
+  pytorch = let
+    # Fails with CUDA 9.1 and GCC 6.4:
+    # https://github.com/pytorch/pytorch/issues/5831
+    # https://devtalk.nvidia.com/default/topic/1028112
+    # We should be able to remove this when CUDA 9.2 is released.
+    cudatoolkit9 = pkgs.cudatoolkit9.override {
+      gcc6 = pkgs.gcc5;
+    };
+  in callPackage ../development/python-modules/pytorch {
     cudaSupport = pkgs.config.cudaSupport or false;
+    cudatoolkit = cudatoolkit9;
+    cudnn = pkgs.cudnn_cudatoolkit9.override {
+      inherit cudatoolkit9;
+    };
   };
 
   pytorchWithCuda = self.pytorch.override {
@@ -5959,6 +5987,8 @@ in {
   };
 
   geopandas = callPackage ../development/python-modules/geopandas { };
+
+  geojson = callPackage ../development/python-modules/geojson { };
 
   gevent-websocket = buildPythonPackage rec {
     name = "gevent-websocket-0.9.3";
@@ -6925,6 +6955,9 @@ in {
   pylast = callPackage ../development/python-modules/pylast { };
 
   pylru = callPackage ../development/python-modules/pylru { };
+
+  libnl-python = disabledIf isPy3k
+    (toPythonModule (pkgs.libnl.override{pythonSupport=true; inherit python; })).py;
 
   lark-parser = callPackage ../development/python-modules/lark-parser { };
 
@@ -9860,25 +9893,7 @@ in {
 
   pybase64 = callPackage ../development/python-modules/pybase64 { };
 
-  pylibconfig2 = buildPythonPackage rec {
-    name = "pylibconfig2-${version}";
-    version = "0.2.4";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/p/pylibconfig2/${name}.tar.gz";
-      sha256 = "0kyg6gldj6hi2jhc5xhi834bb2mcaiy24dvfik963shnldqr7kqg";
-    };
-
-    doCheck = false;
-
-    propagatedBuildInputs = with self ; [ pyparsing ];
-
-    meta = {
-      homepage = https://github.com/heinzK1X/pylibconfig2;
-      description = "Pure python library for libconfig syntax";
-      license = licenses.gpl3;
-    };
-  };
+  pylibconfig2 = callPackage ../development/python-modules/pylibconfig2 { };
 
   pylibmc = callPackage ../development/python-modules/pylibmc {};
 
@@ -13011,15 +13026,7 @@ in {
     };
   };
 
-  timeout-decorator = buildPythonPackage rec {
-    name    = "timeout-decorator-${version}";
-    version = "0.3.2";
-
-    src = pkgs.fetchurl {
-      url    = "http://pypi.python.org/packages/source/t/timeout-decorator/${name}.tar.gz";
-      sha256 = "1x9l8bwdk72if2d5h5mi4lcaidbsmyh0iz114cfyyj1rzz5rxqaf";
-    };
-  };
+  timeout-decorator = callPackage ../development/python-modules/timeout-decorator { };
 
   pid = buildPythonPackage rec {
     name = "pid-${version}";
@@ -14590,6 +14597,8 @@ in {
   update_checker = callPackage ../development/python-modules/update_checker {};
 
   uritemplate = callPackage ../development/python-modules/uritemplate { };
+
+  uproot = callPackage ../development/python-modules/uproot {};
 
   uptime = buildPythonPackage rec {
     name = "uptime-${version}";
@@ -16313,8 +16322,8 @@ EOF
     };
   };
 
-  # For backwards compatibility. Please use nixpkgs.udiskie instead.
-  udiskie = toPythonModule (pkgs.udiskie.override { pythonPackages = self; });
+  # added 2018-05-23, can be removed once 18.09 is branched off
+  udiskie = throw "pythonPackages.udiskie has been replaced by udiskie";
 
   # Should be bumped along with EFL!
   pythonefl = buildPythonPackage rec {
@@ -18151,6 +18160,10 @@ EOF
   pyowm = callPackage ../development/python-modules/pyowm { };
 
   prometheus_client = callPackage ../development/python-modules/prometheus_client { };
+
+  pysdl2 = callPackage ../development/python-modules/pysdl2 { };
+
+  pyogg = callPackage ../development/python-modules/pyogg { };
 });
 
 in fix' (extends overrides packages)

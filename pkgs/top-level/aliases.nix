@@ -257,6 +257,7 @@ mapAliases (rec {
   speedtest_cli = speedtest-cli;  # added 2015-02-17
   spice_gtk = spice-gtk; # added 2018-02-25
   spice_protocol = spice-protocol; # added 2018-02-25
+  sqlite3_analyzer = sqlite-analyzer; # added 2018-05-22
   sqliteInteractive = sqlite-interactive;  # added 2014-12-06
   sshfs = sshfs-fuse; # added 2017-08-14
   sshfsFuse = sshfs-fuse; # added 2016-09
@@ -275,6 +276,7 @@ mapAliases (rec {
   telepathy_qt = telepathy-qt; # added 2018-02-25
   telepathy_qt5 = libsForQt5.telepathy;  # added 2015-12-19
   telepathy_salut = telepathy-salut; # added 2018-02-25
+  telnet = inetutils; # added 2018-05-15
   tex-gyre-bonum-math = tex-gyre-math.bonum; # added 2018-04-03
   tex-gyre-pagella-math = tex-gyre-math.pagella; # added 2018-04-03
   tex-gyre-schola-math = tex-gyre-math.schola; # added 2018-04-03
@@ -294,6 +296,7 @@ mapAliases (rec {
   vorbisTools = vorbis-tools; # added 2016-01-26
   wineStaging = wine-staging; # added 2018-01-08
   winusb = woeusb; # added 2017-12-22
+  wireguard = wireguard-tools; # added 2018-05-19
   x11 = xlibsWrapper; # added 2015-09
   xbmc = kodi; # added 2018-04-25
   xbmcPlain = kodiPlain; # added 2018-04-25

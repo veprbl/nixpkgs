@@ -95,7 +95,8 @@ stdenv.mkDerivation rec {
     (fetchpatch { # Backport of https://phabricator.haskell.org/D4388 for more determinism
       url = "https://github.com/shlevy/ghc/commit/fec1b8d3555c447c0d8da0e96b659be67c8bb4bc.patch";
       sha256 = "1lyysz6hfd1njcigpm8xppbnkadqfs0kvrp7s8vqgb38pjswj5hg";
-    });
+    })
+    ++ stdenv.lib.optional stdenv.isDarwin ./backport-dylib-command-size-limit.patch;
 
   postPatch = "patchShebangs .";
 
@@ -169,6 +170,8 @@ stdenv.mkDerivation rec {
 
   checkTarget = "test";
   doCheck = false; # fails with "testsuite/tests: No such file or directory.  Stop."
+
+  hardeningDisable = [ "format" ];
 
   # zsh and other shells are smart about `{ghc}` but bash isn't, and doesn't
   # treat that as a unary `{x,y,z,..}` repetition.

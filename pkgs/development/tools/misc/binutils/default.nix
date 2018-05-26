@@ -19,10 +19,11 @@ in
 stdenv.mkDerivation rec {
   name = targetPrefix + basename;
 
-  src = fetchurl {
+  # HACK to ensure that we preserve source from bootstrap binutils to not rebuild LLVM
+  src = stdenv.__bootPackages.binutils-unwrapped.src or (fetchurl {
     url = "mirror://gnu/binutils/${basename}.tar.bz2";
     sha256 = "028cklfqaab24glva1ks2aqa1zxa6w6xmc8q34zs1sb7h22dxspg";
-  };
+  });
 
   patches = [
     # Turn on --enable-new-dtags by default to make the linker set
@@ -64,8 +65,7 @@ stdenv.mkDerivation rec {
 
     # https://sourceware.org/bugzilla/show_bug.cgi?id=22868
     ./gold-symbol-visibility.patch
-  ] ++ stdenv.lib.optional targetPlatform.isiOS ./support-ios.patch
-    ++ stdenv.lib.optionals targetPlatform.isAarch64 [
+
     # Version 2.30 introduced strict requirements on ELF relocations which cannot
     # be satisfied on aarch64 platform. Add backported fix from bugzilla.
     # https://sourceware.org/bugzilla/show_bug.cgi?id=22764
