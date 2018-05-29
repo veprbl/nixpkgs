@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchgit, fetchpatch, meson, ninja, pkgconfig, gettext, python3, libxml2, libxslt, docbook_xsl
+{ stdenv, fetchurl, fetchgit, fetchpatch, fixDarwinDylibNames, meson, ninja, pkgconfig, gettext, python3, libxml2, libxslt, docbook_xsl
 , docbook_xml_dtd_43, gtk-doc, glib, libtiff, libjpeg, libpng, libX11, gnome3
 , jasper, gobjectIntrospection, doCheck ? false, makeWrapper }:
 
@@ -53,7 +53,8 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [
     meson ninja pkgconfig gettext python3 libxml2 libxslt docbook_xsl docbook_xml_dtd_43
     gtk-doc gobjectIntrospection makeWrapper
-  ];
+  ]
+    ++ stdenv.lib.optional stdenv.isDarwin fixDarwinDylibNames;
 
   propagatedBuildInputs = [ glib libtiff libjpeg libpng jasper ];
 
@@ -80,6 +81,12 @@ stdenv.mkDerivation rec {
       # We need to install 'loaders.cache' in lib/gdk-pixbuf-2.0/2.10.0/
       $dev/bin/gdk-pixbuf-query-loaders --update-cache
     '';
+
+  # The fixDarwinDylibNames hook doesn't patch binaries.
+  preFixup = stdenv.lib.optionalString stdenv.isDarwin ''
+    install_name_tool -change "@rpath/libgdk_pixbuf-2.0.0.dylib" "$dev/lib/libgdk_pixbuf-2.0.0.dylib" $out/bin/gdk-pixbuf-thumbnailer
+    install_name_tool -change "@rpath/libgdk_pixbuf-2.0.0.dylib" "$out/lib/libgdk_pixbuf-2.0.0.dylib" $dev/bin/gdk-pixbuf-thumbnailer
+  '';
 
   # The tests take an excessive amount of time (> 1.5 hours) and memory (> 6 GB).
   inherit doCheck;
