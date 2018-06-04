@@ -146,8 +146,8 @@ in rec {
     src = fetchFromGitHub {
       owner = "NixOS";
       repo = "nix";
-      rev = "1fee671d12f468c9afb013c5bf47c631dd0a6a1b";
-      sha256 = "1zp3qlwavs1km81kdn970yyizsl0skgp4jvni4li10syy9f6ifhj";
+      rev = "b5bd4f2d930560b42fd5295464f5932bfd94c867";
+      sha256 = "0lcj4zgaylkmijih83pdbzrk2ijd8qnrx4isv1sgbzy202qkr7s2";
     };
     fromGit = true;
   })) // { perl-bindings = perl-bindings {
