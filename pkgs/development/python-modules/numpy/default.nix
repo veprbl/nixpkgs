@@ -20,18 +20,6 @@ buildPythonPackage rec {
     ./numpy-distutils-C++.patch
   ];
 
-  postPatch = lib.optionalString hostPlatform.isMusl ''
-    # Use fenv.h
-    sed -i \
-      numpy/core/src/npymath/ieee754.c.src \
-      numpy/core/include/numpy/ufuncobject.h \
-      -e 's/__GLIBC__/__linux__/'
-    # Don't use various complex trig functions
-    substituteInPlace numpy/core/src/private/npy_config.h \
-      --replace '#if defined(__GLIBC__)' "#if 1" \
-      --replace '#if !__GLIBC_PREREQ(2, 18)' "#if 1"
-  '';
-
   preConfigure = ''
     sed -i 's/-faltivec//' numpy/distutils/system_info.py
     export NPY_NUM_BUILD_JOBS=$NIX_BUILD_CORES
