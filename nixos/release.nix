@@ -248,6 +248,7 @@ in rec {
   tests.avahi = callTest tests/avahi.nix {};
   tests.beegfs = callTest tests/beegfs.nix {};
   tests.bittorrent = callTest tests/bittorrent.nix {};
+  tests.bind = callTest tests/bind.nix {};
   tests.blivet = callTest tests/blivet.nix {};
   tests.boot = callSubTests tests/boot.nix {};
   tests.boot-stage1 = callTest tests/boot-stage1.nix {};
@@ -407,6 +408,7 @@ in rec {
   tests.xss-lock = callTest tests/xss-lock.nix {};
   tests.yabar = callTest tests/yabar.nix {};
   tests.zookeeper = callTest tests/zookeeper.nix {};
+  tests.morty = callTest tests/morty.nix { };
 
   /* Build a bunch of typical closures so that Hydra can keep track of
      the evolution of closure sizes. */

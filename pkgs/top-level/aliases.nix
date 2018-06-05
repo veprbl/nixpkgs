@@ -37,6 +37,7 @@ mapAliases (rec {
   QmidiNet = qmidinet;  # added 2016-05-22
   accounts-qt = libsForQt5.accounts-qt; # added 2015-12-19
   adobeReader = adobe-reader; # added 2013-11-04
+  adobe_flex_sdk = apache-flex-sdk; # added 2018-06-01
   ag = silver-searcher; # added 2018-04-25
   aircrackng = aircrack-ng; # added 2016-01-14
   ammonite-repl = ammonite; # added 2017-05-02
@@ -56,6 +57,7 @@ mapAliases (rec {
   clawsMail = claws-mail; # added 2016-04-29
   clutter_gtk = clutter-gtk; # added 2018-02-25
   conkerorWrapper = conkeror; # added 2015-01
+  conntrack_tools = conntrack-tools; # added 2018-05
   cool-old-term = cool-retro-term; # added 2015-01-31
   cupsBjnp = cups-bjnp; # added 2016-01-02
   cups_filters = cups-filters; # added 2016-08

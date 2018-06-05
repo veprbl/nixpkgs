@@ -514,6 +514,7 @@
   ./services/networking/miniupnpd.nix
   ./services/networking/mosquitto.nix
   ./services/networking/monero.nix
+  ./services/networking/morty.nix
   ./services/networking/miredo.nix
   ./services/networking/mstpd.nix
   ./services/networking/murmur.nix
@@ -787,6 +788,7 @@
   ./virtualisation/lxd.nix
   ./virtualisation/amazon-options.nix
   ./virtualisation/hyperv-guest.nix
+  ./virtualisation/kvmgt.nix
   ./virtualisation/openvswitch.nix
   ./virtualisation/parallels-guest.nix
   ./virtualisation/qemu-guest-agent.nix

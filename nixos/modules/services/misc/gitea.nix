@@ -282,7 +282,7 @@ in
 
         mkdir -p ${cfg.repositoryRoot}
         # update all hooks' binary paths
-        HOOKS=$(find ${cfg.repositoryRoot} -mindepth 4 -maxdepth 4 -type f -wholename "*git/hooks/*")
+        HOOKS=$(find ${cfg.repositoryRoot} -mindepth 4 -maxdepth 5 -type f -wholename "*git/hooks/*")
         if [ "$HOOKS" ]
         then
           sed -ri 's,/nix/store/[a-z0-9.-]+/bin/gitea,${gitea.bin}/bin/gitea,g' $HOOKS
@@ -294,6 +294,11 @@ in
         then
           mkdir -p ${cfg.stateDir}/conf
           cp -r ${gitea.out}/locale ${cfg.stateDir}/conf/locale
+        fi
+        # update command option in authorized_keys
+        if [ -r ${cfg.stateDir}/.ssh/authorized_keys ]
+        then
+          sed -ri 's,/nix/store/[a-z0-9.-]+/bin/gitea,${gitea.bin}/bin/gitea,g' ${cfg.stateDir}/.ssh/authorized_keys
         fi
       '' + optionalString (usePostgresql && cfg.database.createDatabase) ''
         if ! test -e "${cfg.stateDir}/db-created"; then
@@ -351,7 +356,7 @@ in
         text = cfg.database.password;
       })));
 
-    systemd.services.gitea-dump = {
+    systemd.services.gitea-dump = mkIf cfg.dump.enable {
        description = "gitea dump";
        after = [ "gitea.service" ];
        wantedBy = [ "default.target" ];
@@ -371,7 +376,7 @@ in
        };
     };
 
-    systemd.timers.gitea-dump = {
+    systemd.timers.gitea-dump = mkIf cfg.dump.enable {
       description = "Update timer for gitea-dump";
       partOf = [ "gitea-dump.service" ];
       wantedBy = [ "timers.target" ];
