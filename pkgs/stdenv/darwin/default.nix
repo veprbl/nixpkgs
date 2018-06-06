@@ -159,7 +159,7 @@ in rec {
         dyld = bootstrapTools;
       };
 
-      llvmPackages_5 = {
+      llvmPackages_6 = {
         libcxx = stdenv.mkDerivation {
           name = "bootstrap-stage0-libcxx";
           phases = [ "installPhase" "fixupPhase" ];
@@ -239,9 +239,9 @@ in rec {
         openssh sqlite sed serf openldap db cyrus-sasl expat apr-util
         findfreetype libssh curl cmake autoconf automake libtool cpio;
 
-      llvmPackages_5 = super.llvmPackages_5 // (let
-        libraries = super.llvmPackages_5.libraries.extend (_: _: {
-          inherit (llvmPackages_5) libcxx libcxxabi;
+      llvmPackages_6 = super.llvmPackages_6 // (let
+        libraries = super.llvmPackages_6.libraries.extend (_: _: {
+          inherit (llvmPackages_6) libcxx libcxxabi;
         });
       in { inherit libraries; } // libraries);
 
@@ -281,12 +281,12 @@ in rec {
         ncurses libffi zlib gmp pcre gnugrep
         coreutils findutils diffutils patchutils;
 
-      llvmPackages_5 = super.llvmPackages_5 // (let
-        tools = super.llvmPackages_5.tools.extend (llvmSelf: _: {
-          inherit (llvmPackages_5) llvm clang-unwrapped;
+      llvmPackages_6 = super.llvmPackages_6 // (let
+        tools = super.llvmPackages_6.tools.extend (llvmSelf: _: {
+          inherit (llvmPackages_6) llvm clang-unwrapped;
         });
-        libraries = super.llvmPackages_5.libraries.extend (llvmSelf: _: {
-          inherit (llvmPackages_5) libcxx libcxxabi compiler-rt;
+        libraries = super.llvmPackages_6.libraries.extend (llvmSelf: _: {
+          inherit (llvmPackages_6) libcxx libcxxabi compiler-rt;
         });
       in { inherit tools libraries; } // tools // libraries);
 
@@ -323,20 +323,20 @@ in rec {
         ncurses libffi zlib llvm gmp pcre gnugrep
         coreutils findutils diffutils patchutils;
 
-      llvmPackages_5 = super.llvmPackages_5 // (let
-        tools = super.llvmPackages_5.tools.extend (_: super: {
+      llvmPackages_6 = super.llvmPackages_6 // (let
+        tools = super.llvmPackages_6.tools.extend (_: super: {
           # Build man pages with final stdenv not before
           llvm = lib.extendDerivation
             true
             { inherit (super.llvm) man; }
-            llvmPackages_5.llvm;
+            llvmPackages_6.llvm;
           clang-unwrapped = lib.extendDerivation
             true
             { inherit (super.clang-unwrapped) man; }
-            llvmPackages_5.clang-unwrapped;
+            llvmPackages_6.clang-unwrapped;
         });
-        libraries = super.llvmPackages_5.libraries.extend (_: _: {
-          inherit (llvmPackages_5) compiler-rt libcxx libcxxabi;
+        libraries = super.llvmPackages_6.libraries.extend (_: _: {
+          inherit (llvmPackages_6) compiler-rt libcxx libcxxabi;
         });
       in { inherit tools libraries; } // tools // libraries);
 
