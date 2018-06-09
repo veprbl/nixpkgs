@@ -1,0 +1,33 @@
+From c481435c2d6a832e2ae610ce8e899b2c6c5887de Mon Sep 17 00:00:00 2001
+From: Will Dietz <w@wdtz.org>
+Date: Thu, 24 May 2018 16:23:05 -0500
+Subject: [PATCH] download: if there are active requests, never sleep for 10s
+
+In some versions/configurations libcurl doesn't handle timeouts
+(especially DNS timeouts) in a way that wakes curl_multi_wait.
+
+This doesn't appear to be a problem if using c-ares, FWIW.
+---
+ src/libstore/download.cc | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/libstore/download.cc b/src/libstore/download.cc
+index 2cefbc3c..44bc6a32 100644
+--- a/src/libstore/download.cc
++++ b/src/libstore/download.cc
+@@ -523,10 +523,11 @@ struct CurlDownloader : public Downloader
+             extraFDs[0].fd = wakeupPipe.readSide.get();
+             extraFDs[0].events = CURL_WAIT_POLLIN;
+             extraFDs[0].revents = 0;
++            long maxSleepTimeMs = items.empty() ? 10000 : 100;
+             auto sleepTimeMs =
+                 nextWakeup != std::chrono::steady_clock::time_point()
+                 ? std::max(0, (int) std::chrono::duration_cast<std::chrono::milliseconds>(nextWakeup - std::chrono::steady_clock::now()).count())
+-                : 10000;
++                : maxSleepTimeMs;
+             vomit("download thread waiting for %d ms", sleepTimeMs);
+             mc = curl_multi_wait(curlm, extraFDs, 1, sleepTimeMs, &numfds);
+             if (mc != CURLM_OK)
+-- 
+2.18.0-rc1
+

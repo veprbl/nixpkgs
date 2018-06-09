@@ -77,6 +77,8 @@ let
 
     enableParallelBuilding = true;
 
+    patches = lib.optional is20 ./reduce-timeout.patch;
+
     meta = {
       description = "Powerful package manager that makes package management reliable and reproducible";
       longDescription = ''
