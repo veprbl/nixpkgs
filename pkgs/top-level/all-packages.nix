@@ -7055,6 +7055,7 @@ with pkgs;
   metaBuildEnv = callPackage ../development/compilers/meta-environment/meta-build-env { };
 
   swift = callPackage ../development/compilers/swift { };
+  swift_42-dev = callPackage ../development/compilers/swift/4.2.nix { };
 
   swiProlog = callPackage ../development/compilers/swi-prolog { };
 
