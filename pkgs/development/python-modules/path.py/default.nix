@@ -10,12 +10,12 @@
 
 buildPythonPackage rec {
   pname = "path.py";
-  version = "11.0";
+  version = "11.0.1";
   name = pname + "-" + version;
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "16134e5b287aba4a4125a6722e7837cf2a149fccc5000c500ae6c71a5525488b";
+    sha256 = "e7eb9d0ca4110d9b4d7c9baa0696d8c94f837d622409cefc5ec9e7c3d02ea11f";
   };
 
   checkInputs = [ pytest pytestrunner glibcLocales packaging ];
