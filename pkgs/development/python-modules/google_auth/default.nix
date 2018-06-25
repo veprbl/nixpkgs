@@ -3,11 +3,11 @@
 
 buildPythonPackage rec {
   pname = "google-auth";
-  version = "1.4.1";
+  version = "1.4.2";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "9051802d3dae256036cca9e34633a32c0ed1427730d4ebc513dff91ec8b6dd45";
+    sha256 = "e67a59f29a68c44a135328b28992a072cde67ac5646a173b7009047ba994de7d";
   };
 
   checkInputs = [ pytest mock oauth2client flask requests urllib3 pytest-localserver ];
