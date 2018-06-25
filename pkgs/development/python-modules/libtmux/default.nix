@@ -2,11 +2,11 @@
 
 buildPythonPackage rec {
   pname = "libtmux";
-  version = "0.7.7";
+  version = "0.7.8";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "5670c8da8d0192d932ac1e34f010e0eeb098cdb2af6daad0307b5418e7a37733";
+    sha256 = "3dacce93790a93d4b1a70eb4a6ea5db6a49dcf6599c277e89c1a8de742d9b89e";
   };
 
   checkInputs = [ pytest ];
