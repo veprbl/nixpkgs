@@ -9,12 +9,12 @@
 
 buildPythonPackage rec {
   pname = "guessit";
-  version = "2.0.4";
+  version = "2.0.5";
   name = "${pname}-${version}";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "1cfcgb0px6i9jl8nwkx8j06j4y6p5975a9pfmd8lcacwr8gy4wjg";
+    sha256 = "626e0024c5cca9b84883b65246e4f238e3f39064664486f69f086c853a63ff61";
   };
 
   # Tests require more packages.
