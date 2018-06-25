@@ -2,12 +2,12 @@
 
 buildPythonPackage rec {
   pname = "pypcap";
-  version = "1.2.0";
+  version = "1.2.2";
   name = "${pname}-${version}";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "0n01xjgg8n5mf1cs9yg9ljsx1kvir8cm6wwrd2069fawjxdbk0b9";
+    sha256 = "a32322f45d63ff6196e33004c568b9f5019202a40aa2b16008b7f94e7e119c1f";
   };
 
   patches = [
