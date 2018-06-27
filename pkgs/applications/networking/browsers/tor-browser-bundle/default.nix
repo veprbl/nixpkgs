@@ -32,8 +32,8 @@
 # HTTPS Everywhere
 , git
 , libxml2 # xmllint
-, python27
-, python27Packages
+, python36
+, python36Packages
 , rsync
 
 # Pluggable transports
@@ -49,13 +49,13 @@ with stdenv.lib;
 let
   tor-browser-build_src = fetchgit {
     url = "https://git.torproject.org/builders/tor-browser-build.git";
-    rev = "refs/tags/tbb-7.5a5-build5";
-    sha256 = "0j37mqldj33fnzghxifvy6v8vdwkcz0i4z81prww64md5s8qcsa9";
+    rev = "refs/tags/tbb-7.5.6-build4";
+    sha256 = "1l71dl4kkzfx63qrglrydr2ffwnxlmy3f7al8f090yim8s5g9gm9";
   };
 
   firefoxExtensions = import ./extensions.nix {
     inherit stdenv fetchurl fetchgit zip
-      git libxml2 python27 python27Packages rsync;
+      git libxml2 python36 python36Packages rsync;
   };
 
   bundledExtensions = with firefoxExtensions; [
