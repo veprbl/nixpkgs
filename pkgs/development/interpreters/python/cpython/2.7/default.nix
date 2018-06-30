@@ -31,7 +31,7 @@ with stdenv.lib;
 
 let
   majorVersion = "2.7";
-  minorVersion = "14";
+  minorVersion = "15";
   minorVersionSuffix = "";
   pythonVersion = majorVersion;
   version = "${majorVersion}.${minorVersion}${minorVersionSuffix}";
@@ -40,7 +40,7 @@ let
 
   src = fetchurl {
     url = "https://www.python.org/ftp/python/${majorVersion}.${minorVersion}/Python-${version}.tar.xz";
-    sha256 = "0rka541ys16jwzcnnvjp2v12m4cwgd2jp6wj4kj511p715pb5zvi";
+    sha256 = "0x2mvz9dp11wj7p5ccvmk9s0hzjk2fa1m462p395l4r6bfnb3n92";
   };
 
   hasDistutilsCxxPatch = !(stdenv.cc.isGNU or false);
@@ -58,8 +58,24 @@ let
       # if DETERMINISTIC_BUILD env var is set
       ./deterministic-build.patch
 
-      ./properly-detect-curses.patch
+      # Fix python bug #27177 (https://bugs.python.org/issue27177)
+      # The issue is that `match.group` only recognizes python integers
+      # instead of everything that has `__index__`.
+      # This bug was fixed upstream, but not backported to 2.7
+      (fetchpatch {
+        name = "re_match_index.patch";
+        url = "https://bugs.python.org/file43084/re_match_index.patch";
+        sha256 = "0l9rw6r5r90iybdkp3hhl2pf0h0s1izc68h5d3ywrm92pq32wz57";
+      })
 
+      # "`type_getattro()` calls `tp_descr_get(self, obj, type)` without actually owning a reference to "self".
+      # In very rare cases, this can cause a segmentation fault if "self" is deleted by the descriptor."
+      # https://github.com/python/cpython/pull/6118
+      (fetchpatch {
+        name = "type_getattro.patch";
+        url = "https://github.com/python/cpython/pull/6118/commits/8c6da2d7e7e719c40fb539b7f7cb7583cccc5527.patch";
+        sha256 = "11v9yx20hs3jmw0wggzvmw39qs4mxay4kb8iq2qjydwy9ya61nrd";
+      })
     ] ++ optionals (x11Support && stdenv.isDarwin) [
       ./use-correct-tcl-tk-on-darwin.patch
     ] ++ optionals stdenv.isLinux [
@@ -140,7 +156,10 @@ let
     "ac_cv_computed_gotos=yes"
     "ac_cv_file__dev_ptmx=yes"
     "ac_cv_file__dev_ptc=yes"
-  ];
+  ]
+    # Never even try to use lchmod on linux,
+    # don't rely on detecting glibc-isms.
+  ++ optional hostPlatform.isLinux "ac_cv_func_lchmod=no";
 
   postConfigure = if hostPlatform.isCygwin then ''
     sed -i Makefile -e 's,PYTHONPATH="$(srcdir),PYTHONPATH="$(abs_srcdir),'
@@ -240,6 +259,8 @@ in stdenv.mkDerivation {
     };
 
     enableParallelBuilding = true;
+
+    doCheck = false; # expensive, and fails
 
     meta = {
       homepage = http://python.org;

@@ -9,11 +9,18 @@ stdenv.mkDerivation rec {
     sha256 = "1r3qpg3bhz37mgvp9chsaa3k0csby3vayfvz8ggsqz194af5i2w5";
   };
 
+  outputs = [ "out" "dev" "man" "info" ];
+
   patches = stdenv.lib.optional doCheck ./gpt-unicode-test-fix.patch
     ++ stdenv.lib.optional stdenv.hostPlatform.isMusl
     (fetchpatch {
       url = "https://git.alpinelinux.org/cgit/aports/plain/main/parted/fix-includes.patch?id=9c5cd3c329a40ba4559cc1d8c7d17a9bf95c237b";
       sha256 = "117ypyiwvzym6pi8xmy16wa5z3sbpx7gh6haabs6kfb1x2894z7q";
+    })
+    ++ stdenv.lib.optional (devicemapper == null)
+    (fetchpatch {
+      url = https://git.savannah.gnu.org/cgit/parted.git/patch/?id=7e87ca3c531228d35e13e802d2622006138b104c;
+      sha256 = "0i29lfg8cwj342q5s7qwqhncz2bkifj5rjc7cx6jd4zqb6ykkndj";
     });
 
   postPatch = stdenv.lib.optionalString doCheck ''

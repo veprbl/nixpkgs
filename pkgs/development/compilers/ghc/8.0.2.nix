@@ -15,7 +15,7 @@
 
 , # If enabled, GHC will be built with the GPL-free but slower integer-simple
   # library instead of the faster but GPLed integer-gmp library.
-  enableIntegerSimple ? false, gmp ? null
+  enableIntegerSimple ? !(gmp.meta.available or false), gmp
 
 , # If enabled, use -fPIC when compiling static libs.
   enableRelocatedStaticLibs ? targetPlatform != hostPlatform
@@ -28,8 +28,6 @@
   # specific flavour and falls back to ghc default values.
   ghcFlavour ? stdenv.lib.optionalString (targetPlatform != hostPlatform) "perf-cross"
 }:
-
-assert !enableIntegerSimple -> gmp != null;
 
 let
   inherit (bootPkgs) ghc;
@@ -139,10 +137,8 @@ stdenv.mkDerivation rec {
     "--disable-large-address-space"
   ];
 
-  # Hack to make sure we never to the relaxation `$PATH` and hooks support for
-  # compatability. This will be replaced with something clearer in a future
-  # masss-rebuild.
-  crossConfig = true;
+  # Make sure we never relax`$PATH` and hooks support for compatability.
+  strictDeps = true;
 
   nativeBuildInputs = [
     perl sphinx
@@ -164,10 +160,13 @@ stdenv.mkDerivation rec {
   # that in turn causes GHCi to abort
   stripDebugFlags = [ "-S" ] ++ stdenv.lib.optional (!targetPlatform.isDarwin) "--keep-file-symbols";
 
-  # zsh and other shells are smart about `{ghc}` but bash isn't, and doesn't
-  # treat that as a unary `{x,y,z,..}` repetition.
+  hardeningDisable = [ "format" ];
+
   postInstall = ''
-    paxmark m $out/lib/${name}/bin/*
+    for bin in "$out"/lib/${name}/bin/*; do
+      isELF "$bin" || continue
+      paxmark m "$bin"
+    done
 
     # Install the bash completion file.
     install -D -m 444 utils/completion/ghc.bash $out/share/bash-completion/completions/${targetPrefix}ghc
@@ -184,6 +183,7 @@ stdenv.mkDerivation rec {
     inherit bootPkgs targetPrefix;
 
     inherit llvmPackages;
+    inherit enableShared;
 
     # Our Cabal compiler name
     haskellCompilerName = "ghc-8.0.2";

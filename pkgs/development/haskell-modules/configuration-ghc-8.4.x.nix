@@ -39,23 +39,7 @@ self: super: {
   unix = null;
   xhtml = null;
 
-  ## Shadowed:
-
-  ## Needs bump to a versioned attribute
-  ## Issue: https://github.com/sol/doctest/issues/189
-  doctest = overrideCabal super.doctest_0_15_0 (drv: {
-    ## Setup: Encountered missing dependencies:
-    ## ghc >=7.0 && <8.4
-    ##
-    ## Setup: Encountered missing dependencies:
-    ## QuickCheck >=2.11.3
-    doCheck         = false;
-  });
-
-  ## Needs bump to a versioned attribute
-  ## Setup: Encountered missing dependencies:
-  ## Cabal <2.2
-  ## Older versions don't compile.
+  doctest = dontCheck super.doctest_0_16_0;  # tests depend on very recent QuickCheck
   hackage-db = super.hackage-db_2_0_1;
 
   ## Needs bump to a versioned attribute
@@ -120,7 +104,7 @@ self: super: {
     prePatch        = "cd lambdacube-ir.haskell; ";
   });
 
-  singletons = super.singletons_2_4_1;
+  singletons = dontCheck super.singletons_2_4_1;
   th-desugar = super.th-desugar_1_8;
 
   ## Upstreamed, awaiting a Hackage release
@@ -136,6 +120,8 @@ self: super: {
     };
   });
 
+  ## Bounds related: it wants base-compat 0.9.
+  criterion = super.criterion_1_4_1_0;
 
   ## Unmerged
 
@@ -290,14 +276,6 @@ self: super: {
     jailbreak       = true;
   });
 
-  jailbreak-cabal = super.jailbreak-cabal.override {
-    ##     • No instance for (Semigroup CDialect)
-    ##         arising from the superclasses of an instance declaration
-    ##     • In the instance declaration for ‘Monoid CDialect’
-    ## Undo the override in `configuration-common.nix`: GHC 8.4 bumps Cabal to 2.1:
-    Cabal = self.Cabal;
-  };
-
   kan-extensions = overrideCabal super.kan-extensions (drv: {
     ## Setup: Encountered missing dependencies:
     ## free ==4.*
@@ -413,9 +391,9 @@ self: super: {
 
   # Older versions don't compile.
   base-compat = self.base-compat_0_10_1;
-  brick = self.brick_0_37;
-  dhall = self.dhall_1_13_0;
-  dhall_1_13_0 = doJailbreak super.dhall_1_13_0;  # support ansi-terminal 0.8.x
+  brick = self.brick_0_37_1;
+  dhall = self.dhall_1_14_0;
+  dhall_1_13_0 = doJailbreak super.dhall_1_14_0;  # support ansi-terminal 0.8.x
   HaTeX = self.HaTeX_3_19_0_0;
   hpack = self.hpack_0_28_2;
   hspec = dontCheck super.hspec_2_5_1;
@@ -424,7 +402,7 @@ self: super: {
   hspec-smallcheck = self.hspec-smallcheck_0_5_2;
   matrix = self.matrix_0_3_6_1;
   pandoc = self.pandoc_2_2_1;
-  pandoc-types = self.pandoc-types_1_17_4_2;
+  pandoc-types = self.pandoc-types_1_17_5_1;
   wl-pprint-text = self.wl-pprint-text_1_2_0_0;
 
   # https://github.com/xmonad/xmonad/issues/155
@@ -447,5 +425,13 @@ self: super: {
     url = https://raw.githubusercontent.com/lambdabot/lambdabot/ghc-8.4.1/patches/flexible-defaults-0.0.1.2.patch;
     sha256 = "1bpsqq80h6nxm04wddgcgyzn0fjfsmhccmqb211jqswv5209znx8";
   });
+
+  lambdabot-core = appendPatch super.lambdabot-core ./patches/lambdabot-core-ghc-8.4.x-fix.patch;
+
+  # Version 1.9.1 excludes base-compat 0.10.x for the benefit of older
+  # compilers, but ghc 8.4.x works fine with the new version.
+  hledger-lib = doJailbreak super.hledger-lib;
+  hledger = doJailbreak super.hledger;
+  hledger-ui = doJailbreak super.hledger-ui;
 
 }

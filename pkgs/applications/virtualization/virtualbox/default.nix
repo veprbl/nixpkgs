@@ -1,6 +1,6 @@
-{ stdenv, fetchurl, lib, iasl, dev86, pam, libxslt, libxml2, libX11, xproto, libXext
-, libXcursor, libXmu, qt5, libIDL, SDL, libcap, zlib, libpng, glib, lvm2
-, libXrandr, libXinerama
+{ stdenv, fetchurl, lib, fetchpatch, iasl, dev86, pam, libxslt, libxml2
+, libX11, xproto, libXext, libXcursor, libXmu, qt5, libIDL, SDL, libcap
+, zlib, libpng, glib, lvm2, libXrandr, libXinerama
 , pkgconfig, which, docbook_xsl, docbook_xml_dtd_43
 , alsaLib, curl, libvpx, gawk, nettools, dbus
 , xorriso, makeself, perl
@@ -47,7 +47,7 @@ in stdenv.mkDerivation {
   name = "virtualbox-${version}";
 
   src = fetchurl {
-    url = "http://download.virtualbox.org/virtualbox/${version}/VirtualBox-${version}.tar.bz2";
+    url = "https://download.virtualbox.org/virtualbox/${version}/VirtualBox-${version}.tar.bz2";
     sha256 = main;
   };
 
@@ -65,7 +65,7 @@ in stdenv.mkDerivation {
     ++ optionals (headless) [ libXrandr ]
     ++ optionals (!headless) [ qt5.qtbase qt5.qtx11extras libXinerama SDL ];
 
-  hardeningDisable = [ "fortify" "pic" "stackprotector" ];
+  hardeningDisable = [ "format" "fortify" "pic" "stackprotector" ];
 
   prePatch = ''
     set -x
@@ -94,9 +94,14 @@ in stdenv.mkDerivation {
 
   patches =
      optional enableHardening ./hardened.patch
-  ++ [ ./qtx11extras.patch ];
-
-
+  ++ [
+    ./qtx11extras.patch
+    (fetchpatch {
+      name = "010-qt-5.11.patch";
+      url = "https://git.archlinux.org/svntogit/community.git/plain/trunk/010-qt-5.11.patch?h=packages/virtualbox";
+      sha256 = "0hjx99pg40wqyggnrpylrp5zngva4xrnk7r90i0ynrqc7n84g9pn";
+    })
+  ];
 
   postPatch = ''
     sed -i -e 's|/sbin/ifconfig|${nettools}/bin/ifconfig|' \

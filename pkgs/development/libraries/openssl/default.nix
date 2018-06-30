@@ -12,7 +12,7 @@ let
     name = "openssl-${version}";
 
     src = fetchurl {
-      url = "http://www.openssl.org/source/${name}.tar.gz";
+      url = "https://www.openssl.org/source/${name}.tar.gz";
       inherit sha256;
     };
 
@@ -73,8 +73,7 @@ let
 
     makeFlags = [ "MANDIR=$(man)/share/man" ];
 
-    # Parallel building is broken in OpenSSL.
-    enableParallelBuilding = false;
+    enableParallelBuilding = true;
 
     postInstall = ''
       # If we're building dynamic libraries, then don't install static

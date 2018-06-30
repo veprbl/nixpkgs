@@ -5,7 +5,7 @@ stdenv.mkDerivation rec {
   version = "1.7.0";
 
   src = fetchurl {
-    url = "http://www.hepforge.org/archive/yoda/YODA-${version}.tar.bz2";
+    url = "https://www.hepforge.org/archive/yoda/YODA-${version}.tar.bz2";
     sha256 = "0fyf6ld1klzlfmr5sl1jxzck4a0h14zfkrff8397rn1fqnqbzmmk";
   };
 
@@ -22,6 +22,8 @@ stdenv.mkDerivation rec {
       wrapProgram "$prog" --set PYTHONPATH $PYTHONPATH:$(toPythonPath "$out")
     done
   '';
+
+  hardeningDisable = [ "format" ];
 
   meta = {
     description = "Provides small set of data analysis (specifically histogramming) classes";

@@ -1475,7 +1475,7 @@ let
     name = "xcb-util-cursor-0.1.3";
     builder = ./builder.sh;
     src = fetchurl {
-      url = http://xcb.freedesktop.org/dist/xcb-util-cursor-0.1.3.tar.bz2;
+      url = https://xcb.freedesktop.org/dist/xcb-util-cursor-0.1.3.tar.bz2;
       sha256 = "0krr4rcw6r42cncinzvzzdqnmxk3nrgpnadyg2h8k9x10q3hm885";
     };
     nativeBuildInputs = [ pkgconfig ];
@@ -2468,11 +2468,11 @@ let
   }) // {inherit inputproto libX11 libXaw xproto libXt ;};
 
   xkeyboardconfig = (mkDerivation "xkeyboardconfig" {
-    name = "xkeyboard-config-2.22";
+    name = "xkeyboard-config-2.23.1";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/data/xkeyboard-config/xkeyboard-config-2.22.tar.bz2;
-      sha256 = "1garmbyfjp0han04l2l90zzwlfbdgdxl6r1qnic36i5wkycckbny";
+      url = mirror://xorg/individual/data/xkeyboard-config/xkeyboard-config-2.23.1.tar.bz2;
+      sha256 = "1wq27cs1c9y7d1d7zp5yhq29paj9smajdb68lyvm28d2zq2vqjra";
     };
     nativeBuildInputs = [ pkgconfig ];
     buildInputs = [ libX11 xproto ];

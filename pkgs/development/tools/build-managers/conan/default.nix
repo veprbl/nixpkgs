@@ -20,13 +20,18 @@ let newPython = python.override {
 };
 
 in newPython.pkgs.buildPythonApplication rec {
-  version = "1.1.1"; # remove patch below when updating
+  version = "1.4.5";
   pname = "conan";
 
   src = newPython.pkgs.fetchPypi {
     inherit pname version;
-    sha256 = "1k1r401bc9fgmhd5n5f29mjcn346r3zdrm7p28nwpr2r2p3fslrl";
+    sha256 = "1mjakrv1d7la3lrxsv6jjqprqwmslpjmfxkw3z7pk56rzlp99nv2";
   };
+
+  postPatch = ''
+    # Remove pylint constraint
+    substituteInPlace conans/requirements.txt --replace ", <1.9.0" ""
+  '';
 
   checkInputs = with newPython.pkgs; [
     nose
@@ -39,15 +44,7 @@ in newPython.pkgs.buildPythonApplication rec {
   propagatedBuildInputs = with newPython.pkgs; [
     requests fasteners pyyaml pyjwt colorama patch
     bottle pluginbase six distro pylint node-semver
-    future pygments mccabe
-  ];
-
-  patches = [
-    # already merged, remove with the next package update
-    (fetchpatch {
-      url = "https://github.com/conan-io/conan/commit/51cc4cbd51ac8f9b9efa2bf678a2d7810e273ff3.patch";
-      sha256 = "0d93g4hjpfk8z870imwdswkw5qba2h5zhfgwwijiqhr2pv7fl1y7";
-    })
+    future pygments mccabe deprecation
   ];
 
   preCheck = ''

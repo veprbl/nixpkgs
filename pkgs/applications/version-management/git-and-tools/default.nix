@@ -95,6 +95,8 @@ rec {
 
   git-stree = callPackage ./git-stree { };
 
+  git-sync = callPackage ./git-sync { };
+
   git2cl = callPackage ./git2cl { };
 
   gitFastExport = callPackage ./fast-export { };
@@ -109,9 +111,7 @@ rec {
     inherit (darwin) Security;
   };
 
-  hubUnstable = callPackage ./hub/unstable.nix {
-    inherit (darwin) Security;
-  };
+  hubUnstable = throw "use gitAndTools.hub instead";
 
   qgit = qt5.callPackage ./qgit { };
 

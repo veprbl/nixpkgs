@@ -35,6 +35,8 @@ let
       patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
         --set-rpath "${atomEnv.libPath}" \
         $share/resources/app/apm/bin/node
+      patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
+        $share/resources/app.asar.unpacked/node_modules/symbols-view/vendor/ctags-linux
 
       dugite=$share/resources/app.asar.unpacked/node_modules/dugite
       rm -f $dugite/git/bin/git
@@ -53,17 +55,17 @@ let
       homepage = https://atom.io/;
       license = licenses.mit;
       maintainers = with maintainers; [ offline nequissimus synthetica ysndr ];
-      platforms = [ "x86_64-linux" ];
+      platforms = platforms.x86_64;
     };
   };
 in stdenv.lib.mapAttrs common {
   atom = {
-    version = "1.27.1";
-    sha256 = "08slv8s90wz2jcdrcqh2d815wfbrkwcdx9c3qbx8cml04hz8p2gx";
+    version = "1.28.0";
+    sha256 = "0k09316897qb9ypkqm6w78nz7sj5385xfdm9bm97m8pka7v61g7h";
   };
 
   atom-beta = {
-    version = "1.28.0-beta1";
-    sha256 = "1mkxq2a7sylj9jx1bs2v1pmgrwc10cgh810qic1lncq9jzpaik0n";
+    version = "1.29.0-beta0";
+    sha256 = "05xk63wsjfssf8ckph2bgrxaf99fhz3gs8n8pira8cc9yjk7diz7";
   };
 }

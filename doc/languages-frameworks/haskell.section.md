@@ -312,7 +312,7 @@ For example, installing the following environment
 allows one to browse module documentation index [not too dissimilar to
 this](https://downloads.haskell.org/~ghc/latest/docs/html/libraries/index.html)
 for all the specified packages and their dependencies by directing a browser of
-choice to `~/.nix-profiles/share/doc/hoogle/index.html` (or
+choice to `~/.nix-profile/share/doc/hoogle/index.html` (or
 `/run/current-system/sw/share/doc/hoogle/index.html` in case you put it in
 `environment.systemPackages` in NixOS).
 
@@ -334,10 +334,29 @@ navigate there.
 
 Finally, you can run
 ```shell
-hoogle server -p 8080 --local
+hoogle server --local -p 8080
 ```
 and navigate to http://localhost:8080/ for your own local
-[Hoogle](https://www.haskell.org/hoogle/).
+[Hoogle](https://www.haskell.org/hoogle/). The `--local` flag makes the hoogle
+server serve files from your nix store over http, without the flag it will use
+`file://` URIs. Note, however, that Firefox and possibly other browsers
+disallow navigation from `http://` to `file://` URIs for security reasons,
+which might be quite an inconvenience. Versions before v5 did not have this
+flag. See
+[this page](http://kb.mozillazine.org/Links_to_local_pages_do_not_work) for
+workarounds.
+
+For NixOS users there's a service which runs this exact command for you.
+Specify the `packages` you want documentation for and the `haskellPackages` set
+you want them to come from. Add the following to `configuration.nix`.
+
+```nix
+services.hoogle = {
+enable = true;
+packages = (hpkgs: with hpkgs; [text cryptonite]);
+haskellPackages = pkgs.haskellPackages;
+};
+```
 
 ### How to build a Haskell project using Stack
 
@@ -715,6 +734,62 @@ sets at once:
   };
 }
 ```
+
+### How to specify source overrides for your Haskell package
+
+When starting a Haskell project you can use `developPackage`
+to define a derivation for your package at the `root` path
+as well as source override versions for Hackage packages, like so:
+
+```nix
+# default.nix
+{ compilerVersion ? "ghc842" }:
+let
+  # pinning nixpkgs using new Nix 2.0 builtin `fetchGit`
+  pkgs = import (fetchGit (import ./version.nix)) { };
+  compiler = pkgs.haskell.packages."${compilerVersion}";
+  pkg = compiler.developPackage {
+    root = ./.;
+    source-overrides = {
+      # Let's say the GHC 8.4.2 haskellPackages uses 1.6.0.0 and your test suite is incompatible with >= 1.6.0.0
+      HUnit = "1.5.0.0";
+    };
+  };
+in pkg
+```
+
+This could be used in place of a simplified `stack.yaml` defining a Nix
+derivation for your Haskell package.
+
+As you can see this allows you to specify only the source version found on
+Hackage and nixpkgs will take care of the rest.
+
+You can also specify `buildInputs` for your Haskell derivation for packages
+that directly depend on external libraries like so:
+
+```nix
+# default.nix
+{ compilerVersion ? "ghc842" }:
+let
+  # pinning nixpkgs using new Nix 2.0 builtin `fetchGit`
+  pkgs = import (fetchGit (import ./version.nix)) { };
+  compiler = pkgs.haskell.packages."${compilerVersion}";
+  pkg = compiler.developPackage {
+    root = ./.;
+    source-overrides = {
+      HUnit = "1.5.0.0"; # Let's say the GHC 8.4.2 haskellPackages uses 1.6.0.0 and your test suite is incompatible with >= 1.6.0.0
+    };
+  };
+  # in case your package source depends on any libraries directly, not just transitively.
+  buildInputs = [ zlib ];
+in pkg.overrideAttrs(attrs: {
+  buildInputs = attrs.buildInputs ++ buildInputs;
+})
+```
+
+Notice that you will need to override (via `overrideAttrs` or similar) the
+derivation returned by the `developPackage` Nix lambda as there is no `buildInputs`
+named argument you can pass directly into the `developPackage` lambda.
 
 ### How to recover from GHC's infamous non-deterministic library ID bug
 

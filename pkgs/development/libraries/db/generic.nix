@@ -14,11 +14,13 @@ stdenv.mkDerivation (rec {
   name = "db-${version}";
 
   src = fetchurl {
-    url = "http://download.oracle.com/berkeley-db/${name}.tar.gz";
+    url = "https://download.oracle.com/berkeley-db/${name}.tar.gz";
     sha256 = sha256;
   };
 
   patches = extraPatches;
+
+  outputs = [ "bin" "out" "dev" ];
 
   configureFlags =
     [

@@ -368,7 +368,6 @@ rec {
 
   # MySQL mirrors
   mysql = [
-    http://mysql.mirrors.pair.com/Downloads/
     http://cdn.mysql.com/Downloads/
   ];
 
@@ -405,5 +404,13 @@ rec {
   maven = [
     http://repo1.maven.org/maven2/
     http://central.maven.org/maven2/
+  ];
+
+  # Alsa Project
+  alsa = [
+     ftp://ftp.alsa-project.org/pub/
+     http://alsa.cybermirror.org/
+     http://www.mirrorservice.org/sites/ftp.alsa-project.org/pub/
+     http://alsa.mirror.fr/
   ];
 }

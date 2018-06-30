@@ -139,8 +139,6 @@ let
 
     cil = callPackage ../development/ocaml-modules/cil { };
 
-    cmdliner_0_9 = callPackage ../development/ocaml-modules/cmdliner/0.9.nix { };
-
     cmdliner = callPackage ../development/ocaml-modules/cmdliner { };
 
     cohttp_p4 = callPackage ../development/ocaml-modules/cohttp/0.19.3.nix {
@@ -217,6 +215,8 @@ let
 
     earley = callPackage ../development/ocaml-modules/earley { };
 
+    earley_ocaml = callPackage ../development/ocaml-modules/earley_ocaml { };
+
     easy-format = callPackage ../development/ocaml-modules/easy-format { };
 
     eliom = callPackage ../development/ocaml-modules/eliom { };
@@ -268,6 +268,8 @@ let
     herelib = callPackage ../development/ocaml-modules/herelib { };
 
     higlo = callPackage ../development/ocaml-modules/higlo { };
+
+    imagelib = callPackage ../development/ocaml-modules/imagelib { };
 
     inotify = callPackage ../development/ocaml-modules/inotify { };
 
@@ -358,6 +360,8 @@ let
       if lib.versionOlder "4.02" ocaml.version
       then callPackage ../development/ocaml-modules/lambda-term { }
       else lambdaTerm-1_6;
+
+    linenoise = callPackage ../development/ocaml-modules/linenoise { };
 
     llvm = callPackage ../development/ocaml-modules/llvm {
       llvm = pkgs.llvm_39;
@@ -488,12 +492,11 @@ let
 
     ocf = callPackage ../development/ocaml-modules/ocf { };
 
-    ocpBuild = callPackage ../development/tools/ocaml/ocp-build { };
+    ocp-build = callPackage ../development/tools/ocaml/ocp-build { };
 
-    ocpIndent = callPackage ../development/tools/ocaml/ocp-indent { };
-    ocpIndent_1_5_2 = callPackage ../development/tools/ocaml/ocp-indent/1.5.2.nix { cmdliner = cmdliner_0_9; };
+    ocp-indent = callPackage ../development/tools/ocaml/ocp-indent { };
 
-    ocp-index = callPackage ../development/tools/ocaml/ocp-index { ocpIndent = ocpIndent_1_5_2; };
+    ocp-index = callPackage ../development/tools/ocaml/ocp-index { };
 
     ocp-ocamlres = callPackage ../development/ocaml-modules/ocp-ocamlres { };
 
@@ -515,6 +518,8 @@ let
 
     omd = callPackage ../development/ocaml-modules/omd { };
 
+    opam-file-format = callPackage ../development/ocaml-modules/opam-file-format { };
+
     otfm = callPackage ../development/ocaml-modules/otfm { };
 
     otr = callPackage ../development/ocaml-modules/otr { };
@@ -525,6 +530,8 @@ let
 
     piqi = callPackage ../development/ocaml-modules/piqi { };
     piqi-ocaml = callPackage ../development/ocaml-modules/piqi-ocaml { };
+
+    psmt2-frontend = callPackage ../development/ocaml-modules/psmt2-frontend { };
 
     psq = callPackage ../development/ocaml-modules/psq { };
 

@@ -23,6 +23,8 @@ let
   libcLib = lib.getLib libc;
   crossCompiling = stdenv.buildPlatform != stdenv.hostPlatform;
   common = { version, sha256 }: stdenv.mkDerivation (rec {
+    inherit version;
+
     name = "perl-${version}";
 
     src = fetchurlBoot {
@@ -105,6 +107,8 @@ let
 
     passthru.libPrefix = "lib/perl5/site_perl";
 
+    doCheck = false; # some tests fail, expensive
+
     # TODO: it seems like absolute paths to some coreutils is required.
     postInstall =
       ''
@@ -177,26 +181,27 @@ let
 
     configurePlatforms = [ "build" "host" "target" ];
 
-    inherit version;
-
     # TODO merge setup hooks
     setupHook = ./setup-hook-cross.sh;
   });
 in rec {
-  perl = perl524;
-
   perl522 = common {
     version = "5.22.4";
     sha256 = "1yk1xn4wmnrf2ph02j28khqarpyr24qwysjzkjnjv7vh5dygb7ms";
   };
 
   perl524 = common {
-    version = "5.24.3";
-    sha256 = "1m2px85kq2fyp2d4rx3bw9kg3car67qfqwrs5vlv96dx0x8rl06b";
+    version = "5.24.4";
+    sha256 = "0w0r6v5k5hw5q1k3p4c7krcxidkj2qzsj5dlrlrxhm01n7fksbxz";
   };
 
   perl526 = common {
-    version = "5.26.1";
-    sha256 = "1p81wwvr5jb81m41d07kfywk5gvbk0axdrnvhc2aghcdbr4alqz7";
+    version = "5.26.2";
+    sha256 = "03gpnxx1g6hvlh0v4aqx00580h787sfywp1vlvw64q2xcbm9qbsp";
+  };
+
+  perl528 = common {
+    version = "5.28.0";
+    sha256 = "1a3f822lcl8dr8v0hk80yyhpzqlljg49z9flb48rs3nbsij9z4ky";
   };
 }

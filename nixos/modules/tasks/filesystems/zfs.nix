@@ -171,8 +171,12 @@ in
         default = config.boot.zfs.enableUnstable;
         description = ''
           Request encryption keys or passwords for all encrypted datasets on import.
-
           Dataset encryption is only supported in zfsUnstable at the moment.
+          For root pools the encryption key can be supplied via both an
+          interactive prompt (keylocation=prompt) and from a file
+          (keylocation=file://). Note that for data pools the encryption key can
+          be only loaded from a file and not via interactive prompt since the
+          import is processed in a background systemd service.
         '';
       };
 
@@ -394,6 +398,7 @@ in
             script = ''
               zpool_cmd="${packages.zfsUser}/sbin/zpool"
               ("$zpool_cmd" list "${pool}" >/dev/null) || "$zpool_cmd" import -d ${cfgZfs.devNodes} -N ${optionalString cfgZfs.forceImportAll "-f"} "${pool}"
+              ${optionalString cfgZfs.requestEncryptionCredentials "\"${packages.zfsUser}/sbin/zfs\" load-key -r \"${pool}\""}
             '';
           };
 
@@ -403,6 +408,9 @@ in
           nameValuePair "zfs-sync-${pool}" {
             description = "Sync ZFS pool \"${pool}\"";
             wantedBy = [ "shutdown.target" ];
+            unitConfig = {
+              DefaultDependencies = false;
+            };
             serviceConfig = {
               Type = "oneshot";
               RemainAfterExit = true;
@@ -411,12 +419,15 @@ in
               ${packages.zfsUser}/sbin/zfs set nixos:shutdown-time="$(date)" "${pool}"
             '';
           };
+        createZfsService = serv:
+          nameValuePair serv {
+            after = [ "systemd-modules-load.service" ];
+            wantedBy = [ "zfs.target" ];
+          };
 
-      in listToAttrs (map createImportService dataPools ++ map createSyncService allPools) // {
-        "zfs-mount" = { after = [ "systemd-modules-load.service" ]; };
-        "zfs-share" = { after = [ "systemd-modules-load.service" ]; };
-        "zfs-zed" = { after = [ "systemd-modules-load.service" ]; };
-      };
+      in listToAttrs (map createImportService dataPools ++
+                      map createSyncService allPools ++
+                      map createZfsService [ "zfs-mount" "zfs-share" "zfs-zed" ]);
 
       systemd.targets."zfs-import" =
         let
@@ -425,6 +436,7 @@ in
           {
             requires = services;
             after = services;
+            wantedBy = [ "zfs.target" ];
           };
 
       systemd.targets."zfs".wantedBy = [ "multi-user.target" ];

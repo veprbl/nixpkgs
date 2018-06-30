@@ -24,7 +24,7 @@ stdenv.mkDerivation rec {
   version = "2.0.8";
 
   src = fetchurl {
-    url = "http://www.libsdl.org/release/${name}.tar.gz";
+    url = "https://www.libsdl.org/release/${name}.tar.gz";
     sha256 = "1v4js1gkr75hzbxzhwzzif0sf9g07234sd23x1vdaqc661bprizd";
   };
 
@@ -55,7 +55,8 @@ stdenv.mkDerivation rec {
   configureFlags = [
     "--disable-oss"
   ] ++ optional (!x11Support) "--without-x"
-    ++ optional alsaSupport "--with-alsa-prefix=${alsaLib.out}/lib";
+    ++ optional alsaSupport "--with-alsa-prefix=${alsaLib.out}/lib"
+    ++ optional stdenv.isDarwin "--disable-sdltest";
 
   postInstall = ''
     moveToOutput lib/libSDL2main.a "$dev"
