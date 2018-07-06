@@ -21069,6 +21069,8 @@ with pkgs;
     x11Support = true;
   });
 
+  glava = callPackage ../applications/misc/glava {};
+
   gnome-breeze = callPackage ../misc/themes/gnome-breeze { };
 
   gnuk = callPackage ../misc/gnuk {
