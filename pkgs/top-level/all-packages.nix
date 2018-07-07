@@ -18749,11 +18749,15 @@ with pkgs;
 
   vscode = callPackage ../applications/editors/vscode { };
 
-  vscode-with-extensions = callPackage ../applications/editors/vscode/with-extensions.nix {};
+  vscode-insiders = callPackage ../applications/editors/vscode/insiders.nix { };
 
-  vscode-utils = callPackage ../misc/vscode-extensions/vscode-utils.nix {};
+  vscode-with-extensions = callPackage ../applications/editors/vscode/with-extensions.nix { };
 
-  vscode-extensions = recurseIntoAttrs (callPackage ../misc/vscode-extensions {});
+  vscode-insiders-with-extensions = callPackage ../applications/editors/vscode/insiders-with-extensions.nix { };
+
+  vscode-utils = callPackage ../misc/vscode-extensions/vscode-utils.nix { };
+
+  vscode-extensions = recurseIntoAttrs (callPackage ../misc/vscode-extensions { });
 
   vue = callPackage ../applications/misc/vue { };
 
