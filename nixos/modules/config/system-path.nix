@@ -139,8 +139,15 @@ in
               $out/bin/gtk-update-icon-cache $out/share/icons/hicolor
           fi
 
-          if [ -x $out/bin/glib-compile-schemas -a -w $out/share/glib-2.0/schemas ]; then
-              $out/bin/glib-compile-schemas $out/share/glib-2.0/schemas
+          if [ -d  $out/share/gsettings-schemas/ ]; then
+              mkdir -p $out/share/glib-2.0/schemas
+              for d in $out/share/gsettings-schemas/*; do
+                  ln -s $d/glib-2.0/schemas/*.xml $out/share/glib-2.0/schemas
+              done
+          fi
+
+          if [ -w $out/share/glib-2.0/schemas ]; then
+              ${pkgs.glib.dev}/bin/glib-compile-schemas $out/share/glib-2.0/schemas
           fi
 
           ${config.environment.extraSetup}
