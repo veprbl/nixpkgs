@@ -180,6 +180,12 @@ in {
                               networkmanager-openconnect networkmanager-fortisslvpn
                               networkmanager-iodine networkmanager-l2tp; };
 
+    environment.interactiveShellInit = ''
+      if [[ "$VTE_VERSION" > 3405 ]]; then
+        source "${pkgs.gnome3.vte}/etc/profile.d/vte.sh"
+      fi
+    '';
+
     # Needed for themes and backgrounds
     environment.pathsToLink = [ "/share" ];
 
