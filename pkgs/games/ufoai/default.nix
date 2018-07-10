@@ -5,7 +5,7 @@ libjpeg, libpng,
 libGLU_combined,
 SDL, SDL_image, SDL_mixer, SDL_ttf,
 openal,
-curl,
+curl, minixml
 cunit,
 enableEditor ? false
 }:
@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
     libGLU_combined
     SDL SDL_image SDL_mixer SDL_ttf
     openal
-    curl cunit
+    curl minixml cunit
   ];
 
   patches = [ ./build_fixes_from_freebsd.patch  ];
