@@ -43,6 +43,7 @@ stdenv.mkDerivation rec {
 
   patches = [ ./build_fixes_from_freebsd.patch  ];
 
+  checkTarget = "check";
   doCheck = true;
 
   NIX_CFLAGS_LINK = "-lgcc_s"; # to avoid occasional runtime error in finding libgcc_s.so.1
