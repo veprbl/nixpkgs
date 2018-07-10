@@ -1,5 +1,5 @@
 { stdenv, fetchurl,
-gettext, pkgconfig, zip,
+gettext, pkgconfig, python, zip,
 libtheora, libvorbis, xvidcore,
 libjpeg, libpng,
 libGLU_combined,
@@ -24,7 +24,7 @@ stdenv.mkDerivation rec {
     sha256 = "1c6dglmm36qj522q1pzahxrqjkihsqlq2yac1aijwspz9916lw2y";
   };
 
-  nativeBuildInputs = [ gettext pkgconfig zip ];
+  nativeBuildInputs = [ gettext pkgconfig python zip ];
 
   preConfigure = ''tar xvf "${srcData}"'';
 
