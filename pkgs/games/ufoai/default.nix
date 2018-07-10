@@ -5,7 +5,7 @@ libjpeg, libpng,
 libGLU_combined,
 SDL, SDL_image, SDL_mixer, SDL_ttf,
 openal,
-curl, minixml
+curl, minixml,
 cunit,
 enableEditor ? false
 }:
