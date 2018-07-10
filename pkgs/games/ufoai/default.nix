@@ -43,6 +43,8 @@ stdenv.mkDerivation rec {
 
   patches = [ ./build_fixes_from_freebsd.patch  ];
 
+  enableParallelBuilding = true;
+
   NIX_CFLAGS_LINK = "-lgcc_s"; # to avoid occasional runtime error in finding libgcc_s.so.1
 
   meta = {
