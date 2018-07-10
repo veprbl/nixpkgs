@@ -1,10 +1,10 @@
 { stdenv, fetchurl,
 gettext, pkgconfig, zip,
-openal,
 libtheora, libvorbis, xvidcore,
 libjpeg, libpng,
 libGLU_combined,
 SDL, SDL_image, SDL_mixer, SDL_ttf,
+openal,
 curl,
 cunit,
 enableEditor ? false
@@ -35,9 +35,9 @@ stdenv.mkDerivation rec {
     libtheora libvorbis xvidcore
     libpng libjpeg
     libGLU_combined
-    SDL SDL_Image SDL_mixer SDL_ttf
-    curl cunit
+    SDL SDL_image SDL_mixer SDL_ttf
     openal
+    curl cunit
   ];
 
   CXXFLAGS = [ "-std=c++11" ];
