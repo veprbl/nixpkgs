@@ -1,5 +1,14 @@
-{ stdenv, fetchurl, pkgconfig, zip, libtheora, xvidcore, libGLU_combined, SDL, SDL_image, SDL_ttf, SDL_mixer
-, curl, libjpeg, libpng, gettext, cunit, enableEditor?false }:
+{ stdenv, fetchurl,
+gettext, pkgconfig, zip,
+openal,
+libtheora, libvorbis, xvidcore,
+libjpeg, libpng,
+libGLU_combined,
+SDL, SDL_image, SDL_mixer, SDL_ttf,
+curl,
+cunit,
+enableEditor ? false
+}:
 
 stdenv.mkDerivation rec {
   name = "${pname}-${version}";
@@ -15,7 +24,7 @@ stdenv.mkDerivation rec {
     sha256 = "1c6dglmm36qj522q1pzahxrqjkihsqlq2yac1aijwspz9916lw2y";
   };
 
-  nativeBuildInputs = [ pkgconfig zip ];
+  nativeBuildInputs = [ gettext pkgconfig zip ];
 
   preConfigure = ''tar xvf "${srcData}"'';
 
@@ -23,11 +32,15 @@ stdenv.mkDerivation rec {
     ++ stdenv.lib.optional enableEditor "--enable-uforadiant";
 
   buildInputs = [
-    libtheora xvidcore libGLU_combined SDL SDL_image SDL_mixer SDL_ttf
-    curl libjpeg libpng gettext cunit
+    libtheora libvorbis xvidcore
+    libpng libjpeg
+    libGLU_combined
+    SDL SDL_Image SDL_mixer SDL_ttf
+    curl cunit
+    openal
   ];
 
-  CXXFLAGS = [ "-std=gnu++98" ];
+  CXXFLAGS = [ "-std=c++11" ];
 
   NIX_CFLAGS_LINK = "-lgcc_s"; # to avoid occasional runtime error in finding libgcc_s.so.1
 
