@@ -40,7 +40,7 @@ stdenv.mkDerivation rec {
     curl cunit
   ];
 
-  CXXFLAGS = [ "-std=c++11" ];
+  patches = [ ./build_fixes_from_freebsd.patch  ];
 
   NIX_CFLAGS_LINK = "-lgcc_s"; # to avoid occasional runtime error in finding libgcc_s.so.1
 

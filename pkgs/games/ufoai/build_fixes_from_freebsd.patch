@@ -1,0 +1,190 @@
+--- ./src/client/battlescape/cl_particle.cpp.orig	2014-06-05 06:18:39.000000000 +0200
++++ ./src/client/battlescape/cl_particle.cpp	2014-08-07 16:49:53.693302810 +0200
+@@ -138,7 +138,7 @@
+ CASSERT(lengthof(pc_strings) == PC_NUM_PTLCMDS);
+ 
+ /** @brief particle commands parameter and types */
+-static const int pc_types[PC_NUM_PTLCMDS] = {
++static const unsigned int pc_types[PC_NUM_PTLCMDS] = {
+ 	0,
+ 
+ 	V_UNTYPED, V_UNTYPED, V_UNTYPED,
+--- ./src/client/renderer/r_state.cpp.orig	2014-06-05 06:18:39.000000000 +0200
++++ ./src/client/renderer/r_state.cpp	2014-08-07 16:49:53.695310143 +0200
+@@ -147,7 +147,8 @@
+ 
+ void R_BindArray (GLenum target, GLenum type, const void* array)
+ {
+-	switch (target) {
++	const int v = static_cast<int>(target);
++	switch (v) {
+ 	case GL_VERTEX_ARRAY:
+ 		glVertexPointer(COMPONENTS_VERTEX_ARRAY3D, type, 0, array);
+ 		break;
+@@ -180,7 +181,8 @@
+  */
+ void R_BindDefaultArray (GLenum target)
+ {
+-	switch (target) {
++	const int v = static_cast<int>(target);
++	switch (v) {
+ 	case GL_VERTEX_ARRAY:
+ 		R_BindArray(target, GL_FLOAT, r_state.vertex_array_3d);
+ 		break;
+--- ./src/game/g_ai.cpp.orig	2014-06-05 06:18:39.000000000 +0200
++++ ./src/game/g_ai.cpp	2014-08-07 16:49:53.698302816 +0200
+@@ -35,6 +35,8 @@
+ #include "g_vis.h"
+ #include "g_reaction.h"
+ 
++#include <cstdlib>
++
+ typedef struct aiAction_s {
+ 	pos3_t to;			/**< grid pos to walk to for performing the action */
+ 	pos3_t stop;		/**< grid pos to end turn at (e.g. hiding spots) */
+--- ./src/libs/vorbis/config.h.orig	2014-06-05 06:18:39.000000000 +0200
++++ ./src/libs/vorbis/config.h	2014-08-07 16:49:53.700302995 +0200
+@@ -14,7 +14,7 @@
+ 
+ /* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
+    */
+-#define HAVE_ALLOCA_H 1
++/* #define HAVE_ALLOCA_H 1 */
+ 
+ /* Define to 1 if you have the <dlfcn.h> header file. */
+ #define HAVE_DLFCN_H 1
+--- ./src/tools/radiant/radiant/exec.cpp.orig	2014-06-05 06:18:39.000000000 +0200
++++ ./src/tools/radiant/radiant/exec.cpp	2014-08-07 16:49:53.703302732 +0200
+@@ -28,6 +28,8 @@
+ 
+ #if defined (__FreeBSD__) || defined(__OpenBSD__)
+ # include <signal.h>
++# include <sys/types.h>
++# include <sys/wait.h>
+ #elif defined(__linux__)
+ # include <sys/wait.h>
+ #endif
+--- ./src/tools/radiant/radiant/ui/colourscheme/ColourScheme.h.orig	2014-06-05 06:18:39.000000000 +0200
++++ ./src/tools/radiant/radiant/ui/colourscheme/ColourScheme.h	2014-08-07 16:51:10.093299939 +0200
+@@ -52,8 +52,6 @@
+ 		ColourItem _emptyColour;
+ 
+ 	public:
+-		// Constructors
+-		ColourScheme() {};
+ 		// Constructs a ColourScheme from a given xml::node
+ 		ColourScheme(xml::Node& schemeNode);
+ 
+--- ./src/tools/radiant/radiant/ui/colourscheme/ColourSchemeManager.cpp.orig	2014-06-05 06:18:39.000000000 +0200
++++ ./src/tools/radiant/radiant/ui/colourscheme/ColourSchemeManager.cpp	2014-08-07 16:55:49.627279079 +0200
+@@ -5,13 +5,15 @@
+ #include "stream/stringstream.h"
+ #include "stream/textfilestream.h"
+ 
++#include <stdexcept>
++
+ namespace ui {
+ 
+ /*	returns true, if the scheme called <name> exists
+  */
+ bool ColourSchemeManager::schemeExists(const std::string& name) {
+ 	ColourSchemeMap::iterator it = _colourSchemes.find(name);
+-	return (it != _colourSchemes.end());
++	return it != _colourSchemes.end();
+ }
+ 
+ ColourSchemeMap& ColourSchemeManager::getSchemeList() {
+@@ -19,11 +21,15 @@
+ }
+ 
+ ColourScheme& ColourSchemeManager::getActiveScheme() {
+-	return _colourSchemes[_activeScheme];
++	return getScheme(_activeScheme);
+ }
+ 
+ ColourScheme& ColourSchemeManager::getScheme(const std::string& name) {
+-	return _colourSchemes[name];
++	ColourSchemeMap::iterator i = _colourSchemes.find(name);
++	if (i == _colourSchemes.end()) {
++		throw std::runtime_error("ColourSchemeManager: active scheme not found");
++	}
++	return i->second;
+ }
+ 
+ /*	Returns true, if the scheme called <name> is currently active
+@@ -32,9 +38,7 @@
+ 	if (schemeExists(name)) {
+ 		return (name == _activeScheme);
+ 	}
+-	else {
+-		return false;
+-	}
++	return false;
+ }
+ 
+ void ColourSchemeManager::setActive(const std::string& name) {
+@@ -53,7 +57,7 @@
+ 		globalOutputStream() << "Dump: Schemename: " << it->first << "\n";
+ 
+ 		// Retrieve the list with all the ColourItems of this scheme
+-		ColourItemMap& colourMap = _colourSchemes[it->first].getColourMap();
++		ColourItemMap& colourMap = getScheme(it->first).getColourMap();
+ 
+ 		//globalOutputStream() << "Dump: Number of ColourItems: " << colourMap.size();
+ 		globalOutputStream() << "\n";
+@@ -95,7 +99,8 @@
+ 	xml::Node schemeNode = GlobalRegistry().createKeyWithName(basePath, "colourscheme", name);
+ 
+ 	// Set the readonly attribute if necessary
+-	if (_colourSchemes[name].isReadOnly()) {
++	ColourScheme& scheme = getScheme(name);
++	if (scheme.isReadOnly()) {
+ 		schemeNode.setAttributeValue("readonly", "1");
+ 	}
+ 
+@@ -108,7 +113,7 @@
+ 	std::string schemePath = basePath + "/colourscheme[@name='" + name + "']";
+ 
+ 	// Retrieve the list with all the ColourItems of this scheme
+-	ColourItemMap& colourMap = _colourSchemes[name].getColourMap();
++	ColourItemMap& colourMap = scheme.getColourMap();
+ 
+ 	// Cycle through all the ColourItems and save them into the registry
+ 	for (ColourItemMap::iterator it = colourMap.begin(); it != colourMap.end(); ++it) {
+@@ -157,7 +162,7 @@
+ 			// If the scheme is already in the list, skip it
+ 			if (!schemeExists(schemeName)) {
+ 				// Construct the ColourScheme class from the xml::node
+-				_colourSchemes[schemeName] = ColourScheme(schemeNodes[i]);
++				_colourSchemes.insert(std::pair<std::string,ColourScheme>(schemeName, ColourScheme(schemeNodes[i])));
+ 
+ 				// Check, if this is the currently active scheme
+ 				if (schemeNodes[i].getAttributeValue("active") == "1") {
+@@ -179,8 +184,11 @@
+ void ColourSchemeManager::copyScheme(const std::string& fromName, const std::string& toName) {
+ 	if (schemeExists(fromName)) {
+ 		// Copy the actual entry
+-		_colourSchemes[toName] = _colourSchemes[fromName];
+-		_colourSchemes[toName].setReadOnly(false);
++		ColourScheme& copy = getScheme(fromName);
++		std::pair<ColourSchemeMap::iterator, bool> i = _colourSchemes.insert(std::pair<std::string,ColourScheme>(toName, copy));
++		if (i.second) {
++			i.first->second.setReadOnly(false);
++		}
+ 	}
+ 	else {
+ 		globalOutputStream() << "ColourSchemeManager: Scheme " << fromName << " does not exist!\n";
+@@ -189,11 +197,11 @@
+ 
+ Vector3 ColourSchemeManager::getColourVector3(const std::string& colourName) {
+ 	// Cast the ColourItem object onto a Vector3
+-	return _colourSchemes[_activeScheme].getColour(colourName);
++	return getActiveScheme().getColour(colourName);
+ }
+ 
+ ColourItem& ColourSchemeManager::getColour(const std::string& colourName) {
+-	return _colourSchemes[_activeScheme].getColour(colourName);
++	return getActiveScheme().getColour(colourName);
+ }
+ 
+ } // namespace ui
