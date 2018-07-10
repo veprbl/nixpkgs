@@ -37,10 +37,13 @@ stdenv.mkDerivation rec {
     libGLU_combined
     SDL SDL_image SDL_mixer SDL_ttf
     openal
-    curl minixml cunit
+    curl minixml
+    cunit
   ];
 
   patches = [ ./build_fixes_from_freebsd.patch  ];
+
+  doCheck = true;
 
   NIX_CFLAGS_LINK = "-lgcc_s"; # to avoid occasional runtime error in finding libgcc_s.so.1
 
