@@ -28,7 +28,7 @@ stdenv.mkDerivation rec {
 
   preConfigure = ''tar xvf "${srcData}"'';
 
-  configureFlags = [ "--enable-release" "--enable-sse" ]
+  configureFlags = [ "--enable-release" "--enable-sse" "--disable-testall" ]
     ++ stdenv.lib.optional enableEditor "--enable-uforadiant";
 
   buildInputs = [
@@ -38,13 +38,10 @@ stdenv.mkDerivation rec {
     SDL SDL_image SDL_mixer SDL_ttf
     openal
     curl minixml
-    cunit
+    #cunit
   ];
 
   patches = [ ./build_fixes_from_freebsd.patch  ];
-
-  checkTarget = "check";
-  doCheck = true;
 
   NIX_CFLAGS_LINK = "-lgcc_s"; # to avoid occasional runtime error in finding libgcc_s.so.1
 
