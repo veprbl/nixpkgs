@@ -32,11 +32,10 @@ stdenv.mkDerivation rec {
   name    = "musl-${version}";
   version = "1.1.19";
 
-  src = builtins.fetchGit /home/will/misc/2017/july/musl; # /home/will/src/musl;
-  #src = fetchurl {
-  #  url    = "https://www.musl-libc.org/releases/musl-${version}.tar.gz";
-  #  sha256 = "1nf1wh44bhm8gdcfr75ayib29b99vpq62zmjymrq7f96h9bshnfv";
-  #};
+  src = fetchurl {
+    url    = "https://www.musl-libc.org/releases/musl-${version}.tar.gz";
+    sha256 = "1nf1wh44bhm8gdcfr75ayib29b99vpq62zmjymrq7f96h9bshnfv";
+  };
 
   enableParallelBuilding = true;
 
