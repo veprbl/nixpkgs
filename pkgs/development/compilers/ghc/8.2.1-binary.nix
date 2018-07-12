@@ -108,6 +108,9 @@ stdenv.mkDerivation rec {
 
       sed -i "s|/usr/bin/perl|perl\x00        |" ghc-${version}/ghc/stage2/build/tmp/ghc-stage2
       sed -i "s|/usr/bin/gcc|gcc\x00        |" ghc-${version}/ghc/stage2/build/tmp/ghc-stage2
+    '' +
+    ''
+      patch -p1 -i ${./0000-bootstrap.patch}
     '';
 
   configurePlatforms = stdenv.lib.optionals stdenv.hostPlatform.isMusl [ "build" "host" "target" ];
