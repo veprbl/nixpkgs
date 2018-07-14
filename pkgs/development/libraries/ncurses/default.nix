@@ -31,6 +31,7 @@ stdenv.mkDerivation rec {
     "--without-debug"
     "--enable-pc-files"
     "--enable-symlinks"
+    "--with-termlib"
   ] ++ lib.optional unicode "--enable-widec"
     ++ lib.optional enableStatic "--enable-normal"
     ++ lib.optional (!withCxx) "--without-cxx"
@@ -98,12 +99,6 @@ stdenv.mkDerivation rec {
           if [ -e "$out/lib/lib''${library}$suffix.$dylibtype" ]; then
             ln -svf lib''${library}$suffix.$dylibtype $out/lib/lib$library$newsuffix.$dylibtype
             ln -svf lib''${library}$suffix.${abiVersion-extension} $out/lib/lib$library$newsuffix.${abiVersion-extension}
-            if [ "ncurses" = "$library" ]
-            then
-              # make libtinfo symlinks
-              ln -svf lib''${library}$suffix.$dylibtype $out/lib/libtinfo$newsuffix.$dylibtype
-              ln -svf lib''${library}$suffix.${abiVersion-extension} $out/lib/libtinfo$newsuffix.${abiVersion-extension}
-            fi
           fi
         done
         for statictype in a dll.a la; do
