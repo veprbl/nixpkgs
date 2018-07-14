@@ -31,7 +31,10 @@ stdenv.mkDerivation rec {
   name    = "musl-${version}";
   version = "1.1.19git${toString src.revCount}_${src.shortRev}";
 
-  src = builtins.fetchGit git://git.musl-libc.org/musl;
+  src = builtins.fetchGit {
+    url = git://git.musl-libc.org/musl;
+    rev = "9cad27a3dc1a4eb349b6591e4dc8cc89dce32277";
+  };
   #src = fetchurl {
   #  url    = "https://www.musl-libc.org/releases/musl-${version}.tar.gz";
   #  sha256 = "1nf1wh44bhm8gdcfr75ayib29b99vpq62zmjymrq7f96h9bshnfv";
