@@ -27,11 +27,6 @@ stdenv.mkDerivation rec {
   };
 
   patches = [
-    # Turn on --enable-new-dtags by default to make the linker set
-    # RUNPATH instead of RPATH on binaries.  This is important because
-    # RUNPATH can be overriden using LD_LIBRARY_PATH at runtime.
-    ./new-dtags.patch
-
     # Since binutils 2.22, DT_NEEDED flags aren't copied for dynamic outputs.
     # That requires upstream changes for things to work. So we can patch it to
     # get the old behaviour by now.
@@ -63,14 +58,6 @@ stdenv.mkDerivation rec {
     # override this behavior, forcing ld to search DT_RPATH even when
     # cross-compiling.
     ./always-search-rpath.patch
-
-    # https://sourceware.org/bugzilla/show_bug.cgi?id=22868
-    ./gold-symbol-visibility.patch
-
-    # Version 2.30 introduced strict requirements on ELF relocations which cannot
-    # be satisfied on aarch64 platform. Add backported fix from bugzilla.
-    # https://sourceware.org/bugzilla/show_bug.cgi?id=22764
-    ./relax-R_AARCH64_ABS32-R_AARCH64_ABS16-absolute.patch
   ] ++ stdenv.lib.optional targetPlatform.isiOS ./support-ios.patch;
 
   outputs = [ "out" "info" "man" ];
@@ -118,6 +105,7 @@ stdenv.mkDerivation rec {
     "--enable-deterministic-archives"
     "--disable-werror"
     "--enable-fix-loongson2f-nop"
+    "--enable-new-dtags"
   ] ++ optionals gold [ "--enable-gold" "--enable-plugins" ];
 
   doCheck = false; # fails
