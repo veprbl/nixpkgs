@@ -7827,6 +7827,10 @@ with pkgs;
     # FHS sys dirs presumably only have stuff for the build platform
     noSysDirs = (targetPlatform != buildPlatform) || noSysDirs;
   };
+  binutils_2_31-unwrapped = callPackage ../development/tools/misc/binutils/2.31.nix {
+    # FHS sys dirs presumably only have stuff for the build platform
+    noSysDirs = (targetPlatform != buildPlatform) || noSysDirs;
+  };
   binutils = wrapBintoolsWith {
     bintools = binutils-unwrapped;
   };
@@ -7834,6 +7838,9 @@ with pkgs;
     bintools = binutils-unwrapped.override {
       gold = false;
     };
+  });
+  binutils_2_31 = lowPrio (wrapBintoolsWith {
+    bintools = binutils_2_31-unwrapped;
   });
 
   bison2 = callPackage ../development/tools/parsing/bison/2.x.nix { };
