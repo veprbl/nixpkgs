@@ -30,11 +30,11 @@ let
 in
 stdenv.mkDerivation rec {
   name    = "musl-${version}";
-  version = "1.1.19";
+  version = "1.1.20pre0";
 
-  src = fetchurl {
-    url    = "https://www.musl-libc.org/releases/musl-${version}.tar.gz";
-    sha256 = "1nf1wh44bhm8gdcfr75ayib29b99vpq62zmjymrq7f96h9bshnfv";
+  src = fetchGit {
+    url = git://git.musl-libc.org/musl;
+    rev = "18fbc7e4fa254696eb024f56ee74704805925fad";
   };
 
   enableParallelBuilding = true;
