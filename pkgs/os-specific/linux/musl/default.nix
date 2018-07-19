@@ -57,6 +57,11 @@ stdenv.mkDerivation rec {
       url = https://raw.githubusercontent.com/openwrt/openwrt/87606e25afac6776d1bbc67ed284434ec5a832b4/toolchain/musl/patches/300-relative.patch;
       sha256 = "0hfadrycb60sm6hb6by4ycgaqc9sgrhh42k39v8xpmcvdzxrsq2n";
     })
+    (fetchurl {
+      url = "https://git.alpinelinux.org/cgit/aports/patch/main/musl/2000-pthread-internals-increase-DEFAULT_GUARD_SIZE-to-2-p.patch?id=765c858d306c713051abcdfca64a875f05462d2b";
+      name = "increase-guard-size.patch";
+      sha256 = "1ms2m35i79744lz5x5fx7p59gknf3gsqbzp34knb7q2rijg9cz1v";
+    })
   ];
   preConfigure = ''
     configureFlagsArray+=("--syslibdir=$out/lib")
