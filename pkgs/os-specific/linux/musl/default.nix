@@ -33,7 +33,7 @@ stdenv.mkDerivation rec {
 
   src = builtins.fetchGit {
     url = git://git.musl-libc.org/musl;
-    rev = "9cad27a3dc1a4eb349b6591e4dc8cc89dce32277";
+    rev = "18fbc7e4fa254696eb024f56ee74704805925fad";
   };
   #src = fetchurl {
   #  url    = "https://www.musl-libc.org/releases/musl-${version}.tar.gz";
