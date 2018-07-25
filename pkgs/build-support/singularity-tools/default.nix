@@ -60,7 +60,8 @@ rec {
             mkfs -t ext3 -b 4096 /dev/${vmTools.hd}
             mount /dev/${vmTools.hd} disk
             cd disk
-            mkdir proc sys dev
+            mkdir proc sys dev etc root
+            touch etc/{localtime,hosts}
 
             # Run root script
             ${stdenv.lib.optionalString (runAsRoot != null) ''
