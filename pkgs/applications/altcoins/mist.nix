@@ -1,4 +1,4 @@
-{ stdenv, lib, makeWrapper, fetchurl, unzip, atomEnv, makeDesktopItem, buildFHSUserEnv }:
+{ stdenv, makeWrapper, fetchurl, unzip, atomEnv, makeDesktopItem, buildFHSUserEnv }:
 
 let
   version = "0.10.0";
@@ -25,8 +25,8 @@ let
     categories = "Network;";
   };
 
-  mist = stdenv.mkDerivation {
-    inherit name version;
+  mist = stdenv.lib.appendToName "unwrapped" (stdenv.mkDerivation {
+    inherit name version meta;
 
     src = {
       i686-linux = fetchurl {
@@ -53,10 +53,10 @@ let
         --set-rpath "${atomEnv.libPath}:$out/lib/mist" \
         $out/lib/mist/mist
     '';
-  };
+  });
 in
 buildFHSUserEnv {
-  name = "mist";
+  inherit name meta;
 
   targetPkgs = pkgs: with pkgs; [
      mist

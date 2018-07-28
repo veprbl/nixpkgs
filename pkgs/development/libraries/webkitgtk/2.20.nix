@@ -15,20 +15,20 @@ assert stdenv.isDarwin -> !enableGtk2Plugins;
 with stdenv.lib;
 stdenv.mkDerivation rec {
   name = "webkitgtk-${version}";
-  version = "2.20.1";
+  version = "2.20.3";
 
   meta = {
     description = "Web content rendering engine, GTK+ port";
     homepage = https://webkitgtk.org/;
     license = licenses.bsd2;
-    platforms = with platforms; linux ++ darwin;
+    platforms = platforms.linux;
     hydraPlatforms = [];
     maintainers = with maintainers; [ ];
   };
 
   src = fetchurl {
-    url = "http://webkitgtk.org/releases/${name}.tar.xz";
-    sha256 = "0nc9dj05dbk31ciip08b3rdsfja7ckc5mgagrj030fafza2k5r23";
+    url = "https://webkitgtk.org/releases/${name}.tar.xz";
+    sha256 = "1n0dy94bm7wvxln4jis1gp8plv8n4a01g41724zsf5psg1yk16sp";
   };
 
   patches = optionals stdenv.isDarwin [

@@ -1,15 +1,15 @@
-{ stdenv, fetchFromGitHub, fetchpatch, autoreconfHook, pkgconfig, boost, libevent
+{ stdenv, fetchFromGitHub, autoreconfHook, pkgconfig, boost, libevent
 , double-conversion, glog, google-gflags, python, libiberty, openssl }:
 
 stdenv.mkDerivation rec {
   name = "folly-${version}";
-  version = "2018.04.16.00";
+  version = "2018.07.09.00";
 
   src = fetchFromGitHub {
     owner = "facebook";
     repo = "folly";
     rev = "v${version}";
-    sha256 = "10wivnszpqcbg2hbvfal94lcjw20pjz0d8p0m4qa7i4v4z90q37p";
+    sha256 = "08irwa2pb3f2gnk31rq31jjrqk2xxx0a0m72gf0bsv2w9fgn5sfm";
   };
 
   nativeBuildInputs = [ autoreconfHook python pkgconfig ];

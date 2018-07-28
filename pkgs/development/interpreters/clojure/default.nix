@@ -2,18 +2,20 @@
 
 stdenv.mkDerivation rec {
   name = "clojure-${version}";
-  version = "1.9.0.375";
+  version = "1.9.0.381";
 
   src = fetchurl {
     url = "https://download.clojure.org/install/clojure-tools-${version}.tar.gz";
-    sha256 = "17a82dw5akhzlz4az9bh6s8rnz6nfgq50d8si0lwg212niq3c599";
+    sha256 = "18aqfjm6vbhlflxdnpcr9gib00zg2ys5hck4kfxr9rc4aylnn9pi";
   };
 
   buildInputs = [ makeWrapper ];
 
   outputs = [ "out" "prefix" ];
 
-  installPhase = ''
+  installPhase = let
+    binPath = stdenv.lib.makeBinPath [ rlwrap jdk ];
+  in ''
     mkdir -p $prefix/libexec
     cp clojure-tools-${version}.jar $prefix/libexec
     cp {,example-}deps.edn $prefix
@@ -21,8 +23,8 @@ stdenv.mkDerivation rec {
     substituteInPlace clojure --replace PREFIX $prefix
 
     install -Dt $out/bin clj clojure
-    wrapProgram $out/bin/clj --suffix PATH ${rlwrap}/bin
-    wrapProgram $out/bin/clojure --suffix PATH ${jdk}/bin
+    wrapProgram $out/bin/clj --prefix PATH : ${binPath}
+    wrapProgram $out/bin/clojure --prefix PATH : ${binPath}
   '';
 
   meta = with stdenv.lib; {

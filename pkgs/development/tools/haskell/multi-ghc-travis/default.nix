@@ -2,14 +2,15 @@
 , deepseq, Diff, directory, filepath, ShellCheck, stdenv, tasty
 , tasty-golden, transformers, fetchFromGitHub
 }:
+
 mkDerivation {
   pname = "haskell-ci";
   version = "0";
   src = fetchFromGitHub {
     owner = "haskell-CI";
     repo = "haskell-ci";
-    rev = "105005cde6bde903e477e5b9724d02bdea06bae4";
-    sha256 = "1l76782aa29mi88a2brvkyi6k0v33rpihxlskx99mak06bjrmnhh";
+    rev = "f7ab8c794d7a957370d89f9b4e285a6d20bf8af8";
+    sha256 = "0w8qjdy8hzdrwmqnkf4y967r9xh0k21w3hxqlsjp66cay1vby2s8";
   };
   isLibrary = true;
   isExecutable = true;

@@ -209,7 +209,6 @@ in
           servicesLists = mapAttrsToList certToServices cfg.certs;
           certToServices = cert: data:
               let
-                domain = if data.domain != null then data.domain else cert;
                 cpath = lpath + optionalString (data.activationDelay != null) ".staging";
                 lpath = "${cfg.directory}/${cert}";
                 rights = if data.allowKeysForGroup then "750" else "700";
@@ -257,7 +256,7 @@ in
 
                     if [ -e /tmp/lastExitCode ] && [ "$(cat /tmp/lastExitCode)" = "0" ]; then
                       ${if data.activationDelay != null then ''
-                      
+
                       ${data.preDelay}
 
                       if [ -d '${lpath}' ]; then
@@ -266,6 +265,10 @@ in
                         systemctl --wait start acme-setlive-${cert}.service
                       fi
                       '' else data.postRun}
+
+                      # noop ensuring that the "if" block is non-empty even if
+                      # activationDelay == null and postRun == ""
+                      true
                     fi
                   '';
 
@@ -294,7 +297,7 @@ in
                         chown '${data.user}:${data.group}' '${cpath}'
                       fi
                   '';
-                  script = 
+                  script =
                     ''
                       workdir="$(mktemp -d)"
 

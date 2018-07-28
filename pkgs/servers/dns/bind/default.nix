@@ -1,4 +1,6 @@
-{ stdenv, lib, fetchurl, openssl, libtool, perl, libxml2
+{ stdenv, lib, fetchurl
+, perl
+, libcap, libtool, libxml2, openssl
 , enablePython ? false, python3 ? null
 , enableSeccomp ? false, libseccomp ? null, buildPackages
 }:
@@ -6,14 +8,14 @@
 assert enableSeccomp -> libseccomp != null;
 assert enablePython -> python3 != null;
 
-let version = "9.12.1"; in
+let version = "9.12.2"; in
 
 stdenv.mkDerivation rec {
   name = "bind-${version}";
 
   src = fetchurl {
-    url = "http://ftp.isc.org/isc/bind9/${version}/${name}.tar.gz";
-    sha256 = "043mjcw405qa0ghm5dkhfsq35gsy279724fz3mjqpr1mbi14dr0n";
+    url = "https://ftp.isc.org/isc/bind9/${version}/${name}.tar.gz";
+    sha256 = "0ll46igs9xfq2qclc5wzqsnj3zv7ssga0544gm24s1m7765lqslz";
   };
 
   outputs = [ "out" "lib" "dev" "man" "dnsutils" "host" ];
@@ -22,7 +24,8 @@ stdenv.mkDerivation rec {
     stdenv.lib.optional stdenv.isDarwin ./darwin-openssl-linking-fix.patch;
 
   nativeBuildInputs = [ perl ];
-  buildInputs = [ openssl libtool libxml2 ]
+  buildInputs = [ libtool libxml2 openssl ]
+    ++ lib.optional stdenv.isLinux libcap
     ++ lib.optional enableSeccomp libseccomp
     ++ lib.optional enablePython python3;
 
@@ -43,6 +46,7 @@ stdenv.mkDerivation rec {
     "--without-idn"
     "--without-idnlib"
     "--without-lmdb"
+    "--without-libjson"
     "--without-pkcs11"
     "--without-purify"
     "--with-randomdev=/dev/random"
@@ -50,7 +54,8 @@ stdenv.mkDerivation rec {
     "--with-gost"
     "--without-eddsa"
     "--with-aes"
-  ] ++ lib.optional enableSeccomp "--enable-seccomp";
+  ] ++ lib.optional stdenv.isLinux "--with-libcap=${libcap.dev}"
+    ++ lib.optional enableSeccomp "--enable-seccomp";
 
   postInstall = ''
     moveToOutput bin/bind9-config $dev
@@ -66,6 +71,8 @@ stdenv.mkDerivation rec {
       sed -i "$f" -e 's|-L${openssl.dev}|-L${openssl.out}|g'
     done
   '';
+
+  doCheck = false; # requires root and the net
 
   meta = {
     homepage = http://www.isc.org/software/bind;

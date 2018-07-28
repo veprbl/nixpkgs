@@ -1,6 +1,52 @@
-args@{ callPackage, ... }:
+{ stdenv, lib, fetchFromGitHub, fetchpatch, pkgconfig, automake, autoconf, zlib
+, boost, openssl, libtool, python, libiconv, geoip }:
 
-callPackage (import ./generic.nix {
-  version = "1.1.6";
-  sha256 = "1xlh0sqypjbx0imw3bkbjwgwb4bm6zl7c0y01p0xsw8ncfmwjll7";
-}) args
+let
+  version = "1.1.7";
+  formattedVersion = lib.replaceChars ["."] ["_"] version;
+
+  boostPython = boost.override { enablePython = true; };
+
+in stdenv.mkDerivation {
+  name = "libtorrent-rasterbar-${version}";
+
+  src = fetchFromGitHub {
+    owner = "arvidn";
+    repo = "libtorrent";
+    rev = "libtorrent-${formattedVersion}";
+    sha256 = "073nb7yca5jg1i8z5h76qrmddl2hdy8fc1pnchkg574087an31r3";
+  };
+
+  patches = [
+    (fetchpatch {
+      url = "https://github.com/arvidn/libtorrent/commit/64d6b4900448097b0157abb328621dd211e2947d.patch";
+      sha256 = "1bdv0icqzbg1il60sckcly4y22lkdbkkwdjadwdzxv7cdj586bzd";
+    })
+    (fetchpatch {
+      url = "https://github.com/arvidn/libtorrent/commit/9cd0ae67e74a507c1b9ff9c057ee97dda38ccb81.patch";
+      sha256 = "1cscqpc6fq9iwspww930dsxf0yb01bgrghzf5hdhl09a87r6q2zg";
+    })
+  ];
+
+  enableParallelBuilding = true;
+  nativeBuildInputs = [ automake autoconf libtool pkgconfig ];
+  buildInputs = [ boostPython openssl zlib python libiconv geoip ];
+  preConfigure = "./autotool.sh";
+
+  configureFlags = [
+    "--enable-python-binding"
+    "--with-libgeoip=system"
+    "--with-libiconv=yes"
+    "--with-boost=${boostPython.dev}"
+    "--with-boost-libdir=${boostPython.out}/lib"
+    "--with-libiconv=yes"
+  ];
+
+  meta = with stdenv.lib; {
+    homepage = "https://libtorrent.org/";
+    description = "A C++ BitTorrent implementation focusing on efficiency and scalability";
+    license = licenses.bsd3;
+    maintainers = [ maintainers.phreedom ];
+    platforms = platforms.unix;
+  };
+}

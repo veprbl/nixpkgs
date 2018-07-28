@@ -1,7 +1,15 @@
 # This module defines the global list of uids and gids.  We keep a
 # central list to prevent id collisions.
 
-{ config, pkgs, lib, ... }:
+# IMPORTANT!
+# We only add static uids and gids for services where it is not feasible
+# to change uids/gids on service start, in example a service with a lot of
+# files. Please also check if the service is applicable for systemd's
+# DynamicUser option and does not need a uid/gid allocation at all.
+# Systemd can also change ownership of service directories using the
+# RuntimeDirectory/StateDirectory options.
+
+{ lib, ... }:
 
 {
   options = {
@@ -135,6 +143,7 @@
       jenkins = 109;
       systemd-journal-gateway = 110;
       #notbit = 111; # unused
+      aerospike = 111;
       ngircd = 112;
       btsync = 113;
       minecraft = 114;
@@ -190,7 +199,7 @@
       cadvisor = 167;
       nylon = 168;
       apache-kafka = 169;
-      panamax = 170;
+      #panamax = 170; # unused
       exim = 172;
       #fleet = 173; # unused
       #input = 174; # unused
@@ -306,6 +315,14 @@
       ceph = 288;
       duplicati = 289;
       monetdb = 290;
+      restic = 291;
+      openvpn = 292;
+      meguca = 293;
+      yarn = 294;
+      hdfs = 295;
+      mapred = 296;
+      hadoop = 297;
+      hydron = 298;
 
       # When adding a uid, make sure it doesn't match an existing gid. And don't use uids above 399!
 
@@ -421,6 +438,7 @@
       jenkins = 109;
       systemd-journal-gateway = 110;
       #notbit = 111; # unused
+      aerospike = 111;
       #ngircd = 112; # unused
       btsync = 113;
       #minecraft = 114; # unused
@@ -473,9 +491,9 @@
       #chronos = 164; # unused
       gitlab = 165;
       nylon = 168;
-      panamax = 170;
+      #panamax = 170; # unused
       exim = 172;
-      fleet = 173;
+      #fleet = 173; # unused
       input = 174;
       sddm = 175;
       tss = 176;
@@ -580,6 +598,14 @@
       ceph = 288;
       duplicati = 289;
       monetdb = 290;
+      restic = 291;
+      openvpn = 292;
+      meguca = 293;
+      yarn = 294;
+      hdfs = 295;
+      mapred = 296;
+      hadoop = 297;
+      hydron = 298;
 
       # When adding a gid, make sure it doesn't match an existing
       # uid. Users and groups with the same name should have equal

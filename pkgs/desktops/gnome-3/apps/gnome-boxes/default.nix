@@ -9,13 +9,13 @@
 # TODO: ovirt (optional)
 
 let
-  version = "3.28.2";
+  version = "3.28.5";
 in stdenv.mkDerivation rec {
   name = "gnome-boxes-${version}";
 
   src = fetchurl {
     url = "mirror://gnome/sources/gnome-boxes/${gnome3.versionBranch version}/${name}.tar.xz";
-    sha256 = "0xss6wrs4hkmr0aa9qxr9b6wxbygrkjz4p0c4xnymicq97jnwra1";
+    sha256 = "1z1qimspx1nw7l79rardxcx2bydj9nmk60vsdb611xzlqa3hkppm";
   };
 
   doCheck = true;
@@ -23,6 +23,9 @@ in stdenv.mkDerivation rec {
   nativeBuildInputs = [
     meson ninja vala pkgconfig gettext itstool wrapGAppsHook gobjectIntrospection desktop-file-utils
   ];
+
+  # Required for USB redirection PolicyKit rules file
+  propagatedUserEnvPkgs = [ spice-gtk ];
 
   buildInputs = [
     libvirt-glib glib gtk3 gtkvnc libxml2

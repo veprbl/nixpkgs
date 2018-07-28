@@ -1,4 +1,4 @@
-{ stdenv, lib, buildGoPackage, fetchFromGitHub }:
+{ stdenv, buildGoPackage, fetchFromGitHub }:
 
 #
 # USAGE:
@@ -12,7 +12,7 @@
 
 buildGoPackage rec {
   name = "terraform-provider-ibm-${version}";
-  version = "0.8.0";
+  version = "0.11.1";
 
   goPackagePath = "github.com/terraform-providers/terraform-provider-ibm";
   subPackages = [ "./" ];
@@ -20,7 +20,7 @@ buildGoPackage rec {
   src = fetchFromGitHub {
     owner = "IBM-Cloud";
     repo = "terraform-provider-ibm";
-    sha256 = "1jc1g2jadh02z4lfqnvgqk5cqrzk8pnn3cj3cwsm3ksa8pccf6w4";
+    sha256 = "1vp1kzadfkacn6c4illxjra8yki1fx7h77b38fixkcvc79mzasmv";
     rev = "v${version}";
   };
 

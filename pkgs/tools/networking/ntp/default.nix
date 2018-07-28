@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchurl, openssl, perl, libcap ? null, libseccomp ? null }:
+{ stdenv, lib, fetchurl, openssl, perl, libcap ? null, libseccomp ? null, pps-tools }:
 
 assert stdenv.isLinux -> libcap != null;
 assert stdenv.isLinux -> libseccomp != null;
@@ -8,11 +8,11 @@ let
 in
 
 stdenv.mkDerivation rec {
-  name = "ntp-4.2.8p10";
+  name = "ntp-4.2.8p11";
 
   src = fetchurl {
-    url = "http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/${name}.tar.gz";
-    sha256 = "17xrk7gxrl3hgg0i73n8qm53knyh01lf0f3l1zx9x6r1cip3dlnx";
+    url = "https://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/${name}.tar.gz";
+    sha256 = "13i7rp1va29ffjdk08fvsfl6n47zzwsp147zhgb550k8agvkjjpi";
   };
 
   # The hardcoded list of allowed system calls for seccomp is
@@ -28,7 +28,9 @@ stdenv.mkDerivation rec {
   ] ++ stdenv.lib.optional stdenv.isLinux "--enable-linuxcaps"
     ++ stdenv.lib.optional withSeccomp "--enable-libseccomp";
 
-  buildInputs = [ libcap openssl perl ] ++ lib.optional withSeccomp libseccomp;
+  buildInputs = [ libcap openssl perl ]
+    ++ lib.optional withSeccomp libseccomp
+    ++ lib.optional stdenv.isLinux pps-tools;
 
   hardeningEnable = [ "pie" ];
 

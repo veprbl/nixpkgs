@@ -3,17 +3,17 @@
 let
   ell = fetchgit {
      url = https://git.kernel.org/pub/scm/libs/ell/ell.git;
-     rev = "0.4";
-     sha256 = "0l203n1jnqa2mcifir8ydxhcvbiwlvk89ailm0lida83l9vdlwpv";
+     rev = "0.6";
+     sha256 = "0cs0a7rjg9gl9gn9sc3b1y8mv2zbjg7rb87mla6kcrknjci76pgm";
   };
 in stdenv.mkDerivation rec {
   name = "iwd-${version}";
-  version = "0.1";
+  version = "0.3";
 
   src = fetchgit {
     url = https://git.kernel.org/pub/scm/network/wireless/iwd.git;
     rev = version;
-    sha256 = "1f8c6xvcvqw8z78mskynd2fkghggcl7vfz8vxzvpx0fkqcprn5n0";
+    sha256 = "151bqc85vchl1arhl9pyvfashxq886cjrbi6js4csx4vzscbhzzm";
   };
 
   nativeBuildInputs = [
@@ -35,6 +35,7 @@ in stdenv.mkDerivation rec {
 
   configureFlags = [
     "--with-dbus-datadir=$(out)/etc/"
+    "--localstatedir=/var"
     "--disable-systemd-service"
   ];
 

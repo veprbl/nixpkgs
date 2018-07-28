@@ -38,6 +38,7 @@ let
       ${toString (flip mapAttrsToList upstream.servers (name: server: ''
         server ${name} ${optionalString server.backup "backup"};
       ''))}
+      ${upstream.extraConfig}
     }
   ''));
 
@@ -492,6 +493,13 @@ in
               '';
               default = {};
             };
+            extraConfig = mkOption {
+              type = types.lines;
+              default = "";
+              description = ''
+                These lines go to the end of the upstream verbatim.
+              '';
+            };
           };
         });
         description = ''
@@ -605,13 +613,13 @@ in
         listToAttrs acmePairs
     );
 
-    users.extraUsers = optionalAttrs (cfg.user == "nginx") (singleton
+    users.users = optionalAttrs (cfg.user == "nginx") (singleton
       { name = "nginx";
         group = cfg.group;
         uid = config.ids.uids.nginx;
       });
 
-    users.extraGroups = optionalAttrs (cfg.group == "nginx") (singleton
+    users.groups = optionalAttrs (cfg.group == "nginx") (singleton
       { name = "nginx";
         gid = config.ids.gids.nginx;
       });

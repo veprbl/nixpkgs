@@ -1,4 +1,4 @@
-{ lib, pkgs, stdenv, pythonPackages, fetchurl, fetchFromGitHub, fetchpatch }:
+{ stdenv, pythonPackages, fetchurl, fetchFromGitHub }:
 let
   matrix-angular-sdk = pythonPackages.buildPythonPackage rec {
     name = "matrix-angular-sdk-${version}";
@@ -26,13 +26,13 @@ let
   };
 in pythonPackages.buildPythonApplication rec {
   name = "matrix-synapse-${version}";
-  version = "0.27.4";
+  version = "0.31.2";
 
   src = fetchFromGitHub {
     owner = "matrix-org";
     repo = "synapse";
     rev = "v${version}";
-    sha256 = "051bwr4vz8mwglh1m9rqlljbn8g3alvd52f09ff887nsi6z3jc17";
+    sha256 = "15nfdq5s0d4bv1in6vymhq70hpz48p0nlzx25wxpibbrix630h8q";
   };
 
   patches = [
@@ -42,7 +42,7 @@ in pythonPackages.buildPythonApplication rec {
   propagatedBuildInputs = with pythonPackages; [
     blist canonicaljson daemonize dateutil frozendict pillow pyasn1
     pydenticon pymacaroons-pynacl pynacl pyopenssl pysaml2 pytz requests
-    signedjson systemd twisted ujson unpaddedbase64 pyyaml
+    signedjson systemd twisted ujson unpaddedbase64 pyyaml prometheus_client
     matrix-angular-sdk bleach netaddr jinja2 psycopg2
     psutil msgpack-python lxml matrix-synapse-ldap3
     phonenumbers jsonschema affinity bcrypt

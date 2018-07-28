@@ -2,14 +2,14 @@
 
 stdenv.mkDerivation rec {
   pname = "lynis";
-  version = "2.6.3";
+  version = "2.6.6";
   name = "${pname}-${version}";
 
   src = fetchFromGitHub {
     owner = "CISOfy";
     repo = "${pname}";
     rev = "${version}";
-    sha256 = "17xfs0jr0rf8xvk860l2wpxg0h1m2c1dq41lqnq6wga9jifxmzqd";
+    sha256 = "02d8nwy78gy07c32c7dk3sl93h1z0gav0h4j7xp85m6xj852lb5a";
   };
 
   nativeBuildInputs = [ makeWrapper perl ];

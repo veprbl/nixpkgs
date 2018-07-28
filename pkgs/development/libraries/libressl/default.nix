@@ -26,7 +26,7 @@ let
 
     meta = with lib; {
       description = "Free TLS/SSL implementation";
-      homepage    = "http://www.libressl.org";
+      homepage    = "https://www.libressl.org";
       platforms   = platforms.all;
       maintainers = with maintainers; [ thoughtpolice wkennington fpletz globin ];
     };
@@ -34,13 +34,13 @@ let
 
 in {
 
-  libressl_2_5 = generic {
-    version = "2.5.5";
-    sha256 = "1i77viqy1afvbr392npk9v54k9zhr9zq2vhv6pliza22b0ymwzz5";
+  libressl_2_6 = generic {
+    version = "2.6.5";
+    sha256 = "0anx9nlgixdjn811zclim85jm5yxmxwycj71ix27rlhr233xz7l5";
   };
 
-  libressl_2_6 = generic {
-    version = "2.6.4";
-    sha256 = "07yi37a2ghsgj2b4w30q1s4d2inqnix7ika1m21y57p9z71212k3";
+  libressl_2_7 = generic {
+    version = "2.7.4";
+    sha256 = "19kxa5i97q7p6rrps9qm0nd8zqhdjvzx02j72400c73cl2nryfhy";
   };
 }

@@ -1,18 +1,14 @@
 { lib
 , buildPythonPackage
 , fetchPypi
-, nose
 , sphinx
 , numpydoc
-, isPy3k
-, stdenv
 , pytest
 }:
 
 
 buildPythonPackage rec {
   pname = "joblib";
-  name = "${pname}-${version}";
   version = "0.11";
   src = fetchPypi {
     inherit pname version;
@@ -27,7 +23,7 @@ buildPythonPackage rec {
 
   meta = {
     description = "Lightweight pipelining: using Python functions as pipeline jobs";
-    homepage = http://pythonhosted.org/joblib/;
+    homepage = https://pythonhosted.org/joblib/;
     license = lib.licenses.bsd3;
   };
 }

@@ -1,5 +1,5 @@
 let
-  commonConfig = { config, lib, pkgs, nodes, ... }: {
+  commonConfig = { lib, nodes, ... }: {
     networking.nameservers = [
       nodes.letsencrypt.config.networking.primaryIPAddress
     ];
@@ -29,7 +29,7 @@ in import ./make-test.nix {
   name = "acme";
 
   nodes = {
-    letsencrypt = ./common/letsencrypt.nix;
+    letsencrypt = ./common/letsencrypt;
 
     webserver = { config, pkgs, ... }: {
       imports = [ commonConfig ];
@@ -54,9 +54,11 @@ in import ./make-test.nix {
   };
 
   testScript = ''
+    $letsencrypt->waitForUnit("default.target");
     $letsencrypt->waitForUnit("boulder.service");
-    startAll;
+    $webserver->waitForUnit("default.target");
     $webserver->waitForUnit("acme-certificates.target");
+    $client->waitForUnit("default.target");
     $client->succeed('curl https://example.com/ | grep -qF "hello world"');
   '';
 }

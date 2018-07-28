@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   name = "raspberrypi-firmware-${version}";
-  version = "1.20180328";
+  version = "1.20180619";
 
   src = fetchFromGitHub {
     owner = "raspberrypi";
     repo = "firmware";
     rev = version;
-    sha256 = "19h4lv11idy268pyrq21c5gsff77d5xr9xjkpmzfpcq34gjh3x21";
+    sha256 = "1wppk6c5mbanx9h2wa3yz3rzh5am8bqvgw23gxqgwhbar8w99cfn";
   };
 
   installPhase = ''

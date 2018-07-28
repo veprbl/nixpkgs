@@ -31,7 +31,7 @@ let
     connPortShift = ${toString cfg.connPortShift}
     storeAllowFirstRunInit = false
 
-    ${cfg.mgmtd.extraConfig}
+    ${cfg.meta.extraConfig}
   '';
 
   configStorage = name: cfg: pkgs.writeText "storage-${name}.conf" ''
@@ -139,7 +139,7 @@ in
       description = ''
         BeeGFS configurations. Every mount point requires a separate configuration.
       '';
-      type = with types; attrsOf (submodule ({ config, ... } : {
+      type = with types; attrsOf (submodule ({ ... } : {
         options = {
           mgmtdHost = mkOption {
             type = types.str;

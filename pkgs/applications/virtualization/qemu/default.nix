@@ -15,6 +15,7 @@
 , xenSupport ? false, xen
 , openGLSupport ? sdlSupport, mesa_noglu, epoxy, libdrm
 , virglSupport ? openGLSupport, virglrenderer
+, smbdSupport ? false, samba
 , hostCpuOnly ? false
 , nixosTestRunner ? false
 }:
@@ -63,7 +64,8 @@ stdenv.mkDerivation rec {
     ++ optionals stdenv.isLinux [ alsaLib libaio libcap_ng libcap attr ]
     ++ optionals xenSupport [ xen ]
     ++ optionals openGLSupport [ mesa_noglu epoxy libdrm ]
-    ++ optionals virglSupport [ virglrenderer ];
+    ++ optionals virglSupport [ virglrenderer ]
+    ++ optionals smbdSupport [ samba ];
 
   enableParallelBuilding = true;
 
@@ -100,8 +102,7 @@ stdenv.mkDerivation rec {
   '';
 
   configureFlags =
-    [ "--smbd=smbd" # use `smbd' from $PATH
-      "--audio-drv-list=${audio}"
+    [ "--audio-drv-list=${audio}"
       "--sysconfdir=/etc"
       "--localstatedir=/var"
     ]
@@ -117,7 +118,10 @@ stdenv.mkDerivation rec {
     ++ optional gtkSupport "--enable-gtk"
     ++ optional xenSupport "--enable-xen"
     ++ optional openGLSupport "--enable-opengl"
-    ++ optional virglSupport "--enable-virglrenderer";
+    ++ optional virglSupport "--enable-virglrenderer"
+    ++ optional smbdSupport "--smbd=${samba}/bin/smbd";
+
+  doCheck = false; # tries to access /dev
 
   postFixup =
     ''
@@ -133,7 +137,7 @@ stdenv.mkDerivation rec {
   postInstall =
     if stdenv.isx86_64       then ''makeWrapper $out/bin/qemu-system-x86_64  $out/bin/qemu-kvm --add-flags "\$([ -e /dev/kvm ] && echo -enable-kvm)"''
     else if stdenv.isi686    then ''makeWrapper $out/bin/qemu-system-i386    $out/bin/qemu-kvm --add-flags "\$([ -e /dev/kvm ] && echo -enable-kvm)"''
-    else if stdenv.isAarch32     then ''makeWrapper $out/bin/qemu-system-arm     $out/bin/qemu-kvm --add-flags "\$([ -e /dev/kvm ] && echo -enable-kvm)"''
+    else if stdenv.isAarch32 then ''makeWrapper $out/bin/qemu-system-arm     $out/bin/qemu-kvm --add-flags "\$([ -e /dev/kvm ] && echo -enable-kvm)"''
     else if stdenv.isAarch64 then ''makeWrapper $out/bin/qemu-system-aarch64 $out/bin/qemu-kvm --add-flags "\$([ -e /dev/kvm ] && echo -enable-kvm)"''
     else "";
 

@@ -5,14 +5,10 @@
 , six
 , scipy
 , smart_open
-, scikitlearn
-, testfixtures
-, unittest2
 }:
 
 buildPythonPackage rec {
   pname = "gensim";
-  name = "${pname}-${version}";
   version = "3.4.0";
   src = fetchPypi {
     inherit pname version;

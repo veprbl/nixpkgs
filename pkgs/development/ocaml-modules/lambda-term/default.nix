@@ -1,10 +1,10 @@
-{ stdenv, buildOcaml, fetchurl, libev, ocaml, findlib, jbuilder, zed, lwt_react }:
+{ stdenv, fetchurl, libev, ocaml, findlib, jbuilder, zed, lwt_react }:
 
 assert stdenv.lib.versionAtLeast ocaml.version "4.02";
 
-buildOcaml rec {
+stdenv.mkDerivation rec {
   version = "1.12.0";
-  name = "lambda-term";
+  name = "ocaml${ocaml.version}-lambda-term-${version}";
 
   src = fetchurl {
     url = "https://github.com/diml/lambda-term/archive/${version}.tar.gz";
@@ -17,10 +17,7 @@ buildOcaml rec {
 
   buildPhase = "jbuilder build -p lambda-term";
 
-  installPhase = ''
-    ${jbuilder.installPhase}
-    mv $out/lib/ocaml/${ocaml.version}/site-lib/{stubslibs,lambda-term}/dlllambda_term_stubs.so
-  '';
+  inherit (jbuilder) installPhase;
 
   hasSharedObjects = true;
 

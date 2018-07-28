@@ -1,17 +1,11 @@
-# Handbrake normally uses its own copies of the libraries it uses, for better
-# control over library patches.
+# Upstream distributes HandBrake with bundle of according versions of libraries and patches to them.
 #
-# This derivation patches HB so it doesn't do that. The relevant patches
-# are added to the Nix packages and proposed upstream instead. In several cases
-# upstream already incorporated these patches.
-# This has the benefits of providing improvements to other packages,
-# making licenses more clear and reducing compile time/install size.
+# Derivation patches HandBrake to use our closure.
 #
-# Only tested on Linux
 
 { stdenv, lib, fetchurl,
-  python2, pkgconfig, yasm, harfbuzz, zlib,
-  autoconf, automake, cmake, libtool, m4, jansson,
+  python2, pkgconfig, yasm, zlib,
+  autoconf, automake, libtool, m4, jansson,
   libass, libiconv, libsamplerate, fribidi, libxml2, bzip2,
   libogg, libopus, libtheora, libvorbis, libdvdcss, a52dec,
   lame, libdvdread, libdvdnav, libbluray,
@@ -25,6 +19,7 @@
 }:
 
 stdenv.mkDerivation rec {
+  # TODO: Release 1.2.0 would switch LibAV to FFmpeg.
   version = "1.1.0";
   name = "handbrake-${version}";
 
@@ -34,7 +29,7 @@ stdenv.mkDerivation rec {
   };
 
   patched_libav_12 = libav_12.overrideAttrs (super: {
-    # 2018-04-26: HandBrake compilation (1.1.0) requires a patch of LibAV (12.3) from HandBrake team. This patch not went LibAV upstream.
+    # NOTE: 2018-04-26: HandBrake compilation (1.1.0) requires a patch of LibAV (12.3) from HandBrake team. This patch not went LibAV upstream.
     patches = (super.patches or []) ++ [(
       fetchurl {
         url = ''https://raw.githubusercontent.com/HandBrake/HandBrake/9e1f245708a157231c427c0ef9b91729d59a30e1/contrib/ffmpeg/A21-mp4-sdtp.patch'';
@@ -44,7 +39,7 @@ stdenv.mkDerivation rec {
   });
 
   nativeBuildInputs = [
-    cmake python2 pkgconfig yasm autoconf automake libtool m4
+    python2 pkgconfig yasm autoconf automake libtool m4
   ] ++ lib.optionals useGtk [ intltool wrapGAppsHook ];
 
   buildInputs = [
@@ -55,11 +50,9 @@ stdenv.mkDerivation rec {
   ] ++ lib.optionals useGtk [
     glib gtk3 libappindicator-gtk3 libnotify
     gst_all_1.gstreamer gst_all_1.gst-plugins-base dbus-glib udev
-    libgudev
+    libgudev hicolor-icon-theme
   ] ++ (if useFfmpeg then [ ffmpeg ] else [ patched_libav_12 ])
   ++ lib.optional useFdk fdk_aac;
-
-  dontUseCmakeConfigure = true;
 
   enableParallelBuilding = true;
 
@@ -89,11 +82,6 @@ stdenv.mkDerivation rec {
     cd build
   '';
 
-  # icon-theme.cache belongs in the icon theme, not in individual packages
-  postInstall = ''
-    rm $out/share/icons/hicolor/icon-theme.cache
-  '';
-
   meta = with stdenv.lib; {
     homepage = http://handbrake.fr/;
     description = "A tool for converting video files and ripping DVDs";
@@ -107,7 +95,6 @@ stdenv.mkDerivation rec {
     '';
     license = licenses.gpl2;
     maintainers = with maintainers; [ Anton-Latukha wmertens ];
-    # Not tested on anything else
-    platforms = platforms.linux;
+    platforms = with platforms; unix;
   };
 }

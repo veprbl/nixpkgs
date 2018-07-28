@@ -1,9 +1,8 @@
-{ stdenv, fetchPypi, buildPythonPackage, lib }:
+{ fetchPypi, buildPythonPackage, lib }:
 
 buildPythonPackage rec {
   version = "3.9.2";
   pname = "thespian";
-  name = "${pname}-${version}";
 
   src = fetchPypi {
     inherit pname version;

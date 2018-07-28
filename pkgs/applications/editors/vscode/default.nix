@@ -1,8 +1,8 @@
-{ stdenv, lib, callPackage, fetchurl, unzip, atomEnv, makeDesktopItem,
-  makeWrapper, libXScrnSaver, libxkbfile, libsecret }:
+{ stdenv, lib, fetchurl, unzip, atomEnv, makeDesktopItem,
+  gtk2, makeWrapper, libXScrnSaver, libxkbfile, libsecret }:
 
 let
-  version = "1.22.2";
+  version = "1.25.1";
   channel = "stable";
 
   plat = {
@@ -12,15 +12,16 @@ let
   }.${stdenv.system};
 
   sha256 = {
-    "i686-linux" = "17iqqg6vdccbl1k4k2ks3kkgg7619j6qdvca4k27pjfqm17mvw5n";
-    "x86_64-linux" = "1ng2jhhaghsf7a2dmrimazh817jh0ag88whija179ywgrg3i6xam";
-    "x86_64-darwin" = "083hizigzxm45hcy6yqwznj9ibqdaxg2xv8rsyas4ig9x55irrcj";
+    "i686-linux" = "1qljnajk4h9ki5gvydh1b557fvhvcryvkrvypvz0pr804lpdqsmg";
+    "x86_64-linux" = "0f1lpwyxfchmbymzzxv97w9cy1z5pdljhwm49mc5v84aygmvnmjq";
+    "x86_64-darwin" = "1dgda1drij1c114xzv4hs44k7rx4x1vzghlxgii0h2rg641n6pbn";
   }.${stdenv.system};
 
   archive_fmt = if stdenv.system == "x86_64-darwin" then "zip" else "tar.gz";
 
   rpath = lib.concatStringsSep ":" [
     atomEnv.libPath
+    "${lib.makeLibraryPath [gtk2]}"
     "${lib.makeLibraryPath [libsecret]}/libsecret-1.so.0"
     "${lib.makeLibraryPath [libXScrnSaver]}/libXss.so.1"
     "${lib.makeLibraryPath [libxkbfile]}/libxkbfile.so.1"
@@ -80,6 +81,11 @@ in
       patchelf \
         --set-rpath "${rpath}" \
         $out/lib/vscode/resources/app/node_modules.asar.unpacked/keytar/build/Release/keytar.node
+
+      patchelf \
+        --set-rpath "${rpath}" \
+        "$out/lib/vscode/resources/app/node_modules.asar.unpacked/native-keymap/build/Release/\
+      keymapping.node"
 
       ln -s ${lib.makeLibraryPath [libsecret]}/libsecret-1.so.0 $out/lib/vscode/libsecret-1.so.0
     '';

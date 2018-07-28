@@ -1,4 +1,4 @@
-{ stdenv, lib, openssh, buildbot-worker, buildbot-pkg, pythonPackages, runCommand, makeWrapper }:
+{ stdenv, openssh, buildbot-worker, buildbot-pkg, pythonPackages, runCommand, makeWrapper }:
 
 let
   withPlugins = plugins: runCommand "wrapped-${package.name}" {
@@ -14,11 +14,11 @@ let
   package = pythonPackages.buildPythonApplication rec {
     name = "${pname}-${version}";
     pname = "buildbot";
-    version = "1.1.0";
+    version = "1.2.0";
 
     src = pythonPackages.fetchPypi {
       inherit pname version;
-      sha256 = "1rhmlcvw0dsr4f37sb3xmb9xcn76lsrsw2g1z611g339nmxzi0sc";
+      sha256 = "02gwmls8kgm6scy36hdy0bg645zs1pxlrgwkcn79wrl7cfmabcbv";
     };
 
     buildInputs = with pythonPackages; [

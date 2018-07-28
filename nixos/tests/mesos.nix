@@ -5,7 +5,7 @@ import ./make-test.nix ({ pkgs, ...} : rec {
   };
 
   nodes = {
-    master = { config, pkgs, ... }: {
+    master = { ... }: {
       networking.firewall.enable = false;
       services.zookeeper.enable = true;
       services.mesos.master = {
@@ -14,7 +14,7 @@ import ./make-test.nix ({ pkgs, ...} : rec {
       };
     };
 
-    slave = { config, pkgs, ... }: {
+    slave = { ... }: {
       networking.firewall.enable = false;
       networking.nat.enable = true;
       virtualisation.docker.enable = true;
@@ -66,9 +66,11 @@ import ./make-test.nix ({ pkgs, ...} : rec {
   testScript =
     ''
       startAll;
+      $master->waitForUnit("zookeeper.service");
       $master->waitForUnit("mesos-master.service");
+      $slave->waitForUnit("docker.service");
       $slave->waitForUnit("mesos-slave.service");
-
+      $master->waitForOpenPort(2181);
       $master->waitForOpenPort(5050);
       $slave->waitForOpenPort(5051);
 

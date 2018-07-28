@@ -37,6 +37,8 @@ in stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
+  NIX_CFLAGS_COMPILE = "-Wno-format-nonliteral";
+
   buildPhase = ''
     runHook preBuild
 

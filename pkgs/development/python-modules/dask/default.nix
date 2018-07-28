@@ -12,12 +12,11 @@
 
 buildPythonPackage rec {
   pname = "dask";
-  version = "0.17.2";
-  name = "${pname}-${version}";
+  version = "0.18.0";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "27e470b8cfdd0516189e641b1213fceec0ddc4f37ead1fbce733d3381134fccd";
+    sha256 = "ebaa0f144b43a00e7b9b3b9cb557e8ebada5fcbb982cdaba1802cd8c4c5720f0";
   };
 
   checkInputs = [ pytest ];

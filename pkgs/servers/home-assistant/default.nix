@@ -6,19 +6,20 @@
 let
 
   py = python3.override {
+    # Override the version of some packages pinned in Home Assistant's setup.py
     packageOverrides = self: super: {
       aiohttp = super.aiohttp.overridePythonAttrs (oldAttrs: rec {
-        version = "3.1.3";
+        version = "3.3.2";
         src = oldAttrs.src.override {
           inherit version;
-          sha256 = "9fcef0489e3335b200d31a9c1fb6ba80fdafe14cd82b971168c2f9fa1e4508ad";
+          sha256 = "f20deec7a3fbaec7b5eb7ad99878427ad2ee4cc16a46732b705e8121cbb3cc12";
         };
       });
-      pytest = super.pytest.overridePythonAttrs (oldAttrs: rec {
-        version = "3.4.2";
+      requests = super.requests.overridePythonAttrs (oldAttrs: rec {
+        version = "2.19.1";
         src = oldAttrs.src.override {
           inherit version;
-          sha256 = "117bad36c1a787e1a8a659df35de53ba05f9f3398fb9e4ac17e80ad5903eb8c5";
+          sha256 = "ec22d826a36ed72a7358ff3fe56cbd4ba69dd7a6718ffd450ff0e9df7a47ce6a";
         };
       });
       voluptuous = super.voluptuous.overridePythonAttrs (oldAttrs: rec {
@@ -28,18 +29,27 @@ let
           sha256 = "af7315c9fa99e0bfd195a21106c82c81619b42f0bd9b6e287b797c6b6b6a9918";
         };
       });
-      astral = super.astral.overridePythonAttrs (oldAttrs: rec {
-        version = "1.6";
+      attrs = super.attrs.overridePythonAttrs (oldAttrs: rec {
+        version = "18.1.0";
         src = oldAttrs.src.override {
           inherit version;
-          sha256 = "874b397ddbf0a4c1d8d644b21c2481e8a96b61343f820ad52d8a322d61a15083";
+          sha256 = "e0d0eb91441a3b53dab4d9b743eafc1ac44476296a2053b6ca3af0b139faf87b";
         };
       });
-      async-timeout = super.async-timeout.overridePythonAttrs (oldAttrs: rec {
-        version = "2.0.1";
+      astral = super.astral.overridePythonAttrs (oldAttrs: rec {
+        version = "1.6.1";
         src = oldAttrs.src.override {
           inherit version;
-          sha256 = "00cff4d2dce744607335cba84e9929c3165632da2d27970dbc55802a0c7873d0";
+          sha256 = "ab0c08f2467d35fcaeb7bad15274743d3ac1ad18b5391f64a0058a9cd192d37d";
+        };
+      });
+      # used by check_config script
+      # can be unpinned once https://github.com/home-assistant/home-assistant/issues/11917 is resolved
+      colorlog = super.colorlog.overridePythonAttrs (oldAttrs: rec {
+        version = "3.1.4";
+        src = oldAttrs.src.override {
+          inherit version;
+          sha256 = "418db638c9577f37f0fae4914074f395847a728158a011be2a193ac491b9779d";
         };
       });
       hass-frontend = super.callPackage ./frontend.nix { };
@@ -58,7 +68,7 @@ let
   extraBuildInputs = extraPackages py.pkgs;
 
   # Don't forget to run parse-requirements.py after updating
-  hassVersion = "0.68.1";
+  hassVersion = "0.73.2";
 
 in with py.pkgs; buildPythonApplication rec {
   pname = "homeassistant";
@@ -73,14 +83,14 @@ in with py.pkgs; buildPythonApplication rec {
     owner = "home-assistant";
     repo = "home-assistant";
     rev = version;
-    sha256 = "103py7hfdanr8zk3cl93rm7ngjz0n95kwjbphq7iy8l8hqpzs1m8";
+    sha256 = "1hfxwm49hgikdh827jnlzgfz9h51rjz1gm841f5iz1vwz301l6sk";
   };
 
   propagatedBuildInputs = [
     # From setup.py
     requests pyyaml pytz pip jinja2 voluptuous typing aiohttp async-timeout astral certifi attrs
-    # From http, frontend and recorder components
-    sqlalchemy aiohttp-cors hass-frontend
+    # From http, frontend, recorder and config.config_entries components
+    sqlalchemy aiohttp-cors hass-frontend voluptuous-serialize
   ] ++ componentBuildInputs ++ extraBuildInputs;
 
   checkInputs = [
@@ -91,10 +101,9 @@ in with py.pkgs; buildPythonApplication rec {
     # The components' dependencies are not included, so they cannot be tested
     py.test --ignore tests/components
     # Some basic components should be tested however
-    # test_not_log_password fails because nothing is logged at all
-    py.test -k "not test_not_log_password" \
-      tests/components/{group,http} \
-      tests/components/test_{api,configurator,demo,discovery,frontend,init,introduction,logger,script,shell_command,system_log,websocket_api}.py
+    py.test \
+      tests/components/{group,http,frontend} \
+      tests/components/test_{api,configurator,demo,discovery,init,introduction,logger,script,shell_command,system_log,websocket_api}.py
   '';
 
   makeWrapperArgs = lib.optional skipPip "--add-flags --skip-pip";

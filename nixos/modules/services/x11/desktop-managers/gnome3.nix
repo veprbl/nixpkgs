@@ -10,7 +10,6 @@ let
     let
       pkgName = drv: (builtins.parseDrvName drv.name).name;
       ysNames = map pkgName ys;
-      res = (filter (x: !(builtins.elem (pkgName x) ysNames)) xs);
     in
       filter (x: !(builtins.elem (pkgName x) ysNames)) xs;
 
@@ -120,6 +119,7 @@ in {
     services.xserver.libinput.enable = mkDefault true; # for controlling touchpad settings via gnome control center
     services.udev.packages = [ pkgs.gnome3.gnome-settings-daemon ];
     systemd.packages = [ pkgs.gnome3.vino ];
+    services.flatpak.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
     # If gnome3 is installed, build vim for gtk3 too.
     nixpkgs.config.vim.gui = "gtk3";

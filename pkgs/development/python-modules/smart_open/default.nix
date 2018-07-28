@@ -1,6 +1,5 @@
 { lib
 , buildPythonPackage
-, isPy3k
 , fetchPypi
 , boto
 , boto3
@@ -13,7 +12,6 @@
 
 buildPythonPackage rec {
   pname = "smart_open";
-  name = "${pname}-${version}";
   version = "1.5.7";
 
   src = fetchPypi {

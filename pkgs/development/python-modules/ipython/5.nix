@@ -2,7 +2,6 @@
 , stdenv
 , buildPythonPackage
 , fetchPypi
-, pythonOlder
 # Build dependencies
 , glibcLocales
 # Test dependencies
@@ -13,7 +12,6 @@
 , mock
 # Runtime dependencies
 , backports_shutil_get_terminal_size
-, jedi
 , decorator
 , pathlib2
 , pickleshare
@@ -27,11 +25,11 @@
 
 buildPythonPackage rec {
   pname = "ipython";
-  version = "5.6.0";
+  version = "5.7.0";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "00g696r9rk1c4p3sycnv7by55cp9mm7r6zkkdqbiw9l0mk8k58wb";
+    sha256 = "0g1jm06qriq48m58311cs7askp83ipq3yq96hv4kg431nxzkmd4d";
   };
 
   prePatch = stdenv.lib.optionalString stdenv.isDarwin ''

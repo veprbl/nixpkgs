@@ -1,4 +1,4 @@
-{ buildPythonPackage, fetchPypi, python
+{ buildPythonPackage, fetchPypi
 , plaster, PasteDeploy
 , pytest, pytestcov
 }:
@@ -6,7 +6,6 @@
 buildPythonPackage rec {
   pname = "plaster_pastedeploy";
   version = "0.5";
-  name = "${pname}-${version}";
 
   src = fetchPypi {
     inherit pname version;

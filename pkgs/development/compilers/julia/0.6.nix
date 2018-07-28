@@ -1,11 +1,10 @@
-{ stdenv, fetchgit, fetchurl, fetchzip
+{ stdenv, fetchurl, fetchzip
 # build tools
 , gfortran, m4, makeWrapper, patchelf, perl, which, python2
-, runCommand
 , paxctl
 # libjulia dependencies
 , libunwind, readline, utf8proc, zlib
-, llvm, libffi, ncurses
+, llvm
 # standard library dependencies
 , curl, fftwSinglePrec, fftw, gmp, libgit2, mpfr, openlibm, openspecfun, pcre2
 # linear algebra
@@ -44,22 +43,27 @@ let
     url = "https://api.github.com/repos/JuliaLang/Rmath-julia/tarball/v${rmathVersion}";
     sha256 = "1qyps217175qhid46l8f5i1v8i82slgp23ia63x2hzxwfmx8617p";
   };
-  
+
   virtualenvVersion = "15.0.0";
   virtualenv = fetchurl {
     url = "mirror://pypi/v/virtualenv/virtualenv-${virtualenvVersion}.tar.gz";
     sha256 = "06fw4liazpx5vf3am45q2pdiwrv0id7ckv7n6zmpml29x6vkzmkh";
   };
+
+  majorVersion = "0";
+  minorVersion = "6";
+  maintenanceVersion = "4";
+  version = "${majorVersion}.${minorVersion}.${maintenanceVersion}";
 in
 
 stdenv.mkDerivation rec {
   pname = "julia";
-  version = "0.6.2";
+  inherit version;
   name = "${pname}-${version}";
 
   src = fetchzip {
     url = "https://github.com/JuliaLang/${pname}/releases/download/v${version}/${name}.tar.gz";
-    sha256 = "0ym4n9vn6w8vj175mmsc2nzvdk2ij0cdrs44lkr3p0signji73b5";
+    sha256 = "09axkkj914al7lzvcvhb33hz5wp083lk18llsvrn622fqhmyqabl";
   };
   prePatch = ''
     mkdir deps/srccache
@@ -130,7 +134,7 @@ stdenv.mkDerivation rec {
       "USE_SYSTEM_GMP=1"
       "USE_SYSTEM_LIBGIT2=1"
       "USE_SYSTEM_LIBUNWIND=1"
-      
+
       "USE_SYSTEM_LLVM=1"
       "LLVM_VER=3.9.1"
 
@@ -182,6 +186,11 @@ stdenv.mkDerivation rec {
       fi
     done
   '';
+
+  passthru = {
+    inherit majorVersion minorVersion maintenanceVersion;
+    site = "share/julia/site/v${majorVersion}.${minorVersion}";
+  };
 
   meta = {
     description = "High-level performance-oriented dynamical language for technical computing";

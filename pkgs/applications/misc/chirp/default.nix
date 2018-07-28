@@ -1,13 +1,13 @@
 { stdenv, fetchurl, libxml2Python, libxslt, makeWrapper
-, python, pyserial, pygtk }:
+, pyserial, pygtk }:
 
 stdenv.mkDerivation rec {
   name = "chirp-daily-${version}";
-  version = "20180412";
+  version = "20180707";
 
   src = fetchurl {
     url = "https://trac.chirp.danplanet.com/chirp_daily/daily-${version}/${name}.tar.gz";
-    sha256 = "17wpxqzifz6grw9xzg9q9vr58vm2xd50fhd64c3ngdhxcnq2dpj9";
+    sha256 = "09siq74k0ss65ssck7i7h515dxp7fhdz5klc3y0yp9wajn706ic3";
   };
 
   nativeBuildInputs = [ makeWrapper ];

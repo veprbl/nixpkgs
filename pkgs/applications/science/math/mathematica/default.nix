@@ -8,7 +8,6 @@
 , freetype
 , gcc
 , glib
-, libpng
 , ncurses
 , opencv
 , openssl
@@ -19,15 +18,11 @@
 , libxml2
 , libuuid
 , lang ? "en"
+, libGL
+, libGLU
 }:
 
 let
-  platform =
-    if stdenv.system == "i686-linux" || stdenv.system == "x86_64-linux" then
-      "Linux"
-    else
-      throw "Mathematica requires i686-linux or x86_64 linux";
-
   l10n =
     with stdenv.lib;
     with callPackage ./l10ns.nix {};
@@ -56,6 +51,8 @@ stdenv.mkDerivation rec {
     libxml2
     libuuid
     zlib
+    libGL
+    libGLU
   ] ++ (with xorg; [
     libX11
     libXext

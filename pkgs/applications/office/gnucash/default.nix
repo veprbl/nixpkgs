@@ -25,11 +25,11 @@ in
 
 stdenv.mkDerivation rec {
   name = "gnucash-${version}";
-  version = "3.1-1";
+  version = "3.2";
 
   src = fetchurl {
     url = "mirror://sourceforge/gnucash/${name}.tar.bz2";
-    sha256 = "0qfjpmr6hnr0v7l2fi00rilnlyan4kqiyygyidxlpdxqqg76dvx1";
+    sha256 = "0li4b6pvlahgh5n9v91yxfgm972a1kky80xw3q1ggl4f2h6b1rb3";
   };
 
   nativeBuildInputs = [ pkgconfig makeWrapper cmake gtest ];
@@ -37,8 +37,9 @@ stdenv.mkDerivation rec {
   buildInputs = [
     boost icu libxml2 libxslt gettext swig isocodes gtk3 glibcLocales
     webkit dconf hicolor-icon-theme libofx aqbanking gwenhywfar libdbi
-    libdbiDrivers guile perlWrapper
-  ];
+    libdbiDrivers guile
+    perlWrapper perl
+  ] ++ (with perlPackages; [ FinanceQuote DateManip ]);
 
   propagatedUserEnvPkgs = [ dconf ];
 
@@ -58,6 +59,7 @@ stdenv.mkDerivation rec {
     wrapProgram "$out/bin/gnucash" \
       --prefix XDG_DATA_DIRS : "$GSETTINGS_SCHEMAS_PATH:$out/share/gsettings-schemas/${name}" \
       --prefix XDG_DATA_DIRS : "${hicolor-icon-theme}/share" \
+      --prefix PERL5LIB ":" "$PERL5LIB" \
       --prefix GIO_EXTRA_MODULES : "${stdenv.lib.getLib dconf}/lib/gio/modules"
   '';
 

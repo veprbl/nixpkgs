@@ -1,21 +1,22 @@
-{lib, fetchPypi, python, buildPythonPackage, isPy27, isPyPy, gfortran, nose, blas, hostPlatform }:
+{lib, fetchPypi, python, buildPythonPackage, isPyPy, gfortran, nose, blas, hostPlatform }:
 
 buildPythonPackage rec {
   pname = "numpy";
-  version = "1.14.2";
+  version = "1.14.5";
 
   src = fetchPypi {
     inherit pname version;
     extension = "zip";
-    sha256 = "facc6f925c3099ac01a1f03758100772560a0b020fb9d70f210404be08006bcb";
+    sha256 = "a4a433b3a264dbc9aa9c7c241e87c0358a503ea6394f8737df1683c7c9a102ac";
   };
 
   disabled = isPyPy;
   buildInputs = [ gfortran nose blas ];
 
   patches = lib.optionals (python.hasDistutilsCxxPatch or false) [
-    # See cpython 2.7 patches.
-    # numpy.distutils is used by cython during it's check phase
+    # We patch cpython/distutils to fix https://bugs.python.org/issue1222585
+    # Patching of numpy.distutils is needed to prevent it from undoing the
+    # patch to distutils.
     ./numpy-distutils-C++.patch
   ];
 

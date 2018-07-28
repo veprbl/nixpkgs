@@ -1,9 +1,8 @@
-{ stdenv, buildPythonPackage, fetchPypi
+{ buildPythonPackage, fetchPypi
 , setuptools_scm
 , six, pytz}:
 
 buildPythonPackage rec {
-  name = "${pname}-${version}";
   pname = "tempora";
   version = "1.9";
 

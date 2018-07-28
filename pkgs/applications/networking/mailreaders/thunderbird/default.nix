@@ -3,7 +3,7 @@
 , freetype, fontconfig, file, nspr, nss, libnotify
 , yasm, libGLU_combined, sqlite, unzip
 , hunspell, libevent, libstartup_notification
-, cairo, gstreamer, gst-plugins-base, icu, libpng, jemalloc
+, icu, libpng, jemalloc
 , autoconf213, which, m4
 , writeScript, xidel, common-updater-scripts, coreutils, gnused, gnugrep, curl
 , enableGTK3 ? false, gtk3, gnome3, wrapGAppsHook, makeWrapper
@@ -22,11 +22,11 @@ let
   wrapperTool = if enableGTK3 then wrapGAppsHook else makeWrapper;
 in stdenv.mkDerivation rec {
   name = "thunderbird-${version}";
-  version = "52.7.0";
+  version = "52.9.1";
 
   src = fetchurl {
     url = "mirror://mozilla/thunderbird/releases/${version}/source/thunderbird-${version}.source.tar.xz";
-    sha512 = "875ad6f2b030c65d248ecec4f4a5b51767c3ee7944ac72893237efd2af50145ec2e4a9efa8d60807b78bcfb8189969e5a67d15124710e8b0091f639cddfbfe21";
+    sha512 = "0ipvhllvlkcjshf2h938d531wpgnhbvdw1k088iazqamb3vrspxpfb4dhfrxvff995nym0gs7j5wa6bjd36nm4wajlabs5i6r80ms0d";
   };
 
   # New sed no longer tolerates this mistake.

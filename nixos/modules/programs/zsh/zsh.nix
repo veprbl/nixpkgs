@@ -69,7 +69,9 @@ in
 
       promptInit = mkOption {
         default = ''
-          autoload -U promptinit && promptinit && prompt walters
+          if [ "$TERM" != dumb ]; then
+            autoload -U promptinit && promptinit && prompt walters
+          fi
         '';
         description = ''
           Shell script code used to initialise the zsh prompt.
@@ -85,13 +87,6 @@ in
         type = types.bool;
       };
 
-      enableAutosuggestions = mkOption {
-        default = false;
-        description = ''
-          Enable zsh-autosuggestions
-        '';
-        type = types.bool;
-      };
     };
 
   };
@@ -165,10 +160,6 @@ in
         done
 
         ${optionalString cfg.enableCompletion "autoload -U compinit && compinit"}
-
-        ${optionalString (cfg.enableAutosuggestions)
-          "source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-        }
 
         ${cfge.interactiveShellInit}
 

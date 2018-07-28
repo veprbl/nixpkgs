@@ -6,10 +6,6 @@
 with lib;
 with import ../../lib/qemu-flags.nix { inherit pkgs; };
 
-let
-  kernel = config.boot.kernelPackages.kernel;
-in
-
 {
 
   # This option is a dummy that if used in conjunction with
@@ -57,6 +53,9 @@ in
     # with EIO).  Likewise for hvc0.
     systemd.services."serial-getty@${qemuSerialDevice}".enable = false;
     systemd.services."serial-getty@hvc0".enable = false;
+
+    # Only use a serial console, no TTY.
+    virtualisation.qemu.consoles = [ qemuSerialDevice ];
 
     boot.initrd.preDeviceCommands =
       ''
@@ -123,9 +122,12 @@ in
     networking.usePredictableInterfaceNames = false;
 
     # Make it easy to log in as root when running the test interactively.
-    users.extraUsers.root.initialHashedPassword = mkOverride 150 "";
+    users.users.root.initialHashedPassword = mkOverride 150 "";
 
     services.xserver.displayManager.job.logToJournal = true;
+
+    # set default stateVersion to avoid warnings during eval
+    system.nixos.stateVersion = mkDefault "18.03";
   };
 
 }
