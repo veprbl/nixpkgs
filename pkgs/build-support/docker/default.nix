@@ -1,5 +1,4 @@
 {
-  callPackage,
   coreutils,
   docker,
   e2fsprogs,
@@ -37,36 +36,31 @@ rec {
   in
     { imageName
       # To find the digest of an image, you can use skopeo:
-      # skopeo inspect docker://docker.io/nixos/nix:1.11 | jq -r '.Digest'
-      # sha256:20d9485b25ecfd89204e843a962c1bd70e9cc6858d65d7f5fadc340246e2116b
+      # see doc/functions.xml
     , imageDigest
     , sha256
+    , os ? "linux"
+    , arch ? "x86_64"
       # This used to set a tag to the pulled image
     , finalImageTag ? "latest"
     , name ? fixName "docker-image-${imageName}-${finalImageTag}.tar"
     }:
 
     runCommand name {
+      inherit imageName imageDigest;
+      imageTag = finalImageTag;
       impureEnvVars = pkgs.stdenv.lib.fetchers.proxyImpureEnvVars;
       outputHashMode = "flat";
       outputHashAlgo = "sha256";
       outputHash = sha256;
 
-      # One of the dependencies of Skopeo uses a hardcoded /var/tmp for storing
-      # big image files, which is not available in sandboxed builds.
-      nativeBuildInputs = lib.singleton (pkgs.skopeo.overrideAttrs (drv: {
-        postPatch = (drv.postPatch or "") + ''
-          sed -i -e 's!/var/tmp!/tmp!g' \
-            vendor/github.com/containers/image/storage/storage_image.go \
-            vendor/github.com/containers/image/internal/tmpdir/tmpdir.go
-        '';
-      }));
+      nativeBuildInputs = lib.singleton (pkgs.skopeo);
       SSL_CERT_FILE = "${pkgs.cacert.out}/etc/ssl/certs/ca-bundle.crt";
 
       sourceURL = "docker://${imageName}@${imageDigest}";
       destNameTag = "${imageName}:${finalImageTag}";
     } ''
-      skopeo copy "$sourceURL" "docker-archive://$out:$destNameTag"
+      skopeo --override-os ${os} --override-arch ${arch} copy "$sourceURL" "docker-archive://$out:$destNameTag"
     '';
 
   # We need to sum layer.tar, not a directory, hence tarsum instead of nix-hash.
@@ -360,7 +354,9 @@ rec {
     extraCommands ? ""
   }:
     # Generate an executable script from the `runAsRoot` text.
-    let runAsRootScript = shellScript "run-as-root.sh" runAsRoot;
+    let
+      runAsRootScript = shellScript "run-as-root.sh" runAsRoot;
+      extraCommandsScript = shellScript "extra-commands.sh" extraCommands;
     in runWithOverlay {
       name = "docker-layer-${name}";
 
@@ -398,7 +394,7 @@ rec {
       '';
 
       postUmount = ''
-        (cd layer; eval "${extraCommands}")
+        (cd layer; ${extraCommandsScript})
 
         echo "Packing layer..."
         mkdir $out
@@ -424,8 +420,8 @@ rec {
   buildImage = args@{
     # Image name.
     name,
-    # Image tag.
-    tag ? "latest",
+    # Image tag, when null then the nix output hash will be used.
+    tag ? null,
     # Parent image, to append to.
     fromImage ? null,
     # Name of the parent image; will be read from the image otherwise.
@@ -475,12 +471,19 @@ rec {
         buildInputs = [ jshon pigz coreutils findutils jq ];
         # Image name and tag must be lowercase
         imageName = lib.toLower name;
-        imageTag = lib.toLower tag;
+        imageTag = if tag == null then "" else lib.toLower tag;
         inherit fromImage baseJson;
         layerClosure = writeReferencesToFile layer;
         passthru.buildArgs = args;
         passthru.layer = layer;
       } ''
+        ${lib.optionalString (tag == null) ''
+          outName="$(basename "$out")"
+          outHash=$(echo "$outName" | cut -d - -f 1)
+
+          imageTag=$outHash
+        ''}
+
         # Print tar contents:
         # 1: Interpreted as relative to the root directory
         # 2: With no trailing slashes on directories

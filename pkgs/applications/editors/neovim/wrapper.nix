@@ -1,4 +1,4 @@
-{ stdenv, lib, makeDesktopItem, makeWrapper
+{ stdenv, lib, makeWrapper
 , vimUtils
 , bundlerEnv, ruby
 , pythonPackages
@@ -10,8 +10,7 @@ neovim:
 
 let
   wrapper = {
-    name ? "neovim"
-    , withPython ? true,  extraPythonPackages ? []
+      withPython ? true,  extraPythonPackages ? []
     , withPython3 ? true,  extraPython3Packages ? []
     , withRuby ? true
     , withPyGUI ? false
@@ -51,7 +50,7 @@ let
 
   in
   stdenv.mkDerivation {
-      inherit name;
+      name = "neovim-${stdenv.lib.getVersion neovim}";
       buildCommand = let bin="${neovim}/bin/nvim"; in ''
         if [ ! -x "${bin}" ]
         then

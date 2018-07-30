@@ -1,4 +1,4 @@
-{ lib, pkgs, stdenv, pythonPackages, fetchurl, fetchFromGitHub, fetchpatch }:
+{ stdenv, pythonPackages, fetchurl, fetchFromGitHub }:
 let
   matrix-angular-sdk = pythonPackages.buildPythonPackage rec {
     name = "matrix-angular-sdk-${version}";
@@ -26,13 +26,13 @@ let
   };
 in pythonPackages.buildPythonApplication rec {
   name = "matrix-synapse-${version}";
-  version = "0.28.1";
+  version = "0.33.0";
 
   src = fetchFromGitHub {
     owner = "matrix-org";
     repo = "synapse";
     rev = "v${version}";
-    sha256 = "1xgiprnhp893zc0g3i7wpwzgjy6q5nb858p0s6kcsca60vr9j6h0";
+    sha256 = "1immk6k0wgiks1s39dhyjg79n6rgans9zy85r5wmkp4dlc3r5rx6";
   };
 
   patches = [
@@ -42,10 +42,10 @@ in pythonPackages.buildPythonApplication rec {
   propagatedBuildInputs = with pythonPackages; [
     blist canonicaljson daemonize dateutil frozendict pillow pyasn1
     pydenticon pymacaroons-pynacl pynacl pyopenssl pysaml2 pytz requests
-    signedjson systemd twisted ujson unpaddedbase64 pyyaml
+    signedjson systemd twisted ujson unpaddedbase64 pyyaml prometheus_client
     matrix-angular-sdk bleach netaddr jinja2 psycopg2
     psutil msgpack-python lxml matrix-synapse-ldap3
-    phonenumbers jsonschema affinity bcrypt
+    phonenumbers jsonschema affinity bcrypt sortedcontainers
   ];
 
   # Checks fail because of Tox.
@@ -59,6 +59,6 @@ in pythonPackages.buildPythonApplication rec {
     homepage = https://matrix.org;
     description = "Matrix reference homeserver";
     license = licenses.asl20;
-    maintainers = [ maintainers.ralith maintainers.roblabla ];
+    maintainers = with maintainers; [ ralith roblabla ekleog ];
   };
 }

@@ -1,10 +1,9 @@
-{ stdenv, buildPythonPackage, fetchPypi
+{ buildPythonPackage, fetchPypi
 , boto }:
 
 buildPythonPackage rec {
   pname = "Area53";
   version = "0.94";
-  name = "${pname}-${version}";
 
   src = fetchPypi {
     inherit pname version;

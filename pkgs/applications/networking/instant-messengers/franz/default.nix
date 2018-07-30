@@ -1,5 +1,5 @@
 { stdenv, fetchurl, makeDesktopItem, makeWrapper, autoPatchelfHook
-, xorg, gtk2, atk, glib, pango, gdk_pixbuf, cairo, freetype, fontconfig
+, xorg, atk, glib, pango, gdk_pixbuf, cairo, freetype, fontconfig, gtk2
 , gnome2, dbus, nss, nspr, alsaLib, cups, expat, udev, libnotify, xdg_utils }:
 
 let

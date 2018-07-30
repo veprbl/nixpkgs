@@ -1,5 +1,5 @@
-{ stdenv, fetchurl, fetchpatch, lib
-, pkgconfig, intltool, autoreconfHook, substituteAll
+{ stdenv, fetchurl, lib
+, pkgconfig, intltool, autoreconfHook
 , file, expat, libdrm, xorg, wayland, wayland-protocols, openssl
 , llvmPackages, libffi, libomxil-bellagio, libva-minimal
 , libelf, libvdpau, valgrind-light, python2
@@ -34,10 +34,10 @@ else
 let
   defaultGalliumDrivers =
     if stdenv.isAarch32
-    then ["nouveau" "freedreno" "vc4" "etnaviv" "imx"]
+    then ["virgl" "nouveau" "freedreno" "vc4" "etnaviv" "imx"]
     else if stdenv.isAarch64
-    then ["nouveau" "vc4" ]
-    else ["svga" "i915" "r300" "r600" "radeonsi" "nouveau"];
+    then ["virgl" "nouveau" "vc4" ]
+    else ["virgl" "svga" "i915" "r300" "r600" "radeonsi" "nouveau"];
   defaultDriDrivers =
     if (stdenv.isAarch32 || stdenv.isAarch64)
     then ["nouveau"]
@@ -67,7 +67,7 @@ let
 in
 
 let
-  version = "17.3.8";
+  version = "18.1.4";
   branch  = head (splitString "." version);
 in
 
@@ -81,7 +81,7 @@ let self = stdenv.mkDerivation {
       "ftp://ftp.freedesktop.org/pub/mesa/older-versions/${branch}.x/${version}/mesa-${version}.tar.xz"
       "https://mesa.freedesktop.org/archive/mesa-${version}.tar.xz"
     ];
-    sha256 = "1cd6a4ll5arla3kncxnw9196ak1v4rvnb098aa7lm3n4h7r9p7cg";
+    sha256 = "12zm9hc3v4wnzhqyrvf2kfnz55idzdn82hs3ry940l45bn5lhq9h";
   };
 
   prePatch = "patchShebangs .";
@@ -92,7 +92,7 @@ let self = stdenv.mkDerivation {
   patches = [
     ./glx_ro_text_segm.patch # fix for grsecurity/PaX
     ./symlink-drivers.patch
-    ./missing-include.patch # dev_t needs sys/stat.h, fixes build w/musl
+    ./missing-includes.patch # dev_t needs sys/stat.h, time_t needs time.h, etc.-- fixes build w/musl
   ];
 
   outputs = [ "out" "dev" "drivers" "osmesa" ];
@@ -154,14 +154,14 @@ let self = stdenv.mkDerivation {
     libX11 libXext libxcb libXt libXfixes libxshmfence
     libffi wayland wayland-protocols libvdpau libelf libXvMC
     libomxil-bellagio libva-minimal libpthreadstubs openssl/*or another sha1 provider*/
-    valgrind-light python2
+    valgrind-light python2 python2.pkgs.Mako
   ];
 
   enableParallelBuilding = true;
   doCheck = false;
 
   installFlags = [
-    "sysconfdir=\${out}/etc"
+    "sysconfdir=\${drivers}/etc"
     "localstatedir=\${TMPDIR}"
     "vendorjsondir=\${out}/share/glvnd/egl_vendor.d"
   ];
@@ -204,6 +204,11 @@ let self = stdenv.mkDerivation {
     # Update search path used by glvnd
     for js in $drivers/share/glvnd/egl_vendor.d/*.json; do
       substituteInPlace "$js" --replace '"libEGL_' '"'"$drivers/lib/libEGL_"
+    done
+
+    # Update search path used by pkg-config
+    for pc in $dev/lib/pkgconfig/{d3d,dri,xatracker}.pc; do
+      substituteInPlace "$pc" --replace $out $drivers
     done
   '' + optionalString (vulkanDrivers != []) ''
     # Update search path used by Vulkan (it's pointing to $out but

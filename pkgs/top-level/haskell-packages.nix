@@ -1,5 +1,5 @@
 { buildPackages, pkgs
-, newScope, stdenv
+, newScope
 , buildPlatform, targetPlatform
 }:
 
@@ -8,7 +8,6 @@ let
   integerSimpleExcludes = [
     "ghc7103Binary"
     "ghc821Binary"
-    "ghcCross"
     "ghcjs"
     "ghcjs710"
     "ghcjs80"
@@ -67,19 +66,25 @@ in rec {
       buildLlvmPackages = buildPackages.llvmPackages_39;
       llvmPackages = pkgs.llvmPackages_39;
     };
-    ghc842 = callPackage ../development/compilers/ghc/8.4.2.nix rec {
+    ghc843 = callPackage ../development/compilers/ghc/8.4.3.nix rec {
       bootPkgs = packages.ghc821Binary;
-      inherit (bootPkgs) alex happy;
+      inherit (bootPkgs) alex happy hscolour;
       buildLlvmPackages = buildPackages.llvmPackages_5;
       llvmPackages = pkgs.llvmPackages_5;
+    };
+    ghc861 = callPackage ../development/compilers/ghc/8.6.1.nix rec {
+      bootPkgs = packages.ghc822;
+      inherit (bootPkgs) alex happy hscolour;
+      buildLlvmPackages = buildPackages.llvmPackages_6;
+      llvmPackages = pkgs.llvmPackages_6;
     };
     ghcHEAD = callPackage ../development/compilers/ghc/head.nix rec {
       bootPkgs = packages.ghc821Binary;
-      inherit (bootPkgs) alex happy;
+      inherit (bootPkgs) alex happy hscolour;
       buildLlvmPackages = buildPackages.llvmPackages_5;
       llvmPackages = pkgs.llvmPackages_5;
     };
-    ghcjs = compiler.ghcjs82;
+    ghcjs = compiler.ghcjs84;
     ghcjs710 = packages.ghc7103.callPackage ../development/compilers/ghcjs {
       bootPkgs = packages.ghc7103;
       inherit (pkgs) cabal-install;
@@ -95,7 +100,7 @@ in rec {
       stage0 = ../development/compilers/ghcjs-ng/8.2/stage0.nix;
     };
     ghcjs84 = callPackage ../development/compilers/ghcjs-ng rec {
-      bootPkgs = packages.ghc842;
+      bootPkgs = packages.ghc843;
       inherit (bootPkgs) alex happy;
       ghcjsSrcJson = ../development/compilers/ghcjs-ng/8.4/git.json;
       stage0 = ../development/compilers/ghcjs-ng/8.4/stage0.nix;
@@ -146,26 +151,31 @@ in rec {
       ghc = bh.compiler.ghc822;
       compilerConfig = callPackage ../development/haskell-modules/configuration-ghc-8.2.x.nix { };
     };
-    ghc842 = callPackage ../development/haskell-modules {
-      buildHaskellPackages = bh.packages.ghc842;
-      ghc = bh.compiler.ghc842;
+    ghc843 = callPackage ../development/haskell-modules {
+      buildHaskellPackages = bh.packages.ghc843;
+      ghc = bh.compiler.ghc843;
       compilerConfig = callPackage ../development/haskell-modules/configuration-ghc-8.4.x.nix { };
+    };
+    ghc861 = callPackage ../development/haskell-modules {
+      buildHaskellPackages = bh.packages.ghc861;
+      ghc = bh.compiler.ghc861;
+      compilerConfig = callPackage ../development/haskell-modules/configuration-ghc-8.6.x.nix { };
     };
     ghcHEAD = callPackage ../development/haskell-modules {
       buildHaskellPackages = bh.packages.ghcHEAD;
       ghc = bh.compiler.ghcHEAD;
       compilerConfig = callPackage ../development/haskell-modules/configuration-ghc-head.nix { };
     };
-    ghcjs = packages.ghcjs82;
+    ghcjs = packages.ghcjs84;
     ghcjs710 = callPackage ../development/haskell-modules rec {
       buildHaskellPackages = ghc.bootPkgs;
-      ghc = bh.compiler.ghcjs;
+      ghc = bh.compiler.ghcjs710;
       compilerConfig = callPackage ../development/haskell-modules/configuration-ghc-7.10.x.nix { };
       packageSetConfig = callPackage ../development/haskell-modules/configuration-ghcjs.nix { };
     };
     ghcjs80 = callPackage ../development/haskell-modules rec {
       buildHaskellPackages = ghc.bootPkgs;
-      ghc = bh.compiler.ghcjsHEAD;
+      ghc = bh.compiler.ghcjs80;
       compilerConfig = callPackage ../development/haskell-modules/configuration-ghc-8.0.x.nix { };
       packageSetConfig = callPackage ../development/haskell-modules/configuration-ghcjs.nix { };
     };
@@ -190,6 +200,7 @@ in rec {
         (pkgs.lib.attrNames packages);
     in pkgs.lib.genAttrs integerSimpleGhcNames (name: packages."${name}".override {
       ghc = bh.compiler.integer-simple."${name}";
+      buildHaskellPackages = bh.packages.integer-simple."${name}";
       overrides = _self : _super : {
         integer-simple = null;
         integer-gmp = null;

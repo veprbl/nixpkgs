@@ -1,17 +1,19 @@
-{ stdenv, fetchurl, fetchFromGitHub, fetchpatch, makeWrapper
+{ stdenv, fetchurl, fetchFromGitHub, makeWrapper
 , docutils, perl, pkgconfig, python3, which, ffmpeg_4
 , freefont_ttf, freetype, libass, libpthreadstubs
 , lua, luasocket, libuchardet, libiconv ? null, darwin
 
-, x11Support ? true,
+, x11Support ? stdenv.isLinux,
     libGLU_combined       ? null,
     libX11     ? null,
     libXext    ? null,
-    libXxf86vm ? null
+    libXxf86vm ? null,
+    libXrandr  ? null
 
-, waylandSupport ? false,
-    wayland      ? null,
-    libxkbcommon ? null
+, waylandSupport ? false
+  , wayland           ? null
+  , wayland-protocols ? null
+  , libxkbcommon      ? null
 
 , rubberbandSupport  ? true,  rubberband    ? null
 , xineramaSupport    ? true,  libXinerama   ? null
@@ -36,9 +38,6 @@
 , vapoursynthSupport ? false, vapoursynth   ? null
 , archiveSupport     ? false, libarchive    ? null
 , jackaudioSupport   ? false, libjack2      ? null
-
-# scripts you want to be loaded by default
-, scripts ? []
 }:
 
 with stdenv.lib;
@@ -46,8 +45,8 @@ with stdenv.lib;
 let
   available = x: x != null;
 in
-assert x11Support         -> all available [libGLU_combined libX11 libXext libXxf86vm];
-assert waylandSupport     -> all available [wayland libxkbcommon];
+assert x11Support         -> all available [libGLU_combined libX11 libXext libXxf86vm libXrandr];
+assert waylandSupport     -> all available [wayland wayland-protocols libxkbcommon];
 assert rubberbandSupport  -> available rubberband;
 assert xineramaSupport    -> x11Support && available libXinerama;
 assert xvSupport          -> x11Support && available libXv;
@@ -75,28 +74,29 @@ assert drmSupport         -> available libdrm;
 let
   # Purity: Waf is normally downloaded by bootstrap.py, but
   # for purity reasons this behavior should be avoided.
-  wafVersion = "1.9.15";
+  wafVersion = "2.0.9";
   waf = fetchurl {
     urls = [ "https://waf.io/waf-${wafVersion}"
              "http://www.freehackers.org/~tnagy/release/waf-${wafVersion}" ];
-    sha256 = "0qrnlv91cb0v221w8a0fi4wxm99q2hpz10rkyyk4akcsvww6xrw5";
+    sha256 = "0j7sbn3w6bgslvwwh5v9527w3gi2sd08kskrgxamx693y0b0i3ia";
   };
 in stdenv.mkDerivation rec {
   name = "mpv-${version}";
-  version = "0.28.2";
+  version = "0.29.0";
 
   src = fetchFromGitHub {
     owner = "mpv-player";
     repo  = "mpv";
     rev    = "v${version}";
-    sha256 = "0bldxhqjz7z9fgvx4k40l49awpay17fscp8ypswb459yicy8npmg";
+    sha256 = "0i2nl65diqsjyz28dj07h6d8gq6ix72ysfm0nhs8514hqccaihs3";
   };
 
   postPatch = ''
     patchShebangs ./TOOLS/
   '';
 
-  NIX_LDFLAGS = optionalString x11Support "-lX11 -lXext";
+  NIX_LDFLAGS = optionalString x11Support "-lX11 -lXext "
+              + optionalString stdenv.isDarwin "-framework CoreFoundation";
 
   configureFlags = [
     "--enable-libmpv-shared"
@@ -150,10 +150,10 @@ in stdenv.mkDerivation rec {
     ++ optional vapoursynthSupport vapoursynth
     ++ optional archiveSupport     libarchive
     ++ optionals dvdnavSupport     [ libdvdnav libdvdnav.libdvdread ]
-    ++ optionals x11Support        [ libX11 libXext libGLU_combined libXxf86vm ]
-    ++ optionals waylandSupport    [ wayland libxkbcommon ]
+    ++ optionals x11Support        [ libX11 libXext libGLU_combined libXxf86vm libXrandr ]
+    ++ optionals waylandSupport    [ wayland wayland-protocols libxkbcommon ]
     ++ optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
-      libiconv Cocoa CoreAudio
+      CoreFoundation libiconv Cocoa CoreAudio
     ]);
 
   enableParallelBuilding = true;
@@ -177,7 +177,6 @@ in stdenv.mkDerivation rec {
     ln -s ${freefont_ttf}/share/fonts/truetype/FreeSans.ttf $out/share/mpv/subfont.ttf
     # Ensure youtube-dl is available in $PATH for MPV
     wrapProgram $out/bin/mpv \
-      --add-flags "--scripts=${concatStringsSep "," scripts}" \
       --prefix LUA_PATH : "${luaPath}" \
       --prefix LUA_CPATH : "${luaCPath}" \
   '' + optionalString youtubeSupport ''

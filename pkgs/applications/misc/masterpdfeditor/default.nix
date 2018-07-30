@@ -1,10 +1,10 @@
-{ stdenv, fetchurl, glibc, sane-backends, qtbase, qtsvg, libXext, libX11, libXdmcp, libXau, libxcb, autoPatchelfHook }:
+{ stdenv, fetchurl, sane-backends, qtbase, qtsvg, autoPatchelfHook }:
 let
   version = "4.3.89";
 in stdenv.mkDerivation {
   name = "masterpdfeditor-${version}";
   src = fetchurl {
-    url = "http://get.code-industry.net/public/master-pdf-editor-${version}_qt5.amd64.tar.gz";
+    url = "https://get.code-industry.net/public/master-pdf-editor-${version}_qt5.amd64.tar.gz";
     sha256 = "0k5bzlhqglskiiq86nmy18mnh5bf2w3mr9cq3pibrwn5pisxnxxc";
   };
 

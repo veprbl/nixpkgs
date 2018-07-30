@@ -1,11 +1,13 @@
-{ stdenv, fetchFromGitHub, pkgs, python3Packages, glfw, libunistring, harfbuzz,
-  fontconfig, zlib, pkgconfig, ncurses, imagemagick, makeWrapper, xsel,
+{ stdenv, fetchFromGitHub, python3Packages, glfw, libunistring, harfbuzz,
+  fontconfig, pkgconfig, ncurses, imagemagick, xsel,
   libstartup_notification, libX11, libXrandr, libXinerama, libXcursor,
-  libxkbcommon, libXi, libXext }:
+  libxkbcommon, libXi, libXext, wayland-protocols, wayland,
+  which
+}:
 
 with python3Packages;
 buildPythonApplication rec {
-  version = "0.9.1";
+  version = "0.11.2";
   name = "kitty-${version}";
   format = "other";
 
@@ -13,19 +15,24 @@ buildPythonApplication rec {
     owner = "kovidgoyal";
     repo = "kitty";
     rev = "v${version}";
-    sha256 = "08j2k3852c64z4mgh1j0dgdj6c2alkckpav67lzg1lxsz3w2izh2";
+    sha256 = "0vmxgyxrgaqijwd51ldd8pkz7jn9hdcfib1dqr0ai614286v69hw";
   };
 
   buildInputs = [
     fontconfig glfw ncurses libunistring harfbuzz libX11
     libXrandr libXinerama libXcursor libxkbcommon libXi libXext
+    wayland-protocols wayland
   ];
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig which sphinx ];
 
   postPatch = ''
     substituteInPlace kitty/utils.py \
       --replace "find_library('startup-notification-1')" "'${libstartup_notification}/lib/libstartup-notification-1.so'"
+
+    substituteInPlace docs/Makefile \
+      --replace 'python3 .. +launch $(shell which sphinx-build)' \
+                'PYTHONPATH=$PYTHONPATH:.. HOME=$TMPDIR/nowhere $(shell which sphinx-build)'
     '';
 
   buildPhase = ''

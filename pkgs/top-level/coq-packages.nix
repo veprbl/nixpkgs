@@ -29,6 +29,7 @@ let
       heq = callPackage ../development/coq-modules/heq {};
       HoTT = callPackage ../development/coq-modules/HoTT {};
       interval = callPackage ../development/coq-modules/interval {};
+      iris = callPackage ../development/coq-modules/iris {};
       math-classes = callPackage ../development/coq-modules/math-classes { };
       mathcomp = callPackage ../development/coq-modules/mathcomp { };
       metalib = callPackage ../development/coq-modules/metalib { };
@@ -73,7 +74,7 @@ in rec {
     version = "8.7.2";
   };
   coq_8_8 = callPackage ../applications/science/logic/coq {
-    version = "8.8.0";
+    version = "8.8.1";
   };
 
   coqPackages_8_5 = mkCoqPackages coq_8_5;

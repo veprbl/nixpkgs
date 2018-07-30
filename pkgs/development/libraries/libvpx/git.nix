@@ -35,7 +35,6 @@
 , temporalDenoisingSupport ? true # use temporal denoising instead of spatial denoising
 , coefficientRangeCheckingSupport ? false # decoder checks if intermediate transform coefficients are in valid range
 , vp9HighbitdepthSupport ? true # 10/12 bit color support in VP9
-, experimentalSupport ? false # experimental features
 # Experimental features
 , experimentalSpatialSvcSupport ? false # Spatial scalable video coding
 , experimentalFpMbStatsSupport ? false
@@ -77,6 +76,7 @@ stdenv.mkDerivation rec {
   outputs = [ "bin" "dev" "out" ];
   setOutputFlags = false;
 
+  configurePlatforms = [];
   configureFlags = [
     (enableFeature (vp8EncoderSupport || vp8DecoderSupport) "vp8")
     (enableFeature vp8EncoderSupport "vp8-encoder")
@@ -139,23 +139,7 @@ stdenv.mkDerivation rec {
     (enableFeature (experimentalSpatialSvcSupport ||
                     experimentalFpMbStatsSupport ||
                     experimentalEmulateHardwareSupport) "experimental")
-    # Experimental features
-  ] ++ optional experimentalSpatialSvcSupport "--enable-spatial-svc"
-    ++ optional experimentalFpMbStatsSupport "--enable-fp-mb-stats"
-    ++ optional experimentalEmulateHardwareSupport "--enable-emulate-hardware";
-
-  nativeBuildInputs = [ perl yasm ];
-
-  buildInputs = [ ]
-    ++ optionals unitTestsSupport [ coreutils curl ];
-
-  enableParallelBuilding = true;
-
-  postInstall = ''moveToOutput bin "$bin" '';
-
-  crossAttrs = {
-    configurePlatforms = [];
-    configureFlags = configureFlags ++ [
+  ] ++ optionals (stdenv.hostPlatform != stdenv.buildPlatform) [
       #"--extra-cflags="
       #"--prefix="
       #"--libc="
@@ -175,8 +159,19 @@ stdenv.mkDerivation rec {
                 else "8"
               else ""}-gcc"
       (if hostPlatform.isCygwin then "--enable-static-msvcrt" else "")
-    ];
-  };
+  ] # Experimental features
+    ++ optional experimentalSpatialSvcSupport "--enable-spatial-svc"
+    ++ optional experimentalFpMbStatsSupport "--enable-fp-mb-stats"
+    ++ optional experimentalEmulateHardwareSupport "--enable-emulate-hardware";
+
+  nativeBuildInputs = [ perl yasm ];
+
+  buildInputs = [ ]
+    ++ optionals unitTestsSupport [ coreutils curl ];
+
+  enableParallelBuilding = true;
+
+  postInstall = ''moveToOutput bin "$bin" '';
 
   meta = with stdenv.lib; {
     description = "WebM VP8/VP9 codec SDK";

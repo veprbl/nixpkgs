@@ -2,7 +2,6 @@
 , cairo, gd, libcerf, pango, readline, zlib
 , withTeXLive ? false, texlive
 , withLua ? false, lua
-, emacs ? null
 , libX11 ? null
 , libXt ? null
 , libXpm ? null
@@ -20,11 +19,11 @@ let
   withX = libX11 != null && !aquaterm && !stdenv.isDarwin;
 in
 stdenv.mkDerivation rec {
-  name = "gnuplot-5.2.3";
+  name = "gnuplot-5.2.4";
 
   src = fetchurl {
     url = "mirror://sourceforge/gnuplot/${name}.tar.gz";
-    sha256 = "0977vgjszjpqhz2jahq07zmcmi0k9d6v7wq70ph2klfrb29qrdgy";
+    sha256 = "1jvh8xmd2cvrhlsg88kxwh55wkwx31sg50v1n59slfippl0g058m";
   };
 
   nativeBuildInputs = [ makeWrapper pkgconfig texinfo ] ++ lib.optional withQt qttools;

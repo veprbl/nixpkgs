@@ -4,8 +4,7 @@
 
 buildPythonPackage rec {
   pname = "marshmallow";
-  name = "${pname}-${version}";
-  version = "2.15.0";
+  version = "2.15.3";
 
   meta = {
     homepage = "https://github.com/marshmallow-code/marshmallow";
@@ -18,7 +17,7 @@ buildPythonPackage rec {
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "d3f31fe7be2106b1d783cbd0765ef4e1c6615505514695f33082805f929dd584";
+    sha256 = "171f409d48b44786b7df2793cbd7f1a9062f0fe2c14d547da536b5010f671ade";
   };
 
   propagatedBuildInputs = [ dateutil simplejson ];

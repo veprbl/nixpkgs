@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgconfig, glib, dbus-glib
+{ stdenv, fetchurl, pkgconfig, dbus-glib
 , intltool, libxslt, docbook_xsl, udev, libgudev, libusb1
 , useSystemd ? true, systemd, gobjectIntrospection
 }:
@@ -27,6 +27,8 @@ stdenv.mkDerivation rec {
     ];
 
   NIX_CFLAGS_LINK = "-lgcc_s";
+
+  doCheck = false; # fails with "env: './linux/integration-test': No such file or directory"
 
   installFlags = "historydir=$(TMPDIR)/foo";
 

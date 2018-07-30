@@ -1,8 +1,8 @@
-{ stdenv, lib, buildGoPackage, fetchFromGitHub }:
+{ lib, buildGoPackage, fetchFromGitHub }:
 
 buildGoPackage rec {
   name = "antibody-${version}";
-  version = "3.4.6";
+  version = "3.5.1";
   rev = "v${version}";
   
   goPackagePath = "github.com/getantibody/antibody";
@@ -11,7 +11,7 @@ buildGoPackage rec {
     inherit rev;
     owner  = "getantibody";
     repo   = "antibody";
-    sha256 = "0pvsngvlxv5iw7yj18snslag8c61ji4w3j3rw543ckl6k3f9zq6c";
+    sha256 = "0bqq59vnnm80jiqlhn7wfyzj96nkv8k9zp8i4sgcj8gvk1zq2lbc";
   };
 
   goDeps = ./deps.nix;

@@ -5,9 +5,9 @@
 , perlBindings ? false
 , javahlBindings ? false
 , saslSupport ? false
-, stdenv, fetchurl, apr, aprutil, zlib, sqlite
+, stdenv, fetchurl, apr, aprutil, zlib, sqlite, openssl, lz4, utf8proc
 , apacheHttpd ? null, expat, swig ? null, jdk ? null, python ? null, perl ? null
-, sasl ? null, serf ? null, openssl
+, sasl ? null, serf ? null
 }:
 
 assert bdbSupport -> aprutil.bdbSupport;
@@ -17,7 +17,7 @@ assert javahlBindings -> jdk != null && perl != null;
 
 let
 
-  common = { version, sha256 }: stdenv.mkDerivation (rec {
+  common = { version, sha256, extraBuildInputs ? [ ] }: stdenv.mkDerivation (rec {
     inherit version;
     name = "subversion-${version}";
 
@@ -30,6 +30,7 @@ let
     outputs = [ "out" "dev" "man" ];
 
     buildInputs = [ zlib apr aprutil sqlite openssl ]
+      ++ extraBuildInputs
       ++ stdenv.lib.optional httpSupport serf
       ++ stdenv.lib.optional pythonBindings python
       ++ stdenv.lib.optional perlBindings perl
@@ -88,6 +89,8 @@ let
 
     enableParallelBuilding = true;
 
+    doCheck = false; # fails 10 out of ~2300 tests
+
     meta = {
       description = "A version control system intended to be a compelling replacement for CVS in the open source community";
       homepage = http://subversion.apache.org/;
@@ -111,5 +114,11 @@ in {
   subversion19 = common {
     version = "1.9.7";
     sha256 = "08qn94zaqcclam2spb4h742lvhxw8w5bnrlya0fm0bp17hriicf3";
+  };
+
+  subversion_1_10 = common {
+    version = "1.10.2";
+    sha256 = "127dysfc31q4dhbbxaznh9kqixy9jd44kgwji2gdwj6rb2lf6dav";
+    extraBuildInputs = [ lz4 utf8proc ];
   };
 }

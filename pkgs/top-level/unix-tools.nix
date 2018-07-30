@@ -1,4 +1,4 @@
-{ pkgs, buildEnv, runCommand, hostPlatform, lib }:
+{ pkgs, buildEnv, runCommand, hostPlatform, lib, stdenv }:
 
 # These are some unix tools that are commonly included in the /usr/bin
 # and /usr/sbin directory under more normal distributions. Along with
@@ -10,30 +10,42 @@
 # instance, if your program needs to use "ps", just list it as a build
 # input, not "procps" which requires Linux.
 
-let
-  singleBinary = cmd: providers: let
-      provider = "${lib.getBin providers.${hostPlatform.parsed.kernel.name}}/bin/${cmd}";
-    in runCommand cmd {
-      meta.platforms = map (n: { kernel.name = n; }) (pkgs.lib.attrNames providers);
-    } ''
-      mkdir -p $out/bin
+with lib;
 
-      if ! [ -x "${provider}" ]; then
-        echo "Cannot find command ${cmd}"
+let
+  version = "1003.1-2008";
+
+  singleBinary = cmd: providers: let
+      provider = providers.${hostPlatform.parsed.kernel.name};
+      bin = "${getBin provider}/bin/${cmd}";
+      manpage = "${getOutput "man" provider}/share/man/man1/${cmd}.1.gz";
+    in runCommand "${cmd}-${version}" {
+      meta.platforms = map (n: { kernel.name = n; }) (attrNames providers);
+      passthru = { inherit provider; };
+      preferLocalBuild = true;
+    } ''
+      if ! [ -x ${bin} ]; then
+        echo Cannot find command ${cmd}
         exit 1
       fi
 
-      ln -s "${provider}" "$out/bin/${cmd}"
+      mkdir -p $out/bin
+      ln -s ${bin} $out/bin/${cmd}
+
+      if [ -f ${manpage} ]; then
+        mkdir -p $out/share/man/man1
+        ln -s ${manpage} $out/share/man/man1/${cmd}.1.gz
+      fi
     '';
 
   # more is unavailable in darwin
-  # just use less
-  more_compat = runCommand "more" {} ''
+  # so we just use less
+  more_compat = runCommand "more-${version}" {} ''
     mkdir -p $out/bin
     ln -s ${pkgs.less}/bin/less $out/bin/more
   '';
 
-  bins = lib.mapAttrs singleBinary {
+  bins = mapAttrs singleBinary {
     # singular binaries
     arp = {
       linux = pkgs.nettools;
@@ -45,6 +57,16 @@ let
     };
     eject = {
       linux = pkgs.utillinux;
+    };
+    getconf = {
+      linux = if hostPlatform.libc == "glibc" then pkgs.glibc
+              else pkgs.netbsd.getconf;
+      darwin = pkgs.darwin.system_cmds;
+    };
+    getent = {
+      linux = if hostPlatform.libc == "glibc" then pkgs.glibc
+              else pkgs.netbsd.getent;
+      darwin = pkgs.netbsd.getent;
     };
     getopt = {
       linux = pkgs.utillinux;
@@ -69,6 +91,14 @@ let
     ifconfig = {
       linux = pkgs.nettools;
       darwin = pkgs.darwin.network_cmds;
+    };
+    killall = {
+      linux = pkgs.psmisc;
+      darwin = pkgs.darwin.shell_cmds;
+    };
+    locale = {
+      linux = pkgs.glibc;
+      darwin = pkgs.netbsd.locale;
     };
     logger = {
       linux = pkgs.utillinux;
@@ -124,21 +154,33 @@ let
     wall = {
       linux = pkgs.utillinux;
     };
+    watch = {
+      linux = pkgs.procps;
+
+      # watch is the only command from procps that builds currently on
+      # Darwin. Unfortunately no other implementations exist currently!
+      darwin = pkgs.callPackage ../os-specific/linux/procps-ng {};
+    };
     write = {
       linux = pkgs.utillinux;
       darwin = pkgs.darwin.basic_cmds;
     };
+    xxd = {
+      linux = pkgs.vim;
+      darwin = pkgs.vim;
+    };
   };
 
-  makeCompat = name': value: buildEnv {
-    name = name' + "-compat";
-    paths = value;
-  };
+  makeCompat = pname: paths:
+    buildEnv {
+      name = "${pname}-${version}";
+      inherit paths;
+    };
 
   # Compatibility derivations
   # Provided for old usage of these commands.
   compat = with bins; lib.mapAttrs makeCompat {
-    procps = [ ps sysctl top ];
+    procps = [ ps sysctl top watch ];
     utillinux = [ fsck fdisk getopt hexdump mount
                   script umount whereis write col ];
     nettools = [ arp hostname ifconfig netstat route ];

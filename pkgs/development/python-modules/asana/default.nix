@@ -1,11 +1,10 @@
-{ lib, buildPythonPackage, pytest, requests, requests_oauthlib, six
+{ buildPythonPackage, pytest, requests, requests_oauthlib, six
 , fetchFromGitHub, responses, stdenv
 }:
 
 buildPythonPackage rec {
   pname = "asana";
   version = "0.7.0";
-  name = "${pname}-${version}";
 
   src = fetchFromGitHub {
     owner = "asana";

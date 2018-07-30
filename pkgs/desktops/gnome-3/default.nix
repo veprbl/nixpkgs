@@ -1,18 +1,6 @@
-{ pkgs, lib }:
+{ config, pkgs, lib }:
 
-let
-
-  pkgsFun = overrides:
-    let
-      self = self_ // overrides;
-      self_ = with self; {
-
-  overridePackages = f:
-    let newself = pkgsFun (f newself self);
-    in newself;
-
-  callPackage = pkgs.newScope self;
-
+lib.makeScope pkgs.newScope (self: with self; {
   # Convert a version to branch (3.26.18 → 3.26)
   # Used for finding packages on GNOME mirrors
   versionBranch = version: builtins.concatStringsSep "." (lib.take 2 (lib.splitString "." version));
@@ -52,15 +40,13 @@ let
     hitori gnome-taquin
   ];
 
-  inherit (pkgs) atk glib gobjectIntrospection gtk2 webkitgtk gtk3 gtkmm3 libcanberra-gtk2
+  inherit (pkgs) atk glib gobjectIntrospection gspell webkitgtk gtk3 gtkmm3
     libgtop libgudev libhttpseverywhere librsvg libsecret gdk_pixbuf gtksourceview gtksourceview4
     easytag meld orca rhythmbox shotwell gnome-usage
     clutter clutter-gst clutter-gtk cogl gtkvnc libdazzle;
 
-  inherit (pkgs.gnome2) ORBit2;
   libsoup = pkgs.libsoup.override { gnomeSupport = true; };
   libchamplain = pkgs.libchamplain.override { libsoup = libsoup; };
-  orbit = ORBit2;
   gnome3 = self // { recurseForDerivations = false; };
   gtk = gtk3;
   gtkmm = gtkmm3;
@@ -91,8 +77,6 @@ let
   evince = callPackage ./core/evince { }; # ToDo: dbus would prevent compilation, enable tests
 
   evolution-data-server = callPackage ./core/evolution-data-server { };
-
-  gconf = callPackage ./core/gconf { };
 
   geocode-glib = callPackage ./core/geocode-glib { };
 
@@ -305,6 +289,8 @@ let
 
   gnome-power-manager = callPackage ./apps/gnome-power-manager { };
 
+  gnome-sound-recorder = callPackage ./apps/gnome-sound-recorder { };
+
   gnome-weather = callPackage ./apps/gnome-weather { };
 
   nautilus-sendto = callPackage ./apps/nautilus-sendto { };
@@ -375,8 +361,6 @@ let
 
   gitg = callPackage ./misc/gitg { };
 
-  gspell = callPackage ./misc/gspell { };
-
   libgnome-games-support = callPackage ./misc/libgnome-games-support { };
 
   libgda = callPackage ./misc/libgda { };
@@ -403,6 +387,7 @@ let
 
   gnome-packagekit = callPackage ./misc/gnome-packagekit { };
 
+} // lib.optionalAttrs (config.allowAliases or true) {
 #### Legacy aliases
 
   evolution_data_server = evolution-data-server; # added 2018-02-25
@@ -421,7 +406,6 @@ let
   gnome_themes_standard = gnome-themes-standard; # added 2018-02-25
   gnome-tweak-tool = gnome-tweaks; # added 2018-03-21
   gsettings_desktop_schemas = gsettings-desktop-schemas; # added 2018-02-25
-  libcanberra_gtk2 = libcanberra-gtk2; # added 2018-02-25
   libgames-support = libgnome-games-support; # added 2018-03-14
   libgnome_keyring = libgnome-keyring; # added 2018-02-25
   inherit (pkgs) rarian; # added 2018-04-25
@@ -434,7 +418,4 @@ let
   yelp_xsl = yelp-xsl; # added 2018-02-25
   yelp_tools = yelp-tools; # added 2018-02-25
 
-    };
-  in self; # pkgsFun
-
-in pkgsFun {}
+})

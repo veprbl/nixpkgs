@@ -38,7 +38,7 @@ let
   inherit (stdenv) buildPlatform hostPlatform;
 
   inherit (stdenv.lib) fix' extends makeOverridable;
-  inherit (haskellLib) overrideCabal;
+  inherit (haskellLib) overrideCabal getHaskellBuildInputs;
 
   mkDerivationImpl = pkgs.callPackage ./generic-builder.nix {
     inherit stdenv;
@@ -97,13 +97,25 @@ let
       };
     in stdenv.lib.makeOverridable drvScope (auto // manualArgs);
 
-  mkScope = scope: pkgs // pkgs.xorg // pkgs.gnome2 // { inherit stdenv; } // scope;
+  mkScope = scope: let
+      ps = pkgs.__splicedPackages;
+      scopeSpliced = pkgs.splicePackages {
+        pkgsBuildBuild = scope.buildHaskellPackages.buildHaskellPackages;
+        pkgsBuildHost = scope.buildHaskellPackages;
+        pkgsBuildTarget = {};
+        pkgsHostHost = {};
+        pkgsHostTarget = scope;
+        pkgsTargetTarget = {};
+      } // {
+        # Don't splice these
+        inherit (scope) ghc buildHaskellPackages;
+      };
+    in ps // ps.xorg // ps.gnome2 // { inherit stdenv; } // scopeSpliced;
   defaultScope = mkScope self;
   callPackage = drv: args: callPackageWithScope defaultScope drv args;
 
   withPackages = packages: buildPackages.callPackage ./with-packages-wrapper.nix {
-    inherit (self) llvmPackages;
-    inherit ghc;
+    inherit (self) ghc llvmPackages;
     inherit packages;
   };
 
@@ -116,11 +128,11 @@ let
       preferLocalBuild = true;
       phases = ["installPhase"];
       LANG = "en_US.UTF-8";
-      LOCALE_ARCHIVE = pkgs.lib.optionalString buildPlatform.isLinux "${buildPackages.glibcLocales}/lib/locale/locale-archive";
+      LOCALE_ARCHIVE = pkgs.lib.optionalString (buildPlatform.libc == "glibc") "${buildPackages.glibcLocales}/lib/locale/locale-archive";
       installPhase = ''
         export HOME="$TMP"
         mkdir -p "$out"
-        cabal2nix --compiler=${ghc.haskellCompilerName} --system=${hostPlatform.system} ${sha256Arg} "${src}" ${extraCabal2nixOptions} > "$out/default.nix"
+        cabal2nix --compiler=${self.ghc.haskellCompilerName} --system=${hostPlatform.system} ${sha256Arg} "${src}" ${extraCabal2nixOptions} > "$out/default.nix"
       '';
   };
 
@@ -151,7 +163,7 @@ let
 
 in package-set { inherit pkgs stdenv callPackage; } self // {
 
-    inherit mkDerivation callPackage haskellSrc2nix hackage2nix;
+    inherit mkDerivation callPackage haskellSrc2nix hackage2nix buildHaskellPackages;
 
     inherit (haskellLib) packageSourceOverrides;
 
@@ -162,7 +174,7 @@ in package-set { inherit pkgs stdenv callPackage; } self // {
       filter = path: type:
                  pkgs.lib.hasSuffix "${name}.cabal" path ||
                  baseNameOf path == "package.yaml";
-      expr = haskellSrc2nix {
+      expr = self.haskellSrc2nix {
         inherit name;
         src = if pkgs.lib.canCleanSource src
                 then pkgs.lib.cleanSourceWith { inherit src filter; }
@@ -238,7 +250,7 @@ in package-set { inherit pkgs stdenv callPackage; } self // {
     shellFor = { packages, withHoogle ? false, ... } @ args:
       let
         selected = packages self;
-        packageInputs = builtins.map (p: p.override { mkDerivation = haskellLib.extractBuildInputs p.compiler; }) selected;
+        packageInputs = builtins.map getHaskellBuildInputs selected;
         haskellInputs =
           builtins.filter
             (input: pkgs.lib.all (p: input.outPath != p.outPath) selected)

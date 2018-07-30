@@ -1,10 +1,11 @@
-{ stdenv, hostPlatform, fetchurl, gettext, pkgconfig, perl, python
+{ stdenv, fetchurl, gettext, pkgconfig, perl, python
 , libiconv, zlib, libffi, pcre, libelf, gnome3
 # use utillinuxMinimal to avoid circular dependency (utillinux, systemd, glib)
 , utillinuxMinimal ? null
 
 # this is just for tests (not in closure of any regular package)
-, coreutils, dbus_daemon, libxml2, tzdata, desktop-file-utils, shared-mime-info, doCheck ? false
+, coreutils, dbus, libxml2, tzdata, desktop-file-utils
+, shared-mime-info, doCheck ? false
 }:
 
 with stdenv.lib;
@@ -54,7 +55,10 @@ stdenv.mkDerivation rec {
 
   patches = optional stdenv.isDarwin ./darwin-compilation.patch
     ++ optional doCheck ./skip-timer-test.patch
-    ++ [ ./schema-override-variable.patch ];
+    ++ optionals stdenv.hostPlatform.isMusl [
+      ./quark_init_on_demand.patch
+      ./gobject_init_on_demand.patch
+    ] ++ [ ./schema-override-variable.patch ];
 
   outputs = [ "out" "dev" "devdoc" ];
   outputBin = "dev";
@@ -65,7 +69,7 @@ stdenv.mkDerivation rec {
     ++ optionals stdenv.isLinux [ utillinuxMinimal ] # for libmount
     ++ optionals doCheck [ tzdata libxml2 desktop-file-utils shared-mime-info ];
 
-  nativeBuildInputs = [ pkgconfig perl python ];
+  nativeBuildInputs = [ pkgconfig perl python gettext ];
 
   propagatedBuildInputs = [ zlib libffi gettext libiconv ];
 
@@ -118,7 +122,7 @@ stdenv.mkDerivation rec {
     export XDG_RUNTIME_HOME="$TMP"
     export HOME="$TMP"
     export XDG_DATA_DIRS="${desktop-file-utils}/share:${shared-mime-info}/share"
-    export G_TEST_DBUS_DAEMON="${dbus_daemon.out}/bin/dbus-daemon"
+    export G_TEST_DBUS_DAEMON="${dbus.daemon}/bin/dbus-daemon"
     export PATH="$PATH:$(pwd)/gobject"
     echo "PATH=$PATH"
 

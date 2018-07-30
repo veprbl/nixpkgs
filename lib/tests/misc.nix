@@ -45,6 +45,21 @@ runTests {
     expected = true;
   };
 
+  testBitAnd = {
+    expr = (bitAnd 3 10);
+    expected = 2;
+  };
+
+  testBitOr = {
+    expr = (bitOr 3 10);
+    expected = 11;
+  };
+
+  testBitXor = {
+    expr = (bitXor 3 10);
+    expected = 9;
+  };
+
 # STRINGS
 
   testConcatMapStrings = {
@@ -364,10 +379,6 @@ runTests {
                 in (y.merge) { a = 10; };
 
           resRem7 = res6.replace (a: removeAttrs a ["a"]);
-
-          resReplace6 = let x = defaultOverridableDelayableArgs id { a = 7; mergeAttrBy = { a = builtins.add; }; };
-                            x2 = x.merge { a = 20; }; # now we have 27
-                        in (x2.replace) { a = 10; }; # and override the value by 10
 
           # fixed tests (delayed args): (when using them add some comments, please)
           resFixed1 =

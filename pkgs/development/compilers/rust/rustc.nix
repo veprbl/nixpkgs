@@ -13,7 +13,7 @@
 , doCheck ? true
 , broken ? false
 , buildPlatform, hostPlatform
-} @ args:
+}:
 
 let
   inherit (stdenv.lib) optional optionalString;
@@ -63,7 +63,7 @@ stdenv.mkDerivation {
                 ++ optional (targets != []) "--target=${target}"
                 ++ optional (!forceBundledLLVM) "--llvm-root=${llvmShared}";
 
-  # The boostrap.py will generated a Makefile that then executes the build.
+  # The bootstrap.py will generated a Makefile that then executes the build.
   # The BOOTSTRAP_ARGS used by this Makefile must include all flags to pass
   # to the bootstrap builder.
   postConfigure = ''
@@ -145,10 +145,11 @@ stdenv.mkDerivation {
   outputs = [ "out" "man" "doc" ];
   setOutputFlags = false;
 
-  # Disable codegen units for the tests.
+  # Disable codegen units and hardening for the tests.
   preCheck = ''
     export RUSTFLAGS=
     export TZDIR=${tzdata}/share/zoneinfo
+    export hardeningDisable=all
   '' +
   # Ensure TMPDIR is set, and disable a test that removing the HOME
   # variable from the environment falls back to another home

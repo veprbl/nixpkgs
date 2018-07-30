@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, replace, curl, expat, zlib, bzip2
+{ stdenv, fetchurl, fetchpatch, curl, expat, zlib, bzip2
 , useNcurses ? false, ncurses, useQt4 ? false, qt4, ps
 , buildPlatform, hostPlatform
 }:
@@ -76,6 +76,8 @@ stdenv.mkDerivation rec {
         --subst-var-by libc_lib ${getLib cc.libc}
       configureFlags="--parallel=''${NIX_BUILD_CORES:-1} $configureFlags"
     '';
+
+  hardeningDisable = [ "format" ];
 
   meta = {
     homepage = https://cmake.org;

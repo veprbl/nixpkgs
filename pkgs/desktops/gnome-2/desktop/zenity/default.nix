@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgconfig, cairo, libxml2, libxslt, glib, gtk, pango, atk
+{ stdenv, fetchurl, pkgconfig, libxml2, libxslt, gtk
 , gnome-doc-utils, intltool, libglade, libX11, which, docbook_xml_dtd_412 }:
 
 stdenv.mkDerivation {
@@ -13,4 +13,6 @@ stdenv.mkDerivation {
   buildInputs = [ gtk libglade libxml2 libxslt libX11 docbook_xml_dtd_412 ];
 
   nativeBuildInputs = [ pkgconfig intltool gnome-doc-utils which ];
+
+  doCheck = false; # fails, tries to access the net
 }

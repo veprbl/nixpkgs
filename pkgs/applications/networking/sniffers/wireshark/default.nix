@@ -1,5 +1,5 @@
-{ stdenv, lib, fetchurl, pkgconfig, pcre, perl, flex, bison, gettext, libpcap, libnl, c-ares
-, gnutls, libgcrypt, libgpgerror, geoip, openssl, lua5, makeDesktopItem, python, libcap, glib
+{ stdenv, fetchurl, pkgconfig, pcre, perl, flex, bison, gettext, libpcap, libnl, c-ares
+, gnutls, libgcrypt, libgpgerror, geoip, openssl, lua5, python, libcap, glib
 , libssh, zlib, cmake, extra-cmake-modules, fetchpatch, makeWrapper
 , withGtk ? false, gtk3 ? null, librsvg ? null, gsettings-desktop-schemas ? null, wrapGAppsHook ? null
 , withQt ? false, qt5 ? null
@@ -12,15 +12,15 @@ assert withQt  -> !withGtk && qt5  != null;
 with stdenv.lib;
 
 let
-  version = "2.4.6";
+  version = "2.6.2";
   variant = if withGtk then "gtk" else if withQt then "qt" else "cli";
 
 in stdenv.mkDerivation {
   name = "wireshark-${variant}-${version}";
 
   src = fetchurl {
-    url = "http://www.wireshark.org/download/src/all-versions/wireshark-${version}.tar.xz";
-    sha256 = "1znmjg40pf81ks9lnm6ilx0cy32xan5g19gbqkkhj35whb95z5lf";
+    url = "https://www.wireshark.org/download/src/all-versions/wireshark-${version}.tar.xz";
+    sha256 = "153h6prxamv5a62f3pfadkry0y57696xrgxfy2gfy5xswdg8kcj9";
   };
 
   cmakeFlags = [
@@ -52,6 +52,10 @@ in stdenv.mkDerivation {
     })
     ++ stdenv.lib.optional stdenv.isDarwin ./cmake.patch;
 
+  preBuild = ''
+    export LD_LIBRARY_PATH="$PWD/run"
+  '';
+
   postInstall = if stdenv.isDarwin then ''
     ${optionalString withQt ''
       mkdir -p $out/Applications
@@ -72,6 +76,8 @@ in stdenv.mkDerivation {
     ''}
     ${optionalString withQt ''
       install -Dm644 -t $out/share/applications ../wireshark.desktop
+      wrapProgram $out/bin/wireshark \
+        --set QT_PLUGIN_PATH ${qt5.qtbase.bin}/${qt5.qtbase.qtPluginPrefix}
     ''}
 
     substituteInPlace $out/share/applications/*.desktop \

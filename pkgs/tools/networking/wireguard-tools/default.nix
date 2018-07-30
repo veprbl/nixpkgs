@@ -1,46 +1,44 @@
-{ stdenv, lib, fetchzip, libmnl, useSystemd ? stdenv.isLinux }:
+{ stdenv, fetchzip, libmnl ? null, makeWrapper ? null, wireguard-go ? null }:
 
-let
-  inherit (lib) optional optionalString;
-in
+with stdenv.lib;
 
 stdenv.mkDerivation rec {
   name = "wireguard-tools-${version}";
-  version = "0.0.20180514";
+  version = "0.0.20180708";
 
   src = fetchzip {
-    url    = "https://git.zx2c4.com/WireGuard/snapshot/WireGuard-${version}.tar.xz";
-    sha256 = "15z0s1i8qyq1fpw8j6rky53ffrpp3f49zn1022jwdslk4g0ncaaj";
+    url = "https://git.zx2c4.com/WireGuard/snapshot/WireGuard-${version}.tar.xz";
+    sha256 = "04c3vynr7rfmnnw7gccbap9xcfi89ma09lq66c4bzjzxny1n2wdz";
   };
 
-  preConfigure = "cd src";
+  sourceRoot = "source/src/tools";
 
-  buildInputs = optional stdenv.isLinux libmnl;
-
-  enableParallelBuilding = true;
+  nativeBuildInputs = [ (optional stdenv.isDarwin makeWrapper) ];
+  buildInputs = [ (optional stdenv.isLinux libmnl) ];
 
   makeFlags = [
-    "WITH_BASHCOMPLETION=yes"
-    "WITH_WGQUICK=yes"
-    "WITH_SYSTEMDUNITS=${if useSystemd then "yes" else "no"}"
     "DESTDIR=$(out)"
     "PREFIX=/"
-    "-C" "tools"
+    "WITH_BASHCOMPLETION=yes"
+    "WITH_SYSTEMDUNITS=yes"
+    "WITH_WGQUICK=yes"
   ];
 
-  buildPhase = "make tools";
-
-  postInstall = optionalString useSystemd ''
+  postFixup = ''
     substituteInPlace $out/lib/systemd/system/wg-quick@.service \
       --replace /usr/bin $out/bin
+  '' + optionalString stdenv.isDarwin ''
+    for f in $out/bin/*; do
+      wrapProgram $f --prefix PATH : ${wireguard-go}/bin
+    done
   '';
 
   meta = with stdenv.lib; {
-    homepage     = https://www.wireguard.com/;
+    description = "Tools for the WireGuard secure network tunnel";
     downloadPage = https://git.zx2c4.com/WireGuard/refs/;
-    description  = " Tools for the WireGuard secure network tunnel";
-    maintainers  = with maintainers; [ ericsagnes mic92 zx2c4 ];
-    license      = licenses.gpl2;
-    platforms    = platforms.unix;
+    homepage = https://www.wireguard.com/;
+    license = licenses.gpl2;
+    maintainers = with maintainers; [ ericsagnes mic92 zx2c4 ];
+    platforms = platforms.unix;
   };
 }

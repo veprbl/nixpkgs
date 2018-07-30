@@ -43,10 +43,8 @@ let
   # The wrapper scripts use 'cat' and 'grep', so we may need coreutils.
   coreutils_bin = if nativeTools then "" else getBin coreutils;
 
-  dashlessTarget = stdenv.lib.replaceStrings ["-"] ["_"] targetPlatform.config;
-
   # See description in cc-wrapper.
-  infixSalt = dashlessTarget;
+  infixSalt = replaceStrings ["-" "."] ["_" "_"] targetPlatform.config;
 
   # The dynamic linker has different names on different platforms. This is a
   # shell glob that ought to match it.
@@ -74,7 +72,7 @@ in
 
 stdenv.mkDerivation {
   name = targetPrefix
-    + (if name != "" then name else "${bintoolsName}-wrapper")
+    + (if name != "" then name else stdenv.lib.removePrefix targetPrefix "${bintoolsName}-wrapper")
     + (stdenv.lib.optionalString (bintools != null && bintoolsVersion != "") "-${bintoolsVersion}");
 
   preferLocalBuild = true;
@@ -185,12 +183,20 @@ stdenv.mkDerivation {
           "mips64"   = "btsmip";
           "mips64el" = "ltsmip";
         }.${targetPlatform.parsed.cpu.name}
+      else if targetPlatform.isPowerPC then "powerpc"
+      else if targetPlatform.isSparc then "sparc"
       else throw "unknown emulation for platform: " + targetPlatform.config;
     in targetPlatform.platform.bfdEmulation or (fmt + sep + arch);
 
+  strictDeps = true;
   depsTargetTargetPropagated = extraPackages;
 
-  setupHook = ./setup-hook.sh;
+  wrapperName = "BINTOOLS_WRAPPER";
+
+  setupHooks = [
+    ../setup-hooks/role.bash
+    ./setup-hook.sh
+  ];
 
   postFixup =
     ''
@@ -289,7 +295,7 @@ stdenv.mkDerivation {
       set +u
       substituteAll ${./add-flags.sh} $out/nix-support/add-flags.sh
       substituteAll ${./add-hardening.sh} $out/nix-support/add-hardening.sh
-      substituteAll ${../cc-wrapper/utils.sh} $out/nix-support/utils.sh
+      substituteAll ${../wrapper-common/utils.bash} $out/nix-support/utils.bash
 
       ##
       ## Extra custom steps
@@ -300,7 +306,7 @@ stdenv.mkDerivation {
 
   inherit dynamicLinker expand-response-params;
 
-  # for substitution in utils.sh
+  # for substitution in utils.bash
   expandResponseParams = "${expand-response-params}/bin/expand-response-params";
 
   meta =

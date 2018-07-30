@@ -2,14 +2,14 @@
 
 stdenv.mkDerivation rec {
   name = "yarn-${version}";
-  version = "1.6.0";
+  version = "1.9.2";
 
   src = fetchzip {
     url = "https://github.com/yarnpkg/yarn/releases/download/v${version}/yarn-v${version}.tar.gz";
-    sha256 = "0bblp1jy4s9y5rpcqn40w61qwsmxr342xkcn7ykk88i7sng2cgfw";
+    sha256 = "0bk006zs1bk6nwj9x07ry314fgxi21sk79h1paljbs6yzrv62h4g";
   };
 
-  buildInputs = [makeWrapper nodejs];
+  buildInputs = [ makeWrapper nodejs ];
 
   installPhase = ''
     mkdir -p $out/{bin,libexec/yarn/}

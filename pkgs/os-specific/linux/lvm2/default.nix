@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, pkgconfig, systemd, libudev, utillinux, coreutils, libuuid
+{ stdenv, fetchurl, fetchpatch, pkgconfig, systemd, udev, utillinux, libuuid
 , thin-provisioning-tools, enable_dmeventd ? false }:
 
 let
@@ -27,7 +27,7 @@ stdenv.mkDerivation {
   ];
 
   nativeBuildInputs = [ pkgconfig ];
-  buildInputs = [ libudev libuuid thin-provisioning-tools ];
+  buildInputs = [ udev libuuid thin-provisioning-tools ];
 
   preConfigure =
     ''
@@ -58,6 +58,8 @@ stdenv.mkDerivation {
       sha256 = "1ivbj3sphgf8n1ykfiv5rbw7s8dgnj5jcr9jl2v8cwf28lkacw5l";
     })
   ];
+
+  doCheck = false; # requires root
 
   # To prevent make install from failing.
   preInstall = "installFlags=\"OWNER= GROUP= confdir=$out/etc\"";

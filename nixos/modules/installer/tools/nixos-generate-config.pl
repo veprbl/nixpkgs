@@ -619,7 +619,7 @@ $bootLoaderConfig
   # services.xserver.desktopManager.plasma5.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.extraUsers.guest = {
+  # users.users.guest = {
   #   isNormalUser = true;
   #   uid = 1000;
   # };
@@ -628,7 +628,7 @@ $bootLoaderConfig
   # compatible, in order to avoid breaking some software such as database
   # servers. You should change this only after NixOS release notes say you
   # should.
-  system.nixos.stateVersion = "${\(qw(@release@))}"; # Did you read the comment?
+  system.stateVersion = "${\(qw(@release@))}"; # Did you read the comment?
 
 }
 EOF

@@ -20,7 +20,7 @@
 { stdenv, lib
 , buildPlatform, hostPlatform
 , buildPackages
-, fetchurl, fetchpatch ? null
+, fetchurl ? null
 , linuxHeaders ? null
 , gd ? null, libpng ? null
 , bison
@@ -187,6 +187,8 @@ stdenv.mkDerivation ({
   '';
 
   preBuild = lib.optionalString withGd "unset NIX_DONT_SET_RPATH";
+
+  doCheck = false; # fails
 
   meta = {
     homepage = http://www.gnu.org/software/libc/;

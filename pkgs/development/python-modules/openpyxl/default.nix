@@ -9,12 +9,11 @@
 
 buildPythonPackage rec {
   pname = "openpyxl";
-  version = "2.5.2";
-  name = "${pname}-${version}";
+  version = "2.5.4";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "63165adcc806a5c281febb344f3594541f778f05b99a3a5e802941a3c0a85f71";
+    sha256 = "9239b74faf175dc4276a5fc277655fc53c2f704ded39e680d35e6a39e1913f69";
   };
 
   checkInputs = [ pytest ];

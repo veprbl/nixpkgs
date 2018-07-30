@@ -12,13 +12,15 @@
 , withpcre2 ? true
 , sendEmailSupport
 , darwin
+, withLibsecret ? false
+, pkgconfig, glib, libsecret
 }:
 
 assert sendEmailSupport -> perlSupport;
 assert svnSupport -> perlSupport;
 
 let
-  version = "2.16.3";
+  version = "2.18.0";
   svn = subversionClient.override { perlBindings = perlSupport; };
 in
 
@@ -27,19 +29,23 @@ stdenv.mkDerivation {
 
   src = fetchurl {
     url = "https://www.kernel.org/pub/software/scm/git/git-${version}.tar.xz";
-    sha256 = "0j1dwvg5llnj3g0fp8hdgpms4hp90qw9f6509vqw30dhwplrjpfn";
+    sha256 = "14hfwfkrci829a9316hnvkglnqqw1p03cw9k56p4fcb078wbwh4b";
   };
 
   outputs = [ "out" ] ++ stdenv.lib.optional perlSupport "gitweb";
 
   hardeningDisable = [ "format" ];
 
+  enableParallelBuilding = true;
+
+  ## Patch
+
   patches = [
     ./docbook2texi.patch
-    ./symlinks-in-bin.patch
     ./git-sh-i18n.patch
     ./ssh-path.patch
     ./git-send-email-honor-PATH.patch
+    ./installCheck-path.patch
   ];
 
   postPatch = ''
@@ -47,6 +53,10 @@ stdenv.mkDerivation {
       substituteInPlace "$x" \
         --subst-var-by ssh "${openssh}/bin/ssh"
     done
+
+    # Fix references to gettext introduced by ./git-sh-i18n.patch
+    substituteInPlace git-sh-i18n.sh \
+        --subst-var-by gettext ${gettext}
   '';
 
   nativeBuildInputs = [ gettext perl ]
@@ -56,8 +66,8 @@ stdenv.mkDerivation {
     ++ stdenv.lib.optionals perlSupport [ perl ]
     ++ stdenv.lib.optionals guiSupport [tcl tk]
     ++ stdenv.lib.optionals withpcre2 [ pcre2 ]
-    ++ stdenv.lib.optionals stdenv.isDarwin [ darwin.Security ];
-
+    ++ stdenv.lib.optionals stdenv.isDarwin [ darwin.Security ]
+    ++ stdenv.lib.optionals withLibsecret [ pkgconfig glib libsecret ];
 
   # required to support pthread_cancel()
   NIX_LDFLAGS = stdenv.lib.optionalString (!stdenv.cc.isClang) "-lgcc_s"
@@ -67,6 +77,10 @@ stdenv.mkDerivation {
     "ac_cv_fread_reads_directories=yes"
     "ac_cv_snprintf_returns_bogus=no"
   ];
+
+  preBuild = ''
+    makeFlagsArray+=( perllibdir=$out/$(perl -MConfig -wle 'print substr $Config{installsitelib}, 1 + length $Config{siteprefixexp}') )
+  '';
 
   makeFlags = [
     "prefix=\${out}"
@@ -79,23 +93,32 @@ stdenv.mkDerivation {
   ++ stdenv.lib.optionals stdenv.hostPlatform.isMusl ["NO_SYS_POLL_H=1" "NO_GETTEXT=YesPlease"]
   ++ stdenv.lib.optional withpcre2 "USE_LIBPCRE2=1";
 
-  # build git-credential-osxkeychain if darwin
-  postBuild = stdenv.lib.optionalString stdenv.isDarwin ''
-    pushd $PWD/contrib/credential/osxkeychain/
-    make
-    popd
-  '';
 
-  # FIXME: "make check" requires Sparse; the Makefile must be tweaked
-  # so that `SPARSE_FLAGS' corresponds to the current architecture...
-  #doCheck = true;
+  postBuild = ''
+    make -C contrib/subtree
+  '' + (stdenv.lib.optionalString stdenv.isDarwin ''
+    make -C contrib/credential/osxkeychain
+  '') + (stdenv.lib.optionalString withLibsecret ''
+    make -C contrib/credential/libsecret
+  '');
+
+
+  ## Install
+
+  # WARNING: Do not `rm` or `mv` files from the source tree; use `cp` instead.
+  #          We need many of these files during the installCheckPhase.
 
   installFlags = "NO_INSTALL_HARDLINKS=1";
 
-  preInstall = stdenv.lib.optionalString stdenv.isDarwin ''
+  preInstall = (stdenv.lib.optionalString stdenv.isDarwin ''
     mkdir -p $out/bin
-    mv $PWD/contrib/credential/osxkeychain/git-credential-osxkeychain $out/bin
-  '';
+    ln -s $out/share/git/contrib/credential/osxkeychain/git-credential-osxkeychain $out/bin/
+    rm -f $PWD/contrib/credential/osxkeychain/git-credential-osxkeychain.o
+  '') + (stdenv.lib.optionalString withLibsecret ''
+    mkdir -p $out/bin
+    ln -s $out/share/git/contrib/credential/libsecret/git-credential-libsecret $out/bin/
+    rm -f $PWD/contrib/credential/libsecret/git-credential-libsecret.o
+  '');
 
   postInstall =
     ''
@@ -104,15 +127,12 @@ stdenv.mkDerivation {
       }
 
       # Install git-subtree.
-      pushd contrib/subtree
-      make
-      make install ${stdenv.lib.optionalString withManual "install-doc"}
-      popd
+      make -C contrib/subtree install ${stdenv.lib.optionalString withManual "install-doc"}
       rm -rf contrib/subtree
 
       # Install contrib stuff.
       mkdir -p $out/share/git
-      mv contrib $out/share/git/
+      cp -a contrib $out/share/git/
       ln -s "$out/share/git/contrib/credential/netrc/git-credential-netrc" $out/bin/
       mkdir -p $out/share/emacs/site-lisp
       ln -s "$out/share/git/contrib/emacs/"*.el $out/share/emacs/site-lisp/
@@ -145,9 +165,6 @@ stdenv.mkDerivation {
       perl -0777 -i -pe "$SCRIPT" \
         $out/libexec/git-core/git-{sh-setup,filter-branch,merge-octopus,mergetool,quiltimport,request-pull,stash,submodule,subtree,web--browse}
 
-      # Fix references to gettext.
-      substituteInPlace $out/libexec/git-core/git-sh-i18n \
-          --subst-var-by gettext ${gettext}
 
       # Also put git-http-backend into $PATH, so that we can use smart
       # HTTP(s) transports for pushing
@@ -225,7 +242,64 @@ EOF
   '';
 
 
-  enableParallelBuilding = true;
+  ## InstallCheck
+
+  doCheck = false;
+  doInstallCheck = true;
+
+  installCheckTarget = "test";
+
+  # see also installCheckFlagsArray
+  installCheckFlags = "DEFAULT_TEST_TARGET=prove";
+
+  preInstallCheck = ''
+    installCheckFlagsArray+=(
+      GIT_PROVE_OPTS="--jobs $NIX_BUILD_CORES --failures --state=failed,save"
+      GIT_TEST_INSTALLED=$out/bin
+      ${stdenv.lib.optionalString (!svnSupport) "NO_SVN_TESTS=y"}
+    )
+
+    function disable_test {
+      local test=$1 pattern=$2
+      if [ $# -eq 1 ]; then
+        mv t/{,skip-}$test.sh || true
+      else
+        sed -i t/$test.sh \
+          -e "/^ *test_expect_.*$pattern/,/^ *' *\$/{s/^/#/}"
+      fi
+    }
+
+    # Shared permissions are forbidden in sandbox builds.
+    disable_test t0001-init shared
+    disable_test t1301-shared-repo
+
+    # Our patched gettext never fallbacks
+    disable_test t0201-gettext-fallbacks
+
+    ${stdenv.lib.optionalString (!sendEmailSupport) ''
+      # Disable sendmail tests
+      disable_test t9001-send-email
+    ''}
+
+    # XXX: I failed to understand why this one fails.
+    # Could someone try to re-enable it on the next release ?
+    # Tested to fail: 2.18.0
+    disable_test t1700-split-index "null sha1"
+
+    # Tested to fail: 2.18.0
+    disable_test t7005-editor "editor with a space"
+    disable_test t7005-editor "core.editor with a space"
+
+    # Tested to fail: 2.18.0
+    disable_test t9902-completion "sourcing the completion script clears cached --options"
+  '' + stdenv.lib.optionalString stdenv.hostPlatform.isMusl ''
+    # Test fails (as of 2.17.0, musl 1.1.19)
+    disable_test t3900-i18n-commit
+    # Fails largely due to assumptions about BOM
+    # Tested to fail: 2.18.0
+    disable_test t0028-working-tree-encoding
+  '';
+
 
   meta = {
     homepage = https://git-scm.com/;

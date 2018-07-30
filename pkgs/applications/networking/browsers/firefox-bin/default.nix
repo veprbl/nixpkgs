@@ -5,7 +5,7 @@
 , curl
 , cups
 , dbus-glib
-, dbus_libs
+, dbus
 , fontconfig
 , freetype
 , gconf
@@ -19,9 +19,11 @@
 , libXScrnSaver
 , libxcb
 , libXcomposite
+, libXcursor
 , libXdamage
 , libXext
 , libXfixes
+, libXi
 , libXinerama
 , libXrender
 , libXt
@@ -45,6 +47,7 @@
 , gnused
 , gnugrep
 , gnupg
+, ffmpeg
 }:
 
 let
@@ -90,7 +93,7 @@ stdenv.mkDerivation {
       curl
       cups
       dbus-glib
-      dbus_libs
+      dbus
       fontconfig
       freetype
       gconf
@@ -103,10 +106,12 @@ stdenv.mkDerivation {
       libX11
       libXScrnSaver
       libXcomposite
+      libXcursor
       libxcb
       libXdamage
       libXext
       libXfixes
+      libXi
       libXinerama
       libXrender
       libXt
@@ -122,6 +127,7 @@ stdenv.mkDerivation {
       libpulseaudio
       (lib.getDev libpulseaudio)
       systemd
+      ffmpeg
     ] + ":" + stdenv.lib.makeSearchPathOutput "lib" "lib64" [
       stdenv.cc.cc
     ];

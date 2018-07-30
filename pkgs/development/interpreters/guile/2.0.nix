@@ -2,7 +2,7 @@
 , buildPlatform, hostPlatform
 , fetchpatch, fetchurl, makeWrapper, gawk, pkgconfig
 , libffi, libtool, readline, gmp, boehmgc, libunistring
-, coverageAnalysis ? null, gnu ? null
+, coverageAnalysis ? null
 }:
 
 # Do either a coverage analysis build or a standard build.
@@ -89,6 +89,7 @@
   # make check doesn't work on darwin
   # On Linuxes+Hydra the tests are flaky; feel free to investigate deeper.
   doCheck = false;
+  doInstallCheck = doCheck;
 
   setupHook = ./setup-hook-2.0.sh;
 

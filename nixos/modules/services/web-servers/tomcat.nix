@@ -110,7 +110,7 @@ in
       webapps = mkOption {
         type = types.listOf types.package;
         default = [ tomcat.webapps ];
-        defaultText = "[ tomcat.webapps ]";
+        defaultText = "[ pkgs.tomcat85.webapps ]";
         description = "List containing WAR files or directories with WAR files which are web applications to be deployed on Tomcat";
       };
 
@@ -166,12 +166,12 @@ in
 
   config = mkIf config.services.tomcat.enable {
 
-    users.extraGroups = singleton
+    users.groups = singleton
       { name = "tomcat";
         gid = config.ids.gids.tomcat;
       };
 
-    users.extraUsers = singleton
+    users.users = singleton
       { name = "tomcat";
         uid = config.ids.uids.tomcat;
         description = "Tomcat user";
