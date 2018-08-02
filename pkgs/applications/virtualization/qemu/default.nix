@@ -34,7 +34,7 @@ let
 in
 
 stdenv.mkDerivation rec {
-  version = "3.0.0-rc1";
+  version = "3.0.0-rc3";
   name = "qemu-"
     + stdenv.lib.optionalString xenSupport "xen-"
     + stdenv.lib.optionalString hostCpuOnly "host-cpu-only-"
@@ -43,7 +43,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "http://wiki.qemu.org/download/qemu-${version}.tar.bz2";
-    sha256 = "0ckmh737wda634ikzxk4kx294gnq9gx5m5wpl6rvh68m35qsm31s";
+    sha256 = "1c9j5iikkyinsf7ms44lhji72nc0n2ad68nr8vj00a9cs7d52qmx";
   };
 
   buildInputs =
