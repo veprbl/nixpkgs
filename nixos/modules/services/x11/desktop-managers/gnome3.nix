@@ -150,7 +150,9 @@ in {
     environment.variables.GNOME_SESSION_DEBUG = optionalString cfg.debug "1";
 
     # Override default mimeapps
-    environment.variables.XDG_DATA_DIRS = [ "${mimeAppsList}/share" ];
+    environment.variables.XDG_DATA_DIRS = [
+      "${mimeAppsList}/share" "${pkgs.gnome3.gnome-session}/share"
+    ];
 
     # Override GSettings schemas
     environment.variables.NIX_GSETTINGS_OVERRIDES_DIR = "${nixos-gsettings-desktop-schemas}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas";
