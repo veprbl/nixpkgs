@@ -72,12 +72,13 @@ let
       ${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY DBUS_SESSION_BUS_ADDRESS
 
       # Load X defaults.
-      # FIXME: Check XDG_SESSION_TYPE against x11
-      ${xorg.xrdb}/bin/xrdb -merge ${xresourcesXft}
-      if test -e ~/.Xresources; then
-          ${xorg.xrdb}/bin/xrdb -merge ~/.Xresources
-      elif test -e ~/.Xdefaults; then
-          ${xorg.xrdb}/bin/xrdb -merge ~/.Xdefaults
+      if test x"$XDG_SESSION_TYPE" = "xx11"; then
+          ${xorg.xrdb}/bin/xrdb -merge ${xresourcesXft}
+          if test -e ~/.Xresources; then
+              ${xorg.xrdb}/bin/xrdb -merge ~/.Xresources
+          elif test -e ~/.Xdefaults; then
+              ${xorg.xrdb}/bin/xrdb -merge ~/.Xdefaults
+          fi
       fi
 
       # Speed up application start by 50-150ms according to
@@ -194,6 +195,11 @@ let
 
       ${concatMapStrings (pkg: ''
         ${xorg.lndir}/bin/lndir ${pkg}/share/xsessions $out/share/xsessions
+      '') cfg.displayManager.extraSessionFilePackages}
+
+      mkdir -p "$out/share/wayland-sessions"
+      ${concatMapStrings (pkg: ''
+        ${xorg.lndir}/bin/lndir ${pkg}/share/wayland-sessions $out/share/wayland-sessions
       '') cfg.displayManager.extraSessionFilePackages}
     '';
 
