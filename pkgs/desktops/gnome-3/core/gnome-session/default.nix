@@ -1,6 +1,6 @@
 { fetchurl, stdenv, substituteAll, meson, ninja, pkgconfig, gnome3, glib, gtk, gsettings-desktop-schemas
 , gnome-desktop, dbus, json-glib, libICE, xmlto, docbook_xsl, docbook_xml_dtd_412, python3
-, libxslt, gettext, makeWrapper, systemd, xorg, epoxy }:
+, libxslt, gettext, makeWrapper, systemd, xorg, epoxy, gnugrep, bash }:
 
 stdenv.mkDerivation rec {
   name = "gnome-session-${version}";
@@ -16,6 +16,8 @@ stdenv.mkDerivation rec {
       src = ./fix-paths.patch;
       gsettings = "${glib.bin}/bin/gsettings";
       dbusLaunch = "${dbus.lib}/bin/dbus-launch";
+      grep = "${gnugrep}/bin/grep";
+      bash = "${bash}/bin/bash";
     })
   ];
 
@@ -32,9 +34,20 @@ stdenv.mkDerivation rec {
     gnome3.gnome-settings-daemon gsettings-desktop-schemas systemd epoxy
   ];
 
+  # TODO: switch to substituteAll with placeholder
+  # https://github.com/NixOS/nix/issues/1846
+  # https://github.com/NixOS/nixpkgs/pull/37693
   postPatch = ''
     chmod +x meson_post_install.py # patchShebangs requires executable file
     patchShebangs meson_post_install.py
+
+
+    substituteInPlace gnome-session/gsm-manager.c \
+      --subst-var-by gschemasCompiled "$out/share/gsettings-schemas/${name}/glib-2.0/schemas"
+    substituteInPlace gnome-session/gsm-session-save.c \
+      --subst-var-by gschemasCompiled "$out/share/gsettings-schemas/${name}/glib-2.0/schemas"
+    substituteInPlace tools/gnome-session-selector.c \
+      --subst-var-by gschemasCompiled "$out/share/gsettings-schemas/${name}/glib-2.0/schemas"
   '';
 
   preFixup = ''
