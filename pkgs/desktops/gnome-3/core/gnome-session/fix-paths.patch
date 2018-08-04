@@ -1,5 +1,21 @@
 --- a/gnome-session/gnome-session.in
 +++ b/gnome-session/gnome-session.in
+@@ -3,11 +3,11 @@
+ if [ "x$XDG_SESSION_TYPE" = "xwayland" ] &&
+    [ "x$XDG_SESSION_CLASS" != "xgreeter" ] &&
+    [  -n "$SHELL" ] &&
+-   grep -q "$SHELL" /etc/shells &&
+-   ! (echo "$SHELL" | grep -q "false") &&
+-   ! (echo "$SHELL" | grep -q "nologin"); then
++   @grep@ -q "$SHELL" /etc/shells &&
++   ! (echo "$SHELL" | @grep@ -q "false") &&
++   ! (echo "$SHELL" | @grep@ -q "nologin"); then
+   if [ "$1" != '-l' ]; then
+-    exec bash -c "exec -l '$SHELL' -c '$0 -l $*'"
++    exec @bash@ -c "exec -l '$SHELL' -c '$0 -l $*'"
+   else
+     shift
+   fi
 @@ -13,7 +13,7 @@
    fi
  fi
@@ -20,3 +36,42 @@
                  g_set_error (error, 
                               G_SPAWN_ERROR,
                               G_SPAWN_ERROR_FAILED,
+--- a/gnome-session/gsm-manager.c
++++ b/gnome-session/gsm-manager.c
+@@ -3192,7 +3192,9 @@ gsm_manager_init (GsmManager *manager)
+ 
+         manager->priv = GSM_MANAGER_GET_PRIVATE (manager);
+ 
+-        manager->priv->settings = g_settings_new (GSM_MANAGER_SCHEMA);
++        GSettingsSchemaSource *schema_source = g_settings_schema_source_new_from_directory("@gschemasCompiled@", NULL, FALSE, NULL);
++        GSettingsSchema *schema = g_settings_schema_source_lookup(schema_source, GSM_MANAGER_SCHEMA, FALSE);
++        manager->priv->settings = g_settings_new_full (schema, NULL, NULL);
+         manager->priv->session_settings = g_settings_new (SESSION_SCHEMA);
+         manager->priv->screensaver_settings = g_settings_new (SCREENSAVER_SCHEMA);
+         manager->priv->lockdown_settings = g_settings_new (LOCKDOWN_SCHEMA);
+--- a/gnome-session/gsm-session-save.c
++++ b/gnome-session/gsm-session-save.c
+@@ -164,7 +164,9 @@ gsm_session_save (GsmStore  *client_store,
+         /* Clear one shot key autosave in the event its set (so that it's actually
+          * one shot only)
+          */
+-        settings = g_settings_new (GSM_MANAGER_SCHEMA);
++        GSettingsSchemaSource *schema_source = g_settings_schema_source_new_from_directory("@gschemasCompiled@", NULL, FALSE, NULL);
++        GSettingsSchema *schema = g_settings_schema_source_lookup(schema_source, GSM_MANAGER_SCHEMA, FALSE);
++        settings = g_settings_new_full (schema, NULL, NULL);
+         g_settings_set_boolean (settings, KEY_AUTOSAVE_ONE_SHOT, FALSE);
+         g_object_unref (settings);
+ 
+--- a/tools/gnome-session-selector.c
++++ b/tools/gnome-session-selector.c
+@@ -570,7 +570,9 @@ auto_save_next_session (void)
+ {
+         GSettings *settings;
+ 
+-        settings = g_settings_new (GSM_MANAGER_SCHEMA);
++        GSettingsSchemaSource *schema_source = g_settings_schema_source_new_from_directory("@gschemasCompiled@", NULL, FALSE, NULL);
++        GSettingsSchema *schema = g_settings_schema_source_lookup(schema_source, GSM_MANAGER_SCHEMA, FALSE);
++        settings = g_settings_new_full (schema, NULL, NULL);
+         g_settings_set_boolean (settings, KEY_AUTOSAVE_ONE_SHOT, TRUE);
+         g_object_unref (settings);
+ }
