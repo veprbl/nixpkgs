@@ -1,7 +1,7 @@
-{ stdenv, fetchurl, lib
+{ stdenv, fetchurl, lib, recurseIntoAttrs
 , pkgconfig, intltool, autoreconfHook
 , file, expat, libdrm, xorg, wayland, wayland-protocols, openssl
-, llvmPackages, libffi, libomxil-bellagio, libva-minimal
+, llvmPackages_6, libffi, libomxil-bellagio, libva-minimal
 , libelf, libvdpau, valgrind-light, python2
 , libglvnd
 , enableRadv ? true
@@ -20,6 +20,8 @@
     (I suppose on non-NixOS one would create the appropriate symlinks from there.)
   - libOSMesa is in $osmesa (~4 MB)
 */
+
+# Floating point texture patents have expired, so upstream enables them by default since 17.3.
 
 with stdenv.lib;
 
@@ -60,24 +62,40 @@ let
     if vulkan_ == null
     then defaultVulkanDrivers
     else vulkan_;
-in
 
-let
-  version = "18.1.5";
-  branch  = head (splitString "." version);
-in
+  llvmPackages = llvmPackages_6; # common for all versions, for now
 
-let self = stdenv.mkDerivation {
+  mkVer = extra: let self =
+    stdenv.mkDerivation (commonAttrs (extra // { inherit self; }));
+    in self;
+
+  # the package-set returned from this file
+  result = recurseIntoAttrs {
+    mesa_noglu   = result."18.1";
+    mesa_drivers = result."18.0".drivers;
+
+    "18.1" = mkVer {
+      version = "18.1.5";
+      sha256 = "69dbe6f1a6660386f5beb85d4fcf003ee23023ed7b9a603de84e9a37e8d98dea";
+    };
+    "18.0" = mkVer {
+      version = "18.0.5";
+      sha256 = "5187bba8d72aea78f2062d134ec6079a508e8216062dce9ec9048b5eb2c4fc6b";
+    };
+  };
+
+# common stuff, un-indented intentionally
+commonAttrs = { self, version, sha256 }: {
   name = "mesa-noglu-${version}";
 
   src =  fetchurl {
-    urls = [
+    urls = let branch = head (splitString "." version); in [
       "ftp://ftp.freedesktop.org/pub/mesa/mesa-${version}.tar.xz"
       "ftp://ftp.freedesktop.org/pub/mesa/${version}/mesa-${version}.tar.xz"
       "ftp://ftp.freedesktop.org/pub/mesa/older-versions/${branch}.x/${version}/mesa-${version}.tar.xz"
       "https://mesa.freedesktop.org/archive/mesa-${version}.tar.xz"
     ];
-    sha256 = "69dbe6f1a6660386f5beb85d4fcf003ee23023ed7b9a603de84e9a37e8d98dea";
+    inherit sha256;
   };
 
   prePatch = "patchShebangs .";
@@ -267,4 +285,6 @@ let self = stdenv.mkDerivation {
     maintainers = with maintainers; [ vcunat ];
   };
 };
-in self
+
+in result
+

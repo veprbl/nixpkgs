@@ -11017,17 +11017,10 @@ with pkgs;
 
   libGLDarwinOr = alternative: if stdenv.isDarwin then libGLDarwin else alternative;
 
-  mesa_noglu = callPackage ../development/libraries/mesa {
-    llvmPackages = llvmPackages_6;
-  };
+  mesa_versioned = callPackages ../development/libraries/mesa { };
+  inherit (mesa_versioned) mesa_noglu mesa_drivers;
 
   mesa_glu =  callPackage ../development/libraries/mesa-glu { };
-
-  # NOTE: 2018-07-12: legacy alias:
-  # gcsecurity bussiness is done: https://www.theregister.co.uk/2018/02/08/bruce_perens_grsecurity_anti_slapp/
-  # floating point textures patents are expired,
-  # so package reduced to alias
-  mesa_drivers = mesa_noglu.drivers;
 
   ## End libGL/libGLU/Mesa stuff
 
