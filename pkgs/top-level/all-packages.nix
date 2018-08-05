@@ -18365,6 +18365,8 @@ with pkgs;
 
   lightdm-mini-greeter = callPackage ../applications/display-managers/lightdm-mini-greeter { };
 
+  lightdm-webkit2-greeter = libsForQt5.callPackage ../applications/display-managers/lightdm/web-greeter.nix { };
+
   slic3r = callPackage ../applications/misc/slic3r { };
 
   slic3r-prusa3d = callPackage ../applications/misc/slic3r/prusa3d.nix { };
