@@ -10,14 +10,6 @@ let
 
   videoDrivers = config.services.xserver.videoDrivers;
 
-  makePackage = p: pkgs.buildEnv {
-    name = "mesa-drivers+txc-${p.mesa_drivers.version}";
-    paths =
-      [ p.mesa_drivers
-        (if cfg.s3tcSupport then p.libtxc_dxtn else p.libtxc_dxtn_s2tc)
-      ];
-  };
-
   package = pkgs.buildEnv {
     name = "opengl-drivers";
     paths = [ cfg.package ] ++ cfg.extraPackages;
@@ -147,8 +139,8 @@ in
     environment.variables.XDG_DATA_DIRS =
       [ "/run/opengl-driver/share" ] ++ optional cfg.driSupport32Bit "/run/opengl-driver-32/share";
 
-    hardware.opengl.package = mkDefault (makePackage pkgs);
-    hardware.opengl.package32 = mkDefault (makePackage pkgs_i686);
+    hardware.opengl.package   = mkDefault pkgs.mesa_drivers;
+    hardware.opengl.package32 = mkDefault pkgs_i686.mesa_drivers;
 
     boot.extraModulePackages = optional (elem "virtualbox" videoDrivers) kernelPackages.virtualboxGuestAdditions;
   };

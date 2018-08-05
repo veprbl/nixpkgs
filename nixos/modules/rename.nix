@@ -135,6 +135,8 @@ with lib;
     (mkRenamedOptionModule [ "services" "xserver" "s3tcSupport" ] [ "hardware" "opengl" "s3tcSupport" ])
     (mkRenamedOptionModule [ "hardware" "opengl" "videoDrivers" ] [ "services" "xserver" "videoDrivers" ])
     (mkRenamedOptionModule [ "services" "xserver" "vaapiDrivers" ] [ "hardware" "opengl" "extraPackages" ])
+    (mkRemovedOptionModule [ "hardware" "opengl" "s3tcSupport" ]
+      "mesa now has built-in S3TC, as patents have expired")
 
     (mkRenamedOptionModule [ "services" "mysql55" ] [ "services" "mysql" ])
 
