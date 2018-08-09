@@ -16727,8 +16727,9 @@ with pkgs;
   wlroots = callPackage ../development/libraries/wlroots { };
   rootston = wlroots.bin;
   orbment = callPackage ../applications/window-managers/orbment { };
-  sway = callPackage ../applications/window-managers/sway { };
+  sway-old = callPackage ../applications/window-managers/sway { };
   sway-git = callPackage ../applications/window-managers/sway/git.nix { };
+  sway = sway-git;
 
   velox = callPackage ../applications/window-managers/velox {
     stConf = config.st.conf or null;
