@@ -4,15 +4,17 @@
 }:
 
 let pname = "wlroots";
-    version = "unstable-2018-03-16";
+    version = "unstable-2018-08-08";
 in stdenv.mkDerivation rec {
   name = "${pname}-${version}";
 
   src = fetchFromGitHub {
     owner = "swaywm";
     repo = "wlroots";
-    rev = "9cc875429b40e2567b219f8e9ffd23316d136204";
-    sha256 = "1prhic3pyf9n65qfg5akzkc9qv2z3ab60dpcacr7wgr9nxrvnsdq";
+    rev = "28b0a406";
+    sha256 = "07y7y11jaxaf55gdigz7r41868vgz3fdfrlngr4w29942lnbfl0v";
+    #rev = "ce0ab4d4b5f4f396e807c1c580274d68b3efa43c";
+    #sha256 = "1prhic3pyf9n65qfg5akzkc9qv2z3ab60dpcacr7wgr9nxrvnsdq";
   };
 
   # $out for the library and $bin for rootston
@@ -44,6 +46,6 @@ in stdenv.mkDerivation rec {
     maintainers = with maintainers; [ primeos ];
     # Marked as broken until the first official/stable release (upstream
     # request). See #38344 for the public discussion.
-    broken = true;
+    #broken = true;
   };
 }
