@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, meson, ninja, pkgconfig, yacc, xkeyboard_config, libxcb, libX11, doxygen }:
+{ stdenv, fetchurl, fetchpatch, meson, ninja, pkgconfig, yacc, xkeyboard_config, libxcb, libX11, doxygen, wayland, wayland-protocols }:
 
 stdenv.mkDerivation rec {
   name = "libxkbcommon-0.8.0";
@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
   outputs = [ "out" "dev" "doc" ];
 
   nativeBuildInputs = [ meson ninja pkgconfig yacc doxygen ];
-  buildInputs = [ xkeyboard_config libxcb ];
+  buildInputs = [ xkeyboard_config libxcb wayland wayland-protocols ];
 
   patches = [
     # darwin compatibility
@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
   ];
 
   mesonFlags = [
-    "-Denable-wayland=false"
+    #"-Denable-wayland=false"
     "-Dxkb-config-root=${xkeyboard_config}/etc/X11/xkb"
     "-Dx-locale-root=${libX11.out}/share/X11/locale"
   ];
