@@ -2,7 +2,7 @@
 , meson, ninja, pkgconfig, asciidoc, libxslt, docbook_xsl
 , wayland, wayland-protocols, wlroots, libxkbcommon, pcre, json_c, dbus
 , pango, cairo, libinput, libcap, pam, gdk_pixbuf, libpthreadstubs
-, libXdmcp
+, libXdmcp, scdoc
 , buildDocs ? true
 }:
 
@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [
     meson pkgconfig ninja
-  ] ++ stdenv.lib.optional buildDocs [ asciidoc libxslt docbook_xsl ];
+  ] ++ stdenv.lib.optional buildDocs [ asciidoc libxslt docbook_xsl scdoc ];
   buildInputs = [
     wayland wayland-protocols wlroots libxkbcommon pcre json_c dbus
     pango cairo libinput libcap pam gdk_pixbuf libpthreadstubs
