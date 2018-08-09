@@ -32,7 +32,13 @@ stdenv.mkDerivation rec {
     "-Dsway_version=${version}"
     "-Dc_args='-D_LD_LIBRARY_PATH=\"/run/opengl-driver/lib:/run/opengl-driver-32/lib\"'"
   ];
+
   #cmakeFlags = "-DVERSION=${version} -DLD_LIBRARY_PATH=/run/opengl-driver/lib:/run/opengl-driver-32/lib";
+
+  postInstall = ''
+    substituteInPlace $out/share/wayland-sessions/sway.desktop \
+      --replace =sway =$out/bin/sway
+  '';
 
   meta = with stdenv.lib; {
     description = "i3-compatible window manager for Wayland";
