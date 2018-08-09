@@ -1,5 +1,5 @@
 { version
-, sha256_32bit
+, sha256_32bit ? null
 , sha256_64bit
 , settingsSha256
 , persistencedSha256
@@ -23,6 +23,7 @@
 with stdenv.lib;
 
 assert (!libsOnly) -> kernel != null;
+assert (versionOlder version "391") -> sha256_32bit != null;
 
 let
   nameSuffix = optionalString (!libsOnly) "-${kernel.version}";
