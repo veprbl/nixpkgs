@@ -30,6 +30,7 @@ stdenv.mkDerivation rec {
 
   mesonFlags = [
     "-Dsway_version=${version}"
+    "-Dc_args='-D_LD_LIBRARY_PATH=\"/run/opengl-driver/lib:/run/opengl-driver-32/lib\"'"
   ];
   #cmakeFlags = "-DVERSION=${version} -DLD_LIBRARY_PATH=/run/opengl-driver/lib:/run/opengl-driver-32/lib";
 
