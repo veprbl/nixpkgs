@@ -27,6 +27,12 @@ in stdenv.mkDerivation rec {
     xcbutilwm libX11 libcap xcbutilimage xcbutilerrors mesa_noglu
   ];
 
+  mesonFlags = [
+    "-Denable-rootson=true"
+    "-Denable-examples=true"
+    "-Denable-xwayland=true"
+  ];
+
   # Install rootston (the reference compositor) to $bin
   postInstall = ''
     mkdir -p $bin/bin
