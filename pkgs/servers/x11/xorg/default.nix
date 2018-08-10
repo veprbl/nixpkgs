@@ -999,9 +999,9 @@ let
       sha256 = "1ahxhmdqp4bhb90zmc275rmf5wixqra4bnw9pqnzyl1w3598g30q";
     };
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libxslt libpthreadstubs python libXau xcbproto libXdmcp ];
+    buildInputs = [ libxslt libpthreadstubs python libXau xcbproto xorgproto libXdmcp ];
     meta.platforms = stdenv.lib.platforms.unix;
-  }) // {inherit libxslt libpthreadstubs python libXau xcbproto libXdmcp ;};
+  }) // {inherit libxslt libpthreadstubs python libXau xcbproto xorgproto libXdmcp ;};
 
   libxkbfile = (mkDerivation "libxkbfile" {
     name = "libxkbfile-1.0.9";
