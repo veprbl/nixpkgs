@@ -11,7 +11,7 @@ let
 in
 {
   bdftopcf = attrs: attrs // {
-    buildInputs = attrs.buildInputs ++ [ xorg.xproto xorg.fontsproto ];
+    buildInputs = attrs.buildInputs ++ [ xorg.xorgproto xorg.xorgproto ];
   };
 
   bitmap = attrs: attrs // {
@@ -151,7 +151,7 @@ in
   };
 
   compositeproto = attrs: attrs // {
-    propagatedBuildInputs = [ xorg.fixesproto ];
+    propagatedBuildInputs = [ xorg.xorgproto ];
   };
 
   libICE = attrs: attrs // {
@@ -189,7 +189,7 @@ in
 
   libXext = attrs: attrs // {
     outputs = [ "out" "dev" "man" "doc" ];
-    propagatedBuildInputs = [ xorg.xproto xorg.libXau ];
+    propagatedBuildInputs = [ xorg.xorgproto xorg.libXau ];
     configureFlags = attrs.configureFlags or []
       ++ malloc0ReturnsNullCrossFlag;
   };
@@ -228,7 +228,7 @@ in
     outputs = [ "out" "dev" "doc" ];
     configureFlags = attrs.configureFlags or []
       ++ malloc0ReturnsNullCrossFlag;
-    propagatedBuildInputs = [ xorg.renderproto ];
+    propagatedBuildInputs = [ xorg.xorgproto ];
   };
 
   libXres = attrs: attrs // {
@@ -241,7 +241,7 @@ in
 
   libXvMC = attrs: attrs // {
     outputs = [ "out" "dev" "doc" ];
-    buildInputs = attrs.buildInputs ++ [xorg.renderproto];
+    buildInputs = attrs.buildInputs ++ [xorg.xorgproto];
   };
 
   libXp = attrs: attrs // {
@@ -440,7 +440,7 @@ in
             sha256 = "0mv4ilpqi5hpg182mzqn766frhi6rw48aba3xfbaj4m82v0lajqc";
           };
           nativeBuildInputs = [ pkgconfig ];
-          buildInputs = [ dri2proto dri3proto renderproto libdrm openssl libX11 libXau libXaw libxcb xcbutil xcbutilwm xcbutilimage xcbutilkeysyms xcbutilrenderutil libXdmcp libXfixes libxkbfile libXmu libXpm libXrender libXres libXt ];
+          buildInputs = [ xorgproto libdrm openssl libX11 libXau libXaw libxcb xcbutil xcbutilwm xcbutilimage xcbutilkeysyms xcbutilrenderutil libXdmcp libXfixes libxkbfile libXmu libXpm libXrender libXres libXt ];
           meta.platforms = stdenv.lib.platforms.unix;
         } else if (args.abiCompat == "1.18") then {
             name = "xorg-server-1.18.4";
@@ -450,7 +450,7 @@ in
               sha256 = "1j1i3n5xy1wawhk95kxqdc54h34kg7xp4nnramba2q8xqfr5k117";
             };
             nativeBuildInputs = [ pkgconfig ];
-            buildInputs = [ dri2proto dri3proto renderproto libdrm openssl libX11 libXau libXaw libxcb xcbutil xcbutilwm xcbutilimage xcbutilkeysyms xcbutilrenderutil libXdmcp libXfixes libxkbfile libXmu libXpm libXrender libXres libXt ];
+            buildInputs = [ xorgproto libdrm openssl libX11 libXau libXaw libxcb xcbutil xcbutilwm xcbutilimage xcbutilkeysyms xcbutilrenderutil libXdmcp libXfixes libxkbfile libXmu libXpm libXrender libXres libXt ];
             postPatch = stdenv.lib.optionalString stdenv.isLinux "sed '1i#include <malloc.h>' -i include/os.h";
             meta.platforms = stdenv.lib.platforms.unix;
         } else throw "unsupported xorg abiCompat ${args.abiCompat} for ${attrs_passed.name}";
@@ -461,14 +461,21 @@ in
       commonBuildInputs = attrs.buildInputs ++ [ xtrans ];
       commonPropagatedBuildInputs = [
         args.zlib args.libGL args.libGLU args.dbus
+        /*
         xf86bigfontproto glproto xf86driproto
         compositeproto scrnsaverproto resourceproto
         xf86dgaproto
-        dmxproto /*libdmx not used*/ xf86vidmodeproto
-        recordproto libXext pixman libXfont libxshmfence args.libunwind
+        dmxproto # libdmx not used
+        xf86vidmodeproto
+        recordproto
+        */
+        libXext pixman libXfont libxshmfence args.libunwind
+        /*
         damageproto xcmiscproto  bigreqsproto
         inputproto xextproto randrproto renderproto presentproto
         dri2proto dri3proto kbproto xineramaproto resourceproto scrnsaverproto videoproto
+        */
+        xorgproto
         libXfont2
       ];
       # XQuartz requires two compilations: the first to get X / XQuartz,
@@ -611,7 +618,7 @@ in
       "--with-launchagents-dir=\${out}/LaunchAgents"
     ];
     propagatedBuildInputs = [ xorg.xauth ]
-                         ++ lib.optionals isDarwin [ xorg.libX11 xorg.xproto ];
+                         ++ lib.optionals isDarwin [ xorg.libX11 xorg.xorgproto ];
     prePatch = ''
       sed -i 's|^defaultserverargs="|&-logfile \"$HOME/.xorg.log\"|p' startx.cpp
     '';
@@ -659,17 +666,17 @@ in
     buildInputs = with xorg; attrs.buildInputs ++ [libXt libxkbfile];
   };
 
-  kbproto = attrs: attrs // {
-    outputs = [ "out" "doc" ];
-  };
-
-  xextproto = attrs: attrs // {
-    outputs = [ "out" "doc" ];
-  };
-
-  xproto = attrs: attrs // {
-    outputs = [ "out" "doc" ];
-  };
+#  kbproto = attrs: attrs // {
+#    outputs = [ "out" "doc" ];
+#  };
+#
+#  xextproto = attrs: attrs // {
+#    outputs = [ "out" "doc" ];
+#  };
+#
+#  xproto = attrs: attrs // {
+#    outputs = [ "out" "doc" ];
+#  };
 
   xrdb = attrs: attrs // {
     configureFlags = "--with-cpp=${args.mcpp}/bin/mcpp";
@@ -685,9 +692,9 @@ in
     '';
   };
 
-  xorgproto = attrs: attrs // {
-    configureFlags = (attrs.configureFlags or []) ++ [
-      "--enable-legacy"
-    ];
-  };
+#  xorgproto = attrs: attrs // {
+#    configureFlags = (attrs.configureFlags or []) ++ [
+#      "--enable-legacy"
+#    ];
+#  };
 }

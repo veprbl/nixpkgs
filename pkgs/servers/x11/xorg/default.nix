@@ -2259,9 +2259,9 @@ let
       sha256 = "0679942x1ma2p30vlvqylpjc5v1ak1pgqysnqrj82nz7dzl9zjar";
     };
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ dri2proto dri3proto renderproto xorgproto openssl libX11 libXau libXaw libxcb xcbutil xcbutilwm xcbutilimage xcbutilkeysyms xcbutilrenderutil libXdmcp libXfixes libxkbfile libXmu libXpm libXrender libXres libXt ];
+    buildInputs = [ xorgproto openssl libX11 libXau libXaw libxcb xcbutil xcbutilwm xcbutilimage xcbutilkeysyms xcbutilrenderutil libXdmcp libXfixes libxkbfile libXmu libXpm libXrender libXres libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
-  }) // {inherit dri2proto dri3proto renderproto xorgproto openssl libX11 libXau libXaw libxcb xcbutil xcbutilwm xcbutilimage xcbutilkeysyms xcbutilrenderutil libXdmcp libXfixes libxkbfile libXmu libXpm libXrender libXres libXt ;};
+  }) // {inherit xorgproto openssl libX11 libXau libXaw libxcb xcbutil xcbutilwm xcbutilimage xcbutilkeysyms xcbutilrenderutil libXdmcp libXfixes libxkbfile libXmu libXpm libXrender libXres libXt ;};
 
   xorgsgmldoctools = (mkDerivation "xorgsgmldoctools" {
     name = "xorg-sgml-doctools-1.11";
@@ -2419,4 +2419,10 @@ let
     meta.platforms = stdenv.lib.platforms.unix;
   }) // {inherit libX11 xorgproto ;};
 
+
+  xproto = xorgproto;
+  glproto = xorgproto;
+  dri2proto = xorgproto;
+  dri3proto = xorgproto;
+  presentproto = xorgproto;
 }; in xorg
