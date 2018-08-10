@@ -684,4 +684,10 @@ in
       rm $out/bin/xkeystone
     '';
   };
+
+  xorgproto = attrs: attrs // {
+    configureFlags = (attrs.configureFlags or []) ++ [
+      "--enable-legacy"
+    ];
+  };
 }
