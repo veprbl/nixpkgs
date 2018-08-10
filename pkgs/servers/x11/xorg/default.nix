@@ -2247,9 +2247,9 @@ let
       sha256 = "180mqkp70i44rkmj430pmn9idssvffrgv4y5h19fm698a7h8bs7y";
     };
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libXt ];
+    buildInputs = [ ];
     meta.platforms = stdenv.lib.platforms.unix;
-  }) // {inherit libXt ;};
+  }) // {inherit ;};
 
   xorgserver = (mkDerivation "xorgserver" {
     name = "xorg-server-1.20.1";
