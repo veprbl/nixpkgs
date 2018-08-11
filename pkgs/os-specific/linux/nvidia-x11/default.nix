@@ -26,8 +26,12 @@ rec {
     patches = lib.optional (kernel.meta.branch == "4.19") ./drm_mode_connector.patch;
   };
 
-  beta = stable; # not enough interest to maintain beta ATM
-
+  beta = generic {
+    version = "396.54";
+    sha256_64bit = "1hzfx4g63h6wbbjq9w4qnrhmvn8h8mmcpy9yc791m8xflsf3qgkw";
+    settingsSha256 = "0hddma11y1z4hm3vrbjjnlkxg69rnwr5xc83r78qjbmz10zii5kw";
+    persistencedSha256 = "0m7pfx0ypih3n28mgx4h9hfryvjnwsl2w78j4cq9fhc4ry6zjlbj";
+  };
 
   legacy_340 = generic {
     version = "340.104";

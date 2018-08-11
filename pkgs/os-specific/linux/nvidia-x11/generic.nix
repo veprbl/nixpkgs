@@ -1,5 +1,5 @@
 { version
-, sha256_32bit
+, sha256_32bit ? null
 , sha256_64bit
 , settingsSha256
 , persistencedSha256
@@ -23,6 +23,7 @@
 with stdenv.lib;
 
 assert (!libsOnly) -> kernel != null;
+assert (versionOlder version "391") -> sha256_32bit != null;
 
 let
   nameSuffix = optionalString (!libsOnly) "-${kernel.version}";
@@ -34,15 +35,15 @@ let
     builder = ./builder.sh;
 
     src =
-      if stdenv.hostPlatform.system == "i686-linux" then
-        fetchurl {
-          url = "https://download.nvidia.com/XFree86/Linux-x86/${version}/NVIDIA-Linux-x86-${version}${pkgSuffix}.run";
-          sha256 = sha256_32bit;
-        }
-      else if stdenv.hostPlatform.system == "x86_64-linux" then
+      if stdenv.hostPlatform.system == "x86_64-linux" || (stdenv.hostPlatform.system == "i686-linux" && versionAtLeast version "391") then
         fetchurl {
           url = "https://download.nvidia.com/XFree86/Linux-x86_64/${version}/NVIDIA-Linux-x86_64-${version}${pkgSuffix}.run";
           sha256 = sha256_64bit;
+        }
+      else if stdenv.hostPlatform.system == "i686-linux" then
+        fetchurl {
+          url = "https://download.nvidia.com/XFree86/Linux-x86/${version}/NVIDIA-Linux-x86-${version}${pkgSuffix}.run";
+          sha256 = sha256_32bit;
         }
       else throw "nvidia-x11 does not support platform ${stdenv.hostPlatform.system}";
 
