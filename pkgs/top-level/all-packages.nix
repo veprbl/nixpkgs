@@ -14926,6 +14926,8 @@ with pkgs;
 
   opensans-ttf = callPackage ../data/fonts/opensans-ttf { };
 
+  openzone-cursors = callPackage ../data/icons/openzone-cursors {};
+
   orbitron = callPackage ../data/fonts/orbitron { };
 
   overpass = callPackage ../data/fonts/overpass { };
