@@ -32,7 +32,14 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
 
   # TODO: Fix tests that fail in sandbox build
-  doCheck = false;
+  doCheck = true;
+  preCheck = ''
+    # Disable tests that require networking.
+    echo > ext/net/test.scm
+    echo > test/rfc.scm
+    # Unable to open pty in Darwin sandbox build.
+    echo > ext/termios/test.scm
+  '';
 
   meta = with stdenv.lib; {
     description = "R7RS Scheme scripting engine";
