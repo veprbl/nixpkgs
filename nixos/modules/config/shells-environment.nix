@@ -171,7 +171,7 @@ in
          # ~/bin if it exists overrides other bin directories.
          export PATH="$HOME/bin:$PATH"
 
-         export NIX_PATH="$NIX_PATH"
+         # export NIX_PATH="$NIX_PATH"
        '';
 
     system.activationScripts.binsh = stringAfter [ "stdio" ]
