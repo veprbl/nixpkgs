@@ -1,7 +1,7 @@
 { stdenv, fetchFromGitHub, autoreconfHook, pkgconfig, libxml2, xdg-desktop-portal, gtk3, glib }:
 
 let
-  version = "0.99";
+  version = "1.0";
 in stdenv.mkDerivation rec {
   name = "xdg-desktop-portal-gtk-${version}";
 
@@ -9,7 +9,7 @@ in stdenv.mkDerivation rec {
     owner = "flatpak";
     repo = "xdg-desktop-portal-gtk";
     rev = version;
-    sha256 = "0jnmrl55gpvz06hy0832kcby4y84f0a1hiali6qy1lcmyqhm3v59";
+    sha256 = "19kpg5l0p6ljdr6q549qzy9lbsw3h03qaddqn8mh49zca6hnyhyq";
   };
 
   nativeBuildInputs = [ autoreconfHook pkgconfig libxml2 xdg-desktop-portal ];
