@@ -1,10 +1,10 @@
 { stdenv, fetchFromGitHub, meson, ninja, pkgconfig, doxygen, graphviz, valgrind
 , glib, dbus, gst_all_1, v4l_utils, alsaLib, ffmpeg, libjack2, udev, libva, xorg
-, sbc, SDL2, makeFontsConf, freefont_ttf
+, sbc, SDL2, makeFontsConf, freefont_ttf, fetchpatch
 }:
 
 let
-  version = "0.1.9";
+  version = "0.2.2";
 
   fontsConf = makeFontsConf {
     fontDirectories = [ freefont_ttf ];
@@ -16,10 +16,18 @@ in stdenv.mkDerivation rec {
     owner = "PipeWire";
     repo = "pipewire";
     rev = version;
-    sha256 = "0r9mgwbggnnijhdz49fnv0qdka364xn1h8yml2jakyqpfrm3i2nm";
+    sha256 = "1b19wdxwr07xifj58b91qqngj15n8c80nl9i8niaywk9ypxmwmpj";
   };
 
   outputs = [ "out" "dev" "doc" ];
+
+  patches = [
+    # Respect includedir properly
+    (fetchpatch {
+      url = https://github.com/PipeWire/pipewire/commit/90400b17d624369512007366eddb9996a3558d22.patch;
+      sha256 = "0hfb60z162mkx6vrcrs08d1yav9nf5jhxay1f3qmrf5gib66ycwa";
+    })
+  ];
 
   nativeBuildInputs = [
     meson ninja pkgconfig doxygen graphviz valgrind
