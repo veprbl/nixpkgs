@@ -2,12 +2,12 @@
 
 stdenv.mkDerivation rec {
   name = "firmware-linux-nonfree-${version}";
-  version = "2018-03-20";
+  version = "2018-08-21";
 
   src = fetchgit {
     url = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git";
-    rev = "8c1e439c967a50f0698d61aafdba3841aff10db0";
-    sha256 = "110vxgahyx5dvylqrxsm5cmx4a32cl2zchvm6cgc270jz75fg7wd";
+    rev = "1d17c18226c2ddf5bc127b3f934cfa88e0c0c29f";
+    sha256 = "0944a1bi5xj6w8s4zcnby82l6v36n8hf06hbxk9j68l7lv53fx1x";
   };
 
   installFlags = [ "DESTDIR=$(out)" ];
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
 
   outputHashMode = "recursive";
   outputHashAlgo = "sha256";
-  outputHash = "0r2g91hc7csp2fbp2ny4s4rwv0mw2m130gpnisxnhzi05hkwki66";
+  outputHash = "1dxx8p3pna0f9084r3n7x4z6x11wd4glrrwh73qm90cg37v3pfqq";
 
   meta = with stdenv.lib; {
     description = "Binary firmware collection packaged by kernel.org";
