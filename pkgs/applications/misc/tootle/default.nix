@@ -7,16 +7,17 @@
 
 let
   pname = "tootle";
-  version = "0.1.5";
+  version = "0.1.5-git";
 in stdenv.mkDerivation rec {
   name = "${pname}-${version}";
 
-  src = fetchFromGitHub {
-    owner = "bleakgrey";
-    repo = pname;
-    rev = version;
-    sha256 = "022h1rh1jk3m1f9al0s1rylmnqnkydyc81idfc8jf1g0frnvn5i6";
-  };
+  src = builtins.fetchGit https://github.com/bleakgrey/tootle;
+  #src = fetchFromGitHub {
+  #  owner = "bleakgrey";
+  #  repo = pname;
+  #  rev = version;
+  #  sha256 = "022h1rh1jk3m1f9al0s1rylmnqnkydyc81idfc8jf1g0frnvn5i6";
+  #};
 
   nativeBuildInputs = [ meson ninja pkgconfig vala gobjectIntrospection wrapGAppsHook ];
   buildInputs = [
