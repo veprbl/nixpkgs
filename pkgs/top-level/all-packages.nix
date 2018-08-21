@@ -3623,7 +3623,7 @@ with pkgs;
 
   nginx-config-formatter = callPackage ../tools/misc/nginx-config-formatter { };
 
-  ninka = callPackage ../development/tools/misc/ninka { };
+  ninka = callPackage ../development/tools/misc/ninka { perlPackages = perl526Packages; };
 
   nixnote2 = libsForQt5.callPackage ../applications/misc/nixnote2 { };
 

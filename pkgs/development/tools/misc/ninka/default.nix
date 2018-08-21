@@ -1,16 +1,16 @@
-{ stdenv, fetchFromGitHub, perl, perlPackages, buildPerlPackage }:
+{ stdenv, fetchFromGitHub, perlPackages }:
 
 assert stdenv ? glibc;
 
-buildPerlPackage rec {
+perlPackages.buildPerlPackage rec {
   name = "ninka-${version}";
-  version = "2.0-pre";
+  version = "2017-04-02";
 
   src = fetchFromGitHub {
     owner = "dmgerman";
     repo = "ninka";
-    rev = "b89b59ecd057dfc939d0c75acaddebb58fcd8cba";
-    sha256 = "1grlis1kycbcjvjgqvn7aw81q1qx49ahvxg2k7cgyr79mvgpgi9m";
+    rev = "81f185261c8863c5b84344ee31192870be939faf";
+    sha256 = "0dbnghpc2fgdx2chsx3m1ksv2p2acjss999ijwhaiwjkja4zgd1c";
   };
   
   buildInputs = with perlPackages; [ perl TestOutput DBDSQLite DBI TestPod TestPodCoverage SpreadsheetParseExcel ];
@@ -18,7 +18,7 @@ buildPerlPackage rec {
   doCheck = false;    # hangs
 
   preConfigure = ''
-    sed -i.bak -e 's;#!/usr/bin/perl;#!${perl}/bin/perl;g' \
+    sed -i.bak -e 's;#!/usr/bin/perl;#!${perlPackages.perl}/bin/perl;g' \
         ./bin/ninka-excel ./bin/ninka ./bin/ninka-sqlite \
         ./scripts/unify.pl ./scripts/parseLicense.pl \
         ./scripts/license_matcher_modified.pl \
