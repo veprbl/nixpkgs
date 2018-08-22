@@ -74,7 +74,7 @@ let
     passthru = {
       isClang = true;
       inherit llvm;
-    } // stdenv.lib.optionalAttrs stdenv.isLinux {
+    } // stdenv.lib.optionalAttrs stdenv.targetPlatform.isLinux {
       inherit gcc;
     };
 
