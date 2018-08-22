@@ -126,20 +126,19 @@ let
       # Common packages should get served from the binary cache anyway.
       # See discussions, e.g. https://github.com/NixOS/nixpkgs/issues/24683
       urlPrefixes = args.urlPrefixes or [
-        # Should be stable for historic, archived releases
-        # http://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2018/tlnet-final/archive
-        # TODO: use this later when 2018 is archived
-
-        # The canonical source moves quickly and will be broken almost immediately
-        # but we put it first on the list for now while it works
-        http://mirror.ctan.org/tex-archive/systems/texlive/tlnet/archive
-
         # A snapshot temporarily hosted by @xeji for developing the upgrade to 2018.
         # TODO: remove when there is a reliable long-term solution
         https://cat3.de/texlive-2018/tlnet/archive
 
         # TODO: Add IPFS storage or host snapshot elsewhere,
         # maybe on one of our project's servers
+
+        # The canonical source moves quickly and will be broken almost immediately
+        http://mirror.ctan.org/tex-archive/systems/texlive/tlnet/archive
+
+        # Should be stable for historic, archived releases
+        # http://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2018/tlnet-final/archive
+        # TODO: use this later when 2018 is archived
 
       ];
 
