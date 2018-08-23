@@ -98,8 +98,7 @@ mendeleySrc = stdenv.mkDerivation rec {
 };
 
 fhsEnv = buildFHSUserEnv {
-  #name = "mendeley-fhs-env";
-  name = "mendeleydesktop"; # kludge so entry point has friendlier name
+  name = "mendeley-fhs-env";
   targetPkgs = pkgs: with pkgs; with xorg; [
     which
     xdg_utils
@@ -232,16 +231,20 @@ fhsEnv = buildFHSUserEnv {
     maintainers  = with maintainers; [ dtzWill ];
   };
 
-  in fhsEnv // { name = "mendeley-${version}"; inherit meta; }
-#in runCommand "mendeley-${version}" { inherit meta; } ''
-#  mkdir -p $out/bin $out/share/applications
-#  cat >$out/bin/mendeleydesktop <<EOF
-##!${runtimeShell}
-#${fhsEnv}/bin/mendeley-fhs-env ${mendeleySrc}/usr/bin/mendeleydesktop
-#EOF
-#  chmod +x $out/bin/mendeleydesktop
-#
-#''
+  #in fhsEnv
+in runCommand "mendeley-${version}" { inherit meta; } ''
+  mkdir -p $out/bin 
+  cat >$out/bin/mendeleydesktop <<EOF
+#!${runtimeShell}
+${fhsEnv}/bin/mendeley-fhs-env ${mendeleySrc}/usr/bin/mendeleydesktop
+EOF
+  chmod +x $out/bin/mendeleydesktop
+
+  # pull in .desktop, icons, misc bits
+
+  mkdir -p $out/share/
+  cp -r ${mendeleySrc}/usr/share/{applications,icons} $out/share/
+''
 
 /*
   cp ${desktopItem}/share/applications/* $out/share/applications/
