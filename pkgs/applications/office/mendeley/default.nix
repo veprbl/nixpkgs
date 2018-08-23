@@ -98,7 +98,8 @@ mendeleySrc = stdenv.mkDerivation rec {
 };
 
 fhsEnv = buildFHSUserEnv {
-  name = "mendeley-fhs-env";
+  #name = "mendeley-fhs-env";
+  name = "mendeley-${version}";
   targetPkgs = pkgs: with pkgs; with xorg; [
     which
     xdg_utils
