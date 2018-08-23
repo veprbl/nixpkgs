@@ -99,7 +99,7 @@ mendeleySrc = stdenv.mkDerivation rec {
 
 fhsEnv = buildFHSUserEnv {
   #name = "mendeley-fhs-env";
-  name = "mendeley-${version}";
+  name = "mendeleydesktop"; # kludge so entry point has friendlier name
   targetPkgs = pkgs: with pkgs; with xorg; [
     which
     xdg_utils
@@ -232,7 +232,7 @@ fhsEnv = buildFHSUserEnv {
     maintainers  = with maintainers; [ dtzWill ];
   };
 
-  in fhsEnv
+  in fhsEnv // { name = "mendeley-${version}"; inherit meta; }
 #in runCommand "mendeley-${version}" { inherit meta; } ''
 #  mkdir -p $out/bin $out/share/applications
 #  cat >$out/bin/mendeleydesktop <<EOF
