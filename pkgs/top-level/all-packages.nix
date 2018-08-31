@@ -5638,6 +5638,8 @@ with pkgs;
 
   tty-clock = callPackage ../tools/misc/tty-clock { };
 
+  ttyecho = callPackage ../tools/misc/ttyecho { };
+
   ttyrec = callPackage ../tools/misc/ttyrec { };
 
   ttylog = callPackage ../tools/misc/ttylog { };
