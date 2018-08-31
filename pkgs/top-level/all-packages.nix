@@ -22332,6 +22332,8 @@ with pkgs;
 
   wal-g = callPackage ../tools/backup/wal-g {};
 
+  wallama-paper = callPackage ../applications/misc/wallama-paper { };
+
   tlwg = callPackage ../data/fonts/tlwg { };
 
   simplehttp2server = callPackage ../servers/simplehttp2server { };
