@@ -79,6 +79,7 @@ in
   imports = [
     ./lightdm-greeters/gtk.nix
     ./lightdm-greeters/mini.nix
+    ./lightdm-greeters/enso-os.nix
   ];
 
   options = {
