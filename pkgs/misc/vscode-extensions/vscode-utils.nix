@@ -55,7 +55,7 @@ let
   buildVscodeExtension ((removeAttrs a [ "mktplcRef" ]) // {
     name = "${mktplcRef.publisher}-${mktplcRef.name}-${mktplcRef.version}";
     src = fetchVsixFromVscodeMarketplace mktplcRef;
-    vscodeExtUniqueId = "${mktplcRef.publisher}.${mktplcRef.name}";
+    vscodeExtUniqueId = ''${lib.toLower "${mktplcRef.publisher}.${mktplcRef.name}-${mktplcRef.version}"}'';
   });
 
   mktplcRefAttrList = [
