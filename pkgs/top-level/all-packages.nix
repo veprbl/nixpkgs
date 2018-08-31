@@ -17103,6 +17103,10 @@ with pkgs;
 
   jbrout = callPackage ../applications/graphics/jbrout { };
 
+  justmonika = callPackage ../misc/screensavers/justmonika {
+    inherit (xorg) libxcb xcbutilimage;
+  };
+
   jwm = callPackage ../applications/window-managers/jwm { };
 
   k3d = callPackage ../applications/graphics/k3d {
