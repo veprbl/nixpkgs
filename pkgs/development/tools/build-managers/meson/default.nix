@@ -1,12 +1,12 @@
 { lib, python3Packages, stdenv, writeTextDir, substituteAll }:
 
 python3Packages.buildPythonApplication rec {
-  version = "0.46.1";
+  version = "0.48.0";
   pname = "meson";
 
   src = python3Packages.fetchPypi {
     inherit pname version;
-    sha256 = "1jdxs2mkniy1hpdjc4b4jb95axsjp6j5fzphmm6d4gqmqyykjvqc";
+    sha256 = "0qawsm6px1vca3babnqwn0hmkzsxy4w0gi345apd2qk3v0cv7ipc";
   };
 
   postFixup = ''
@@ -16,6 +16,9 @@ python3Packages.buildPythonApplication rec {
       mv ".$i-wrapped" "$i"
     done
     popd
+
+    # Do not propagate Python
+    rm $out/nix-support/propagated-build-inputs
   '';
 
   patches = [
@@ -24,13 +27,6 @@ python3Packages.buildPythonApplication rec {
     # https://github.com/mesonbuild/meson/issues/2561
     # We remove the check so multiple outputs can work sanely.
     ./allow-dirs-outside-of-prefix.patch
-
-    # Unlike libtool, vanilla Meson does not pass any information
-    # about the path library will be installed to to g-ir-scanner,
-    # breaking the GIR when path other than ${!outputLib}/lib is used.
-    # We patch Meson to add a --fallback-library-path argument with
-    # library install_dir to g-ir-scanner.
-    ./gir-fallback-path.patch
 
     # In common distributions, RPATH is only needed for internal libraries so
     # meson removes everything else. With Nix, the locations of libraries
