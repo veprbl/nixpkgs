@@ -26,19 +26,23 @@ buildPhase() {
     fi
 }
 
-    
+
 installPhase() {
     # Install libGL and friends.
     mkdir -p "$out/lib"
-    cp -prd *.so.* tls "$out/lib/"
-    rm $out/lib/lib{glx,nvidia-wfb}.so.* # handled separately
+    if $i686bundled; then
+        cp -prd 32/*.so.* 32/tls "$out/lib/"
+    else
+        cp -prd *.so.* tls "$out/lib/"
+    fi
+    rm -f $out/lib/lib{glx,nvidia-wfb}.so.* # handled separately
     rm -f $out/lib/libnvidia-gtk* # built from source
     if [ "$useGLVND" = "1" ]; then
         # Pre-built libglvnd
         rm $out/lib/lib{GL,GLX,EGL,GLESv1_CM,GLESv2,OpenGL,GLdispatch}.so.*
     fi
     # Use ocl-icd instead
-    rm $out/lib/libOpenCL.so*
+    rm -f $out/lib/libOpenCL.so*
     # Move VDPAU libraries to their place
     mkdir $out/lib/vdpau
     mv $out/lib/libvdpau* $out/lib/vdpau
