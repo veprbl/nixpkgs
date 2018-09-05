@@ -8,13 +8,13 @@
 
 let
   pname = "gnome-photos";
-  version = "3.28.0";
+  version = "3.29.92";
 in stdenv.mkDerivation rec {
   name = "${pname}-${version}";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${gnome3.versionBranch version}/${name}.tar.xz";
-    sha256 = "1n280j7crgwlzyf09j66f1zkrnnhfrr8pshn824njs1xyk3g0q11";
+    sha256 = "0p5h3k6wfkh7ddsyw2dyyymr90ynqm02hx5xgjqshqs3avxmi1lx";
   };
 
   # doCheck = true;
