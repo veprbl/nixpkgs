@@ -6,13 +6,13 @@
 
 let
   pname = "gnome-online-accounts";
-  version = "3.28.0";
+  version = "3.30.0";
 in stdenv.mkDerivation rec {
   name = "${pname}-${version}";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${gnome3.versionBranch version}/${name}.tar.xz";
-    sha256 = "035lmm21imr7ddpzffqabv53g3ggjscmqvlzy3j1qkv00zrlxg47";
+    sha256 = "1hyg9g7l4ypnirx2j7ms2vr8711x90aybpq3s3wa20ma8a4xin97";
   };
 
   outputs = [ "out" "man" "dev" "devdoc" ];
