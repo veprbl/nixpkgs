@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, meson, ninja, python3, vala, libxslt, pkgconfig, glib, dbus-glib, gnome3
+{ stdenv, fetchurl, meson, ninja, python3, vala, libxslt, pkgconfig, glib, bash-completion, dbus, gnome3
 , libxml2, docbook_xsl }:
 
 let
@@ -6,11 +6,11 @@ let
 in
 stdenv.mkDerivation rec {
   name = "${pname}-${version}";
-  version = "0.28.0";
+  version = "0.30.0";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${gnome3.versionBranch version}/${name}.tar.xz";
-    sha256 = "0hn7v6769xabqz7kvyb2hfm19h46z1whkair7ff752zmbs3b7lv1";
+    sha256 = "05d72i7gj7q23qqr7zpjjinzlz84c33hrjrhx10m5v4mhg4mdwha";
   };
 
   postPatch = ''
@@ -21,7 +21,11 @@ stdenv.mkDerivation rec {
   outputs = [ "out" "lib" "dev" ];
 
   nativeBuildInputs = [ meson ninja vala pkgconfig python3 libxslt libxml2 docbook_xsl ];
-  buildInputs = [ glib dbus-glib ];
+  buildInputs = [ glib bash-completion dbus ];
+
+  mesonFlags = [
+    "--sysconfdir=/etc"
+  ];
 
   doCheck = false; # fails 2 out of 9 tests, maybe needs dbus daemon?
 
