@@ -1,6 +1,6 @@
 # This module provides the proprietary NVIDIA X11 / OpenGL drivers.
 
-{ config, lib, pkgs, pkgs_i686, ... }:
+{ stdenv, config, lib, pkgs, pkgs_i686, ... }:
 
 with lib;
 
@@ -31,11 +31,16 @@ in
 {
 
   config = mkIf enabled {
-    assertions = [
+    assertions = mkMerge [
       {
         assertion = config.services.xserver.displayManager.gdm.wayland;
-        message = "NVidia drivers don't support wayland";
+        message = "NVIDIA drivers don't support wayland";
       }
+
+      (mkIf stdenv.hostPlatform.system == "i686-linux" {
+        assertion = versionOlder nvidiaForKernel "391";
+        message = "NVIDIA drivers don't support i686 past 390";
+      })
     ];
 
     services.xserver.drivers = singleton
