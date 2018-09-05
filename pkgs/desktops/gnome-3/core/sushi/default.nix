@@ -5,11 +5,11 @@
 
 stdenv.mkDerivation rec {
   name = "sushi-${version}";
-  version = "3.28.3";
+  version = "3.30.0";
 
   src = fetchurl {
     url = "mirror://gnome/sources/sushi/${gnome3.versionBranch version}/${name}.tar.xz";
-    sha256 = "1yydd34q7r05z0jdgym3r4f8jv8snrcvvhxw0vxn6damlvj5lbiw";
+    sha256 = "0zpaiw5r734fky3zq95a6szwn7srbkpixajqg2xvdivhhx4mbnnj";
   };
 
   passthru = {
