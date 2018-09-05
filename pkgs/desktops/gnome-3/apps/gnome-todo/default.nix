@@ -5,13 +5,13 @@
 
 let
   pname = "gnome-todo";
-  version = "3.28.1";
+  version = "3.91.1";
 in stdenv.mkDerivation rec {
   name = "${pname}-${version}";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${gnome3.versionBranch version}/${name}.tar.xz";
-    sha256 = "08ygqbib72jlf9y0a16k54zz51sncpq2wa18wp81v46q8301ymy7";
+    sha256 = "02h6a3h3aavbh88if02m1d3n0cx841ag75wzvryjh4jvq8vgcwyy";
   };
 
   nativeBuildInputs = [
