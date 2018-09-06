@@ -23,7 +23,11 @@ let
     else null;
 
   nvidia_x11 = nvidiaForKernel config.boot.kernelPackages;
-  nvidia_libs32 = (nvidiaForKernel pkgs_i686.linuxPackages).override { libsOnly = true; kernel = null; };
+  nvidia_libs32 =
+    if versionOlder nvidia_x11.version "391" then
+      ((nvidiaForKernel pkgs_i686.linuxPackages).override { libsOnly = true; kernel = null; }).out
+    else
+      (nvidiaForKernel config.boot.kernelPackages).lib32;
 
   enabled = nvidia_x11 != null;
 in
@@ -31,16 +35,11 @@ in
 {
 
   config = mkIf enabled {
-    assertions = mkMerge [
+    assertions = [
       {
         assertion = config.services.xserver.displayManager.gdm.wayland;
         message = "NVIDIA drivers don't support wayland";
       }
-
-      (mkIf stdenv.hostPlatform.system == "i686-linux" {
-        assertion = versionOlder nvidiaForKernel "391";
-        message = "NVIDIA drivers don't support i686 past 390";
-      })
     ];
 
     services.xserver.drivers = singleton
@@ -56,7 +55,7 @@ in
     };
 
     hardware.opengl.package = nvidia_x11.out;
-    hardware.opengl.package32 = nvidia_libs32.out;
+    hardware.opengl.package32 = nvidia_libs32;
 
     environment.systemPackages = [ nvidia_x11.bin nvidia_x11.settings ]
       ++ lib.filter (p: p != null) [ nvidia_x11.persistenced ];
