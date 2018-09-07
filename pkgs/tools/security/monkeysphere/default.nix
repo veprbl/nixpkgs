@@ -1,5 +1,6 @@
 { stdenv, fetchurl, makeWrapper
-, perl, perlPackages, libassuan, libgcrypt
+, perl, libassuan, libgcrypt
+, perlPackages, lockfileProgs, gnupg
 }:
 
 stdenv.mkDerivation rec {
@@ -11,27 +12,42 @@ stdenv.mkDerivation rec {
     sha256 = "0jz7kwkwgylqprnl8bwvl084s5gjrilza77ln18i3f6x48b2y6li";
   };
 
-  buildInputs = [ makeWrapper perl libassuan libgcrypt ];
-
   patches = [ ./monkeysphere.patch ];
+
+  nativeBuildInputs = [ makeWrapper ];
+  buildInputs = [ perl libassuan libgcrypt ];
 
   makeFlags = ''
     PREFIX=/
     DESTDIR=$(out)
   '';
 
-  postInstall = ''
-    wrapProgram $out/bin/openpgp2ssh --prefix PERL5LIB : \
-      "${with perlPackages; stdenv.lib.makePerlPath [
-        CryptOpenSSLRSA
-        CryptOpenSSLBignum
-      ]}"
-    wrapProgram $out/bin/monkeysphere --prefix PERL5LIB :\
-      "${with perlPackages; stdenv.lib.makePerlPath [
-        CryptOpenSSLRSA
-        CryptOpenSSLBignum
-      ]}"
-  '';
+  postFixup =
+    let wrapperArgs = runtimeDeps:
+          "--prefix PERL5LIB : "
+          + (with perlPackages; stdenv.lib.makePerlPath [
+              CryptOpenSSLRSA
+              CryptOpenSSLBignum
+            ])
+          + stdenv.lib.optionalString
+              (builtins.length runtimeDeps > 0)
+              " --prefix PATH : ${stdenv.lib.makeBinPath runtimeDeps}";
+        wrapMonkeysphere = runtimeDeps: program:
+          "wrapProgram $out/bin/${program} ${wrapperArgs runtimeDeps}\n";
+        wrapPrograms = runtimeDeps: programs: stdenv.lib.concatMapStrings
+          (wrapMonkeysphere runtimeDeps)
+          programs;
+    in wrapPrograms [ gnupg ] [ "monkeysphere-authentication" "monkeysphere-host" ]
+      + wrapPrograms [ lockfileProgs ] [ "monkeysphere" ]
+      + ''
+        # These 4 programs depend on the program name ($0):
+        for program in openpgp2pem openpgp2spki openpgp2ssh pem2openpgp; do
+          rm $out/bin/$program
+          ln -sf keytrans $out/share/monkeysphere/$program
+          makeWrapper $out/share/monkeysphere/$program $out/bin/$program \
+            ${wrapperArgs [ ]}
+        done
+      '';
 
   meta = with stdenv.lib; {
     homepage = http://web.monkeysphere.info/;
