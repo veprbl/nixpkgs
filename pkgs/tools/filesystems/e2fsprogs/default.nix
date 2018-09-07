@@ -1,11 +1,11 @@
-{ stdenv, buildPackages, fetchurl, pkgconfig, libuuid, gettext, texinfo }:
+{ stdenv, buildPackages, fetchurl, pkgconfig, libuuid, gettext, texinfo, perl }:
 
 stdenv.mkDerivation rec {
-  name = "e2fsprogs-1.44.3";
+  name = "e2fsprogs-1.44.4";
 
   src = fetchurl {
     url = "mirror://sourceforge/e2fsprogs/${name}.tar.gz";
-    sha256 = "1gl34i2dy1n7aky9g0jgdybl3ar2zh8i8xnghrcbb5pvws66vbn2";
+    sha256 = "1cnwfmv9r7s73xhgghqspjq593pc4qghh80wjd0kjdgwy247cw6x";
   };
 
   outputs = [ "bin" "dev" "out" "man" "info" ];
@@ -14,6 +14,10 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ pkgconfig texinfo ];
   buildInputs = [ libuuid gettext ];
 
+  # Only use glibc's __GNUC_PREREQ(X,Y) (checks if compiler is gcc version >= X.Y) when using glibc
+  NIX_CFLAGS_COMPILE = stdenv.lib.optional (stdenv.hostPlatform.libc != "glibc")
+    "-D__GNUC_PREREQ(maj,min)=0";
+
   configureFlags =
     if stdenv.isLinux then [
       "--enable-elf-shlibs" "--enable-symlink-install" "--enable-relative-symlinks"
@@ -21,8 +25,10 @@ stdenv.mkDerivation rec {
       "--disable-libuuid" "--disable-uuidd" "--disable-libblkid" "--disable-fsck"
     ] else [
       "--enable-libuuid --disable-e2initrd-helper"
-    ]
-  ;
+    ];
+
+  checkInputs = [ perl ];
+  doCheck = false; # fails
 
   # hacky way to make it install *.pc
   postInstall = ''

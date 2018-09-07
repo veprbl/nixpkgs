@@ -129,6 +129,20 @@ stdenv.mkDerivation rec {
       url = "https://git.sagemath.org/sage.git/patch/?id=2ab1546b3e21d1d0ab3b4fcd58576848b3a2d888";
       sha256 = "1c5gnasq7y9xxj762bn79bis0zi8d9bgg7jzlf64ifixsrc5cymb";
     })
+
+    # arb 2.13.0 -> 2.14.0
+    (fetchpatch {
+      name = "arb-2.14.0.patch";
+      url = "https://git.sagemath.org/sage.git/patch?id2=8.4.beta0&id=8bef4fd2876a61969b516fe4eb3b8ad7cc076c5e";
+      sha256 = "00p3hfsfn3w2vxgd9fjd23mz7xfxjfravf8ysjxkyd657jbkpjmk";
+    })
+
+    # https://trac.sagemath.org/ticket/26117
+    (fetchpatch {
+      name = "sympy-1.2.patch";
+      url = "https://git.sagemath.org/sage.git/patch?id2=8.4.beta2&id=d94a0a3a3fb4aec05a6f4d95166d90c284f05c36";
+      sha256 = "0an2xl1pp3jg36kgg2m1vb7sns7rprk1h3d0qy1gxwdab6i7qnvi";
+    })
   ];
 
   patches = nixPatches ++ packageUpgradePatches ++ [

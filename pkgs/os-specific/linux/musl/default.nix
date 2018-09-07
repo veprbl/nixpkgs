@@ -29,16 +29,19 @@ let
 in
 stdenv.mkDerivation rec {
   name    = "musl-${version}";
+/*
   version = "1.1.19git${toString src.revCount}_${src.shortRev}";
 
   src = builtins.fetchGit {
     url = git://git.musl-libc.org/musl;
     rev = "7dad9c212587267818de919dd9c5886f18f99779";
+*/
+  version = "1.1.20";
+
+  src = fetchurl {
+    url    = "https://www.musl-libc.org/releases/musl-${version}.tar.gz";
+    sha256 = "0q8dsjxl41dccscv9a0r78bs7jap57mn4mni5pwbbip6s1qqggj4";
   };
-  #src = fetchurl {
-  #  url    = "https://www.musl-libc.org/releases/musl-${version}.tar.gz";
-  #  sha256 = "1nf1wh44bhm8gdcfr75ayib29b99vpq62zmjymrq7f96h9bshnfv";
-  #};
 
   enableParallelBuilding = true;
 
@@ -67,11 +70,12 @@ stdenv.mkDerivation rec {
     configureFlagsArray+=("--syslibdir=$out/lib")
   '';
 
+  CFLAGS="-fstack-protector-strong" + lib.optionalString stdenv.hostPlatform.isPower " -mlong-double-64";
+
   configureFlags = [
     "--enable-shared"
     "--enable-static"
     "--enable-debug"
-    "CFLAGS=-fstack-protector-strong"
     "--enable-wrapper=all"
   ];
 
