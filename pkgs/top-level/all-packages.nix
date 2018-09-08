@@ -22102,6 +22102,8 @@ with pkgs;
 
   thinkfan = callPackage ../tools/system/thinkfan { };
 
+  i8kutils = callPackage ../tools/system/i8kutils { };
+
   dell-bios-fan-control = callPackage ../tools/system/dell-bios-fan-control { };
 
   tup = callPackage ../development/tools/build-managers/tup { };
