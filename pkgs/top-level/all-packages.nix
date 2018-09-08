@@ -20229,6 +20229,8 @@ with pkgs;
     nativeOnly = true;
   }).run;
 
+  steamcmd = steamPackages.steamcmd;
+
   linux-steam-integration = callPackage ../games/linux-steam-integration {
     gtk = pkgs.gtk3;
   };
