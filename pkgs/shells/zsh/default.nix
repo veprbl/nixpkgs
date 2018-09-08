@@ -1,23 +1,26 @@
-{ stdenv, fetchurl, ncurses, pcre }:
+{ stdenv, fetchurl, fetchFromGitHub, autoreconfHook, ncurses, pcre }:
 
 let
-  version = "5.6";
+  version = "5.6.1";
 
   documentation = fetchurl {
-    url = "mirror://sourceforge/zsh/zsh-${version}-doc.tar.gz";
+    url = "mirror://sourceforge/zsh/zsh-5.6-doc.tar.gz";
     sha256 = "1kz57w4l0jank67a2hiz6y5idbff5avwg52zdxx3qnflkjvkn2kx";
   };
 
 in
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   name = "zsh-${version}";
 
-  src = fetchurl {
-    url = "mirror://sourceforge/zsh/zsh-${version}.tar.gz";
-    sha256 = "1vik7s3q5hvazvgw4jm4b90qlk6zcry0s314xw1liarspkd721g3";
+  src = fetchFromGitHub {
+    owner = "zsh-users";
+    repo = "zsh";
+    rev = name;
+    sha256 = "1bc4y3bha1y9hvf0aq0nwqrkljcf46j432vhyldbxhr3771ii7vh";
   };
 
+  nativeBuildInputs = [ autoreconfHook ];
   buildInputs = [ ncurses pcre ];
 
   configureFlags = [
