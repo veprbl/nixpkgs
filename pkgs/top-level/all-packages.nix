@@ -129,8 +129,7 @@ with pkgs;
 
   digitalbitbox = libsForQt5.callPackage ../applications/misc/digitalbitbox { };
 
-  # go 1.9 pin until https://github.com/moby/moby/pull/35739
-  dockerTools = callPackage ../build-support/docker { go = go_1_9; };
+  dockerTools = callPackage ../build-support/docker { };
 
   docker_compose = pythonPackages.docker_compose;
 
@@ -2347,7 +2346,9 @@ with pkgs;
 
   enblend-enfuse = callPackage ../tools/graphics/enblend-enfuse { };
 
-  cryfs = callPackage ../tools/filesystems/cryfs { };
+  cryfs = callPackage ../tools/filesystems/cryfs {
+    spdlog = spdlog_0;
+  };
 
   encfs = callPackage ../tools/filesystems/encfs {
     tinyxml2 = tinyxml-2;
@@ -11245,6 +11246,8 @@ with pkgs;
   mtdev = callPackage ../development/libraries/mtdev { };
 
   mtpfs = callPackage ../tools/filesystems/mtpfs { };
+
+  mtxclient = callPackage ../development/libraries/mtxclient { };
 
   mu = callPackage ../tools/networking/mu {
     texinfo = texinfo4;
@@ -22226,7 +22229,10 @@ with pkgs;
 
   bullet = callPackage ../development/libraries/bullet {};
 
-  spdlog = callPackage ../development/libraries/spdlog { };
+  inherit (callPackages ../development/libraries/spdlog { })
+    spdlog_0 spdlog_1;
+
+  spdlog = spdlog_1;
 
   dart = callPackage ../development/interpreters/dart { };
   dart_stable = dart.override { version = "1.24.3"; };
