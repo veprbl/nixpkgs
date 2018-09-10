@@ -13134,6 +13134,8 @@ with pkgs;
 
   nas = callPackage ../servers/nas { };
 
+  nats-streaming-server = callPackage ../servers/nats-streaming-server { };
+
   neard = callPackage ../servers/neard { };
 
   nginx = nginxStable;
@@ -14468,6 +14470,8 @@ with pkgs;
 
   govers = callPackage ../development/tools/govers { };
 
+  govendor = callPackage ../development/tools/govendor { };
+
   gotools = callPackage ../development/tools/gotools { };
 
   gotop = callPackage ../tools/system/gotop { };
@@ -14550,6 +14554,8 @@ with pkgs;
   pmtools = callPackage ../os-specific/linux/pmtools { };
 
   policycoreutils = callPackage ../os-specific/linux/policycoreutils { };
+
+  semodule-utils = callPackage ../os-specific/linux/semodule-utils { };
 
   powerdns = callPackage ../servers/dns/powerdns { };
 
@@ -18855,6 +18861,8 @@ with pkgs;
 
   nylas-mail-bin = callPackage ../applications/networking/mailreaders/nylas-mail-bin { };
 
+  thonny = callPackage ../applications/editors/thonny { };
+
   thunderbird = callPackage ../applications/networking/mailreaders/thunderbird {
     inherit (gnome2) libIDL;
     libpng = libpng_apng;
@@ -19606,6 +19614,8 @@ with pkgs;
   yarssr = callPackage ../applications/misc/yarssr { };
 
   yate = callPackage ../applications/misc/yate { };
+
+  ydiff = callPackage ../development/tools/ydiff { };
 
   yed = callPackage ../applications/graphics/yed {};
 
@@ -20641,6 +20651,8 @@ with pkgs;
   emboss = callPackage ../applications/science/biology/emboss { };
 
   ezminc = callPackage ../applications/science/biology/EZminc { };
+
+  hisat2 = callPackage ../applications/science/biology/hisat2 { };
 
   htslib = callPackage ../development/libraries/science/biology/htslib { };
 
@@ -22232,7 +22244,9 @@ with pkgs;
     inherit (gnome2) gtksourceview;
   };
 
-  bullet = callPackage ../development/libraries/bullet {};
+  bullet = callPackage ../development/libraries/bullet {
+    inherit (darwin.apple_sdk.frameworks) Cocoa OpenGL;
+  };
 
   inherit (callPackages ../development/libraries/spdlog { })
     spdlog_0 spdlog_1;
