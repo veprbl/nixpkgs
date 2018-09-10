@@ -4,6 +4,7 @@ let
   packages = self: with self; {
 
     dbus-factory = callPackage ./dbus-factory { };
+    dde-calendar = callPackage ./dde-calendar { };
     dde-qt-dbus-factory = callPackage ./dde-qt-dbus-factory { };
     deepin-gettext-tools = callPackage ./deepin-gettext-tools { };
     deepin-gtk-theme = callPackage ./deepin-gtk-theme { };
@@ -17,6 +18,7 @@ let
       wnck = pkgs.libwnck3;
     };
     dtkcore = callPackage ./dtkcore { };
+    dtkwm = callPackage ./dtkwm { };
     dtkwidget = callPackage ./dtkwidget { };
     go-dbus-factory = callPackage ./go-dbus-factory { };
     go-dbus-generator = callPackage ./go-dbus-generator { };
