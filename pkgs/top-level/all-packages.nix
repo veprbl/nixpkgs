@@ -151,6 +151,8 @@ with pkgs;
 
   ebook2cw = callPackage ../applications/misc/ebook2cw { };
 
+  etBook = callPackage ../data/fonts/et-book { };
+
   fetchbower = callPackage ../build-support/fetchbower {
     inherit (nodePackages) bower2nix;
   };
@@ -4594,6 +4596,8 @@ with pkgs;
 
   pdfcrack = callPackage ../tools/security/pdfcrack { };
 
+  pdftag = callPackage ../tools/graphics/pdftag { };
+
   pdf2svg = callPackage ../tools/graphics/pdf2svg { };
 
   fmodex = callPackage ../games/zandronum/fmod.nix { };
@@ -6210,6 +6214,8 @@ with pkgs;
   zsh-autoenv = callPackage ../tools/misc/zsh-autoenv { };
 
   zsh-git-prompt = callPackage ../shells/zsh/zsh-git-prompt { };
+
+  zsh-history-substring-search = callPackage ../shells/zsh/zsh-history-substring-search { };
 
   zsh-navigation-tools = callPackage ../tools/misc/zsh-navigation-tools { };
 
