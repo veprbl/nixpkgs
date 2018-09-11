@@ -20693,6 +20693,8 @@ with pkgs;
 
   bcftools = callPackage ../applications/science/biology/bcftools { };
 
+  manta = callPackage ../applications/science/biology/manta { };
+
   conglomerate = callPackage ../applications/science/biology/conglomerate {
     inherit (perlPackages) GetoptTabular MNI-Perllib;
   };
