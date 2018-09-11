@@ -3200,6 +3200,8 @@ with pkgs;
 
   hwinfo = callPackage ../tools/system/hwinfo { };
 
+  hylafaxplus = callPackage ../servers/hylafaxplus { };
+
   i2c-tools = callPackage ../os-specific/linux/i2c-tools { };
 
   i2p = callPackage ../tools/networking/i2p {};
@@ -13708,6 +13710,8 @@ with pkgs;
 
   bluez5 = callPackage ../os-specific/linux/bluez { };
 
+  pulseaudio-modules-bt = callPackage ../applications/audio/pulseaudio-modules-bt { };
+
   bluez = bluez5;
 
   inherit (python3Packages) bedup;
@@ -18805,7 +18809,7 @@ with pkgs;
   teamspeak_client = libsForQt5.callPackage ../applications/networking/instant-messengers/teamspeak/client.nix { };
   teamspeak_server = callPackage ../applications/networking/instant-messengers/teamspeak/server.nix { };
 
-  uaskjuggler = callPackage ../applications/misc/taskjuggler { };
+  taskjuggler = callPackage ../applications/misc/taskjuggler { };
 
   tasknc = callPackage ../applications/misc/tasknc { };
 
