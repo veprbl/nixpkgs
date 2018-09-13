@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, autoreconfHook
+{ stdenv, fetchFromGitHub, autoreconfHook, makeWrapper
 , pkgconfig, dbus, dbus-glib, libxml2 }:
 
 stdenv.mkDerivation rec {
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
     sha256 = "1g1l7k8yxj8bl1ysdx8v6anv1s7xk9j072y44gwki70dy48n7j92";
   };
 
-  nativeBuildInputs = [ pkgconfig autoreconfHook ];
+  nativeBuildInputs = [ pkgconfig autoreconfHook makeWrapper ];
   buildInputs = [ dbus dbus-glib libxml2 ];
 
   configureFlags = [
@@ -20,6 +20,14 @@ stdenv.mkDerivation rec {
     "--with-dbus-sys-dir=$(out)/etc/dbus-1/system.d"
     "--with-systemdsystemunitdir=$(out)/etc/systemd/system"
     ];
+
+  postInstall = ''
+    mkdir -p $out/bin
+    cp ./tools/thermald_set_pref.sh $out/bin/
+
+    patchShebangs $out/bin/thermald_set_pref.sh
+    wrapProgram $out/bin/thermald_set_pref.sh --prefix PATH ':' ${stdenv.lib.makeBinPath [ dbus ]}
+  '';
 
   meta = with stdenv.lib; {
     description = "Thermal Daemon";
