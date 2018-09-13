@@ -36,6 +36,8 @@ in {
     environment.systemPackages = [ pkgs.thermald ];
     services.dbus.packages = [ pkgs.thermald ];
 
+    users.groups.power = {};
+
     systemd.services.thermald = {
       description = "Thermal Daemon Service";
       wantedBy = [ "multi-user.target" ];
