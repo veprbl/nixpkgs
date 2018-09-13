@@ -1,7 +1,10 @@
-{ stdenv, lib, fetchgit, darwin, buildPlatform
+{ stdenv, lib, fetchgit, darwin
 , buildRustCrate, defaultCrateOverrides }:
 
-((import ./Cargo.nix { inherit lib buildPlatform buildRustCrate fetchgit; }).cargo_download {}).override {
+((import ./Cargo.nix {
+  inherit lib buildRustCrate fetchgit;
+  inherit (stdenv) buildPlatform;
+}).cargo_download {}).override {
   crateOverrides = defaultCrateOverrides // {
     cargo-download = attrs: {
       buildInputs = lib.optional stdenv.isDarwin
