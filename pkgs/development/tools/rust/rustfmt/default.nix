@@ -2,7 +2,7 @@
 
 rustPlatform.buildRustPackage rec {
   name = "rustfmt-${version}";
-  version = "0.9.0";
+  version = "0.99.2";
 
   src = fetchFromGitHub {
     owner = "rust-lang-nursery";
