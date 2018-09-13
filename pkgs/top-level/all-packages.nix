@@ -844,7 +844,9 @@ with pkgs;
 
   bashmount = callPackage ../tools/filesystems/bashmount {};
 
-  bat = callPackage ../tools/misc/bat { };
+  bat = callPackage ../tools/misc/bat {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
 
   bc = callPackage ../tools/misc/bc { };
 
@@ -5585,7 +5587,9 @@ with pkgs;
 
   tor-arm = callPackage ../tools/security/tor/tor-arm.nix { };
 
-  tor-browser-bundle-bin = callPackage ../applications/networking/browsers/tor-browser-bundle-bin { };
+  tor-browser-bundle-bin = callPackage ../applications/networking/browsers/tor-browser-bundle-bin {
+    inherit (gnome3) defaultIconTheme;
+  };
 
   tor-browser-bundle = callPackage ../applications/networking/browsers/tor-browser-bundle {
     stdenv = stdenvNoCC;
@@ -10397,6 +10401,8 @@ with pkgs;
 
   libgrss = callPackage ../development/libraries/libgrss { };
 
+  libiio = callPackage ../development/libraries/libiio { };
+
   libseccomp = callPackage ../development/libraries/libseccomp { };
 
   libsecret = callPackage ../development/libraries/libsecret { };
@@ -11727,7 +11733,7 @@ with pkgs;
       kservice ktexteditor ktextwidgets kunitconversion kwallet kwayland
       kwidgetsaddons kwindowsystem kxmlgui kxmlrpcclient modemmanager-qt
       networkmanager-qt plasma-framework prison solid sonnet syntax-highlighting
-      threadweaver kirigami2 kholidays kpurpose;
+      syndication threadweaver kirigami2 kholidays kpurpose;
 
     ### KDE PLASMA 5
 
@@ -15853,6 +15859,7 @@ with pkgs;
   datadog-agent = callPackage ../tools/networking/dd-agent/6.nix {
     pythonPackages = datadog-integrations-core {};
   };
+  datadog-process-agent = callPackage ../tools/networking/dd-agent/datadog-process-agent.nix { };
   datadog-integrations-core = extras: callPackage ../tools/networking/dd-agent/integrations-core.nix {
     python = python27;
     extraIntegrations = extras;
@@ -17245,7 +17252,6 @@ with pkgs;
 
   krita = libsForQt5.callPackage ../applications/graphics/krita {
     openjpeg = openjpeg_1;
-    poppler_qt5 = libsForQt5.poppler;
   };
 
   krusader = libsForQt5.callPackage ../applications/misc/krusader { };
@@ -20735,6 +20741,8 @@ with pkgs;
 
   strelka = callPackage ../applications/science/biology/strelka { };
 
+  seaview = callPackage ../applications/science/biology/seaview { };
+
   varscan = callPackage ../applications/science/biology/varscan { };
 
   hmmer = callPackage ../applications/science/biology/hmmer { };
@@ -20813,6 +20821,10 @@ with pkgs;
 
   planarity = callPackage ../development/libraries/science/math/planarity { };
 
+  scalapack = callPackage ../development/libraries/science/math/scalapack {
+    mpi = openmpi;
+  };
+
   rankwidth = callPackage ../development/libraries/science/math/rankwidth { };
 
   fenics = callPackage ../development/libraries/science/math/fenics {
@@ -20841,6 +20853,10 @@ with pkgs;
   rubiks = callPackage ../development/libraries/science/math/rubiks { };
 
   petsc = callPackage ../development/libraries/science/math/petsc { };
+
+  parmetis = callPackage ../development/libraries/science/math/parmetis {
+    mpi = openmpi;
+  };
 
   scs = callPackage ../development/libraries/science/math/scs {
     liblapack = liblapackWithoutAtlas;
