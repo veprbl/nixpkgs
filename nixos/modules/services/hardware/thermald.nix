@@ -46,6 +46,9 @@ in {
             ${optionalString (cfg.configFile != null) "--config-file ${cfg.configFile}"} \
             --dbus-enable
         '';
+        Type = "dbus";
+        BusName = "org.freedesktop.thermald";
+        SuccessExitStatus = 1;
       };
     };
   };
