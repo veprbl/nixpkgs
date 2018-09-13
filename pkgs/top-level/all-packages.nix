@@ -9369,7 +9369,6 @@ with pkgs;
     inherit (gst_all_1)
       gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad
       gst-libav;
-    inherit (pythonPackages) gst-python;
   };
 
   fcgi = callPackage ../development/libraries/fcgi { };
