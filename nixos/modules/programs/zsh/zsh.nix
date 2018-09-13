@@ -161,8 +161,8 @@ in
         . /etc/zinputrc
 
         # history defaults
-        HISTSIZE=50000
-        SAVEHIST=10000
+        SAVEHIST=2000
+        HISTSIZE=2000
         HISTFILE=$HOME/.zsh_history
 
         setopt HIST_IGNORE_DUPS SHARE_HISTORY HIST_FCNTL_LOCK
