@@ -48,7 +48,7 @@ in stdenv.mkDerivation {
     substituteInPlace data/installed-tests/fwupdmgr.test.in --subst-var-by installedtestsdir "$installedTests/share/installed-tests/fwupd"
 
     # /etc/daemon.conf
-    substituteInPlace src/fu-config.c --replace \
+    substituteInPlace meson.build --replace \
       "conf.set_quoted('SYSCONFDIR', sysconfdir)" \
       "conf.set_quoted('SYSCONFDIR', '/etc')"
   '';
