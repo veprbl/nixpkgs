@@ -33,6 +33,7 @@ in {
 
   ###### implementation
   config = mkIf cfg.enable {
+    environment.systemPackages = [ pkgs.thermald ];
     services.dbus.packages = [ pkgs.thermald ];
 
     systemd.services.thermald = {
