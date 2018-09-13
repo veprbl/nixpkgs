@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, autoconf, automake, libtool
+{ stdenv, fetchFromGitHub, autoreconfHook
 , pkgconfig, dbus, dbus-glib, libxml2 }:
 
 stdenv.mkDerivation rec {
@@ -6,21 +6,14 @@ stdenv.mkDerivation rec {
   version = "1.8";
 
   src = fetchFromGitHub {
-    owner = "01org";
+    owner = "intel";
     repo = "thermal_daemon";
     rev = "v${version}";
     sha256 = "1g1l7k8yxj8bl1ysdx8v6anv1s7xk9j072y44gwki70dy48n7j92";
   };
 
-  nativeBuildInputs = [ pkgconfig ];
-  buildInputs = [ autoconf automake libtool dbus dbus-glib libxml2 ];
-
-  patchPhase = ''sed -e 's/upstartconfdir = \/etc\/init/upstartconfdir = $(out)\/etc\/init/' -i data/Makefile.am'';
-
-  preConfigure = ''
-    export PKG_CONFIG_PATH="${dbus.dev}/lib/pkgconfig:$PKG_CONFIG_PATH"
-    ./autogen.sh
-  '';
+  nativeBuildInputs = [ pkgconfig autoreconfHook ];
+  buildInputs = [ dbus dbus-glib libxml2 ];
 
   configureFlags = [
     "--sysconfdir=$(out)/etc" "--localstatedir=/var"
