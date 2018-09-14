@@ -19140,6 +19140,8 @@ with pkgs;
       else null;
   };
 
+  vmware-workstation-player = callPackage ../applications/virtualization/vmware-workstation-player { };
+
   vpcs = callPackage ../applications/virtualization/vpcs { };
 
   primusLib = callPackage ../tools/X11/primus/lib.nix {
