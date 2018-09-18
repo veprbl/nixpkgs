@@ -1,46 +1,25 @@
-{ stdenv, fetchFromGitHub, zlib, pkgconfig, python, boost, cmake, doxygen, ccache }:
+{ stdenv, lib, fetchurl, python}:
 
 stdenv.mkDerivation rec {
   name = "${pname}-${version}";
   pname = "manta";
   version = "1.4.0";
 
-  src = fetchFromGitHub {
-    repo = pname;
-    owner = "Illumina";
-    rev = "v${version}";
-    sha256 = "019w86zc36jkz2w1asjg7kc7qinl86p5bpyymdzz2xcgqhpza5wb";
+  src = fetchurl {
+    url = "https://github.com/Illumina/manta/releases/download/v${version}/manta-${version}.centos6_x86_64.tar.bz2";
+    sha256 = "0hds1a70z4vya9wbcfkxdipms5i1qf8nix96i0a2lfjh1l77qm79";
   };
 
-  buildInputs = [ pkgconfig zlib python boost cmake doxygen ccache];
+  phases = "installPhase";
 
-  setSourceRoot = ''
-    mkdir ../build_manta
-    cd ../build_manta
-    sourceRoot="`pwd`"
-  '';
-
-  configurePhase = ''
-    echo "configuring manta .."
-    $src/configure --jobs=4 --prefix=$out
-    echo "finished configuring manta"
-  '';
-
-  CCACHE_DIR=".ccache";
-  makeFlags = [ "BOOST_ROOT=${boost}" ];
-  
   installPhase = ''
-    echo "$BOOST_ROOT";
-    export BOOST_ROOT=${boost};
-    echo "going to install manta .."
-    echo $(pwd)
-    echo "moving into src, is it the same?"
-    cd $src
-    echo "Starting to compile"
-    make -j4 install
-    make doc
-    rm -rf ../build_manta
-  '';  
+    mkdir -p $out
+    tar xvjf $src
+    ls -ahl
+    pwd
+    cd manta-${version}.centos6_x86_64
+    cp -R bin lib libexec share $out/
+  '';
 
   meta = with stdenv.lib; {
     description = "Manta calls structural variants (SVs) and indels from mapped paired-end sequencing reads";
