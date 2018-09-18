@@ -59,6 +59,8 @@ in stdenv.mkDerivation (rec {
     substituteInPlace unittests/Support/CMakeLists.txt \
       --replace "add_subdirectory(DynamicLibrary)" ""
     rm unittests/Support/DynamicLibrary/DynamicLibraryTest.cpp
+  '' + ''
+    patchShebangs test/BugPoint/compile-custom.ll.py
   '';
 
   # hacky fix: created binaries need to be run before installation
@@ -111,8 +113,6 @@ in stdenv.mkDerivation (rec {
 
   preCheck = ''
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/lib
-
-    patchShebangs test/BugPoint/compile-custom.ll.py
   '';
 
   postInstall = ''
