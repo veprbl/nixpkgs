@@ -111,6 +111,8 @@ in stdenv.mkDerivation (rec {
 
   preCheck = ''
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/lib
+
+    patchShebangs test/BugPoint/compile-custom.ll.py
   '';
 
   postInstall = ''
