@@ -261,6 +261,7 @@ in rec {
   tests.chromium = (callSubTestsOnMatchingSystems ["x86_64-linux"] tests/chromium.nix {}).stable or {};
   tests.cjdns = callTest tests/cjdns.nix {};
   tests.cloud-init = callTest tests/cloud-init.nix {};
+  tests.codimd = callTest tests/codimd.nix {};
   tests.containers-ipv4 = callTest tests/containers-ipv4.nix {};
   tests.containers-ipv6 = callTest tests/containers-ipv6.nix {};
   tests.containers-bridge = callTest tests/containers-bridge.nix {};
@@ -284,7 +285,8 @@ in rec {
   tests.ecryptfs = callTest tests/ecryptfs.nix {};
   tests.etcd = callTestOnMatchingSystems ["x86_64-linux"] tests/etcd.nix {};
   tests.ec2-nixops = (callSubTestsOnMatchingSystems ["x86_64-linux"] tests/ec2.nix {}).boot-ec2-nixops or {};
-  tests.ec2-config = (callSubTestsOnMatchingSystems ["x86_64-linux"] tests/ec2.nix {}).boot-ec2-config or {};
+  # ec2-config doesn't work in a sandbox as the simulated ec2 instance needs network access
+  #tests.ec2-config = (callSubTestsOnMatchingSystems ["x86_64-linux"] tests/ec2.nix {}).boot-ec2-config or {};
   tests.elk = callSubTestsOnMatchingSystems ["x86_64-linux"] tests/elk.nix {};
   tests.env = callTest tests/env.nix {};
   tests.ferm = callTest tests/ferm.nix {};
@@ -399,7 +401,7 @@ in rec {
   tests.slurm = callTest tests/slurm.nix {};
   tests.smokeping = callTest tests/smokeping.nix {};
   tests.snapper = callTest tests/snapper.nix {};
-  tests.statsd = callTest tests/statsd.nix {};
+  #tests.statsd = callTest tests/statsd.nix {}; # statsd is broken: #45946
   tests.strongswan-swanctl = callTest tests/strongswan-swanctl.nix {};
   tests.sudo = callTest tests/sudo.nix {};
   tests.systemd = callTest tests/systemd.nix {};

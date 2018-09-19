@@ -216,6 +216,8 @@ in {
 
   backports_csv = callPackage ../development/python-modules/backports_csv {};
 
+  backports-shutil-which = callPackage ../development/python-modules/backports-shutil-which {};
+
   bap = callPackage ../development/python-modules/bap {
     bap = pkgs.ocamlPackages.bap;
   };
@@ -288,6 +290,8 @@ in {
 
   distorm3 = callPackage ../development/python-modules/distorm3 { };
 
+  distributed = callPackage ../development/python-modules/distributed { };
+
   docutils = callPackage ../development/python-modules/docutils { };
 
   dogtail = callPackage ../development/python-modules/dogtail { };
@@ -297,6 +301,10 @@ in {
   fido2 = callPackage ../development/python-modules/fido2 {  };
 
   fire = callPackage ../development/python-modules/fire { };
+
+  fuse = callPackage ../development/python-modules/fuse-python { fuse = pkgs.fuse; };
+
+  genanki = callPackage ../development/python-modules/genanki { };
 
   globus-sdk = callPackage ../development/python-modules/globus-sdk { };
 
@@ -333,6 +341,8 @@ in {
   logster = callPackage ../development/python-modules/logster { };
 
   mail-parser = callPackage ../development/python-modules/mail-parser { };
+
+  markerlib = callPackage ../development/python-modules/markerlib { };
 
   monty = callPackage ../development/python-modules/monty { };
 
@@ -377,6 +387,8 @@ in {
   pdfx = callPackage ../development/python-modules/pdfx { };
 
   phonopy = callPackage ../development/python-modules/phonopy { };
+
+  pims = callPackage ../development/python-modules/pims { };
 
   plantuml = callPackage ../tools/misc/plantuml { };
 
@@ -461,9 +473,13 @@ in {
 
   pykerberos = callPackage ../development/python-modules/pykerberos { };
 
+  pykeepass = callPackage ../development/python-modules/pykeepass { };
+
   pymatgen = callPackage ../development/python-modules/pymatgen { };
 
   pymatgen-lammps = callPackage ../development/python-modules/pymatgen-lammps { };
+
+  pymsgbox = callPackage ../development/python-modules/pymsgbox { };
 
   pynisher = callPackage ../development/python-modules/pynisher { };
 
@@ -495,7 +511,11 @@ in {
 
   pytest-tornado = callPackage ../development/python-modules/pytest-tornado { };
 
+  python-binance = callPackage ../development/python-modules/python-binance { };
+
   python-hosts = callPackage ../development/python-modules/python-hosts { };
+
+  python-lz4 = callPackage ../development/python-modules/python-lz4 { };
 
   python-igraph = callPackage ../development/python-modules/python-igraph {
     pkgconfig = pkgs.pkgconfig;
@@ -536,6 +556,8 @@ in {
 
   seekpath = callPackage ../development/python-modules/seekpath { };
 
+  selectors2 = callPackage ../development/python-modules/selectors2 { };
+
   serversyncstorage = callPackage ../development/python-modules/serversyncstorage {};
 
   simpleeval = callPackage ../development/python-modules/simpleeval { };
@@ -549,6 +571,8 @@ in {
   sklearn-deap = callPackage ../development/python-modules/sklearn-deap { };
 
   slackclient = callPackage ../development/python-modules/slackclient { };
+
+  slicerator = callPackage ../development/python-modules/slicerator { };
 
   spglib = callPackage ../development/python-modules/spglib { };
 
@@ -567,6 +591,8 @@ in {
   trustme = callPackage ../development/python-modules/trustme {};
 
   trio = callPackage ../development/python-modules/trio {};
+
+  sniffio = callPackage ../development/python-modules/sniffio { };
 
   tokenserver = callPackage ../development/python-modules/tokenserver {};
 
@@ -1448,6 +1474,8 @@ in {
 
     disabled = !isPy27;
 
+    buildInputs = optionals stdenv.isDarwin [ pkgs.darwin.apple_sdk.frameworks.IOKit ];
+
     src = pkgs.fetchurl {
       url = "http://cddb-py.sourceforge.net/${name}.tar.gz";
       sha256 = "098xhd575ibvdx7i3dny3lwi851yxhjg2hn5jbbgrwj833rg5l5w";
@@ -1645,6 +1673,12 @@ in {
 
   envs = callPackage ../development/python-modules/envs { };
 
+  eth-hash = callPackage ../development/python-modules/eth-hash { };
+
+  eth-typing = callPackage ../development/python-modules/eth-typing { };
+
+  eth-utils = callPackage ../development/python-modules/eth-utils { };
+
   jsonrpc-async = callPackage ../development/python-modules/jsonrpc-async { };
 
   jsonrpc-base = callPackage ../development/python-modules/jsonrpc-base { };
@@ -1704,35 +1738,7 @@ in {
 
   idna = callPackage ../development/python-modules/idna { };
 
-  mahotas = buildPythonPackage rec {
-    name = "python-mahotas-${version}";
-    version = "1.4.2";
-
-    src = pkgs.fetchurl {
-      url = "https://github.com/luispedro/mahotas/archive/v${version}.tar.gz";
-      sha256 = "1mvsxh0pa5vdvbknlv1m68n7gw2cv4pyqgqp3r770rnmf6nxbp7m";
-    };
-
-    buildInputs = with self; [
-      nose
-      pillow
-      scipy
-    ];
-    propagatedBuildInputs = with self; [
-      numpy
-      imread
-    ];
-
-    disabled = stdenv.isi686; # Failing tests
-
-    meta = with stdenv.lib; {
-      description = "Computer vision package based on numpy";
-      homepage = http://mahotas.readthedocs.io/;
-      maintainers = with maintainers; [ luispedro ];
-      license = licenses.mit;
-      platforms = platforms.linux;
-    };
-  };
+  mahotas = callPackage ../development/python-modules/mahotas { };
 
   MDP = callPackage ../development/python-modules/mdp {};
 
@@ -1787,6 +1793,13 @@ in {
     LD_LIBRARY_PATH = makeLibraryPath [ pkgs.mxnet ];
 
     doCheck = !isPy3k;
+
+    postPatch = ''
+      substituteInPlace python/setup.py \
+      --replace "graphviz<0.9.0" "graphviz<0.10.0" \
+      --replace "numpy<=1.15.0" "numpy<1.16.0" \
+      --replace "requests<2.19.0" "requests<2.20.0"
+    '';
 
     preConfigure = ''
       cd python
@@ -1890,6 +1903,8 @@ in {
 
   pytest-django = callPackage ../development/python-modules/pytest-django { };
 
+  pytest-faulthandler = callPackage ../development/python-modules/pytest-faulthandler { };
+
   pytest-fixture-config = callPackage ../development/python-modules/pytest-fixture-config { };
 
   pytest-forked = callPackage ../development/python-modules/pytest-forked { };
@@ -1913,6 +1928,8 @@ in {
   pytest-pep257 = callPackage ../development/python-modules/pytest-pep257 { };
 
   pytest-raisesregexp = callPackage ../development/python-modules/pytest-raisesregexp { };
+
+  pytest-repeat = callPackage ../development/python-modules/pytest-repeat { };
 
   pytestrunner = callPackage ../development/python-modules/pytestrunner { };
 
@@ -1975,39 +1992,21 @@ in {
 
   dask = callPackage ../development/python-modules/dask { };
 
+  dask-glm = callPackage ../development/python-modules/dask-glm { };
+
+  dask-image = callPackage ../development/python-modules/dask-image { };
+
+  dask-jobqueue = callPackage ../development/python-modules/dask-jobqueue { };
+
+  dask-ml = callPackage ../development/python-modules/dask-ml { };
+
+  dask-xgboost = callPackage ../development/python-modules/dask-xgboost { };
+
   datrie = callPackage ../development/python-modules/datrie { };
 
   heapdict = callPackage ../development/python-modules/heapdict { };
 
   zict = callPackage ../development/python-modules/zict { };
-
-  distributed = buildPythonPackage rec {
-
-    name = "distributed-${version}";
-    version = "1.15.1";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/d/distributed/${name}.tar.gz";
-      sha256 = "037a07sdf2ch1d360nqwqz3b4ld8msydng7mw4i5s902v7xr05l6";
-    };
-
-    buildInputs = with self; [ pytest docutils ];
-    propagatedBuildInputs = with self; [
-      dask six boto3 s3fs tblib locket msgpack-python click cloudpickle tornado
-      psutil botocore zict lz4 sortedcollections sortedcontainers
-    ] ++ (if !isPy3k then [ singledispatch ] else []);
-
-    # py.test not picking up local config file, even when running
-    # manually: E ValueError: no option named '--runslow'
-    doCheck = false;
-
-    meta = {
-      description = "Distributed computation in Python.";
-      homepage = "http://distributed.readthedocs.io/en/latest/";
-      license = licenses.bsd3;
-      maintainers = with maintainers; [ teh ];
-    };
-  };
 
   digital-ocean = callPackage ../development/python-modules/digitalocean { };
 
@@ -2030,6 +2029,8 @@ in {
   datashape = callPackage ../development/python-modules/datashape { };
 
   requests-cache = callPackage ../development/python-modules/requests-cache { };
+
+  requests-file = callPackage ../development/python-modules/requests-file { };
 
   requests-kerberos = callPackage ../development/python-modules/requests-kerberos { };
 
@@ -2617,48 +2618,9 @@ in {
 
   GeoIP = callPackage ../development/python-modules/GeoIP { };
 
-  gmpy = buildPythonPackage rec {
-    name = "gmpy-1.17";
-    disabled = isPyPy;
+  gmpy = callPackage ../development/python-modules/gmpy { };
 
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/g/gmpy/${name}.zip";
-      sha256 = "1a79118a5332b40aba6aa24b051ead3a31b9b3b9642288934da754515da8fa14";
-    };
-
-    buildInputs = [
-      pkgs.gcc
-      pkgs.gmp
-    ];
-
-    meta = {
-      description = "GMP or MPIR interface to Python 2.4+ and 3.x";
-      homepage = http://code.google.com/p/gmpy/;
-    };
-  };
-
-  gmpy2 = buildPythonPackage rec {
-    name = "gmpy2-2.0.6";
-    disabled = isPyPy;
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/g/gmpy2/${name}.zip";
-      sha256 = "5041d0ae24407c24487106099f5bcc4abb1a5f58d90e6712cc95321975eddbd4";
-    };
-
-    buildInputs = [
-      pkgs.gcc
-      pkgs.gmp
-      pkgs.mpfr
-      pkgs.libmpc
-    ];
-
-    meta = {
-      description = "GMP/MPIR, MPFR, and MPC interface to Python 2.6+ and 3.x";
-      homepage = http://code.google.com/p/gmpy/;
-      license = licenses.gpl3Plus;
-    };
-  };
+  gmpy2 = callPackage ../development/python-modules/gmpy2 { };
 
   gmusicapi = with pkgs; buildPythonPackage rec {
     name = "gmusicapi-10.1.0";
@@ -3724,6 +3686,8 @@ in {
       maintainers = with maintainers; [ copumpkin ];
     };
   };
+
+  phe = callPackage ../development/python-modules/phe { };
 
   phpserialize = callPackage ../development/python-modules/phpserialize { };
 
@@ -5663,8 +5627,6 @@ in {
     };
   };
 
-  fuse = callPackage ../development/python-modules/python-fuse { fuse = pkgs.fuse; };
-
   fusepy = buildPythonPackage rec {
     name = "fusepy-2.0.4";
 
@@ -5916,14 +5878,14 @@ in {
 
   glances = buildPythonPackage rec {
     name = "glances-${version}";
-    version = "3.0";
+    version = "3.0.1";
     disabled = isPyPy;
 
     src = pkgs.fetchFromGitHub {
       owner = "nicolargo";
       repo = "glances";
       rev = "v${version}";
-      sha256 = "19pymw104l05af710ph69znqiz9av3if7436kigjlwd65gxnghkc";
+      sha256 = "18pyp6ij3bzybqj771v48n7yn3a1spk6ncg1kgp6hfpjhpqiw87x";
     };
 
     # Requires access to /sys/class/power_supply
@@ -6154,13 +6116,13 @@ in {
 
   hetzner = buildPythonPackage rec {
     name = "hetzner-${version}";
-    version = "0.8.0";
+    version = "0.8.1";
 
     src = pkgs.fetchFromGitHub {
       repo = "hetzner";
       owner = "aszlig";
       rev = "v${version}";
-      sha256 = "04q2q2w2qkhfly8rfjg2h5pnh42gs18l6cmipqc37yf7qvkw3nd0";
+      sha256 = "1xd1klvjskv0pg8ginih597jkk491a55b8dq80dsm61m5sbsx3vq";
     };
 
     meta = {
@@ -7840,6 +7802,8 @@ in {
 
   mypy = callPackage ../development/python-modules/mypy { };
 
+  mypy_extensions = callPackage ../development/python-modules/mypy/extensions.nix { };
+
   mypy-protobuf = callPackage ../development/python-modules/mypy-protobuf { };
 
   mwclient = buildPythonPackage rec {
@@ -7937,11 +7901,11 @@ in {
 
   graphviz = buildPythonPackage rec {
     name = "graphviz-${version}";
-    version = "0.5.2";
+    version = "0.9";
 
     src = pkgs.fetchurl {
       url = "mirror://pypi/g/graphviz/${name}.zip";
-      sha256 = "0jh31nlm0qbxwylhdkwnb69pcjlc5z03fcfbs0gvgzp3hfrngsk0";
+      sha256 = "14r9brj4r31b3qy1nnn34v3l4h0n39bqxg9sn2fz4p3pp5mglnl6";
     };
 
     propagatedBuildInputs = [ pkgs.graphviz ];
@@ -9510,31 +9474,7 @@ in {
     };
   };
 
-  pgspecial = buildPythonPackage rec {
-    pname = "pgspecial";
-    version = "1.8.0";
-    name = "${pname}-${version}";
-
-    src = fetchPypi {
-      inherit pname version;
-      sha256 = "1dwlv3m4jl34zsakmvxg6hgbfv786jl8dcffxsrlnmcpks829xc9";
-    };
-
-    buildInputs = with self; [ pytest psycopg2 ];
-
-    checkPhase = ''
-      find tests -name \*.pyc -delete
-      py.test tests
-    '';
-
-    propagatedBuildInputs = with self; [ click sqlparse ];
-
-    meta = {
-      description = "Meta-commands handler for Postgres Database";
-      homepage = https://pypi.python.org/pypi/pgspecial;
-      license = licenses.bsd3;
-    };
-  };
+  pgspecial = callPackage ../development/python-modules/pgspecial { };
 
   pickleshare = buildPythonPackage rec {
     version = "0.7.4";
@@ -9804,21 +9744,7 @@ in {
 
   psutil = callPackage ../development/python-modules/psutil { };
 
-  psycopg2 = buildPythonPackage rec {
-    name = "psycopg2-2.7.1";
-    disabled = isPyPy;
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/p/psycopg2/${name}.tar.gz";
-      sha256 = "86c9355f5374b008c8479bc00023b295c07d508f7c3b91dbd2e74f8925b1d9c6";
-    };
-    buildInputs = optional stdenv.isDarwin pkgs.openssl;
-    propagatedBuildInputs = with self; [ pkgs.postgresql ];
-    doCheck = false;
-    meta = {
-      description = "PostgreSQL database adapter for the Python programming language";
-      license = with licenses; [ gpl2 zpl20 ];
-    };
-  };
+  psycopg2 = callPackage ../development/python-modules/psycopg2 {};
 
   ptpython = callPackage ../development/python-modules/ptpython {};
 
@@ -10905,6 +10831,8 @@ in {
 
   python-language-server = callPackage ../development/python-modules/python-language-server {};
 
+  python-jsonrpc-server = callPackage ../development/python-modules/python-jsonrpc-server {};
+
   pyls-black = callPackage ../development/python-modules/pyls-black {};
 
   pyls-isort = callPackage ../development/python-modules/pyls-isort {};
@@ -11208,6 +11136,8 @@ in {
       description = "Pyreport makes notes out of a python script";
     };
   });
+
+  pyreadability = callPackage ../development/python-modules/pyreadability { };
 
   pyscss = buildPythonPackage rec {
     name = "pyScss-${version}";
@@ -14951,6 +14881,7 @@ EOF
   };
 
   tornado = callPackage ../development/python-modules/tornado { };
+  tornado_4 = callPackage ../development/python-modules/tornado { version = "4.5.3"; };
 
   tokenlib = buildPythonPackage rec {
     name = "tokenlib-${version}";
@@ -16286,6 +16217,8 @@ EOF
 
   potr = callPackage ../development/python-modules/potr {};
 
+  python-u2flib-host = callPackage ../development/python-modules/python-u2flib-host { };
+
   pluggy = callPackage ../development/python-modules/pluggy {};
 
   xcffib = callPackage ../development/python-modules/xcffib {};
@@ -16802,22 +16735,7 @@ EOF
     cudaSupport = true;
   };
 
-  tflearn = buildPythonPackage rec {
-    name = "tflearn-0.2.1";
-
-    meta = {
-      description = "Deep learning library featuring a higher-level API for TensorFlow";
-      homepage    = "https://github.com/tflearn/tflearn";
-      license     = licenses.mit;
-    };
-
-    propagatedBuildInputs = with self; [ scipy h5py pillow tensorflow ];
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/t/tflearn/${name}.tar.gz";
-      sha256 = "1n884c4j35409id2bncyj5fvmmfpdqj3pk6wrv0s1znnvs0lkii0";
-    };
-  };
+  tflearn = callPackage ../development/python-modules/tflearn { };
 
   simpleai = buildPythonPackage rec {
      version = "0.7.11";
@@ -17033,6 +16951,8 @@ EOF
 
   black = callPackage ../development/python-modules/black { };
 
+  bjoern = callPackage ../development/python-modules/bjoern { };
+
   autobahn = callPackage ../development/python-modules/autobahn { };
 
   jsonref = callPackage ../development/python-modules/jsonref { };
@@ -17153,6 +17073,8 @@ EOF
   warrant = callPackage ../development/python-modules/warrant { };
 
   textacy = callPackage ../development/python-modules/textacy { };
+
+  tldextract = callPackage ../development/python-modules/tldextract { };
 
   pyemd  = callPackage ../development/python-modules/pyemd { };
 

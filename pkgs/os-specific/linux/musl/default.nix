@@ -36,6 +36,7 @@ stdenv.mkDerivation rec {
     url = git://git.musl-libc.org/musl;
     rev = "7dad9c212587267818de919dd9c5886f18f99779";
 */
+
   version = "1.1.20";
 
   src = fetchurl {
@@ -63,14 +64,30 @@ stdenv.mkDerivation rec {
       url = https://raw.githubusercontent.com/openwrt/openwrt/87606e25afac6776d1bbc67ed284434ec5a832b4/toolchain/musl/patches/300-relative.patch;
       sha256 = "0hfadrycb60sm6hb6by4ycgaqc9sgrhh42k39v8xpmcvdzxrsq2n";
     })
+
+    # Kludge to accomodate badness in Nix, not recommended for general use.
     ./malloc.patch
+
+    # Upstream bugfix, see: https://git.musl-libc.org/cgit/musl/commit/?id=0db393d3a77bb9f300a356c6a5484fc2dddb161d
+    # Explicitly flagged for inclusion by distributions using musl
+    ./fix-file-locking-race.patch
+
+    # More specific error reporting
+    ./tty-more-precise-errors.patch
+    # Use execveat to impl fexecve when avail (useful for containers)
+    ./fexecve-execveat.patch
+    # improve behavior in few cases
+    ./0001-in-pthread_mutex_trylock-EBUSY-out-more-directly-whe.patch
+    ./0002-in-pthread_mutex_timedlock-avoid-repeatedly-reading-.patch
+    ./0003-fix-namespace-violation-for-c11-mutex-functions.patch
   ];
 
   preConfigure = ''
     configureFlagsArray+=("--syslibdir=$out/lib")
   '';
 
-  CFLAGS="-fstack-protector-strong" + lib.optionalString stdenv.hostPlatform.isPower " -mlong-double-64";
+  CFLAGS = [ "-fstack-protector-strong" ]
+    ++ lib.optional stdenv.hostPlatform.isPower "-mlong-double-64";
 
   configureFlags = [
     "--enable-shared"
