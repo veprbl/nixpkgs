@@ -20782,6 +20782,8 @@ with pkgs;
     stdenv = gccStdenv;
   };
 
+  cnvnator = callPackage ../applications/science/biology/cnvnator { };
+
   snpeff = callPackage ../applications/science/biology/snpeff { };
 
   somatic-sniper = callPackage ../applications/science/biology/somatic-sniper { };
