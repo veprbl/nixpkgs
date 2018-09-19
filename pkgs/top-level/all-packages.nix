@@ -22451,6 +22451,8 @@ with pkgs;
 
   doing = callPackage ../applications/misc/doing  { };
 
+  intel-undervolt = callPackage ../os-specific/linux/intel-undervolt { };
+
   undervolt = callPackage ../os-specific/linux/undervolt { };
 
   alibuild = callPackage ../development/tools/build-managers/alibuild {
