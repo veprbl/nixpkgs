@@ -511,6 +511,8 @@ in {
 
   pytest-tornado = callPackage ../development/python-modules/pytest-tornado { };
 
+  python-binance = callPackage ../development/python-modules/python-binance { };
+
   python-hosts = callPackage ../development/python-modules/python-hosts { };
 
   python-lz4 = callPackage ../development/python-modules/python-lz4 { };
@@ -6114,13 +6116,13 @@ in {
 
   hetzner = buildPythonPackage rec {
     name = "hetzner-${version}";
-    version = "0.8.0";
+    version = "0.8.1";
 
     src = pkgs.fetchFromGitHub {
       repo = "hetzner";
       owner = "aszlig";
       rev = "v${version}";
-      sha256 = "04q2q2w2qkhfly8rfjg2h5pnh42gs18l6cmipqc37yf7qvkw3nd0";
+      sha256 = "1xd1klvjskv0pg8ginih597jkk491a55b8dq80dsm61m5sbsx3vq";
     };
 
     meta = {

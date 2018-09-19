@@ -1467,7 +1467,9 @@ with pkgs;
 
   noteshrink = callPackage ../tools/misc/noteshrink { };
 
-  noti = callPackage ../tools/misc/noti { };
+  noti = callPackage ../tools/misc/noti {
+    inherit (darwin.apple_sdk.frameworks) Cocoa;
+  };
 
   nrsc5 = callPackage ../applications/misc/nrsc5 { };
 
@@ -2391,7 +2393,9 @@ with pkgs;
 
   exa = callPackage ../tools/misc/exa { };
 
-  exempi = callPackage ../development/libraries/exempi { };
+  exempi = callPackage ../development/libraries/exempi {
+    stdenv = if stdenv.isi686 then overrideCC stdenv gcc6 else stdenv;
+  };
 
   execline = skawarePackages.execline;
 
