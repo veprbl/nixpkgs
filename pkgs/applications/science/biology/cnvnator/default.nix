@@ -1,33 +1,32 @@
-{ stdenv, fetchurl, zlib, bzip2, lzma, curl, pkgconfig, perl, cmake, ncurses, doxygen, ccache, libXpm }:
-
+{ pkgs, stdenv, ocaml, fetchurl,  samtools, zlib, bzip2, lzma, curl, pkgconfig, perl, ncurses, doxygen, ccache, libXpm }:
+# The call.package of nix will ensure that the packages above is passed in appropriately
 let 
 
   cnvnatorVersion = "0.3.3";
   yeppVersion = "1.0.0";
-  samtoolsVersion = "1.8";
-  rootVersion = "6.06.6";
+
+  root = pkgs.root.overrideAttrs (oldAttrs: rec {
+    
+    name = "root-${version}";
+    version = "6.06.6";
+
+    src = fetchurl {
+      url = "https://root.cern.ch/download/root_v${version}.source.tar.gz";
+      sha256 = "1557b9sdragsx9i15qh6lq7fn056bgi87d31kxdl4vl0awigvp5f";
+    };
+
+  });
 
   srcs = {
     
     cnvnator = fetchurl {
-#      url = "https://github.com/abyzovlab/CNVnator/releases/download/v${cnvnatorVersion}/CNVnator_v${cnvnatorVersion}.zip";
       url = "https://github.com/abyzovlab/CNVnator/archive/v${cnvnatorVersion}.tar.gz";
       sha256 = "1hg57wdlg0xs7vylqp4yf95hhpksj7w9dha6ypmmy7ls3zvariaq";
     };
 
     yeppp = fetchurl {
       url = "https://bitbucket.org/MDukhan/yeppp/downloads/yeppp-${yeppVersion}.tar.bz2";
-      sha256 = "1324";
-    };
-
-    samtools = fetchurl {
-      url = "https://github.com/samtools/samtools/releases/download/${samtoolsVersion}/samtools-${samtoolsVersion}.tar.bz2"; 
-      sha256 = "1242354";
-    };
-
-    root = fetchurl {
-      url = "https://github.com/root-project/root/archive/v${rootVersion}.tar.gz";
-      sha256 = "12234";
+      sha256 = "0gacil1xvvpj5vyrrbdyrxxxy74zfdi9rn9jlplx0scrf9pacbh4";
     };
   
   };
@@ -37,18 +36,49 @@ in stdenv.mkDerivation rec {
   pname = "CNVnator";
   version = "0.3.3";
 
-  buildInputs = [ stdenv zlib bzip2 lzma curl pkgconfig perl cmake ncurses doxygen ccache libXpm ];
+  buildInputs = [ stdenv ocaml zlib root samtools bzip2 lzma curl pkgconfig perl ncurses doxygen ccache libXpm ];
 
   src = srcs.cnvnator;
 
   postUnpack = ''
-    ln -sv ${srcs.samtools} $sourceRoot/samtools
-    ln -sv ${src.yeppp} $sourceRoot/yeppp
-    ln -sv ${src.root} $sourceRoot/root
+    ln -sv ${srcs.yeppp} $sourceRoot/yeppp
   '';
+
   preConfigure = ''
+
+    echo "content of this directory:"
+    ls -ahl
+    echo "active directory is":
+    pwd
+
+    echo "content of root"
+    ls ${root}
+
+    echo "content of samtools"
+    ls ${samtools}
+
+    echo "root is located at"
+    cd ${root}
+    pwd
+    cd -
+
+    echo "samtools is located at:"
+    cd ${samtools}
+    pwd
+    cd -
+
+    tar -xvjf ${samtools.src}
+    echo "What do we have here?"
     ls -ahl
     pwd
+    cd samtools-${samtools.version}
+    echo "What do we have here?"
+    ls -ahl
+    pwd
+    ./configure --without-curses
+    make
+
+    cd ../ 
   '';
 
   CCACHE_DIR=".ccache";

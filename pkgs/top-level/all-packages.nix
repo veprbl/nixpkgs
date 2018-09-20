@@ -20782,7 +20782,11 @@ with pkgs;
     stdenv = gccStdenv;
   };
 
-  cnvnator = callPackage ../applications/science/biology/cnvnator { };
+  cnvnator = callPackage ../applications/science/biology/cnvnator { 
+    #  curl = buildPackages.curl.override (lib.optionalAttrs stdenv.isDarwin { gssSupport = false; });
+    #  root = root.override { version = "6.06.06"; };
+
+  };
 
   snpeff = callPackage ../applications/science/biology/snpeff { };
 
