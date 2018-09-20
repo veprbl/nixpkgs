@@ -13908,7 +13908,7 @@ with pkgs;
 
   hwdata = callPackage ../os-specific/linux/hwdata { };
 
-  i7z = callPackage ../os-specific/linux/i7z { };
+  i7z = qt5.callPackage ../os-specific/linux/i7z { };
 
   pcm = callPackage ../os-specific/linux/pcm { };
 
@@ -14087,18 +14087,6 @@ with pkgs;
         # when adding a new linux version
         # kernelPatches.cpu-cgroup-v2."4.11"
         kernelPatches.modinst_arg_list_too_long
-
-        # https://github.com/NixOS/nixpkgs/issues/45165
-        # TODO: remove this patch once it is merged upstream and released.
-        (rec {
-          name = "hid-core-fix-grouping-by-application";
-          patch = fetchpatch {
-            name = name + ".patch";
-            # https://patchwork.kernel.org/patch/10587369/
-            url = https://git.kernel.org/pub/scm/linux/kernel/git/jikos/hid.git/patch/?id=0d6c3011409135ea84e2a231b013a22017ff999a;
-            sha256 = "0bdrv0aqjh0rdjlaaaqpdgrnd9452fa4ggaa1nq2kmik3q00cq4m";
-          };
-        })
       ];
   };
 
@@ -14507,8 +14495,6 @@ with pkgs;
   golangci-lint = callPackage ../development/tools/golangci-lint { };
 
   godef = callPackage ../development/tools/godef { };
-
-  goimports = callPackage ../development/tools/goimports { };
 
   gopkgs = callPackage ../development/tools/gopkgs { };
 
