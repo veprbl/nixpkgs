@@ -2,13 +2,13 @@
 
 with lib;
 
-let extpackRev = "123301";
-    version = "5.2.14";
+let extpackRev = "124319";
+    version = "5.2.18";
 in
 fetchurl rec {
   name = "Oracle_VM_VirtualBox_Extension_Pack-${version}-${toString extpackRev}.vbox-extpack";
-  url = "http://download.virtualbox.org/virtualbox/${version}/${name}";
-  sha256 = "d90c1b0c89de19010f7c7fe7a675ac744067baf29a9966b034e97b5b2053b37e";
+  url = "https://download.virtualbox.org/virtualbox/${version}/${name}";
+  sha256 = "0s3gh2n2qjhy8xbdppzkphjd8p5nirh6qmwhnx71yx022p3l7jry";
 
   meta = {
     description = "Oracle Extension pack for VirtualBox";
