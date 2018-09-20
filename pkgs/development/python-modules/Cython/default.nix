@@ -1,7 +1,7 @@
 { lib
 , stdenv
 , buildPythonPackage
-, fetchPypi
+, fetchFromGitHub # fetchPypi
 , python
 , glibcLocales
 , pkgconfig
@@ -26,10 +26,16 @@ in buildPythonPackage rec {
   pname = "Cython";
   version = "0.28.5";
 
-  src = fetchPypi {
-    inherit pname version;
-    sha256 = "1q3rk46hcn7lnpyv4vc2dqamxfmhkwrkfhadb80frxk43wj7aidn";
+  src = fetchFromGitHub {
+    owner = "cython";
+    repo = "cython";
+    rev = "70b3d15d3b4835ec837ebae3bf4f3f70cf66ab50";
+    sha256 = "1rpm899ywky48xhkz2bmmk7fgmp1xwm7yabnp3swh0d9n2d003rd";
   };
+  #src = fetchPypi {
+  #  inherit pname version;
+  #  sha256 = "1q3rk46hcn7lnpyv4vc2dqamxfmhkwrkfhadb80frxk43wj7aidn";
+  #};
 
   nativeBuildInputs = [
     pkgconfig
