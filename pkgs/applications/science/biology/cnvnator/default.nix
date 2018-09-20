@@ -99,12 +99,12 @@ in stdenv.mkDerivation rec {
     ls -ahl
     mv samtools-${samtools.version} samtools
 
-    echo >> MakeFile
-    echo >> MakeFile
+    echo >> Makefile
+    echo >> Makefile
 
-    echo "install:  cnvnator" >> MakeFile
+    echo "install:  cnvnator" >> Makefile
 
-    cat MakeFile
+    cat Makefile
   '';
 
   meta = with stdenv.lib; {
