@@ -36,7 +36,7 @@
 }:
 
 let
-  v_base = "4.1.3";
+  v_base = "4.2";
   version = "${v_base}-RELEASE";
   version_friendly = "${v_base}";
 
@@ -54,15 +54,15 @@ let
     # For more inforation, see: https://github.com/apple/swift/pull/3594#issuecomment-234169759
     clang = fetch {
       repo = "swift-clang";
-      sha256 = "0j8bi6jv4m4hqiib02q5cvnxd9j6bwiri853x6px86vai3mdff0h";
+      sha256 = "0l6w4xzpl3w2nax9a0b885nfzhfj38p2g99158nb5bzfd4s0man7";
     };
     llvm = fetch {
       repo = "swift-llvm";
-      sha256 = "0q5cv4iydm8c1kcax32573y3q2cbpihwgj5aa8ws1fnpy4jvq934";
+      sha256 = "133kzhm23gl150wq1kwg47mnlx8vq505f46rdbnkp46adqqrfj17";
     };
     compilerrt = fetch {
       repo = "swift-compiler-rt";
-      sha256 = "1wkymmxi2v759xkwlzfrq9rivndjfvp6ikrzz10mvvrvyvrgwqnl";
+      sha256 = "1fs4jl1wy5wjpzzmp5g4nlgh6p1i47nzz6fyzj1wl54snjs5sv98";
     };
     cmark = fetch {
       repo = "swift-cmark";
@@ -70,32 +70,32 @@ let
     };
     lldb = fetch {
       repo = "swift-lldb";
-      sha256 = "1d0pa7xm289bjb6r52hkkmlngkqkwbwgixnmm30bin2q18mkxk7s";
+      sha256 = "1k3fyzpr1gqz99d3ylij7rhij02w99vrg4ll47zjw51vvglyr74h";
     };
     llbuild = fetch {
       repo = "swift-llbuild";
-      sha256 = "04y0ihfyam2n671vmpk9gy0gb9lb3ivh6mr19862p5kg5bmrcic1";
+      sha256 = "1mkkhydshhxr28igbldzr0hhqvb6ql43cpf3ba5vglfkbcz6wh6q";
     };
     pm = fetch {
       repo = "swift-package-manager";
-      sha256 = "08d87fc29qq7m92jaxkiczsa7b567pwbibiwwkzdrj6a0gr11qn3";
+      sha256 = "0ccwshmbzwkmg8xc9ryk5ji96q0pi5rl18zhbw20hjdgf1rn54h9";
     };
     xctest = fetch {
       repo = "swift-corelibs-xctest";
-      sha256 = "1alkgxx8jsr2jjv2kchnjaaddb1byjwim015m1z3qxh6lknqm0k5";
+      sha256 = "1n4w7bfgy73vjzbvbphlwayy0dw73bbrayrpkqq8lbidg0x9lam8";
     };
     foundation = fetch {
       repo = "swift-corelibs-foundation";
-      sha256 = "1bhrag63rmz41bg2g6ap01qrdpq37hislgf5hg6myy2v69q7mahx";
+      sha256 = "1xq0wb3wz8p16y05vlw8cp9pzly7ivmb555s93231dr2mqzpqsdj";
     };
     libdispatch = fetch {
       repo = "swift-corelibs-libdispatch";
-      sha256 = "198vskbajch8s168a649qz5an92i2mxmmmzcjlgxlzh38fgxri0n";
+      sha256 = "0fibrx54nbaawhsgd7cbr356ji9qvf8y8ahd5bdx28fpj6q0cnwc";
       fetchSubmodules = true;
     };
     swift = fetch {
       repo = "swift";
-      sha256 = "1ydx11pkvaasgjbr29lnha0lpnak758gd5l0aqzmp3q6mcyvfm7a";
+      sha256 = "1k9lppx4p3n4gqp8ai0cw3gqv6ybgd4ilzwy54qb69in7m6pxqpy";
     };
   };
 
