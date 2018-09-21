@@ -7503,8 +7503,6 @@ with pkgs;
 
   ### LUA MODULES
 
-  lua4 = callPackage ../development/interpreters/lua-4 { };
-  lua5_0 = callPackage ../development/interpreters/lua-5/5.0.3.nix { };
   lua5_1 = callPackage ../development/interpreters/lua-5/5.1.nix { };
   lua5_2 = callPackage ../development/interpreters/lua-5/5.2.nix { };
   lua5_2_compat = callPackage ../development/interpreters/lua-5/5.2.nix {
@@ -12077,6 +12075,7 @@ with pkgs;
     s6-rc = callPackage ../tools/system/s6-rc { };
 
     nsss = callPackage ../development/libraries/nsss { };
+    utmps = callPackage ../development/libraries/utmps { };
 
   };
 
@@ -12365,6 +12364,8 @@ with pkgs;
   };
 
   uthash = callPackage ../development/libraries/uthash { };
+
+  utmps = skawarePackages.utmps;
 
   ucommon = ucommon_openssl;
 
@@ -15064,6 +15065,8 @@ with pkgs;
   libertine = callPackage ../data/fonts/libertine { };
 
   libertinus = callPackage ../data/fonts/libertinus { };
+
+  libratbag = callPackage ../os-specific/linux/libratbag { };
 
   libre-baskerville = callPackage ../data/fonts/libre-baskerville { };
 
@@ -17796,6 +17799,8 @@ with pkgs;
 
   pijul = callPackage ../applications/version-management/pijul {};
 
+  piper = callPackage ../os-specific/linux/piper { };
+
   plank = callPackage ../applications/misc/plank { };
 
   planner = callPackage ../applications/office/planner { };
@@ -20041,7 +20046,7 @@ with pkgs;
   };
 
   liquidwar = callPackage ../games/liquidwar {
-    guile = guile_1_8;
+    guile = guile_2_0;
   };
 
   liquidwar5 = callPackage ../games/liquidwar/5.nix {
