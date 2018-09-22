@@ -1,15 +1,18 @@
 { fetchurl, stdenv, gnutls, glib, pkgconfig, check, libotr, python
 , enableLibPurple ? false, pidgin ? null
 , enablePam ? false, pam ? null
+, fetchFromGitHub
 }:
 
 with stdenv.lib;
 stdenv.mkDerivation rec {
   name = "bitlbee-3.5.1";
 
-  src = fetchurl {
-    url = "mirror://bitlbee/src/${name}.tar.gz";
-    sha256 = "0sgsn0fv41rga46mih3fyv65cvfa6rvki8x92dn7bczbi7yxfdln";
+  src = fetchFromGitHub {
+    owner = "bitlbee";
+    repo = "bitlbee";
+    rev = "0b1448f070917daf4966097a06b47fc4b2ce0c92";
+    sha256 = "0ri9rzn3s76ggpq0s17zpq1mcxgimk9c4300d70a4njcjrslwfnm";
   };
 
   nativeBuildInputs = [ pkgconfig ] ++ optional doCheck check;
