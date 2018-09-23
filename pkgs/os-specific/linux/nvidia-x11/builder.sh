@@ -72,7 +72,7 @@ installPhase() {
         mkdir -p $bin/lib/xorg/modules/drivers
         cp -p nvidia_drv.so $bin/lib/xorg/modules/drivers
         mkdir -p $bin/lib/xorg/modules/extensions
-        cp -p libglx.so.* $bin/lib/xorg/modules/extensions
+        cp -p libglxserver_nvidia.so* $bin/lib/xorg/modules/extensions
 
         # Install the kernel module.
         mkdir -p $bin/lib/modules/$kernelVersion/misc
