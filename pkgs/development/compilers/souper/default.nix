@@ -6,18 +6,19 @@ let
   klee = fetchFromGitHub {
     owner = "rsas";
     repo  = "klee";
-    rev   = "57cd3d43056b029d9da3c6b3c666c4153554c04f";
-    sha256 = "197wb7nbirlfpx2jr3afpjjhcj7slc4dxxi02j3kmazz9kcqaygz";
+    # branch "pure-bv-qf-llvm-7.0"
+    rev   = "211d8fbdba6df025379ba0f3cbe61e3c700e149f";
+    sha256 = "0rbj6bmcgylffyrg1li7rgy8va51r09yk3s28hmw81impn1s0f1m";
   };
 in stdenv.mkDerivation rec {
   name = "souper-unstable-${version}";
-  version = "2017-03-23";
+  version = "2018-09-19";
 
   src = fetchFromGitHub {
     owner  = "google";
     repo   = "souper";
-    rev    = "cf2911d2eb1e7c8ab465df5a722fa5cdac06e6fc";
-    sha256 = "1kg08a1af4di729pn1pip2lzqzlvjign6av95214f5rr3cq2q0cl";
+    rev    = "db7033e694f97a2d800e8686c80a572b03b65404";
+    sha256 = "0nsnhlikblhixj0f7sby81765jjgszbb6ixqwv5fmc7h88pp6jj7";
   };
 
   nativeBuildInputs = [
