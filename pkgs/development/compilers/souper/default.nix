@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, cmake, makeWrapper
-, llvmPackages_4, hiredis, z3, gtest
+, llvmPackages_7, hiredis, z3, gtest
 }:
 
 let
@@ -27,8 +27,8 @@ in stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
-    llvmPackages_4.llvm
-    llvmPackages_4.clang-unwrapped
+    llvmPackages_7.llvm
+    llvmPackages_7.clang-unwrapped
     hiredis
     gtest
   ];
