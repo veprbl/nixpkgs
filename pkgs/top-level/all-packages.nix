@@ -1980,11 +1980,8 @@ with pkgs;
 
   cool-retro-term = libsForQt5.callPackage ../applications/misc/cool-retro-term { };
 
-  coreutils = callPackage ../tools/misc/coreutils {
-    aclSupport = stdenv.isLinux;
-    attrSupport = stdenv.isLinux;
-  };
-
+  coreutils = callPackage ../tools/misc/coreutils { };
+  coreutils-full = coreutils.override { minimal = false; };
   coreutils-prefixed = coreutils.override { withPrefix = true; singleBinary = false; };
 
   corkscrew = callPackage ../tools/networking/corkscrew { };
@@ -7814,6 +7811,8 @@ with pkgs;
 
   wasm = callPackage ../development/interpreters/wasm { };
 
+  wasm-gc = callPackage ../development/interpreters/wasm-gc { };
+
 
   ### DEVELOPMENT / MISC
 
@@ -11597,10 +11596,8 @@ with pkgs;
     introspectionSupport = true;
   });
 
-  poppler_min = poppler_0_61.override { # TODO: maybe reduce even more
+  poppler_min = poppler.override { # TODO: maybe reduce even more
     # this is currently only used by texlive.bin.
-    # pinned to 0.61 because texlive 2017 doesn't build w/poppler 0.64
-    # TODO: review poppler version for texlive 2018
     minimal = true;
     suffix = "min";
   };
@@ -16412,7 +16409,7 @@ with pkgs;
 
   gnuradio-with-packages = callPackage ../applications/misc/gnuradio/wrapper.nix {
     inherit (python2Packages) python;
-    extraPackages = [ gnuradio-nacl gnuradio-osmosdr gnuradio-gsm gnuradio-ais gnuradio-rds ];
+    extraPackages = [ gnuradio-nacl gnuradio-osmosdr gnuradio-gsm gnuradio-ais gnuradio-rds gnuradio-limesdr ];
   };
 
   gnuradio-nacl = callPackage ../applications/misc/gnuradio/nacl.nix { };
@@ -16420,6 +16417,8 @@ with pkgs;
   gnuradio-gsm = callPackage ../applications/misc/gnuradio/gsm.nix { };
 
   gnuradio-ais = callPackage ../applications/misc/gnuradio/ais.nix { };
+
+  gnuradio-limesdr = callPackage ../applications/misc/gnuradio/limesdr.nix { };
 
   gnuradio-rds = callPackage ../applications/misc/gnuradio/rds.nix { };
 
