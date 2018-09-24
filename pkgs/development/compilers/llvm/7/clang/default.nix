@@ -16,6 +16,7 @@ let
         sha256 = "05jyknkpigj54bcwmynyw7vnpkxgyvzjd0m2g6vh2sf3gf046wnq";
       }}
       mv source clang
+      chmod u+rw -R clang
       sourceRoot=$PWD/clang
       unpackFile ${clang-tools-extra_src}
       mv clang-tools-extra-* $sourceRoot/tools/extra
