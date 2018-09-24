@@ -1,4 +1,4 @@
-{ stdenv, fetch, cmake, libxml2, llvm, version, clang-tools-extra_src, python
+{ stdenv, fetchFromGitHub, cmake, libxml2, llvm, version, clang-tools-extra_src, python
 , fixDarwinDylibNames
 , enableManpages ? false
 }:
@@ -9,8 +9,13 @@ let
     name = "clang-${version}";
 
     unpackPhase = ''
-      unpackFile ${fetch "cfe" "0mdsbgj3p7mayhzm8hclzl3i46r2lwa8fr1cz399f9km3iqi40jm"}
-      mv cfe-${version}* clang
+      unpackFile ${fetchFromGitHub {
+        owner = "llvm-mirror";
+        repo = "clang";
+        rev = "fa0bcfc365f6e4bd4855e0e256826bdbee98b4d2";
+        sha256 = "05jyknkpigj54bcwmynyw7vnpkxgyvzjd0m2g6vh2sf3gf046wnq";
+      }}
+      mv source clang
       sourceRoot=$PWD/clang
       unpackFile ${clang-tools-extra_src}
       mv clang-tools-extra-* $sourceRoot/tools/extra
