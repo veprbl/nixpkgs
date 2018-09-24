@@ -22,6 +22,13 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
 
   doCheck = stdenv.cc.isClang; # can only test with clang >= 6.0 (according to message printed during build)
+  checkTarget = "check-openmp";
+
+  postPatch = ''
+    substituteInPlace cmake/OpenMPTesting.cmake --replace \
+      ' ''${PYTHON_EXECUTABLE} ''${OPENMP_LLVM_LIT_EXECUTABLE}' \
+      ' ''${OPENMP_LLVM_LIT_EXECUTABLE}'
+  '';
 
   meta = {
     description = "Components required to build an executable OpenMP program";
