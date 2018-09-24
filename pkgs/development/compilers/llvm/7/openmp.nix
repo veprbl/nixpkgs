@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  doCheck = true;
+  doCheck = stdenv.cc.isClang; # can only test with clang >= 6.0 (according to message printed during build)
 
   meta = {
     description = "Components required to build an executable OpenMP program";
