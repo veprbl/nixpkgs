@@ -1,5 +1,6 @@
 { stdenv
-, fetch
+#, fetch
+, fetchFromGitHub
 , cmake
 , python
 , libffi
@@ -18,7 +19,13 @@
 }:
 
 let
-  src = fetch "llvm" "08p27wv1pr9ql2zc3f3qkkymci46q7myvh8r5ijippnbwr2gihcb";
+#  src = fetch "llvm" "08p27wv1pr9ql2zc3f3qkkymci46q7myvh8r5ijippnbwr2gihcb";
+  src = fetchFromGitHub {
+    owner = "llvm-mirror";
+    repo = "llvm";
+    rev = "03728047a126fb49c0bd8bfe1ad044aa50c22744";
+    sha256 = "0mn3fgh359wc1klr0sj3735ligpj9705jk6q2vpj6g44hyfz1gjs";
+  };
 
   # Used when creating a version-suffixed symlink of libLLVM.dylib
   shortVersion = with stdenv.lib;
@@ -28,7 +35,8 @@ in stdenv.mkDerivation (rec {
 
   unpackPhase = ''
     unpackFile ${src}
-    mv llvm-${version}* llvm
+    mv source llvm
+    chmod u+rw -R llvm
     sourceRoot=$PWD/llvm
   '';
 
