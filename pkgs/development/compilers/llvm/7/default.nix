@@ -1,5 +1,5 @@
 { lowPrio, newScope, pkgs, stdenv, cmake, libstdcxxHook
-, libxml2, python, isl, fetchurl, overrideCC, wrapCCWith
+, libxml2, python, isl, fetchurl, fetchFromGitHub, overrideCC, wrapCCWith
 , buildLlvmTools # tools, but from the previous stage, for cross
 , targetLlvmLibraries # libraries, but from the next stage, for cross
 }:
@@ -13,7 +13,12 @@ let
     inherit sha256;
   };
 
-  clang-tools-extra_src = fetch "clang-tools-extra" "1glxl7bnr4k3j16s8xy8r9cl0llyg524f50591g1ig23ij65lz4k";
+  clang-tools-extra_src = fetchFromGitHub {
+    owner = "llvm-mirror";
+    repo = "clang-tools-extra";
+    rev = "1eba77e91480ffb7034572d4ab5d533a59946b9e";
+    sha256 = "1lhh45lj5lm1lbwlwyxxp9z5cwpvvihw9dvzzz2h8767bbk0zgii";
+  };
 
   tools = stdenv.lib.makeExtensible (tools: let
     callPackage = newScope (tools // { inherit stdenv cmake libxml2 python isl release_version version fetch; });
