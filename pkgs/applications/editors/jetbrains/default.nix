@@ -275,12 +275,12 @@ in
 
   goland = buildGoland rec {
     name = "goland-${version}";
-    version = "2018.2.2"; /* updated by script */
+    version = "2018.2.3"; /* updated by script */
     description = "Up and Coming Go IDE";
     license = stdenv.lib.licenses.unfree;
     src = fetchurl {
       url = "https://download.jetbrains.com/go/${name}.tar.gz";
-      sha256 = "10ymk9fw01a6c6harqv4pa0ywj130sjsbqhyqmw35v1b1srmxcrj"; /* updated by script */
+      sha256 = "0pd01aw1mv6w47ksgc8zbc7ppgbb64qsdgyqghiyibdjf07h53hd"; /* updated by script */
     };
     wmClass = "jetbrains-goland";
     update-channel = "GoLand Release";
@@ -327,12 +327,12 @@ in
 
   pycharm-community = buildPycharm rec {
     name = "pycharm-community-${version}";
-    version = "2018.2.3"; /* updated by script */
+    version = "2018.2.4"; /* updated by script */
     description = "PyCharm Community Edition";
     license = stdenv.lib.licenses.asl20;
     src = fetchurl {
       url = "https://download.jetbrains.com/python/${name}.tar.gz";
-      sha256 = "0avfz2mdzwx3lz06pf79x74xs38lvk0c6l2d9bb8h9986n0qc2gw"; /* updated by script */
+      sha256 = "1vjvbaqa1qq173m0xy16v9avav8az43s1dzks55x0gvh5yj3cyqz"; /* updated by script */
     };
     wmClass = "jetbrains-pycharm-ce";
     update-channel = "PyCharm Release";
@@ -340,12 +340,12 @@ in
 
   pycharm-professional = buildPycharm rec {
     name = "pycharm-professional-${version}";
-    version = "2018.2.3"; /* updated by script */
+    version = "2018.2.4"; /* updated by script */
     description = "PyCharm Professional Edition";
     license = stdenv.lib.licenses.unfree;
     src = fetchurl {
       url = "https://download.jetbrains.com/python/${name}.tar.gz";
-      sha256 = "0j65knddbrr3j3hsxp4fwqp398brzd4sfjla6bxa0g87x2k6j5hl"; /* updated by script */
+      sha256 = "14q4n62ppp1cxrv8mq2lxv9mjm95adag9856jpl9734s0gyjj3a5"; /* updated by script */
     };
     wmClass = "jetbrains-pycharm";
     update-channel = "PyCharm Release";
