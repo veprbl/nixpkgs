@@ -5,7 +5,7 @@
 }:
 
 let
-  release_version = "7.0.0";
+  release_version = "8.0.0"; # XXX: HACK
   version = release_version; # differentiating these is important for rc's
 
   fetch = name: sha256: fetchurl {
