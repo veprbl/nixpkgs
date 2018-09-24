@@ -71,7 +71,7 @@ in rec {
       llvmPackages = pkgs.llvmPackages_5;
     };
     ghc861 = callPackage ../development/compilers/ghc/8.6.1.nix rec {
-      bootPkgs = packages.ghc822;
+      bootPkgs = packages.ghc843;
       inherit (bootPkgs) alex happy hscolour;
       buildLlvmPackages = buildPackages.llvmPackages_6;
       llvmPackages = pkgs.llvmPackages_6;
