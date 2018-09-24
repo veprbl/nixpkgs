@@ -1,9 +1,14 @@
-{ stdenv, version, fetch, cmake, python, llvm, libcxxabi }:
+{ stdenv, version, fetchFromGitHub, cmake, python, llvm, libcxxabi }:
 with stdenv.lib;
 stdenv.mkDerivation rec {
   name = "compiler-rt-${version}";
   inherit version;
-  src = fetch "compiler-rt" "1mkhqvs8cxbfmprkzwyq7lmnzr1sv45znzf0arbgb19crzipzv5x";
+  src = fetchFromGitHub {
+    owner = "llvm-mirror";
+    repo = "compiler-rt";
+    rev = "51ddca93afde5779cdaa5f96c4bebaf6384bed76";
+    sha256 = "0igjgkjp1lhv1p74kljqxawnxbzyhm3iyzsagjny675qhxvp4ylb";
+  };
 
   nativeBuildInputs = [ cmake python llvm ];
   buildInputs = stdenv.lib.optional stdenv.hostPlatform.isDarwin libcxxabi;
