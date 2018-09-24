@@ -4,6 +4,9 @@
 , llvm
 , perl
 , version
+, pkgconfig
+, libffi
+, libelf
 }:
 
 stdenv.mkDerivation {
@@ -11,8 +14,8 @@ stdenv.mkDerivation {
 
   src = fetch "openmp" "1zrqlaxr954sp8lcr7g8m0z0pr8xyq4i6p11x6gcamjm5xijnrih";
 
-  nativeBuildInputs = [ cmake perl ];
-  buildInputs = [ llvm ];
+  nativeBuildInputs = [ cmake perl pkgconfig ];
+  buildInputs = [ llvm libffi libelf /* cuda */ ];
 
   enableParallelBuilding = true;
 
