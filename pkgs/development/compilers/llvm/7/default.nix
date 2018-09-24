@@ -86,7 +86,7 @@ let
 
     libcxxabi = callPackage ./libc++abi.nix {};
 
-    openmp = callPackage ./openmp.nix {};
+    openmp = callPackage ./openmp.nix { inherit (libraries) stdenv; };
   });
 
 in { inherit tools libraries; } // libraries // tools
