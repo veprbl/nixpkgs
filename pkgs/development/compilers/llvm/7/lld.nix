@@ -1,5 +1,5 @@
 { stdenv
-, fetch
+, fetchFromGitHub
 , cmake
 , libxml2
 , llvm
@@ -9,7 +9,12 @@
 stdenv.mkDerivation {
   name = "lld-${version}";
 
-  src = fetch "lld" "173z50vx5mlsaiqmbz7asxy2297z4xivrfxrdfncvx23wp2lgkzv";
+  src = fetchFromGitHub {
+    owner = "llvm-mirror";
+    repo = "lld";
+    rev = "762d7b4dda20905f1e27a8abf80549a47fd1d8b4";
+    sha256 = "00n9v0bzasi05lmc0xy382fl1307hqd99d8q3d41dqb8nm1wy8by";
+  };
 
   nativeBuildInputs = [ cmake ];
   buildInputs = [ llvm libxml2 ];
