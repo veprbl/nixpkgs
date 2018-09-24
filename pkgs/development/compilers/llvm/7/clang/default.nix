@@ -19,8 +19,8 @@ let
       chmod u+rw -R clang
       sourceRoot=$PWD/clang
       unpackFile ${clang-tools-extra_src}
+      chmod u+rw -R source clang/tools/
       mv source $sourceRoot/tools/extra
-      chmod u+rw -R clang/tools/extra
     '';
 
     nativeBuildInputs = [ cmake python ]
