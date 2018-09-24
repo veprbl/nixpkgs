@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
 
   src = fetch "openmp" "1zrqlaxr954sp8lcr7g8m0z0pr8xyq4i6p11x6gcamjm5xijnrih";
 
-  nativeBuildInputs = [ cmake pkgconfig ] ++ stdenv.lib.optionals doCheck [ python lit ];
+  nativeBuildInputs = [ cmake perl pkgconfig ] ++ stdenv.lib.optionals doCheck [ python lit ];
   buildInputs = [ llvm libffi libelf /* cuda */ ];
 
   enableParallelBuilding = true;
