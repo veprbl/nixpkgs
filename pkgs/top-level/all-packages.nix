@@ -930,6 +930,8 @@ with pkgs;
     libgit2 = libgit2_0_27;
   };
 
+  bluez-alsa = callPackage ../tools/bluetooth/bluez-alsa { };
+
   bluez-tools = callPackage ../tools/bluetooth/bluez-tools { };
 
   bmon = callPackage ../tools/misc/bmon { };
@@ -14727,6 +14729,8 @@ with pkgs;
 
   tunctl = callPackage ../os-specific/linux/tunctl { };
 
+  twa = callPackage ../tools/networking/twa { };
+
   # Upstream U-Boots:
   inherit (callPackage ../misc/uboot {})
     buildUBoot
@@ -15530,12 +15534,7 @@ with pkgs;
 
 
   go-ethereum = self.altcoins.go-ethereum;
-  ethsign = self.altcoins.ethsign;
   ethabi = self.altcoins.ethabi;
-  ethrun = self.altcoins.ethrun;
-  seth = self.altcoins.seth;
-  dapp = self.altcoins.dapp;
-  hevm = self.altcoins.hevm;
 
   parity = self.altcoins.parity;
   parity-beta = self.altcoins.parity-beta;
@@ -22023,6 +22022,8 @@ with pkgs;
     libselinux = libselinux.override { python = python3; };
     libsemanage = libsemanage.override { python = python3; };
   };
+
+  shades-of-gray-theme = callPackage ../misc/themes/shades-of-gray { };
 
   sierra-gtk-theme = callPackage ../misc/themes/sierra { };
 
