@@ -597,6 +597,8 @@ with pkgs;
 
   azure-cli = nodePackages.azure-cli;
 
+  azure-storage-azcopy = callPackage ../development/tools/azcopy { };
+
   azure-vhd-utils  = callPackage ../tools/misc/azure-vhd-utils { };
 
   awless = callPackage ../tools/virtualization/awless { };
@@ -11954,6 +11956,8 @@ with pkgs;
 
   qrupdate = callPackage ../development/libraries/qrupdate { };
 
+  qgnomeplatform =  libsForQt5.callPackage ../development/libraries/qgnomeplatform { };
+
   resolv_wrapper = callPackage ../development/libraries/resolv_wrapper { };
 
   rhino = callPackage ../development/libraries/java/rhino {
@@ -13473,8 +13477,10 @@ with pkgs;
 
   quagga = callPackage ../servers/quagga { };
 
-  rabbitmq_server = callPackage ../servers/amqp/rabbitmq-server {
+  rabbitmq-server = callPackage ../servers/amqp/rabbitmq-server {
     inherit (darwin.apple_sdk.frameworks) AppKit Carbon Cocoa;
+    elixir = elixir_1_6;
+    erlang = erlang_nox;
   };
 
   radicale1 = callPackage ../servers/radicale/1.x.nix { };
@@ -14749,6 +14755,7 @@ with pkgs;
     ubootNovena
     ubootOdroidXU3
     ubootOrangePiPc
+    ubootOrangePiZeroPlus2H5
     ubootPcduino3Nano
     ubootPine64
     ubootQemuAarch64
@@ -20578,6 +20585,8 @@ with pkgs;
   redshift-plasma-applet = libsForQt5.callPackage ../applications/misc/redshift-plasma-applet { };
 
   latte-dock = libsForQt5.callPackage ../applications/misc/latte-dock { };
+
+  adwaita-qt = libsForQt5.callPackage ../misc/themes/adwaita-qt { };
 
   orion = callPackage ../misc/themes/orion {};
 
