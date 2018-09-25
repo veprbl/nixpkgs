@@ -11,8 +11,13 @@ stdenv.mkDerivation rec {
   };
 
   postUnpack = ''
+    chmod u+rw -R source
+    mv source libcxx
+    export sourceRoot=$PWD/libcxx
     unpackFile ${libcxxabi.src}
-    export LIBCXXABI_INCLUDE_DIR="$PWD/$(ls -d libcxxabi-${version}*)/include"
+    chmod u+rw -R *source*
+    mv *source* libcxxabi
+    export LIBCXXABI_INCLUDE_DIR="$PWD/$(ls -d libcxxabi)/include"
   '';
 
   patches = stdenv.lib.optional stdenv.hostPlatform.isMusl ../../libcxx-0001-musl-hacks.patch;
