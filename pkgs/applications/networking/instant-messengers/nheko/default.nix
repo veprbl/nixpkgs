@@ -7,8 +7,8 @@ let
   tweeny = fetchFromGitHub {
     owner = "mobius3";
     repo = "tweeny";
-    rev = "b94ce07cfb02a0eb8ac8aaf66137dabdaea857cf";
-    sha256 = "1wyyq0j7dhjd6qgvnh3knr70li47hmf5394yznkv9b1indqjx4mi";
+    rev = "5e683d735be18427f7b5736f590cd12e71911f97";
+    sha256 = "1w381zf0k4cn8jxm492ib7mgr06ybjg2gbfak5map8ixixnsyjmp";
   };
 
   lmdbxx = fetchFromGitHub {
