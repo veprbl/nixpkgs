@@ -14,14 +14,20 @@ stdenv.mkDerivation {
   buildInputs = stdenv.lib.optional (!stdenv.isDarwin && !stdenv.isFreeBSD) libunwind;
 
   postUnpack = ''
+    chmod u+rw -R source
+    mv source libcxxabi
+    export sourceRoot=$PWD/libcxxabi
     unpackFile ${libcxx.src}
+    chmod u+rw -R *source*
+    mv *source* libcxx
     unpackFile ${llvm.src}
-    chmod -u+rw -R *
-    export cmakeFlags="-DLLVM_PATH=$PWD/$(ls -d llvm-*) -DLIBCXXABI_LIBCXX_PATH=$PWD/$(ls -d libcxx-*)"
+    chmod u+rw -R *source*
+    mv *source* llvm
+    export cmakeFlags="-DLLVM_PATH=$PWD/$(ls -d llvm) -DLIBCXXABI_LIBCXX_PATH=$PWD/$(ls -d libcxx)"
   '' + stdenv.lib.optionalString stdenv.isDarwin ''
     export TRIPLE=x86_64-apple-darwin
   '' + stdenv.lib.optionalString stdenv.hostPlatform.isMusl ''
-    patch -p1 -d $(ls -d libcxx-*) -i ${../libcxx-0001-musl-hacks.patch}
+    patch -p1 -d $(ls -d libcxx) -i ${../libcxx-0001-musl-hacks.patch}
   '';
 
   installPhase = if stdenv.isDarwin
