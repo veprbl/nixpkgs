@@ -12,8 +12,8 @@ let
       unpackFile ${fetchFromGitHub {
         owner = "llvm-mirror";
         repo = "clang";
-        rev = "fa0bcfc365f6e4bd4855e0e256826bdbee98b4d2";
-        sha256 = "05jyknkpigj54bcwmynyw7vnpkxgyvzjd0m2g6vh2sf3gf046wnq";
+        rev = "852234a8798dd5f5401a14b3fd9823cd8b45fbfa";
+        sha256 = "0123s76my9wj52ld5yckkc5wmdd0l9r4c8f7hgfp0vqvch6fln3i";
       }}
       mv source clang
       chmod u+rw -R clang

@@ -16,8 +16,8 @@ let
   clang-tools-extra_src = fetchFromGitHub {
     owner = "llvm-mirror";
     repo = "clang-tools-extra";
-    rev = "1eba77e91480ffb7034572d4ab5d533a59946b9e";
-    sha256 = "1lhh45lj5lm1lbwlwyxxp9z5cwpvvihw9dvzzz2h8767bbk0zgii";
+    rev = "de725ec8a2b9f9f6ac44808f6648930935fd680b";
+    sha256 = "0yhx1wbx75iwjhjn3s3ag1n38gd5ss3xykajji8lr5h863ngyr0v";
   };
 
   tools = stdenv.lib.makeExtensible (tools: let

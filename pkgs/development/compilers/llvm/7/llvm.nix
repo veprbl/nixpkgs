@@ -23,8 +23,8 @@ let
   src = fetchFromGitHub {
     owner = "llvm-mirror";
     repo = "llvm";
-    rev = "03728047a126fb49c0bd8bfe1ad044aa50c22744";
-    sha256 = "0mn3fgh359wc1klr0sj3735ligpj9705jk6q2vpj6g44hyfz1gjs";
+    rev = "bf745a628fe8140873cd887ae217e1a006a48f35";
+    sha256 = "0jlw9lvpw8cs8ldi78hbnlspls468gzhr4hj2br32gspr009dvaj";
   };
 
   # Used when creating a version-suffixed symlink of libLLVM.dylib

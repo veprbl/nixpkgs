@@ -6,8 +6,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "llvm-mirror";
     repo = "compiler-rt";
-    rev = "51ddca93afde5779cdaa5f96c4bebaf6384bed76";
-    sha256 = "0igjgkjp1lhv1p74kljqxawnxbzyhm3iyzsagjny675qhxvp4ylb";
+    rev = "47a959c926d5170ccd6c4fd953da6929099b58c5";
+    sha256 = "0q5yhndx6gf0ivycsgjipazz192abp9r5398nc8gcdmm56cc1vpk";
   };
 
   nativeBuildInputs = [ cmake python llvm ];

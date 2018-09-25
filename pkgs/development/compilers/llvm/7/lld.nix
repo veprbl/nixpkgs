@@ -12,8 +12,8 @@ stdenv.mkDerivation {
   src = fetchFromGitHub {
     owner = "llvm-mirror";
     repo = "lld";
-    rev = "762d7b4dda20905f1e27a8abf80549a47fd1d8b4";
-    sha256 = "00n9v0bzasi05lmc0xy382fl1307hqd99d8q3d41dqb8nm1wy8by";
+    rev = "21f9d854a0a578c7b9892dd16fe104c3b0c54953";
+    sha256 = "0mk98q4yggfq0m093j2c3rc4nygb55877s46k4jclhrv9k2479qg";
   };
 
   nativeBuildInputs = [ cmake ];
