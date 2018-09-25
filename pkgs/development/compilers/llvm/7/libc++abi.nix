@@ -1,9 +1,14 @@
-{ stdenv, cmake, fetch, libcxx, libunwind, llvm, version }:
+{ stdenv, cmake, fetchFromGitHub, libcxx, libunwind, llvm, version }:
 
 stdenv.mkDerivation {
   name = "libc++abi-${version}";
 
-  src = fetch "libcxxabi" "0pr4xfx61r5mwmvhg4j9pb6df6vvha1gyf6rwkm14x9rzxcwficv";
+  src = fetchFromGitHub {
+    owner = "llvm-mirror";
+    repo = "libcxxabi";
+    rev = "dd73082d02640d8677d585c8a48243dcdd93e195";
+    sha256 = "024dkb7ai4qv29y99g56f19f8mgw703kjr9q37sxpd9k79k5rpaq";
+  };
 
   nativeBuildInputs = [ cmake ];
   buildInputs = stdenv.lib.optional (!stdenv.isDarwin && !stdenv.isFreeBSD) libunwind;

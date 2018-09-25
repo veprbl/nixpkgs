@@ -1,5 +1,5 @@
 { stdenv
-, fetch
+, fetchFromGitHub
 , cmake
 , llvm
 , perl
@@ -9,7 +9,12 @@
 stdenv.mkDerivation {
   name = "openmp-${version}";
 
-  src = fetch "openmp" "1zrqlaxr954sp8lcr7g8m0z0pr8xyq4i6p11x6gcamjm5xijnrih";
+  src = fetchFromGitHub {
+    owner = "llvm-mirror";
+    repo = "openmp";
+    rev = "83a13b92aad55a56ebe398870daa4723223dae46";
+    sha256 = "1jqfw7nid0ckbqa6igli8ich842qjihnb9dn8kils57ma83zg4wd";
+  };
 
   nativeBuildInputs = [ cmake perl ];
   buildInputs = [ llvm ];

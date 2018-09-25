@@ -1,9 +1,14 @@
-{ lib, stdenv, fetch, cmake, python, libcxxabi, fixDarwinDylibNames, version }:
+{ lib, stdenv, fetchFromGitHub, cmake, python, libcxxabi, fixDarwinDylibNames, version }:
 
 stdenv.mkDerivation rec {
   name = "libc++-${version}";
 
-  src = fetch "libcxx" "1w1l472p03csgz76p70pn9yk7h0nw5hj1av44ysnakigp8jjcd4v";
+  src = fetchFromGitHub {
+    owner = "llvm-mirror";
+    repo = "libcxx";
+    rev = "c4b44869daab09da2f559e88c5efb137a65b3dbf";
+    sha256 = "0xwcrk4501p17x8b91wy5gidr557c1rxrnzxmhk8mgzm2rm4gzzb";
+  };
 
   postUnpack = ''
     unpackFile ${libcxxabi.src}
