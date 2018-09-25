@@ -18022,7 +18022,7 @@ with pkgs;
 
   nedit = callPackage ../applications/editors/nedit { };
 
-  nheko = libsForQt5.callPackage ../applications/networking/instant-messengers/nheko { };
+  nheko = libsForQt5.callPackage ../applications/networking/instant-messengers/nheko { boost = boost168; };
 
   nomacs = libsForQt5.callPackage ../applications/graphics/nomacs { };
 
