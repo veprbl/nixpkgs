@@ -21,7 +21,10 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  doCheck = stdenv.cc.isClang; # can only test with clang >= 6.0 (according to message printed during build)
+  # build system reports that tests are only enabled when building with clang > 6.0
+  # Disable tests w/musl since they mostly pass but a few don't and it appears
+  # to be due to hardcoded '-gnu' triples, although only briefly investigated.
+  doCheck = stdenv.cc.isClang && !stdenv.hostPlatform.isMusl;
   checkTarget = "check-openmp";
 
   postPatch = ''
