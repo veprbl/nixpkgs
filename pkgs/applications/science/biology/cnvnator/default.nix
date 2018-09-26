@@ -107,6 +107,22 @@ in stdenv.mkDerivation rec {
     cat Makefile
   '';
 
+  postInstall = ''
+    echo "Result after install?"
+    pwd
+    ls -hal
+    ls -hal | grep cnvnator
+    mkdir $out/bin
+    cp cnvnator $out/bin
+    cp cnvnator2VCF.pl $out/bin
+  '';
+  /*
+  postBuild = ''
+    '';
+    */
+
+#  installTargets = "all";
+
   meta = with stdenv.lib; {
     description = "CNVnator calls CNV from mapped paired-end sequencing reads";
     license = licenses.gpl3;
