@@ -6,7 +6,10 @@
 
 with lib;
 
-let cfg = config.services.nixosManual; in
+let
+  cfg = config.services.nixosManual;
+  cfgd = config.documentation;
+in
 
 {
 
@@ -41,29 +44,30 @@ let cfg = config.services.nixosManual; in
   };
 
 
-  config = mkIf cfg.showManual {
-
-    assertions = [{
-      assertion = config.documentation.nixos.enable;
-      message   = "Can't enable `service.nixosManual.showManual` without `documentation.nixos.enable`";
-    }];
-
-    boot.extraTTYs = [ "tty${toString cfg.ttyNumber}" ];
-
-    systemd.services."nixos-manual" = {
-      description = "NixOS Manual";
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        ExecStart = "${cfg.browser} ${config.system.build.manual.manualHTMLIndex}";
-        StandardInput = "tty";
-        StandardOutput = "tty";
-        TTYPath = "/dev/tty${toString cfg.ttyNumber}";
-        TTYReset = true;
-        TTYVTDisallocate = true;
-        Restart = "always";
+  config = mkMerge [
+    (mkIf cfg.showManual {
+      assertions = singleton {
+        assertion = cfgd.enable && cfgd.nixos.enable;
+        message   = "Can't enable `services.nixosManual.showManual` without `documentation.nixos.enable`";
       };
-    };
+    })
+    (mkIf (cfg.showManual && cfgd.enable && cfgd.nixos.enable) {
+      boot.extraTTYs = [ "tty${toString cfg.ttyNumber}" ];
 
-  };
+      systemd.services."nixos-manual" = {
+        description = "NixOS Manual";
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          ExecStart = "${cfg.browser} ${config.system.build.manual.manualHTMLIndex}";
+          StandardInput = "tty";
+          StandardOutput = "tty";
+          TTYPath = "/dev/tty${toString cfg.ttyNumber}";
+          TTYReset = true;
+          TTYVTDisallocate = true;
+          Restart = "always";
+        };
+      };
+    })
+  ];
 
 }
