@@ -33,6 +33,7 @@ stdenv.mkDerivation rec {
   ] ++ optional interactive "--enable-readline";
 
   NIX_CFLAGS_COMPILE = [
+    "-DSQLITE_ENABLE_API_ARMOR"
     "-DSQLITE_ENABLE_COLUMN_METADATA"
     "-DSQLITE_ENABLE_DBSTAT_VTAB"
     "-DSQLITE_ENABLE_JSON1"
