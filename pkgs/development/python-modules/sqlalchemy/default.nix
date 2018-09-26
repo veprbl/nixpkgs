@@ -5,16 +5,23 @@
 , mock
 , isPy3k
 , pysqlite
+, fetchFromGitHub
 }:
 
 buildPythonPackage rec {
   pname = "SQLAlchemy";
   version = "1.2.12";
 
-  src = fetchPypi {
-    inherit pname version;
-    sha256 = "c5951d9ef1d5404ed04bae5a16b60a0779087378928f997a294d1229c6ca4d3e";
+  src = fetchFromGitHub {
+    owner = "zzzeek";
+    repo = "sqlalchemy";
+    rev = "d945ee87a1934cb689066e4683ba9531d803f9ad";
+    sha256 = "1m84npxc63z4dz5j71wsqf0ncz8kal23df3qr127c0jlykwp7pf2";
   };
+  #src = fetchPypi {
+  #  inherit pname version;
+  #  sha256 = "c5951d9ef1d5404ed04bae5a16b60a0779087378928f997a294d1229c6ca4d3e";
+  #};
 
   checkInputs = [
     pytest
