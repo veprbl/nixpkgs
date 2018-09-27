@@ -33,7 +33,8 @@ stdenv.mkDerivation rec {
   version = "1.1.20git${toString src.revCount}_${src.shortRev}";
 
   src = builtins.fetchGit {
-    url = git://git.musl-libc.org/musl;
+    #url = git://git.musl-libc.org/musl;
+    url = https://github.com/dtzWill/musl;
     rev = "4d0a82170a25464c39522d7190b9fe302045ddb2";
   };
 
