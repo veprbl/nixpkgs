@@ -292,8 +292,8 @@ with pkgs;
     ... # For hash agility
   }@args: fetchzip ({
     inherit name;
-    url = "https://${domain}/api/v4/projects/${lib.optionalString (group != null) group+"%2F"}${owner}%2F${repo}/repository/archive.tar.gz?sha=${rev}";
-    meta.homepage = "https://${domain}/${lib.optionalString (group != null) group+"/"}${owner}/${repo}/";
+    url = "https://${domain}/api/v4/projects/${lib.optionalString (group != null) "${group}%2F"}${owner}%2F${repo}/repository/archive.tar.gz?sha=${rev}";
+    meta.homepage = "https://${domain}/${lib.optionalString (group != null) "${group}/"}${owner}/${repo}/";
   } // removeAttrs args [ "domain" "owner" "group" "repo" "rev" ]) // { inherit rev; };
 
   # gitweb example, snapshot support is optional in gitweb
@@ -1337,6 +1337,8 @@ with pkgs;
   gdrivefs = python27Packages.gdrivefs;
 
   gdrive = callPackage ../applications/networking/gdrive { };
+
+  go-2fa = callPackage ../tools/security/2fa {};
 
   go-dependency-manager = callPackage ../development/tools/gdm { };
 
@@ -7932,7 +7934,10 @@ with pkgs;
     for more information.
   '';
 
-  alloy = callPackage ../development/tools/alloy { };
+  inherit (callPackage ../development/tools/alloy { })
+    alloy4
+    alloy5
+    alloy;
 
   adtool = callPackage ../tools/admin/adtool { };
 
@@ -13379,11 +13384,7 @@ with pkgs;
 
   check-esxi-hardware = callPackage ../servers/monitoring/plugins/esxi.nix {};
 
-  net_snmp = callPackage ../servers/monitoring/net-snmp {
-    # https://sourceforge.net/p/net-snmp/bugs/2712/
-    # remove after net-snmp > 5.7.3
-    perl = perl522;
-  };
+  net_snmp = callPackage ../servers/monitoring/net-snmp { };
 
   newrelic-sysmond = callPackage ../servers/monitoring/newrelic-sysmond { };
 
@@ -15685,6 +15686,12 @@ with pkgs;
 
   bluejeans = callPackage ../applications/networking/browsers/mozilla-plugins/bluejeans { };
 
+  bluejeans-gui = callPackage ../applications/networking/instant-messengers/bluejeans {
+    gconf = pkgs.gnome2.GConf;
+    inherit (pkgs.xorg) libX11 libXrender libXtst libXdamage
+                        libXi libXext libXfixes libXcomposite;
+  };
+
   bombono = callPackage ../applications/video/bombono {};
 
   bomi = libsForQt5.callPackage ../applications/video/bomi {
@@ -16997,6 +17004,8 @@ with pkgs;
   singularity = callPackage ../applications/virtualization/singularity { };
 
   spectrwm = callPackage ../applications/window-managers/spectrwm { };
+
+  spectral = qt5.callPackage ../applications/networking/instant-messengers/spectral { };
 
   super-productivity = callPackage ../applications/networking/super-productivity { };
 
