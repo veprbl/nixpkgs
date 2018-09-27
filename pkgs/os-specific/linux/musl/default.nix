@@ -29,20 +29,22 @@ let
 in
 stdenv.mkDerivation rec {
   name    = "musl-${version}";
-/*
-  version = "1.1.19git${toString src.revCount}_${src.shortRev}";
+
+  version = "1.1.20git${toString src.revCount}_${src.shortRev}";
 
   src = builtins.fetchGit {
     url = git://git.musl-libc.org/musl;
-    rev = "7dad9c212587267818de919dd9c5886f18f99779";
-*/
+    rev = "4d0a82170a25464c39522d7190b9fe302045ddb2";
+  };
 
+/*
   version = "1.1.20";
 
   src = fetchurl {
     url    = "https://www.musl-libc.org/releases/musl-${version}.tar.gz";
     sha256 = "0q8dsjxl41dccscv9a0r78bs7jap57mn4mni5pwbbip6s1qqggj4";
   };
+*/
 
   enableParallelBuilding = true;
 
@@ -68,6 +70,7 @@ stdenv.mkDerivation rec {
     # Kludge to accomodate badness in Nix, not recommended for general use.
     ./malloc.patch
 
+/*
     # Upstream bugfix, see: https://git.musl-libc.org/cgit/musl/commit/?id=0db393d3a77bb9f300a356c6a5484fc2dddb161d
     # Explicitly flagged for inclusion by distributions using musl
     ./fix-file-locking-race.patch
@@ -87,6 +90,7 @@ stdenv.mkDerivation rec {
     ./max-handle-sz-for-name-to-handle-at.patch
     # stacksize bump (upstream)
     ./stacksize-bump.patch
+*/
   ];
 
   preConfigure = ''
