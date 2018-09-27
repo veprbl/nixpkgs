@@ -1537,6 +1537,8 @@ with pkgs;
   riot-web = callPackage ../applications/networking/instant-messengers/riot/riot-web.nix {
     conf = config.riot-web.conf or null;
   };
+  
+  roundcube = callPackage ../servers/roundcube { };
 
   rsbep = callPackage ../tools/backup/rsbep { };
 
@@ -8444,7 +8446,7 @@ with pkgs;
   };
 
   include-what-you-use = callPackage ../development/tools/analysis/include-what-you-use {
-    llvmPackages = llvmPackages_4;
+    llvmPackages = llvmPackages_6;
   };
 
   indent = callPackage ../development/tools/misc/indent { };
