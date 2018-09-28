@@ -181,18 +181,6 @@ in stdenv.mkDerivation {
     cp -rv out/linux.*/${buildType}/bin/src "$modsrc"
   '';
 
-  # Don't run normal patchelf setup-hook, it uses wrong patchelf
-  dontPatchELF = true;
-
-  postInstall = ''
-    unset patchELF
-    source ${patchelfUnstable}/nix-support/setup-hook
-    local output
-    for output in $outputs; do
-      patchELF "''${!output}"
-    done
-  '';
-
   passthru = {
     inherit version;       # for guest additions
     inherit extensionPack; # for inclusion in profile to prevent gc
