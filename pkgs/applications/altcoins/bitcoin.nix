@@ -1,17 +1,17 @@
-{ stdenv, fetchFromGitHub, pkgconfig, autoreconfHook, openssl, db48, boost, zeromq
+{ stdenv, fetchurl, pkgconfig, autoreconfHook, openssl, db48, boost, zeromq
 , zlib, miniupnpc, qtbase ? null, qttools ? null, utillinux, protobuf, qrencode, libevent
 , withGui }:
 
 with stdenv.lib;
 stdenv.mkDerivation rec{
   name = "bitcoin" + (toString (optional (!withGui) "d")) + "-" + version;
-  version = "0.17.0rc4";
+  version = "0.16.3";
 
-  src = fetchFromGitHub {
-    owner = "bitcoin";
-    repo = "bitcoin";
-    rev = "v${version}";
-    sha256 = "1d6xws7997dqh9ph4w6gpcrlgcszcc4chgi0l3329m5v28sgkzbp";
+  src = fetchurl {
+    urls = [ "https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}.tar.gz"
+             "https://bitcoin.org/bin/bitcoin-core-${version}/bitcoin-${version}.tar.gz"
+           ];
+    sha256 = "060223dzzk2izfzhxwlzzd0fhbgglvbgps2nyc4zz767vybysvl3";
   };
 
   nativeBuildInputs = [ pkgconfig autoreconfHook ];
