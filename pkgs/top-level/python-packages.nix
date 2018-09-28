@@ -5278,6 +5278,8 @@ in {
 
   flask_elastic = callPackage ../development/python-modules/flask-elastic { };
 
+  flask-jwt-extended = callPackage ../development/python-modules/flask-jwt-extended { };
+
   flask-limiter = callPackage ../development/python-modules/flask-limiter { };
 
   flask_login = callPackage ../development/python-modules/flask-login { };
@@ -5306,23 +5308,7 @@ in {
 
   flask-silk = callPackage ../development/python-modules/flask-silk { };
 
-  flask_sqlalchemy = buildPythonPackage rec {
-    name = "Flask-SQLAlchemy-${version}";
-    version = "2.1";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/F/Flask-SQLAlchemy/${name}.tar.gz";
-      sha256 = "1i9ps5d5snih9xlqhrvmi3qfiygkmqzxh92n25kj4pf89kj4s965";
-    };
-
-    propagatedBuildInputs = with self ; [ flask sqlalchemy ];
-
-    meta = {
-      description = "SQLAlchemy extension for Flask";
-      homepage = http://flask-sqlalchemy.pocoo.org/;
-      license = licenses.bsd3;
-    };
-  };
+  flask_sqlalchemy = callPackage ../development/python-modules/flask-sqlalchemy { };
 
   flask_testing = callPackage ../development/python-modules/flask-testing { };
 
@@ -8211,6 +8197,24 @@ in {
 
   nipype = callPackage ../development/python-modules/nipype {
     inherit (pkgs) which;
+  };
+
+  nixpkgs = buildPythonPackage rec {
+    disabled = ! pythonAtLeast "3.5";
+    pname = "nixpkgs";
+    version = "0.2.2";
+    src = fetchPypi {
+      inherit pname version;
+      sha256 = "0gsrd99kkv99jsrh3hckz7ns1zwndi9vvh4465v4gnpz723dd6fj";
+    };
+    buildInputs = with self; [ pbr ];
+    propagatedBuildInputs = with self; [ pythonix ];
+    meta = {
+      description = "Allows to `from nixpkgs import` stuff in interactive Python sessions";
+      homepage = http://github.com/t184256/nixpkgs-python-importer;
+      license = licenses.mit;
+      maintainers = with maintainers; [ t184256 ];
+    };
   };
 
   nodeenv = callPackage ../development/python-modules/nodeenv { };
