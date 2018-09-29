@@ -1370,6 +1370,8 @@ with pkgs;
 
   gmic = callPackage ../tools/graphics/gmic { };
 
+  gmic_krita_qt = libsForQt5.callPackage ../tools/graphics/gmic_krita_qt { };
+
   goa = callPackage ../development/tools/goa {
     buildGoPackage = buildGo110Package;
   };
@@ -19033,8 +19035,6 @@ with pkgs;
   tree = callPackage ../tools/system/tree {};
 
   treesheets = callPackage ../applications/office/treesheets { wxGTK = wxGTK31; };
-
-  trezor-bridge = callPackage ../applications/networking/browsers/mozilla-plugins/trezor { };
 
   tribler = callPackage ../applications/networking/p2p/tribler { };
 
