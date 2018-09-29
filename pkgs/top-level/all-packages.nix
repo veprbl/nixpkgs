@@ -3781,6 +3781,8 @@ with pkgs;
 
   libfann = callPackage ../development/libraries/libfann { };
 
+  libgaminggear = callPackage ../development/libraries/libgaminggear { };
+
   libipfix = callPackage ../development/libraries/libipfix { };
 
   libircclient = callPackage ../development/libraries/libircclient { };
@@ -14661,6 +14663,8 @@ with pkgs;
     payload = "${linux_riscv}/vmlinux";
   };
 
+  roccat-tools = callPackage ../os-specific/linux/roccat-tools { };
+
   rtkit = callPackage ../os-specific/linux/rtkit { };
 
   rt5677-firmware = callPackage ../os-specific/linux/firmware/rt5677 { };
@@ -17800,6 +17804,8 @@ with pkgs;
   mwic = callPackage ../applications/misc/mwic {
     pythonPackages = python3Packages;
   };
+
+  neap = callPackage ../applications/misc/neap { };
 
   neomutt = callPackage ../applications/networking/mailreaders/neomutt { };
 
