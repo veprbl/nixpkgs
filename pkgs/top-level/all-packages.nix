@@ -16635,6 +16635,8 @@ with pkgs;
 
   flac = callPackage ../applications/audio/flac { };
 
+  redoflacs = callPackage ../applications/audio/redoflacs { };
+
   flameshot = libsForQt5.callPackage ../tools/misc/flameshot { };
 
   flashplayer = callPackage ../applications/networking/browsers/mozilla-plugins/flashplayer {
@@ -19048,8 +19050,6 @@ with pkgs;
   tree = callPackage ../tools/system/tree {};
 
   treesheets = callPackage ../applications/office/treesheets { wxGTK = wxGTK31; };
-
-  trezor-bridge = callPackage ../applications/networking/browsers/mozilla-plugins/trezor { };
 
   tribler = callPackage ../applications/networking/p2p/tribler { };
 
