@@ -49,7 +49,7 @@ stdenv.mkDerivation rec {
   #TODO: colord?
 
   # demos fail to install, no idea where's the problem
-  preConfigure = "sed '/^SRC_SUBDIRS /s/demos//' -i Makefile.in";
+  #preConfigure = "sed '/^SRC_SUBDIRS /s/demos//' -i Makefile.in";
 
   enableParallelBuilding = true;
 
@@ -63,6 +63,8 @@ stdenv.mkDerivation rec {
     "--enable-x11-backend"
   ] ++ optional waylandSupport [
     "--enable-wayland-backend"
+  ] ++ [
+    "--enable-installed-tests"
   ];
 
   doCheck = false; # needs X11
