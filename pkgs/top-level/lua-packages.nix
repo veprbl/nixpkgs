@@ -914,14 +914,15 @@ let
   };
 
   lgi = stdenv.mkDerivation rec {
-    name = "lgi-${version}";
+    name = "lgi-${version}-git";
     version = "0.9.2";
 
     src = fetchFromGitHub {
       owner = "pavouk";
       repo = "lgi";
-      rev = version;
-      sha256 = "03rbydnj411xpjvwsyvhwy4plm96481d7jax544mvk7apd8sd5jj";
+      #rev = version;
+      rev = "05971bbf9ce59dba0c2a7774578d3a5a3a028de3";
+      sha256 = "17rivp12s8pcnc8rbqkqvzrzixvzs9aw7l9m21p8ss5mpjbn7b20";
     };
 
     nativeBuildInputs = [ pkgconfig ];
@@ -933,13 +934,13 @@ let
       sed -i "s|/usr/local|$out|" lgi/Makefile
     '';
 
-    patches = [
-        (fetchpatch {
-            name = "lgi-find-cairo-through-typelib.patch";
-            url = "https://github.com/psychon/lgi/commit/46a163d9925e7877faf8a4f73996a20d7cf9202a.patch";
-            sha256 = "0gfvvbri9kyzhvq3bvdbj2l6mwvlz040dk4mrd5m9gz79f7w109c";
-        })
-    ];
+    #patches = [
+    #    (fetchpatch {
+    #        name = "lgi-find-cairo-through-typelib.patch";
+    #        url = "https://github.com/psychon/lgi/commit/46a163d9925e7877faf8a4f73996a20d7cf9202a.patch";
+    #        sha256 = "0gfvvbri9kyzhvq3bvdbj2l6mwvlz040dk4mrd5m9gz79f7w109c";
+    #    })
+    #];
 
     meta = with stdenv.lib; {
       description = "GObject-introspection based dynamic Lua binding to GObject based libraries";
