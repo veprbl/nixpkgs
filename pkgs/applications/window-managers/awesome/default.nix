@@ -51,7 +51,9 @@ with luaPackages; stdenv.mkDerivation rec {
       --add-flags '--search ${lgi}/lib/lua/${lua.luaversion}' \
       --add-flags '--search ${lgi}/share/lua/${lua.luaversion}' \
       --prefix GI_TYPELIB_PATH : "$GI_TYPELIB_PATH" \
-      --prefix PATH : "${stdenv.lib.makeBinPath [ compton unclutter procps iproute coreutils curl alsaUtils findutils xterm ]}"
+      --prefix PATH : "${stdenv.lib.makeBinPath [ compton unclutter procps iproute coreutils curl alsaUtils findutils xterm lua ]}" \
+      --prefix LUA_PATH ';'  "${lgi}/share/lua/${lua.luaversion}/?.lua;${lgi}/share/lua/${lua.luaversion}/lgi/?.lua" \
+      --prefix LUA_CPATH ';' "${lgi}/lib/lua/${lua.luaversion}/?.so"
 
     wrapProgram $out/bin/awesome-client \
       --prefix PATH : "${which}/bin"
