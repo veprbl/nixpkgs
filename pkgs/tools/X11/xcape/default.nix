@@ -1,5 +1,4 @@
-{ stdenv, fetchFromGitHub, pkgconfig, libX11, libXtst, xextproto,
-libXi }:
+{ stdenv, fetchFromGitHub, pkgconfig, libX11, libXtst, xorgproto, libXi }:
 
 let
   baseName = "xcape";
@@ -18,7 +17,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkgconfig ];
 
-  buildInputs = [ libX11 libXtst xextproto libXi ];
+  buildInputs = [ libX11 libXtst xorgproto libXi ];
 
   makeFlags = [ "PREFIX=$(out)" "MANDIR=/share/man/man1" ];
 

@@ -16,11 +16,8 @@ let
     nativeBuildInputs = [ pkgconfig python makedepend flex bison ];
 
     buildInputs = with xorg; [
-      glproto dri2proto libXfixes libXi libXmu
-      intltool expat libxml2Python llvm
-      presentproto
-      libX11 libXext libxcb libXt libxshmfence
-      libffi libvdpau
+      xorgproto libXfixes libXi libXmu intltool expat libxml2Python llvm libX11
+      libXext libxcb libXt libxshmfence libffi libvdpau
     ] ++ stdenv.lib.optionals stdenv.isDarwin [ OpenGL apple_sdk.sdk Xplugin ];
 
     propagatedBuildInputs = stdenv.lib.optionals stdenv.isDarwin [ OpenGL ];

@@ -9,9 +9,7 @@ stdenv.mkDerivation rec {
   };
 
   buildInputs =
-    [ xorg.libX11 xorg.xproto xorg.xextproto xorg.libXext
-      xorg.libXrandr xorg.randrproto
-    ];
+    [ xorg.libX11 xorg.xorgproto xorg.libXext xorg.libXrandr ];
 
   hardeningDisable = [ "format" ];
 

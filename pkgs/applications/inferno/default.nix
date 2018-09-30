@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
     sha256 = "1b428ma9fi5skvfrxp91dr43a62kax89wmx7950ahc1cxyx90k7x";
   };
 
-  buildInputs = [ makeWrapper ] ++ (with xorg; [ libX11 libXpm libXext xextproto ]);
+  buildInputs = [ makeWrapper ] ++ (with xorg; [ libX11 libXpm libXext xorgproto ]);
 
   infernoWrapper = ./inferno;
 

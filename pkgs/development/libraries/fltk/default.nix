@@ -1,6 +1,5 @@
-{ stdenv, fetchurl, pkgconfig, xlibsWrapper, inputproto, libXi
-, freeglut, libGLU_combined, libjpeg, zlib, libXft, libpng
-, darwin, libtiff, freetype
+{ stdenv, fetchurl, pkgconfig, xlibsWrapper, libXi, freeglut, libGLU_combined
+, libjpeg, zlib, libXft, libpng , darwin, libtiff, freetype, xorgproto
 }:
 
 let
@@ -33,7 +32,7 @@ in stdenv.mkDerivation {
     "--enable-xft"
   ];
 
-  propagatedBuildInputs = [ inputproto ]
+  propagatedBuildInputs = [ xorgproto ]
     ++ (if stdenv.isDarwin
         then (with darwin.apple_sdk.frameworks; [Cocoa AGL GLUT freetype libtiff])
         else [ xlibsWrapper libXi freeglut ]);

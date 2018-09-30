@@ -1,5 +1,5 @@
-{ stdenv, fetchurl, plib, freeglut, xproto, libX11, libXext, xextproto, libXi
-, inputproto, libICE, libSM, libXt, libXmu, libGLU_combined, boost, zlib, libjpeg, freealut
+{ stdenv, fetchurl, plib, freeglut, xorgproto, libX11, libXext, libXi
+, libICE, libSM, libXt, libXmu, libGLU_combined, boost, zlib, libjpeg, freealut
 , openscenegraph, openal, expat, cmake, apr
 , curl
 }:
@@ -14,8 +14,8 @@ stdenv.mkDerivation rec {
     sha256 = "1x71wvycs2bjgmmacswgk6091p65p46fr40mr7f4kcipnx88bq0f";
   };
 
-  buildInputs = [ plib freeglut xproto libX11 libXext xextproto libXi inputproto
-                  libICE libSM libXt libXmu libGLU_combined boost zlib libjpeg freealut
+  buildInputs = [ plib freeglut xorgproto libX11 libXext libXi libICE libSM
+                  libXt libXmu libGLU_combined boost zlib libjpeg freealut
                   openscenegraph openal expat cmake apr curl ];
 
   enableParallelBuilding = true;
@@ -28,4 +28,3 @@ stdenv.mkDerivation rec {
     license = licenses.lgpl2;
   };
 }
-

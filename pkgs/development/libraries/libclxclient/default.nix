@@ -9,9 +9,9 @@ stdenv.mkDerivation rec {
     sha256 = "14l7xrh964gllymraq4n5pgax94p5jsfjslqi5c6637zc4lmgnl0";
   };
 
-  buildInputs = [ libclthreads libX11 libXft xorg.xproto ];
+  buildInputs = [ libclthreads libX11 libXft xorg.xorgproto ];
 
-  NIX_CFLAGS_COMPILE = "-I${xorg.xproto}/include -I${libXft.dev}/include";
+  NIX_CFLAGS_COMPILE = "-I${xorg.xorgproto}/include -I${libXft.dev}/include";
 
   patchPhase = ''
     sed -e "s@ldconfig@@" -i Makefile

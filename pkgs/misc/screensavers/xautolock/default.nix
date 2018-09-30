@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, xlibsWrapper, imake, libXScrnSaver, scrnsaverproto }:
+{ stdenv, fetchurl, xlibsWrapper, imake, libXScrnSaver, xorgproto }:
 
 stdenv.mkDerivation rec {
   name = "xautolock-2.2";
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
   makeFlags="BINDIR=\${out}/bin MANPATH=\${out}/man";
   preBuild = "xmkmf";
   installTargets = "install install.man";
-  buildInputs = [xlibsWrapper imake libXScrnSaver scrnsaverproto];
+  buildInputs = [xlibsWrapper imake libXScrnSaver xorgproto ];
   meta = with stdenv.lib; {
     description = "A program that launches a given program when your X session has been idle for a given time.";
     homepage = http://www.ibiblio.org/pub/linux/X11/screensavers;

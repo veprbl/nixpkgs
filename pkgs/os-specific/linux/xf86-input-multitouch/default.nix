@@ -2,11 +2,8 @@
 , fetchgit
 , mtdev
 , xorgserver
-, xproto
+, xorgproto
 , pixman
-, xextproto
-, inputproto
-, randrproto
 , xorg
 , libpciaccess
 }:
@@ -29,11 +26,7 @@ stdenv.mkDerivation {
     EndSection
   '';
 
-  buildInputs = with xorg; [
-    mtdev xproto xextproto inputproto libpciaccess randrproto renderproto
-    xineramaproto resourceproto scrnsaverproto kbproto libxcb videoproto
-    dri3proto presentproto
-  ];
+  buildInputs = with xorg; [ mtdev xorgproto libpciaccess libxcb ];
 
   buildPhase = ''
     make INCLUDE="$NIX_CFLAGS_COMPILE -I${xorgserver.dev}/include/xorg -I${pixman}/include/pixman-1 -Iinclude"

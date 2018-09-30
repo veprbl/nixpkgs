@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, ncurses, libX11, xproto, buildEnv }:
+{ stdenv, fetchurl, ncurses, libX11, xorgproto, buildEnv }:
 
 let
    useX11 = stdenv.isi686 || stdenv.isx86_64;
@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
   # Needed to avoid a SIGBUS on the final executable on mips
   NIX_CFLAGS_COMPILE = if stdenv.isMips then "-fPIC" else "";
 
-  x11env = buildEnv { name = "x11env"; paths = [libX11 xproto];};
+  x11env = buildEnv { name = "x11env"; paths = [libX11 xorgproto];};
   x11lib = x11env + "/lib";
   x11inc = x11env + "/include";
 
@@ -32,7 +32,7 @@ stdenv.mkDerivation rec {
                                       "-x11include" x11inc ];
 
   dontStrip = true;
-  buildInputs = [ncurses] ++ optionals useX11 [ libX11 xproto ];
+  buildInputs = [ncurses] ++ optionals useX11 [ libX11 xorgproto ];
   installFlags = "-i";
   installTargets = "install"; # + optionalString useNativeCompilers " installopt";
 

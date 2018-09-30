@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, wxGTK, libuuid, xercesc, zip , libXt, libXtst
-, libXi, xextproto, gettext, perl, pkgconfig, libyubikey, yubikey-personalization
+, libXi, xorgproto, gettext, perl, pkgconfig, libyubikey, yubikey-personalization
 }:
 
 stdenv.mkDerivation rec {
@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
 
   buildFlags = "unicoderelease";
   buildInputs = [ wxGTK libuuid gettext perl zip
-                  xercesc libXt libXtst libXi xextproto
+                  xercesc libXt libXtst libXi xorgproto
                   pkgconfig libyubikey yubikey-personalization ];
 
   postPatch = ''

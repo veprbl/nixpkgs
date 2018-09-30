@@ -1,6 +1,6 @@
 { stdenv, fetchurl, pkgconfig
 , freetype, fribidi
-, libXext, libXft, libXpm, libXrandr, libXrender, xextproto
+, libXext, libXft, libXpm, libXrandr, libXrender, xorgproto
 , libXinerama
 , imlib2 }:
 
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkgconfig ];
 
-  buildInputs = [ freetype fribidi libXext libXft libXpm libXrandr libXrender xextproto libXinerama imlib2 ];
+  buildInputs = [ freetype fribidi libXext libXft libXpm libXrandr libXrender xorgproto libXinerama imlib2 ];
 
   enableParallelBuilding = true;
 
@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
     substituteInPlace util/fluxbox-generate_menu.in \
       --subst-var-by PREFIX "$out"
   '';
-  
+
   meta = {
     description = "Full-featured, light-resource X window manager";
     longDescription = ''

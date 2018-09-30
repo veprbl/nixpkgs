@@ -1,6 +1,5 @@
 { stdenv, fetchgit, which, libX11, libXt, fontconfig, freetype
-, xproto ? null
-, xextproto ? null
+, xorgproto ? null
 , libXext ? null
   # For building web manuals
 , perl ? null
@@ -46,9 +45,8 @@ stdenv.mkDerivation rec {
     perl
     libX11
     fontconfig
-    xproto
+    xorgproto
     libXt
-    xextproto
     libXext
     freetype #fontsrv wants ft2build.h. provides system fonts for acme and sam.
   ];

@@ -1,10 +1,9 @@
 { fetchurl, stdenv, lib
 , cmake, libGLU_combined
-, freetype, freeimage, zziplib, randrproto, libXrandr
+, freetype, freeimage, zziplib, libXrandr
 , libXaw, freeglut, libXt, libpng, boost, ois
-, xproto, libX11, libXmu, libSM, pkgconfig
-, libXxf86vm, xf86vidmodeproto, libICE
-, renderproto, libXrender
+, xorgproto, libX11, libXmu, libSM, pkgconfig
+, libXxf86vm, libICE, libXrender
 , withNvidiaCg ? false, nvidia_cg_toolkit
 , withSamples ? false }:
 
@@ -25,11 +24,10 @@ stdenv.mkDerivation {
 
   buildInputs =
    [ cmake libGLU_combined
-     freetype freeimage zziplib randrproto libXrandr
+     freetype freeimage zziplib libXrandr
      libXaw freeglut libXt libpng boost ois
-     xproto libX11 libXmu libSM pkgconfig
-     libXxf86vm xf86vidmodeproto libICE
-     renderproto libXrender
+     xorgproto libX11 libXmu libSM pkgconfig
+     libXxf86vm libICE libXrender
    ] ++ lib.optional withNvidiaCg nvidia_cg_toolkit;
 
   meta = {

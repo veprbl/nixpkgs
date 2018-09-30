@@ -45,8 +45,7 @@ stdenv.mkDerivation rec {
     libvpx makeWrapper libGLU_combined nspr nss pango perl pkgconfig python
     libpulseaudio sqlite unzip which yasm zip zlib
   ] ++ (with xorg; [
-    libX11 libXext libXft libXi libXrender libXScrnSaver
-    libXt pixman scrnsaverproto xextproto
+    libX11 libXext libXft libXi libXrender xorgproto libXScrnSaver libXt pixman
   ]);
 
   enableParallelBuilding = true;
@@ -80,7 +79,7 @@ stdenv.mkDerivation rec {
   '';
 
   hardeningDisable = [ "format" ];
-  
+
   buildPhase = ''
     cd $builddir
     $src/mach build

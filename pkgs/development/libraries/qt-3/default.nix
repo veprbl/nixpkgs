@@ -7,7 +7,7 @@
 , threadSupport ? true
 , mysqlSupport ? false, mysql ? null
 , openglSupport ? false, libGLU_combined ? null, libXmu ? null
-, xlibsWrapper, xextproto, zlib, libjpeg, libpng, which
+, xlibsWrapper, xorgproto, zlib, libjpeg, libpng, which
 }:
 
 assert xftSupport -> libXft != null;
@@ -40,7 +40,7 @@ stdenv.mkDerivation {
     "-v"
     "-system-zlib" "-system-libpng" "-system-libjpeg"
     "-qt-gif"
-    "-I${xextproto}/include"
+    "-I${xorgproto}/include"
     (mk threadSupport "thread")
     (mk xrenderSupport "xrender")
     (mk xrandrSupport "xrandr")

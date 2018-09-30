@@ -1539,7 +1539,7 @@ with pkgs;
   riot-web = callPackage ../applications/networking/instant-messengers/riot/riot-web.nix {
     conf = config.riot-web.conf or null;
   };
-  
+
   roundcube = callPackage ../servers/roundcube { };
 
   rsbep = callPackage ../tools/backup/rsbep { };
@@ -12612,9 +12612,8 @@ with pkgs;
   # Avoid using this. It isn't really a wrapper anymore, but we keep the name.
   xlibsWrapper = callPackage ../development/libraries/xlibs-wrapper {
     packages = [
-      freetype fontconfig xorg.xproto xorg.libX11 xorg.libXt
+      freetype fontconfig xorg.xorgproto xorg.libX11 xorg.libXt
       xorg.libXft xorg.libXext xorg.libSM xorg.libICE
-      xorg.xextproto
     ];
   };
 

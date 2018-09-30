@@ -12,8 +12,8 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ pkgconfig shared-mime-info ];
 
   buildInputs =
-    [ xineLib libpng readline ncurses curl lirc libjpeg
-      xorg.xlibsWrapper xorg.libXext xorg.libXv xorg.libXxf86vm xorg.libXtst xorg.inputproto
+    [ xineLib libpng readline ncurses curl lirc libjpeg xorg.xlibsWrapper
+      xorg.libXext xorg.libXv xorg.libXxf86vm xorg.libXtst xorg.xorgproto
       xorg.libXinerama xorg.libXi xorg.libXft
     ];
 
