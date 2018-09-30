@@ -28,17 +28,10 @@ stdenv.mkDerivation rec {
     # For now, we are patching the build script to avoid the dependency.
     ./no-mime-sniffing.patch
 
-    # Fix installed tests with meson
-    # https://bugzilla.gnome.org/show_bug.cgi?id=795527
-    (fetchurl {
-      url = https://bugzilla.gnome.org/attachment.cgi?id=371381;
-      sha256 = "0nl1cixkjfa5kcfh0laz8h6hdsrpdkxqn7a1k35jrb6zwc9hbydn";
-    })
-
-    # Add missing test file bug753605-atsize.jpg
+    
     (fetchpatch {
-      url = https://gitlab.gnome.org/GNOME/gdk-pixbuf/commit/87f8f4bf01dfb9982c1ef991e4060a5e19fdb7a7.patch;
-      sha256 = "1slzywwnrzfx3zjzdsxrvp4g2q4skmv50pdfmyccp41j7bfyb2j0";
+      url = https://gitlab.gnome.org/GNOME/gdk-pixbuf/commit/a7d582f75a71320554b881e063a65f4ced679c1c.patch;
+      sha256 = "0z0w52bh4hcrdllbgrqvh12iqzr7k1pb0wdr9vz2qslg1kjk4j92";
     })
 
     # Move installed tests to a separate output
@@ -68,6 +61,12 @@ stdenv.mkDerivation rec {
   ];
 
   postPatch = ''
+    # disable attempt to generate loaders.cache since it fails and we do it
+    cat > build-aux/post-install.sh <<EOF
+    #!/bin/sh
+    echo "Skipping post-install script"
+    EOF
+
     chmod +x build-aux/* # patchShebangs only applies to executables
     patchShebangs build-aux
 
