@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, sassc, autoreconfHook, pkgconfig, gtk3
-, gnome-themes-extra, gtk-engine-murrine, optipng, inkscape}:
+, gnome-themes-extra, gtk-engine-murrine, optipng, inkscape, which }:
 
 let
   pname = "arc-theme";
@@ -7,13 +7,13 @@ in
 
 stdenv.mkDerivation rec {
   name = "${pname}-${version}";
-  version = "20180715";
+  version = "20181001";
 
   src = fetchFromGitHub {
     owner  = "NicoHood";
     repo   = pname;
-    rev    = version;
-    sha256 = "1kkfnkiih0i3pds5mgd1v9lrdrp4nh4hk42mw7sa4fpbjff4jh6j";
+    rev    = "7a719566dbbc46fba388429eb57236d0e9b873d2";
+    sha256 = "1nmh445v936x6a3gqqg18db6yyy5lf97zpc5v9izvdzni2nnj309";
   };
 
   preBuild = ''
@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
     export HOME="$NIX_BUILD_ROOT"
   '';
 
-  nativeBuildInputs = [ autoreconfHook pkgconfig sassc optipng inkscape ];
+  nativeBuildInputs = [ autoreconfHook pkgconfig sassc optipng inkscape which ];
   buildInputs = [ gtk3 ];
 
   propagatedUserEnvPkgs = [ gnome-themes-extra gtk-engine-murrine ];
@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
     patchShebangs .
   '';
 
-  configureFlags = [ "--disable-unity" ];
+  configureFlags = [ "--disable-unity" "--disable-gnome-shell" /* XXX: enable once avail! */ ];
 
   postInstall = ''
     install -Dm644 -t $out/share/doc/${pname}        AUTHORS *.md
