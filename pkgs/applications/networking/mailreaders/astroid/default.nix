@@ -34,6 +34,8 @@ stdenv.mkDerivation rec {
     wrapProgram "$out/bin/astroid" --set CHARSET=en_us.UTF-8
   '';
 
+  doCheck = true;
+
   enableParallelBuilding = true;
 
   meta = with stdenv.lib; {
