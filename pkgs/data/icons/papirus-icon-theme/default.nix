@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   name = "papirus-icon-theme-${version}";
-  version = "20180816";
+  version = "20180929";
 
   src = fetchFromGitHub {
     owner = "PapirusDevelopmentTeam";
     repo = "papirus-icon-theme";
-    rev = version;
-    sha256 = "0rmf5hvp6711pyqdq5sdxkrjr21nbk6113r4a7d8735ynvm8znkk";
+    rev = "3ca9a018bf8d365cb7c1df473efddaee960ff93d";
+    sha256 = "0ymw76p2r94vwh8ak1hwppqw92f6lkxzmsyq5nmqsy6s1v2bmbx8";
   };
 
   nativeBuildInputs = [ gtk3 ];
