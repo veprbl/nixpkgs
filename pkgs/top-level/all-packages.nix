@@ -22131,15 +22131,18 @@ with pkgs;
   terraform = terraform_0_11;
   terraform-full = terraform_0_11-full;
 
+  terraform-providers = recurseIntoAttrs (
+    callPackage ../applications/networking/cluster/terraform-providers {}
+  );
+
+  terraform-provider-libvirt = callPackage ../applications/networking/cluster/terraform-provider-libvirt {};
+
   terraform-provider-ibm = callPackage ../applications/networking/cluster/terraform-provider-ibm {};
+
 
   terraform-inventory = callPackage ../applications/networking/cluster/terraform-inventory {};
 
-  terraform-provider-nixos = callPackage ../applications/networking/cluster/terraform-provider-nixos {};
-
   terraform-landscape = callPackage ../applications/networking/cluster/terraform-landscape {};
-
-  terraform-provider-libvirt = callPackage ../applications/networking/cluster/terraform-provider-libvirt {};
 
   terragrunt = callPackage ../applications/networking/cluster/terragrunt {};
 
@@ -22391,8 +22394,8 @@ with pkgs;
   spdlog = spdlog_1;
 
   dart = callPackage ../development/interpreters/dart { };
-  dart_stable = dart.override { version = "1.24.3"; };
-  dart_old = dart.override { version = "1.16.1"; };
+  dart_stable = dart.override { version = "2.0.0"; };
+  dart_old = dart.override { version = "1.24.3"; };
   dart_dev = dart.override { version = "2.0.0-dev.26.0"; };
 
   httrack = callPackage ../tools/backup/httrack { };
