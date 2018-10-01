@@ -25,12 +25,6 @@ stdenv.mkDerivation rec {
                   notmuch boost gnome3.gsettings-desktop-schemas gnome3.defaultIconTheme
                   glib-networking protobuf ] ++ (if vim == null then [] else [ vim ]);
 
-  patches = [
-    # TODO: remove when https://github.com/astroidmail/astroid/pull/531
-    #       is released
-    ./run_tests.diff
-  ];
-
   postPatch = ''
     sed -i "s~gvim ~${vim}/bin/vim -g ~g" src/config.cc
     sed -i "s~ -geom 10x10~~g" src/config.cc
