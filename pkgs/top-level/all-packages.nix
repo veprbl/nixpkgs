@@ -365,6 +365,8 @@ with pkgs;
 
   nukeReferences = callPackage ../build-support/nuke-references { };
 
+  referencesByPopularity = callPackage ../build-support/references-by-popularity { };
+
   removeReferencesTo = callPackage ../build-support/remove-references-to { };
 
   vmTools = callPackage ../build-support/vm { };
@@ -1458,6 +1460,10 @@ with pkgs;
 
   metabase = callPackage ../servers/metabase { };
 
+  mkspiffs = callPackage ../tools/filesystems/mkspiffs { };
+
+  mkspiffs-presets = recurseIntoAttrs (callPackages ../tools/filesystems/mkspiffs/presets.nix { });
+
   monetdb = callPackage ../servers/sql/monetdb { };
 
   mp3blaster = callPackage ../applications/audio/mp3blaster { };
@@ -1514,6 +1520,8 @@ with pkgs;
 
   simg2img = callPackage ../tools/filesystems/simg2img { };
 
+  snipes = callPackage ../games/snipes { };
+
   socklog = callPackage ../tools/system/socklog { };
 
   staccato = callPackage ../tools/text/staccato { };
@@ -1539,7 +1547,7 @@ with pkgs;
   riot-web = callPackage ../applications/networking/instant-messengers/riot/riot-web.nix {
     conf = config.riot-web.conf or null;
   };
-  
+
   roundcube = callPackage ../servers/roundcube { };
 
   rsbep = callPackage ../tools/backup/rsbep { };
@@ -5730,6 +5738,8 @@ with pkgs;
   ufraw = callPackage ../applications/graphics/ufraw {
     stdenv = overrideCC stdenv gcc6; # doesn't build with gcc7
   };
+
+  uftrace = callPackage ../development/tools/uftrace { };
 
   uget = callPackage ../tools/networking/uget { };
 
@@ -15858,6 +15868,8 @@ with pkgs;
     inherit (gnome2) libgnomeui GConf;
   };
 
+  csa = callPackage ../applications/audio/csa { };
+
   csound = callPackage ../applications/audio/csound { };
 
   cinepaint = callPackage ../applications/graphics/cinepaint {
@@ -22155,6 +22167,8 @@ with pkgs;
   };
 
   tetex = callPackage ../tools/typesetting/tex/tetex { libpng = libpng12; };
+
+  tetra-gtk-theme = callPackage ../misc/themes/tetra { };
 
   tewi-font = callPackage ../data/fonts/tewi  {};
 
