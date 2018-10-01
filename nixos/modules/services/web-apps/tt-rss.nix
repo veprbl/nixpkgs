@@ -549,9 +549,10 @@ let
         preStart = let
           callSql = e:
               if cfg.database.type == "pgsql" then ''
-                  ${optionalString (cfg.database.password != null) "PGPASSWORD=${cfg.database.password}"} \
-                  ${optionalString (cfg.database.passwordFile != null) "PGPASSWORD=$(cat ${cfg.database.passwordFile}"}) \
-                  ${pkgs.sudo}/bin/sudo -u ${cfg.user} ${config.services.postgresql.package}/bin/psql \
+                  ${pkgs.sudo}/bin/sudo  \
+                    ${optionalString (cfg.database.password != null) "PGPASSWORD=${cfg.database.password}"} \
+                    ${optionalString (cfg.database.passwordFile != null) "PGPASSWORD=$(cat ${cfg.database.passwordFile})"} \
+                    -u ${cfg.user} ${config.services.postgresql.package}/bin/psql \
                     -U ${cfg.database.user} \
                     ${optionalString (cfg.database.host != null) "-h ${cfg.database.host} --port ${toString dbPort}"} \
                     -c '${e}' \
@@ -561,6 +562,7 @@ let
                   echo '${e}' | ${pkgs.sudo}/bin/sudo -u ${cfg.user} ${config.services.mysql.package}/bin/mysql \
                     -u ${cfg.database.user} \
                     ${optionalString (cfg.database.password != null) "-p${cfg.database.password}"} \
+                    ${optionalString (cfg.database.passwordFile != null) "-p$(cat ${cfg.database.passwordFile})"} \
                     ${optionalString (cfg.database.host != null) "-h ${cfg.database.host} -P ${toString dbPort}"} \
                     ${cfg.database.name}''
 
@@ -603,7 +605,6 @@ let
             echo 'The database contains some data. Leaving it as it is.'
           fi;
         '')
-
         + (optionalString (cfg.database.type == "mysql") ''
           exists=$(${callSql "select count(*) > 0 from information_schema.tables where table_schema = schema()"} \
           | tail -n+2 | sed -e 's/[ \n\t]*//')
@@ -613,7 +614,10 @@ let
           else
             echo 'The database contains some data. Leaving it as it is.'
           fi;
-        '');
+        '') +
+        ''
+          echo yes | ${pkgs.sudo}/bin/sudo -u ${cfg.user} ${pkgs.php}/bin/php ${cfg.root}/update.php --update-schema
+        '';
 
         serviceConfig = {
           User = "${cfg.user}";
