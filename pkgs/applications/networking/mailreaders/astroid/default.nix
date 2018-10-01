@@ -24,7 +24,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ gnome3.gtkmm gmime3 webkitgtk222x libsass gnome3.libpeas
                   python3 python3Packages.pygobject3
                   notmuch boost gnome3.gsettings-desktop-schemas gnome3.defaultIconTheme
-                  glib-networking protobuf ] ++ (if vim == null then [] else [ vim ]);
+                  glib-networking protobuf ] ++ (if (!stdenv.lib.isDerivation vim)  then [] else [ vim ]);
 
   postPatch = ''
     sed -i "s~gvim ~${vim}/bin/vim -g ~g" src/config.cc
