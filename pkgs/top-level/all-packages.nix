@@ -1460,6 +1460,10 @@ with pkgs;
 
   metabase = callPackage ../servers/metabase { };
 
+  mkspiffs = callPackage ../tools/filesystems/mkspiffs { };
+
+  mkspiffs-presets = recurseIntoAttrs (callPackages ../tools/filesystems/mkspiffs/presets.nix { });
+
   monetdb = callPackage ../servers/sql/monetdb { };
 
   mp3blaster = callPackage ../applications/audio/mp3blaster { };
@@ -5732,6 +5736,8 @@ with pkgs;
   ufraw = callPackage ../applications/graphics/ufraw {
     stdenv = overrideCC stdenv gcc6; # doesn't build with gcc7
   };
+
+  uftrace = callPackage ../development/tools/uftrace { };
 
   uget = callPackage ../tools/networking/uget { };
 
