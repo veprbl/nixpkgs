@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, cmake, pkgconfig, gnome3, gmime3, webkitgtk
+{ stdenv, fetchFromGitHub, cmake, pkgconfig, scdoc, gnome3, gmime3, webkitgtk
 , libsass, notmuch, boost, wrapGAppsHook, glib-networking, protobuf, vim_configurable
 , makeWrapper, python3, python3Packages
 , vim ? vim_configurable.override {
@@ -18,10 +18,10 @@ stdenv.mkDerivation rec {
     sha256 = "1wkv1icsx3g3gq485dnvcdhr9srrjgz4ws1i1krcw9n61bj7gxh8";
   };
 
-  nativeBuildInputs = [ cmake pkgconfig wrapGAppsHook ];
+  nativeBuildInputs = [ cmake pkgconfig scdoc wrapGAppsHook ];
 
   buildInputs = [ gnome3.gtkmm gmime3 webkitgtk libsass gnome3.libpeas
-                  python3 python3Packages.pygobject3
+                  python3 python3Packages.pygobject3 gnome3.vte
                   notmuch boost gnome3.gsettings-desktop-schemas gnome3.defaultIconTheme
                   glib-networking protobuf ] ++ (if vim == null then [] else [ vim ]);
 
@@ -33,6 +33,8 @@ stdenv.mkDerivation rec {
   postInstall = ''
     wrapProgram "$out/bin/astroid" --set CHARSET=en_us.UTF-8
   '';
+
+  enableParallelBuilding = true;
 
   meta = with stdenv.lib; {
     homepage = https://astroidmail.github.io/;
