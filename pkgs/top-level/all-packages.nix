@@ -365,6 +365,8 @@ with pkgs;
 
   nukeReferences = callPackage ../build-support/nuke-references { };
 
+  referencesByPopularity = callPackage ../build-support/references-by-popularity { };
+
   removeReferencesTo = callPackage ../build-support/remove-references-to { };
 
   vmTools = callPackage ../build-support/vm { };
@@ -1514,6 +1516,8 @@ with pkgs;
 
   simg2img = callPackage ../tools/filesystems/simg2img { };
 
+  snipes = callPackage ../games/snipes { };
+
   socklog = callPackage ../tools/system/socklog { };
 
   staccato = callPackage ../tools/text/staccato { };
@@ -1539,7 +1543,7 @@ with pkgs;
   riot-web = callPackage ../applications/networking/instant-messengers/riot/riot-web.nix {
     conf = config.riot-web.conf or null;
   };
-  
+
   roundcube = callPackage ../servers/roundcube { };
 
   rsbep = callPackage ../tools/backup/rsbep { };
@@ -15857,6 +15861,8 @@ with pkgs;
   coriander = callPackage ../applications/video/coriander {
     inherit (gnome2) libgnomeui GConf;
   };
+
+  csa = callPackage ../applications/audio/csa { };
 
   csound = callPackage ../applications/audio/csound { };
 
