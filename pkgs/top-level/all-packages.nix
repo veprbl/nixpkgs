@@ -12549,6 +12549,7 @@ with pkgs;
   webkitgtk222x = callPackage ../development/libraries/webkitgtk/2.22.nix {
     harfbuzz = harfbuzzFull;
     inherit (gst_all_1) gst-plugins-base gst-plugins-bad;
+    stdenv = overrideCC stdenv gcc6; # Almost certianly another victim of our borked libgcc_s
   };
 
   webkitgtk24x-gtk2 = webkitgtk24x-gtk3.override {
