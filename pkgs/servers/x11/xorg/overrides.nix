@@ -1,7 +1,7 @@
 { args, xorg }:
 
 let
-  inherit (args) stdenv makeWrapper;
+  inherit (args) stdenv makeWrapper fetchpatch;
   inherit (stdenv) lib isDarwin;
   inherit (lib) overrideDerivation;
 
@@ -98,6 +98,16 @@ in
         rm -rf $out/share/doc
       '';
     CPP = stdenv.lib.optionalString stdenv.isDarwin "clang -E -";
+    patches = (attrs.patches or []) ++ [
+      (fetchpatch {
+        url = "https://gitlab.freedesktop.org/xorg/lib/libx11/commit/d0416863d5bf75af54ce81f6c30d4c1476b5e04f.patch";
+        sha256 = "0rqw3z8krgww5dqw6kjksirhigaav8yinwlcr9fyj6lnabkb99v9";
+      })
+      (fetchpatch {
+        url = "https://gitlab.freedesktop.org/xorg/lib/libx11/commit/406afe4b0f1b655c0db19bbc9a0c48da9a46acf5.patch";
+        sha256 = "0a8nhigbxqvz286hjbc524kz83zpbr1szhdqpx96vixdhqa5zbbx";
+      })
+    ];
   };
 
   libAppleWM = attrs: attrs // {
