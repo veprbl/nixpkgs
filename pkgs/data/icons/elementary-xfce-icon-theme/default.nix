@@ -15,6 +15,13 @@ stdenv.mkDerivation rec {
 
   postPatch = ''
     substituteInPlace svgtopng/Makefile --replace "-O0" "-O"
+
+    for x in */index.theme; do
+      echo "Fixing theme name for $x"
+      echo "before: $(grep 'Name=' $x)"
+      sed -i $x -e "s|Name=.*|Name=$(dirname $x)|"
+      echo "after: $(grep 'Name=' $x)"
+    done
   '';
 
   postInstall = ''
