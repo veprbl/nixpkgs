@@ -18,6 +18,9 @@ stdenv.mkDerivation rec {
     fetchSubmodules = true;
   };
 
+  # Doesn't seem to work without this, used to be documented in the .pro file.  Dunno.
+  qmakeFlags = [ "CONFIG+=qtquickcompiler" ];
+
   nativeBuildInputs = [ pkgconfig qmake ];
   buildInputs = [ qtbase qtquickcontrols2 qtmultimedia qtgraphicaleffects qtdeclarative ]
     ++ stdenv.lib.optional stdenv.hostPlatform.isLinux libpulseaudio;
