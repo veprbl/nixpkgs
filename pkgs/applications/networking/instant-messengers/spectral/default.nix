@@ -4,6 +4,7 @@
 , libpulseaudio
 # Not mentioned but seems needed
 , qtgraphicaleffects
+, qtdeclarative
 }:
 
 stdenv.mkDerivation rec {
@@ -18,7 +19,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ pkgconfig qmake ];
-  buildInputs = [ qtbase qtquickcontrols2 qtmultimedia qtgraphicaleffects ]
+  buildInputs = [ qtbase qtquickcontrols2 qtmultimedia qtgraphicaleffects qtdeclarative ]
     ++ stdenv.lib.optional stdenv.hostPlatform.isLinux libpulseaudio;
 
   meta = with stdenv.lib; {
