@@ -9,7 +9,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ pkgconfig perl ];
-  buildInputs = [ openssl db cyrus_sasl ];
+  buildInputs = [ openssl db cyrus_sasl zlib ];
 
   meta = with stdenv.lib; {
     homepage = http://isync.sourceforge.net/;
