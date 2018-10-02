@@ -43,7 +43,7 @@ stdenv.mkDerivation rec {
     })
   ];
   postPatch = ''
-    for x in ${gtk_mushrooms}/*.patch; do
+    for x in ${gtk_mushrooms}/fixes__*.patch ${gtk_mushrooms}/file-chooser__typeahead.patch ${gtk_mushrooms}/other__mnemonics-delay.patch; do
       echo "Applying $x..."
       patch -p2 -i $x
     done
