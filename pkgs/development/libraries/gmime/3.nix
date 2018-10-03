@@ -1,20 +1,26 @@
-{ stdenv, fetchurl, pkgconfig, glib, zlib, gnupg, gpgme, libidn, gobjectIntrospection }:
+{ stdenv, fetchFromGitHub, pkgconfig, glib, zlib, gnupg, gpgme, libidn2, gobjectIntrospection, libtool, autoconf, automake, which, gtk_doc, libunistring }:
 
 stdenv.mkDerivation rec {
-  version = "3.2.0";
+  version = "3.2.0-git";
   name = "gmime-${version}";
 
-  src = fetchurl {
-    url = "mirror://gnome/sources/gmime/3.2/${name}.tar.xz";
-    sha256 = "1q6palbpf6lh6bvy9ly26q5apl5k0z0r4mvl6zzqh90rz4rn1v3m";
+  src = fetchFromGitHub {
+    owner = "jstedfast";
+    repo = "gmime";
+    rev = "da168513c91f9ed25d2e22c5b6a23fa50266a3bc";
+    sha256 = "11qn02pddfclvy5376061jjlv0nbzm58imjfvgw9cawyr5mhp1iv";
   };
 
   outputs = [ "out" "dev" ];
 
-  buildInputs = [ gobjectIntrospection zlib gpgme libidn ];
-  nativeBuildInputs = [ pkgconfig ];
+  buildInputs = [ gobjectIntrospection zlib gpgme libidn2 libunistring ];
+  nativeBuildInputs = [ pkgconfig libtool autoconf automake which gtk_doc ];
   propagatedBuildInputs = [ glib ];
   configureFlags = [ "--enable-introspection=yes" ];
+
+  preConfigure = ''
+    NOCONFIGURE=1 ./autogen.sh
+  '';
 
   postPatch = ''
     substituteInPlace tests/testsuite.c \
