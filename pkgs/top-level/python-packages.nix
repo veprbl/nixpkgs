@@ -658,7 +658,7 @@ in {
 
   python-sybase = callPackage ../development/python-modules/sybase {};
 
-  alot = callPackage ../development/python-modules/alot {};
+  alot = callPackage ../development/python-modules/alot { inherit (self) gpgme; };
 
   anyjson = callPackage ../development/python-modules/anyjson {};
 
@@ -5963,7 +5963,7 @@ in {
 
   google_cloud_speech = callPackage ../development/python-modules/google_cloud_speech { };
 
-  gpgme = toPythonModule (pkgs.gpgme.override { withPython=true; });
+  gpgme = toPythonModule (pkgs.gpgme.override { withPython=true; inherit (self) python; });
 
   gphoto2 = callPackage ../development/python-modules/gphoto2 {
     inherit (pkgs) pkgconfig;
