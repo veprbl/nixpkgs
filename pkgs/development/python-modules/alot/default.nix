@@ -7,16 +7,17 @@
 
 buildPythonPackage rec {
   pname = "alot";
-  version = "0.7";
   outputs = [ "out" ] ++ lib.optional withManpage "man";
 
-  disabled = isPy3k;
+  disabled = !isPy3k;
+
+  version = "2018-10-01";
 
   src = fetchFromGitHub {
     owner = "pazz";
     repo = "alot";
-    rev = "${version}";
-    sha256 = "1y932smng7qx7ybmqw4qh75b0lv9imfs5ak9fd0qhysij8kpmdhi";
+    rev = "41197b766f5223c1d3f02594c9324b67c14c56ae";
+    sha256 = "0ynwpp8hkhhl3iydzviadi2p5iwcmybd9z5c7jpf3264hhnyj0yd";
   };
 
   nativeBuildInputs = lib.optional withManpage sphinx;
