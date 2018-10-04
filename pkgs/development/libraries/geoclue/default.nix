@@ -1,4 +1,4 @@
-{ fetchurl, stdenv, fetchgit, fetchpatch, intltool, meson, ninja, pkgconfig, gtk-doc, docbook_xsl, docbook_xml_dtd_412, glib, json-glib, libsoup, libnotify, gdk_pixbuf
+{ fetchurl, stdenv, fetchgit, fetchpatch, intltool, meson, ninja, python3, pkgconfig, gtk-doc, docbook_xsl, docbook_xml_dtd_412, glib, json-glib, libsoup, libnotify, gdk_pixbuf
 , modemmanager, avahi, glib-networking, wrapGAppsHook, gobjectIntrospection
 }:
 
@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
   outputs = [ "out" "dev" "devdoc" ];
 
   nativeBuildInputs = [
-    meson ninja
+    meson ninja python3
     pkgconfig intltool wrapGAppsHook gobjectIntrospection
     # devdoc
     gtk-doc docbook_xsl docbook_xml_dtd_412
@@ -33,6 +33,11 @@ stdenv.mkDerivation rec {
   ] ++ optionals (!stdenv.isDarwin) [ modemmanager ];
 
   propagatedBuildInputs = [ glib glib-networking ];
+
+  postPatch = ''
+    chmod +x demo/install-file.py
+    patchShebangs .
+  '';
 
 #  configureFlags = [
 #    "--with-systemdsystemunitdir=$(out)/etc/systemd/system"
