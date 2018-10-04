@@ -19804,6 +19804,8 @@ with pkgs;
 
   zim = callPackage ../applications/office/zim { };
 
+  zita-njbridge = callPackage ../applications/audio/zita-njbridge { };
+
   zoom-us = libsForQt59.callPackage ../applications/networking/instant-messengers/zoom-us { };
 
   zotero = callPackage ../applications/office/zotero { };
