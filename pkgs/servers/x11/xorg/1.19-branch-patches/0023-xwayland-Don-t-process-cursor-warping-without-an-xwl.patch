@@ -1,0 +1,93 @@
+From e96bd477395af3c2c3157ebda0f55ea4b672a114 Mon Sep 17 00:00:00 2001
+From: Lyude Paul <lyude@redhat.com>
+Date: Tue, 6 Feb 2018 12:41:47 -0500
+Subject: [PATCH 23/24] xwayland: Don't process cursor warping without an
+ xwl_seat
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Unfortunately, on my machine Xwayland immediately crashes when I try to
+start it. gdb backtrace:
+
+ #0  0x00007ffff74f0e79 in wl_proxy_marshal () from target:/lib64/libwayland-client.so.0
+ #1  0x0000000000413172 in zwp_confined_pointer_v1_destroy (zwp_confined_pointer_v1=0x700000000)
+     at hw/xwayland/Xwayland@exe/pointer-constraints-unstable-v1-client-protocol.h:612
+ #2  0x0000000000418bc0 in xwl_seat_destroy_confined_pointer (xwl_seat=0x8ba2a0)
+     at /home/lyudess/Projects/xserver/hw/xwayland/xwayland-input.c:2839
+ #3  0x0000000000418c09 in xwl_seat_unconfine_pointer (xwl_seat=0x8ba2a0)
+     at /home/lyudess/Projects/xserver/hw/xwayland/xwayland-input.c:2849
+ #4  0x0000000000410d97 in xwl_cursor_confined_to (device=0xa5a000, screen=0x8b9d80, window=0x9bdb70)
+     at /home/lyudess/Projects/xserver/hw/xwayland/xwayland.c:328
+ #5  0x00000000004a8571 in ConfineCursorToWindow (pDev=0xa5a000, pWin=0x9bdb70, generateEvents=1,
+     confineToScreen=0) at /home/lyudess/Projects/xserver/dix/events.c:900
+ #6  0x00000000004a94b7 in ScreenRestructured (pScreen=0x8b9d80)
+     at /home/lyudess/Projects/xserver/dix/events.c:1387
+ #7  0x0000000000502386 in RRScreenSizeNotify (pScreen=0x8b9d80)
+     at /home/lyudess/Projects/xserver/randr/rrscreen.c:160
+ #8  0x000000000041a83c in update_screen_size (xwl_output=0x8e7670, width=3840, height=2160)
+     at /home/lyudess/Projects/xserver/hw/xwayland/xwayland-output.c:203
+ #9  0x000000000041a9f0 in apply_output_change (xwl_output=0x8e7670)
+     at /home/lyudess/Projects/xserver/hw/xwayland/xwayland-output.c:252
+ #10 0x000000000041aaeb in xdg_output_handle_done (data=0x8e7670, xdg_output=0x8e7580)
+     at /home/lyudess/Projects/xserver/hw/xwayland/xwayland-output.c:307
+ #11 0x00007ffff50e9d1e in ffi_call_unix64 () at ../src/x86/unix64.S:76
+ #12 0x00007ffff50e968f in ffi_call (cif=<optimized out>, fn=<optimized out>, rvalue=<optimized out>,
+     avalue=<optimized out>) at ../src/x86/ffi64.c:525
+ #13 0x00007ffff74f3d8b in wl_closure_invoke () from target:/lib64/libwayland-client.so.0
+ #14 0x00007ffff74f0928 in dispatch_event.isra () from target:/lib64/libwayland-client.so.0
+ #15 0x00007ffff74f1be4 in wl_display_dispatch_queue_pending () from target:/lib64/libwayland-client.so.0
+ #16 0x00007ffff74f200b in wl_display_roundtrip_queue () from target:/lib64/libwayland-client.so.0
+ #17 0x0000000000418cad in InitInput (argc=12, argv=0x7fffffffd9c8)
+     at /home/lyudess/Projects/xserver/hw/xwayland/xwayland-input.c:2867
+ #18 0x00000000004a20e3 in dix_main (argc=12, argv=0x7fffffffd9c8, envp=0x7fffffffda30)
+     at /home/lyudess/Projects/xserver/dix/main.c:250
+ #19 0x0000000000420cb2 in main (argc=12, argv=0x7fffffffd9c8, envp=0x7fffffffda30)
+    at /home/lyudess/Projects/xserver/dix/stubmain.c:34
+
+This appears to be the result of xwl_cursor_confined_to() and
+xwl_screen_get_default_seat(). While not against protocol, mutter ends
+up sending xdg_output before wl_seat. xwl_screen_get_default_seat()
+makes the naïve assumption that we always have a valid seat, we end up
+returning a pointer to the empty list itself instead of an actual seat
+and causing ourselves to segfault.
+
+So, actually return NULL in xwl_screen_get_default_seat() if the seat
+list is empty, and skip any pointer confinement processing in
+xwl_cursor_confined_to() when we don't have a seat setup yet.
+
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Reviewed-by: Adam Jackson <ajax@redhat.com>
+(cherry picked from commit 98edb9a35e2cdd61355656b82975d7f2b6a9f0e6)
+---
+ hw/xwayland/xwayland.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/hw/xwayland/xwayland.c b/hw/xwayland/xwayland.c
+index 0e7929715..d0bdf36a4 100644
+--- a/hw/xwayland/xwayland.c
++++ b/hw/xwayland/xwayland.c
+@@ -159,6 +159,9 @@ xwl_window_from_window(WindowPtr window)
+ static struct xwl_seat *
+ xwl_screen_get_default_seat(struct xwl_screen *xwl_screen)
+ {
++    if (xorg_list_is_empty(&xwl_screen->seat_list))
++        return NULL;
++
+     return container_of(xwl_screen->seat_list.prev,
+                         struct xwl_seat,
+                         link);
+@@ -218,6 +221,10 @@ xwl_cursor_confined_to(DeviceIntPtr device,
+     if (!xwl_seat)
+         xwl_seat = xwl_screen_get_default_seat(xwl_screen);
+ 
++    /* xwl_seat hasn't been setup yet, don't do anything just yet */
++    if (!xwl_seat)
++        return;
++
+     if (window == screen->root) {
+         xwl_seat_unconfine_pointer(xwl_seat);
+         return;
+-- 
+2.19.0
+
