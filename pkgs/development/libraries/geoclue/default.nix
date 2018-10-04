@@ -1,6 +1,5 @@
 { fetchurl, stdenv, fetchgit, fetchpatch, intltool, meson, pkgconfig, gtk-doc, docbook_xsl, docbook_xml_dtd_412, glib, json-glib, libsoup, libnotify, gdk_pixbuf
 , modemmanager, avahi, glib-networking, wrapGAppsHook, gobjectIntrospection
-, withDemoAgent ? false
 }:
 
 with stdenv.lib;
@@ -30,7 +29,6 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     glib json-glib libsoup avahi
-  ] ++ optionals withDemoAgent [
     libnotify gdk_pixbuf
   ] ++ optionals (!stdenv.isDarwin) [ modemmanager ];
 
