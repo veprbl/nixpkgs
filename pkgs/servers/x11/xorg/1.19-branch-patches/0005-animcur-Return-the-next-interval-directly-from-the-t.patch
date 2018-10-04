@@ -1,0 +1,38 @@
+From 354c48304d27f75b7c33c03a0adb050c37788ccf Mon Sep 17 00:00:00 2001
+From: Adam Jackson <ajax@redhat.com>
+Date: Thu, 26 Oct 2017 13:53:06 -0400
+Subject: [PATCH 05/24] animcur: Return the next interval directly from the
+ timer callback
+
+If the return value is non-zero here, DoTimer() will automatically rearm
+the timer for the new (relative) delay. 'soonest' is in absolute time,
+so subtract off 'now' and return that.
+
+Reviewed-by: Robert Morell <rmorell@nvidia.com>
+Tested-by: Robert Morell <rmorell@nvidia.com>
+Signed-off-by: Adam Jackson <ajax@redhat.com>
+(cherry picked from commit cc3241a712684f8c7147f5688e9ee3ecb5a93b87)
+---
+ render/animcur.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/render/animcur.c b/render/animcur.c
+index 3f85f9a4f..26a6026ae 100644
+--- a/render/animcur.c
++++ b/render/animcur.c
+@@ -169,10 +169,9 @@ AnimCurTimerNotify(OsTimerPtr timer, CARD32 now, void *arg)
+     }
+ 
+     if (activeDevice)
+-        TimerSet(as->timer, TimerAbsolute, soonest, AnimCurTimerNotify, pScreen);
+-    else
+-        as->timer_set = FALSE;
++        return soonest - now;
+ 
++    as->timer_set = FALSE;
+     return 0;
+ }
+ 
+-- 
+2.19.0
+

@@ -1,0 +1,46 @@
+From 56547b196660e246e37132960723819972b99c8c Mon Sep 17 00:00:00 2001
+From: Mario Kleiner <mario.kleiner.de@gmail.com>
+Date: Mon, 5 Feb 2018 11:20:41 +0100
+Subject: [PATCH 24/24] glx: Only assign 8 bpc fbconfigs for composite visuals.
+
+Commit 91c42093b248 ("glx: Duplicate relevant fbconfigs for
+compositing visuals") adds many new depth 32 fbconfigs as
+composite visuals. On a X-Screen running at depth 24, this
+also adds bgra 10-10-10-2 fbconigs, as they also have
+config.rgbBits == 32, but these are not displayable on a
+depth 24 screen, leading to visually corrupted desktops
+under some compositors, e.g., fdo bug 104597 "Compton
+weird colors" when running compton with
+"compton --backend glx".
+
+Be more conservative for now and only select fbconfigs with
+8 bpc red, green, blue components for composite visuals.
+
+Fixes: 91c42093b248 ("glx: Duplicate relevant fbconfigs for
+                      compositing visuals")
+Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=104597
+Signed-off-by: Mario Kleiner <mario.kleiner.de@gmail.com>
+Reviewed-by: Thomas Hellstrom <thellstrom@vmware.com>
+Reviewed-by: Adam Jackson <ajax@redhat.com>
+(cherry picked from commit bebcc8477c8070ade9dd4be7299c718baeab3d7a)
+---
+ glx/glxdricommon.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/glx/glxdricommon.c b/glx/glxdricommon.c
+index d3136e87b..dbf199c93 100644
+--- a/glx/glxdricommon.c
++++ b/glx/glxdricommon.c
+@@ -218,6 +218,9 @@ createModeFromConfig(const __DRIcoreExtension * core,
+     if (duplicateForComp &&
+         (render_type_is_pbuffer_only(renderType) ||
+          config->config.rgbBits != 32 ||
++         config->config.redBits != 8 ||
++         config->config.greenBits != 8 ||
++         config->config.blueBits != 8 ||
+          config->config.visualRating != GLX_NONE ||
+          config->config.sampleBuffers != 0)) {
+         free(config);
+-- 
+2.19.0
+

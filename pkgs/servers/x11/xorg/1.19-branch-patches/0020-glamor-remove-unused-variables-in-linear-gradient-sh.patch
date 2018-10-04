@@ -1,0 +1,34 @@
+From b41bb8147e706cb8e615842e08a548b7e8afd279 Mon Sep 17 00:00:00 2001
+From: Jeff Smith <whydoubt@gmail.com>
+Date: Fri, 26 Jan 2018 06:25:21 -0600
+Subject: [PATCH 20/24] glamor: remove unused variables in linear gradient
+ shader
+
+Signed-off-by: Jeff Smith <whydoubt@gmail.com>
+Reviewed-by: Adam Jackson <ajax@redhat.com>
+(cherry picked from commit 3bd17dff1ac5a4685a5da92a9982f621effee658)
+---
+ glamor/glamor_gradient.c | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/glamor/glamor_gradient.c b/glamor/glamor_gradient.c
+index e9880e79d..5deaf5ff4 100644
+--- a/glamor/glamor_gradient.c
++++ b/glamor/glamor_gradient.c
+@@ -467,13 +467,6 @@ _glamor_create_linear_gradient_program(ScreenPtr screen, int stops_count,
+ 	    "    float _p1_distance;\n"\
+ 	    "    float _pt_distance;\n"\
+ 	    "    float y_dist;\n"\
+-	    "    float stop_after;\n"\
+-	    "    float stop_before;\n"\
+-	    "    vec4 stop_color_before;\n"\
+-	    "    vec4 stop_color_after;\n"\
+-	    "    float new_alpha; \n"\
+-	    "    vec4 gradient_color;\n"\
+-	    "    float percentage; \n"\
+ 	    "    vec3 source_texture_trans = transform_mat * tmp;\n"\
+ 	    "    \n"\
+ 	    "    if(hor_ver == 0) { \n" /*Normal case.*/\
+-- 
+2.19.0
+

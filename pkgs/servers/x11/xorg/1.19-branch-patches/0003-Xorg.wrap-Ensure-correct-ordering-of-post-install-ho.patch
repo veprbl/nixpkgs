@@ -1,0 +1,59 @@
+From 725b4b46ff59a8db84d8c12fec02c6b1d94b27ce Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Luk=C3=A1=C5=A1=20Krej=C4=8D=C3=AD?= <lskrejci@gmail.com>
+Date: Sat, 30 Dec 2017 23:46:45 +0100
+Subject: [PATCH 03/24] Xorg.wrap: Ensure correct ordering of post-install hook
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The install rule of Xorg.wrap is currently a dependency of the
+install-data target instead of the install-exec target. The build also
+uses install-exec-hook to change the ownership and set the SUID bit on
+the Xorg.wrap binary. The problem is that install-exec-hook is only
+ordered respective to the install-exec target, the rules of install-data
+may or may not have been executed.
+
+If install-exec-hook runs before the Xorg.wrap binary is in place,
+a message similar to the following will be present in the build log:
+
+chown: cannot access '/pkgdir/usr/lib/xorg-server/Xorg.wrap': No such file or directory
+make[6]: [Makefile:1151: install-exec-hook] Error 1 (ignored)
+
+All that needs to be done is to change the name of the program variable
+to contain 'exec' for the install rule to depend on the install-exec
+target.
+
+Excerpt from the Automake manual, chapter 12.2 The Two Parts of Install:
+"Any variable using a user-defined directory prefix with ‘exec’ in the
+name (e.g., myexecbin_PROGRAMS) is installed by install-exec. All other
+user-defined prefixes are installed by install-data."
+
+https://bugs.freedesktop.org/show_bug.cgi?id=104419
+
+Signed-off-by: Lukáš Krejčí <lskrejci@gmail.com>
+Acked-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
+Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+(cherry picked from commit f615cb62d47cb24ea31718e8226df53ce6651c91)
+---
+ hw/xfree86/Makefile.am | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hw/xfree86/Makefile.am b/hw/xfree86/Makefile.am
+index b876b79ab..458720052 100644
+--- a/hw/xfree86/Makefile.am
++++ b/hw/xfree86/Makefile.am
+@@ -84,8 +84,8 @@ Xorg_DEPENDENCIES = $(LOCAL_LIBS)
+ Xorg_LDFLAGS = $(LD_EXPORT_SYMBOLS_FLAG)
+ 
+ if SUID_WRAPPER
+-wrapdir = $(SUID_WRAPPER_DIR)
+-wrap_PROGRAMS = Xorg.wrap
++wrapexecdir = $(SUID_WRAPPER_DIR)
++wrapexec_PROGRAMS = Xorg.wrap
+ Xorg_wrap_SOURCES = xorg-wrapper.c
+ endif
+ 
+-- 
+2.19.0
+

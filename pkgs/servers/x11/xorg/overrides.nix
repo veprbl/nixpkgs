@@ -445,7 +445,35 @@ in
     let
       version = (builtins.parseDrvName attrs_passed.name).version;
       attrs = with args;
-        if (args.abiCompat == null || lib.hasPrefix args.abiCompat version) then attrs_passed
+      if (args.abiCompat == null || lib.hasPrefix args.abiCompat version) then
+          (attrs_passed // {
+            patches = [
+              ./1.19-branch-patches/0001-glx-do-not-pick-sRGB-config-for-32-bit-RGBA-visual.patch
+              ./1.19-branch-patches/0002-xwayland-avoid-race-condition-on-new-keymap.patch
+              ./1.19-branch-patches/0003-Xorg.wrap-Ensure-correct-ordering-of-post-install-ho.patch
+              ./1.19-branch-patches/0004-animcur-Use-fixed-size-screen-private.patch
+              ./1.19-branch-patches/0005-animcur-Return-the-next-interval-directly-from-the-t.patch
+              ./1.19-branch-patches/0006-animcur-Run-the-timer-from-the-device-not-the-screen.patch
+              ./1.19-branch-patches/0007-animcur-Fix-transitions-between-animated-cursors.patch
+              ./1.19-branch-patches/0008-glamor-Specify-GLSL-version-for-xv-shader.patch
+              ./1.19-branch-patches/0009-config-fix-NULL-value-detection-for-ID_INPUT-being-u.patch
+              ./1.19-branch-patches/0010-build-guess-availability-of-monotonic-clock-for-cros.patch
+              ./1.19-branch-patches/0011-os-Fix-a-type-error-in-the-IPv6-XDMCP-code.patch
+              ./1.19-branch-patches/0012-xfree86-add-default-modes-for-16-9-and-16-10.patch
+              ./1.19-branch-patches/0013-Revert-present-Only-send-PresentCompleteNotify-event.patch
+              ./1.19-branch-patches/0014-xf86XvMCScreenInit-Clear-pScreenPriv-dixinfo-when-fr.patch
+              ./1.19-branch-patches/0015-composite-Propagate-damagedDescendants-when-reparent.patch
+              ./1.19-branch-patches/0016-os-inputthread-Force-unlock-when-stopping-thread.patch
+              ./1.19-branch-patches/0017-xwayland-remove-dirty-window-unconditionally-on-unre.patch
+              ./1.19-branch-patches/0018-glamor-fix-repeat-reflect-case-in-linear-gradient-sh.patch
+              ./1.19-branch-patches/0019-glamor-fix-no-reflect-case-for-gradients.patch
+              ./1.19-branch-patches/0020-glamor-remove-unused-variables-in-linear-gradient-sh.patch
+              ./1.19-branch-patches/0021-glamor-tidy-up-some-gradient-color-formulas.patch
+              ./1.19-branch-patches/0022-randr-Fix-rotation-check-in-ProcRRSetScreenSize.patch
+              ./1.19-branch-patches/0023-xwayland-Don-t-process-cursor-warping-without-an-xwl.patch
+              ./1.19-branch-patches/0024-glx-Only-assign-8-bpc-fbconfigs-for-composite-visual.patch
+            ];
+          })
         else if (args.abiCompat == "1.17") then {
           name = "xorg-server-1.17.4";
           builder = ./builder.sh;
