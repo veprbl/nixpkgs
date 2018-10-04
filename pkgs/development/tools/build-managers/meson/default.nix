@@ -17,9 +17,9 @@ python3Packages.buildPythonApplication rec {
     done
     popd
 
-    # Do not propagate Python
-    rm $out/nix-support/propagated-build-inputs
   '';
+    ## # Do not propagate Python
+    ## rm $out/nix-support/propagated-build-inputs
 
   patches = [
     # Upstream insists on not allowing bindir and other dir options
