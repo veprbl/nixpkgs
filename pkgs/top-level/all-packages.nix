@@ -6763,7 +6763,8 @@ with pkgs;
     ncurses = pkgsi686Linux.ncurses5;
   };
   gcc-arm-embedded-6 = callPackage ../development/compilers/gcc-arm-embedded/6 {};
-  gcc-arm-embedded = gcc-arm-embedded-6;
+  gcc-arm-embedded-7 = callPackage ../development/compilers/gcc-arm-embedded/7 {};
+  gcc-arm-embedded = gcc-arm-embedded-7;
 
   gforth = callPackage ../development/compilers/gforth {};
 
@@ -8058,6 +8059,8 @@ with pkgs;
   bazel-deps = callPackage ../development/tools/build-managers/bazel/bazel-deps {
     buildBazelPackage = buildBazelPackage.override { enableNixHacks = false; };
   };
+
+  bazel-watcher = callPackage ../development/tools/bazel-watcher { };
 
   buildBazelPackage = callPackage ../build-support/build-bazel-package { };
 
@@ -10749,6 +10752,8 @@ with pkgs;
   idnkit = callPackage ../development/libraries/idnkit { };
 
   libiec61883 = callPackage ../development/libraries/libiec61883 { };
+
+  libimagequant = callPackage ../development/libraries/libimagequant {};
 
   libinfinity = callPackage ../development/libraries/libinfinity { };
 
@@ -16430,6 +16435,14 @@ with pkgs;
   flink = callPackage ../applications/networking/cluster/flink { };
   flink_1_5 = flink.override { version = "1.5"; };
 
+  fllog = callPackage ../applications/misc/fllog { };
+
+  flmsg = callPackage ../applications/misc/flmsg { };
+
+  flrig = callPackage ../applications/misc/flrig { };
+
+  flwrap = callPackage ../applications/misc/flwrap { };
+
   fluidsynth = callPackage ../applications/audio/fluidsynth {
      inherit (darwin.apple_sdk.frameworks) AudioUnit CoreAudio CoreMIDI CoreServices;
   };
@@ -22077,9 +22090,10 @@ with pkgs;
   mfcl8690cdwcupswrapper = callPackage ../misc/cups/drivers/mfcl8690cdwcupswrapper { };
   mfcl8690cdwlpr = callPackage ../misc/cups/drivers/mfcl8690cdwlpr { };
 
-  samsung-unified-linux-driver_1_00_37 = callPackage ../misc/cups/drivers/samsung { };
+  samsung-unified-linux-driver_1_00_37 = callPackage ../misc/cups/drivers/samsung/1.00.37.nix { };
+  samsung-unified-linux-driver_4_00_39 = callPackage ../misc/cups/drivers/samsung/4.00.39 { };
   samsung-unified-linux-driver_4_01_17 = callPackage ../misc/cups/drivers/samsung/4.01.17.nix { };
-  samsung-unified-linux-driver = callPackage ../misc/cups/drivers/samsung/4.00.39 { };
+  samsung-unified-linux-driver = self.samsung-unified-linux-driver_4_01_17;
 
   sane-backends = callPackage ../applications/graphics/sane/backends {
     gt68xxFirmware = config.sane.gt68xxFirmware or null;
@@ -22165,11 +22179,6 @@ with pkgs;
   terraform-providers = recurseIntoAttrs (
     callPackage ../applications/networking/cluster/terraform-providers {}
   );
-
-  terraform-provider-libvirt = callPackage ../applications/networking/cluster/terraform-provider-libvirt {};
-
-  terraform-provider-ibm = callPackage ../applications/networking/cluster/terraform-provider-ibm {};
-
 
   terraform-inventory = callPackage ../applications/networking/cluster/terraform-inventory {};
 
@@ -22564,4 +22573,6 @@ with pkgs;
   alibuild = callPackage ../development/tools/build-managers/alibuild {
     python = python27;
   };
+
+  tsung = callPackage ../applications/networking/tsung {};
 }
