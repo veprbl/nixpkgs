@@ -1,0 +1,161 @@
+From d0d1a694f967af770fba0d36043fd5218ff20984 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Michel=20D=C3=A4nzer?= <michel.daenzer@amd.com>
+Date: Wed, 24 Jan 2018 11:40:50 +0100
+Subject: [PATCH 13/24] Revert "present: Only send PresentCompleteNotify events
+ to the presenting client"
+
+This reverts commit 5c00e693631475679c1c2504e03177652ec7de28.
+
+It broke the Gallium nine state tracker, which makes PresentPixmap
+requests on one display connection and processes the corresponding
+events on another one.
+
+The issue that motivated this change is prevented on the client side by
+https://cgit.freedesktop.org/mesa/mesa/commit/?id=7b0e8264dd21ae05521d08d41fecd84139401fef
+
+Bugzilla: https://bugs.freedesktop.org/104678
+(cherry picked from commit 76732f498f1e73fb081841a04faf068660f3d5c7)
+---
+ present/present.c         | 8 ++------
+ present/present_event.c   | 5 ++---
+ present/present_priv.h    | 5 +----
+ present/present_request.c | 4 ++--
+ 4 files changed, 7 insertions(+), 15 deletions(-)
+
+diff --git a/present/present.c b/present/present.c
+index 86743c504..7d428fca7 100644
+--- a/present/present.c
++++ b/present/present.c
+@@ -222,13 +222,13 @@ present_vblank_notify(present_vblank_ptr vblank, CARD8 kind, CARD8 mode, uint64_
+     int         n;
+ 
+     if (vblank->window)
+-        present_send_complete_notify(vblank->window, kind, mode, vblank->serial, ust, crtc_msc - vblank->msc_offset, vblank->client);
++        present_send_complete_notify(vblank->window, kind, mode, vblank->serial, ust, crtc_msc - vblank->msc_offset);
+     for (n = 0; n < vblank->num_notifies; n++) {
+         WindowPtr   window = vblank->notifies[n].window;
+         CARD32      serial = vblank->notifies[n].serial;
+ 
+         if (window)
+-            present_send_complete_notify(window, kind, mode, serial, ust, crtc_msc - vblank->msc_offset, vblank->client);
++            present_send_complete_notify(window, kind, mode, serial, ust, crtc_msc - vblank->msc_offset);
+     }
+ }
+ 
+@@ -788,7 +788,6 @@ present_execute(present_vblank_ptr vblank, uint64_t ust, uint64_t crtc_msc)
+ int
+ present_pixmap(WindowPtr window,
+                PixmapPtr pixmap,
+-               ClientPtr client,
+                CARD32 serial,
+                RegionPtr valid,
+                RegionPtr update,
+@@ -899,7 +898,6 @@ present_pixmap(WindowPtr window,
+     xorg_list_append(&vblank->window_list, &window_priv->vblank);
+     xorg_list_init(&vblank->event_queue);
+ 
+-    vblank->client = client;
+     vblank->screen = screen;
+     vblank->window = window;
+     vblank->pixmap = pixmap;
+@@ -1019,7 +1017,6 @@ present_abort_vblank(ScreenPtr screen, RRCrtcPtr crtc, uint64_t event_id, uint64
+ 
+ int
+ present_notify_msc(WindowPtr window,
+-                   ClientPtr client,
+                    CARD32 serial,
+                    uint64_t target_msc,
+                    uint64_t divisor,
+@@ -1027,7 +1024,6 @@ present_notify_msc(WindowPtr window,
+ {
+     return present_pixmap(window,
+                           NULL,
+-                          client,
+                           serial,
+                           NULL, NULL,
+                           0, 0,
+diff --git a/present/present_event.c b/present/present_event.c
+index ac6f2555a..c222dd5ff 100644
+--- a/present/present_event.c
++++ b/present/present_event.c
+@@ -146,7 +146,7 @@ present_register_complete_notify(present_complete_notify_proc proc)
+ }
+ 
+ void
+-present_send_complete_notify(WindowPtr window, CARD8 kind, CARD8 mode, CARD32 serial, uint64_t ust, uint64_t msc, ClientPtr client)
++present_send_complete_notify(WindowPtr window, CARD8 kind, CARD8 mode, CARD32 serial, uint64_t ust, uint64_t msc)
+ {
+     present_window_priv_ptr window_priv = present_window_priv(window);
+ 
+@@ -167,8 +167,7 @@ present_send_complete_notify(WindowPtr window, CARD8 kind, CARD8 mode, CARD32 se
+         present_event_ptr event;
+ 
+         for (event = window_priv->events; event; event = event->next) {
+-            if (event->mask & PresentCompleteNotifyMask &&
+-                client == event->client) {
++            if (event->mask & PresentCompleteNotifyMask) {
+                 cn.eid = event->id;
+                 WriteEventsToClient(event->client, 1, (xEvent *) &cn);
+             }
+diff --git a/present/present_priv.h b/present/present_priv.h
+index 41c37af7e..dfb4bdea9 100644
+--- a/present/present_priv.h
++++ b/present/present_priv.h
+@@ -52,7 +52,6 @@ struct present_notify {
+ struct present_vblank {
+     struct xorg_list    window_list;
+     struct xorg_list    event_queue;
+-    ClientPtr           client;
+     ScreenPtr           screen;
+     WindowPtr           window;
+     PixmapPtr           pixmap;
+@@ -156,7 +155,6 @@ present_get_window_priv(WindowPtr window, Bool create);
+ int
+ present_pixmap(WindowPtr window,
+                PixmapPtr pixmap,
+-               ClientPtr client,
+                CARD32 serial,
+                RegionPtr valid,
+                RegionPtr update,
+@@ -174,7 +172,6 @@ present_pixmap(WindowPtr window,
+ 
+ int
+ present_notify_msc(WindowPtr window,
+-                   ClientPtr client,
+                    CARD32 serial,
+                    uint64_t target_msc,
+                    uint64_t divisor,
+@@ -218,7 +215,7 @@ void
+ present_send_config_notify(WindowPtr window, int x, int y, int w, int h, int bw, WindowPtr sibling);
+ 
+ void
+-present_send_complete_notify(WindowPtr window, CARD8 kind, CARD8 mode, CARD32 serial, uint64_t ust, uint64_t msc, ClientPtr client);
++present_send_complete_notify(WindowPtr window, CARD8 kind, CARD8 mode, CARD32 serial, uint64_t ust, uint64_t msc);
+ 
+ void
+ present_send_idle_notify(WindowPtr window, CARD32 serial, PixmapPtr pixmap, present_fence_ptr idle_fence);
+diff --git a/present/present_request.c b/present/present_request.c
+index 6997aa869..c7663fcc8 100644
+--- a/present/present_request.c
++++ b/present/present_request.c
+@@ -135,7 +135,7 @@ proc_present_pixmap(ClientPtr client)
+             return ret;
+     }
+ 
+-    ret = present_pixmap(window, pixmap, client, stuff->serial, valid, update,
++    ret = present_pixmap(window, pixmap, stuff->serial, valid, update,
+                          stuff->x_off, stuff->y_off, target_crtc,
+                          wait_fence, idle_fence, stuff->options,
+                          stuff->target_msc, stuff->divisor, stuff->remainder, notifies, nnotifies);
+@@ -171,7 +171,7 @@ proc_present_notify_msc(ClientPtr client)
+         }
+     }
+ 
+-    return present_notify_msc(window, client, stuff->serial,
++    return present_notify_msc(window, stuff->serial,
+                               stuff->target_msc, stuff->divisor, stuff->remainder);
+ }
+ 
+-- 
+2.19.0
+
