@@ -252,6 +252,8 @@ let
 
     ezjsonm = callPackage ../development/ocaml-modules/ezjsonm { };
 
+    ezxmlm = callPackage ../development/ocaml-modules/ezxmlm { };
+
     facile = callPackage ../development/ocaml-modules/facile { };
 
     faillib = callPackage ../development/ocaml-modules/faillib { };
@@ -1041,6 +1043,7 @@ let
     };
 
     hol_light = callPackage ../applications/science/logic/hol_light {
+      inherit num;
       camlp5 = camlp5_strict;
     };
 
