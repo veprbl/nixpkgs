@@ -43,7 +43,6 @@ stdenv.mkDerivation rec {
   };
 
   patches = [
-    ./icc-profile-validation.patch
     ./urw-font-files.patch
     ./doc-no-ref.diff
   ];
