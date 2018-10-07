@@ -5212,6 +5212,8 @@ with pkgs;
 
   seqdiag = with python3Packages; toPythonApplication seqdiag;
 
+  sewer = callPackage ../tools/admin/sewer { };
+
   screenfetch = callPackage ../tools/misc/screenfetch { };
 
   sg3_utils = callPackage ../tools/system/sg3_utils { };
@@ -14783,6 +14785,8 @@ with pkgs;
         cp "${pkgs.lvm2}/lib/systemd/system-generators/"* $out/lib/systemd/system-generators
       '';
   }));
+
+  systemd-wait = callPackages ../os-specific/linux/systemd-wait { };
 
   sysvinit = callPackage ../os-specific/linux/sysvinit { };
 
