@@ -20788,6 +20788,8 @@ with pkgs;
 
   };
 
+  xcopydepth = callPackage ../applications/science/biology/xcopydepth {};
+
   snpeff = callPackage ../applications/science/biology/snpeff { };
 
   somatic-sniper = callPackage ../applications/science/biology/somatic-sniper { };
