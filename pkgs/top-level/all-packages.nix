@@ -569,6 +569,7 @@ with pkgs;
   asymptote = callPackage ../tools/graphics/asymptote {
     texLive = texlive.combine { inherit (texlive) scheme-small epsf cm-super; };
     gsl = gsl_1;
+    boehmgc = boehmgc_766;
   };
 
   atomicparsley = callPackage ../tools/video/atomicparsley { };
@@ -584,6 +585,8 @@ with pkgs;
   awsebcli = callPackage ../tools/virtualization/awsebcli {};
 
   awslogs = callPackage ../tools/admin/awslogs { };
+
+  aws-env = callPackage ../tools/admin/aws-env { };
 
   aws-okta = callPackage ../tools/security/aws-okta { };
 
@@ -2593,6 +2596,8 @@ with pkgs;
   fdk_aac = callPackage ../development/libraries/fdk-aac { };
 
   feedgnuplot = callPackage ../tools/graphics/feedgnuplot { };
+
+  fbv = callPackage ../tools/graphics/fbv { };
 
   fim = callPackage ../tools/graphics/fim { };
 
@@ -9074,6 +9079,7 @@ with pkgs;
   bobcat = callPackage ../development/libraries/bobcat { };
 
   boehmgc = callPackage ../development/libraries/boehm-gc { };
+  boehmgc_766 = callPackage ../development/libraries/boehm-gc/7.6.6.nix { };
 
   boolstuff = callPackage ../development/libraries/boolstuff { };
 
@@ -10110,9 +10116,7 @@ with pkgs;
 
   jsoncpp = callPackage ../development/libraries/jsoncpp { };
 
-  jsonnet = callPackage ../development/compilers/jsonnet {
-    emscripten = emscripten.override {python=python2;};
-  };
+  jsonnet = callPackage ../development/compilers/jsonnet { };
 
   jsonrpc-glib = callPackage ../development/libraries/jsonrpc-glib { };
 
@@ -14789,7 +14793,7 @@ with pkgs;
       '';
   }));
 
-  systemd-wait = callPackages ../os-specific/linux/systemd-wait { };
+  systemd-wait = callPackage ../os-specific/linux/systemd-wait { };
 
   sysvinit = callPackage ../os-specific/linux/sysvinit { };
 
@@ -17033,6 +17037,8 @@ with pkgs;
   homebank = callPackage ../applications/office/homebank {
     gtk = gtk3;
   };
+
+  howl = callPackage ../applications/editors/howl { };
 
   ht = callPackage ../applications/editors/ht { };
 
