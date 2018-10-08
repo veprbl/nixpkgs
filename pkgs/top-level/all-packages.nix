@@ -4058,6 +4058,8 @@ with pkgs;
 
   mgba = libsForQt5.callPackage ../misc/emulators/mgba { };
 
+  midisheetmusic = callPackage ../applications/audio/midisheetmusic { };
+
   mikutter = callPackage ../applications/networking/instant-messengers/mikutter { };
 
   mimeo = callPackage ../tools/misc/mimeo { };
@@ -5503,6 +5505,8 @@ with pkgs;
 
   staruml = callPackage ../tools/misc/staruml { inherit (gnome2) GConf; libgcrypt = libgcrypt_1_5; };
 
+  systrayhelper = callPackage ../tools/misc/systrayhelper {};
+
   otter-browser = qt5.callPackage ../applications/networking/browsers/otter {};
 
   privoxy = callPackage ../tools/networking/privoxy {
@@ -6311,6 +6315,8 @@ with pkgs;
   runtimeShell = "${runtimeShellPackage}${runtimeShellPackage.shellPath}";
   runtimeShellPackage = bash;
 
+  any-nix-shell = callPackage ../shells/any-nix-shell { };
+
   bash = lowPrio (callPackage ../shells/bash/4.4.nix { });
 
   # WARNING: this attribute is used by nix-shell so it shouldn't be removed/renamed
@@ -6479,6 +6485,8 @@ with pkgs;
   icr = callPackage ../development/tools/icr {};
 
   scry = callPackage ../development/tools/scry {};
+
+  dbmate = callPackage ../development/tools/database/dbmate { };
 
   devpi-client = callPackage ../development/tools/devpi-client {};
 
@@ -11963,6 +11971,8 @@ with pkgs;
 
   rabbitmq-java-client = callPackage ../development/libraries/rabbitmq-java-client {};
 
+  rapidcheck = callPackage ../development/libraries/rapidcheck {};
+
   rapidjson = callPackage ../development/libraries/rapidjson {};
 
   raul = callPackage ../development/libraries/audio/raul { };
@@ -16406,6 +16416,8 @@ with pkgs;
 
   eterm = callPackage ../applications/misc/eterm { };
 
+  eteroj.lv2 = libsForQt5.callPackage ../applications/audio/eteroj.lv2 { };
+
   etherape = callPackage ../applications/networking/sniffers/etherape { };
 
   evilvte = callPackage ../applications/misc/evilvte {
@@ -16454,6 +16466,8 @@ with pkgs;
   fetchmail = callPackage ../applications/misc/fetchmail { };
 
   fig2dev = callPackage ../applications/graphics/fig2dev { };
+
+  FIL-plugins = callPackage ../applications/audio/FIL-plugins { };
 
   flacon = callPackage ../applications/audio/flacon { };
 
@@ -18970,6 +18984,8 @@ with pkgs;
   tangogps = callPackage ../applications/misc/tangogps {
     gconf = gnome2.GConf;
   };
+
+  tambura = callPackage ../applications/audio/tambura { };
 
   teamspeak_client = libsForQt5.callPackage ../applications/networking/instant-messengers/teamspeak/client.nix { };
   teamspeak_server = callPackage ../applications/networking/instant-messengers/teamspeak/server.nix { };
