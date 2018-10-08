@@ -7,12 +7,12 @@ let
 
   # gl.xml
   gl = fetchurl {
-    url = https://raw.githubusercontent.com/KhronosGroup/OpenGL-Registry/56312cfe680e4be5ae61bbf1c628e420f8731718/xml/gl.xml;
-    sha256 = "1c45bcgaxiic5gmb3gkrd9qcvascvij97vz5y6fc3a2y7x3gjc5l";
+    url = "https://raw.githubusercontent.com/KhronosGroup/OpenGL-Registry/f902fae4117105795d0b35313b92595a9b48f9fd/xml/gl.xml";
+    sha256 = "13dsi2h5wmy3kdvflxgr93vd9lq7bpqdhb4ikbf5wfxxdg49g7px";
   };
   # EGL 1.5
   egl = fetchurl {
-    url = https://www.khronos.org/registry/EGL/api/KHR/khrplatform.h;
+    url = "https://www.khronos.org/registry/EGL/api/KHR/khrplatform.h";
     sha256 = "0p0vs4siiya05cvbqq7cw3ci2zvvlfh8kycgm9k9cwvmrkj08349";
   };
 
@@ -33,12 +33,12 @@ let
 in
   stdenv.mkDerivation rec {
     name = "glava-${version}";
-    version = "1.5.1";
+    version = "1.5.3";
 
     src = fetchgit {
       url = "https://github.com/wacossusca34/glava.git";
       rev = "v${version}";
-      sha256 = "1k8x0a0g2pm7ficsk4az9s7mjbm85a987apjg5c4y6iyldxgd6sb";
+      sha256 = "1jmkz26irvp34r24g1zs2c05jyxfxyxgk2fi5hj62m2iqk3c9y0r";
     };
 
     buildInputs = [
@@ -60,6 +60,10 @@ in
       cp ${gl} glad/gl.xml
       cp ${egl} glad/include/KHR/khrplatform.h
       patchShebangs .
+    '';
+
+    preConfigure = ''
+      export CFLAGS="-march=native"
     '';
 
     makeFlags = optional (!enableGlfw) "DISABLE_GLFW=1";
