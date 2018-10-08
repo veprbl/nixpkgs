@@ -569,7 +569,6 @@ with pkgs;
   asymptote = callPackage ../tools/graphics/asymptote {
     texLive = texlive.combine { inherit (texlive) scheme-small epsf cm-super; };
     gsl = gsl_1;
-    boehmgc = boehmgc_766;
   };
 
   atomicparsley = callPackage ../tools/video/atomicparsley { };
@@ -5603,6 +5602,8 @@ with pkgs;
   tinc_pre = callPackage ../tools/networking/tinc/pre.nix { };
 
   tiny8086 = callPackage ../applications/virtualization/8086tiny { };
+
+  tinyemu = callPackage ../applications/virtualization/tinyemu { };
 
   tinyproxy = callPackage ../tools/networking/tinyproxy {};
 
