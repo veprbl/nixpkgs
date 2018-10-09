@@ -463,7 +463,7 @@ with pkgs;
 
   acme-client = callPackage ../tools/networking/acme-client { inherit (darwin) apple_sdk; };
 
-  afew = callPackage ../applications/networking/mailreaders/afew { pythonPackages = python37Packages; };
+  afew = callPackage ../applications/networking/mailreaders/afew { pythonPackages = python3Packages; };
 
   afio = callPackage ../tools/archivers/afio { };
 
@@ -13970,9 +13970,7 @@ with pkgs;
 
   gfxtablet = callPackage ../os-specific/linux/gfxtablet {};
 
-  gmailieer = callPackage ../applications/networking/gmailieer {
-    python3Packages = python37Packages;
-  };
+  gmailieer = callPackage ../applications/networking/gmailieer {};
 
   gpm = callPackage ../servers/gpm {
     ncurses = null;  # Keep curses disabled for lack of value
@@ -15533,7 +15531,7 @@ with pkgs;
 
   alock = callPackage ../misc/screensavers/alock { };
 
-  inherit (python37Packages) alot;
+  inherit (python3Packages) alot;
 
   alpine = callPackage ../applications/networking/mailreaders/alpine {
     tcl = tcl-8_5;
@@ -15602,7 +15600,6 @@ with pkgs;
     webkitgtk = webkitgtk222x;
 
     boost = boost168;
-    python3Packages = python37Packages;
   };
 
   audacious = callPackage ../applications/audio/audacious { };
