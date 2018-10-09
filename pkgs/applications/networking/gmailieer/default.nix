@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, python3Packages }:
+{ stdenv, fetchFromGitHub, fetchpatch, python3Packages }:
 
 python3Packages.buildPythonApplication rec {
   name = "gmailieer-${version}";
@@ -10,6 +10,13 @@ python3Packages.buildPythonApplication rec {
     rev = "v${version}";
     sha256 = "1ixs5hip37hzcxwi2gsxp34r914f1wrl4r3swxqmzln3a15kngsk";
   };
+
+  patches = [
+    (fetchpatch {
+      url = "https://github.com/gauteh/gmailieer/commit/544cade79ac6a9670a05dd84ca525926050656b9.patch";
+      sha256 = "0c15bvi8lf451538cg5i8i54ipq0gifbjsy5k2zvmpywsvgh8jb7";
+    })
+  ];
 
   propagatedBuildInputs = with python3Packages; [
     notmuch
