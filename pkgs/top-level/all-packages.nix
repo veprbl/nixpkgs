@@ -13970,7 +13970,9 @@ with pkgs;
 
   gfxtablet = callPackage ../os-specific/linux/gfxtablet {};
 
-  gmailieer = callPackage ../applications/networking/gmailieer {};
+  gmailieer = callPackage ../applications/networking/gmailieer {
+    python3Packages = python37Packages;
+  };
 
   gpm = callPackage ../servers/gpm {
     ncurses = null;  # Keep curses disabled for lack of value
