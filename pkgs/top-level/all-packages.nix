@@ -15602,6 +15602,7 @@ with pkgs;
     webkitgtk = webkitgtk222x;
 
     boost = boost168;
+    python3Packages = python37Packages;
   };
 
   audacious = callPackage ../applications/audio/audacious { };
