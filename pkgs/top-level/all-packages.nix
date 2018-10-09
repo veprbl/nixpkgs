@@ -15602,7 +15602,9 @@ with pkgs;
 
   astah-community = callPackage ../applications/graphics/astah-community { };
 
-  astroid = callPackage ../applications/networking/mailreaders/astroid { };
+  astroid = callPackage ../applications/networking/mailreaders/astroid {
+    boost = boost168;
+  };
 
   audacious = callPackage ../applications/audio/audacious { };
   audaciousQt5 = libsForQt5.callPackage ../applications/audio/audacious/qt-5.nix { };
