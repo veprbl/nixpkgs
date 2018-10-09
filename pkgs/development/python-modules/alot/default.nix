@@ -11,13 +11,13 @@ buildPythonPackage rec {
 
   disabled = !isPy3k;
 
-  version = "2018-10-01";
+  version = "2018-10-04";
 
   src = fetchFromGitHub {
     owner = "pazz";
     repo = "alot";
-    rev = "41197b766f5223c1d3f02594c9324b67c14c56ae";
-    sha256 = "0ynwpp8hkhhl3iydzviadi2p5iwcmybd9z5c7jpf3264hhnyj0yd";
+    rev = "4a6711865b154152d4978e8316727f4902de3e02";
+    sha256 = "16c5hhcyvkjaq7j406wx2js636y50pq28kc9nh7hbg8dzfj1274j";
   };
 
   nativeBuildInputs = lib.optional withManpage sphinx;
