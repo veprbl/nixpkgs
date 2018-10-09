@@ -15603,9 +15603,6 @@ with pkgs;
   astah-community = callPackage ../applications/graphics/astah-community { };
 
   astroid = callPackage ../applications/networking/mailreaders/astroid {
-    # Use latest, with the current default of 2.20.0 it builds but doesn't work right at runtime
-    webkitgtk = webkitgtk222x;
-
     boost = boost168;
   };
 
