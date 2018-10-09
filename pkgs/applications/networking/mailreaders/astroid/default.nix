@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, fetchpatch, cmake, pkgconfig, scdoc, gnome3, gmime3, webkitgtk
-, libsass, notmuch, boost, wrapGAppsHook, glib-networking, protobuf, vim_configurable
+, libsass, notmuch, boost, libsoup, wrapGAppsHook, glib-networking, protobuf, vim_configurable
 , makeWrapper, python3, python3Packages
 , vim ? vim_configurable.override {
                     features = "normal";
@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ gnome3.gtkmm gmime3 webkitgtk libsass gnome3.libpeas
                   python3 python3Packages.pygobject3 gnome3.vte
-                  notmuch boost gnome3.gsettings-desktop-schemas gnome3.defaultIconTheme
+                  notmuch boost libsoup gnome3.gsettings-desktop-schemas gnome3.defaultIconTheme
                   glib-networking protobuf ] ++ (if (!stdenv.lib.isDerivation vim)  then [] else [ vim ]);
 
   patches = [
