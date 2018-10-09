@@ -17,7 +17,8 @@ stdenv.mkDerivation rec {
   name = "notmuch-${version}";
 
   passthru = {
-    pythonSourceRoot = "${name}/bindings/python";
+    #pythonSourceRoot = "${name}/bindings/python";
+    pythonSourceRoot = "source/bindings/python";
     inherit version;
   };
 
