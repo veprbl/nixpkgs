@@ -1,4 +1,5 @@
-{ fetchurl, stdenv, fixDarwinDylibNames
+{ fetchurl, fetchFromGitHub
+, stdenv, fixDarwinDylibNames
 , pkgconfig, gnupg
 , xapian, gmime, talloc, zlib
 , doxygen, perl
@@ -12,7 +13,7 @@
 with stdenv.lib;
 
 stdenv.mkDerivation rec {
-  version = "0.27";
+  version = "0.28_rc0";
   name = "notmuch-${version}";
 
   passthru = {
@@ -20,9 +21,15 @@ stdenv.mkDerivation rec {
     inherit version;
   };
 
-  src = fetchurl {
-    url = "https://notmuchmail.org/releases/${name}.tar.gz";
-    sha256 = "0xh8vq2sa7r07xb3n13drc6gdiqhcgl0pj0za5xj43qkiwpikls0";
+  #src = fetchurl {
+  #  url = "https://notmuchmail.org/releases/${name}.tar.gz";
+  #  sha256 = "0xh8vq2sa7r07xb3n13drc6gdiqhcgl0pj0za5xj43qkiwpikls0";
+  #};
+  src = fetchFromGitHub {
+    owner = "notmuch";
+    repo = "notmuch";
+    rev = version;
+    sha256 = "1ym9crnwzc7h75a4nrac32y9xdp9n3707ll8c34jmld9gkpr9cdh";
   };
 
   nativeBuildInputs = [ pkgconfig ];
