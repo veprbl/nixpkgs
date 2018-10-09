@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, fetchpatch, cmake, pkgconfig, scdoc, gnome3, gmime3, webkitgtk
+{ stdenv, fetchFromGitHub, fetchpatch, cmake, pkgconfig, scdoc, gnome3, gmime3, webkitgtk222x
 , libsass, notmuch, boost, libsoup, wrapGAppsHook, glib-networking, protobuf, vim_configurable
 , makeWrapper, python3, python3Packages
 , vim ? vim_configurable.override {
