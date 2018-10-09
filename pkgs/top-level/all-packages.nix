@@ -2845,6 +2845,8 @@ with pkgs;
 
   gnome-builder = callPackage ../applications/editors/gnome-builder { };
 
+  gnome-podcasts = callPackage ../applications/audio/gnome-podcasts { };
+
   gnokii = callPackage ../tools/misc/gnokii { };
 
   gnuapl = callPackage ../development/interpreters/gnu-apl { };
@@ -3802,6 +3804,8 @@ with pkgs;
 
   libgaminggear = callPackage ../development/libraries/libgaminggear { };
 
+  libhandy = callPackage ../development/libraries/libhandy { };
+
   libipfix = callPackage ../development/libraries/libipfix { };
 
   libircclient = callPackage ../development/libraries/libircclient { };
@@ -4598,16 +4602,7 @@ with pkgs;
 
   pick = callPackage ../tools/misc/pick { };
 
-  pitivi = callPackage ../applications/video/pitivi {
-    gst = gst_all_1 //
-      { gst-plugins-bad = gst_all_1.gst-plugins-bad.overrideDerivation
-          (attrs: { nativeBuildInputs = attrs.nativeBuildInputs ++ [ gtk3 ];
-                    # Fix this build error in ./tests/examples/waylandsink:
-                    #   main.c:28:2: error: #error "Wayland is not supported in GTK+"
-                    configureFlags = attrs.configureFlags or [] ++ [ "--enable-wayland=no" ];
-                  });
-      };
-  };
+  pitivi = callPackage ../applications/video/pitivi { };
 
   p0f = callPackage ../tools/security/p0f { };
 
@@ -7404,6 +7399,7 @@ with pkgs;
     vala_0_36
     vala_0_38
     vala_0_40
+    vala_0_42
     vala;
 
   valadoc = callPackage ../development/tools/valadoc { };
@@ -7867,6 +7863,7 @@ with pkgs;
       stdenv = overrideCC stdenv gcc6; # with gcc-7: undefined reference to `__divmoddi4'
   }));
   spidermonkey_52 = callPackage ../development/interpreters/spidermonkey/52.nix { };
+  spidermonkey_60 = callPackage ../development/interpreters/spidermonkey/60.nix { };
   spidermonkey = spidermonkey_31;
 
   ssm-agent = callPackage ../applications/networking/cluster/ssm-agent { };
@@ -9397,7 +9394,6 @@ with pkgs;
     inherit (gst_all_1)
       gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad
       gst-libav;
-    inherit (pythonPackages) gst-python;
   };
 
   fcgi = callPackage ../development/libraries/fcgi { };
@@ -12561,7 +12557,7 @@ with pkgs;
     inherit (darwin) libobjc;
   };
 
-  webkitgtk220x = callPackage ../development/libraries/webkitgtk/2.20.nix {
+  webkitgtk220x = callPackage ../development/libraries/webkitgtk {
     harfbuzz = harfbuzzFull;
     inherit (gst_all_1) gst-plugins-base gst-plugins-bad;
     stdenv = overrideCC stdenv gcc6;
@@ -16960,6 +16956,10 @@ with pkgs;
   gnomecast = callPackage ../applications/video/gnomecast { };
 
   gnome-mpv = callPackage ../applications/video/gnome-mpv { };
+
+  gnome-recipes = callPackage ../applications/misc/gnome-recipes {
+    inherit (gnome3) gnome-online-accounts rest gnome-autoar gspell;
+  };
 
   gollum = callPackage ../applications/misc/gollum { };
 

@@ -13,15 +13,12 @@ let
 
 in stdenv.mkDerivation rec {
   name = "gnome-shell-${version}";
-  version = "3.28.3";
+  version = "3.30.0";
 
   src = fetchurl {
     url = "mirror://gnome/sources/gnome-shell/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "0xm2a8inj2zkrpgkhy69rbqh44q62gpwm4javzbvvvgx0srza90w";
+    sha256 = "0fgjy5z3cmnsh62rjgy24ppws1g39n9kis7x9s28acfdb1r2j7k2";
   };
-
-  # Needed to find /etc/NetworkManager/VPN
-  mesonFlags = [ "--sysconfdir=/etc" ];
 
   LANG = "en_US.UTF-8";
 
@@ -61,6 +58,13 @@ in stdenv.mkDerivation rec {
       src = ./fix-paths.patch;
       inherit (gnome3) libgnomekbd;
       inherit unzip;
+    })
+    # Fix connection to wifi APs from user menu:
+    # https://gitlab.gnome.org/GNOME/gnome-shell/commit/33ffdd60611e8e8d0018680dd97bcbd0e98c6b4b
+    (fetchpatch {
+      url = https://gitlab.gnome.org/GNOME/gnome-shell/commit/33ffdd60611e8e8d0018680dd97bcbd0e98c6b4b.diff;
+      sha256 = "1v406skiw4054sc90ggr2c5a89z54prmiqlwff88c9b38bayjx91";
+
     })
   ];
 
