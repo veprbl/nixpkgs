@@ -4920,6 +4920,8 @@ with pkgs;
 
   qtikz = libsForQt5.callPackage ../applications/graphics/ktikz { };
 
+  quickserve = callPackage ../tools/networking/quickserve { };
+
   quicktun = callPackage ../tools/networking/quicktun { };
 
   quilt = callPackage ../development/tools/quilt { };
@@ -19928,6 +19930,8 @@ with pkgs;
   blackshadeselite = callPackage ../games/blackshadeselite { };
 
   blobby = callPackage ../games/blobby { };
+
+  boohu = callPackage ../games/boohu { };
 
   braincurses = callPackage ../games/braincurses { };
 
