@@ -20,14 +20,15 @@ stdenv.mkDerivation rec {
   '';
 
   configureFlags = [
-    "--enable-talloc-compat1"
+    #"--enable-talloc-compat1"
     "--bundled-libraries=NONE"
     "--builtin-libraries=replace"
+    "--disable-python"
   ];
 
-  postInstall = ''
-    ar q $out/lib/libtalloc.a bin/default/talloc_[0-9]*.o
-  '';
+  #postInstall = ''
+  #  ar q $out/lib/libtalloc.a bin/default/talloc_[0-9]*.o
+  #'';
 
   meta = with stdenv.lib; {
     description = "Hierarchical pool based memory allocator with destructors";
