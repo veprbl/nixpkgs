@@ -26,9 +26,9 @@ stdenv.mkDerivation rec {
     "--disable-python"
   ];
 
-  postInstall = ''
-    ar q $out/lib/libtalloc.a bin/default/talloc_[0-9]*.o
-  '';
+  #postInstall = ''
+  #  ar q $out/lib/libtalloc.a bin/default/talloc_[0-9]*.o
+  #'';
 
   meta = with stdenv.lib; {
     description = "Hierarchical pool based memory allocator with destructors";
