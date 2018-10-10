@@ -23,6 +23,7 @@ stdenv.mkDerivation rec {
     "--enable-talloc-compat1"
     "--bundled-libraries=NONE"
     "--builtin-libraries=replace"
+    "--disable-python"
   ];
 
   postInstall = ''
