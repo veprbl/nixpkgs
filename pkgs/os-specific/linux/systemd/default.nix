@@ -67,7 +67,6 @@ in stdenv.mkDerivation rec {
     "-Dtty-gid=3" # tty in NixOS has gid 3
     # "-Dtests=" # TODO
     "-Dlz4=true"
-    #"-Dxz=false"
     "-Dhostnamed=true"
     "-Dnetworkd=true"
     "-Dsysusers=false"
@@ -81,7 +80,6 @@ in stdenv.mkDerivation rec {
     "-Dlibidn=false"
     "-Dlibidn2=true"
     "-Dlink-udev-shared=false"
-    "-Dlink-systemctl-shared=false"
     "-Dquotacheck=false"
     "-Dldconfig=false"
     "-Dsmack=true"
