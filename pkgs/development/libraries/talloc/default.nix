@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
   '';
 
   configureFlags = [
-    "--enable-talloc-compat1"
+    #"--enable-talloc-compat1"
     "--bundled-libraries=NONE"
     "--builtin-libraries=replace"
     "--disable-python"
