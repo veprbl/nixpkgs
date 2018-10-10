@@ -71,6 +71,7 @@ in stdenv.mkDerivation rec {
     "-Dlibcurl=false"
     "-Dlibidn=false"
     "-Dlibidn2=true"
+    "-Dlink-udev-shared=false"
     "-Dquotacheck=false"
     "-Dldconfig=false"
     "-Dsmack=true"
