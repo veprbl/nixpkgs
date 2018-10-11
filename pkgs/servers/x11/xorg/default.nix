@@ -2295,8 +2295,7 @@ let
       url = "mirror://xorg/individual/proto/${name}.tar.bz2";
       sha256 = "180mqkp70i44rkmj430pmn9idssvffrgv4y5h19fm698a7h8bs7y";
     };
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ meson ninja ];
+    nativeBuildInputs = [ pkgconfig meson ninja ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) // {inherit ;};
 
