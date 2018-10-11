@@ -1,13 +1,27 @@
-{ stdenv, wayland, wayland-protocols, xorgserver, xkbcomp, xkeyboard_config, epoxy, libxslt, libunwind, makeWrapper }:
+{ stdenv, wayland, wayland-protocols, xorgserver, xkbcomp, xkeyboard_config, epoxy, libxslt, libunwind, makeWrapper, meson, ninja, nettle }:
 
 with stdenv.lib;
 
 xorgserver.overrideAttrs (oldAttrs: {
 
   name = "xwayland-${xorgserver.version}";
-  propagatedBuildInputs = oldAttrs.propagatedBuildInputs
-    ++ [wayland wayland-protocols epoxy libxslt makeWrapper libunwind];
-  configureFlags = oldAttrs.configureFlags ++ [ "--enable-xwayland" ];
+  propagatedBuildInputs = oldAttrs.propagatedBuildInputs ++ [
+    wayland wayland-protocols epoxy libxslt makeWrapper libunwind
+    nettle /* sha1 */
+  ];
+
+  nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [ meson ninja ];
+
+  configureFlags = null;
+
+  mesonFlags = [
+    "-Dglamor=true"
+    "-Dxwayland=true"
+    "-Dxkb_bin_dir=${xkbcomp}/bin"
+    "-Dxkb_dir=${xkeyboard_config}/etc/X11/xkb"
+    "-Dxkb_output_dir=${placeholder "out"}/share/X11/xkb/compiled"
+    "-Ddefault_font_path="
+  ];
   #configureFlags = [
   #  "--disable-docs"
   #  "--disable-devel-docs"
