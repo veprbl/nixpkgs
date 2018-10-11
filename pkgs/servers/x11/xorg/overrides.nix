@@ -544,7 +544,7 @@ in
           args.apple_sdk.frameworks.Cocoa
         ];
         propagatedBuildInputs = commonPropagatedBuildInputs ++ [
-          libAppleWM applewmproto
+          libAppleWM xorgproto 
         ];
 
         # XQuartz patchset

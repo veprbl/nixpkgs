@@ -542,9 +542,9 @@ let
       sha256 = "0r8x28n45q89x91mz8mv0zkkcxi8wazkac886fyvflhiv2y8ap2y";
     };
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ applewmproto libX11 libXext ];
+    buildInputs = [ xorgproto libX11 libXext ];
     meta.platforms = stdenv.lib.platforms.unix;
-  }) // {inherit applewmproto libX11 libXext ;};
+  }) // {inherit xorgproto libX11 libXext ;};
 
   libFS = (mkDerivation "libFS" {
     name = "libFS-1.0.7";
