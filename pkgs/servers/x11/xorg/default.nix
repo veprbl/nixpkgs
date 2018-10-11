@@ -590,9 +590,9 @@ let
       sha256 = "1p0flwb67xawyv6yhri9w17m1i4lji5qnd0gq8v1vsfb8zw7rw15";
     };
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ windowswmproto libX11 libXext ];
+    buildInputs = [ xorgproto libX11 libXext ];
     meta.platforms = stdenv.lib.platforms.unix;
-  }) // {inherit windowswmproto libX11 libXext ;};
+  }) // {inherit xorgproto libX11 libXext ;};
 
   libX11 = (mkDerivation "libX11" {
     name = "libX11-1.6.6";
