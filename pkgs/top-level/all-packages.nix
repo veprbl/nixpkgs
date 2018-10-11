@@ -12699,6 +12699,8 @@ with pkgs;
 
   yajl = callPackage ../development/libraries/yajl { };
 
+  yojimbo = callPackage ../development/libraries/yojimbo { };
+
   yubioath-desktop = callPackage ../applications/misc/yubioath-desktop { };
 
   yubico-piv-tool = callPackage ../tools/misc/yubico-piv-tool { };
