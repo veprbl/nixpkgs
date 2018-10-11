@@ -436,7 +436,7 @@ in
       version = (builtins.parseDrvName attrs_passed.name).version;
       attrs = with args;
       if (args.abiCompat == null || lib.hasPrefix args.abiCompat version) then
-          (attrs_passed // {
+          (attrs_passed // (lib.optionalAttrs false {
             patches = [
               ./1.19-branch-patches/0001-glx-do-not-pick-sRGB-config-for-32-bit-RGBA-visual.patch
               ./1.19-branch-patches/0002-xwayland-avoid-race-condition-on-new-keymap.patch
@@ -463,7 +463,7 @@ in
               ./1.19-branch-patches/0023-xwayland-Don-t-process-cursor-warping-without-an-xwl.patch
               ./1.19-branch-patches/0024-glx-Only-assign-8-bpc-fbconfigs-for-composite-visual.patch
             ];
-          })
+          }))
         else if (args.abiCompat == "1.17") then {
           name = "xorg-server-1.17.4";
           builder = ./builder.sh;
