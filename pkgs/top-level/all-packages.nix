@@ -963,6 +963,8 @@ with pkgs;
 
   brasero = callPackage ../tools/cd-dvd/brasero/wrapper.nix { };
 
+  brigand = callPackage ../development/libraries/brigand { };
+
   brltty = callPackage ../tools/misc/brltty {
     alsaSupport = (!stdenv.isDarwin);
     systemdSupport = stdenv.isLinux;
@@ -1297,6 +1299,8 @@ with pkgs;
   ephemeralpg = callPackage ../applications/misc/ephemeralpg {};
 
   et = callPackage ../applications/misc/et {};
+
+  ejson = callPackage ../development/tools/ejson {};
 
   eternal-terminal = callPackage ../tools/networking/eternal-terminal {};
 
@@ -4963,7 +4967,7 @@ with pkgs;
 
   redir = callPackage ../tools/networking/redir { };
 
-  redmine = callPackage ../applications/version-management/redmine { };
+  redmine = callPackage ../applications/version-management/redmine { ruby = pkgs.ruby_2_4; };
 
   redsocks = callPackage ../tools/networking/redsocks { };
 
@@ -5544,6 +5548,8 @@ with pkgs;
   ted = callPackage ../tools/typesetting/ted { };
 
   teamviewer = libsForQt5.callPackage ../applications/networking/remote/teamviewer { };
+
+  teleconsole = callPackage ../tools/misc/teleconsole { };
 
   telegraf = callPackage ../servers/monitoring/telegraf { };
 
@@ -8550,6 +8556,8 @@ with pkgs;
   kustomize = callPackage ../development/tools/kustomize { };
 
   kythe = callPackage ../development/tools/kythe { };
+
+  lazygit = callPackage ../development/tools/lazygit { };
 
   Literate = callPackage ../development/tools/literate-programming/Literate {};
 
@@ -21277,7 +21285,7 @@ with pkgs;
 
   libpoly = callPackage ../applications/science/logic/poly {};
 
-  prooftree = ocamlPackages.callPackage  ../applications/science/logic/prooftree { };
+  prooftree = callPackage  ../applications/science/logic/prooftree {};
 
   prover9 = callPackage ../applications/science/logic/prover9 { };
 
@@ -21678,6 +21686,8 @@ with pkgs;
   cups-bjnp = callPackage ../misc/cups/drivers/cups-bjnp { };
 
   cups-brother-hl1110 = pkgsi686Linux.callPackage ../misc/cups/drivers/hl1110 { };
+
+  cups-googlecloudprint = callPackage ../misc/cups/drivers/googlecloudprint { };
 
   # this driver ships with pre-compiled 32-bit binary libraries
   cnijfilter_2_80 = pkgsi686Linux.callPackage ../misc/cups/drivers/cnijfilter_2_80 { };
