@@ -1,7 +1,7 @@
 { stdenv, fetchurl
 , xftSupport ? true, libXft ? null
 , xrenderSupport ? true, libXrender ? null
-, xrandrSupport ? true, libXrandr ? null, randrproto ? null
+, xrandrSupport ? true, libXrandr ? null
 , xineramaSupport ? true, libXinerama ? null
 , cursorSupport ? true, libXcursor ? null
 , threadSupport ? true
@@ -12,7 +12,7 @@
 
 assert xftSupport -> libXft != null;
 assert xrenderSupport -> xftSupport && libXrender != null;
-assert xrandrSupport -> libXrandr != null && randrproto != null;
+assert xrandrSupport -> libXrandr != null && xorgproto != null;
 assert cursorSupport -> libXcursor != null;
 assert mysqlSupport -> mysql != null;
 assert openglSupport -> libGLU_combined != null && libXmu != null;
@@ -55,7 +55,7 @@ stdenv.mkDerivation {
     "-L${libXrender.out}/lib" "-I${libXrender.dev}/include"
   ] ++ stdenv.lib.optionals xrandrSupport [
     "-L${libXrandr.out}/lib" "-I${libXrandr.dev}/include"
-    "-I${randrproto}/include"
+    "-I${xorgproto}/include"
   ] ++ stdenv.lib.optionals xineramaSupport [
     "-L${libXinerama.out}/lib" "-I${libXinerama.dev}/include"
   ] ++ stdenv.lib.optionals cursorSupport [

@@ -1383,9 +1383,9 @@ let
       sha256 = "0681d0y8liqakkpz7mmsf689jcxrvs5291r20qi78mc9xxk3gfjc";
     };
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ glproto libX11 ];
+    buildInputs = [ xorgproto libX11 ];
     meta.platforms = stdenv.lib.platforms.unix;
-  }) // {inherit glproto libX11 ;};
+  }) // {inherit xorgproto libX11 ;};
 
   xev = (mkDerivation "xev" {
     name = "xev-1.2.2";
@@ -1755,9 +1755,9 @@ let
       sha256 = "0x9gq3hw6k661k82ikd1y2kkk4dmgv310xr5q59dwn4k6z37aafs";
     };
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ glproto libdrm udev libpciaccess libX11 libXext xorgserver xorgproto libXvMC ];
+    buildInputs = [ libdrm udev libpciaccess libX11 libXext xorgserver xorgproto libXvMC ];
     meta.platforms = stdenv.lib.platforms.unix;
-  }) // {inherit glproto libdrm udev libpciaccess libX11 libXext xorgserver xorgproto libXvMC ;};
+  }) // {inherit libdrm udev libpciaccess libX11 libXext xorgserver xorgproto libXvMC ;};
 
   xf86videoqxl = (mkDerivation "xf86videoqxl" {
     name = "xf86-video-qxl-0.1.5";
