@@ -1,5 +1,5 @@
-{ stdenv, fetchurl, libX11, xproto, imake, gccmakedep, libXt, libXmu
-, libXaw, libXext, xextproto, libSM, libICE, libXpm, libXp
+{ stdenv, fetchurl, libX11, xorgproto, imake, gccmakedep, libXt, libXmu
+, libXaw, libXext, libSM, libICE, libXpm, libXp
 }:
 
 stdenv.mkDerivation rec {
@@ -13,8 +13,8 @@ stdenv.mkDerivation rec {
   hardeningDisable = [ "format" ];
 
   buildInputs = [
-    libX11 xproto imake gccmakedep libXt libXmu libXaw
-    libXext xextproto libSM libICE libXpm libXp
+    libX11 xorgproto imake gccmakedep libXt libXmu libXaw
+    libXext libSM libICE libXpm libXp
   ];
 
   buildPhase = ''xmkmf && make World'';

@@ -9,11 +9,19 @@ stdenv.mkDerivation rec {
   };
 
   buildInputs =
-    [ xorg.libXfixes xorg.fixesproto openssl xorg.libXdamage
-      xorg.damageproto zlib xorg.libX11 xorg.xproto libjpeg
-      xorg.libXtst xorg.libXinerama xorg.xineramaproto xorg.libXrandr
-      xorg.randrproto xorg.libXext xorg.xextproto xorg.inputproto
-      xorg.recordproto xorg.libXi xorg.libXrender xorg.renderproto
+    [ libjpeg
+      openssl
+      xorg.libX11
+      xorg.libXdamage
+      xorg.libXext
+      xorg.libXfixes
+      xorg.libXi
+      xorg.libXinerama
+      xorg.libXrandr
+      xorg.libXrender
+      xorg.libXtst
+      xorg.xorgproto
+      zlib
     ];
 
   preConfigure = ''

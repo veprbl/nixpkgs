@@ -10,9 +10,6 @@ let
     "--enable-malloc0returnsnull";
 in
 {
-  bdftopcf = attrs: attrs // {
-    buildInputs = attrs.buildInputs ++ [ xorg.xproto xorg.fontsproto ];
-  };
 
   bitmap = attrs: attrs // {
     nativeBuildInputs = attrs.nativeBuildInputs ++ [ makeWrapper ];
@@ -150,10 +147,6 @@ in
     configureFlags = [ "--disable-selective-werror" ];
   };
 
-  compositeproto = attrs: attrs // {
-    propagatedBuildInputs = [ xorg.fixesproto ];
-  };
-
   libICE = attrs: attrs // {
     outputs = [ "out" "dev" "doc" ];
   };
@@ -189,7 +182,7 @@ in
 
   libXext = attrs: attrs // {
     outputs = [ "out" "dev" "man" "doc" ];
-    propagatedBuildInputs = [ xorg.xproto xorg.libXau ];
+    propagatedBuildInputs = [ xorg.xorgproto xorg.libXau ];
     configureFlags = attrs.configureFlags or []
       ++ malloc0ReturnsNullCrossFlag;
   };
@@ -228,7 +221,7 @@ in
     outputs = [ "out" "dev" "doc" ];
     configureFlags = attrs.configureFlags or []
       ++ malloc0ReturnsNullCrossFlag;
-    propagatedBuildInputs = [ xorg.renderproto ];
+    propagatedBuildInputs = [ xorg.xorgproto ];
   };
 
   libXres = attrs: attrs // {
@@ -241,7 +234,6 @@ in
 
   libXvMC = attrs: attrs // {
     outputs = [ "out" "dev" "doc" ];
-    buildInputs = attrs.buildInputs ++ [xorg.renderproto];
   };
 
   libXp = attrs: attrs // {
@@ -321,7 +313,7 @@ in
 
   xf86inputevdev = attrs: attrs // {
     outputs = [ "out" "dev" ]; # to get rid of xorgserver.dev; man is tiny
-    preBuild = "sed -e '/motion_history_proc/d; /history_size/d;' -i src/*.c";
+    preBuild = "sed -e '/motion_history_proc/d; /history_size/d;' -i 'src/'*.c";
     installFlags = "sdkdir=\${out}/include/xorg";
     buildInputs = attrs.buildInputs ++ [ args.mtdev args.libevdev ];
   };
@@ -472,7 +464,7 @@ in
             sha256 = "0mv4ilpqi5hpg182mzqn766frhi6rw48aba3xfbaj4m82v0lajqc";
           };
           nativeBuildInputs = [ pkgconfig ];
-          buildInputs = [ dri2proto dri3proto renderproto libdrm openssl libX11 libXau libXaw libxcb xcbutil xcbutilwm xcbutilimage xcbutilkeysyms xcbutilrenderutil libXdmcp libXfixes libxkbfile libXmu libXpm libXrender libXres libXt ];
+          buildInputs = [ xorgproto libdrm openssl libX11 libXau libXaw libxcb xcbutil xcbutilwm xcbutilimage xcbutilkeysyms xcbutilrenderutil libXdmcp libXfixes libxkbfile libXmu libXpm libXrender libXres libXt ];
           meta.platforms = stdenv.lib.platforms.unix;
         } else if (args.abiCompat == "1.18") then {
             name = "xorg-server-1.18.4";
@@ -482,7 +474,7 @@ in
               sha256 = "1j1i3n5xy1wawhk95kxqdc54h34kg7xp4nnramba2q8xqfr5k117";
             };
             nativeBuildInputs = [ pkgconfig ];
-            buildInputs = [ dri2proto dri3proto renderproto libdrm openssl libX11 libXau libXaw libxcb xcbutil xcbutilwm xcbutilimage xcbutilkeysyms xcbutilrenderutil libXdmcp libXfixes libxkbfile libXmu libXpm libXrender libXres libXt ];
+            buildInputs = [ xorgproto libdrm openssl libX11 libXau libXaw libxcb xcbutil xcbutilwm xcbutilimage xcbutilkeysyms xcbutilrenderutil libXdmcp libXfixes libxkbfile libXmu libXpm libXrender libXres libXt ];
             postPatch = stdenv.lib.optionalString stdenv.isLinux "sed '1i#include <malloc.h>' -i include/os.h";
             meta.platforms = stdenv.lib.platforms.unix;
         } else throw "unsupported xorg abiCompat ${args.abiCompat} for ${attrs_passed.name}";
@@ -492,16 +484,8 @@ in
       version = (builtins.parseDrvName attrs.name).version;
       commonBuildInputs = attrs.buildInputs ++ [ xtrans ];
       commonPropagatedBuildInputs = [
-        args.zlib args.libGL args.libGLU args.dbus
-        xf86bigfontproto glproto xf86driproto
-        compositeproto scrnsaverproto resourceproto
-        xf86dgaproto
-        dmxproto /*libdmx not used*/ xf86vidmodeproto
-        recordproto libXext pixman libXfont libxshmfence args.libunwind
-        damageproto xcmiscproto  bigreqsproto
-        inputproto xextproto randrproto renderproto presentproto
-        dri2proto dri3proto kbproto xineramaproto resourceproto scrnsaverproto videoproto
-        libXfont2
+        args.zlib args.libGL args.libGLU args.dbus xorgproto libXext pixman
+        libXfont libxshmfence args.libunwind libXfont2
       ];
       # XQuartz requires two compilations: the first to get X / XQuartz,
       # and the second to get Xvfb, Xnest, etc.
@@ -644,7 +628,7 @@ in
       "--with-launchagents-dir=\${out}/LaunchAgents"
     ];
     propagatedBuildInputs = [ xorg.xauth ]
-                         ++ lib.optionals isDarwin [ xorg.libX11 xorg.xproto ];
+                         ++ lib.optionals isDarwin [ xorg.libX11 xorg.xorgproto ];
     prePatch = ''
       sed -i 's|^defaultserverargs="|&-logfile \"$HOME/.xorg.log\"|p' startx.cpp
     '';
@@ -692,16 +676,8 @@ in
     buildInputs = with xorg; attrs.buildInputs ++ [libXt libxkbfile];
   };
 
-  kbproto = attrs: attrs // {
-    outputs = [ "out" "doc" ];
-  };
-
-  xextproto = attrs: attrs // {
-    outputs = [ "out" "doc" ];
-  };
-
-  xproto = attrs: attrs // {
-    outputs = [ "out" "doc" ];
+  xorgproto = attrs: attrs // {
+    outputs = [ "out" ];
   };
 
   xrdb = attrs: attrs // {

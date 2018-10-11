@@ -1,12 +1,10 @@
-{
-  stdenv
+{ stdenv
 , fetchurl
 , utilmacros
 , pkgconfig
 , mtdev
 , xorgserver
-, xproto
-, inputproto
+, xorgproto
 , pixman
 , autoreconfHook
 }:
@@ -19,8 +17,7 @@ stdenv.mkDerivation {
     pkgconfig
     mtdev
     xorgserver
-    xproto
-    inputproto
+    xorgproto
     pixman
     autoreconfHook
   ];

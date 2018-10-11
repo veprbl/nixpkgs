@@ -1,5 +1,5 @@
 { stdenv, fetchurl, pkgconfig, perl, autoconf, automake
-, libX11, inputproto, libXt, libXpm, libXft, libXtst, xextproto, libXi
+, libX11, libXt, libXpm, libXft, libXtst, xorgproto, libXi
 , libXrandr, fontconfig, freetype, readline
 }:
 
@@ -22,9 +22,9 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ pkgconfig autoconf automake ];
 
   buildInputs =
-    [ perl
-      libX11 inputproto libXt libXpm libXft libXtst xextproto libXi libXrandr
-      fontconfig freetype readline ];
+    [ perl libX11 xorgproto libXt libXpm libXft libXtst libXi libXrandr
+      fontconfig freetype readline
+    ];
 
   postInstall = ''
     mkdir -p $contrib/{bin,share}

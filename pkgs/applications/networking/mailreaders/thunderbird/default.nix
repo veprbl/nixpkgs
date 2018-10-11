@@ -33,14 +33,11 @@ in stdenv.mkDerivation rec {
 
   # from firefox, but without sound libraries
   buildInputs =
-    [ gtk2 zip libIDL libjpeg zlib bzip2
-      dbus dbus-glib pango freetype fontconfig xorg.libXi
-      xorg.libX11 xorg.libXrender xorg.libXft xorg.libXt file
-      nspr nss libnotify xorg.pixman yasm libGLU_combined
-      xorg.libXScrnSaver xorg.scrnsaverproto
-      xorg.libXext xorg.xextproto sqlite unzip
-      hunspell libevent libstartup_notification /* cairo */
-      icu libpng jemalloc
+    [ gtk2 zip libIDL libjpeg zlib bzip2 dbus dbus-glib pango freetype
+      fontconfig xorg.libXi xorg.xorgproto xorg.libX11 xorg.libXrender
+      xorg.libXft xorg.libXt file nspr nss libnotify xorg.pixman yasm
+      libGLU_combined xorg.libXScrnSaver xorg.libXext sqlite unzip hunspell
+      libevent libstartup_notification /* cairo */ icu libpng jemalloc
     ]
     ++ lib.optionals enableGTK3 [ gtk3 gnome3.defaultIconTheme ];
 
@@ -108,7 +105,7 @@ in stdenv.mkDerivation rec {
     ''
       cxxLib=$( echo -n ${gcc}/include/c++/* )
       archLib=$cxxLib/$( ${gcc}/bin/gcc -dumpmachine )
-  
+
       test -f layout/style/ServoBindings.toml && sed -i -e '/"-DRUST_BINDGEN"/ a , "-cxx-isystem", "'$cxxLib'", "-isystem", "'$archLib'"' layout/style/ServoBindings.toml
 
       configureScript="$(realpath ./configure)"

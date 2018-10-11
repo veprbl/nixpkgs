@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, libX11, libXinerama, libXft, zlib, patches ? null }:
+{ stdenv, fetchurl, xorgproto, libX11, libXinerama, libXft, zlib, patches ? null }:
 
 stdenv.mkDerivation rec {
   name = "dmenu-4.8";
@@ -8,7 +8,7 @@ stdenv.mkDerivation rec {
     sha256 = "0qfvfrj10xlwd9hkvb57wshryan65bl6423h0qhiw1h76rf5lqgy";
   };
 
-  buildInputs = [ libX11 libXinerama zlib libXft ];
+  buildInputs = [ libX11 libXinerama zlib libXft xorgproto ];
 
   inherit patches;
 

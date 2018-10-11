@@ -1,5 +1,5 @@
-{ fetchurl, stdenv, libX11, xproto, libXext, xextproto, libXtst
-, gtk2, libXi, inputproto, pkgconfig, recordproto, texinfo }:
+{ fetchurl, stdenv, libX11, xorgproto, libXext, libXtst
+, gtk2, libXi, pkgconfig, texinfo }:
 
 stdenv.mkDerivation rec {
   version = "3.19";
@@ -18,10 +18,7 @@ stdenv.mkDerivation rec {
     '';
 
   buildInputs =
-    [ libX11 xproto libXext xextproto libXtst gtk2
-      libXi inputproto pkgconfig recordproto
-      texinfo
-    ];
+    [ libX11 xorgproto libXext libXtst gtk2 libXi pkgconfig texinfo ];
 
   configureFlags =
     # Do a static build because `libxnee' doesn't get installed anyway.

@@ -1,6 +1,6 @@
 { stdenv, fetchurl
 , zlib, curl, gnutls, fribidi, libpng, SDL, SDL_gfx, SDL_image, SDL_mixer
-, SDL_net, SDL_ttf, libunwind, libX11, xproto, libxml2, pkgconfig
+, SDL_net, SDL_ttf, libunwind, libX11, xorgproto, libxml2, pkgconfig
 , gettext, intltool, libtool, perl
 }:
 
@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
 
   buildInputs =
     [ zlib curl gnutls fribidi libpng SDL SDL_gfx SDL_image SDL_mixer
-      SDL_net SDL_ttf libunwind libX11 xproto libxml2 pkgconfig
+      SDL_net SDL_ttf libunwind libX11 xorgproto libxml2 pkgconfig
       gettext intltool libtool perl
     ];
 

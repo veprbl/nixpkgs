@@ -86,14 +86,11 @@ stdenv.mkDerivation (rec {
   inherit src patches meta;
 
   buildInputs = [
-    gtk2 perl zip libIDL libjpeg zlib bzip2
-    dbus dbus-glib pango freetype fontconfig xorg.libXi xorg.libXcursor
-    xorg.libX11 xorg.libXrender xorg.libXft xorg.libXt file
-    nspr libnotify xorg.pixman yasm libGLU_combined
-    xorg.libXScrnSaver xorg.scrnsaverproto
-    xorg.libXext xorg.xextproto sqlite unzip makeWrapper
-    libevent libstartup_notification libvpx /* cairo */
-    icu libpng jemalloc glib
+    gtk2 perl zip libIDL libjpeg zlib bzip2 dbus dbus-glib pango freetype
+    fontconfig xorg.libXi xorg.libXcursor xorg.libX11 xorg.libXrender
+    xorg.libXft xorg.libXt file nspr libnotify xorg.pixman yasm libGLU_combined
+    xorg.libXScrnSaver xorg.libXext xorg.xorgproto sqlite unzip makeWrapper
+    libevent libstartup_notification libvpx /* cairo */ icu libpng jemalloc glib
   ]
   ++ lib.optionals (!isTorBrowserLike) [ nss ]
   ++ lib.optional (lib.versionOlder version "61") hunspell

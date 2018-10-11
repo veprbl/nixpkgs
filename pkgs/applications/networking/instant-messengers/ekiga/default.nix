@@ -1,8 +1,10 @@
-{ stdenv, glib, fetchurl, fetchpatch, cyrus_sasl, gettext, openldap, ptlib, opal, libXv, rarian, intltool
-, perl, perlXMLParser, evolution-data-server, gnome-doc-utils, avahi, autoreconfHook
-, libsigcxx, gtk, dbus-glib, libnotify, libXext, xextproto, gnome3, boost, libsecret
-, pkgconfig, libxml2, videoproto, unixODBC, db, nspr, nss, zlib
-, libXrandr, randrproto, which, libxslt, libtasn1, gmp, nettle, sqlite, makeWrapper }:
+{ stdenv, glib, fetchurl, fetchpatch, cyrus_sasl, gettext, openldap, ptlib
+, opal, libXv, rarian, intltool, perl, perlXMLParser, evolution-data-server
+, gnome-doc-utils, avahi, autoreconfHook, libsigcxx, gtk, dbus-glib, libnotify
+, libXext, xorgproto, gnome3, boost, libsecret, pkgconfig, libxml2, unixODBC, db
+, nspr, nss, zlib, libXrandr, which, libxslt, libtasn1, gmp, nettle, sqlite
+, makeWrapper
+}:
 
 stdenv.mkDerivation rec {
   name = "ekiga-4.0.1";
@@ -14,10 +16,10 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ cyrus_sasl gettext openldap ptlib opal libXv rarian intltool
                   perl perlXMLParser evolution-data-server gnome-doc-utils avahi
-                  libsigcxx gtk dbus-glib libnotify libXext xextproto sqlite
+                  libsigcxx gtk dbus-glib libnotify libXext xorgproto sqlite
                   gnome3.libsoup glib gnome3.defaultIconTheme boost
-                  autoreconfHook pkgconfig libxml2 videoproto unixODBC db nspr
-                  nss zlib libsecret libXrandr randrproto which libxslt libtasn1
+                  autoreconfHook pkgconfig libxml2 unixODBC db nspr
+                  nss zlib libsecret libXrandr which libxslt libtasn1
                   gmp nettle makeWrapper ];
 
   preAutoreconf = ''
@@ -64,4 +66,3 @@ stdenv.mkDerivation rec {
     };
   };
 }
-

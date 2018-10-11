@@ -2,7 +2,7 @@
 , enableX11 ? true, xorg
 , enableSDL ? true, SDL }:
 
-let s = 
+let s =
 rec {
    version = "1.7.7";
    name="directfb-${version}";
@@ -21,8 +21,7 @@ stdenv.mkDerivation {
   buildInputs = [ zlib libjpeg freetype giflib libpng ]
     ++ stdenv.lib.optional enableSDL SDL
     ++ stdenv.lib.optionals enableX11 (with xorg; [
-      xproto libX11 libXext #xextproto
-      #renderproto libXrender
+      xorgproto libX11 libXext
     ]);
 
   NIX_LDFLAGS="-lgcc_s";
