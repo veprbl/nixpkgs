@@ -28,6 +28,12 @@ xorgserver.overrideAttrs (oldAttrs: {
     "-Dxkb_dir=${xkeyboard_config}/etc/X11/xkb"
     "-Dxkb_output_dir=${placeholder "out"}/share/X11/xkb/compiled"
     "-Ddefault_font_path="
+
+    "-Dxorg=false"
+    "-Dxvfb=false"
+    "-Dxnest=false"
+    "-Dxquartz=false"
+    "-Dxwin=false"
   ];
 
   # Add file missing from tarball
