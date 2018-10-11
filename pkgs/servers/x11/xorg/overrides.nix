@@ -678,6 +678,7 @@ in
 
   xorgproto = attrs: attrs // {
     outputs = [ "out" ];
+    mesonFlags = [ "-Dlegacy=true" ];
   };
 
   xrdb = attrs: attrs // {
