@@ -3591,8 +3591,7 @@ with pkgs;
   lesspipe = callPackage ../tools/misc/lesspipe { };
 
   liquidsoap = callPackage ../tools/audio/liquidsoap/full.nix {
-    ffmpeg = ffmpeg_2;
-    ocamlPackages = ocaml-ng.ocamlPackages_4_02;
+    ffmpeg = ffmpeg-full;
   };
 
   lksctp-tools = callPackage ../os-specific/linux/lksctp-tools { };
@@ -4925,6 +4924,8 @@ with pkgs;
 
   qtikz = libsForQt5.callPackage ../applications/graphics/ktikz { };
 
+  quickserve = callPackage ../tools/networking/quickserve { };
+
   quicktun = callPackage ../tools/networking/quicktun { };
 
   quilt = callPackage ../development/tools/quilt { };
@@ -6213,7 +6214,9 @@ with pkgs;
     libxml2 = libxml2Python;
   };
 
-  xsecurelock = callPackage ../tools/X11/xsecurelock { };
+  xsecurelock = callPackage ../tools/X11/xsecurelock {
+    xset = xorg.xset;
+  };
 
   xsel = callPackage ../tools/misc/xsel { };
 
@@ -19935,6 +19938,8 @@ with pkgs;
 
   blobby = callPackage ../games/blobby { };
 
+  boohu = callPackage ../games/boohu { };
+
   braincurses = callPackage ../games/braincurses { };
 
   brogue = callPackage ../games/brogue { };
@@ -21279,10 +21284,7 @@ with pkgs;
 
   libpoly = callPackage ../applications/science/logic/poly {};
 
-  prooftree = (with ocaml-ng.ocamlPackages_4_01_0;
-    callPackage  ../applications/science/logic/prooftree {
-      camlp5 = camlp5_transitional;
-    });
+  prooftree = ocamlPackages.callPackage  ../applications/science/logic/prooftree { };
 
   prover9 = callPackage ../applications/science/logic/prover9 { };
 
@@ -21727,6 +21729,8 @@ with pkgs;
   };
 
   electricsheep = callPackage ../misc/screensavers/electricsheep { };
+
+  equilux-theme = callPackage ../misc/themes/equilux-theme { };
 
   flam3 = callPackage ../tools/graphics/flam3 { };
 
