@@ -1,7 +1,7 @@
 { qtModule, stdenv, lib, fetchurl
 , qtbase, qtdeclarative, qtlocation, qtsensors, qtwebchannel
 , fontconfig, gdk_pixbuf, gtk2, libwebp, libxml2, libxslt
-, sqlite, systemd, glib, gst_all_1, cmake
+, sqlite, systemd, glib, gst_all_1, cmake, ninja
 , bison2, flex, gdb, gperf, perl, pkgconfig, python2, ruby
 , darwin
 , flashplayerFix ? false
@@ -29,7 +29,7 @@ qtModule {
     ++ optionals (lib.versionAtLeast qtbase.version "5.11.0") [ hyphen ];
   nativeBuildInputs = [
     bison2 flex gdb gperf perl pkgconfig python2 ruby
-  ] ++ optionals (lib.versionAtLeast qtbase.version "5.11.0") [ cmake ];
+  ] ++ optionals (lib.versionAtLeast qtbase.version "5.11.0") [ cmake ninja ];
 
   cmakeFlags = optionals (lib.versionAtLeast qtbase.version "5.11.0") [ "-DPORT=Qt" ];
 
