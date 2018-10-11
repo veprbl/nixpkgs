@@ -1,7 +1,14 @@
-{ stdenv, wayland, wayland-protocols, xorgserver, xkbcomp, xkeyboard_config, epoxy, libxslt, libunwind, makeWrapper, meson, ninja, nettle }:
+{ stdenv, fetchurl, wayland, wayland-protocols, xorgserver, xkbcomp, xkeyboard_config, epoxy, libxslt, libunwind, makeWrapper, meson, ninja, nettle }:
 
 with stdenv.lib;
 
+let
+  xwayland_config_h_meson_in = fetchurl {
+    name = "xwayland-config.h.meson.in";
+    url = "https://cgit.freedesktop.org/xorg/xserver/plain/include/xwayland-config.h.meson.in?id=xorg-server-1.20.0";
+    sha256 = "0gngampgls3qa2h745ndfavxw6r5x2lcrpylkyb4g5i2r1smpj29";
+  };
+in
 xorgserver.overrideAttrs (oldAttrs: {
 
   name = "xwayland-${xorgserver.version}";
@@ -22,21 +29,11 @@ xorgserver.overrideAttrs (oldAttrs: {
     "-Dxkb_output_dir=${placeholder "out"}/share/X11/xkb/compiled"
     "-Ddefault_font_path="
   ];
-  #configureFlags = [
-  #  "--disable-docs"
-  #  "--disable-devel-docs"
-  #  "--enable-xwayland"
-  #  "--disable-xorg"
-  #  "--disable-xvfb"
-  #  "--disable-xnest"
-  #  "--disable-xquartz"
-  #  "--disable-xwin"
-  #  "--enable-glamor"
-  #  "--with-default-font-path="
-  #  "--with-xkb-bin-directory=${xkbcomp}/bin"
-  #  "--with-xkb-path=${xkeyboard_config}/etc/X11/xkb"
-  #  "--with-xkb-output=$(out)/share/X11/xkb/compiled"
-  #];
+
+  # Add file missing from tarball
+  postPatch = (oldAttrs.postPatch or "") + ''
+    cp ${xwayland_config_h_meson_in} include/xwayland-config.h.meson.in
+  '';
 
   postInstall = ''
     rm -fr $out/share/X11/xkb/compiled
