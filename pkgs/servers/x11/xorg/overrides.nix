@@ -504,7 +504,7 @@ in
       then {
         outputs = [ "out" "dev" ];
         buildInputs = commonBuildInputs ++ [ args.libdrm args.mesa_noglu ];
-        nativeBuildInputs = attrs.nativeBuildInputs ++ [ args.autoreconfHook xorg.utilmacros xorg.fontutil ];
+        nativeBuildInputs = attrs.nativeBuildInputs ++ [ xorg.utilmacros xorg.fontutil ];
         propagatedBuildInputs = [ libpciaccess args.epoxy ] ++ commonPropagatedBuildInputs ++ lib.optionals stdenv.isLinux [
           args.udev
         ];
