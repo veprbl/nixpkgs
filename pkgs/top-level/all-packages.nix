@@ -8246,6 +8246,8 @@ with pkgs;
 
   cppcheck = callPackage ../development/tools/analysis/cppcheck { };
 
+  cpplint = callPackage ../development/tools/analysis/cpplint { };
+
   cquery = callPackage ../development/tools/misc/cquery {
     llvmPackages = llvmPackages_6;
   };
