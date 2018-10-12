@@ -13976,17 +13976,19 @@ in {
   urwid = callPackage ../development/python-modules/urwid {};
 
   urwidtrees = buildPythonPackage rec {
-    name = "urwidtrees-${rev}";
-    rev = "1.0";
+    name = "urwidtrees-${version}";
+    version = "2017-10-01";
 
     src = pkgs.fetchFromGitHub {
       owner = "pazz";
       repo = "urwidtrees";
-      inherit rev;
-      sha256 = "03gpcdi45z2idy1fd9zv8v9naivmpfx65hshm8r984k9wklv1dsa";
+      rev = "207563ad5d750155104ed25292a264957f79af51";
+      sha256 = "0rvhi0bcpa9fvfxcj7az7928db9n8bf9phh9nq1hizldzz3vkdkj";
     };
 
     propagatedBuildInputs = with self; [ urwid ];
+
+    checkInputs = [ self.mock ];
 
     meta = {
       description = "Tree widgets for urwid";
