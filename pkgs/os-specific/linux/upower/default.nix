@@ -1,21 +1,25 @@
-{ stdenv, fetchurl, pkgconfig, dbus-glib
+{ stdenv, fetchgit, pkgconfig, dbus-glib
 , intltool, libxslt, docbook_xsl, udev, libgudev, libusb1
+, gtk-doc, automake, autoconf, libtool, which
 , useSystemd ? true, systemd, gobjectIntrospection
 }:
 
 stdenv.mkDerivation rec {
-  name = "upower-0.99.8";
+  name = "upower-0.99.8-git";
 
-  src = fetchurl {
-    url = https://gitlab.freedesktop.org/upower/upower/uploads/9125ab7ee96fdc4ecc68cfefb50c1cab/upower-0.99.8.tar.xz;
-    sha256 = "00lzr0vyxz5lvmgya48gdb2cdgmfdim4b34jlfdyqakk1i9sl8xv";
+  src = fetchgit {
+    url = https://gitlab.freedesktop.org/upower/upower.git;
+    rev = "0a9d9ab4949effb20e77aa52e7b4ee07e776fc0d";
+    sha256 = "0jv6f71wqhlrz6n545p8zj5snvxx03sjllzia3vqiyijqkd21p80";
   };
 
   buildInputs =
     [ dbus-glib intltool libxslt docbook_xsl udev libgudev libusb1 gobjectIntrospection ]
     ++ stdenv.lib.optional useSystemd systemd;
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig autoconf automake libtool which gtk-doc ];
+
+  preConfigure = "NOCONFIGURE=1 ./autogen.sh";
 
   configureFlags =
     [ "--with-backend=linux" "--localstatedir=/var"
