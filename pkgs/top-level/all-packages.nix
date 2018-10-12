@@ -4331,9 +4331,7 @@ with pkgs;
 
   pulsemixer = callPackage ../tools/audio/pulsemixer { };
 
-  pwsafe = callPackage ../applications/misc/pwsafe {
-    wxGTK = wxGTK30;
-  };
+  pwsafe = callPackage ../applications/misc/pwsafe { };
 
   niff = callPackage ../tools/package-management/niff { };
 
@@ -12358,6 +12356,8 @@ with pkgs;
   telepathy-farstream = callPackage ../development/libraries/telepathy/farstream {};
 
   telepathy-qt = callPackage ../development/libraries/telepathy/qt { qtbase = qt4; };
+
+  termbox = callPackage ../development/libraries/termbox { };
 
   tevent = callPackage ../development/libraries/tevent {
     python = python2;
@@ -21968,7 +21968,9 @@ with pkgs;
   nix-info = callPackage ../tools/nix/info { };
   nix-info-tested = nix-info.override { doCheck = true; };
 
-  nix-index = callPackage ../tools/package-management/nix-index { };
+  nix-index = callPackage ../tools/package-management/nix-index {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
 
   nix-pin = callPackage ../tools/package-management/nix-pin { };
 
