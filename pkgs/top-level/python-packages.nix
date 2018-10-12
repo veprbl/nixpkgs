@@ -13986,7 +13986,7 @@ in {
       sha256 = "0rvhi0bcpa9fvfxcj7az7928db9n8bf9phh9nq1hizldzz3vkdkj";
     };
 
-    propagatedBuildInputs = with self; [ urwid ];
+    propagatedBuildInputs = with self; [ urwid mock /* sadface */ ];
 
     checkInputs = [ self.mock ];
 
