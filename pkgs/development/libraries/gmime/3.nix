@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, pkgconfig, glib, zlib, gnupg, gpgme, libidn2, gobjectIntrospection, libtool, autoconf, automake, which, gtk_doc, libunistring, vala }:
+{ stdenv, fetchFromGitHub, pkgconfig, glib, zlib, gnupg, gpgme, libidn2, gobjectIntrospection, libtool, autoconf, automake, which, gtk_doc, libunistring }:
 
 stdenv.mkDerivation rec {
   version = "3.2.0-git";
@@ -14,7 +14,7 @@ stdenv.mkDerivation rec {
   outputs = [ "out" "dev" ];
 
   buildInputs = [ gobjectIntrospection zlib gpgme libidn2 libunistring ];
-  nativeBuildInputs = [ pkgconfig libtool autoconf automake which gtk_doc vala ];
+  nativeBuildInputs = [ pkgconfig libtool autoconf automake which gtk_doc ];
   propagatedBuildInputs = [ glib ];
   configureFlags = [ "--enable-introspection=yes" ];
 
