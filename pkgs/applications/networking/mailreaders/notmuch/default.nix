@@ -38,10 +38,11 @@ stdenv.mkDerivation rec {
     gnupg # undefined dependencies
     xapian gmime talloc zlib  # dependencies described in INSTALL
     doxygen perl  # (optional) api docs
-    pythonPackages.sphinx pythonPackages.python  # (optional) documentation -> doc/INSTALL
+    pythonPackages.python
+    # pythonPackages.sphinx pythonPackages.python  # (optional) documentation -> doc/INSTALL
     bash-completion  # (optional) dependency to install bash completion
-    emacs  # (optional) to byte compile emacs code
-    ruby  # (optional) ruby bindings
+    emacs  # (optional) to byte compile emacs code, also needed for tests
+    #ruby  # (optional) ruby bindings
     which dtach openssl bash  # test dependencies
   ]
   ++ optional stdenv.isDarwin fixDarwinDylibNames
@@ -105,6 +106,7 @@ stdenv.mkDerivation rec {
   in ''
     ln -s ${test-database} test/test-databases/database-v1.tar.xz
   '';
+
   doCheck = !stdenv.isDarwin && (versionAtLeast gmime.version "3.0");
   checkTarget = "test V=1";
 
