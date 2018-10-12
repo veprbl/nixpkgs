@@ -39,7 +39,7 @@ stdenv.mkDerivation rec {
     xapian gmime talloc zlib  # dependencies described in INSTALL
     doxygen perl  # (optional) api docs
     pythonPackages.python
-    # pythonPackages.sphinx pythonPackages.python  # (optional) documentation -> doc/INSTALL
+    pythonPackages.sphinx pythonPackages.python  # (optional) documentation -> doc/INSTALL
     bash-completion  # (optional) dependency to install bash completion
     emacs  # (optional) to byte compile emacs code, also needed for tests
     #ruby  # (optional) ruby bindings
