@@ -1,28 +1,21 @@
-{ stdenv, fetchurl, fetchpatch, pkgconfig, gnum4, glib, libsigcxx }:
+{ stdenv, fetchgit, fetchpatch, autoreconfHook, pkgconfig, gnum4, gtk-doc, glib, libsigcxx }:
 
 let
   ver_maj = "2.56";
   ver_min = "0";
 in
 stdenv.mkDerivation rec {
-  name = "glibmm-${ver_maj}.${ver_min}";
+  name = "glibmm-${ver_maj}.${ver_min}-git";
 
-  src = fetchurl {
-    url = "mirror://gnome/sources/glibmm/${ver_maj}/${name}.tar.xz";
-    sha256 = "1abrkqhca5p8n6ly3vp1232rny03s7lrd8f8iz2m2m141nxgqx3f";
+  src = fetchgit {
+    url = "https://gitlab.gnome.org/GNOME/glibmm.git";
+    rev = "cd42ee39a942585a35c71818145dceecc061f15b";
+    sha256 = "0rrhy4zmv03qvyhp56sqh5snb5chpzawr3pjhwbdm0svssf27a3b";
   };
 
   outputs = [ "out" "dev" ];
 
-  patchFlags = "-p0";
-  patches = [
-    (fetchpatch {
-      url = "https://raw.githubusercontent.com/macports/macports-ports/e864b2340be9ef003d8ff4aef92e7151d06287dd/devel/glibmm/files/0001-ustring-Fix-wchar-conversion-on-macOS-with-libc.patch";
-      sha256 = "02qvnailw1i59cjbj3cy7y02kfcivsvkdjrf4njkp4plarayyqp9";
-    })
-  ];
-
-  nativeBuildInputs = [ pkgconfig gnum4 ];
+  nativeBuildInputs = [ autoreconfHook pkgconfig gnum4 gtk-doc ];
   propagatedBuildInputs = [ glib libsigcxx ];
 
   enableParallelBuilding = true;
