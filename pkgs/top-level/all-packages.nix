@@ -18081,6 +18081,7 @@ with pkgs;
 
   notmuch = callPackage ../applications/networking/mailreaders/notmuch {
     gmime = gmime3;
+    # Doesn't really matter what python but I'd like to match anyway
     pythonPackages = python37Packages;
   };
 
