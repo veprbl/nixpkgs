@@ -595,11 +595,11 @@ let
   }) // {inherit xorgproto libX11 libXext ;};
 
   libX11 = (mkDerivation "libX11" {
-    name = "libX11-1.6.6";
+    name = "libX11-1.6.7";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/libX11-1.6.6.tar.bz2;
-      sha256 = "0ks1mxlda7nxfmffihi15ljsn50q8dknl33i2xag8xzc80fiizk5";
+      url = mirror://xorg/individual/lib/libX11-1.6.7.tar.bz2;
+      sha256 = "0j0k5bjz4kd7rx6z09n5ggxbzbi84wf78xx25ikx6jmsxwq9w3li";
     };
     nativeBuildInputs = [ pkgconfig ];
     propagatedBuildInputs = [ xorgproto ];
