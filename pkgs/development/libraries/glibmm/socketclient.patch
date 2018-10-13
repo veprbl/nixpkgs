@@ -1,0 +1,31 @@
+From a12ff14046f4e53a435076cdcdc18b5e0f327066 Mon Sep 17 00:00:00 2001
+From: Daniel Boles <dboles@src.gnome.org>
+Date: Sun, 1 Jul 2018 22:02:55 +0100
+Subject: [PATCH] SocketClient: Take copy in RefPtrs for signal args
+
+Without doing so, the C++ arguments take ownership of the C GObjects
+passed to the handler, so both go out of scope on exiting the handler.
+
+https://gitlab.gnome.org/GNOME/glibmm/issues/28
+---
+ gio/src/socketclient.hg | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/gio/src/socketclient.hg b/gio/src/socketclient.hg
+index 4b896a18..152b06fd 100644
+--- a/gio/src/socketclient.hg
++++ b/gio/src/socketclient.hg
+@@ -168,8 +168,8 @@ public:
+   _WRAP_PROPERTY("tls-validation-flags", TlsCertificateFlags)
+   _WRAP_PROPERTY("proxy-resolver", Glib::RefPtr<ProxyResolver>)
+ 
+-#m4 _CONVERSION(`GSocketConnectable*',`const Glib::RefPtr<SocketConnectable>&',`Glib::wrap($3)')
+-#m4 _CONVERSION(`GIOStream*',`const Glib::RefPtr<IOStream>&',`Glib::wrap($3)')
++#m4 _CONVERSION(`GSocketConnectable*',`const Glib::RefPtr<SocketConnectable>&',`Glib::wrap($3, true)')
++#m4 _CONVERSION(`GIOStream*',`const Glib::RefPtr<IOStream>&',`Glib::wrap($3, true)')
+   _WRAP_SIGNAL(void event(SocketClientEvent event, const Glib::RefPtr<SocketConnectable>& connectable, const Glib::RefPtr<IOStream>& connection), event, no_default_handler)
+ };
+ 
+-- 
+2.19.1
+

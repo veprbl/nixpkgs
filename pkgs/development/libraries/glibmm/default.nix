@@ -1,21 +1,25 @@
-{ stdenv, fetchgit, fetchpatch, autoreconfHook, pkgconfig, gnum4, gtk-doc, glib, libsigcxx }:
+{ stdenv, fetchurl, fetchpatch, pkgconfig, gnum4, glib, libsigcxx }:
 
 let
   ver_maj = "2.56";
   ver_min = "0";
 in
 stdenv.mkDerivation rec {
-  name = "glibmm-${ver_maj}.${ver_min}-git";
+  name = "glibmm-${ver_maj}.${ver_min}";
 
-  src = fetchgit {
-    url = "https://gitlab.gnome.org/GNOME/glibmm.git";
-    rev = "cd42ee39a942585a35c71818145dceecc061f15b";
-    sha256 = "0rrhy4zmv03qvyhp56sqh5snb5chpzawr3pjhwbdm0svssf27a3b";
+  src = fetchurl {
+    url = "mirror://gnome/sources/glibmm/${ver_maj}/${name}.tar.xz";
+    sha256 = "1abrkqhca5p8n6ly3vp1232rny03s7lrd8f8iz2m2m141nxgqx3f";
   };
 
   outputs = [ "out" "dev" ];
 
-  nativeBuildInputs = [ autoreconfHook pkgconfig gnum4 gtk-doc ];
+  patches = [
+    ./ustring-wchar.patch
+    ./socketclient.patch
+  ];
+
+  nativeBuildInputs = [ pkgconfig gnum4 ];
   propagatedBuildInputs = [ glib libsigcxx ];
 
   enableParallelBuilding = true;
