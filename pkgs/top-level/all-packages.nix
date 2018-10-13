@@ -3767,6 +3767,8 @@ with pkgs;
 
   npm2nix = nodePackages.npm2nix;
 
+  now-cli = callPackage ../development/web/now-cli {};
+
   file-rename = callPackage ../tools/filesystems/file-rename { };
 
   kea = callPackage ../tools/networking/kea {
@@ -11595,8 +11597,6 @@ with pkgs;
 
   paperkey = callPackage ../tools/security/paperkey { };
 
-  parquet-cpp = callPackage ../development/libraries/parquet-cpp {};
-
   pangoxsl = callPackage ../development/libraries/pangoxsl { };
 
   pcaudiolib = callPackage ../development/libraries/pcaudiolib {
@@ -18994,6 +18994,8 @@ with pkgs;
 
   teamspeak_client = libsForQt5.callPackage ../applications/networking/instant-messengers/teamspeak/client.nix { };
   teamspeak_server = callPackage ../applications/networking/instant-messengers/teamspeak/server.nix { };
+
+  taskell = callPackage ../applications/misc/taskell { };
 
   taskjuggler = callPackage ../applications/misc/taskjuggler { };
 
