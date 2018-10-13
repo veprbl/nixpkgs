@@ -25,16 +25,16 @@ stdenv.mkDerivation rec {
                   notmuch boost libsoup gnome3.gsettings-desktop-schemas gnome3.defaultIconTheme
                   glib-networking protobuf ] ++ (if (!stdenv.lib.isDerivation vim)  then [] else [ vim ]);
 
-  #patches = [
-  #  (fetchpatch {
-  #    url = "https://github.com/astroidmail/astroid/commit/c7364fe3560681c53e6aeac15a8710297cea3c05.patch";
-  #    sha256 = "0dbfas0jgwcabshkyfr7n75nvahva2mqqm743x637r1p2v96vqwq";
-  #  })
-  #  (fetchpatch {
-  #    url = "https://github.com/astroidmail/astroid/commit/cda29352783efb9be76e76a24ac6d2406697fe4b.patch";
-  #    sha256 = "1wzqvkm6lzl4fpmqndl1z1afn8pi77zsglkpjypjhh5qsvq0jwvm";
-  #  })
-  #];
+  patches = [
+    (fetchpatch {
+      url = "https://github.com/astroidmail/astroid/commit/c7364fe3560681c53e6aeac15a8710297cea3c05.patch";
+      sha256 = "0dbfas0jgwcabshkyfr7n75nvahva2mqqm743x637r1p2v96vqwq";
+    })
+    (fetchpatch {
+      url = "https://github.com/astroidmail/astroid/commit/cda29352783efb9be76e76a24ac6d2406697fe4b.patch";
+      sha256 = "1wzqvkm6lzl4fpmqndl1z1afn8pi77zsglkpjypjhh5qsvq0jwvm";
+    })
+  ];
 
   postPatch = ''
     sed -i "s~gvim ~${vim}/bin/vim -g ~g" src/config.cc
