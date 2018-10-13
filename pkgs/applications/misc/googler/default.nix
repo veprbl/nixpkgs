@@ -16,6 +16,14 @@ stdenv.mkDerivation rec {
   buildFlags = [ "disable-self-upgrade" ];
   installFlags = [ "PREFIX=$(out)" ];
 
+  postInstall = ''
+    mkdir -p $out/share/bash-completion/completions
+    cp auto-completion/bash/googler-completion.bash $out/share/bash-completion/completions/googler
+
+    mkdir -p $out/share/zsh/site-functions
+    cp auto-completion/zsh/_googler $out/share/zsh/site-functions/
+  '';
+
   meta = with stdenv.lib; {
     homepage = https://github.com/jarun/googler;
     description = "Google Search, Google Site Search, Google News from the terminal";
