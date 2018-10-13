@@ -463,7 +463,7 @@ with pkgs;
 
   acme-client = callPackage ../tools/networking/acme-client { inherit (darwin) apple_sdk; };
 
-  afew = callPackage ../applications/networking/mailreaders/afew { pythonPackages = python3Packages; };
+  afew = callPackage ../applications/networking/mailreaders/afew { pythonPackages = python37Packages; };
 
   afio = callPackage ../tools/archivers/afio { };
 
@@ -15603,6 +15603,7 @@ with pkgs;
 
   astroid = callPackage ../applications/networking/mailreaders/astroid {
     boost = boost168;
+    python3Packages = python37Packages;
   };
 
   audacious = callPackage ../applications/audio/audacious { };
@@ -18080,7 +18081,7 @@ with pkgs;
 
   notmuch = callPackage ../applications/networking/mailreaders/notmuch {
     gmime = gmime3;
-    pythonPackages = python3Packages;
+    pythonPackages = python37Packages;
   };
 
   notejot = callPackage ../applications/misc/notejot { };
