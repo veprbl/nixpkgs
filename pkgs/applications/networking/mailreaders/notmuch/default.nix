@@ -13,24 +13,17 @@
 with stdenv.lib;
 
 stdenv.mkDerivation rec {
-  version = "0.28_rc0";
+  version = "0.28";
   name = "notmuch-${version}";
 
   passthru = {
-    #pythonSourceRoot = "${name}/bindings/python";
-    pythonSourceRoot = "source/bindings/python";
+    pythonSourceRoot = "${name}/bindings/python";
     inherit version;
   };
 
-  #src = fetchurl {
-  #  url = "https://notmuchmail.org/releases/${name}.tar.gz";
-  #  sha256 = "0xh8vq2sa7r07xb3n13drc6gdiqhcgl0pj0za5xj43qkiwpikls0";
-  #};
-  src = fetchFromGitHub {
-    owner = "notmuch";
-    repo = "notmuch";
-    rev = version;
-    sha256 = "1ym9crnwzc7h75a4nrac32y9xdp9n3707ll8c34jmld9gkpr9cdh";
+  src = fetchurl {
+    url = "https://notmuchmail.org/releases/${name}.tar.gz";
+    sha256 = "0dqarmjc8544m2w7bqrqmvsfy55fw82707z3lz9cql8nr777bjmc";
   };
 
   nativeBuildInputs = [ pkgconfig ];
