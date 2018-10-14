@@ -9732,7 +9732,6 @@ with pkgs;
   gobjectIntrospection = callPackage ../development/libraries/gobject-introspection {
     nixStoreDir = config.nix.storeDir or builtins.storeDir;
     inherit (darwin) cctools;
-    python3 = python37;
   };
 
   goocanvas = callPackage ../development/libraries/goocanvas { };
