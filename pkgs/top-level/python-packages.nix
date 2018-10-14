@@ -1733,6 +1733,8 @@ in {
 
   pytest-rerunfailures = callPackage ../development/python-modules/pytest-rerunfailures { };
 
+  pytest-relaxed = callPackage ../development/python-modules/pytest-relaxed { };
+
   pytest-flake8 = callPackage ../development/python-modules/pytest-flake8 { };
 
   pytestflakes = callPackage ../development/python-modules/pytest-flakes { };
@@ -2179,23 +2181,7 @@ in {
     };
   };
 
-  Fabric = buildPythonPackage rec {
-    name = "Fabric-${version}";
-    version = "1.13.2";
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/F/Fabric/${name}.tar.gz";
-      sha256 = "0k944dxr41whw7ib6380q9x15wyskx7fqni656icdn8rzshn9bwq";
-    };
-    disabled = isPy3k;
-    doCheck = (!isPyPy);  # https://github.com/fabric/fabric/issues/11891
-    propagatedBuildInputs = with self; [ paramiko pycrypto ];
-    buildInputs = with self; [ fudge_9 nose ];
-    meta = {
-      description = "Pythonic remote execution";
-      homepage    = https://www.fabfile.org/;
-      license     = licenses.bsd2;
-    };
-  };
+  Fabric = callPackage ../development/python-modules/Fabric { };
 
   faulthandler = if ! isPy3k
     then callPackage ../development/python-modules/faulthandler {}
@@ -8855,43 +8841,7 @@ in {
     };
   };
 
-  paramiko = buildPythonPackage rec {
-    pname = "paramiko";
-    version = "2.1.1";
-    name = "${pname}-${version}";
-
-    src = fetchPypi {
-      inherit pname version;
-      sha256 = "0xdmamqgx2ymhdm46q8flpj4fncj4wv2dqxzz0bc2dh7mnkss7fm";
-    };
-
-    propagatedBuildInputs = with self; [ cryptography pyasn1 ];
-
-    __darwinAllowLocalNetworking = true;
-
-    # https://github.com/paramiko/paramiko/issues/449
-    doCheck = !(isPyPy || isPy33);
-    checkPhase = ''
-      # test_util needs to resolve an hostname, thus failing when the fw blocks it
-      sed '/UtilTest/d' -i test.py
-
-      ${python}/bin/${python.executable} test.py --no-sftp --no-big-file
-    '';
-
-    meta = {
-      homepage = "https://github.com/paramiko/paramiko/";
-      description = "Native Python SSHv2 protocol library";
-      license = licenses.lgpl21Plus;
-      maintainers = with maintainers; [ aszlig ];
-
-      longDescription = ''
-        This is a library for making SSH2 connections (client or server).
-        Emphasis is on using SSH2 as an alternative to SSL for making secure
-        connections between python scripts. All major ciphers and hash methods
-        are supported. SFTP client and server mode are both supported too.
-      '';
-    };
-  };
+  paramiko = callPackage ../development/python-modules/paramiko { };
 
   parameterized = callPackage ../development/python-modules/parameterized { };
 

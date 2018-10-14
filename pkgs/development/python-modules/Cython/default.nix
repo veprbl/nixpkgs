@@ -41,8 +41,6 @@ in buildPythonPackage rec {
   buildInputs = [ glibcLocales gdb ];
   LC_ALL = "en_US.UTF-8";
 
-  NIX_CFLAGS_COMPILE = [ "-fno-strict-aliasing" ];
-
   checkPhase = ''
     export HOME="$NIX_BUILD_TOP"
     ${python.interpreter} runtests.py -j$NIX_BUILD_CORES \
