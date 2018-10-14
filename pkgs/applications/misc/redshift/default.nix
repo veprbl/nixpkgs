@@ -66,7 +66,7 @@ stdenv.mkDerivation rec {
   postInstall = ''
     substituteInPlace $out/share/applications/redshift.desktop \
       --replace 'Exec=redshift' "Exec=$out/bin/redshift"
-    substituteInPlace $out/share/applications/redshift.desktop \
+    substituteInPlace $out/share/applications/redshift-gtk.desktop \
       --replace 'Exec=redshift-gtk' "Exec=$out/bin/redshift-gtk"
   '';
 
