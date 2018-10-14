@@ -264,6 +264,8 @@ in {
 
   bugseverywhere = callPackage ../applications/version-management/bugseverywhere {};
 
+  cachecontrol = callPackage ../development/python-modules/cachecontrol { };
+
   cdecimal = callPackage ../development/python-modules/cdecimal { };
 
   clustershell = callPackage ../development/python-modules/clustershell { };
@@ -361,6 +363,8 @@ in {
   helper = callPackage ../development/python-modules/helper { };
 
   histbook = callPackage ../development/python-modules/histbook { };
+
+  hdmedians = callPackage ../development/python-modules/hdmedians { };
 
   httpsig = callPackage ../development/python-modules/httpsig { };
 
@@ -559,7 +563,7 @@ in {
     slurm = pkgs.slurm;
   };
 
-  pystache = callPackage ../development/python-modules/pystache { }; 
+  pystache = callPackage ../development/python-modules/pystache { };
 
   pytest-tornado = callPackage ../development/python-modules/pytest-tornado { };
 
@@ -1658,6 +1662,8 @@ in {
   PyLD = callPackage ../development/python-modules/PyLD { };
 
   python-jose = callPackage ../development/python-modules/python-jose {};
+
+  python-json-logger = callPackage ../development/python-modules/python-json-logger { };
 
   python-ly = callPackage ../development/python-modules/python-ly {};
 
@@ -6304,6 +6310,10 @@ in {
 
   jupyter_core = callPackage ../development/python-modules/jupyter_core { };
 
+  jupyter-repo2docker = callPackage ../development/python-modules/jupyter-repo2docker {
+    pkgs-docker = pkgs.docker;
+  };
+
   jupyterhub = callPackage ../development/python-modules/jupyterhub { };
 
   jupyterhub-ldapauthenticator = callPackage ../development/python-modules/jupyterhub-ldapauthenticator { };
@@ -6588,29 +6598,7 @@ in {
 
   llvmlite = callPackage ../development/python-modules/llvmlite { llvm = pkgs.llvm_6; };
 
-  lockfile = buildPythonPackage rec {
-    pname = "lockfile";
-    version = "0.12.2";
-    name = "${pname}-${version}";
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/${builtins.substring 0 1 pname}/${pname}/${name}.tar.gz";
-      sha256 = "6aed02de03cba24efabcd600b30540140634fc06cfa603822d508d5361e9f799";
-    };
-
-    buildInputs = with self; [
-      pbr nose
-    ];
-
-    checkPhase = ''
-      nosetests
-    '';
-
-    meta = {
-      homepage = https://launchpad.net/pylockfile;
-      description = "Platform-independent advisory file locking capability for Python applications";
-      license = licenses.asl20;
-    };
-  };
+  lockfile = callPackage ../development/python-modules/lockfile { };
 
   logilab_common = callPackage ../development/python-modules/logilab/common.nix {};
 
@@ -11676,6 +11664,8 @@ in {
   scikitlearn = callPackage ../development/python-modules/scikitlearn {
     inherit (pkgs) gfortran glibcLocales;
   };
+
+  scikit-bio = callPackage ../development/python-modules/scikit-bio { };
 
   scp = callPackage ../development/python-modules/scp {};
 
