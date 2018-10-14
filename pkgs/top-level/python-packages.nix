@@ -264,6 +264,8 @@ in {
 
   bugseverywhere = callPackage ../applications/version-management/bugseverywhere {};
 
+  cachecontrol = callPackage ../development/python-modules/cachecontrol { };
+
   cdecimal = callPackage ../development/python-modules/cdecimal { };
 
   clustershell = callPackage ../development/python-modules/clustershell { };
@@ -358,7 +360,11 @@ in {
 
   habanero = callPackage ../development/python-modules/habanero { };
 
+  helper = callPackage ../development/python-modules/helper { };
+
   histbook = callPackage ../development/python-modules/histbook { };
+
+  hdmedians = callPackage ../development/python-modules/hdmedians { };
 
   httpsig = callPackage ../development/python-modules/httpsig { };
 
@@ -388,6 +394,8 @@ in {
     mpi = pkgs.openmpi;
   };
 
+  mwclient = callPackage ../development/python-modules/mwclient { };
+
   mwoauth = callPackage ../development/python-modules/mwoauth { };
 
   nest-asyncio = callPackage ../development/python-modules/nest-asyncio { };
@@ -409,6 +417,8 @@ in {
   nltk = callPackage ../development/python-modules/nltk { };
 
   ntlm-auth = callPackage ../development/python-modules/ntlm-auth { };
+
+  nvchecker = callPackage ../development/python-modules/nvchecker { };
 
   oauthenticator = callPackage ../development/python-modules/oauthenticator { };
 
@@ -554,6 +564,8 @@ in {
   pyslurm = callPackage ../development/python-modules/pyslurm {
     slurm = pkgs.slurm;
   };
+
+  pystache = callPackage ../development/python-modules/pystache { };
 
   pytest-tornado = callPackage ../development/python-modules/pytest-tornado { };
 
@@ -1653,6 +1665,8 @@ in {
 
   python-jose = callPackage ../development/python-modules/python-jose {};
 
+  python-json-logger = callPackage ../development/python-modules/python-json-logger { };
+
   python-ly = callPackage ../development/python-modules/python-ly {};
 
   pyhepmc = buildPythonPackage rec {
@@ -2532,31 +2546,6 @@ in {
 
   hbmqtt = callPackage ../development/python-modules/hbmqtt { };
 
-  helper = buildPythonPackage rec {
-    pname = "helper";
-    version = "2.4.1";
-    name = "${pname}-${version}";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/h/${pname}/${name}.tar.gz";
-      sha256 = "4e33dde42ad4df30fb7790689f93d77252cff26a565610d03ff2e434865a53a2";
-    };
-
-    buildInputs = with self; [ mock ];
-    propagatedBuildInputs = with self; [ pyyaml ];
-
-    # No tests
-    doCheck = false;
-
-    meta = {
-      description = "Development library for quickly writing configurable applications and daemons";
-      homepage = https://helper.readthedocs.org/;
-      license = licenses.bsd3;
-    };
-
-
-  };
-
   hiro = callPackage ../development/python-modules/hiro {};
 
   hglib = callPackage ../development/python-modules/hglib {};
@@ -3411,6 +3400,8 @@ in {
       maintainers = with maintainers; [ koral];
     };
   };
+
+  peewee =  callPackage ../development/python-modules/peewee { };
 
   peppercorn = buildPythonPackage rec {
     name = "peppercorn-0.5";
@@ -6335,6 +6326,10 @@ in {
 
   jupyter_core = callPackage ../development/python-modules/jupyter_core { };
 
+  jupyter-repo2docker = callPackage ../development/python-modules/jupyter-repo2docker {
+    pkgs-docker = pkgs.docker;
+  };
+
   jupyterhub = callPackage ../development/python-modules/jupyterhub { };
 
   jupyterhub-ldapauthenticator = callPackage ../development/python-modules/jupyterhub-ldapauthenticator { };
@@ -6619,29 +6614,7 @@ in {
 
   llvmlite = callPackage ../development/python-modules/llvmlite { llvm = pkgs.llvm_6; };
 
-  lockfile = buildPythonPackage rec {
-    pname = "lockfile";
-    version = "0.12.2";
-    name = "${pname}-${version}";
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/${builtins.substring 0 1 pname}/${pname}/${name}.tar.gz";
-      sha256 = "6aed02de03cba24efabcd600b30540140634fc06cfa603822d508d5361e9f799";
-    };
-
-    buildInputs = with self; [
-      pbr nose
-    ];
-
-    checkPhase = ''
-      nosetests
-    '';
-
-    meta = {
-      homepage = https://launchpad.net/pylockfile;
-      description = "Platform-independent advisory file locking capability for Python applications";
-      license = licenses.asl20;
-    };
-  };
+  lockfile = callPackage ../development/python-modules/lockfile { };
 
   logilab_common = callPackage ../development/python-modules/logilab/common.nix {};
 
@@ -7501,34 +7474,6 @@ in {
   mypy_extensions = callPackage ../development/python-modules/mypy/extensions.nix { };
 
   mypy-protobuf = callPackage ../development/python-modules/mypy-protobuf { };
-
-  mwclient = buildPythonPackage rec {
-    version = "0.8.3";
-    pname = "mwclient";
-    name = "${pname}-${version}";
-
-    src = pkgs.fetchFromGitHub {
-      owner = "mwclient";
-      repo = "mwclient";
-      rev = "v${version}";
-      sha256 = "0kl1yp9z5f1wl6lkm0vix87zkrbl9wcmkrrj1x5c35xvf95laf53";
-    };
-
-    buildInputs = with self; [ mock responses pytestcov pytest pytestcache pytestpep8 coverage ];
-
-    propagatedBuildInputs = with self; [ six requests requests_oauthlib ];
-
-    checkPhase = ''
-      py.test
-    '';
-
-    meta = {
-      description = "Python client library to the MediaWiki API";
-      maintainers = with maintainers; [ ];
-      license = licenses.mit;
-      homepage = https://github.com/mwclient/mwclient;
-    };
-  };
 
   neuronpy = buildPythonPackage rec {
     name = "neuronpy-${version}";
@@ -10382,34 +10327,6 @@ in {
     };
   };
 
-  pystache = buildPythonPackage rec {
-    name = "pystache-${version}";
-    version = "0.5.4";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/p/pystache/${name}.tar.gz";
-      sha256 = "f7bbc265fb957b4d6c7c042b336563179444ab313fb93a719759111eabd3b85a";
-    };
-
-    LC_ALL = "en_US.UTF-8";
-
-    buildInputs = [ pkgs.glibcLocales ];
-
-    checkPhase = ''
-      ${python.interpreter} -m unittest discover
-    '';
-
-    # SyntaxError Python 3
-    # https://github.com/defunkt/pystache/issues/181
-    doCheck = !isPy3k;
-
-    meta = {
-      description = "A framework-agnostic, logic-free templating system inspired by ctemplate and et";
-      homepage = https://github.com/defunkt/pystache;
-      license = licenses.mit;
-    };
-  };
-
   PyStemmer = callPackage ../development/python-modules/pystemmer {};
 
   Pyro = callPackage ../development/python-modules/pyro { };
@@ -11799,6 +11716,8 @@ in {
   scikitlearn = callPackage ../development/python-modules/scikitlearn {
     inherit (pkgs) gfortran glibcLocales;
   };
+
+  scikit-bio = callPackage ../development/python-modules/scikit-bio { };
 
   scp = callPackage ../development/python-modules/scp {};
 
