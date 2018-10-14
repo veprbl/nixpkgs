@@ -39,6 +39,7 @@ stdenv.mkDerivation rec {
     "-Dintrospection=true"
     "-Dgtk-doc=true"
     "-Ddemo-agent=${if withDemoAgent then "true" else "false"}"
+    "-Dsysconfdir=${placeholder "out"}/etc"
   ] ++ optionals stdenv.isDarwin [
     "-D3g-source=false"
     "-Dcdma-source=false"
