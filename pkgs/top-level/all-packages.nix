@@ -7998,6 +7998,10 @@ with pkgs;
 
   ### DEVELOPMENT / TOOLS
 
+  abi-compliance-checker = callPackage ../development/tools/misc/abi-compliance-checker { };
+
+  abi-dumper = callPackage ../development/tools/misc/abi-dumper { };
+
   activator = throw ''
     Typesafe Activator was removed in 2017-05-08 as the actual package reaches end of life.
 
@@ -8006,12 +8010,12 @@ with pkgs;
     for more information.
   '';
 
+  adtool = callPackage ../tools/admin/adtool { };
+
   inherit (callPackage ../development/tools/alloy { })
     alloy4
     alloy5
     alloy;
-
-  adtool = callPackage ../tools/admin/adtool { };
 
   augeas = callPackage ../tools/system/augeas { };
 
@@ -8935,6 +8939,8 @@ with pkgs;
   vulnix = callPackage ../tools/security/vulnix {
     pythonPackages = python3Packages;
   };
+
+  vtable-dumper = callPackage ../development/tools/misc/vtable-dumper { };
 
   watson-ruby = callPackage ../development/tools/misc/watson-ruby {};
 
@@ -21061,6 +21067,8 @@ with pkgs;
   m4ri = callPackage ../development/libraries/science/math/m4ri { };
 
   m4rie = callPackage ../development/libraries/science/math/m4rie { };
+
+  mkl = callPackage ../development/libraries/science/math/mkl { };
 
   nasc = callPackage ../applications/science/math/nasc { };
 
