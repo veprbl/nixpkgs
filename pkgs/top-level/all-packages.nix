@@ -14115,8 +14115,8 @@ with pkgs;
       ];
   };
 
-  # linux mptcp is based on the 4.4 kernel
-  linux_mptcp = callPackage ../os-specific/linux/kernel/linux-mptcp.nix {
+  linux_mptcp = linux_mptcp_94;
+  linux_mptcp_94 = callPackage ../os-specific/linux/kernel/linux-mptcp.nix {
     kernelPatches =
       [ kernelPatches.bridge_stp_helper
         kernelPatches.cpu-cgroup-v2."4.11"
@@ -14954,6 +14954,8 @@ with pkgs;
 
   andagii = callPackage ../data/fonts/andagii { };
 
+  andika = callPackage ../data/fonts/andika { };
+
   android-udev-rules = callPackage ../os-specific/linux/android-udev-rules { };
 
   anonymousPro = callPackage ../data/fonts/anonymous-pro { };
@@ -14985,6 +14987,8 @@ with pkgs;
   capitaine-cursors = callPackage ../data/icons/capitaine-cursors { };
 
   carlito = callPackage ../data/fonts/carlito {};
+
+  charis-sil = callPackage ../data/fonts/charis-sil { };
 
   comfortaa = callPackage ../data/fonts/comfortaa {};
 
@@ -15043,6 +15047,8 @@ with pkgs;
     docbook_xsl_ns;
 
   documentation-highlighter = callPackage ../misc/documentation-highlighter { };
+
+  doulos-sil = callPackage ../data/fonts/doulos-sil { };
 
   cabin = callPackage ../data/fonts/cabin { };
 
@@ -17118,6 +17124,8 @@ with pkgs;
 
   singularity = callPackage ../applications/virtualization/singularity { };
 
+  spectmorph = callPackage ../applications/audio/spectmorph { };
+
   spectrwm = callPackage ../applications/window-managers/spectrwm { };
 
   spectral = qt5.callPackage ../applications/networking/instant-messengers/spectral { };
@@ -18134,6 +18142,8 @@ with pkgs;
   offrss = callPackage ../applications/networking/offrss { };
 
   ogmtools = callPackage ../applications/video/ogmtools { };
+
+  omegat = callPackage ../applications/misc/omegat.nix { };
 
   omxplayer = callPackage ../applications/video/omxplayer { };
 
