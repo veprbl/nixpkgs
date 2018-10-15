@@ -19045,7 +19045,7 @@ with pkgs;
 
   telepathy-idle = callPackage ../applications/networking/instant-messengers/telepathy/idle {};
 
-  termdown = (newScope pythonPackages) ../applications/misc/termdown { };
+  termdown = (newScope python37Packages) ../applications/misc/termdown { };
 
   terminal-notifier = callPackage ../applications/misc/terminal-notifier {};
 
