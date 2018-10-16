@@ -9509,6 +9509,8 @@ with pkgs;
 
   flyway = callPackage ../development/tools/flyway { };
 
+  fmt = callPackage ../development/libraries/fmt/default.nix { };
+
   fplll = callPackage ../development/libraries/fplll {};
   fplll_20160331 = callPackage ../development/libraries/fplll/20160331.nix {};
 
@@ -10304,6 +10306,8 @@ with pkgs;
   libcaca = callPackage ../development/libraries/libcaca {
     inherit (xorg) libX11 libXext;
   };
+
+  libcacard = callPackage ../development/libraries/libcacard { };
 
   libcanberra = callPackage ../development/libraries/libcanberra {
     inherit (darwin.apple_sdk.frameworks) CoreServices;
