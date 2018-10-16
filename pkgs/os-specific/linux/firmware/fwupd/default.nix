@@ -1,5 +1,5 @@
-{ stdenv, fetchurl, gtk-doc, pkgconfig, gobjectIntrospection, intltool
-, libgudev, polkit, appstream-glib, gusb, sqlite, libarchive, glib-networking
+{ stdenv, fetchurl, fetchpatch, gtk-doc, pkgconfig, gobjectIntrospection, intltool
+, libgudev, polkit, libxmlb, gusb, sqlite, libarchive, glib-networking
 , libsoup, help2man, gpgme, libxslt, elfutils, libsmbios, efivar, glibcLocales
 , gnu-efi, libyaml, valgrind, meson, libuuid, colord, docbook_xml_dtd_43, docbook_xsl
 , ninja, gcab, gnutls, python3, wrapGAppsHook, json-glib, bash-completion
@@ -7,7 +7,7 @@
 }:
 let
   # Updating? Keep $out/etc synchronized with passthru.filesInstalledToEtc
-  version = "1.1.2";
+  version = "1.2.0";
   python = python3.withPackages (p: with p; [ pygobject3 pycairo pillow ]);
   installedTestsPython = python3.withPackages (p: with p; [ pygobject3 requests ]);
 
@@ -18,7 +18,7 @@ in stdenv.mkDerivation {
   name = "fwupd-${version}";
   src = fetchurl {
     url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
-    sha256 = "1qhg8h1dv9k3i0429j0wl37rpxfbahggfd1j8s7a4cw83k42cgfs";
+    sha256 = "08bgbbs3i95vcggap7gb1mfar02mmiy8dhd9qfhaj7ndvgyr2avd";
   };
 
   outputs = [ "out" "lib" "dev" "devdoc" "man" "installedTests" ];
@@ -28,7 +28,7 @@ in stdenv.mkDerivation {
     valgrind gcab docbook_xml_dtd_43 docbook_xsl help2man libxslt python wrapGAppsHook vala
   ];
   buildInputs = [
-    polkit appstream-glib gusb sqlite libarchive libsoup elfutils libsmbios gnu-efi libyaml
+    polkit libxmlb gusb sqlite libarchive libsoup elfutils libsmbios gnu-efi libyaml
     libgudev colord gpgme libuuid gnutls glib-networking efivar json-glib umockdev
     bash-completion
   ];
@@ -37,6 +37,10 @@ in stdenv.mkDerivation {
 
   patches = [
     ./fix-paths.patch
+    (fetchpatch {
+      url = https://github.com/hughsie/fwupd/commit/2fe9625cc6dec10531482a3947ef75009eb21489.patch;
+      sha256 = "1d48b0jr9rd7a2glrhxwqgck59aa7wyw8261n5i08m97vyx5jl4f";
+    })
   ];
 
   postPatch = ''
@@ -63,6 +67,8 @@ in stdenv.mkDerivation {
     "-Defi-ldsdir=${gnu-efi}/lib"
     "-Defi-includedir=${gnu-efi}/include/efi"
     "--localstatedir=/var"
+    "--sysconfdir=/etc"
+    "-Dsysconfdir_install=${placeholder "out"}/etc"
   ];
 
   # TODO: We need to be able to override the directory flags from meson setup hook
