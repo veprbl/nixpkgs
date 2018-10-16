@@ -7,7 +7,7 @@
 }:
 let
   # Updating? Keep $out/etc synchronized with passthru.filesInstalledToEtc
-  version = "1.1.2";
+  version = "1.1.3";
   python = python3.withPackages (p: with p; [ pygobject3 pycairo pillow ]);
   installedTestsPython = python3.withPackages (p: with p; [ pygobject3 requests ]);
 
@@ -18,7 +18,7 @@ in stdenv.mkDerivation {
   name = "fwupd-${version}";
   src = fetchurl {
     url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
-    sha256 = "1qhg8h1dv9k3i0429j0wl37rpxfbahggfd1j8s7a4cw83k42cgfs";
+    sha256 = "1bqlhdsjqqs43i5qqqwqv9shhaad5v791nhqbhjq5bpqialnhia7";
   };
 
   outputs = [ "out" "lib" "dev" "devdoc" "man" "installedTests" ];
