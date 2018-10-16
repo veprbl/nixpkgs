@@ -9501,6 +9501,8 @@ with pkgs;
 
   flyway = callPackage ../development/tools/flyway { };
 
+  fmt = callPackage ../development/libraries/fmt/default.nix { };
+
   fplll = callPackage ../development/libraries/fplll {};
   fplll_20160331 = callPackage ../development/libraries/fplll/20160331.nix {};
 
@@ -19698,6 +19700,7 @@ with pkgs;
     gxi
     kod
     xi-core
+    xi-gtk
     xi-term;
 
   xen = xenPackages.xen-vanilla;
