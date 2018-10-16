@@ -22383,7 +22383,7 @@ with pkgs;
   vimUtils = callPackage ../misc/vim-plugins/vim-utils.nix { };
 
   vimPlugins = recurseIntoAttrs (callPackage ../misc/vim-plugins {
-    llvmPackages = llvmPackages_39;
+    llvmPackages = llvmPackages_7;
   });
 
   vimprobable2-unwrapped = callPackage ../applications/networking/browsers/vimprobable2 {
