@@ -94,13 +94,13 @@ with generated;
     # $ eval echo $(nix-instantiate --eval --expr 'with (import <nixpkgs>) {}; clang.default_cxx_stdlib_compile')
     preFixup = ''
       substituteInPlace "$out"/share/vim-plugins/clang_complete/plugin/clang_complete.vim \
-        --replace "let g:clang_library_path = '' + "''" + ''" "let g:clang_library_path='${llvmPackages.clang.cc}/lib/libclang.so'"
+        --replace "let g:clang_library_path = '' + "''" + ''" "let g:clang_library_path='${llvmPackages.libclang}/lib/libclang.so'"
     '';
   });
 
   clighter8 = clighter8.overrideAttrs(old: {
     preFixup = ''
-      sed "/^let g:clighter8_libclang_path/s|')$|${llvmPackages.clang.cc}/lib/libclang.so')|" \
+      sed "/^let g:clighter8_libclang_path/s|')$|${llvmPackages.libclang}/lib/libclang.so')|" \
         -i "$out"/share/vim-plugins/clighter8/plugin/clighter8.vim
     '';
   });
