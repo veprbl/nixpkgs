@@ -9,16 +9,17 @@
 
 stdenv.mkDerivation rec {
   name = "spectral-${version}";
-  version = "2018-10-13";
+  version = "2018-10-16";
 
   src = fetchgit {
     url = "https://gitlab.com/b0/spectral.git";
-    rev = "d9592e4a7c69d00222ef87ad99b3238d3cc27c01";
-    sha256 = "08qd6n54s7y9cdfd49x14673cl4xphv81jlazqj9jsdkg03d71c8";
+    rev = "a8b159b98a042d4b1aaf0ef7b15b1770dabb0ef3";
+    sha256 = "1cyj77m8w7sf7czn3jbwyp4s0908b0hy2fhf4jcacsxsddkjr9xi";
     fetchSubmodules = true;
   };
 
   # Doesn't seem to work without this, used to be documented in the .pro file.  Dunno.
+  # Update: upstream uses this in CI so it's not just us :)
   qmakeFlags = [ "CONFIG+=qtquickcompiler" ];
 
   nativeBuildInputs = [ pkgconfig qmake ];
