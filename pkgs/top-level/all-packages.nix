@@ -19718,14 +19718,6 @@ with pkgs;
 
   xkbmon = callPackage ../applications/misc/xkbmon { };
 
-  inherit (callPackages ../applications/editors/xi { })
-    gxi
-    kod
-    xi-core
-    xi-gtk
-    xi-term;
-
-
   win-spice = callPackage ../applications/virtualization/driver/win-spice { };
   win-virtio = callPackage ../applications/virtualization/driver/win-virtio { };
   win-qemu = callPackage ../applications/virtualization/driver/win-qemu { };
