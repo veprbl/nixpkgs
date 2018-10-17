@@ -1,13 +1,26 @@
-{ lib, buildPythonPackage, fetchPypi }:
+{ lib, buildPythonPackage, fetchFromGitHub,
+flake8, future, mock, pytest, pytestcov, pytest-forked, pytest-timeout, pytest_xdist, six
+}:
 
 buildPythonPackage rec {
   pname = "httplib2";
-  version = "0.11.3";
+  version = "0.11.3-pr111";
 
-  src = fetchPypi {
-    inherit pname version;
-    sha256 = "1pyb0hmc0j0kcy27yiw38gq9pk7f1fkny5k1vd13cdz6l3csw7g7";
+  # Upstream PR 111, using my fork to ensure commits don't go anywhere
+  src = fetchFromGitHub {
+    owner = "dtzWill";
+    repo = "httplib2";
+    rev = "7ee25dbcc24fbe42d2f7b2839327d58ecf3c8e71";
+    sha256 = "0mvqmbv9ccrshcngjdm6yrrd90n5mwa2qcr4nlpkz00ravsarzr9";
   };
+
+  postPatch = ''
+    sed -i '/pytest-randomly/d' requirements-test.txt
+  '';
+
+  checkInputs = [
+    flake8 future mock pytest pytestcov pytest-forked pytest-timeout pytest_xdist six
+  ];
 
   meta = with lib; {
     homepage = http://code.google.com/p/httplib2;
