@@ -8,14 +8,14 @@ with stdenv.lib;
 
 stdenv.mkDerivation rec {
   name = "geoclue-${version}";
-  version = "2.5.0";
+  version = "2.5.1";
 
   src = fetchFromGitLab {
     domain = "gitlab.freedesktop.org";
     owner = "geoclue";
     repo = "geoclue";
     rev = version;
-    sha256 = "0g9hd47dizybjfbnd1yg7j2x7xx85jyjhpf09k7xglp0avmymppn";
+    sha256 = "0vww6irijw5ss7vawkdi5z5wdpcgw4iqljn5vs3vbd4y3d0lzrbs";
   };
 
   outputs = [ "out" "dev" "devdoc" ];
