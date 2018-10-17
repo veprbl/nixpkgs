@@ -577,12 +577,16 @@ in {
 
   python-lz4 = callPackage ../development/python-modules/python-lz4 { };
 
+  python-ldap-test = callPackage ../development/python-modules/python-ldap-test { };
+
   python-igraph = callPackage ../development/python-modules/python-igraph {
     pkgconfig = pkgs.pkgconfig;
     igraph = pkgs.igraph;
   };
 
   python3-openid = callPackage ../development/python-modules/python3-openid { };
+
+  python-packer = callPackage ../development/python-modules/python-packer { };
 
   python-periphery = callPackage ../development/python-modules/python-periphery { };
 
