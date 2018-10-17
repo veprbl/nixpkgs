@@ -25,11 +25,11 @@ let
 
 in buildPythonPackage rec {
   pname = "Cython";
-  version = "0.29";
+  version = "0.28.5";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "94916d1ede67682638d3cc0feb10648ff14dc51fb7a7f147f4fedce78eaaea97";
+    sha256 = "b64575241f64f6ec005a4d4137339fb0ba5e156e826db2fdb5f458060d9979e0";
   };
 
   nativeBuildInputs = [
@@ -49,6 +49,13 @@ in buildPythonPackage rec {
   '';
 
   doCheck = !stdenv.isDarwin;
+
+  patches = [
+    (fetchpatch {
+      url = "https://github.com/cython/cython/commit/eae37760bfbe19e7469aa41269480b84ce12b6cd.patch";
+      sha256 = "0irk53psrs05kzzlvbfv7s3q02x5lsnk5qrv0zd1ra3mw2sfyym6";
+    })
+  ];
 
   meta = {
     description = "An optimising static compiler for both the Python programming language and the extended Cython programming language";
