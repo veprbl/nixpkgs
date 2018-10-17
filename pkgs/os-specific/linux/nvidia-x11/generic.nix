@@ -22,7 +22,7 @@
 
 with stdenv.lib;
 
-assert (!libsOnly) -> kernel != null;
+assert !libsOnly -> kernel != null;
 assert versionOlder version "391" -> sha256_32bit != null;
 assert ! versionOlder version "391" -> stdenv.hostPlatform.system == "x86_64-linux";
 
@@ -56,8 +56,8 @@ let
     inherit (stdenv.hostPlatform) system;
     inherit i686bundled;
 
-    outputs = ([ "out" ]
-        ++ optional (i686bundled) "lib32")
+    outputs = [ "out" ]
+        ++ optional i686bundled "lib32"
         ++ optional (!libsOnly) "bin";
     outputDev = if libsOnly then null else "bin";
 
