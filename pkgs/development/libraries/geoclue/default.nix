@@ -52,12 +52,6 @@ stdenv.mkDerivation rec {
       --replace '#!/usr/bin/env python3' '#!${python3.interpreter}'
   '';
 
-  postInstall = ''
-    substituteInPlace $out/etc/systemd/system/geoclue.service \
-      --replace "ExecStart=libexec/geoclue" \
-                "ExecStart=$out/libexec/geoclue"
-  '';
-
   meta = with stdenv.lib; {
     description = "Geolocation framework and some data providers";
     homepage = https://gitlab.freedesktop.org/geoclue/geoclue/wikis/home;
