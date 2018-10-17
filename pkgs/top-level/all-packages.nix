@@ -5925,6 +5925,12 @@ with pkgs;
 
   wbox = callPackage ../tools/networking/wbox {};
 
+  webassemblyjs-cli = nodePackages."@webassemblyjs/cli";
+  webassemblyjs-repl = nodePackages."@webassemblyjs/repl";
+  wasm-strip = nodePackages."@webassemblyjs/wasm-strip";
+  wasm-text-gen = nodePackages."@webassemblyjs/wasm-text-gen";
+  wast-refmt = nodePackages."@webassemblyjs/wast-refmt";
+
   welkin = callPackage ../tools/graphics/welkin {};
 
   whipper = callPackage ../applications/audio/whipper { };
@@ -6987,6 +6993,8 @@ with pkgs;
   inherit (callPackages ../development/compilers/graalvm { }) mx jvmci8 graalvm8;
 
   openshot-qt = libsForQt5.callPackage ../applications/video/openshot-qt { };
+
+  openspin = callPackage ../development/compilers/openspin { };
 
   oraclejdk = pkgs.jdkdistro true false;
 
@@ -8845,7 +8853,7 @@ with pkgs;
 
   sparse = callPackage ../development/tools/analysis/sparse { };
 
-  speedtest-cli = callPackage ../tools/networking/speedtest-cli { };
+  speedtest-cli = with python3Packages; toPythonApplication speedtest-cli;
 
   spin = callPackage ../development/tools/analysis/spin { };
 
@@ -15820,9 +15828,7 @@ with pkgs;
 
   bristol = callPackage ../applications/audio/bristol { };
 
-  bs1770gain = callPackage ../applications/audio/bs1770gain {
-    ffmpeg = ffmpeg_2;
-  };
+  bs1770gain = callPackage ../applications/audio/bs1770gain { };
 
   bspwm = callPackage ../applications/window-managers/bspwm { };
 
