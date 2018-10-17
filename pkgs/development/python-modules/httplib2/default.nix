@@ -14,6 +14,7 @@ buildPythonPackage rec {
     sha256 = "0mvqmbv9ccrshcngjdm6yrrd90n5mwa2qcr4nlpkz00ravsarzr9";
   };
 
+  # Eep, avoid test dep we haven't packaged yet :3
   postPatch = ''
     sed -i '/pytest-randomly/d' requirements-test.txt
   '';
@@ -21,6 +22,8 @@ buildPythonPackage rec {
   checkInputs = [
     flake8 future mock pytest pytestcov pytest-forked pytest-timeout pytest_xdist six
   ];
+
+  doCheck = false; # network
 
   meta = with lib; {
     homepage = http://code.google.com/p/httplib2;
