@@ -1083,9 +1083,9 @@ let
       sha256 = "041bxkvv6f92sm3hhm977c4gdqdv5r1jyxjqcqfi8vkrg3s2j4ka";
     };
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libXaw libXmu xproto libXt ];
+    buildInputs = [ libXaw libXmu xorgproto libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
-  }) // {inherit libXaw libXmu xproto libXt ;};
+  }) // {inherit libXaw libXmu xorgproto libXt ;};
 
   lndir = (mkDerivation "lndir" {
     name = "lndir-1.0.3";
@@ -1191,9 +1191,9 @@ let
       sha256 = "088v8p0yfn4r3azabp6662hqikfs2gjb9xmjjd45gnngwwp19b2b";
     };
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 xproto ];
+    buildInputs = [ libX11 xorgproto ];
     meta.platforms = stdenv.lib.platforms.unix;
-  }) // {inherit libX11 xproto ;};
+  }) // {inherit libX11 xorgproto ;};
 
   twm = (mkDerivation "twm" {
     name = "twm-1.0.10";
@@ -1419,9 +1419,9 @@ let
       sha256 = "1q2ib1626i5da0nda09sp3vzppjrcn82fff83cw7hwr0vy14h56i";
     };
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 libXaw libXmu xproto libXt ];
+    buildInputs = [ libX11 libXaw libXmu xorgproto libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
-  }) // {inherit libX11 libXaw libXmu xproto libXt ;};
+  }) // {inherit libX11 libXaw libXmu xorgproto libXt ;};
 
   xcursorgen = (mkDerivation "xcursorgen" {
     name = "xcursorgen-1.0.6";
@@ -1851,9 +1851,9 @@ let
       sha256 = "0nmbrx6913dc724y8wj2p6vqfbj5zdjfmsl037v627jj0whx9rwk";
     };
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ fontsproto libdrm randrproto renderproto videoproto xextproto xf86driproto xorgserver xorgproto ];
+    buildInputs = [ libdrm xorgserver xorgproto ];
     meta.platforms = stdenv.lib.platforms.unix;
-  }) // {inherit fontsproto libdrm randrproto renderproto videoproto xextproto xf86driproto xorgserver xorgproto ;};
+  }) // {inherit libdrm xorgserver xorgproto ;};
 
   xf86videoopenchrome = (mkDerivation "xf86videoopenchrome" {
     name = "xf86-video-openchrome-0.6.0";
@@ -2284,9 +2284,9 @@ let
       sha256 = "01sr6yd6yhyyfgn88l867w6h9dn5ikcynaz5rwji6xqxhw1lhkpk";
     };
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 libXaw libXmu xproto libXt ];
+    buildInputs = [ libX11 libXaw libXmu xorgproto libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
-  }) // {inherit libX11 libXaw libXmu xproto libXt ;};
+  }) // {inherit libX11 libXaw libXmu xorgproto libXt ;};
 
   xlsatoms = (mkDerivation "xlsatoms" {
     name = "xlsatoms-1.1.2";
@@ -2499,9 +2499,9 @@ let
       sha256 = "0z21mqvmdl6rl63q77479wgkfygnll57liza1i3va7sr4fx45i0h";
     };
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 xbitmaps libXcursor libXmu xproto ];
+    buildInputs = [ libX11 xbitmaps libXcursor libXmu xorgproto ];
     meta.platforms = stdenv.lib.platforms.unix;
-  }) // {inherit libX11 xbitmaps libXcursor libXmu xproto ;};
+  }) // {inherit libX11 xbitmaps libXcursor libXmu xorgproto ;};
 
   xsm = (mkDerivation "xsm" {
     name = "xsm-1.0.4";
