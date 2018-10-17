@@ -7,14 +7,14 @@ let
 
 in python.pkgs.buildPythonApplication rec {
   pname = "papis";
-  version = "0.6";
+  version = "0.7.4";
 
   # Missing tests on Pypi
   src = fetchFromGitHub {
     owner = "papis";
     repo = pname;
     rev = "v${version}";
-    sha256 = "0zy8q154zhpqb75c775nwq3mdl1szhzhkfi0nvyjmzfgsv2g1wa2";
+    sha256 = "048rgqxbvd77kslm9z0i7g4sj1prnarnjkl46lb3jlrb7kinq11j";
   };
 
   postPatch = ''
@@ -37,7 +37,7 @@ in python.pkgs.buildPythonApplication rec {
     mkdir -p check-phase
     export PATH=$out/bin:$PATH
     # Still don't know why this fails
-    sed -i 's/--set dir=hello //' tests/bash/test_default.sh
+    #sed -i 's/--set dir=hello //' tests/bash/test_default.sh
 
     # This test has been disabled since it requires a network connaction
     sed -i 's/test_downloader_getter(self):/disabled_test_downloader_getter(self):/' papis/downloaders/tests/test_main.py
