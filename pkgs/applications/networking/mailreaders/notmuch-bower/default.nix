@@ -17,7 +17,10 @@ stdenv.mkDerivation rec {
 
   makeFlags = [ "PARALLEL=-j$(NIX_BUILD_CORES)" "bower" "man" ];
 
-  patches = [ ./0001-convert-inbox-tag-to-single-char-indicator-hide-impo.patch ];
+  patches = [
+    ./0001-convert-inbox-tag-to-single-char-indicator-hide-impo.patch
+    ./0002-hide-more-tags-that-would-be-painful-to-mass-change.patch
+  ];
 
   installPhase = ''
     mkdir -p $out/bin

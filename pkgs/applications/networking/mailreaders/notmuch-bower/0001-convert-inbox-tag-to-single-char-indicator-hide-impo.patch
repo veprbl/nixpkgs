@@ -1,7 +1,7 @@
 From c0dcbfcde0177ec4a1ef7a5062a93aa45c832f67 Mon Sep 17 00:00:00 2001
 From: Will Dietz <w@wdtz.org>
 Date: Thu, 18 Oct 2018 09:17:37 -0500
-Subject: [PATCH] convert 'inbox' tag to single-char indicator, hide
+Subject: [PATCH 1/2] convert 'inbox' tag to single-char indicator, hide
  'important'
 
 ---
