@@ -1,6 +1,7 @@
 { stdenv, fetchurl, vala, intltool, pkgconfig, gtk3, glib
 , json-glib, wrapGAppsHook, libpeas, bash, gobjectIntrospection
 , gnome3, gtkspell3, shared-mime-info, libgee, libgit2-glib, libsecret
+, meson, ninja, python3
  }:
 
 let
@@ -14,14 +15,17 @@ in stdenv.mkDerivation rec {
     sha256 = "15qaaz4072lxs16nqr5b65xjyrjqy6ch5bmy1rb288fnzf3aw457";
   };
 
-  preCheck = ''
-    substituteInPlace tests/libgitg/test-commit.c --replace "/bin/bash" "${bash}/bin/bash"
+  postPatch = ''
+    chmod +x meson_post_install.py
+    patchShebangs meson_post_install.py
+    sed -i '/gtk-update-icon-cache/s/^/#/' meson_post_install.py
+
+    substituteInPlace tests/libgitg/test-commit.vala --replace "/bin/bash" "${bash}/bin/bash"
   '';
+
   doCheck = true;
 
   enableParallelBuilding = true;
-
-  makeFlags = "INTROSPECTION_GIRDIR=$(out)/share/gir-1.0/ INTROSPECTION_TYPELIBDIR=$(out)/lib/girepository-1.0";
 
   buildInputs = [
     gtk3 glib json-glib libgee libpeas gnome3.libsoup
@@ -29,7 +33,7 @@ in stdenv.mkDerivation rec {
     libsecret gobjectIntrospection gnome3.adwaita-icon-theme
   ];
 
-  nativeBuildInputs = [ vala wrapGAppsHook intltool pkgconfig ];
+  nativeBuildInputs = [ meson ninja python3 vala wrapGAppsHook intltool pkgconfig ];
 
   preFixup = ''
     gappsWrapperArgs+=(
