@@ -330,6 +330,8 @@ in {
 
   fido2 = callPackage ../development/python-modules/fido2 {  };
 
+  filetype = callPackage ../development/python-modules/filetype {  };
+
   filterpy = callPackage ../development/python-modules/filterpy { };
 
   fire = callPackage ../development/python-modules/fire { };
