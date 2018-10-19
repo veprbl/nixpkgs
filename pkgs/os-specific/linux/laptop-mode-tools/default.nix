@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, coreutils }:
+{ stdenv, fetchFromGitHub, coreutils, which, utillinux, makeWrapper }:
 
 stdenv.mkDerivation rec {
   name = "laptop-mode-tools-${version}";
@@ -10,6 +10,8 @@ stdenv.mkDerivation rec {
     rev = version;
     sha256 = "1pl0rh1bh23ji5r60nvra26ns3z5dfbjj1l9lhzf7hsmpydrgznd";
   };
+
+  nativeBuildInputs = [ makeWrapper ];
 
   postPatch = ''
     substituteInPlace install.sh \
@@ -35,6 +37,12 @@ stdenv.mkDerivation rec {
 
     substituteInPlace $out/lib/systemd/system/laptop-mode.service \
       --replace /bin/rm ${coreutils}/bin/rm \
-      --replace /usr/sbin/laptop-mode-tools $out/bin/laptop-mode-tools
+      --replace /usr/sbin/laptop_mode $out/bin/laptop_mode
+
+    sed -i $out/sbin/laptop_mode -e 's/export PATH=.*//'
+    substituteInPlace $out/sbin/laptop_mode \
+      --replace /sbin/blockdev ${utillinux}/bin/blockdev
+    wrapProgram $out/sbin/laptop_mode \
+      --prefix PATH : "${stdenv.lib.makeBinPath [ coreutils which utillinux ]}"
   '';
 }
