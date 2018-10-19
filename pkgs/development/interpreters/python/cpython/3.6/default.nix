@@ -3,7 +3,6 @@
 , expat
 , libffi
 , gdbm
-, llvm
 , lzma
 , ncurses
 , openssl
@@ -34,11 +33,9 @@ let
   sitePackages = "lib/${libPrefix}/site-packages";
 
   buildInputs = filter (p: p != null) [
-    zlib bzip2 expat lzma libffi gdbm sqlite readline ncurses openssl
-  ]
-    ++ optional stdenv.cc.isClang llvm
-    ++ optionals stdenv.isDarwin [ CF configd ]
-    ++ optionals x11Support [ tcl tk libX11 xorgproto ];
+    zlib bzip2 expat lzma libffi gdbm sqlite readline ncurses openssl ]
+    ++ optionals x11Support [ tcl tk libX11 xorgproto ]
+    ++ optionals stdenv.isDarwin [ CF configd ];
 
   nativeBuildInputs =
     optional (stdenv.hostPlatform != stdenv.buildPlatform) buildPackages.python3;
@@ -105,12 +102,11 @@ in stdenv.mkDerivation {
   LIBS="${optionalString (!stdenv.isDarwin) "-lcrypt"} ${optionalString (ncurses != null) "-lncurses"}";
 
   configureFlags = [
-    "--enable-optimizations"
     "--enable-shared"
-    "--with-system-expat"
-    "--with-system-ffi"
     "--with-threads"
     "--without-ensurepip"
+    "--with-system-expat"
+    "--with-system-ffi"
   ] ++ optionals (stdenv.hostPlatform != stdenv.buildPlatform) [
     "ac_cv_buggy_getaddrinfo=no"
     # Assume little-endian IEEE 754 floating point when cross compiling
