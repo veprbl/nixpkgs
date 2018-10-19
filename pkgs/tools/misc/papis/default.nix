@@ -25,7 +25,7 @@ in python.pkgs.buildPythonApplication rec {
   propagatedBuildInputs = with python.pkgs; [
     argcomplete arxiv2bib beautifulsoup4 bibtexparser
     configparser dmenu-python habanero papis-python-rofi
-    pylibgen prompt_toolkit pyparser python_magic pyyaml
+    pylibgen prompt_toolkit2 pyparser python_magic pyyaml
     requests unidecode urwid vobject tkinter whoosh
     vim
   ];
