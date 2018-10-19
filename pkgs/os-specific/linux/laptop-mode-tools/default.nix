@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, coreutils, which, utillinux, makeWrapper }:
+{ stdenv, fetchFromGitHub, coreutils, which, utillinux, gnused, gnugrep, gawk, makeWrapper }:
 
 stdenv.mkDerivation rec {
   name = "laptop-mode-tools-${version}";
@@ -43,6 +43,6 @@ stdenv.mkDerivation rec {
     substituteInPlace $out/sbin/laptop_mode \
       --replace /sbin/blockdev ${utillinux}/bin/blockdev
     wrapProgram $out/sbin/laptop_mode \
-      --prefix PATH : "${stdenv.lib.makeBinPath [ coreutils which utillinux ]}"
+      --prefix PATH : "${stdenv.lib.makeBinPath [ coreutils which utillinux gnused gnugrep gawk ]}"
   '';
 }
