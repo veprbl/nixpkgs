@@ -20,4 +20,9 @@ stdenv.mkDerivation rec {
     SYSTEMD=yes \
     ./install.sh
   '';
+
+  preFixup = ''
+    substituteInPlace $out/lib/udev/rules.d/99-laptop-mode.rules \
+      --replace lmt-udev $out/lib/udev/lmt-udev
+  '';
 }
