@@ -90,6 +90,7 @@ in stdenv.mkDerivation {
 
   configureFlags = [
     "--enable-shared"
+    "--with-threads"
     "--without-ensurepip"
     "--with-system-expat"
     "--with-system-ffi"
