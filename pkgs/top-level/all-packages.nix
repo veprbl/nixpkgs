@@ -14642,6 +14642,8 @@ with pkgs;
 
   gogoclient = callPackage ../os-specific/linux/gogoclient { };
 
+  laptop-mode-tools = callPackage ../os-specific/linux/laptop-mode-tools { };
+
   linux-pam = callPackage ../os-specific/linux/pam { };
 
   nss_ldap = callPackage ../os-specific/linux/nss_ldap { };
