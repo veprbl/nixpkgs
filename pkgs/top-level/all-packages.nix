@@ -7760,28 +7760,22 @@ with pkgs;
 
   python27 = callPackage ../development/interpreters/python/cpython/2.7 {
     self = python27;
-    # for now can't build w/clang stdenv since it deps on this (inf recursion)
-    #inherit (llvmPackages_7) stdenv;
     inherit (darwin) CF configd;
   };
   python34 = callPackage ../development/interpreters/python/cpython/3.4 {
     inherit (darwin) CF configd;
-    inherit (llvmPackages_7) stdenv;
     self = python34;
   };
   python35 = callPackage ../development/interpreters/python/cpython/3.5 {
     inherit (darwin) CF configd;
-    inherit (llvmPackages_7) stdenv;
     self = python35;
   };
   python36 = callPackage ../development/interpreters/python/cpython/3.6 {
     inherit (darwin) CF configd;
-    inherit (llvmPackages_7) stdenv;
     self = python36;
   };
   python37 = callPackage ../development/interpreters/python/cpython/3.7 {
     inherit (darwin) CF configd;
-    inherit (llvmPackages_7) stdenv;
     self = python37;
   };
 
