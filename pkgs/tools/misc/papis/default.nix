@@ -23,10 +23,15 @@ in python.pkgs.buildPythonApplication rec {
   '';
 
   propagatedBuildInputs = with python.pkgs; [
-    argcomplete arxiv2bib beautifulsoup4 bibtexparser
-    configparser dmenu-python habanero papis-python-rofi
-    pylibgen prompt_toolkit2 pyparser python_magic pyyaml
-    requests unidecode urwid vobject tkinter whoosh
+    pyyaml
+    arxiv2bib beautifulsoup4 bibtexparser
+    chardet click configparser filetype habanero
+    isbnlib prompt_toolkit2 pylibgen pyparser pyparsing
+    python-slugify requests
+
+    # Not mentioned but keeping for now "just in case"
+    argcomplete dmenu-python papis-python-rofi python_magic
+    unidecode vobject tkinter whoosh
     vim
   ];
 
