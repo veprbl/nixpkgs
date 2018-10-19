@@ -122,6 +122,7 @@ let
     '';
 
   configureFlags = [
+    "--enable-optimizations"
     "--enable-shared"
     "--with-threads"
     "--enable-unicode=ucs${toString ucsEncoding}"
