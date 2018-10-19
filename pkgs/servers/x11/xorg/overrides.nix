@@ -479,6 +479,7 @@ self: super:
       then {
         outputs = [ "out" "dev" ];
         buildInputs = commonBuildInputs ++ [ libdrm mesa_noglu ];
+        nativeBuildInputs = attrs.nativeBuildInputs ++ [ self.utilmacros self.fontutil ];
         propagatedBuildInputs = [ libpciaccess epoxy ] ++ commonPropagatedBuildInputs ++ lib.optionals stdenv.isLinux [
           udev
         ];
