@@ -142,11 +142,6 @@ let
       ./patches/nix_plugin_paths_68.patch
       ./patches/remove-webp-include-69.patch
     ] ++ optional enableWideVine ./patches/widevine.patch
-      ++ optional ((versionRange "69" "70") && stdenv.isAarch64)
-           (fetchpatch {
-              url    = https://raw.githubusercontent.com/OSSystems/meta-browser/e4a667deaaf9a26a3a1aeb355770d1f29da549ad/recipes-browser/chromium/files/0001-vpx_sum_squares_2d_i16_neon-Make-s2-a-uint64x1_t.patch;
-              sha256 = "0f37rsjx7jcvdngkj8y6600091nwgn4jci0ny7bxlapq0zx2a4x7";
-            })
       ++ optional stdenv.isAarch64
            (if (versionOlder version "71") then
               fetchpatch {
@@ -243,8 +238,6 @@ let
       google_api_key = "AIzaSyDGi15Zwl11UNe6Y-5XW_upsfyw31qwZPI";
       google_default_client_id = "404761575300.apps.googleusercontent.com";
       google_default_client_secret = "9rIFQjfnkykEmqb6FfjJQD1D";
-    } // optionalAttrs (versionRange "60" "70") {
-      use_gtk3 = true;
     } // optionalAttrs proprietaryCodecs {
       # enable support for the H.264 codec
       proprietary_codecs = true;
