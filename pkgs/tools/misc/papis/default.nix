@@ -18,7 +18,10 @@ in python.pkgs.buildPythonApplication rec {
   };
 
   postPatch = ''
-    sed -i 's/configparser>=3.0.0/# configparser>=3.0.0/' setup.py
+    sed -i setup.py \
+      -e 's/configparser>=3.0.0/#\0/' \
+      -e 's/python-slugify==1.2.5/python-slugify==1.2.6/'
+
     patchShebangs tests
   '';
 
