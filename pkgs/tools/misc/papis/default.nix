@@ -32,27 +32,24 @@ in python.pkgs.buildPythonApplication rec {
     isbnlib prompt_toolkit2 pylibgen pyparser pyparsing
     python-slugify requests
 
+    # Optional
+    dmenu-python jinja2  whoosh
+
     # Not mentioned but keeping for now "just in case"
-    argcomplete dmenu-python papis-python-rofi python_magic
-    unidecode vobject tkinter whoosh
+    argcomplete papis-python-rofi python_magic
+    unidecode vobject tkinter
     vim
   ];
 
   checkInputs = with python.pkgs; [ pytest ];
 
   # Papis tries to create the config folder under $HOME during the tests
-  checkPhase = ''
-    mkdir -p check-phase
-    export PATH=$out/bin:$PATH
-    # Still don't know why this fails
-    #sed -i 's/--set dir=hello //' tests/bash/test_default.sh
+  preCheck = ''
+    export HOME=$PWD
+  '';
 
-    # This test has been disabled since it requires a network connaction
-    sed -i 's/test_downloader_getter(self):/disabled_test_downloader_getter(self):/' papis/downloaders/tests/test_main.py
-
-    export HOME=$(pwd)/check-phase
-    make test
-    SH=${bashInteractive}/bin/bash make test-non-pythonic
+  postCheck = ''
+    unset HOME
   '';
 
   meta = {
