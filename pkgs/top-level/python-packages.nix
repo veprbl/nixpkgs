@@ -376,6 +376,8 @@ in {
 
   intelhex = callPackage ../development/python-modules/intelhex { };
 
+  isbnlib = callPackage ../development/python-modules/isbnlib { };
+
   jira = callPackage ../development/python-modules/jira { };
 
   lammps-cython = callPackage ../development/python-modules/lammps-cython {
