@@ -9264,6 +9264,7 @@ in {
 
 
   prompt_toolkit = callPackage ../development/python-modules/prompt_toolkit { };
+  prompt_toolkit2 = callPackage ../development/python-modules/prompt_toolkit/2.nix { };
 
   protobuf = callPackage ../development/python-modules/protobuf {
     disabled = isPyPy;
