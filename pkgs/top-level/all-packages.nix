@@ -7161,7 +7161,7 @@ with pkgs;
     mercury-14-full
     mercury-rotd
     mercury-rotd-bootstrap
-    mercury-git;
+    ;
   mercury = mercury-14;
 
   microscheme = callPackage ../development/compilers/microscheme { };

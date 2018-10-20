@@ -87,22 +87,4 @@ in rec {
     };
   };
   mercury-rotd-bootstrap = mercury-rotd.override { enableMinimal = true; };
-  mercury-git = mkMercury {
-    version = "2018-10-19";
-    src = fetchFromGitHub {
-      owner = "Mercury-Language";
-      repo = "mercury";
-      rev = "3cf72e496ab4d28ceb18c0564f5ba31d3d72c89a";
-      sha256 = "0j5mk47qksa74gvvj84myhh0lb5i6d8vd3x4iiikwx9y5qa9pgks";
-      fetchSubmodules = true;
-    };
-    bootstrapMercury = mercury-rotd-bootstrap;
-    nativeBuildInputs = [
-      autoconf automake libtool pkgconfig
-    ];
-    preConfigure = ''
-      touch boehm_gc/.git
-      ./prepare.sh
-    '';
-  };
 }
