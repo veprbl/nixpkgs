@@ -15821,7 +15821,9 @@ with pkgs;
 
   brackets = callPackage ../applications/editors/brackets { gconf = gnome2.GConf; };
 
-  notmuch-bower = callPackage ../applications/networking/mailreaders/notmuch-bower { };
+  notmuch-bower = callPackage ../applications/networking/mailreaders/notmuch-bower {
+    mercury = mercury-rotd;
+  };
 
   bristol = callPackage ../applications/audio/bristol { };
 
