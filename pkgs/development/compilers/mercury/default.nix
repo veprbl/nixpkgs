@@ -85,7 +85,8 @@ in rec {
       owner = "Mercury-Language";
       repo = "mercury";
       rev = "3cf72e496ab4d28ceb18c0564f5ba31d3d72c89a";
-      sha256 = "1x6k7siq9qh1fm87ddg0c0nmk59aw62m5v7fza2bkkshyp7d7qs8";
+      sha256 = "0j5mk47qksa74gvvj84myhh0lb5i6d8vd3x4iiikwx9y5qa9pgks";
+      fetchSubmodules = true;
     };
     bootstrapMercury = mercury-14-bootstrap;
     preConfigure = ''
