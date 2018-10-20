@@ -1081,10 +1081,6 @@ self: super: {
   unix-time = if pkgs.stdenv.hostPlatform.isMusl then dontCheck super.unix-time else super.unix-time;
   # dontCheck: printf double rounding behavior
   prettyprinter = if pkgs.stdenv.hostPlatform.isMusl then dontCheck super.prettyprinter else super.prettyprinter;
-  # Upstream issue
-  hslua = if (!pkgs.stdenv.hostPlatform.isMusl) then super.hslua else
-    overrideSrc super.hslua { src = (fetchGit https://github.com/hslua/hslua); };
-
 
   # Fix with Cabal 2.2, https://github.com/guillaume-nargeot/hpc-coveralls/pull/73
   hpc-coveralls = appendPatch super.hpc-coveralls (pkgs.fetchpatch {
