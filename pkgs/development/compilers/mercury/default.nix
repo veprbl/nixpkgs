@@ -9,9 +9,13 @@ let
       name    = "mercury-${if enableMinimal then "minimal-" else ""}${version}";
       inherit src version;
 
-      buildInputs = compilers ++ [ bootstrapMercury flex bison texinfo makeWrapper readline ];
+      nativeBuildInputs = (args.nativeBuildInputs or []) ++ [
+        flex bison texinfo makeWrapper
+      ];
+      buildInputs = (args.buildInputs or [])
+        ++ compilers ++ [ bootstrapMercury readline ];
 
-      patchPhase = ''
+      patchPhase = (args.patchPhase or "") + ''
         # Fix calls to programs in /bin
         for p in uname pwd ; do
           for f in $(egrep -lr /bin/$p *) ; do
@@ -20,11 +24,11 @@ let
         done
       '';
 
-      preConfigure = ''
+      preConfigure = (args.preConfigure or "") + ''
         mkdir -p $out/lib/mercury/cgi-bin
       '';
 
-      configureFlags = [
+      configureFlags = (args.configureFlags or []) ++ [
         (
           if enableMinimal
           then "--enable-minimal-install"
@@ -32,12 +36,12 @@ let
         )
       ];
 
-      preBuild = ''
+      preBuild = (args.preBuild or "") + ''
         # Mercury buildsystem does not take -jN directly.
         makeFlags="PARALLEL=-j$NIX_BUILD_CORES" ;
       '';
 
-      postInstall = ''
+      postInstall = (args.postInstall or "") + ''
         # Wrap with compilers for the different targets.
         for e in $(ls $out/bin) ; do
           wrapProgram $out/bin/$e \
@@ -83,5 +87,6 @@ in rec {
       sha256 = "1x6k7siq9qh1fm87ddg0c0nmk59aw62m5v7fza2bkkshyp7d7qs8";
     };
     bootstrapMercury = mercury_14_bootstrap;
+    preConfigure = "./prepare.sh";
   };
 }
