@@ -1,11 +1,10 @@
 { stdenv, fetchurl, libgpgerror, gnupg, pkgconfig, glib, pth, libassuan
-, file, which
+, file, which, ncurses
 , autoreconfHook
 , git
 , texinfo
 , qtbase ? null
-, withPython ? false, swig2 ? null, python ? null
-, ncurses
+, pythonSupport ? false, swig2 ? null, python ? null
 }:
 
 let
@@ -27,11 +26,10 @@ stdenv.mkDerivation rec {
 
   propagatedBuildInputs =
     [ libgpgerror glib libassuan pth ]
-    ++ lib.optional (qtbase != null) qtbase
-    ++ lib.optionals withPython [ python ncurses swig2 ];
+    ++ lib.optional (qtbase != null) qtbase;
 
   nativeBuildInputs = [ file pkgconfig gnupg autoreconfHook git texinfo ]
-    ++ lib.optional withPython which;
+  ++ lib.optionals pythonSupport [ python swig2 which ncurses ];
 
   postPatch =''
     substituteInPlace ./configure --replace /usr/bin/file ${file}/bin/file
@@ -40,7 +38,7 @@ stdenv.mkDerivation rec {
   configureFlags = [
     "--enable-fixed-path=${gnupg}/bin"
     "--with-libgpg-error-prefix=${libgpgerror.dev}"
-  ] ++ lib.optional withPython "--enable-languages=python";
+  ] ++ lib.optional pythonSupport "--enable-languages=python";
 
   NIX_CFLAGS_COMPILE =
     # qgpgme uses Q_ASSERT which retains build inputs at runtime unless
