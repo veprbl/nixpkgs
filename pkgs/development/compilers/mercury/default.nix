@@ -4,8 +4,8 @@ readline, jdk, erlang }:
 
 let
   mkMercury = stdenv.lib.makeOverridable mkMercury';
-  mkMercury' = { src, version, enableMinimal ? false, compilers ? [ gcc ], bootstrapMercury ? null }:
-    stdenv.mkDerivation rec {
+  mkMercury' = args @ { src, version, enableMinimal ? false, compilers ? [ gcc ], bootstrapMercury ? null, ... }:
+    stdenv.mkDerivation (args // rec {
       name    = "mercury-${if enableMinimal then "minimal-" else ""}${version}";
       inherit src version;
 
@@ -62,9 +62,7 @@ let
         platforms = stdenv.lib.platforms.linux;
         maintainers = [ ];
       };
-
-
-    };
+    });
 
 in rec {
   mercury_14 = mkMercury rec {
