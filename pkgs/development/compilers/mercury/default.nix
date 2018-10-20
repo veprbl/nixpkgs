@@ -70,15 +70,15 @@ let
     });
 
 in rec {
-  mercury_14 = mkMercury rec {
+  mercury-14 = mkMercury rec {
     version = "14.01.1";
     src = fetchurl {
       url    = "https://dl.mercurylang.org/release/mercury-srcdist-${version}.tar.gz";
       sha256 = "12z8qi3da8q50mcsjsy5bnr4ia6ny5lkxvzy01a3c9blgbgcpxwq";
     };
   };
-  mercury_14_bootstrap = mercury_14.override { enableMinimal = true; };
-  mercury_14_full = mercury_14.override { compilers = [ gcc erlang jdk ]; };
+  mercury-14-bootstrap = mercury-14.override { enableMinimal = true; };
+  mercury-14-full = mercury-14.override { compilers = [ gcc erlang jdk ]; };
   mercury-git = mkMercury {
     version = "2018-10-19";
     src = fetchFromGitHub {
@@ -87,7 +87,10 @@ in rec {
       rev = "3cf72e496ab4d28ceb18c0564f5ba31d3d72c89a";
       sha256 = "1x6k7siq9qh1fm87ddg0c0nmk59aw62m5v7fza2bkkshyp7d7qs8";
     };
-    bootstrapMercury = mercury_14_bootstrap;
-    preConfigure = "./prepare.sh";
+    bootstrapMercury = mercury-14-bootstrap;
+    preConfigure = ''
+      ./prepare.sh
+    '';
   };
+  mercury-git-bootstrap = mercury-git.override { enableMinimal = true; };
 }
