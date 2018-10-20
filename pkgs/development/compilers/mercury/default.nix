@@ -1,6 +1,15 @@
-{ stdenv, fetchurl, gcc, flex, bison, texinfo, jdk, erlang, makeWrapper
-, readline }:
+{ stdenv, fetchurl, gcc, flex, bison, texinfo, makeWrapper
+, readline
+, enableMinimal ? true
+, enableJDK ? false, jdk ? null
+, enableErlang ? false, erlang ? null
+}:
 
+let
+  compilers = [ gcc ]
+    ++ stdenv.lib.optional enableJDK jdk
+    ++ stdenv.lib.optional enableErlang erlang;
+in
 stdenv.mkDerivation rec {
   name    = "mercury-${version}";
   version = "14.01.1";
@@ -10,8 +19,7 @@ stdenv.mkDerivation rec {
     sha256 = "12z8qi3da8q50mcsjsy5bnr4ia6ny5lkxvzy01a3c9blgbgcpxwq";
   };
 
-  buildInputs = [ gcc flex bison texinfo jdk erlang makeWrapper
-                  readline ];
+  buildInputs = compilers ++ [ flex bison texinfo makeWrapper readline ];
 
   patchPhase = ''
     # Fix calls to programs in /bin
@@ -23,9 +31,16 @@ stdenv.mkDerivation rec {
   '';
 
   preConfigure = ''
-    mkdir -p $out/lib/mercury/cgi-bin ;
-    configureFlags="--enable-deep-profiler=$out/lib/mercury/cgi-bin";
+    mkdir -p $out/lib/mercury/cgi-bin
   '';
+
+  configureFlags = [
+    (
+      if enableMinimal
+      then "--enable-minimal-install"
+      else "--enable-deep-profiler=${placeholder "out"}/lib/mercury/cgi-bin"
+    )
+  ];
 
   preBuild = ''
     # Mercury buildsystem does not take -jN directly.
@@ -36,9 +51,7 @@ stdenv.mkDerivation rec {
     # Wrap with compilers for the different targets.
     for e in $(ls $out/bin) ; do
       wrapProgram $out/bin/$e \
-        --prefix PATH ":" "${gcc}/bin" \
-        --prefix PATH ":" "${jdk}/bin" \
-        --prefix PATH ":" "${erlang}/bin"
+        --prefix PATH ":" "${stdenv.lib.makeBinPath compilers}"
     done
   '';
 
