@@ -7155,7 +7155,10 @@ with pkgs;
     pkgsi686Linux.callPackage ../development/compilers/mentor {}
   );
 
-  mercury = callPackage ../development/compilers/mercury { };
+  inherit (callPackage ../development/compilers/mercury { })
+    mercury_14
+    mercury_14_bootstrap;
+  mercury = mercury_14;
 
   microscheme = callPackage ../development/compilers/microscheme { };
 

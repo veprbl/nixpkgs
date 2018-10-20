@@ -3,7 +3,8 @@
 
 
 let
-  mkMercury = { src, version, enableMinimal ? false, enableJDK ? false, enableErlang ? false }:
+  mkMercury = stdenv.lib.makeOverridable mkMercury';
+  mkMercury' = { src, version, enableMinimal ? false, enableJDK ? false, enableErlang ? false }:
     let
         compilers = [ gcc ]
           ++ stdenv.lib.optional enableJDK jdk
@@ -70,12 +71,13 @@ let
   
       };
 
-  default = mkMercury rec {
+in rec {
+  mercury_14 = mkMercury rec {
     version = "14.01.1";
     src = fetchurl {
       url    = "https://dl.mercurylang.org/release/mercury-srcdist-${version}.tar.gz";
       sha256 = "12z8qi3da8q50mcsjsy5bnr4ia6ny5lkxvzy01a3c9blgbgcpxwq";
     };
   };
-in
-  default
+  mercury_14_bootstrap = mercury_14.override { enableMinimal = true; };
+}
