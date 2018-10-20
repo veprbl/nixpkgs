@@ -7157,7 +7157,9 @@ with pkgs;
 
   inherit (callPackage ../development/compilers/mercury { })
     mercury_14
-    mercury_14_bootstrap;
+    mercury_14_bootstrap
+    mercury_14_full
+    mercury-git;
   mercury = mercury_14;
 
   microscheme = callPackage ../development/compilers/microscheme { };
