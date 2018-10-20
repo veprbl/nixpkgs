@@ -6839,7 +6839,7 @@ with pkgs;
 
   cabal-install = haskell.lib.justStaticExecutables haskellPackages.cabal-install;
 
-  stack = haskell.lib.justStaticExecutables haskellPackages.stack;
+  stack = haskell.lib.justStaticExecutables haskell.packages.ghc861.stack;
   hlint = haskell.lib.justStaticExecutables haskellPackages.hlint;
 
   all-cabal-hashes = callPackage ../data/misc/hackage { };
@@ -17009,7 +17009,7 @@ with pkgs;
 
   googleearth = callPackage ../applications/misc/googleearth { };
 
-  google-chrome = callPackage ../applications/networking/browsers/google-chrome { gconf = gnome2.GConf; patchelf = patchelfUnstable; };
+  google-chrome = callPackage ../applications/networking/browsers/google-chrome { gconf = gnome2.GConf; };
 
   google-chrome-beta = google-chrome.override { chromium = chromiumBeta; channel = "beta"; };
 
@@ -18600,6 +18600,8 @@ with pkgs;
 
   rclone = callPackage ../applications/networking/sync/rclone { };
 
+  rclone-browser = libsForQt5.callPackage ../applications/networking/sync/rclone/browser.nix { };
+  
   rcs = callPackage ../applications/version-management/rcs { };
 
   rdesktop = callPackage ../applications/networking/remote/rdesktop { };
@@ -22360,7 +22362,7 @@ with pkgs;
   unity3d = callPackage ../development/tools/unity3d {
     stdenv = stdenv_32bit;
     gcc_32bit = pkgsi686Linux.gcc;
-    inherit (gnome2) GConf libgnomeui gnome_vfs;
+    inherit (gnome2) GConf;
   };
 
   urbit = callPackage ../misc/urbit { };
