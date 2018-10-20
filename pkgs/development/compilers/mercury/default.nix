@@ -11,9 +11,10 @@ let
 
       nativeBuildInputs = (args.nativeBuildInputs or []) ++ [
         flex bison texinfo makeWrapper
+        bootstrapMercury 
       ];
       buildInputs = (args.buildInputs or [])
-        ++ compilers ++ [ bootstrapMercury readline ];
+        ++ compilers ++ [ readline ];
 
       patchPhase = (args.patchPhase or "") + ''
         # Fix calls to programs in /bin
