@@ -1,5 +1,5 @@
 { stdenv, fetchurl, fetchFromGitHub, gcc, flex, bison, texinfo, makeWrapper ,
-readline, jdk, erlang }:
+readline, jdk, erlang, autoconf, automake, libtool, pkgconfig }:
 
 
 let
@@ -79,6 +79,13 @@ in rec {
   };
   mercury-14-bootstrap = mercury-14.override { enableMinimal = true; };
   mercury-14-full = mercury-14.override { compilers = [ gcc erlang jdk ]; };
+  mercury-rotd = mkMercury rec {
+    version = "rotd-2018-10-19";
+    src = fetchurl {
+      url = "https://dl.mercurylang.org/rotd/mercury-srcdist-${version}.tar.gz";
+      sha256 = "1drn1jp4xc263zwpjzcdbjgh24c03n8dhxpq5nmg8cy4sh36dg9q";
+    };
+  };
   mercury-git = mkMercury {
     version = "2018-10-19";
     src = fetchFromGitHub {
@@ -88,7 +95,10 @@ in rec {
       sha256 = "0j5mk47qksa74gvvj84myhh0lb5i6d8vd3x4iiikwx9y5qa9pgks";
       fetchSubmodules = true;
     };
-    bootstrapMercury = mercury-14-bootstrap;
+    bootstrapMercury = mercury-rotd.override { enableMinimal = true; };
+    nativeBuildInputs = [
+      autoconf automake libtool pkgconfig
+    ];
     preConfigure = ''
       touch boehm_gc/.git
       ./prepare.sh
