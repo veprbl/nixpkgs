@@ -90,6 +90,7 @@ in rec {
     };
     bootstrapMercury = mercury-14-bootstrap;
     preConfigure = ''
+      touch boehm_gc/.git
       ./prepare.sh
     '';
   };
