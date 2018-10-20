@@ -86,6 +86,7 @@ in rec {
       sha256 = "1drn1jp4xc263zwpjzcdbjgh24c03n8dhxpq5nmg8cy4sh36dg9q";
     };
   };
+  mercury-rotd-bootstrap = mercury-rotd.override { enableMinimal = true; };
   mercury-git = mkMercury {
     version = "2018-10-19";
     src = fetchFromGitHub {
@@ -95,7 +96,7 @@ in rec {
       sha256 = "0j5mk47qksa74gvvj84myhh0lb5i6d8vd3x4iiikwx9y5qa9pgks";
       fetchSubmodules = true;
     };
-    bootstrapMercury = mercury-rotd.override { enableMinimal = true; };
+    bootstrapMercury = mercury-rotd-bootstrap;
     nativeBuildInputs = [
       autoconf automake libtool pkgconfig
     ];
@@ -104,5 +105,4 @@ in rec {
       ./prepare.sh
     '';
   };
-  mercury-git-bootstrap = mercury-git.override { enableMinimal = true; };
 }

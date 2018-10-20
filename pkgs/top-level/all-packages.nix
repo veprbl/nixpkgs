@@ -7160,7 +7160,7 @@ with pkgs;
     mercury-14-bootstrap
     mercury-14-full
     mercury-rotd
-    mercury-git-bootstrap
+    mercury-rotd-bootstrap
     mercury-git;
   mercury = mercury-14;
 
