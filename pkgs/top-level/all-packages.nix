@@ -15824,6 +15824,7 @@ with pkgs;
   notmuch-bower = callPackage ../applications/networking/mailreaders/notmuch-bower {
     mercury = mercury-rotd;
   };
+  notmuch-bower-musl = pkgsMusl.notmuch-bower;
 
   bristol = callPackage ../applications/audio/bristol { };
 
