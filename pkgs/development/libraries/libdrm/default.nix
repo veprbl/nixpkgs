@@ -20,6 +20,9 @@ stdenv.mkDerivation rec {
     for a in */*-symbol-check ; do
       patchShebangs $a
     done
+  '' + stdenv.lib.optionalString stdenv.hostPlatform.isMusl ''
+    substituteInPlace tests/meson.build \
+      --replace "subdir('nouveau')" ""
   '';
 
 #  preConfigure = stdenv.lib.optionalString stdenv.isDarwin
