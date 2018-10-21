@@ -42,6 +42,8 @@ with lib;
     services.udev.packages = [ pkgs.udisks2 ];
 
     systemd.packages = [ pkgs.udisks2 ];
+
+    environment.etc."libblockdev/conf.d".source = "${pkgs.libblockdev}/etc/libblockdev/conf.d";
   };
 
 }
