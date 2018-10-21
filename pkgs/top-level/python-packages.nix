@@ -15778,6 +15778,15 @@ EOF
     };
   };
 
+  boltons = buildPythonPackage rec {
+    pname = "boltons";
+    version = "18.0.1";
+
+    src = fetchPypi {
+      inherit pname version;
+      sha256 = "1b7dd3892e949e7979f9ec4696b29e47e5b8f5ec0c231719bfb5e467202d04d1";
+    };
+  };
   maildir-deduplicate = buildPythonPackage rec {
     name = "maildir-deduplicate-${version}";
     version = "2.1.0";
@@ -15787,7 +15796,7 @@ EOF
       sha256 = "0hhb2gnh2gvzc1dc537hlmq4y80p72w7m3ayl7m0dznshln7yg16";
     };
 
-    propagatedBuildInputs = with self; [ click click-log progressbar2 tabulate ];
+    propagatedBuildInputs = with self; [ boltons click click-log progressbar2 tabulate ];
 
     meta = with stdenv.lib; {
       description = "Command-line tool to deduplicate mails from a set of maildir folders";
