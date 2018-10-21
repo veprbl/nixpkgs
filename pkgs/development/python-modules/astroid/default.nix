@@ -1,19 +1,17 @@
-{ lib, fetchFromGitHub, buildPythonPackage, pythonOlder, isPyPy
+{ lib, fetchPypi, buildPythonPackage, pythonOlder, isPyPy
 , lazy-object-proxy, six, wrapt, typing, typed-ast
 , pytestrunner, pytest
 }:
 
 buildPythonPackage rec {
   pname = "astroid";
-  version = "2018-10-01"; #"2.0.4";
+  version = "2.0.4";
 
   disabled = pythonOlder "3.4";
 
-  src = fetchFromGitHub {
-    owner = "PyCQA";
-    repo = "astroid";
-    rev = "e2fc3c5636544539cad69e25af7de155539558c0";
-    sha256 = "09spl7yw3f7i55p2wfvjqj6f09hpd4jijvcng8npgp3zjw42f1s7";
+  src = fetchPypi {
+    inherit pname version;
+    sha256 = "c7013d119ec95eb626f7a2011f0b63d0c9a095df9ad06d8507b37084eada1a8d";
   };
 
   # From astroid/__pkginfo__.py
