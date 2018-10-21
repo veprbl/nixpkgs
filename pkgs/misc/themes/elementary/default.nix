@@ -1,22 +1,18 @@
-{ stdenv, fetchFromGitHub }:
+{ stdenv, fetchFromGitHub, meson, ninja, gtk3 }:
 
 stdenv.mkDerivation rec {
   name = "elementary-gtk-theme-${version}";
-  version = "5.1.1";
+  version = "5.2.0";
 
   src = fetchFromGitHub {
     owner = "elementary";
     repo = "stylesheet";
     rev = version;
-    sha256 = "1749byc2lbxmprladn9n7k6jh79r8ffgayjn689gmqsrm6czsmh2";
+    sha256 = "0rfpqkbrrbaga8mdpr5s48f13w634dfyk4l44bmg8nxhvzcd88m4";
   };
 
-  dontBuild = true;
-
-  installPhase = ''
-    mkdir -p $out/share/themes/elementary
-    cp -r gtk-* plank $out/share/themes/elementary
-  '';
+  nativeBuildInputs = [ meson ninja ];
+  buildInputs = [ gtk3 ];
 
   meta = with stdenv.lib; {
     description = "GTK theme designed to be smooth, attractive, fast, and usable";
