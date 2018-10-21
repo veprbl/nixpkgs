@@ -5038,9 +5038,7 @@ with pkgs;
     gsettings-desktop-schemas = gnome3.gsettings-desktop-schemas;
   };
 
-  rename = callPackage ../tools/misc/rename {
-    inherit (perlPackages) buildPerlPackage;
-  };
+  rename = callPackage ../tools/misc/rename { };
 
   renameutils = callPackage ../tools/misc/renameutils { };
 
@@ -12966,13 +12964,9 @@ with pkgs;
   });
 
   perlPackages = perl528Packages;
-  inherit (perlPackages) perl buildPerlPackage;
-
-  perlXMLParser = perlPackages.XMLParser;
+  inherit (perlPackages) perl;
 
   ack = perlPackages.ack;
-
-  perlArchiveCpio = perlPackages.ArchiveCpio;
 
   perlcritic = perlPackages.PerlCritic;
 
@@ -20449,6 +20443,12 @@ with pkgs;
   };
 
   scummvm = callPackage ../games/scummvm { };
+
+  inherit (callPackage ../games/scummvm/games.nix { })
+    beneath-a-steel-sky
+    drascula-the-vampire-strikes-back
+    flight-of-the-amazon-queen
+    lure-of-the-temptress;
 
   scorched3d = callPackage ../games/scorched3d { };
 
