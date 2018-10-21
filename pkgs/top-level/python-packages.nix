@@ -15802,6 +15802,10 @@ EOF
       boltons click click-log progressbar2 tabulate
     ];
 
+    buildInputs = [ pkgs.glibcLocales ];
+
+    LC_ALL="en_US.UTF-8";
+
     checkInputs = with self; [ arrow pylint pycodestyle pytest pytestcov ];
 
     meta = with stdenv.lib; {
