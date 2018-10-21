@@ -26,10 +26,11 @@ stdenv.mkDerivation rec {
 
   propagatedBuildInputs =
     [ libgpgerror glib libassuan pth ]
-    ++ lib.optional (qtbase != null) qtbase;
+    ++ lib.optional (qtbase != null) qtbase
+    ++ lib.optionals pythonSupport [ python swig2 ncurses ];
 
   nativeBuildInputs = [ file pkgconfig gnupg autoreconfHook git texinfo ]
-  ++ lib.optionals pythonSupport [ python swig2 which ncurses ];
+  ++ lib.optional pythonSupport which;
 
   postPatch =''
     substituteInPlace ./configure --replace /usr/bin/file ${file}/bin/file
