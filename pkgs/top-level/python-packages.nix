@@ -15780,16 +15780,14 @@ EOF
 
   maildir-deduplicate = buildPythonPackage rec {
     name = "maildir-deduplicate-${version}";
-    version = "1.0.2";
-
-    disabled = !isPy27;
+    version = "2.1.0";
 
     src = pkgs.fetchurl {
       url = "mirror://pypi/m/maildir-deduplicate/${name}.tar.gz";
-      sha256 = "1xy5z756alrjgpl9qx2gdx898rw1mryrqkwmipbh39mgrvkl3fz9";
+      sha256 = "0hhb2gnh2gvzc1dc537hlmq4y80p72w7m3ayl7m0dznshln7yg16";
     };
 
-    propagatedBuildInputs = with self; [ click ];
+    propagatedBuildInputs = with self; [ click click-log progressbar2 tabulate ];
 
     meta = with stdenv.lib; {
       description = "Command-line tool to deduplicate mails from a set of maildir folders";
