@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   name = "quaternion-${version}";
-  version = "rc0.0.9.3";
+  version = "0.0.9.3";
 
   src = fetchFromGitHub {
     owner  = "QMatrixClient";
     repo   = "Quaternion";
-    rev    = "${version}";
-    sha256 = "1qn46ymfl5mm3izb498b511g2mjc51wgm9kjbmikjq2bhn2wlk4a";
+    rev    = "v${version}";
+    sha256 = "1hr9zqf301rg583n9jv256vzj7y57d8qgayk7c723bfknf1s6hh3";
   };
 
   buildInputs = [ qtbase qtquickcontrols qttools libqmatrixclient ];
