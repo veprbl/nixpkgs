@@ -5138,7 +5138,7 @@ with pkgs;
 
   rzip = callPackage ../tools/compression/rzip { };
 
-  s-tui = callPackage ../tools/system/s-tui { };
+  s-tui = callPackage ../tools/system/s-tui { pythonPackages = python3Packages; };
 
   s3backer = callPackage ../tools/filesystems/s3backer { };
 
