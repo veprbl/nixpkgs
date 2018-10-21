@@ -555,8 +555,6 @@ let
     };
   };
 
-  ArchiveZip_1_53 = ArchiveZip;
-
   AudioScan = buildPerlPackage rec {
     name = "Audio-Scan-1.01";
     src = fetchurl {
@@ -4474,7 +4472,6 @@ let
     };
   };
 
-  DigestHMAC_SHA1 = DigestHMAC;
   DigestJHash = buildPerlPackage rec {
     name = "Digest-JHash-0.10";
     src = fetchurl {
@@ -12116,7 +12113,7 @@ let
       sha256 = "18wxvp7psqrx0zdvg47azrals572hv9fx1s3p0q65s87lnk3q63l";
     };
     outputs = [ "out" ];
-    buildInputs = [ DBDmysql DBI DigestMD5 IOSocketSSL TermReadKey TimeHiRes ];
+    buildInputs = [ DBDmysql DBI IOSocketSSL TermReadKey TimeHiRes ];
     meta = {
       description = ''Collection of advanced command-line tools to perform a variety of MySQL and system tasks.'';
       homepage = http://www.percona.com/software/percona-toolkit;
@@ -13448,6 +13445,7 @@ let
       url = "mirror://cpan/authors/id/Y/YV/YVES/${name}.tar.gz";
       sha256 = "02hbk5dwq7fpnyb3vp7xxhb41ra48xhghl13p9pjq9lzsqlb6l19";
     };
+
     buildInputs = [ SerealDecoder TestDeep TestDifferences TestLongString TestWarn ];
     meta = {
       homepage = https://github.com/Sereal/Sereal;
@@ -14141,7 +14139,7 @@ let
       sha256 = "1y9lfhxgwyysybing72n3hng2db5njpk2dbb80vskdz75r7ffqjp";
     };
 
-    buildInputs = [ ArchiveZip_1_53 pkgs.file ];
+    buildInputs = [ ArchiveZip pkgs.file ];
     meta.broken = true;
   };
 
@@ -14155,7 +14153,7 @@ let
       sha256 = "1y9lfhxgwyysybing72n3hng2db5njpk2dbb80vskdz75r7ffqjp";
     };
 
-    buildInputs = [ ArchiveZip_1_53 libfile-stripnondeterminism pkgs.file ];
+    buildInputs = [ ArchiveZip libfile-stripnondeterminism pkgs.file ];
 
     meta = with stdenv.lib; {
       description = "A Perl module for stripping bits of non-deterministic information";
@@ -14221,7 +14219,6 @@ let
     };
   };
 
-  SubExporterUtil = SubExporter;
   SubIdentify = buildPerlPackage rec {
     name = "Sub-Identify-0.14";
     src = fetchurl {
