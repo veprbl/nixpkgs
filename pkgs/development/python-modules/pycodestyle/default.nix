@@ -1,14 +1,12 @@
-{ lib, buildPythonPackage, fetchFromGitHub }:
+{ lib, buildPythonPackage, fetchPypi }:
 
 buildPythonPackage rec {
   pname = "pycodestyle";
-  version = "2018-09-06";
+  version = "2.4.0";
 
-  src = fetchFromGitHub {
-    owner = "PyCQA";
-    repo = pname;
-    rev = "c3d2cbd744236c3a41d1013c9dce2712dcc4eee0";
-    sha256 = "1mryh898spzh407cyj1azdz2gls17g1x1m7fv6bfdcm2kxj7zm2y";
+  src = fetchPypi {
+    inherit pname version;
+    sha256 = "cbfca99bd594a10f674d0cd97a3d802a1fdef635d4361e1a2658de47ed261e3a";
   };
 
   meta = with lib; {
