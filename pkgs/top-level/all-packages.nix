@@ -15826,7 +15826,15 @@ with pkgs;
   notmuch-bower = callPackage ../applications/networking/mailreaders/notmuch-bower {
     mercury = mercury-rotd;
   };
-  notmuch-bower-musl = pkgsMusl.notmuch-bower.override { inherit pandoc; };
+  notmuch-bower-musl = pkgsMusl.notmuch-bower.override {
+    # Only needed for docs
+    inherit pandoc;
+    # gpgme -> gnupg
+    # gnupg -> guiSupport
+    #      \-> libusb -> libusb1 -> "udev" (systemd)
+    # So for now just used non-musl gpgme
+    inherit gpgme;
+  };
 
   bristol = callPackage ../applications/audio/bristol { };
 
