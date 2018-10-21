@@ -2368,6 +2368,8 @@ with pkgs;
 
   carp = callPackage ../development/compilers/carp { };
 
+  cholmod-extra = callPackage ../development/libraries/science/math/cholmod-extra { };
+
   emscriptenVersion = "1.37.36";
 
   emscripten = callPackage ../development/compilers/emscripten { };
@@ -12964,8 +12966,6 @@ with pkgs;
   perlPackages = perl528Packages;
   inherit (perlPackages) perl;
 
-  perlXMLParser = perlPackages.XMLParser;
-
   ack = perlPackages.ack;
 
   perlcritic = perlPackages.PerlCritic;
@@ -20461,6 +20461,12 @@ with pkgs;
   };
 
   scummvm = callPackage ../games/scummvm { };
+
+  inherit (callPackage ../games/scummvm/games.nix { })
+    beneath-a-steel-sky
+    drascula-the-vampire-strikes-back
+    flight-of-the-amazon-queen
+    lure-of-the-temptress;
 
   scorched3d = callPackage ../games/scorched3d { };
 
