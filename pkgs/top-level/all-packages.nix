@@ -8567,6 +8567,8 @@ with pkgs;
 
   kubicorn = callPackage ../development/tools/kubicorn {  };
 
+  kube-prompt = callPackage ../development/tools/kube-prompt { };
+
   kustomize = callPackage ../development/tools/kustomize { };
 
   kythe = callPackage ../development/tools/kythe { };
