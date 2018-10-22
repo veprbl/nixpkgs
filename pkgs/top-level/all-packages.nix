@@ -12907,6 +12907,8 @@ with pkgs;
 
   leaps = callPackage ../development/tools/leaps { };
 
+  vgo2nix = callPackage ../development/tools/vgo2nix { };
+
   ws = callPackage ../development/tools/ws { };
 
   ### DEVELOPMENT / JAVA MODULES
@@ -15833,6 +15835,8 @@ with pkgs;
 
   brackets = callPackage ../applications/editors/brackets { gconf = gnome2.GConf; };
 
+  brave = callPackage ../applications/networking/browsers/brave { };
+
   notmuch-bower = callPackage ../applications/networking/mailreaders/notmuch-bower {
     mercury = mercury-rotd;
   };
@@ -18627,7 +18631,7 @@ with pkgs;
   rclone = callPackage ../applications/networking/sync/rclone { };
 
   rclone-browser = libsForQt5.callPackage ../applications/networking/sync/rclone/browser.nix { };
-  
+
   rcs = callPackage ../applications/version-management/rcs { };
 
   rdesktop = callPackage ../applications/networking/remote/rdesktop { };
