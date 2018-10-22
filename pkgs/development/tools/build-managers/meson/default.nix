@@ -37,6 +37,8 @@ python3Packages.buildPythonApplication rec {
       src = ./fix-rpath.patch;
       inherit (builtins) storeDir;
     })
+
+      ./meson-debug.patch.txt
   ];
 
   setupHook = ./setup-hook.sh;
