@@ -14,7 +14,7 @@ stdenv.mkDerivation rec {
   name = "openal-soft-${version}";
 
   src = fetchurl {
-    url = "http://kcat.strangesoft.net/openal-releases/${name}.tar.bz2";
+    url = "http://openal-soft.org/openal-releases/${name}.tar.bz2";
     sha256 = "1mhf5bsb58s1xk6hvxl7ly7rd4rpl9z8h07xl1q94brywykg7bgi";
   };
 
@@ -31,7 +31,7 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "OpenAL alternative";
-    homepage = http://kcat.strangesoft.net/openal.html;
+    homepage = http://openal-soft.org;
     license = licenses.lgpl2;
     maintainers = with maintainers; [ftrvxmtrx];
     platforms = platforms.unix;
