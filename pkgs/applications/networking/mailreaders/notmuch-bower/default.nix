@@ -24,6 +24,7 @@ stdenv.mkDerivation rec {
   patches = [
     ./0001-convert-inbox-tag-to-single-char-indicator-hide-impo.patch
     ./0002-hide-more-tags-that-would-be-painful-to-mass-change.patch
+    ./0003-lists.patch
   ];
 
   installPhase = ''

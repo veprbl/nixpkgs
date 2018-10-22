@@ -1,7 +1,7 @@
 From 6af819cb6e907830ba89909b6d446440114c3ec9 Mon Sep 17 00:00:00 2001
 From: Will Dietz <w@wdtz.org>
 Date: Thu, 18 Oct 2018 15:20:13 -0500
-Subject: [PATCH 2/2] hide more tags that would be painful to mass-change
+Subject: [PATCH 2/3] hide more tags that would be painful to mass-change
 
 ---
  src/tags.m | 9 +++++++++
