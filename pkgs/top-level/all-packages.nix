@@ -2368,6 +2368,8 @@ with pkgs;
 
   carp = callPackage ../development/compilers/carp { };
 
+  cholmod-extra = callPackage ../development/libraries/science/math/cholmod-extra { };
+
   emscriptenVersion = "1.37.36";
 
   emscripten = callPackage ../development/compilers/emscripten { };
@@ -10247,6 +10249,8 @@ with pkgs;
     usePulseAudio = config.pulseaudio or stdenv.isLinux;
     inherit (darwin.apple_sdk.frameworks) CoreAudio CoreServices AudioUnit;
   };
+
+  libaosd = callPackage ../development/libraries/libaosd { };
 
   libabw = callPackage ../development/libraries/libabw { };
 
