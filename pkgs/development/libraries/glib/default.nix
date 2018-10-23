@@ -115,8 +115,9 @@ stdenv.mkDerivation rec {
     done
 
     # Add gio-launch-desktop to $out so we can refer to it from $dev
-    mv "$dev/bin/gio-launch-desktop" "$out/bin"
-    ln -s "$out/bin/gio-launch-desktop" "$bin/bin"
+    mkdir -p "$out/bin"
+    mv "$dev/bin/gio-launch-desktop" "$out/bin/"
+    ln -s "$out/bin/gio-launch-desktop" "$bin/bin/"
 
     moveToOutput "share/glib-2.0" "$dev"
     substituteInPlace "$dev/bin/gdbus-codegen" --replace "$out" "$dev"
