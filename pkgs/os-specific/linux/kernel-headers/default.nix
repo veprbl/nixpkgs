@@ -4,7 +4,7 @@
 }:
 
 let
-  common = { version, sha256, patches ? [] }: stdenvNoCC.mkDerivation {
+  common = { version, sha256, patches ? [] }: stdenvNoCC.mkDerivation ({
     name = "linux-headers-${version}";
 
     src = fetchurl {
@@ -17,9 +17,10 @@ let
     # It may look odd that we use `stdenvNoCC`, and yet explicit depend on a cc.
     # We do this so we have a build->build, not build->host, C compiler.
     depsBuildBuild = [ buildPackages.stdenv.cc ];
-    nativeBuildInputs = [ perl elf-header ];
-
-    hardeningDisable = lib.optional stdenvNoCC.buildPlatform.isDarwin "format";
+    # TODO make unconditional next mass rebuild
+    nativeBuildInputs = [ perl ] ++ lib.optional
+      (stdenvNoCC.hostPlatform != stdenvNoCC.buildPlatform)
+      elf-header;
 
     extraIncludeDirs = lib.optional stdenvNoCC.hostPlatform.isPowerPC ["ppc"];
 
@@ -27,7 +28,8 @@ let
     # and causing mass rebuild
     inherit patches;
 
-    makeFlags = [
+    # TODO avoid native hack next rebuild
+    makeFlags = if stdenvNoCC.hostPlatform == stdenvNoCC.buildPlatform then null else [
       "SHELL=bash"
       # Avoid use of runtime build->host compilers for checks. These
       # checks only cared to work around bugs in very old compilers, so
@@ -39,8 +41,11 @@ let
       "HOSTCXX:=$(BUILD_CXX)"
     ];
 
+    # TODO avoid native hack next rebuild
     # Skip clean on darwin, case-sensitivity issues.
-    buildPhase = lib.optionalString (!stdenvNoCC.buildPlatform.isDarwin) ''
+    buildPhase = if stdenvNoCC.hostPlatform == stdenvNoCC.buildPlatform then ''
+      make mrproper headers_check SHELL=bash
+    '' else lib.optionalString (!stdenvNoCC.buildPlatform.isDarwin) ''
       make mrproper $makeFlags
     ''
     # For some reason, doing `make install_headers` twice, first without
@@ -50,12 +55,17 @@ let
       make headers_install $makeFlags
     '';
 
-    checkPhase = ''
+    # TODO avoid native hack next rebuild
+    checkPhase = if stdenvNoCC.hostPlatform == stdenvNoCC.buildPlatform then null else ''
       make headers_check $makeFlags
     '';
 
-    installPhase = ''
+    # TODO avoid native hack next rebuild
+    installPhase = (if stdenvNoCC.hostPlatform == stdenvNoCC.buildPlatform then ''
+      make INSTALL_HDR_PATH=$out headers_install
+    '' else ''
       make headers_install INSTALL_HDR_PATH=$out $makeFlags
+    '') + ''
 
       # Some builds (e.g. KVM) want a kernel.release.
       mkdir -p $out/include/config
@@ -67,13 +77,17 @@ let
       license = licenses.gpl2;
       platforms = platforms.linux;
     };
-  };
+  } // lib.optionalAttrs (stdenvNoCC.hostPlatform != stdenvNoCC.buildPlatform) {
+    # TODO Make unconditional next mass rebuild
+    hardeningDisable = lib.optional stdenvNoCC.buildPlatform.isDarwin "format";
+  });
 in {
 
   linuxHeaders = common {
     version = "4.19";
     sha256 = "18a92z17alh5kkvjv7l9z8wk5jgdb6raawdfkpwx9bi8amjzas0c";
-    patches = [
+    # TODO make unconditional next mass rebuild
+    patches = lib.optionals (stdenvNoCC.hostPlatform != stdenvNoCC.buildPlatform) [
        ./no-relocs.patch # for building x86 kernel headers on non-ELF platforms
        ./no-dynamic-cc-version-check.patch # so we can use `stdenvNoCC`, see `makeFlags` above
     ];
