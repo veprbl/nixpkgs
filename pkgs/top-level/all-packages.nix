@@ -1111,6 +1111,8 @@ with pkgs;
 
   cloud-init = callPackage ../tools/virtualization/cloud-init { };
 
+  cloudflared = callPackage ../applications/networking/cloudflared { };
+
   cloudmonkey = callPackage ../tools/virtualization/cloudmonkey { };
 
   clib = callPackage ../tools/package-management/clib { };
@@ -12187,6 +12189,8 @@ with pkgs;
 
   shibboleth-sp = callPackage ../development/libraries/shibboleth-sp { };
 
+  skaffold = callPackage ../development/tools/skaffold { };
+
   skalibs = skawarePackages.skalibs;
 
   skawarePackages = recurseIntoAttrs {
@@ -17217,9 +17221,11 @@ with pkgs;
 
   wlc = callPackage ../development/libraries/wlc { };
   wlroots = callPackage ../development/libraries/wlroots { };
-  rootston = wlroots.bin;
+
   orbment = callPackage ../applications/window-managers/orbment { };
+
   sway = callPackage ../applications/window-managers/sway { };
+  sway-beta = callPackage ../applications/window-managers/sway/beta.nix { };
 
   velox = callPackage ../applications/window-managers/velox {
     stConf = config.st.conf or null;
@@ -17725,6 +17731,8 @@ with pkgs;
   };
 
   makeself = callPackage ../applications/misc/makeself { };
+
+  mako = callPackage ../applications/misc/mako { };
 
   mapmap = libsForQt5.callPackage ../applications/video/mapmap { };
 
