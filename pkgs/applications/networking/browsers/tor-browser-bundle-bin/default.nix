@@ -49,7 +49,7 @@
 
 # Whether to disable multiprocess support to work around crashing tabs
 # TODO: fix the underlying problem instead of this terrible work-around
-, disableContentSandbox ? false
+, disableContentSandbox ? true
 
 # Extra preferences
 , extraPrefs ? ""
