@@ -3459,6 +3459,8 @@ with pkgs;
 
   jira-cli = callPackage ../development/tools/jira_cli { };
 
+  jitterentropy = callPackage ../development/libraries/jitterentropy { };
+
   jl = haskellPackages.callPackage ../development/tools/jl { };
 
   jmespath = callPackage ../development/tools/jmespath { };
@@ -5083,7 +5085,7 @@ with pkgs;
     inherit (pythonPackages) sphinx;
   };
 
-  rng_tools = callPackage ../tools/security/rng-tools { };
+  rng-tools = callPackage ../tools/security/rng-tools { };
 
   rnv = callPackage ../tools/text/xml/rnv { };
 
@@ -14378,6 +14380,8 @@ with pkgs;
 
     ply = callPackage ../os-specific/linux/ply { };
 
+    r8168 = callPackage ../os-specific/linux/r8168 { };
+
     rtl8192eu = callPackage ../os-specific/linux/rtl8192eu { };
 
     rtl8723bs = callPackage ../os-specific/linux/rtl8723bs { };
@@ -21198,6 +21202,8 @@ with pkgs;
   parmetis = callPackage ../development/libraries/science/math/parmetis {
     mpi = openmpi;
   };
+
+  QuadProgpp = callPackage ../development/libraries/science/math/QuadProgpp { };
 
   scs = callPackage ../development/libraries/science/math/scs {
     liblapack = liblapackWithoutAtlas;
