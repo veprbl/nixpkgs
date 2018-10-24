@@ -3461,6 +3461,8 @@ with pkgs;
 
   jira-cli = callPackage ../development/tools/jira_cli { };
 
+  jitterentropy = callPackage ../development/libraries/jitterentropy { };
+
   jl = haskellPackages.callPackage ../development/tools/jl { };
 
   jmespath = callPackage ../development/tools/jmespath { };
@@ -5078,7 +5080,7 @@ with pkgs;
     inherit (pythonPackages) sphinx;
   };
 
-  rng_tools = callPackage ../tools/security/rng-tools { };
+  rng-tools = callPackage ../tools/security/rng-tools { };
 
   rnv = callPackage ../tools/text/xml/rnv { };
 
