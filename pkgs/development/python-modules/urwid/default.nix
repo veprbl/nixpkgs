@@ -1,13 +1,18 @@
-{ stdenv, buildPythonPackage, fetchPypi, fetchpatch }:
+{ stdenv, buildPythonPackage, fetchFromGitHub, fetchpatch, glibcLocales }:
 
 buildPythonPackage (rec {
   pname = "urwid";
-  version = "2.0.1";
+  version = "2018-03-13";
 
-  src = fetchPypi {
-    inherit pname version;
-    sha256 = "1g6cpicybvbananpjikmjk8npmjk4xvak1wjzji62wc600wkwkb4";
+  src = fetchFromGitHub {
+    owner = pname;
+    repo = pname;
+    rev = "16469df346bc4b4b7a1035e06048bb6f5d9aa111";
+    sha256 = "1xcfxsgnzjhsx0zbgrhh74zm34fxqbqnk31k4c9h2b7g0l77gwmb";
   };
+
+  #propagatedBuildInputs = [ glibcLocales ];
+  checkInputs = [ glibcLocales ];
 
   meta = with stdenv.lib; {
     description = "A full-featured console (xterm et al.) user interface library";
