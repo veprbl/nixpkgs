@@ -1,11 +1,10 @@
-{ pkgs, stdenv, python, libX11, autoconf, automake, lib, ocaml, gcc, fetchFromGitHub, fetchurl, zlib, bzip2, openssl, lzma, curl, pkgconfig, perl, ncurses, doxygen, ccache, libXpm }:
-# The call.package of nix will ensure that the packages above is passed in appropriately
+{ stdenv, lib, fetchFromGitHub, perl, htslib, samtools, root, yeppp, curl, openssl, bzip2, zlib, lzma, ncurses }:
 let 
 
   cnvnatorVersion = "0.3.3";
   yeppVersion = "1.0.0";
   samtoolsVersion = "1.3.1";
-  htslibVersion = "1.3.1";
+  htslibVersion = "1.3.2";
 
   root = pkgs.root.overrideAttrs (oldAttrs: rec {
     
@@ -19,13 +18,11 @@ let
 
   });
 
-  /*
   htslib = pkgs.htslib.overrideAttrs (oldAttrs: rec{
     
-    name = "htslib-${version}";
-    version = "1.3.1";
+    name = "htslib-${htslibVersion}";
     src = fetchurl {
-      url =  "https://github.com/samtools/htslib/releases/download/${version}/${name}.tar.bz2";
+      url =  "https://github.com/samtools/htslib/releases/download/${htslibVersion}/${name}.tar.bz2";
       sha256 = "1rja282fwdc25ql6izkhdyh8ppw8x2fs0w0js78zgkmqjlikmma9";
     };
 
