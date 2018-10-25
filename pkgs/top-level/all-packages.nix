@@ -977,6 +977,9 @@ with pkgs;
 
   bruteforce-luks = callPackage ../tools/security/bruteforce-luks { };
 
+  breakpointHook = assert stdenv.isLinux;
+    makeSetupHook { } ../build-support/setup-hooks/breakpoint-hook.sh;
+
   bsod = callPackage ../misc/emulators/bsod { };
 
   btrfs-progs = callPackage ../tools/filesystems/btrfs-progs { };
@@ -5283,6 +5286,8 @@ with pkgs;
 
   signal-desktop = callPackage ../applications/networking/instant-messengers/signal-desktop { };
 
+  signify = callPackage ../tools/security/signify { };
+
   # aka., pgp-tools
   signing-party = callPackage ../tools/security/signing-party { };
 
@@ -5629,6 +5634,8 @@ with pkgs;
   tinc = callPackage ../tools/networking/tinc { };
 
   tie = callPackage ../development/tools/misc/tie { };
+
+  tikzit = libsForQt5.callPackage ../tools/typesetting/tikzit { };
 
   tilix = callPackage ../applications/misc/tilix { };
 
@@ -6458,6 +6465,8 @@ with pkgs;
     inherit (darwin) bootstrap_cmds;
   };
 
+  cdb = callPackage ../development/tools/database/cdb { };
+
   chez = callPackage ../development/compilers/chez {
     inherit (darwin) cctools;
   };
@@ -6850,7 +6859,7 @@ with pkgs;
 
   cabal-install = haskell.lib.justStaticExecutables haskellPackages.cabal-install;
 
-  stack = haskell.lib.justStaticExecutables haskell.packages.ghc861.stack;
+  stack = haskell.lib.justStaticExecutables haskellPackages.stack;
   hlint = haskell.lib.justStaticExecutables haskellPackages.hlint;
 
   all-cabal-hashes = callPackage ../data/misc/hackage { };
@@ -11587,8 +11596,8 @@ with pkgs;
   openh264 = callPackage ../development/libraries/openh264 { };
 
   openjpeg_1 = callPackage ../development/libraries/openjpeg/1.x.nix { };
-  openjpeg_2_1 = callPackage ../development/libraries/openjpeg/2.1.nix { };
-  openjpeg = openjpeg_2_1;
+  openjpeg_2 = callPackage ../development/libraries/openjpeg/2.x.nix { };
+  openjpeg = openjpeg_2;
 
   openpa = callPackage ../development/libraries/openpa { };
 
@@ -16011,6 +16020,8 @@ with pkgs;
 
   cni = callPackage ../applications/networking/cluster/cni {};
   cni-plugins = callPackage ../applications/networking/cluster/cni/plugins.nix {};
+
+  cntr = callPackage ../applications/virtualization/cntr { };
 
   communi = libsForQt5.callPackage ../applications/networking/irc/communi { };
 
@@ -21194,6 +21205,8 @@ with pkgs;
   metis = callPackage ../development/libraries/science/math/metis {};
 
   nauty = callPackage ../applications/science/math/nauty {};
+
+  or-tools = callPackage ../development/libraries/science/math/or-tools {};
 
   rubiks = callPackage ../development/libraries/science/math/rubiks { };
 

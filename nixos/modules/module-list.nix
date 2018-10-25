@@ -120,6 +120,7 @@
   ./programs/sysdig.nix
   ./programs/systemtap.nix
   ./programs/sway.nix
+  ./programs/sway-beta.nix
   ./programs/thefuck.nix
   ./programs/tmux.nix
   ./programs/udevil.nix
@@ -503,6 +504,7 @@
   ./services/networking/dnsmasq.nix
   ./services/networking/ejabberd.nix
   ./services/networking/epmd.nix
+  ./services/networking/eternal-terminal.nix
   ./services/networking/fakeroute.nix
   ./services/networking/ferm.nix
   ./services/networking/firefox/sync-server.nix
