@@ -1293,9 +1293,9 @@ in {
 
   pyhepmc = callPackage ../development/python-modules/pyhepmc { };
 
-  pytest = self.pytest_37;
+  pytest = self.pytest_39;
 
-  pytest_37 = callPackage ../development/python-modules/pytest {
+  pytest_39 = callPackage ../development/python-modules/pytest {
     # hypothesis tests require pytest that causes dependency cycle
     hypothesis = self.hypothesis.override { doCheck = false; };
   };
@@ -10633,7 +10633,7 @@ EOF
 
   tensorflow-tensorboard = callPackage ../development/python-modules/tensorflow-tensorboard { };
 
-  tensorflow =
+  tensorflow = disabledIf isPy37 (
     if stdenv.isDarwin
     then callPackage ../development/python-modules/tensorflow/bin.nix { }
     else callPackage ../development/python-modules/tensorflow/bin.nix rec {
@@ -10641,7 +10641,7 @@ EOF
       inherit (pkgs.linuxPackages) nvidia_x11;
       cudatoolkit = pkgs.cudatoolkit_9_0;
       cudnn = pkgs.cudnn_cudatoolkit_9_0;
-    };
+    });
 
   tensorflowWithoutCuda = self.tensorflow.override {
     cudaSupport = false;

@@ -13445,7 +13445,6 @@ let
       url = "mirror://cpan/authors/id/Y/YV/YVES/${name}.tar.gz";
       sha256 = "02hbk5dwq7fpnyb3vp7xxhb41ra48xhghl13p9pjq9lzsqlb6l19";
     };
-
     buildInputs = [ SerealDecoder TestDeep TestDifferences TestLongString TestWarn ];
     meta = {
       homepage = https://github.com/Sereal/Sereal;
