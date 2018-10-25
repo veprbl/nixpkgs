@@ -49,6 +49,14 @@ in buildPythonPackage rec {
         ''--exclude="(${builtins.concatStringsSep "|" excludedTests})"''}
   '';
 
+  patches = [
+    (fetchpatch {
+      name = "exclude-pycodestyle-test-if-not-avail.patch";
+      url = https://github.com/cython/cython/commit/5dfefdadf6c20bf631ea3b6e567eede2f1ddd3d0.patch;
+      sha256 = "0hdsy2zdc910vhhfckrvnjfli0v766k8s37k203sk557qnhwvica";
+    })
+  ];
+
   doCheck = !stdenv.isDarwin;
 
   meta = {
