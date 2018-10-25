@@ -1,29 +1,34 @@
-{ stdenv, fetchFromGitHub, qmake, qtbase, qttools }:
+{ stdenv, fetchFromGitHub, qmake, qttools }:
 
 stdenv.mkDerivation rec {
   name = "gpxsee-${version}";
-  version = "4.19";
+  version = "6.2";
 
   src = fetchFromGitHub {
     owner = "tumic0";
     repo = "GPXSee";
     rev = version;
-    sha256 = "1xjf2aawf633c1ydhpcsjhdlfkjkfsjbcgjd737xpfv1wjz99l4l";
+    sha256 = "13hd6n5mzkk4nx9v9dwg8vvixr73zjba72h6vmxvz9fmywc4rs5p";
   };
 
-  nativeBuildInputs = [ qmake qttools ];
+  nativeBuildInputs = [ qmake ];
+  buildInputs = [ qttools ];
 
   preConfigure = ''
     substituteInPlace src/config.h --replace /usr/share/gpxsee $out/share/gpxsee
     lrelease lang/*.ts
   '';
 
-  preFixup = ''
+  installPhase = ''
     install -Dm755 GPXSee $out/bin/GPXSee
-
     mkdir -p $out/share/gpxsee
-    cp pkg/maps.txt $out/share/gpxsee
+    cp -r pkg/csv $out/share/gpxsee/
+    cp -r pkg/maps $out/share/gpxsee/
+    mkdir -p $out/share/gpxsee/translations
+    cp -r lang/*.qm $out/share/gpxsee/translations
   '';
+
+  enableParallelBuilding = true;
 
   meta = with stdenv.lib; {
     homepage = http://www.gpxsee.org/;

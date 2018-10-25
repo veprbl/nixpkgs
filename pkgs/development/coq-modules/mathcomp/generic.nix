@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, coq, ncurses, which
+{ stdenv, coq, ncurses, which
 , graphviz, withDoc ? false
 , src, name
 }:
@@ -9,7 +9,7 @@ stdenv.mkDerivation {
   inherit src;
 
   nativeBuildInputs = stdenv.lib.optionals withDoc [ graphviz ];
-  buildInputs = [ coq.ocaml coq.findlib coq.camlp5 ncurses which ];
+  buildInputs = with coq.ocamlPackages; [ ocaml findlib camlp5 ncurses which ];
   propagatedBuildInputs = [ coq ];
 
   enableParallelBuilding = true;

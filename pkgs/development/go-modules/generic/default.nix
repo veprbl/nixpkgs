@@ -2,6 +2,7 @@
 , removeReferencesTo, fetchFromGitHub }:
 
 { name, buildInputs ? [], nativeBuildInputs ? [], passthru ? {}, preFixup ? ""
+, shellHook ? ""
 
 # We want parallel builds by default
 , enableParallelBuilding ? true
@@ -151,6 +152,10 @@ go.stdenv.mkDerivation (
       fi
     }
 
+    if (( "''${NIX_DEBUG:-0}" >= 1 )); then
+      buildFlagsArray+=(-x)
+    fi
+
     if [ ''${#buildFlagsArray[@]} -ne 0 ]; then
       declare -p buildFlagsArray > $TMPDIR/buildFlagsArray
     else
@@ -165,6 +170,7 @@ go.stdenv.mkDerivation (
     runHook postBuild
   '';
 
+  doCheck = args.doCheck or false;
   checkPhase = args.checkPhase or ''
     runHook preCheck
 
@@ -198,7 +204,7 @@ go.stdenv.mkDerivation (
   ''
   ) goPath) + ''
     export GOPATH=${lib.concatStringsSep ":" ( ["$d"] ++ ["$GOPATH"] ++ ["$PWD"] ++ extraSrcPaths)}
-  '';
+  '' + shellHook;
 
   disallowedReferences = lib.optional (!allowGoReference) go
     ++ lib.optional (!dontRenameImports) govers;

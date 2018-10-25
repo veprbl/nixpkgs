@@ -27,6 +27,7 @@ let
     meta = with lib; {
       description = "Free TLS/SSL implementation";
       homepage    = "https://www.libressl.org";
+      license = with licenses; [ publicDomain bsdOriginal bsd0 bsd3 gpl3 isc ];
       platforms   = platforms.all;
       maintainers = with maintainers; [ thoughtpolice wkennington fpletz globin ];
     };
@@ -42,5 +43,10 @@ in {
   libressl_2_7 = generic {
     version = "2.7.4";
     sha256 = "19kxa5i97q7p6rrps9qm0nd8zqhdjvzx02j72400c73cl2nryfhy";
+  };
+
+  libressl_2_8 = generic {
+    version = "2.8.1";
+    sha256 = "0hnga8j7svdbwcy01mh5pxssk7rxq4g5fc5vxrzhid0x1w2zfjrk";
   };
 }

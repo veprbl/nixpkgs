@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, which, autoconf, automake, flex, yacc
+{ stdenv, fetchurl, which, autoconf, automake, flex, bison
 , kernel, glibc, perl }:
 
 with (import ./srcs.nix { inherit fetchurl; });
@@ -8,10 +8,10 @@ let
   kernelBuildDir = "${kernel.dev}/lib/modules/${kernel.modDirVersion}/build";
 
 in stdenv.mkDerivation rec {
-  name = "openafs-${version}-${kernel.version}";
+  name = "openafs-${version}-${kernel.modDirVersion}";
   inherit version src;
 
-  nativeBuildInputs = [ autoconf automake flex perl yacc which ] ++ kernel.moduleBuildDependencies;
+  nativeBuildInputs = [ autoconf automake flex perl bison which ] ++ kernel.moduleBuildDependencies;
 
   hardeningDisable = [ "pic" ];
 
@@ -41,7 +41,7 @@ in stdenv.mkDerivation rec {
 
   installPhase = ''
     mkdir -p ${modDestDir}
-    cp src/libafs/MODLOAD-*/libafs-${kernel.version}.* ${modDestDir}/libafs.ko
+    cp src/libafs/MODLOAD-*/libafs-${kernel.modDirVersion}.* ${modDestDir}/libafs.ko
     xz -f ${modDestDir}/libafs.ko
   '';
 
@@ -51,7 +51,8 @@ in stdenv.mkDerivation rec {
     license = licenses.ipl10;
     platforms = platforms.linux;
     maintainers = [ maintainers.z77z maintainers.spacefrogg ];
-    broken = versionOlder kernel.version "3.18";
+    broken = versionOlder kernel.version "3.18"
+             || stdenv.targetPlatform.isAarch64;
   };
 
 }

@@ -12,8 +12,7 @@
 , targetToolchains
 , doCheck ? true
 , broken ? false
-, buildPlatform, hostPlatform
-} @ args:
+}:
 
 let
   inherit (stdenv.lib) optional optionalString;
@@ -32,8 +31,8 @@ stdenv.mkDerivation {
 
   __darwinAllowLocalNetworking = true;
 
-  # The build will fail at the very end on AArch64 without this.
-  dontUpdateAutotoolsGnuConfigScripts = if stdenv.isAarch64 then true else null;
+  # rustc complains about modified source files otherwise
+  dontUpdateAutotoolsGnuConfigScripts = true;
 
   # Running the default `strip -S` command on Darwin corrupts the
   # .rlib files in "lib/".
@@ -105,6 +104,11 @@ stdenv.mkDerivation {
 
     # On Hydra: `TcpListener::bind(&addr)`: Address already in use (os error 98)'
     sed '/^ *fn fast_rebind()/i#[ignore]' -i src/libstd/net/tcp.rs
+
+    # https://github.com/rust-lang/rust/issues/39522
+    echo removing gdb-version-sensitive tests...
+    find src/test/debuginfo -type f -execdir grep -q ignore-gdb-version '{}' \; -print -delete
+    rm src/test/debuginfo/{borrowed-c-style-enum.rs,c-style-enum-in-composite.rs,gdb-pretty-struct-and-enums-pre-gdb-7-7.rs,generic-enum-with-different-disr-sizes.rs}
 
     # Useful debugging parameter
     # export VERBOSE=1

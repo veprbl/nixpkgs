@@ -18,6 +18,8 @@ let
   callPackage = newScope chromium;
 
   chromium = {
+    inherit stdenv;
+  
     upstream-info = (callPackage ./update.nix {}).getChannel channel;
 
     mkChromiumDerivation = callPackage ./common.nix {
@@ -63,8 +65,6 @@ let
   sandboxExecutableName = chromium.browser.passthru.sandboxExecutableName;
 
   version = chromium.browser.version;
-
-  inherit (stdenv.lib) versionAtLeast;
 
 in stdenv.mkDerivation {
   name = "chromium${suffix}-${version}";

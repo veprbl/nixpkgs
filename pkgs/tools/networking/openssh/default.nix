@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, zlib, openssl, perl, libedit, pkgconfig, pam, autoreconfHook
+{ stdenv, fetchurl, fetchpatch, zlib, openssl, libedit, pkgconfig, pam, autoreconfHook
 , etcDir ? null
 , hpnSupport ? false
 , withKerberos ? true
@@ -37,6 +37,13 @@ stdenv.mkDerivation rec {
 
   patches =
     [
+      # Remove on update!
+      (fetchpatch {
+        name = "fix-tunnel-forwarding.diff";
+        url = "https://github.com/openssh/openssh-portable/commit/cfb1d9bc767.diff";
+        sha256 = "1mszj7f1kj6bazr7asbi1bi4238lfpilpp98f6c1dn3py4fbsdg8";
+      })
+
       ./locale_archive.patch
       ./fix-host-key-algorithms-plus.patch
 

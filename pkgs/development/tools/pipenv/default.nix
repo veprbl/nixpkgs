@@ -2,16 +2,16 @@
 with python3Packages; buildPythonApplication rec {
     name = "${pname}-${version}";
     pname = "pipenv";
-    version = "2018.5.18";
+    version = "2018.10.9";
 
     src = fetchPypi {
       inherit pname version;
-      sha256 = "1knyknmykjj7gixdpfyns77sv4mizl68addk09ajmw9z5aqaif84";
+      sha256 = "0b0safavjxq6malmv44acmgds21m2sp1wqa7gs0qz621v6gcgq4j";
     };
 
     LC_ALL = "en_US.UTF-8";
 
-    propagatedBuildInputs = [ pew pip requests flake8 ];
+    propagatedBuildInputs = [ pew pip requests flake8 parver invoke ];
 
     doCheck = false;
 

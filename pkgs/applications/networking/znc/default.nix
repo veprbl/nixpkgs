@@ -3,17 +3,18 @@
 , withPython ? false, python3
 , withTcl ? false, tcl
 , withCyrus ? true, cyrus_sasl
+, withUnicode ? true, icu
 }:
 
 with stdenv.lib;
 
 stdenv.mkDerivation rec {
   name = "znc-${version}";
-  version = "1.7.0";
+  version = "1.7.1";
 
   src = fetchurl {
     url = "https://znc.in/releases/archive/${name}.tar.gz";
-    sha256 = "0vxra50418bsjfdpf8vl70fijv8syvasjqdxfyjliff6k91k2zn0";
+    sha256 = "1i1r1lh9q2mr1bg520zrvrlwhrhy6wibrin78wjxq1gab1qymks4";
   };
 
   nativeBuildInputs = [ pkgconfig ];
@@ -22,17 +23,21 @@ stdenv.mkDerivation rec {
     ++ optional withPerl perl
     ++ optional withPython python3
     ++ optional withTcl tcl
-    ++ optional withCyrus cyrus_sasl;
+    ++ optional withCyrus cyrus_sasl
+    ++ optional withUnicode icu;
 
-  configureFlags = optionalString withPerl "--enable-perl "
-    + optionalString withPython "--enable-python "
-    + optionalString withTcl "--enable-tcl --with-tcl=${tcl}/lib "
-    + optionalString withCyrus "--enable-cyrus ";
+  configureFlags = [
+    (stdenv.lib.enableFeature withPerl "perl")
+    (stdenv.lib.enableFeature withPython "python")
+    (stdenv.lib.enableFeature withTcl "tcl")
+    (stdenv.lib.withFeatureAs withTcl "tcl" "${tcl}/lib")
+    (stdenv.lib.enableFeature withCyrus "cyrus")
+  ];
 
   meta = with stdenv.lib; {
     description = "Advanced IRC bouncer";
     homepage = https://wiki.znc.in/ZNC;
-    maintainers = with maintainers; [ viric schneefux lnl7 ];
+    maintainers = with maintainers; [ schneefux lnl7 ];
     license = licenses.asl20;
     platforms = platforms.unix;
   };

@@ -1,7 +1,7 @@
 { stdenv, fetchFromGitHub, makeWrapper, makeDesktopItem, pkgconfig, cmake, qt5
 , bluez, ffmpeg, libao, libGLU_combined, pcre, gettext, libXrandr, libusb, lzo
 , libpthreadstubs, libXext, libXxf86vm, libXinerama, libSM, libXdmcp, readline
-, openal, libudev, libevdev, portaudio, curl, alsaLib, miniupnpc, enet, polarssl
+, openal, udev, libevdev, portaudio, curl, alsaLib, miniupnpc, enet, mbedtls
 , soundtouch, sfml, vulkan-loader ? null, libpulseaudio ? null
 
 # - Inputs used for Darwin
@@ -20,13 +20,13 @@ let
   };
 in stdenv.mkDerivation rec {
   name = "dolphin-emu-${version}";
-  version = "2018-07-02";
+  version = "2018-09-24";
 
   src = fetchFromGitHub {
     owner = "dolphin-emu";
     repo = "dolphin";
-    rev = "87c5d00e2085090e51c1d44e4fd271437123c722";
-    sha256 = "04f0my5k1vrj3pcg07m6wy4in4cs95db8367bp7zkraparmj1mjk";
+    rev = "97b1a9bb2a0c29f0f68963483156d5285e1fb1d5";
+    sha256 = "0dwc4l7a7r1f65gh1rhxa854xsknrgp62rr3a0y67lk3xf5y38d7";
   };
 
   enableParallelBuilding = true;
@@ -36,10 +36,10 @@ in stdenv.mkDerivation rec {
   buildInputs = [
     curl ffmpeg libao libGLU_combined pcre gettext libpthreadstubs libpulseaudio
     libXrandr libXext libXxf86vm libXinerama libSM readline openal libXdmcp lzo
-    portaudio libusb libpng hidapi miniupnpc enet polarssl soundtouch sfml
+    portaudio libusb libpng hidapi miniupnpc enet mbedtls soundtouch sfml
     qt5.qtbase
   ] ++ stdenv.lib.optionals stdenv.isLinux [
-    bluez libudev libevdev alsaLib vulkan-loader
+    bluez udev libevdev alsaLib vulkan-loader
   ] ++ stdenv.lib.optionals stdenv.isDarwin [
     CoreBluetooth cf-private OpenGL ForceFeedback IOKit
   ];
@@ -71,13 +71,14 @@ in stdenv.mkDerivation rec {
   '';
 
   meta = with stdenv.lib; {
-    homepage = "http://dolphin-emu.org";
-    description = "Gamecube/Wii/Triforce emulator for x86_64 and ARM";
-    license = licenses.gpl2;
+    homepage = "https://dolphin-emu.org";
+    description = "Gamecube/Wii/Triforce emulator for x86_64 and ARMv8";
+    license = licenses.gpl2Plus;
     maintainers = with maintainers; [ MP2E ];
     branch = "master";
     # x86_32 is an unsupported platform.
     # Enable generic build if you really want a JIT-less binary.
+    broken = stdenv.isDarwin;
     platforms = [ "x86_64-linux" "x86_64-darwin" ];
   };
 }

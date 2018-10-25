@@ -5,7 +5,7 @@
 , readline, sqlite
 , disableDocs ? false
 , CoreFoundation
-, gsettings_desktop_schemas
+, gsettings-desktop-schemas
 }:
 
 let
@@ -20,7 +20,7 @@ let
     glib
     gmp
     gtk3
-    gsettings_desktop_schemas
+    gsettings-desktop-schemas
     libedit
     libjpeg
     libpng
@@ -36,7 +36,7 @@ in
 
 stdenv.mkDerivation rec {
   name = "racket-${version}";
-  version = "6.12";
+  version = "7.0"; # always change at once with ./minimal.nix
 
   src = (stdenv.lib.makeOverridable ({ name, sha256 }:
     fetchurl rec {
@@ -45,7 +45,7 @@ stdenv.mkDerivation rec {
     }
   )) {
     inherit name;
-    sha256 = "0cwcypzjfl9py1s695mhqkiapff7c1w29llsmdj7qgn58wl0apk5";
+    sha256 = "1glv5amsp9xp480d4yr63hhm9kkyav06yl3a6p489nkr4cln0j9a";
   };
 
   FONTCONFIG_FILE = fontsConf;
@@ -55,7 +55,7 @@ stdenv.mkDerivation rec {
     (stdenv.lib.optionalString stdenv.isDarwin "-framework CoreFoundation")
   ];
 
-  buildInputs = [ fontconfig libffi libtool makeWrapper sqlite gsettings_desktop_schemas gtk3 ]
+  buildInputs = [ fontconfig libffi libtool makeWrapper sqlite gsettings-desktop-schemas gtk3 ]
     ++ stdenv.lib.optionals stdenv.isDarwin [ CoreFoundation ];
 
   preConfigure = ''

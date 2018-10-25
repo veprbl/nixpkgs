@@ -28,7 +28,7 @@ rec {
       modules = configurations ++
         [ ../modules/virtualisation/qemu-vm.nix
           ../modules/testing/test-instrumentation.nix # !!! should only get added for automated test runs
-          { key = "no-manual"; services.nixosManual.enable = false; }
+          { key = "no-manual"; documentation.nixos.enable = false; }
           { key = "qemu"; system.build.qemu = qemu; }
         ] ++ optional minimal ../modules/testing/minimal-kernel.nix;
       extraArgs = { inherit nodes; };
@@ -47,7 +47,7 @@ rec {
       machinesNumbered = zipLists machines (range 1 254);
 
       nodes_ = flip map machinesNumbered (m: nameValuePair m.fst
-        [ ( { config, pkgs, nodes, ... }:
+        [ ( { config, nodes, ... }:
             let
               interfacesNumbered = zipLists config.virtualisation.vlans (range 1 255);
               interfaces = flip map interfacesNumbered ({ fst, snd }:

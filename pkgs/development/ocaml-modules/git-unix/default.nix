@@ -1,19 +1,19 @@
-{ stdenv, ocaml, findlib, jbuilder, git-http
+{ stdenv, ocaml, findlib, dune, git-http
 , cohttp-lwt-unix
-, tls, magic-mime, cmdliner, mtime
+, tls, cmdliner, mtime
 }:
 
 stdenv.mkDerivation rec {
 	name = "ocaml${ocaml.version}-git-unix-${version}";
 	inherit (git-http) version src;
 
-	buildInputs = [ ocaml findlib jbuilder cmdliner mtime ];
+	buildInputs = [ ocaml findlib dune cmdliner mtime ];
 
 	propagatedBuildInputs = [ cohttp-lwt-unix git-http tls ];
 
-	buildPhase = "jbuilder build -p git-unix";
+	buildPhase = "dune build -p git-unix";
 
-	inherit (jbuilder) installPhase;
+	inherit (dune) installPhase;
 
 	meta = {
 		description = "Unix backend for the Git protocol(s)";

@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchurl, fetchzip, vscode-utils, jq, mono46, clang-tools, writeScript
+{ stdenv, fetchzip, vscode-utils, jq, mono46, clang-tools, writeScript
 , gdbUseFixed ? true, gdb # The gdb default setting will be fixed to specified. Use version from `PATH` otherwise.
 }:
 
@@ -67,8 +67,8 @@ vscode-utils.buildVscodeMarketplaceExtension {
   mktplcRef = {
     name = "cpptools";
     publisher = "ms-vscode";
-    version = "0.17.6";
-    sha256 = "2625be8b922ffc199e1c776f784d39b6e004523212f7956c93ae40f9040ce6d5";
+    version = "0.19.0";
+    sha256 = "1x97mz859bzr4gxy6cnqgd8qmvnrjn9zdxh457slsxsk4wqcfmgj";
   };
 
   buildInputs = [

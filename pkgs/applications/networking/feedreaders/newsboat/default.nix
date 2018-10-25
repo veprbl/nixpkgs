@@ -1,13 +1,13 @@
 { stdenv, fetchurl, stfl, sqlite, curl, gettext, pkgconfig, libxml2, json_c, ncurses
-, asciidoc, docbook_xml_dtd_45, libxslt, docbook_xml_xslt, libiconv, makeWrapper }:
+, asciidoc, docbook_xml_dtd_45, libxslt, docbook_xsl, libiconv, makeWrapper }:
 
 stdenv.mkDerivation rec {
   name = "newsboat-${version}";
-  version = "2.12";
+  version = "2.13";
 
   src = fetchurl {
     url = "https://newsboat.org/releases/${version}/${name}.tar.xz";
-    sha256 = "1x23zlgljaqf46v7sp8wnkyf6wighvirvn48ankpa34yr8mvrgcv";
+    sha256 = "0pik1d98ydzqi6055vdbkjg5krwifbk2hy2f5jp5p1wcy2s16dn7";
   };
 
   prePatch = ''
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
       --replace "ncurses5.4" "ncurses"
   '';
 
-  nativeBuildInputs = [ pkgconfig asciidoc docbook_xml_dtd_45 libxslt docbook_xml_xslt ]
+  nativeBuildInputs = [ pkgconfig asciidoc docbook_xml_dtd_45 libxslt docbook_xsl ]
                       ++ stdenv.lib.optional stdenv.isDarwin [ makeWrapper libiconv ];
 
   buildInputs = [ stfl sqlite curl gettext libxml2 json_c ncurses ];

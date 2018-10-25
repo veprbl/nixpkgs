@@ -1,5 +1,5 @@
 { stdenv, fetchurl, dbus-glib, libxml2, sqlite, telepathy-glib, pkgconfig
-, gnome3, makeWrapper, intltool, libxslt, gobjectIntrospection, dbus_libs }:
+, gnome3, makeWrapper, intltool, libxslt, gobjectIntrospection, dbus }:
 
 stdenv.mkDerivation rec {
   project = "telepathy-logger";
@@ -15,10 +15,10 @@ stdenv.mkDerivation rec {
   ];
   buildInputs = [
     dbus-glib libxml2 sqlite telepathy-glib
-    dbus_libs telepathy-glib.python
+    dbus telepathy-glib.python
   ];
 
-  configureFlags = "--enable-call";
+  configureFlags = [ "--enable-call" ];
 
   preFixup = ''
     wrapProgram "$out/libexec/telepathy-logger" \

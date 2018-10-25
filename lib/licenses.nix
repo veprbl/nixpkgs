@@ -143,6 +143,12 @@ lib.mapAttrs (n: v: v // { shortName = n; }) rec {
     free = false;
   };
 
+  cc-by-nc-40 = spdx {
+    spdxId = "CC-BY-NC-4.0";
+    fullName = "Creative Commons Attribution Non Commercial 4.0 International";
+    free = false;
+  };
+
   cc-by-nd-30 = spdx {
     spdxId = "CC-BY-ND-3.0";
     fullName = "Creative Commons Attribution-No Derivative Works v3.00";
@@ -204,6 +210,11 @@ lib.mapAttrs (n: v: v // { shortName = n; }) rec {
     fullName = "Common Public License 1.0";
   };
 
+  curl = {
+    fullName = "MIT/X11 derivate";
+    url = "https://curl.haxx.se/docs/copyright.html";
+  };
+
   doc = spdx {
     spdxId = "DOC";
     fullName = "DOC License";
@@ -223,6 +234,12 @@ lib.mapAttrs (n: v: v // { shortName = n; }) rec {
   efl20 = spdx {
     spdxId = "EFL-2.0";
     fullName = "Eiffel Forum License v2.0";
+  };
+
+  elastic = {
+    fullName = "ELASTIC LICENSE";
+    url = https://github.com/elastic/elasticsearch/blob/master/licenses/ELASTIC-LICENSE.txt;
+    free = false;
   };
 
   epl10 = spdx {
@@ -338,6 +355,11 @@ lib.mapAttrs (n: v: v // { shortName = n; }) rec {
     fullName = "Independent JPEG Group License";
   };
 
+  imagemagick = spdx {
+    fullName = "ImageMagick License";
+    spdxId = "imagemagick";
+  };
+
   inria-compcert = {
     fullName  = "INRIA Non-Commercial License Agreement for the CompCert verified compiler";
     url       = "http://compcert.inria.fr/doc/LICENSE";
@@ -364,6 +386,14 @@ lib.mapAttrs (n: v: v // { shortName = n; }) rec {
     spdxId = "ISC";
     fullName = "ISC License";
   };
+
+  # Proprietary binaries; free to redistribute without modification.
+  issl = {
+    fullName = "Intel Simplified Software License";
+    url = https://software.intel.com/en-us/license/intel-simplified-software-license;
+    free = false;
+  };
+
 
   lgpl2 = spdx {
     spdxId = "LGPL-2.0";
@@ -478,6 +508,12 @@ lib.mapAttrs (n: v: v // { shortName = n; }) rec {
     fullName = "Non-Profit Open Software License 3.0";
   };
 
+  ocamlpro_nc = {
+    fullName = "OCamlPro Non Commercial license version 1";
+    url = "https://alt-ergo.ocamlpro.com/http/alt-ergo-2.2.0/OCamlPro-Non-Commercial-License.pdf";
+    free = false;
+  };
+
   ofl = spdx {
     spdxId = "OFL-1.1";
     fullName = "SIL Open Font License 1.1";
@@ -529,6 +565,11 @@ lib.mapAttrs (n: v: v // { shortName = n; }) rec {
     fullName = "Public Domain";
   };
 
+  purdueBsd = {
+    fullName = " Purdue BSD-Style License"; # also know as lsof license
+    url = https://enterprise.dejacode.com/licenses/public/purdue-bsd;
+  };
+
   qpl = spdx {
     spdxId = "QPL-1.0";
     fullName = "Q Public License 1.0";
@@ -542,6 +583,11 @@ lib.mapAttrs (n: v: v // { shortName = n; }) rec {
   ruby = spdx {
     spdxId = "Ruby";
     fullName = "Ruby License";
+  };
+
+  sendmail = spdx {
+    spdxId = "Sendmail";
+    fullName = "Sendmail License";
   };
 
   sgi-b-20 = spdx {
@@ -601,6 +647,12 @@ lib.mapAttrs (n: v: v // { shortName = n; }) rec {
     fullName = "Vim License";
   };
 
+  virtualbox-puel = {
+    fullName = "Oracle VM VirtualBox Extension Pack Personal Use and Evaluation License (PUEL)";
+    url = "https://www.virtualbox.org/wiki/VirtualBox_PUEL";
+    free = false;
+  };
+
   vsl10 = spdx {
     spdxId = "VSL-1.0";
     fullName = "Vovida Software License v1.0";
@@ -629,6 +681,11 @@ lib.mapAttrs (n: v: v // { shortName = n; }) rec {
   wxWindows = spdx {
     spdxId = "WXwindows";
     fullName = "wxWindows Library Licence, Version 3.1";
+  };
+
+  xfig = {
+    fullName = "xfig";
+    url = "http://mcj.sourceforge.net/authors.html#xfig";
   };
 
   zlib = spdx {

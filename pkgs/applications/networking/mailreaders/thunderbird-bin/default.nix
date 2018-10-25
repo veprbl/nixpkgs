@@ -7,7 +7,7 @@
 , cups
 , curl
 , dbus-glib
-, dbus_libs
+, dbus
 , fontconfig
 , freetype
 , gdk_pixbuf
@@ -47,7 +47,7 @@
 with (import ./release_sources.nix);
 
 let
-  arch = if stdenv.system == "i686-linux"
+  arch = if stdenv.hostPlatform.system == "i686-linux"
     then "linux-i686"
     else "linux-x86_64";
 
@@ -86,7 +86,7 @@ stdenv.mkDerivation {
       cups
       curl
       dbus-glib
-      dbus_libs
+      dbus
       fontconfig
       freetype
       gdk_pixbuf

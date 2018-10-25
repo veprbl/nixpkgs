@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, file, curl, pkgconfig, python, openssl, cmake, zlib
+{ stdenv, file, curl, pkgconfig, python, openssl, cmake, zlib
 , makeWrapper, libiconv, cacert, rustPlatform, rustc, libgit2, darwin
 , version
 , patches ? []
@@ -19,14 +19,17 @@ rustPlatform.buildRustPackage rec {
 
   passthru.rustc = rustc;
 
-  # changes hash of vendor directory otherwise on aarch64
-  dontUpdateAutotoolsGnuConfigScripts = if stdenv.isAarch64 then "1" else null;
+  # changes hash of vendor directory otherwise
+  dontUpdateAutotoolsGnuConfigScripts = true;
 
   nativeBuildInputs = [ pkgconfig ];
   buildInputs = [ cacert file curl python openssl cmake zlib makeWrapper libgit2 ]
     ++ stdenv.lib.optionals stdenv.isDarwin [ CoreFoundation libiconv ];
 
   LIBGIT2_SYS_USE_PKG_CONFIG=1;
+
+  # fixes: the cargo feature `edition` requires a nightly version of Cargo, but this is the `stable` channel
+  RUSTC_BOOTSTRAP=1;
 
   # FIXME: Use impure version of CoreFoundation because of missing symbols.
   # CFURLSetResourcePropertyForKey is defined in the headers but there's no
