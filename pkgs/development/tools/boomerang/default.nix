@@ -5,7 +5,7 @@ stdenv.mkDerivation rec {
   version = "0.4.0-alpha-2018-07-03";
 
   src = fetchFromGitHub {
-    owner = "ceeac";
+    owner = "BoomerangDecompiler";
     repo = "boomerang";
     rev = "377ff2d7db93d892c925e2d3e61aef818371ce7d";
     sha256 = "1ljbyj3b8xckr1wihyii3h576zgq0q88vli0ylpr3p4jxy5sm57j";
@@ -35,7 +35,7 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
 
   meta = with stdenv.lib; {
-    homepage = http://boomerang.sourceforge.net/;
+    homepage = https://github.com/BoomerangDecompiler/boomerang;
     license = licenses.bsd3;
     description = "A general, open source, retargetable decompiler";
     maintainers = with maintainers; [ dtzWill ];
