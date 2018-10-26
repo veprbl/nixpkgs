@@ -635,6 +635,8 @@ with pkgs;
     stdenv = overrideCC stdenv gcc5;
   };
 
+  apt-dater = callPackage ../tools/package-management/apt-dater { };
+
   autorevision = callPackage ../tools/misc/autorevision { };
 
   bcachefs-tools = callPackage ../tools/filesystems/bcachefs-tools { };
@@ -2548,6 +2550,8 @@ with pkgs;
   fcron = callPackage ../tools/system/fcron { };
 
   fdm = callPackage ../tools/networking/fdm {};
+
+  featherpad = callPackage ../applications/editors/featherpad {};
 
   feedreader = callPackage ../applications/networking/feedreaders/feedreader {};
 
@@ -4514,6 +4518,10 @@ with pkgs;
     };
 
   openssh_hpn = pkgs.appendToName "with-hpn" (openssh.override { hpnSupport = true; });
+
+  openssh_gssapi = pkgs.appendToName "with-gssapi" (openssh.override {
+    withGssapiPatches = true;
+  });
 
   opensp = callPackage ../tools/text/sgml/opensp { };
 
@@ -7325,10 +7333,11 @@ with pkgs;
   };
 
   # For beta and nightly releases use the nixpkgs-mozilla overlay
-  rust = callPackage ../development/compilers/rust
-    (stdenv.lib.optionalAttrs (stdenv.cc.isGNU && stdenv.hostPlatform.isi686) {
-      stdenv = overrideCC stdenv gcc6; # with gcc-7: undefined reference to `__divmoddi4'
-    });
+  rust = callPackage ../development/compilers/rust ({
+    inherit (darwin.apple_sdk.frameworks) CoreFoundation Security;
+  } // stdenv.lib.optionalAttrs (stdenv.cc.isGNU && stdenv.hostPlatform.isi686) {
+    stdenv = overrideCC stdenv gcc6; # with gcc-7: undefined reference to `__divmoddi4'
+  });
   inherit (rust) cargo rustc;
 
   buildRustCrate = callPackage ../build-support/rust/build-rust-crate { };
@@ -10583,6 +10592,8 @@ with pkgs;
 
   libsignal-protocol-c = callPackage ../development/libraries/libsignal-protocol-c { };
 
+  libsignon-glib = callPackage ../development/libraries/libsignon-glib { };
+
   libsoundio = callPackage ../development/libraries/libsoundio {
     inherit (darwin.apple_sdk.frameworks) AudioUnit;
   };
@@ -12840,6 +12851,17 @@ with pkgs;
   zita-resampler = callPackage ../development/libraries/audio/zita-resampler { };
 
   zziplib = callPackage ../development/libraries/zziplib { };
+
+  gsignond = callPackage ../development/libraries/gsignond {
+    plugins = [];
+  };
+
+  gsignondPlugins = {
+    sasl = callPackage ../development/libraries/gsignond/plugins/sasl.nix { };
+    oauth = callPackage ../development/libraries/gsignond/plugins/oauth.nix { };
+    lastfm = callPackage ../development/libraries/gsignond/plugins/lastfm.nix { };
+    mail = callPackages ../development/libraries/gsignond/plugins/mail.nix { };
+  };
 
   ### DEVELOPMENT / LIBRARIES / AGDA
 
@@ -21154,7 +21176,7 @@ with pkgs;
   liblapackWithAtlas = liblapack;
 
   liblbfgs = callPackage ../development/libraries/science/math/liblbfgs { };
-  
+
   lrs = callPackage ../development/libraries/science/math/lrs { };
 
   m4ri = callPackage ../development/libraries/science/math/m4ri { };
