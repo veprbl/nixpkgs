@@ -635,6 +635,8 @@ with pkgs;
     stdenv = overrideCC stdenv gcc5;
   };
 
+  apt-dater = callPackage ../tools/package-management/apt-dater { };
+
   autorevision = callPackage ../tools/misc/autorevision { };
 
   bcachefs-tools = callPackage ../tools/filesystems/bcachefs-tools { };
@@ -2548,6 +2550,8 @@ with pkgs;
   fcron = callPackage ../tools/system/fcron { };
 
   fdm = callPackage ../tools/networking/fdm {};
+
+  featherpad = callPackage ../applications/editors/featherpad {};
 
   feedreader = callPackage ../applications/networking/feedreaders/feedreader {};
 
@@ -9840,9 +9844,7 @@ with pkgs;
 
   gnonlin = callPackage ../development/libraries/gstreamer/legacy/gnonlin {};
 
-  gusb = callPackage ../development/libraries/gusb {
-    inherit (gnome2) gtkdoc;
-  };
+  gusb = callPackage ../development/libraries/gusb { };
 
   qt-mobility = callPackage ../development/libraries/qt-mobility {};
 
@@ -10587,6 +10589,8 @@ with pkgs;
   libserialport = callPackage ../development/libraries/libserialport { };
 
   libsignal-protocol-c = callPackage ../development/libraries/libsignal-protocol-c { };
+
+  libsignon-glib = callPackage ../development/libraries/libsignon-glib { };
 
   libsoundio = callPackage ../development/libraries/libsoundio {
     inherit (darwin.apple_sdk.frameworks) AudioUnit;
@@ -12843,6 +12847,17 @@ with pkgs;
   zita-resampler = callPackage ../development/libraries/audio/zita-resampler { };
 
   zziplib = callPackage ../development/libraries/zziplib { };
+
+  gsignond = callPackage ../development/libraries/gsignond {
+    plugins = [];
+  };
+
+  gsignondPlugins = {
+    sasl = callPackage ../development/libraries/gsignond/plugins/sasl.nix { };
+    oauth = callPackage ../development/libraries/gsignond/plugins/oauth.nix { };
+    lastfm = callPackage ../development/libraries/gsignond/plugins/lastfm.nix { };
+    mail = callPackages ../development/libraries/gsignond/plugins/mail.nix { };
+  };
 
   ### DEVELOPMENT / LIBRARIES / AGDA
 
