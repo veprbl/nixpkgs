@@ -4519,6 +4519,10 @@ with pkgs;
 
   openssh_hpn = pkgs.appendToName "with-hpn" (openssh.override { hpnSupport = true; });
 
+  openssh_gssapi = pkgs.appendToName "with-gssapi" (openssh.override {
+    withGssapiPatches = true;
+  });
+
   opensp = callPackage ../tools/text/sgml/opensp { };
 
   opentracker = callPackage ../applications/networking/p2p/opentracker { };
@@ -5280,6 +5284,8 @@ with pkgs;
   sigil = libsForQt5.callPackage ../applications/editors/sigil { };
 
   signal-desktop = callPackage ../applications/networking/instant-messengers/signal-desktop { };
+
+  signify = callPackage ../tools/security/signify { };
 
   # aka., pgp-tools
   signing-party = callPackage ../tools/security/signing-party { };
@@ -6455,6 +6461,8 @@ with pkgs;
   ccl = callPackage ../development/compilers/ccl {
     inherit (darwin) bootstrap_cmds;
   };
+
+  cdb = callPackage ../development/tools/database/cdb { };
 
   chez = callPackage ../development/compilers/chez {
     inherit (darwin) cctools;
