@@ -15,6 +15,11 @@ buildGoPackage rec {
   subPackages = ["."];
   goDeps = ./deps.nix;
 
+  postInstall = ''
+    mkdir -p $bin/share/bash-completion/completions
+    $bin/bin/hetzner-kube completion > $bin/share/bash-completion/completions/hetzner-kube
+  '';
+
   meta = {
     description = "A CLI tool for provisioning Kubernetes clusters on Hetzner Cloud";
     homepage = https://github.com/xetys/hetzner-kube;
