@@ -1,6 +1,6 @@
 { stdenv, fetchurl, ncurses }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (rec {
   name = "libedit-20180525-3.1";
 
   src = fetchurl {
@@ -30,4 +30,10 @@ stdenv.mkDerivation rec {
     license = licenses.bsd3;
     platforms = platforms.all;
   };
-}
+} // stdenv.lib.optionalAttrs
+  (stdenv.hostPlatform.libc == "musl" && stdenv.cc.isClang) /* specific */ {
+  # probably just should be #include'ing things where they're not,
+  # but made more problematic clang behavior present in LLVM4 through 7.
+  # I don't have relevant bugs handy but not up to tracking this down presently.
+  NIX_CFLAGS_COMPILE = [ "-include stdc-predef.h" ];
+})
