@@ -652,6 +652,8 @@ in {
 
   relatorio = callPackage ../development/python-modules/relatorio { };
 
+  remotecv = callPackage ../development/python-modules/remotecv { };
+
   pyzufall = callPackage ../development/python-modules/pyzufall { };
 
   rhpl = disabledIf isPy3k (callPackage ../development/python-modules/rhpl {});
