@@ -18230,6 +18230,8 @@ with pkgs;
     gmime = gmime3;
     # Doesn't really matter what python but I'd like to match anyway
     pythonPackages = python37Packages;
+    # Don't pull in rust (librsvg) and other graphical things
+    emacs = emacs26-nox;
   };
 
   notejot = callPackage ../applications/misc/notejot { };
