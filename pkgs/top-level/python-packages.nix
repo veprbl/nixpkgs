@@ -6258,6 +6258,8 @@ in {
     };
   };
 
+  should-dsl = callPackage ../development/python-modules/should-dsl { };
+
   simplejson = callPackage ../development/python-modules/simplejson { };
 
   simpleparse = buildPythonPackage rec {
