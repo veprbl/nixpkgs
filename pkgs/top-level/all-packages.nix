@@ -732,6 +732,8 @@ with pkgs;
 
   oracle-instantclient = callPackage ../development/libraries/oracle-instantclient { };
 
+  goku = callPackage ../os-specific/darwin/goku { };
+
   kwakd = callPackage ../servers/kwakd { };
 
   kwm = callPackage ../os-specific/darwin/kwm { };
@@ -6936,6 +6938,8 @@ with pkgs;
   go = go_1_11;
 
   go-repo-root = callPackage ../development/tools/go-repo-root { };
+
+  go-junit-report = callPackage ../development/tools/go-junit-report { };
 
   gox = callPackage ../development/tools/gox { };
 
