@@ -10893,6 +10893,8 @@ EOF
 
   packaging = callPackage ../development/python-modules/packaging { };
 
+  preggy = callPackage ../development/python-modules/preggy { };
+
   pytoml = callPackage ../development/python-modules/pytoml { };
 
   pypandoc = callPackage ../development/python-modules/pypandoc { };
