@@ -303,7 +303,7 @@ in
   # When updating stdenvLinux, make sure that the result has no
   # dependency (`nix-store -qR') on bootstrapTools or the first
   # binutils built.
-  (prevStage: let thisStage = {
+  (prevStage: {
     inherit config overlays;
     stdenv = import ../generic rec {
       name = "stdenv-linux";
@@ -344,10 +344,8 @@ in
 
       # Mainly avoid reference to bootstrap tools
       allowedRequisites = with prevStage; with lib;
-        # self-refs are okay
-        [ "out" ]
         # Simple executable tools
-        ++ concatMap (p: [ (getBin p) (getLib p) ]) [
+        concatMap (p: [ (getBin p) (getLib p) ]) [
             gzip bzip2 xz bash binutils.bintools coreutils diffutils findutils
             gawk gnumake gnused gnutar gnugrep gnupatch patchelf ed paxctl
           ]
@@ -376,6 +374,6 @@ in
         gcc = cc;
       };
     };
-  }; in thisStage)
+  })
 
 ]
