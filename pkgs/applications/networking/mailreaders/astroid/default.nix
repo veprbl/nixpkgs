@@ -9,13 +9,13 @@
 
 stdenv.mkDerivation rec {
   name = "astroid-${version}";
-  version = "0.14";
+  version = "2018-10-26";
 
   src = fetchFromGitHub {
     owner = "astroidmail";
     repo = "astroid";
-    rev = "v${version}";
-    sha256 = "1wkv1icsx3g3gq485dnvcdhr9srrjgz4ws1i1krcw9n61bj7gxh8";
+    rev = "2398aff9b86bfc54d9936d61b805cbfdb9ba98ba";
+    sha256 = "0xi6nr09c9hjbr6xhw4am8j7zzjy480afncpjznknp2594n8f3c2";
   };
 
   nativeBuildInputs = [ cmake pkgconfig scdoc wrapGAppsHook ];
@@ -24,17 +24,6 @@ stdenv.mkDerivation rec {
                   python3Packages.python python3Packages.pygobject3 gnome3.vte
                   notmuch boost libsoup gnome3.gsettings-desktop-schemas gnome3.defaultIconTheme
                   glib-networking protobuf ] ++ (if (!stdenv.lib.isDerivation vim)  then [] else [ vim ]);
-
-  patches = [
-    (fetchpatch {
-      url = "https://github.com/astroidmail/astroid/commit/c7364fe3560681c53e6aeac15a8710297cea3c05.patch";
-      sha256 = "0dbfas0jgwcabshkyfr7n75nvahva2mqqm743x637r1p2v96vqwq";
-    })
-    (fetchpatch {
-      url = "https://github.com/astroidmail/astroid/commit/cda29352783efb9be76e76a24ac6d2406697fe4b.patch";
-      sha256 = "1wzqvkm6lzl4fpmqndl1z1afn8pi77zsglkpjypjhh5qsvq0jwvm";
-    })
-  ];
 
   postPatch = ''
     sed -i "s~gvim ~${vim}/bin/vim -g ~g" src/config.cc
