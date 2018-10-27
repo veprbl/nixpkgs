@@ -463,7 +463,7 @@ with pkgs;
 
   acme-client = callPackage ../tools/networking/acme-client { inherit (darwin) apple_sdk; };
 
-  afew = callPackage ../applications/networking/mailreaders/afew { pythonPackages = python37Packages; };
+  afew = callPackage ../applications/networking/mailreaders/afew { pythonPackages = python3Packages; };
 
   afio = callPackage ../tools/archivers/afio { };
 
@@ -14074,9 +14074,7 @@ with pkgs;
 
   gfxtablet = callPackage ../os-specific/linux/gfxtablet {};
 
-  gmailieer = callPackage ../applications/networking/gmailieer {
-    python3Packages = python37Packages;
-  };
+  gmailieer = callPackage ../applications/networking/gmailieer { };
 
   gpm = callPackage ../servers/gpm {
     ncurses = null;  # Keep curses disabled for lack of value
@@ -15660,7 +15658,7 @@ with pkgs;
 
   alock = callPackage ../misc/screensavers/alock { };
 
-  inherit (python37Packages) alot;
+  inherit (python3Packages) alot;
 
   alpine = callPackage ../applications/networking/mailreaders/alpine {
     tcl = tcl-8_5;
@@ -15726,7 +15724,6 @@ with pkgs;
 
   astroid = callPackage ../applications/networking/mailreaders/astroid {
     boost = boost168;
-    python3Packages = python37Packages;
   };
 
   audacious = callPackage ../applications/audio/audacious { };
@@ -18229,7 +18226,7 @@ with pkgs;
   notmuch = callPackage ../applications/networking/mailreaders/notmuch {
     gmime = gmime3;
     # Doesn't really matter what python but I'd like to match anyway
-    pythonPackages = python37Packages;
+    pythonPackages = python3Packages;
     # Don't pull in rust (librsvg) and other graphical things
     emacs = emacs26-nox;
   };
@@ -19187,7 +19184,7 @@ with pkgs;
 
   telepathy-idle = callPackage ../applications/networking/instant-messengers/telepathy/idle {};
 
-  termdown = (newScope python37Packages) ../applications/misc/termdown { };
+  termdown = (newScope python3Packages) ../applications/misc/termdown { };
 
   terminal-notifier = callPackage ../applications/misc/terminal-notifier {};
 
