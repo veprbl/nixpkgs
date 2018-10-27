@@ -607,6 +607,8 @@ in {
     slurm = pkgs.slurm;
   };
 
+  pyssim = callPackage ../development/python-modules/pyssim { };
+
   pystache = callPackage ../development/python-modules/pystache { };
 
   pytest-tornado = callPackage ../development/python-modules/pytest-tornado { };
