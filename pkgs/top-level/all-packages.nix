@@ -4547,7 +4547,7 @@ with pkgs;
 
   opae = callPackage ../development/libraries/opae { };
 
-  opentracing-cpp = callPackages ../development/libraries/opentracing-cpp { };
+  opentracing-cpp = callPackage ../development/libraries/opentracing-cpp { };
 
   openvswitch = callPackage ../os-specific/linux/openvswitch { };
 
@@ -6426,6 +6426,23 @@ with pkgs;
 
   abcl = callPackage ../development/compilers/abcl {};
 
+  adoptopenjdk-bin-11-packages-linux = import ../development/compilers/adoptopenjdk-bin/jdk11-linux.nix;
+  adoptopenjdk-bin-11-packages-darwin = import ../development/compilers/adoptopenjdk-bin/jdk11-darwin.nix;
+
+  adoptopenjdk-hotspot-bin-11 = if stdenv.isLinux
+    then callPackage adoptopenjdk-bin-11-packages-linux.jdk-hotspot {}
+    else callPackage adoptopenjdk-bin-11-packages-darwin.jdk-hotspot {};
+  adoptopenjdk-jre-hotspot-bin-11 = if stdenv.isLinux
+    then callPackage adoptopenjdk-bin-11-packages-linux.jre-hotspot {}
+    else callPackage adoptopenjdk-bin-11-packages-darwin.jre-hotspot {};
+
+  # no OpenJ9 for Darwin
+  adoptopenjdk-openj9-bin-11 = callPackage adoptopenjdk-bin-11-packages-linux.jdk-openj9 {};
+  adoptopenjdk-jre-openj9-bin-11 = callPackage adoptopenjdk-bin-11-packages-linux.jre-openj9 {};
+
+  adoptopenjdk-bin = adoptopenjdk-hotspot-bin-11;
+  adoptopenjdk-jre-bin = adoptopenjdk-jre-hotspot-bin-11;
+
   aldor = callPackage ../development/compilers/aldor { };
 
   aliceml = callPackage ../development/compilers/aliceml { };
@@ -7404,6 +7421,7 @@ with pkgs;
   scala_2_12 = callPackage ../development/compilers/scala { jre = jre8; };
   scala = scala_2_12;
 
+  scalafix = callPackage ../development/tools/scalafix { };
   scalafmt = callPackage ../development/tools/scalafmt { };
 
   sdcc = callPackage ../development/compilers/sdcc {
@@ -11504,7 +11522,9 @@ with pkgs;
   };
   libnghttp2 = nghttp2.lib;
 
-  nix-plugins = callPackage ../development/libraries/nix-plugins {};
+  nix-plugins = callPackage ../development/libraries/nix-plugins {
+    nix = nixUnstable;
+  };
 
   nlohmann_json = callPackage ../development/libraries/nlohmann_json { };
 
@@ -16009,13 +16029,18 @@ with pkgs;
 
   bookworm = callPackage ../applications/office/bookworm { };
 
-  chromium = callPackage ../applications/networking/browsers/chromium {
+  chromium = callPackage ../applications/networking/browsers/chromium ({
     channel = "stable";
     pulseSupport = config.pulseaudio or true;
     enablePepperFlash = config.chromium.enablePepperFlash or false;
     enableWideVine = config.chromium.enableWideVine or false;
-    gnome = gnome2;
-  };
+  } // (if stdenv.isAarch64 then {
+          stdenv = gcc8Stdenv;
+        } else {
+          llvmPackages = llvmPackages_7;
+          stdenv = llvmPackages_7.stdenv;
+        })
+   );
 
   chronos = callPackage ../applications/networking/cluster/chronos { };
 
