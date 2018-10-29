@@ -23,6 +23,8 @@ stdenv.mkDerivation rec {
 
   checkInputs = [ gnupg ];
 
+  doCheck = true;
+
   enableParallelBuilding = true;
 
   meta = with stdenv.lib; {
