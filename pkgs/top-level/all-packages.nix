@@ -19826,7 +19826,8 @@ with pkgs;
 
   inherit (xorg) xcompmgr;
 
-  inherit (callPackage ../applications/window-managers/compton {}) compton compton-git;
+  inherit (callPackage ../applications/window-managers/compton {}) compton-old compton-git;
+  compton = compton-git;
 
   xdaliclock = callPackage ../tools/misc/xdaliclock {};
 

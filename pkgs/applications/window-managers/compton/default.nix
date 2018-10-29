@@ -103,6 +103,6 @@ let
     };
   };
 in {
-  compton = common stableSource;
+  compton-old = common stableSource;
   compton-git = common gitSource;
 }
