@@ -1,5 +1,5 @@
 { stdenv, fetchurl, fetchFromGitLab, meson, ninja, gettext, cargo, rustc, python3, rustPlatform, pkgconfig, gtksourceview
-, glib, libhandy, gtk3, dbus, openssl, sqlite, gst_all_1, wrapGAppsHook }:
+, hicolor-icon-theme, glib, libhandy, gtk3, dbus, openssl, sqlite, gst_all_1, wrapGAppsHook }:
 
 #stdenv.mkDerivation rec {
 rustPlatform.buildRustPackage rec {
@@ -19,7 +19,7 @@ rustPlatform.buildRustPackage rec {
   ];
   buildInputs = [
     glib gtk3 libhandy dbus openssl sqlite gst_all_1.gstreamer gst_all_1.gst-plugins-base gst_all_1.gst-plugins-bad
-   gtksourceview
+   gtksourceview hicolor-icon-theme
   ];
 
   postPatch = ''
