@@ -6183,6 +6183,8 @@ with pkgs;
 
   wol = callPackage ../tools/networking/wol { };
 
+  wolf-shaper = callPackage ../applications/audio/wolf-shaper { };
+
   wring = nodePackages.wring;
 
   wrk = callPackage ../tools/networking/wrk { };
@@ -9540,6 +9542,8 @@ with pkgs;
   freetts = callPackage ../development/libraries/freetts { };
 
   frog = self.languageMachines.frog;
+
+  fstrcmp = callPackage ../development/libraries/fstrcmp { };
 
   fstrm = callPackage ../development/libraries/fstrm { };
 
@@ -17165,6 +17169,8 @@ with pkgs;
   };
 
   gxmessage = callPackage ../applications/misc/gxmessage { };
+
+  gxplugins-lv2 = callPackage ../applications/audio/gxplugins-lv2 { };
 
   hackrf = callPackage ../applications/misc/hackrf { };
 
