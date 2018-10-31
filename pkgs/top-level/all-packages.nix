@@ -16892,6 +16892,8 @@ with pkgs;
 
   fomp = callPackage ../applications/audio/fomp { };
 
+  fractal = callPackage ../applications/networking/instant-messengers/fractal { };
+
   freecad = callPackage ../applications/graphics/freecad { mpi = openmpi; };
 
   freemind = callPackage ../applications/misc/freemind { };
