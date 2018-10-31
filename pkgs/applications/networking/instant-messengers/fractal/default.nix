@@ -22,6 +22,17 @@ rustPlatform.buildRustPackage rec {
    gtksourceview
   ];
 
+  # Don't use buildRustPackage phases, only use it for rust deps setup
+  configurePhase = null;
+  buildPhase = null;
+  checkPhase = null;
+  installPhase = null;
+
   cargoSha256 = "15yfh7wvj95g47i777sgxz7zc4xcx6frmpi82ywjgj58fzwndjsg";
+
+  meta = with stdenv.lib; {
+    # TODO
+    license = licenses.gpl3;
+  };
 }
 
