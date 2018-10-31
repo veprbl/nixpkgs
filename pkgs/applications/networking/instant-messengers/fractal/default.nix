@@ -22,6 +22,10 @@ rustPlatform.buildRustPackage rec {
    gtksourceview
   ];
 
+  postPatch = ''
+    patchShebangs scripts/meson_post_install.py
+  '';
+
   # Don't use buildRustPackage phases, only use it for rust deps setup
   configurePhase = null;
   buildPhase = null;
