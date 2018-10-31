@@ -35,7 +35,7 @@ index b5f08fe1..c64def3d 100644
 
          new_rpath += b':'.join(filter(lambda path: path.startswith(b'/nix/store'), old_rpath.split(b':')))
 
-+        print('%%%%%%%%%%%%%%%%%%%%%%%%', new_rpath, old_rpath)
++        print('%%%%%%%%%%%%%%%%%%%%%%%%', self.bfile, new_rpath, old_rpath)
 +
          if len(old_rpath) < len(new_rpath):
              sys.exit("New rpath must not be longer than the old one.")
