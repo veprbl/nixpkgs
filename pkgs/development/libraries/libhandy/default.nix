@@ -25,7 +25,7 @@ in stdenv.mkDerivation rec {
     meson ninja pkgconfig gobjectIntrospection vala
     gtk-doc docbook_xsl docbook_xml_dtd_43
   ];
-  buildInputs = [ gnome3.gnome-desktop gtk3 ];
+  buildInputs = [ gnome3.gnome-desktop gnome3.glade gtk3 ];
   checkInputs = [ dbus xvfb_run ];
 
   mesonFlags = [
