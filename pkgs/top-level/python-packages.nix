@@ -674,6 +674,8 @@ in {
     hdf5 = pkgs.hdf5.override { zlib = pkgs.zlib; };
   };
 
+  trueskill = callPackage ../development/python-modules/trueskill { };
+
   trustme = callPackage ../development/python-modules/trustme {};
 
   trio = callPackage ../development/python-modules/trio {};
@@ -4766,6 +4768,10 @@ in {
   zipfile36 = callPackage ../development/python-modules/zipfile36 { };
 
   todoist = callPackage ../development/python-modules/todoist { };
+
+  zstd = callPackage ../development/python-modules/zstd {
+    inherit (pkgs) zstd pkgconfig;
+  };
 
   zxcvbn-python = callPackage ../development/python-modules/zxcvbn-python { };
 
