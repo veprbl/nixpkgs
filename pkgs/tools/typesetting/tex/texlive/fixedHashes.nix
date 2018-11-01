@@ -3003,8 +3003,8 @@
 "collectbox.source-0.4b"="szy9gprjqnkx357dca60120lvaiyyy8f";
 "anysize-2018"="0phqi21d8qz3ifadzfzyfb04v10xc46n";
 "anysize.doc-2018"="4as0n5cw5g21j1wy094gdrbw8pzdm460";
-"beamer-3.54"="r41vbp1c36vwrbag9w2x325q4b1a99nk";
-"beamer.doc-3.54"="1amgs6gc5w2nlxman8p0qplbq2xbqrlg";
+"beamer-3.51"="6g82vzs3f6hrp3ws0d11ligibk2l4bf6";
+"beamer.doc-3.51"="csjkcbwj0iy5xsqmv24dnmldvjc10hfx";
 "pgf-3.0.1a"="2j88yrmw9ss4c39j1r7s5nfhpkf7x3vc";
 "pgf.doc-3.0.1a"="4c2fgj2lxmhw85ad2hnc5bajzxjg6v6x";
 "pgf.source-3.0.1a"="0fvi39isxzyyndb9x7awjv3qmc0bhb5g";

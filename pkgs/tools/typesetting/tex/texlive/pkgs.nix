@@ -1950,10 +1950,10 @@ tl: { # no indentation
   stripPrefix = 0;
   deps."pgf" = tl."pgf";
   deps."xcolor" = tl."xcolor";
-  sha512.run = "25da189fafe252dc9ae3da783114b4b632431554f464d8ed0e1472a07c182126e54e69a5c4857521c7ae12931256b728a79ab06ffd885b1b57c874169af470c2";
-  sha512.doc = "1df72f7530c030f21acdd289ea6952a9f2b09d47cdb52951b2789f056a9e976d403bc2cdd0cc513ecc910b568ea1a16b33c16bfef99b257af4914d49949d3ca2";
+  sha512.run = "b2fa718a3301d9cd12c1731ca6a2e2a60d3e7ae35cd660e57522d7bcd5b5b843e4bf62659e034a2c80806a672927fc6b42f190cf0ae57c2ac0d61b72d016cd4d";
+  sha512.doc = "c828ed81d0fdc902021c58cd26a54364f9d347c1fea5960f5926ae7c607095cdfd1d42cfa1ae7607eb303cae317e641a90df76838c26c5f2af9414045fa1d96c";
   hasRunfiles = true;
-  version = "3.54";
+  version = "3.51";
 };
 "beamer-FUBerlin" = {
   stripPrefix = 0;
