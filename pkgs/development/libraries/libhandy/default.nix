@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitLab, meson, ninja, pkgconfig, gobjectIntrospection, vala
+{ stdenv, fetchFromGitLab, fetchpatch, meson, ninja, pkgconfig, gobjectIntrospection, vala
 , gtk-doc, docbook_xsl, docbook_xml_dtd_43
 , gtk3, gnome3
 , dbus, xvfb_run, libxml2
@@ -12,6 +12,14 @@ in stdenv.mkDerivation rec {
 
   outputs = [ "out" "dev" "devdoc" "glade" ];
   outputBin = "dev";
+
+  patches = [
+    # https://source.puri.sm/Librem5/libhandy/merge_requests/158
+    (fetchpatch {
+      url = https://source.puri.sm/Librem5/libhandy/commit/50865a07a94875f17d5ef04751ea5de80264407c.patch;
+      sha256 = "1xg4lb03b97s4wbiqgwhq6p87cmxi464dfv9xpxwm2najaxc66fq";
+    })
+  ];
 
   src = fetchFromGitLab {
     domain = "source.puri.sm";
@@ -33,6 +41,7 @@ in stdenv.mkDerivation rec {
   ];
 
   PKG_CONFIG_GLADEUI_2_0_MODULEDIR = "${placeholder "glade"}/lib/glade/modules";
+  PKG_CONFIG_GLADEUI_2_0_CATALOGDIR = "${placeholder "glade"}/share/glade/catalogs";
 
   doCheck = true;
 
