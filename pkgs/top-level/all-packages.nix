@@ -13184,6 +13184,8 @@ with pkgs;
 
   dex-oidc = callPackage ../servers/dex { };
 
+  doh-proxy = callPackage ../servers/dns/doh-proxy { };
+
   dgraph = callPackage ../servers/dgraph { };
 
   dico = callPackage ../servers/dico { };
