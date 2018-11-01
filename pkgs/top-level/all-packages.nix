@@ -770,6 +770,7 @@ with pkgs;
 
   androidenv = callPackage ../development/mobile/androidenv {
     pkgs_i686 = pkgsi686Linux;
+    licenseAccepted = (config.android_sdk.accept_license or false);
   };
 
   inherit (androidenv) androidndk;
@@ -2061,8 +2062,12 @@ with pkgs;
     cudatoolkit_7
     cudatoolkit_7_5
     cudatoolkit_8
+    cudatoolkit_9
     cudatoolkit_9_0
-    cudatoolkit_9;
+    cudatoolkit_9_1
+    cudatoolkit_9_2
+    cudatoolkit_10
+    cudatoolkit_10_0;
 
   cudatoolkit = cudatoolkit_9;
 
@@ -2072,7 +2077,11 @@ with pkgs;
     cudnn6_cudatoolkit_8
     cudnn_cudatoolkit_8
     cudnn_cudatoolkit_9
-    cudnn_cudatoolkit_9_0;
+    cudnn_cudatoolkit_9_0
+    cudnn_cudatoolkit_9_1
+    cudnn_cudatoolkit_9_2
+    cudnn_cudatoolkit_10
+    cudnn_cudatoolkit_10_0;
 
   cudnn = cudnn_cudatoolkit_9;
 
@@ -4154,6 +4163,8 @@ with pkgs;
 
   modemmanager = callPackage ../tools/networking/modem-manager {};
 
+  modem-manager-gui = callPackage ../applications/networking/modem-manager-gui {};
+
   modsecurity_standalone = callPackage ../tools/security/modsecurity { };
 
   molly-guard = callPackage ../os-specific/linux/molly-guard { };
@@ -6186,6 +6197,8 @@ with pkgs;
   wml = callPackage ../development/web/wml { };
 
   wol = callPackage ../tools/networking/wol { };
+
+  wolf-shaper = callPackage ../applications/audio/wolf-shaper { };
 
   wring = nodePackages.wring;
 
@@ -9541,6 +9554,8 @@ with pkgs;
   freetts = callPackage ../development/libraries/freetts { };
 
   frog = self.languageMachines.frog;
+
+  fstrcmp = callPackage ../development/libraries/fstrcmp { };
 
   fstrm = callPackage ../development/libraries/fstrm { };
 
@@ -13181,6 +13196,8 @@ with pkgs;
   couchpotato = callPackage ../servers/couchpotato {};
 
   dex-oidc = callPackage ../servers/dex { };
+
+  doh-proxy = callPackage ../servers/dns/doh-proxy { };
 
   dgraph = callPackage ../servers/dgraph { };
 
@@ -17152,6 +17169,8 @@ with pkgs;
   };
 
   gxmessage = callPackage ../applications/misc/gxmessage { };
+
+  gxplugins-lv2 = callPackage ../applications/audio/gxplugins-lv2 { };
 
   hackrf = callPackage ../applications/misc/hackrf { };
 
