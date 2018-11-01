@@ -5,11 +5,11 @@
 
 stdenv.mkDerivation rec {
   name = "gnome-clocks-${version}";
-  version = "3.30.0";
+  version = "3.30.1";
 
   src = fetchurl {
     url = "mirror://gnome/sources/gnome-clocks/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "1yy8p0rwh2fzxcayh2qc3fsglf0hpgi5bcx1j915092byin8l53n";
+    sha256 = "009fr6zwv37wryi0c0syi4i7pxpdbn3gliws68l99cjsbn2qd6pc";
   };
 
   passthru = {
