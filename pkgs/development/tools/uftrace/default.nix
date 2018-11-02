@@ -1,4 +1,4 @@
-{stdenv, fetchFromGitHub }:
+{stdenv, fetchFromGitHub, pkgconfig, elfutils, ncurses }:
 
 stdenv.mkDerivation rec {
   name = "uftrace-${version}";
@@ -12,8 +12,11 @@ stdenv.mkDerivation rec {
   };
 
   postUnpack = ''
-        patchShebangs .
+    patchShebangs .
   '';
+
+  nativeBuildInputs = [ pkgconfig ];
+  buildInputs = [ elfutils ncurses ];
 
   meta = {
     description = "Function (graph) tracer for user-space";
