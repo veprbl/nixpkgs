@@ -13583,6 +13583,8 @@ with pkgs;
     libmemcached = null; # Detection is broken upstream
   };
 
+  timescaledb-parallel-copy = callPackage ../development/tools/database/timescaledb-parallel-copy { };
+
   postgresql = postgresql_9_6;
 
   inherit (callPackages ../servers/sql/postgresql { })
