@@ -2,19 +2,24 @@
 
 stdenv.mkDerivation rec {
   name    = "trace-cmd-${version}";
-  version = "2.6";
+  version = "2.7";
 
   src = fetchgit {
     url    = "git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/trace-cmd.git";
     rev    = "refs/tags/trace-cmd-v${version}";
-    sha256 = "15d6b7l766h2mamqgphx6l6a33b1zn0yar2h7i6b24ph6kz3idxn";
+    sha256 = "13djbwfp52sg0kxg1n95x86dxcxiwhqlalrif06zg79jq4ry3rbx";
   };
 
-  buildInputs = [ asciidoc libxslt ];
+  nativeBuildInputs = [ asciidoc libxslt ];
 
-  configurePhase = "true";
-  buildPhase     = "make prefix=$out MANPAGE_DOCBOOK_XSL=${docbook_xsl}/xml/xsl/docbook/manpages/docbook.xsl all doc";
-  installPhase   = "make prefix=$out install install_doc";
+  dontConfigure = true;
+  makeFlags = [
+    "prefix=${placeholder "out"}"
+    "MANPAGE_DOCBOOK_XSL=${docbook_xsl}/xml/xsl/docbook/manpages/docbook.xsl"
+    "BASH_COMPLETE_DIR=${placeholder "out"}/etc/bash_completion.d"
+  ];
+  buildFlags = [ "all" "doc" ];
+  installTargets = [ "install" "install_doc" ];
 
   meta = {
     description = "User-space tools for the Linux kernel ftrace subsystem";
