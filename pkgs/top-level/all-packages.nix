@@ -7413,7 +7413,7 @@ with pkgs;
 
   metaBuildEnv = callPackage ../development/compilers/meta-environment/meta-build-env { };
 
-  swift = callPackage ../development/compilers/swift { };
+  swift = callPackage ../development/compilers/swift { clang = clang_5; };
 
   swiProlog = callPackage ../development/compilers/swi-prolog { };
 
