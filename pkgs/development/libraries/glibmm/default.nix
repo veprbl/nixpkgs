@@ -14,11 +14,6 @@ stdenv.mkDerivation rec {
 
   outputs = [ "out" "dev" ];
 
-  patches = [
-    ./ustring-wchar.patch
-    ./socketclient.patch
-  ];
-
   nativeBuildInputs = [ pkgconfig gnum4 ];
   propagatedBuildInputs = [ glib libsigcxx ];
 
