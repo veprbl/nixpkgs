@@ -11,7 +11,7 @@
 , ninja
 , gobjectIntrospection
 , gsettings-desktop-schemas
-, vala
+, vala_0_40
 , wrapGAppsHook }:
 
 stdenv.mkDerivation rec {
@@ -32,7 +32,7 @@ stdenv.mkDerivation rec {
     gettext
     gobjectIntrospection
     libxml2
-    vala
+    vala_0_40 # should be `elementary.vala` when elementary attribute set is merged
     wrapGAppsHook
   ];
   buildInputs = [
@@ -45,7 +45,7 @@ stdenv.mkDerivation rec {
   ];
 
   postInstall = ''
-    ${gnome3.glib.dev}/bin/glib-compile-schemas $out/share/glib-2.0/schemas
+    ${glib.dev}/bin/glib-compile-schemas $out/share/glib-2.0/schemas
   '';
 
   meta = with stdenv.lib; {

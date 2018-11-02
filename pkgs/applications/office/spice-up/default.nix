@@ -18,13 +18,13 @@
 
 stdenv.mkDerivation rec {
   name = "spice-up-${version}";
-  version = "1.6.0";
+  version = "1.7.0";
 
   src = fetchFromGitHub {
     owner = "Philip-Scott";
     repo = "Spice-up";
     rev = version;
-    sha256 = "08g5b412zf3ihv13716fkjsyw2qn3fnx5ciszrlqaxsiysc8azh2";
+    sha256 = "1qb1hlw7g581dmgg5mh832ixjkcgqm3lqzj6xma2cz8wdncwwjaq";
   };
 
   USER = "nix-build-user";
@@ -32,7 +32,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [
     pkgconfig
     wrapGAppsHook
-    vala_0_40
+    vala_0_40 # should be `elementary.vala` when elementary attribute set is merged
     cmake
     ninja
     gettext
@@ -40,12 +40,13 @@ stdenv.mkDerivation rec {
     gobjectIntrospection # For setup hook
   ];
   buildInputs = [
-    gtk3
-    granite
+    gnome3.defaultIconTheme # should be `elementary.defaultIconTheme`when elementary attribute set is merged
     gnome3.libgee
+    granite
+    gtk3
     json-glib
-    libgudev
     libevdev
+    libgudev
     libsoup
   ];
 
