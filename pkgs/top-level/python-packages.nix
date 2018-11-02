@@ -4016,7 +4016,7 @@ in {
       py2 = callPackage ../development/python-modules/pydns { };
     in if isPy3k then py3 else py2;
 
-  pythondaemon = callPackage ../development/python-modules/python-daemon { };
+  python-daemon = callPackage ../development/python-modules/python-daemon { };
 
   sympy = callPackage ../development/python-modules/sympy { };
 
