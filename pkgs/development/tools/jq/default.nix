@@ -9,18 +9,25 @@ stdenv.mkDerivation rec {
     sha256="1a76f46a652i2g333kfvrl6mp2w7whf6h1yly519izg4y967h9cn";
   };
 
-  outputs = [ "out" "doc" "man" "dev" "lib" ];
+  outputs = [ "bin" "doc" "man" "dev" "lib" "out" ];
 
   buildInputs = [ oniguruma ];
 
-  # jq is linked to libjq:
-  configureFlags = stdenv.lib.optional (!stdenv.isDarwin) "LDFLAGS=-Wl,-rpath,\\\${libdir}";
+  configureFlags =
+    [
+    "--bindir=\${bin}/bin"
+    "--sbindir=\${bin}/bin"
+    "--datadir=\${doc}/share"
+    "--mandir=\${man}/share/man"
+    ]
+    # jq is linked to libjq:
+    ++ stdenv.lib.optional (!stdenv.isDarwin) "LDFLAGS=-Wl,-rpath,\\\${libdir}";
 
   doInstallCheck = true;
   installCheckTarget = "check";
 
   postInstallCheck = ''
-    $out/bin/jq --help >/dev/null
+    $bin/bin/jq --help >/dev/null
   '';
 
   meta = with stdenv.lib; {
