@@ -1136,8 +1136,6 @@ with pkgs;
 
   consul = callPackage ../servers/consul { };
 
-  consul-ui = callPackage ../servers/consul/ui.nix { };
-
   consul-alerts = callPackage ../servers/monitoring/consul-alerts { };
 
   consul-template = callPackage ../tools/system/consul-template { };
@@ -4392,6 +4390,8 @@ with pkgs;
 
   nms = callPackage ../tools/misc/nms { };
 
+  nomachine-client = callPackage ../tools/admin/nomachine-client { };
+
   notify-desktop = callPackage ../tools/misc/notify-desktop {};
 
   nkf = callPackage ../tools/text/nkf {};
@@ -7352,7 +7352,9 @@ with pkgs;
   cargo-tree = callPackage ../tools/package-management/cargo-tree { };
   cargo-update = callPackage ../tools/package-management/cargo-update { };
 
-  cargo-asm = callPackage ../development/tools/rust/cargo-asm { };
+  cargo-asm = callPackage ../development/tools/rust/cargo-asm {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
   cargo-fuzz = callPackage ../development/tools/rust/cargo-fuzz { };
 
   pyo3-pack = callPackage ../development/tools/rust/pyo3-pack { };
@@ -8056,6 +8058,7 @@ with pkgs;
     ansible_2_4
     ansible_2_5
     ansible_2_6
+    ansible_2_7
     ansible2
     ansible;
 
@@ -14360,6 +14363,8 @@ with pkgs;
       python = python3;
     };
 
+    bpftrace = callPackage ../os-specific/linux/bpftrace { };
+
     bbswitch = callPackage ../os-specific/linux/bbswitch {};
 
     beegfs-module = callPackage ../os-specific/linux/beegfs/kernel-module.nix { };
@@ -16051,6 +16056,8 @@ with pkgs;
 
     pulseaudioSupport = config.pulseaudio or false;
   };
+
+  cmusfm = callPackage ../applications/audio/cmusfm { };
 
   cni = callPackage ../applications/networking/cluster/cni {};
   cni-plugins = callPackage ../applications/networking/cluster/cni/plugins.nix {};
@@ -19757,6 +19764,8 @@ with pkgs;
     wxGTK = wxGTK28;
     gtk = gtk2;
   };
+
+  x11basic = callPackage ../development/compilers/x11basic { };
 
   x11vnc = callPackage ../tools/X11/x11vnc { };
 
