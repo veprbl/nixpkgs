@@ -43,7 +43,7 @@ with luaPackages; stdenv.mkDerivation rec {
 
   GI_TYPELIB_PATH = "${pango.out}/lib/girepository-1.0";
   LUA_CPATH = "${lgi}/lib/lua/${lua.luaversion}/?.so";
-  LUA_PATH  = "${lgi}/share/lua/${lua.luaversion}/?.lua;${lgi}/share/lua/${lua.luaversion}/lgi/?.lua";
+  LUA_PATH  = "?.lua;${lgi}/share/lua/${lua.luaversion}/?.lua;${lgi}/share/lua/${lua.luaversion}/lgi/?.lua";
 
   postInstall = ''
     wrapProgram $out/bin/awesome \
