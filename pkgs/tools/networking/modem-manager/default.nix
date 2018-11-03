@@ -1,9 +1,9 @@
 { stdenv, fetchurl, glib, udev, libgudev, polkit, ppp, gettext, pkgconfig
 , libmbim, libqmi, systemd, fetchpatch }:
 
+let pname = "ModemManager"; in
 stdenv.mkDerivation rec {
   name = "modem-manager-${version}";
-  pname = "ModemManager";
   version = "1.7.990";
 
   src = fetchurl {
