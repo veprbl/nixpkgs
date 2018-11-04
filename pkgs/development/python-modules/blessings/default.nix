@@ -1,6 +1,8 @@
 { stdenv
 , buildPythonPackage
 , fetchPypi
+, six
+, nose
 }:
 
 buildPythonPackage rec {
@@ -14,6 +16,13 @@ buildPythonPackage rec {
 
   # 4 failing tests, 2to3
   doCheck = false;
+
+  propagatedBuildInputs = [ six ];
+  checkInputs = [ nose ];
+
+  checkPhase = ''
+    nosetests
+  '';
 
   meta = with stdenv.lib; {
     homepage = https://github.com/erikrose/blessings;

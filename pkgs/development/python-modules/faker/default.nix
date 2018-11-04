@@ -2,7 +2,7 @@
   # Build inputs
   dateutil, six, text-unidecode, ipaddress ? null,
   # Test inputs
-  email_validator, nose, mock, ukpostcodeparser }:
+  email_validator, mock, ukpostcodeparser, pytestrunner, pytest}:
 
 assert pythonOlder "3.3" -> ipaddress != null;
 
@@ -17,9 +17,10 @@ buildPythonPackage rec {
 
   checkInputs = [
     email_validator
-    nose
     mock
     ukpostcodeparser
+    pytestrunner
+    pytest
   ];
 
   propagatedBuildInputs = [

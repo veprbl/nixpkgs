@@ -18,6 +18,7 @@
 , iso8601
 , pytz
 , hypothesis
+, fetchpatch
 }:
 
 buildPythonPackage rec {
@@ -49,6 +50,13 @@ buildPythonPackage rec {
     iso8601
     pytz
     hypothesis
+  ];
+
+  patches = [
+    (fetchpatch {
+      url = https://github.com/pyca/cryptography/commit/0322962e143798fa5228f4505eeb606cdf773b87.patch;
+      sha256 = "00c42ql4k8wk924i4pccqc6nkm0c58l7j3vf2fzlawdanyz1s9sb";
+    })
   ];
 
   # The test assumes that if we're on Sierra or higher, that we use `getentropy`, but for binary

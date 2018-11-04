@@ -15,7 +15,7 @@ buildPythonPackage rec {
     sha256 = "1a836406405730121ae9823e19c6e806c62bbad73f890574fff50efa4122c487";
   };
 
-  nativeBuildInputs = [ unittest2 ];
+  checkInputs = [ unittest2 mock ];
   propagatedBuildInputs = [ pyasn1 ];
   checkInputs = [ mock ];
 
