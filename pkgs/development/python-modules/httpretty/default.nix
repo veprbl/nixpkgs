@@ -26,16 +26,6 @@ buildPythonPackage rec {
   propagatedBuildInputs = [ urllib3 ];
 
   postPatch = ''
-    sed -i -e 's/==.*$//' *requirements.txt
-    # XXX: Drop this after version 0.8.4 is released.
-    patch httpretty/core.py <<DIFF
-    ***************
-    *** 566 ****
-    !                 'content-length': len(self.body)
-    --- 566 ----
-    !                 'content-length': str(len(self.body))
-    DIFF
-
     # Explicit encoding flag is required with python3, unless locale is set.
     ${if !isPy3k then "" else
       "patch -p0 -i ${./setup.py.patch}"}
