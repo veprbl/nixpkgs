@@ -10,10 +10,10 @@ buildPythonPackage rec {
     sha256 = "5b94b49521f6456670fdb30cd82a4eca9412788a93fa6dd6df72c94d5a8ff2d7";
   };
 
-  patches = stdenv.lib.optional (stdenv.lib.versionAtLeast version "6.7") (substituteAll {
-    src = ./fix-paths.patch;
-    locale = "${locale}/bin/locale";
-  });
+  #patches = stdenv.lib.optional (stdenv.lib.versionAtLeast version "6.7") (substituteAll {
+  #  src = ./fix-paths.patch;
+  #  locale = "${locale}/bin/locale";
+  #});
 
   buildInputs = [ pytest ];
 
@@ -22,7 +22,7 @@ buildPythonPackage rec {
   '';
 
   # https://github.com/pallets/click/issues/823
-  doCheck = false;
+  doCheck = true;
 
   meta = with stdenv.lib; {
     homepage = http://click.pocoo.org/;
