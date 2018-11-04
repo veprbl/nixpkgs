@@ -1,4 +1,4 @@
-{ stdenv, fetchPypi, buildPythonPackage, execnet, pytest, setuptools_scm, pytest-forked }:
+{ stdenv, fetchPypi, buildPythonPackage, execnet, pytest, setuptools_scm, pytest-forked, filelock }:
 
 buildPythonPackage rec {
   pname = "pytest-xdist";
@@ -11,6 +11,7 @@ buildPythonPackage rec {
 
   nativeBuildInputs = [ setuptools_scm ];
   buildInputs = [ pytest pytest-forked ];
+  checkInputs = [ filelock ];
   propagatedBuildInputs = [ execnet ];
 
   checkPhase = ''
