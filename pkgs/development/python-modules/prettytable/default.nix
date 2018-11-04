@@ -6,11 +6,11 @@
 
 buildPythonPackage rec {
   pname = "prettytable";
-  version = "7";
+  version = "0.7.2";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "7b5df88a819145657ae64cab4bc32dd19dce16ed1263584b08f4c5199443b80d";
+    sha256 = "2d5460dc9db74a32bcc8f9f67de68b2c4f4d2f01fa3bd518764c69156d9cacd9";
   };
 
   buildInputs = [ glibcLocales ];
