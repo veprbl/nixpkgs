@@ -2,11 +2,11 @@
 
 buildPythonPackage rec {
   pname = "Logbook";
-  version = "1.4.0";
+  version = "1.4.1";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "1n8wzm2nc99gbvb44y2fbb59sy3c4awkwfgy4pbwv7z892ykw2iw";
+    sha256 = "32375ce706d04a46886f9818bb953e53e0eda636552d7c0a2e482dd670fa56db";
   };
 
   checkInputs = [ pytest ] ++ lib.optionals (!isPy3k) [ mock ];

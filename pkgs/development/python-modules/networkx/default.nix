@@ -7,12 +7,12 @@
 
 buildPythonPackage rec {
   pname = "networkx";
-  version = "2.1";
+  version = "2.2";
 
   src = fetchPypi {
     inherit pname version;
     extension = "zip";
-    sha256 = "64272ca418972b70a196cb15d9c85a5a6041f09a2f32e0d30c0255f25d458bb1";
+    sha256 = "45e56f7ab6fe81652fb4bc9f44faddb0e9025f469f602df14e3b2551c2ea5c8b";
   };
 
   checkInputs = [ nose ];

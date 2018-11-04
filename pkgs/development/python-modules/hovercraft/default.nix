@@ -12,12 +12,12 @@
 
 buildPythonPackage rec {
   pname = "hovercraft";
-  version = "2.0";
+  version = "2.6";
   disabled = ! isPy3k;
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "0lqxr816lymgnywln8bbv9nrmkyahjjcjkm9kjyny9bflayz4f1g";
+    sha256 = "e44e29adbb1f7491efe22632e7a0ebf913282b02c5e19efdc33871fc10152acf";
   };
 
   propagatedBuildInputs = [ docutils lxml manuel pygments svg-path watchdog ];

@@ -2,11 +2,11 @@
 
 buildPythonPackage rec {
   pname = "stevedore";
-  version = "1.29.0";
+  version = "1.30.0";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "1e153545aca7a6a49d8337acca4f41c212fbfa60bf864ecd056df0cafb9627e8";
+    sha256 = "b92bc7add1a53fb76c634a178978d113330aaf2006f9498d9e2414b31fbfc104";
   };
 
   doCheck = false;

@@ -7,11 +7,11 @@
 
 buildPythonPackage rec {
   pname = "pytest-repeat";
-  version = "0.6.0";
+  version = "0.7.0";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "84aba2fcca5dc2f32ae626a01708f469f17b3384ec3d1f507698077f274909d6";
+    sha256 = "637e68dd615e850b47b2dee0edf72bcede44de6a5335837fe2980daaf0cdab2b";
   };
 
   buildInputs = [ setuptools_scm pytest ];

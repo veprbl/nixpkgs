@@ -3,12 +3,12 @@
 
 buildPythonPackage rec {
   pname = "ptpython";
-  version = "0.41";
+  version = "2.0.4";
   name  = "${pname}-${version}";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "1hcaaadkp5n37hxggraynifa33wx1akklzvf6y4rvgjxbjl2g2x7";
+    sha256 = "ebe9d68ea7532ec8ab306d4bdc7ec393701cd9bbd6eff0aa3067c821f99264d4";
   };
 
   propagatedBuildInputs = [ wcwidth six prompt_toolkit docopt jedi pygments ];

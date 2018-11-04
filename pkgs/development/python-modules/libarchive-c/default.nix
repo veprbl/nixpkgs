@@ -7,11 +7,11 @@
 
 buildPythonPackage rec {
   pname = "libarchive-c";
-  version = "2.7";
+  version = "2.8";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "011bfsmqpcwd6920kckllh7zhw2y4rrasgmddb7wjzn2hg1xpsjn";
+    sha256 = "06d44d5b9520bdac93048c72b7ed66d11a6626da16d2086f9aad079674d8e061";
   };
 
   buildInputs = [ pytest pkgs.glibcLocales ];
