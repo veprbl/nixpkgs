@@ -1,19 +1,13 @@
-{ lib, python3Packages, fetchFromGitHub, stdenv, writeTextDir, substituteAll }:
+{ lib, python3Packages, stdenv, writeTextDir, substituteAll }:
 
 python3Packages.buildPythonApplication rec {
   version = "0.48.1";
   pname = "meson";
 
-  src = fetchFromGitHub {
-    owner = "mesonbuild";
-    repo = "meson";
-    rev = version;
-    sha256 = "0mzaj0ss0svl3q1y751j30yg7ymbq96paa4k5zddakkzic71afg5";
+  src = python3Packages.fetchPypi {
+    inherit pname version;
+    sha256 = "0ivlascy671bpincd76dhz0lpi78vcz6hpgh87z66d08chnkx2gg";
   };
-  #src = python3Packages.fetchPypi {
-  #  inherit pname version;
-  #  sha256 = "0qawsm6px1vca3babnqwn0hmkzsxy4w0gi345apd2qk3v0cv7ipc";
-  #};
 
   postFixup = ''
     pushd $out/bin
