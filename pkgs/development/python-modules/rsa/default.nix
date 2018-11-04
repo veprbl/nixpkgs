@@ -3,6 +3,7 @@
 , fetchPypi
 , unittest2
 , pyasn1
+, mock
 }:
 
 buildPythonPackage rec {
@@ -16,6 +17,7 @@ buildPythonPackage rec {
 
   nativeBuildInputs = [ unittest2 ];
   propagatedBuildInputs = [ pyasn1 ];
+  checkInputs = [ mock ];
 
   meta = with stdenv.lib; {
     homepage = https://stuvel.eu/rsa;
