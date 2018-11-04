@@ -17,7 +17,6 @@ buildPythonPackage rec {
 
   checkInputs = [ unittest2 mock ];
   propagatedBuildInputs = [ pyasn1 ];
-  checkInputs = [ mock ];
 
   meta = with stdenv.lib; {
     homepage = https://stuvel.eu/rsa;
