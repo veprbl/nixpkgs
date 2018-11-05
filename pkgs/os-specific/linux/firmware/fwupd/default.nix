@@ -105,7 +105,7 @@ in stdenv.mkDerivation {
       "fwupd/remotes.d/lvfs.conf"
       "fwupd/remotes.d/vendor.conf"
       "pki/fwupd/GPG-KEY-Hughski-Limited"
-      "pki/fwupd/GPG-KEY-Linux-Foundation-Metadata"
+      "pki/fwupd/GPG-KEY-Linux-Foundation-Firmware"
       "pki/fwupd/GPG-KEY-Linux-Vendor-Firmware-Service"
       "pki/fwupd/LVFS-CA.pem"
       "pki/fwupd-metadata/GPG-KEY-Linux-Foundation-Metadata"
