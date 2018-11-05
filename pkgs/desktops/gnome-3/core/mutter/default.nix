@@ -16,14 +16,6 @@ stdenv.mkDerivation rec {
     updateScript = gnome3.updateScript { packageName = "mutter"; attrPath = "gnome3.mutter"; };
   };
 
-  patches = [
-    # https://gitlab.gnome.org/GNOME/mutter/merge_requests/172
-    (fetchpatch {
-      url = https://gitlab.gnome.org/GNOME/mutter/commit/62660bbd.patch;
-      sha256 = "1qq8vxlqnyrqh94dc0dh1aj1dsbyw6bwv3x46q5vsscbbxbiv9wk";
-    })
-  ];
-
   configureFlags = [
     "--with-x"
     "--disable-static"
