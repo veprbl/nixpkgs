@@ -719,7 +719,8 @@ self: super: {
   math-functions = dontCheck super.math-functions;
 
   # build servant docs from the repository
-  servant =
+  # problems, resolve later
+  servant = if true then super.servant else
     let
       ver = super.servant.version;
       docs = pkgs.stdenv.mkDerivation {
