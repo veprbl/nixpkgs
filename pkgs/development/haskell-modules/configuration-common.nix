@@ -893,9 +893,6 @@ self: super: {
   # https://github.com/aisamanra/config-ini/issues/12
   config-ini = dontCheck super.config-ini;
 
-  # We've remove cpython 3.4 from nixpkgs
-  cpython = null;
-
   # doctest >=0.9 && <0.12
   genvalidity-property = doJailbreak super.genvalidity-property;
   path = dontCheck super.path;
@@ -1068,11 +1065,11 @@ self: super: {
 
   # The tool needs a newer hpack version than the one mandated by LTS-12.x.
   cabal2nix = super.cabal2nix.overrideScope (self: super: {
-    hpack = self.hpack_0_31_0;
+    hpack = self.hpack_0_31_1;
     yaml = self.yaml_0_11_0_0;
   });
   stack2nix = super.stack2nix.overrideScope (self: super: {
-    hpack = self.hpack_0_31_0;
+    hpack = self.hpack_0_31_1;
     yaml = self.yaml_0_11_0_0;
   });
 
