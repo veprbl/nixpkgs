@@ -730,7 +730,7 @@ self: super: {
           rev = "v${ver}";
           sha256 = "0kqglih3rv12nmkzxvalhfaaafk4b2irvv9x5xmc48i1ns71y23l";
         }}/doc";
-        buildInputs = with pkgs.pythonPackages; [ sphinx recommonmark sphinx_rtd_theme ];
+        buildInputs = [ (pkgs.python.withPackages (ps: with ps; [ sphinx recommonmark sphinx_rtd_theme ])) ];
         makeFlags = "html";
         installPhase = ''
           mv _build/html $out
