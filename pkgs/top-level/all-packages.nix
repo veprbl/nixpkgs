@@ -71,6 +71,26 @@ with pkgs;
 
   common-updater-scripts = callPackage ../common-updater/scripts.nix { };
 
+  ### Push NixOS tests inside the fixed point
+
+  nixosTests =
+    let
+      # TODO(Ericson2314,ekleog): Check this will work correctly with cross-
+      system = builtins.currentSystem;
+      rawTests = (import ../../nixos/release.nix {
+        nixpkgs = pkgs;
+      }).tests;
+      testNames = builtins.attrNames rawTests;
+      filteredList = builtins.filter
+        (test: rawTests.${test} ? ${system})
+        testNames;
+      finalList = map
+        (test: { name = test; value = rawTests.${test}.${system}; })
+        filteredList;
+      finalTests = builtins.listToAttrs finalList;
+    in
+    finalTests;
+
   ### BUILD SUPPORT
 
   autoreconfHook = makeSetupHook
@@ -573,7 +593,10 @@ with pkgs;
     gsl = gsl_1;
   };
 
-  atomicparsley = callPackage ../tools/video/atomicparsley { };
+  atomicparsley = callPackage ../tools/video/atomicparsley {
+    inherit (darwin) cf-private;
+    inherit (darwin.apple_sdk.frameworks) Cocoa;
+  };
 
   autoflake = callPackage ../development/tools/analysis/autoflake { };
 
@@ -701,6 +724,8 @@ with pkgs;
   gitless = callPackage ../applications/version-management/gitless { };
 
   gitter = callPackage  ../applications/networking/instant-messengers/gitter { };
+
+  gucci = callPackage ../tools/text/gucci { };
 
   grc = callPackage ../tools/misc/grc { };
 
@@ -1173,6 +1198,7 @@ with pkgs;
   codec2 = callPackage ../development/libraries/codec2 { };
 
   contacts = callPackage ../tools/misc/contacts {
+    inherit (darwin) cf-private;
     inherit (darwin.apple_sdk.frameworks) Foundation AddressBook;
   };
 
@@ -3040,6 +3066,8 @@ with pkgs;
 
   groonga = callPackage ../servers/search/groonga { };
 
+  grpcurl = callPackage ../tools/networking/grpcurl { };
+
   grub = pkgsi686Linux.callPackage ../tools/misc/grub {
     buggyBiosCDSupport = config.grub.buggyBiosCDSupport or true;
     stdenv = overrideCC stdenv pkgsi686Linux.gcc6;
@@ -4783,6 +4811,7 @@ with pkgs;
   };
 
   pinentry_mac = callPackage ../tools/security/pinentry/mac.nix {
+    inherit (darwin) cf-private;
     inherit (darwin.apple_sdk.frameworks) Cocoa;
   };
 
@@ -10995,6 +11024,8 @@ with pkgs;
 
   libosip_3 = callPackage ../development/libraries/osip/3.nix {};
 
+  libosmium = callPackage ../development/libraries/libosmium { };
+
   libosmocore = callPackage ../applications/misc/libosmocore { };
 
   libosmpbf = callPackage ../development/libraries/libosmpbf {};
@@ -11796,6 +11827,8 @@ with pkgs;
 
   protobufc = callPackage ../development/libraries/protobufc/1.3.nix { };
 
+  protozero = callPackage ../development/libraries/protozero { };
+
   flatbuffers = callPackage ../development/libraries/flatbuffers { };
 
   gnupth = callPackage ../development/libraries/pth { };
@@ -12136,10 +12169,7 @@ with pkgs;
   schroedinger = callPackage ../development/libraries/schroedinger { };
 
   SDL = callPackage ../development/libraries/SDL {
-    openglSupport = libGLSupported;
-    alsaSupport = stdenv.isLinux;
-    x11Support = !stdenv.isCygwin;
-    pulseaudioSupport = config.pulseaudio or stdenv.isLinux;
+    inherit (darwin) cf-private;
     inherit (darwin.apple_sdk.frameworks) OpenGL CoreAudio CoreServices AudioUnit Kernel Cocoa;
   };
 
@@ -12160,12 +12190,7 @@ with pkgs;
   SDL_ttf = callPackage ../development/libraries/SDL_ttf { };
 
   SDL2 = callPackage ../development/libraries/SDL2 {
-    openglSupport = libGLSupported;
-    alsaSupport = stdenv.isLinux;
-    x11Support = !stdenv.isCygwin;
-    waylandSupport = stdenv.isLinux;
-    udevSupport = stdenv.isLinux;
-    pulseaudioSupport = config.pulseaudio or stdenv.isLinux;
+    inherit (darwin) cf-private;
     inherit (darwin.apple_sdk.frameworks) AudioUnit Cocoa CoreAudio CoreServices ForceFeedback OpenGL;
   };
 
@@ -13855,10 +13880,14 @@ with pkgs;
 
   xqilla = callPackage ../development/tools/xqilla { };
 
-  xquartz = callPackage ../servers/x11/xquartz { };
+  xquartz = callPackage ../servers/x11/xquartz {
+    inherit (darwin) cf-private;
+  };
+
   quartz-wm = callPackage ../servers/x11/quartz-wm {
     stdenv = clangStdenv;
-    inherit (darwin.apple_sdk.frameworks) AppKit;
+    inherit (darwin) cf-private;
+    inherit (darwin.apple_sdk.frameworks) AppKit Foundation;
     inherit (darwin.apple_sdk.libs) Xplugin;
   };
 
@@ -13867,7 +13896,9 @@ with pkgs;
   # have created a cycle.
   xorg = recurseIntoAttrs ((lib.callPackageWith __splicedPackages ../servers/x11/xorg {
   }).overrideScope' (lib.callPackageWith __splicedPackages ../servers/x11/xorg/overrides.nix {
-    inherit (darwin) apple_sdk;
+    inherit (darwin) cf-private;
+    inherit (darwin.apple_sdk.frameworks) ApplicationServices Carbon Cocoa;
+    inherit (darwin.apple_sdk.libs) Xplugin;
     bootstrap_cmds = if stdenv.isDarwin then darwin.bootstrap_cmds else null;
     python = python2; # Incompatible with Python 3x
     udev = if stdenv.isLinux then udev else null;
@@ -16323,6 +16354,7 @@ with pkgs;
     imagemagick = null;
     acl = null;
     gpm = null;
+    inherit (darwin) cf-private;
     inherit (darwin.apple_sdk.frameworks) AppKit GSS ImageIO;
   };
 
@@ -18327,6 +18359,8 @@ with pkgs;
 
   osmctools = callPackage ../applications/misc/osmctools { };
 
+  osmium-tool = callPackage ../applications/misc/osmium-tool { };
+
   owamp = callPackage ../applications/networking/owamp { };
 
   vivaldi = callPackage ../applications/networking/browsers/vivaldi {};
@@ -18497,6 +18531,8 @@ with pkgs;
   plugin-torture = callPackage ../applications/audio/plugin-torture { };
 
   pmenu = callPackage ../applications/misc/pmenu { };
+
+  polar-bookshelf = callPackage ../applications/misc/polar-bookshelf { };
 
   poezio = python3Packages.poezio;
 
@@ -19405,6 +19441,7 @@ with pkgs;
   };
 
   vim = callPackage ../applications/editors/vim {
+    inherit (darwin) cf-private;
     inherit (darwin.apple_sdk.frameworks) Carbon Cocoa;
   };
 

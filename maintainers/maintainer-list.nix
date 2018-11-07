@@ -624,6 +624,11 @@
     github = "bramd";
     name = "Bram Duvigneau";
   };
+  braydenjw = {
+    email = "nixpkgs@willenborg.ca";
+    github = "braydenjw";
+    name = "Brayden Willenborg";
+  };
   brian-dawn = {
     email = "brian.t.dawn@gmail.com";
     github = "brian-dawn";
@@ -961,6 +966,11 @@
     email = "danielrf12@gmail.com";
     github = "danielfullmer";
     name = "Daniel Fullmer";
+  };
+  das-g = {
+    email = "nixpkgs@raphael.dasgupta.ch";
+    github = "das-g";
+    name = "Raphael Das Gupta";
   };
   das_j = {
     email = "janne@hess.ooo";
@@ -2223,6 +2233,11 @@
     email = "josef.kemetmueller@gmail.com";
     github = "knedlsepp";
     name = "Josef Kemetmüller";
+  };
+  knl = {
+    email = "nikola@knezevic.co";
+    github = "knl";
+    name = "Nikola Knežević";
   };
   konimex = {
     email = "herdiansyah@netc.eu";
