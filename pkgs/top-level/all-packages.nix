@@ -725,6 +725,8 @@ with pkgs;
 
   gitter = callPackage  ../applications/networking/instant-messengers/gitter { };
 
+  gucci = callPackage ../tools/text/gucci { };
+
   grc = callPackage ../tools/misc/grc { };
 
   green-pdfviewer = callPackage ../applications/misc/green-pdfviewer {
@@ -3061,6 +3063,8 @@ with pkgs;
   gron = callPackage ../development/tools/gron { };
 
   groonga = callPackage ../servers/search/groonga { };
+
+  grpcurl = callPackage ../tools/networking/grpcurl { };
 
   grub = pkgsi686Linux.callPackage ../tools/misc/grub {
     buggyBiosCDSupport = config.grub.buggyBiosCDSupport or true;
@@ -11025,6 +11029,8 @@ with pkgs;
 
   libosip_3 = callPackage ../development/libraries/osip/3.nix {};
 
+  libosmium = callPackage ../development/libraries/libosmium { };
+
   libosmocore = callPackage ../applications/misc/libosmocore { };
 
   libosmpbf = callPackage ../development/libraries/libosmpbf {};
@@ -11825,6 +11831,8 @@ with pkgs;
   protobuf2_5 = callPackage ../development/libraries/protobuf/2.5.nix { };
 
   protobufc = callPackage ../development/libraries/protobufc/1.3.nix { };
+
+  protozero = callPackage ../development/libraries/protozero { };
 
   flatbuffers = callPackage ../development/libraries/flatbuffers { };
 
@@ -18345,6 +18353,8 @@ with pkgs;
 
   osmctools = callPackage ../applications/misc/osmctools { };
 
+  osmium-tool = callPackage ../applications/misc/osmium-tool { };
+
   owamp = callPackage ../applications/networking/owamp { };
 
   vivaldi = callPackage ../applications/networking/browsers/vivaldi {};
@@ -18515,6 +18525,8 @@ with pkgs;
   plugin-torture = callPackage ../applications/audio/plugin-torture { };
 
   pmenu = callPackage ../applications/misc/pmenu { };
+
+  polar-bookshelf = callPackage ../applications/misc/polar-bookshelf { };
 
   poezio = python3Packages.poezio;
 
