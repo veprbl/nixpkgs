@@ -1,7 +1,7 @@
 { stdenv, config, libGLSupported, fetchurl, pkgconfig, pruneLibtoolFiles
 , openglSupport ? libGLSupported, libGL
 , alsaSupport ? stdenv.isLinux, alsaLib
-, x11Support ? !stdenv.isCygwin, libX11, xproto, libICE, libXi, libXScrnSaver, libXcursor, libXinerama, libXext, libXxf86vm, libXrandr
+, x11Support ? !stdenv.isCygwin, libX11, xorgproto, libICE, libXi, libXScrnSaver, libXcursor, libXinerama, libXext, libXxf86vm, libXrandr
 , waylandSupport ? stdenv.isLinux, wayland, wayland-protocols, libxkbcommon
 , dbusSupport ? stdenv.isLinux, dbus
 , udevSupport ? false, udev
