@@ -5999,7 +5999,9 @@ with pkgs;
 
   wal_e = callPackage ../tools/backup/wal-e { };
 
-  watchexec = callPackage ../tools/misc/watchexec { };
+  watchexec = callPackage ../tools/misc/watchexec {
+    inherit (darwin.apple_sdk.frameworks) CoreServices CoreFoundation;
+  };
 
   watchman = callPackage ../development/tools/watchman {
     inherit (darwin.apple_sdk.frameworks) CoreServices;
@@ -7318,7 +7320,7 @@ with pkgs;
 
   metaocaml_3_09 = callPackage ../development/compilers/ocaml/metaocaml-3.09.nix { };
 
-  ber_metaocaml = callPackage ../development/compilers/ocaml/ber-metaocaml-104.nix { };
+  ber_metaocaml = callPackage ../development/compilers/ocaml/ber-metaocaml.nix { };
 
   ocaml_make = callPackage ../development/ocaml-modules/ocamlmake { };
 
@@ -9071,6 +9073,8 @@ with pkgs;
   accountsservice = callPackage ../development/libraries/accountsservice { };
 
   acl = callPackage ../development/libraries/acl { };
+
+  acsccid = callPackage ../tools/security/acsccid { };
 
   activemq = callPackage ../development/libraries/apache-activemq { };
 
@@ -16238,10 +16242,10 @@ with pkgs;
   };
 
   inherit (callPackage ../applications/virtualization/docker {})
-    docker_18_06;
+    docker_18_09;
 
-  docker = docker_18_06;
-  docker-edge = docker_18_06;
+  docker = docker_18_09;
+  docker-edge = docker_18_09;
 
   docker-proxy = callPackage ../applications/virtualization/docker/proxy.nix { };
 
@@ -22832,6 +22836,8 @@ with pkgs;
   ghc-standalone-archive = callPackage ../os-specific/darwin/ghc-standalone-archive { inherit (darwin) cctools; };
 
   chrome-gnome-shell = callPackage  ../desktops/gnome-3/extensions/chrome-gnome-shell {};
+
+  chrome-token-signing = libsForQt5.callPackage ../tools/security/chrome-token-signing {};
 
   NSPlist = callPackage ../development/libraries/NSPlist {};
 
