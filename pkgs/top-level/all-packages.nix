@@ -521,6 +521,7 @@ with pkgs;
 
   alacritty = callPackage ../applications/misc/alacritty {
     inherit (xorg) libXcursor libXxf86vm libXi;
+    inherit (darwin) cf-private;
     inherit (darwin.apple_sdk.frameworks) AppKit CoreFoundation CoreGraphics CoreServices CoreText Foundation OpenGL;
   };
 
@@ -1550,6 +1551,7 @@ with pkgs;
   noteshrink = callPackage ../tools/misc/noteshrink { };
 
   noti = callPackage ../tools/misc/noti {
+    inherit (darwin) cf-private;
     inherit (darwin.apple_sdk.frameworks) Cocoa;
   };
 
@@ -3597,6 +3599,7 @@ with pkgs;
   kexpand = callPackage ../development/tools/kexpand { };
 
   keybase = callPackage ../tools/security/keybase {
+    inherit (darwin) cf-private;
     # Reasoning for the inherited apple_sdk.frameworks:
     # 1. specific compiler errors about: AVFoundation, AudioToolbox, MediaToolbox
     # 2. the rest are added from here: https://github.com/keybase/client/blob/68bb8c893c5214040d86ea36f2f86fbb7fac8d39/go/chat/attachments/preview_darwin.go#L7
@@ -9588,7 +9591,10 @@ with pkgs;
 
   flite = callPackage ../development/libraries/flite { };
 
-  fltk13 = callPackage ../development/libraries/fltk { };
+  fltk13 = callPackage ../development/libraries/fltk {
+    inherit (darwin) cf-private;
+    inherit (darwin.apple_sdk.frameworks) Cocoa AGL GLUT;
+  };
   fltk = self.fltk13;
 
   flyway = callPackage ../development/tools/flyway { };
@@ -9742,7 +9748,10 @@ with pkgs;
 
   glfw = glfw3;
   glfw2 = callPackage ../development/libraries/glfw/2.x.nix { };
-  glfw3 = callPackage ../development/libraries/glfw/3.x.nix { };
+  glfw3 = callPackage ../development/libraries/glfw/3.x.nix {
+    inherit (darwin) cf-private;
+    inherit (darwin.apple_sdk.frameworks) Cocoa Kernel;
+  };
 
   glibc = callPackage ../development/libraries/glibc {
     installLocales = config.glibc.locales or false;
@@ -11181,7 +11190,10 @@ with pkgs;
 
   libuecc = callPackage ../development/libraries/libuecc { };
 
-  libui = callPackage ../development/libraries/libui { };
+  libui = callPackage ../development/libraries/libui {
+    inherit (darwin) cf-private;
+    inherit (darwin.apple_sdk.frameworks) Cocoa;
+  };
 
   libunistring = callPackage ../development/libraries/libunistring { };
 
@@ -11631,6 +11643,8 @@ with pkgs;
 
   opencv = callPackage ../development/libraries/opencv {
     ffmpeg = ffmpeg_2;
+    inherit (darwin) cf-private;
+    inherit (darwin.apple_sdk.frameworks) Cocoa QTKit;
   };
 
   opencv3 = callPackage ../development/libraries/opencv/3.x.nix {
@@ -13341,6 +13355,8 @@ with pkgs;
   gofish = callPackage ../servers/gopher/gofish { };
 
   grafana = callPackage ../servers/monitoring/grafana { };
+
+  grafana_reporter = callPackage ../servers/monitoring/grafana-reporter { };
 
   h2o = callPackage ../servers/http/h2o { };
 
@@ -16392,6 +16408,7 @@ with pkgs;
     imagemagick = null;
     acl = null;
     gpm = null;
+    inherit (darwin) cf-private;
     inherit (darwin.apple_sdk.frameworks) AppKit GSS ImageIO;
   };
 
@@ -16401,8 +16418,8 @@ with pkgs;
     withGTK3 = false;
   }));
 
-  emacsMacport = emacs25Macport;
-  emacs25Macport = callPackage ../applications/editors/emacs/macport.nix {
+  emacsMacport = callPackage ../applications/editors/emacs/macport.nix {
+    inherit (darwin) cf-private;
     inherit (darwin.apple_sdk.frameworks)
       AppKit Carbon Cocoa IOKit OSAKit Quartz QuartzCore WebKit
       ImageCaptureCore GSS ImageIO;
