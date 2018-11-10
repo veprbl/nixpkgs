@@ -39,52 +39,36 @@ in
   config = mkIf cfg.enable {
     environment.etc."nscd.conf".text = cfg.config;
 
-    users.users.nscd =
-      { isSystemUser = true;
-        description = "Name service cache daemon user";
-      };
+    users.users.nscd = {
+      isSystemUser = true;
+      description = "Name service cache daemon user";
+    };
 
-    systemd.services.nscd =
-      { description = "Name Service Cache Daemon";
+    systemd.services.nscd = {
+      description = "Name Service Cache Daemon";
 
-        wantedBy = [ "nss-lookup.target" "nss-user-lookup.target" ];
+      wantedBy = [ "nss-lookup.target" "nss-user-lookup.target" ];
 
-        environment = { LD_LIBRARY_PATH = nssModulesPath; };
+      environment = { LD_LIBRARY_PATH = nssModulesPath; };
 
-        preStart =
-          ''
-            mkdir -m 0755 -p /run/nscd
-            rm -f /run/nscd/nscd.pid
-            mkdir -m 0755 -p /var/db/nscd
-          '';
+      restartTriggers = [
+        config.environment.etc.hosts.source
+        config.environment.etc."nsswitch.conf".source
+        config.environment.etc."nscd.conf".source
+      ];
 
-        restartTriggers = [
-          config.environment.etc.hosts.source
-          config.environment.etc."nsswitch.conf".source
-          config.environment.etc."nscd.conf".source
+      serviceConfig = {
+        ExecStart = "@${pkgs.unscd}/bin/nscd nscd";
+        Type = "forking";
+        PIDFile = "/run/nscd/nscd.pid";
+        Restart = "always";
+        ExecReload = [
+          "${pkgs.unscd}/bin/nscd --invalidate passwd"
+          "${pkgs.unscd}/bin/nscd --invalidate group"
+          "${pkgs.unscd}/bin/nscd --invalidate hosts"
         ];
-
-        serviceConfig =
-          { ExecStart = "@${pkgs.glibc.bin}/sbin/nscd nscd";
-            Type = "forking";
-            PIDFile = "/run/nscd/nscd.pid";
-            Restart = "always";
-            ExecReload =
-              [ "${pkgs.glibc.bin}/sbin/nscd --invalidate passwd"
-                "${pkgs.glibc.bin}/sbin/nscd --invalidate group"
-                "${pkgs.glibc.bin}/sbin/nscd --invalidate hosts"
-              ];
-          };
-
-        # Urgggggh... Nscd forks before opening its socket and writing
-        # its pid. So wait until it's ready.
-        postStart =
-          ''
-            while ! ${pkgs.glibc.bin}/sbin/nscd -g > /dev/null; do
-              sleep 0.2
-            done
-          '';
       };
+    };
 
   };
 }
