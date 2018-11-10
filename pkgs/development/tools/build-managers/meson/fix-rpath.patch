@@ -24,7 +24,7 @@
              else:
 --- a/mesonbuild/scripts/depfixer.py
 +++ b/mesonbuild/scripts/depfixer.py
-@@ -303,6 +303,14 @@
+@@ -303,6 +303,30 @@ class Elf(DataSizes):
              return
          self.bf.seek(rp_off)
          old_rpath = self.read_str()
@@ -36,6 +36,33 @@
 +
 +        new_rpath += b':'.join(filter(lambda path: path.startswith(b'@storeDir@'), old_rpath.split(b':')))
 +
++        old_l = len(old_rpath)
++        clean_old_rpath = old_rpath
++        cut = len(new_rpath)
++        if cut < len(old_rpath) and old_rpath[cut] != b':':
++            start = old_rpath.rfind(b':', 0, cut) + 1
++            to = old_rpath.find(b':', start)
++            to = len(old_rpath) if to == -1 else to
++            cut_ref = old_rpath[start:to]
++            if cut_ref.startswith(b'@storeDir@'):
++                clean_old_rpath = old_rpath[0:start] + b'X'*len(cut_ref) + old_rpath[to:]
++
++        print('%%% rpath', new_rpath, old_rpath, clean_old_rpath)
++        if len(old_rpath) != len(clean_old_rpath):
++            print('wrong rewrite', old_rpath, clean_old_rpath)
++            sys.exit("Wrong rewrite")
++
          if len(old_rpath) < len(new_rpath):
              sys.exit("New rpath must not be longer than the old one.")
          # The linker does read-only string deduplication. If there is a
+@@ -316,6 +340,9 @@ class Elf(DataSizes):
+         if not new_rpath:
+             self.remove_rpath_entry(entrynum)
+         else:
++            self.bf.seek(rp_off)
++            self.bf.write(clean_old_rpath)
++
+             self.bf.seek(rp_off)
+             self.bf.write(new_rpath)
+             self.bf.write(b'\0')
+
