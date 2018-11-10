@@ -20,8 +20,8 @@ let
   python = python2;
   buildType = "release";
   # Remember to change the extpackRev and version in extpack.nix as well.
-  main = "ee3af129a581ec4c1a3e777e98247f8943e976ce6edd24962bcaa5c53ed1f644";
-  version = "5.2.14";
+  main = "1m48ywa913g6zgqslvrihxs2fbr4gmljypbdpjma2hck6isyi02m";
+  version = "5.2.22";
 in stdenv.mkDerivation {
   name = "virtualbox-${version}";
 
