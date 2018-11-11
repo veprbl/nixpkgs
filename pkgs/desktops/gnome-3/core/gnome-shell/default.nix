@@ -1,5 +1,5 @@
 { fetchurl, fetchpatch, substituteAll, stdenv, meson, ninja, pkgconfig, gnome3, json-glib, libcroco, gettext, libsecret
-, python3Packages, polkit, clutter, networkmanager, docbook_xsl , docbook_xsl_ns, at-spi2-core
+, python3Packages, libsoup, polkit, clutter, networkmanager, docbook_xsl , docbook_xsl_ns, at-spi2-core
 , libstartup_notification, telepathy-glib, telepathy-logger, libXtst, unzip, glibcLocales, shared-mime-info
 , libgweather, libcanberra-gtk3, librsvg, geoclue2, perl, docbook_xml_dtd_42, desktop-file-utils
 , libpulseaudio, libical, gobjectIntrospection, gstreamer, wrapGAppsHook, libxslt
@@ -29,7 +29,7 @@ in stdenv.mkDerivation rec {
   buildInputs = with gnome3; [
     systemd caribou
     gsettings-desktop-schemas gnome-keyring glib gcr json-glib accountsservice
-    libcroco libsecret polkit gdk_pixbuf librsvg
+    libcroco libsecret libsoup polkit gdk_pixbuf librsvg
     clutter networkmanager libstartup_notification telepathy-glib
     libXtst gjs mutter libpulseaudio evolution-data-server
     libical gtk gstreamer gdm libcanberra-gtk3 geoclue2
