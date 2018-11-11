@@ -3952,8 +3952,6 @@ with pkgs;
 
   libiberty_static = libiberty.override { staticBuild = true; };
 
-  libibverbs = callPackage ../development/libraries/libibverbs { };
-
   libxc = callPackage ../development/libraries/libxc { };
 
   libxcomp = callPackage ../development/libraries/libxcomp { };
@@ -3963,8 +3961,6 @@ with pkgs;
   libx86emu = callPackage ../development/libraries/libx86emu { };
 
   libzmf = callPackage ../development/libraries/libzmf {};
-
-  librdmacm = callPackage ../development/libraries/librdmacm { };
 
   libreswan = callPackage ../tools/networking/libreswan { };
 
@@ -7658,6 +7654,10 @@ with pkgs;
   davmail = callPackage ../applications/networking/davmail {};
 
   kanif = callPackage ../applications/networking/cluster/kanif { };
+
+  lumo = callPackage ../development/interpreters/clojurescript/lumo {
+    nodejs = nodejs-10_x;
+  };
 
   lxappearance = callPackage ../desktops/lxde/core/lxappearance {
     gtk2 = gtk2-x11;
@@ -17269,6 +17269,8 @@ with pkgs;
   homebank = callPackage ../applications/office/homebank {
     gtk = gtk3;
   };
+
+  hovercraft = python3Packages.callPackage ../applications/misc/hovercraft { };
 
   howl = callPackage ../applications/editors/howl { };
 

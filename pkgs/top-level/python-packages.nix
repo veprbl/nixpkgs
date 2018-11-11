@@ -1696,8 +1696,6 @@ in {
 
   hupper = callPackage ../development/python-modules/hupper {};
 
-  hovercraft = callPackage ../development/python-modules/hovercraft { };
-
   hsaudiotag = callPackage ../development/python-modules/hsaudiotag { };
 
   hsaudiotag3k = callPackage ../development/python-modules/hsaudiotag3k { };
@@ -3757,8 +3755,11 @@ in {
     };
   };
 
+  prompt_toolkit = self.prompt_toolkit_1;
 
-  prompt_toolkit = callPackage ../development/python-modules/prompt_toolkit { };
+  prompt_toolkit_1 = callPackage ../development/python-modules/prompt_toolkit/1.nix { };
+
+  prompt_toolkit_2 = callPackage ../development/python-modules/prompt_toolkit { };
 
   protobuf = callPackage ../development/python-modules/protobuf {
     disabled = isPyPy;
@@ -3778,7 +3779,9 @@ in {
 
   psycopg2 = callPackage ../development/python-modules/psycopg2 {};
 
-  ptpython = callPackage ../development/python-modules/ptpython {};
+  ptpython = callPackage ../development/python-modules/ptpython {
+    prompt_toolkit = self.prompt_toolkit_2;
+  };
 
   publicsuffix = callPackage ../development/python-modules/publicsuffix {};
 
