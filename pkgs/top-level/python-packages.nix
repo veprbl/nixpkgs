@@ -362,6 +362,8 @@ in {
 
   gidgethub = callPackage ../development/python-modules/gidgethub { };
 
+  gin-config = callPackage ../development/python-modules/gin-config { };
+
   globus-sdk = callPackage ../development/python-modules/globus-sdk { };
 
   goocalendar = callPackage ../development/python-modules/goocalendar { };
@@ -2744,9 +2746,11 @@ in {
 
   mathics = callPackage ../development/python-modules/mathics { };
 
-  matplotlib = callPackage ../development/python-modules/matplotlib {
+  matplotlib = let
+    path = if isPy3k then ../development/python-modules/matplotlib/default.nix else
+      ../development/python-modules/matplotlib/2.nix;
+  in callPackage path {
     stdenv = if stdenv.isDarwin then pkgs.clangStdenv else pkgs.stdenv;
-    enableGhostscript = true;
     inherit (pkgs.darwin.apple_sdk.frameworks) Cocoa;
   };
 
@@ -11073,6 +11077,8 @@ EOF
   libiio = (toPythonModule (pkgs.libiio.override {
     inherit python;
   })).python;
+
+  scour = callPackage ../development/python-modules/scour { };
 
 });
 
