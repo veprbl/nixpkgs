@@ -1516,6 +1516,8 @@ in {
 
   dopy = callPackage ../development/python-modules/dopy { };
 
+  dpath = callPackage ../development/python-modules/dpath { };
+
   dpkt = callPackage ../development/python-modules/dpkt {};
 
   urllib3 = callPackage ../development/python-modules/urllib3 {};
@@ -2222,8 +2224,6 @@ in {
 
   pyfribidi = callPackage ../development/python-modules/pyfribidi { };
 
-  docker_compose = callPackage ../development/python-modules/docker_compose {};
-
   pyftpdlib = callPackage ../development/python-modules/pyftpdlib { };
 
   fdroidserver = callPackage ../development/python-modules/fdroidserver { };
@@ -2467,6 +2467,8 @@ in {
   hcs_utils = callPackage ../development/python-modules/hcs_utils { };
 
   hetzner = callPackage ../development/python-modules/hetzner { };
+
+  homeassistant-pyozw = callPackage ../development/python-modules/homeassistant-pyozw { };
 
   htmllaundry = callPackage ../development/python-modules/htmllaundry { };
 
@@ -3031,6 +3033,8 @@ in {
   plone-testing = callPackage ../development/python-modules/plone-testing { };
 
   ply = callPackage ../development/python-modules/ply { };
+
+  plyplus = callPackage ../development/python-modules/plyplus { };
 
   plyvel = callPackage ../development/python-modules/plyvel { };
 
@@ -3769,12 +3773,6 @@ in {
     disabled = isPyPy;
     doCheck = !isPy3k;
     protobuf = pkgs.protobuf;
-  };
-
-  protobuf3_1 = callPackage ../development/python-modules/protobuf {
-    disabled = isPyPy;
-    doCheck = !isPy3k;
-    protobuf = pkgs.protobuf3_1;
   };
 
   psd-tools = callPackage ../development/python-modules/psd-tools { };
@@ -5993,27 +5991,7 @@ in {
 
   typeguard = callPackage ../development/python-modules/typeguard { };
 
-  ruamel_yaml = buildPythonPackage rec {
-    name = "ruamel.yaml-${version}";
-    version = "0.15.35";
-
-    src = pkgs.fetchurl {
-      url = "mirror://pypi/r/ruamel.yaml/${name}.tar.gz";
-      sha256 = "0xggyfaj6vprggahf7cq8kp9j79rb7hn8ndk3bxj2sxvwhhliiwd";
-    };
-
-    # Tests cannot load the module to test
-    doCheck = false;
-
-    propagatedBuildInputs = with self; [ ruamel_base typing ] ++
-    (optional (!isPy3k) self.ruamel_ordereddict);
-
-    meta = {
-      description = "YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order";
-      homepage = https://bitbucket.org/ruamel/yaml;
-      license = licenses.mit;
-    };
-  };
+  ruamel_yaml = callPackage ../development/python-modules/ruamel_yaml { };
 
   runsnakerun = buildPythonPackage rec {
     name = "runsnakerun-2.0.4";

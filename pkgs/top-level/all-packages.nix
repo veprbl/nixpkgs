@@ -73,23 +73,11 @@ with pkgs;
 
   ### Push NixOS tests inside the fixed point
 
-  nixosTests =
-    let
-      # TODO(Ericson2314,ekleog): Check this will work correctly with cross-
-      system = builtins.currentSystem;
-      rawTests = (import ../../nixos/release.nix {
-        nixpkgs = pkgs;
-      }).tests;
-      testNames = builtins.attrNames rawTests;
-      filteredList = builtins.filter
-        (test: rawTests.${test} ? ${system})
-        testNames;
-      finalList = map
-        (test: { name = test; value = rawTests.${test}.${system}; })
-        filteredList;
-      finalTests = builtins.listToAttrs finalList;
-    in
-    finalTests;
+  nixosTests = import ../../nixos/tests/all-tests.nix {
+    inherit pkgs;
+    system = stdenv.hostPlatform.system;
+    callTest = t: t.test;
+  };
 
   ### BUILD SUPPORT
 
@@ -154,7 +142,7 @@ with pkgs;
 
   dockerTools = callPackage ../build-support/docker { };
 
-  docker_compose = pythonPackages.docker_compose;
+  docker-compose = python3Packages.callPackage ../applications/virtualization/docker-compose {};
 
   docker-ls = callPackage ../tools/misc/docker-ls { };
 
@@ -690,6 +678,8 @@ with pkgs;
   chkcrontab = callPackage ../tools/admin/chkcrontab { };
 
   cozy = callPackage ../applications/audio/cozy-audiobooks { };
+
+  diskus = callPackage ../tools/misc/diskus { };
 
   djmount = callPackage ../tools/filesystems/djmount { };
 
@@ -8866,6 +8856,8 @@ with pkgs;
     }) ragelStable ragelDev;
 
   hammer = callPackage ../development/tools/parsing/hammer { };
+
+  rdocker = callPackage ../development/tools/rdocker { };
 
   redis-dump = callPackage ../development/tools/redis-dump { };
 
@@ -18940,6 +18932,8 @@ with pkgs;
 
   setbfree = callPackage ../applications/audio/setbfree { };
 
+  sfxr-qt = libsForQt5.callPackage ../applications/audio/sfxr-qt { };
+
   shadowfox = callPackage ../tools/networking/shadowfox { };
 
   shfmt = callPackage ../tools/text/shfmt { };
@@ -21687,14 +21681,14 @@ with pkgs;
     inherit (darwin.apple_sdk.frameworks) Accelerate CoreGraphics CoreVideo;
   };
 
-  caffe2 = callPackage ../development/libraries/science/math/caffe2 {
+  caffe2 = callPackage ../development/libraries/science/math/caffe2 (rec {
     eigen3 = eigen3_3;
     inherit (python3Packages) python future six numpy pydot;
     protobuf = protobuf3_1;
-    python-protobuf = python3Packages.protobuf3_1;
+    python-protobuf = python3Packages.protobuf.override { inherit protobuf; };
     # Used only for image loading.
     opencv3 = opencv3WithoutCuda;
-  };
+  });
 
   cntk = callPackage ../applications/science/math/cntk rec {
     cudaSupport = pkgs.config.cudaSupport or false;
