@@ -3255,7 +3255,6 @@ in {
 
   prettytable = callPackage ../development/python-modules/prettytable { };
 
-
   prompt_toolkit = self.prompt_toolkit_1;
 
   prompt_toolkit_1 = callPackage ../development/python-modules/prompt_toolkit/1.nix { };
@@ -3650,6 +3649,8 @@ in {
 
   isodate = callPackage ../development/python-modules/isodate { };
 
+  owslib = callPackage ../development/python-modules/owslib { };
+
   resampy = callPackage ../development/python-modules/resampy { };
 
   restructuredtext_lint = callPackage ../development/python-modules/restructuredtext_lint { };
@@ -3758,6 +3759,7 @@ in {
 
   sphinx_1_2 = self.sphinx.overridePythonAttrs rec {
     name = "sphinx-1.2.3";
+    version = "1.2.3";
     src = pkgs.fetchurl {
       url = "mirror://pypi/s/sphinx/sphinx-1.2.3.tar.gz";
       sha256 = "94933b64e2fe0807da0612c574a021c0dac28c7bd3c4a23723ae5a39ea8f3d04";
