@@ -726,6 +726,8 @@ with pkgs;
    SDL = SDL_sixel;
   };
 
+  gremlin-console = callPackage ../applications/misc/gremlin-console { };
+
   gcsfuse = callPackage ../tools/filesystems/gcsfuse { };
 
   glyr = callPackage ../tools/audio/glyr { };
@@ -8510,7 +8512,6 @@ with pkgs;
   jdepend = callPackage ../development/tools/analysis/jdepend { };
 
   flex_2_5_35 = callPackage ../development/tools/parsing/flex/2.5.35.nix { };
-  flex_2_6_1 = callPackage ../development/tools/parsing/flex/2.6.1.nix { };
   flex = callPackage ../development/tools/parsing/flex { };
 
   flexcpp = callPackage ../development/tools/parsing/flexc++ { };
@@ -9128,6 +9129,8 @@ with pkgs;
 
   arb = callPackage ../development/libraries/arb {};
   arb-git = callPackage ../development/libraries/arb/git.nix {};
+
+  argp-standalone = callPackage ../development/libraries/argp-standalone {};
 
   armadillo = callPackage ../development/libraries/armadillo {};
 
@@ -17813,6 +17816,8 @@ with pkgs;
 
   looking-glass-client = callPackage ../applications/virtualization/looking-glass-client { };
 
+  ltc-tools = callPackage ../applications/audio/ltc-tools { };
+
   lumail = callPackage ../applications/networking/mailreaders/lumail {
     lua = lua5_1;
   };
@@ -18183,6 +18188,8 @@ with pkgs;
   polybar = callPackage ../applications/misc/polybar { };
 
   ptex = callPackage ../development/libraries/ptex {};
+
+  qtcurve = libsForQt5.callPackage ../misc/themes/qtcurve {};
 
   rssguard = libsForQt5.callPackage ../applications/networking/feedreaders/rssguard { };
 
@@ -18915,6 +18922,8 @@ with pkgs;
   scribus = callPackage ../applications/office/scribus {
     inherit (gnome2) libart_lgpl;
   };
+
+  scribusUnstable = libsForQt5.callPackage ../applications/office/scribus/unstable.nix { };
 
   seafile-client = libsForQt5.callPackage ../applications/networking/seafile-client { };
 
