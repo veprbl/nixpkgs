@@ -166,6 +166,10 @@ in {
 
   agate-dbf = callPackage ../development/python-modules/agate-dbf { };
 
+  alerta = callPackage ../development/python-modules/alerta { };
+
+  alerta-server = callPackage ../development/python-modules/alerta-server { };
+
   phonenumbers = callPackage ../development/python-modules/phonenumbers { };
 
   agate-excel = callPackage ../development/python-modules/agate-excel { };
@@ -201,6 +205,8 @@ in {
   authres = callPackage ../development/python-modules/authres { };
 
   autograd = callPackage ../development/python-modules/autograd { };
+
+  autologging = callPackage ../development/python-modules/autologging { };
 
   automat = callPackage ../development/python-modules/automat { };
 
@@ -271,6 +277,8 @@ in {
   browser-cookie3 = callPackage ../development/python-modules/browser-cookie3 { };
 
   browsermob-proxy = disabledIf isPy3k (callPackage ../development/python-modules/browsermob-proxy {});
+
+  bt_proximity = callPackage ../development/python-modules/bt-proximity { };
 
   bugseverywhere = callPackage ../applications/version-management/bugseverywhere {};
 
@@ -357,6 +365,8 @@ in {
   genanki = callPackage ../development/python-modules/genanki { };
 
   gidgethub = callPackage ../development/python-modules/gidgethub { };
+
+  gin-config = callPackage ../development/python-modules/gin-config { };
 
   globus-sdk = callPackage ../development/python-modules/globus-sdk { };
 
@@ -450,6 +460,10 @@ in {
 
   outcome = callPackage ../development/python-modules/outcome {};
 
+  ovito = toPythonModule (pkgs.libsForQt5.callPackage ../development/python-modules/ovito {
+      pythonPackages = self;
+    });
+
   palettable = callPackage ../development/python-modules/palettable { };
 
   pathlib = callPackage ../development/python-modules/pathlib { };
@@ -515,6 +529,8 @@ in {
   py3exiv2 = callPackage ../development/python-modules/py3exiv2 { };
 
   pyfakefs = callPackage ../development/python-modules/pyfakefs {};
+
+  pyfttt = callPackage ../development/python-modules/pyfttt { };
 
   pygame = callPackage ../development/python-modules/pygame { };
 
@@ -699,6 +715,8 @@ in {
   vidstab = callPackage ../development/python-modules/vidstab { };
 
   pyunbound = callPackage ../tools/networking/unbound/python.nix { };
+
+  WazeRouteCalculator = callPackage ../development/python-modules/WazeRouteCalculator { };
 
   # packages defined here
 
@@ -1146,6 +1164,8 @@ in {
 
   click-plugins = callPackage ../development/python-modules/click-plugins {};
 
+  click-repl = callPackage ../development/python-modules/click-repl { };
+
   click-threading = callPackage ../development/python-modules/click-threading {};
 
   cligj = callPackage ../development/python-modules/cligj { };
@@ -1510,6 +1530,8 @@ in {
 
   dopy = callPackage ../development/python-modules/dopy { };
 
+  dpath = callPackage ../development/python-modules/dpath { };
+
   dpkt = callPackage ../development/python-modules/dpkt {};
 
   urllib3 = callPackage ../development/python-modules/urllib3 {};
@@ -1691,8 +1713,6 @@ in {
   humanize = callPackage ../development/python-modules/humanize { };
 
   hupper = callPackage ../development/python-modules/hupper {};
-
-  hovercraft = callPackage ../development/python-modules/hovercraft { };
 
   hsaudiotag = callPackage ../development/python-modules/hsaudiotag { };
 
@@ -2218,8 +2238,6 @@ in {
 
   pyfribidi = callPackage ../development/python-modules/pyfribidi { };
 
-  docker_compose = callPackage ../development/python-modules/docker_compose {};
-
   pyftpdlib = callPackage ../development/python-modules/pyftpdlib { };
 
   fdroidserver = callPackage ../development/python-modules/fdroidserver { };
@@ -2463,6 +2481,8 @@ in {
   hcs_utils = callPackage ../development/python-modules/hcs_utils { };
 
   hetzner = callPackage ../development/python-modules/hetzner { };
+
+  homeassistant-pyozw = callPackage ../development/python-modules/homeassistant-pyozw { };
 
   htmllaundry = callPackage ../development/python-modules/htmllaundry { };
 
@@ -2742,9 +2762,11 @@ in {
 
   mathics = callPackage ../development/python-modules/mathics { };
 
-  matplotlib = callPackage ../development/python-modules/matplotlib {
+  matplotlib = let
+    path = if isPy3k then ../development/python-modules/matplotlib/default.nix else
+      ../development/python-modules/matplotlib/2.nix;
+  in callPackage path {
     stdenv = if stdenv.isDarwin then pkgs.clangStdenv else pkgs.stdenv;
-    enableGhostscript = true;
     inherit (pkgs.darwin.apple_sdk.frameworks) Cocoa;
   };
 
@@ -3026,6 +3048,8 @@ in {
 
   ply = callPackage ../development/python-modules/ply { };
 
+  plyplus = callPackage ../development/python-modules/plyplus { };
+
   plyvel = callPackage ../development/python-modules/plyvel { };
 
   osc = callPackage ../development/python-modules/osc { };
@@ -3231,19 +3255,17 @@ in {
 
   prettytable = callPackage ../development/python-modules/prettytable { };
 
-  prompt_toolkit = callPackage ../development/python-modules/prompt_toolkit { };
-  prompt_toolkit2 = callPackage ../development/python-modules/prompt_toolkit/2.nix { };
+
+  prompt_toolkit = self.prompt_toolkit_1;
+
+  prompt_toolkit_1 = callPackage ../development/python-modules/prompt_toolkit/1.nix { };
+
+  prompt_toolkit_2 = callPackage ../development/python-modules/prompt_toolkit { };
 
   protobuf = callPackage ../development/python-modules/protobuf {
     disabled = isPyPy;
     doCheck = !isPy3k;
     protobuf = pkgs.protobuf;
-  };
-
-  protobuf3_1 = callPackage ../development/python-modules/protobuf {
-    disabled = isPyPy;
-    doCheck = !isPy3k;
-    protobuf = pkgs.protobuf3_1;
   };
 
   psd-tools = callPackage ../development/python-modules/psd-tools { };
@@ -3252,7 +3274,9 @@ in {
 
   psycopg2 = callPackage ../development/python-modules/psycopg2 {};
 
-  ptpython = callPackage ../development/python-modules/ptpython {};
+  ptpython = callPackage ../development/python-modules/ptpython {
+    prompt_toolkit = self.prompt_toolkit_2;
+  };
 
   publicsuffix = callPackage ../development/python-modules/publicsuffix {};
 
@@ -4926,6 +4950,8 @@ in {
   libiio = (toPythonModule (pkgs.libiio.override {
     inherit python;
   })).python;
+
+  scour = callPackage ../development/python-modules/scour { };
 
 });
 

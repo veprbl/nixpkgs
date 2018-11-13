@@ -2,10 +2,8 @@
 , buildPythonPackage
 , fetchPypi
 , pytest
-, docopt
 , six
 , wcwidth
-, pygments
 }:
 
 buildPythonPackage rec {
@@ -17,12 +15,11 @@ buildPythonPackage rec {
     sha256 = "fd17048d8335c1e6d5ee403c3569953ba3eb8555d710bfc548faf0712666ea39";
   };
   checkPhase = ''
-    rm prompt_toolkit/win32_types.py
     py.test -k 'not test_pathcompleter_can_expanduser'
   '';
 
   checkInputs = [ pytest ];
-  propagatedBuildInputs = [ docopt six wcwidth pygments ];
+  propagatedBuildInputs = [ six wcwidth /* docopt pygments */ ];
 
   meta = {
     description = "Python library for building powerful interactive command lines";

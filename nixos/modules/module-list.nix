@@ -11,6 +11,7 @@
   ./config/xdg/icons.nix
   ./config/xdg/menus.nix
   ./config/xdg/mime.nix
+  ./config/gtk/gtk-icon-cache.nix
   ./config/gnu.nix
   ./config/i18n.nix
   ./config/iproute2.nix
@@ -34,7 +35,7 @@
   ./config/zram.nix
   ./hardware/all-firmware.nix
   ./hardware/brightnessctl.nix
-  ./hardware/ckb.nix
+  ./hardware/ckb-next.nix
   ./hardware/cpu/amd-microcode.nix
   ./hardware/cpu/intel-microcode.nix
   ./hardware/digitalbitbox.nix
@@ -90,6 +91,7 @@
   ./programs/criu.nix
   ./programs/dconf.nix
   ./programs/digitalbitbox/default.nix
+  ./programs/dmrconfig.nix
   ./programs/environment.nix
   ./programs/firejail.nix
   ./programs/fish.nix
@@ -421,6 +423,7 @@
   ./services/misc/weechat.nix
   ./services/misc/xmr-stak.nix
   ./services/misc/zookeeper.nix
+  ./services/monitoring/alerta.nix
   ./services/monitoring/apcupsd.nix
   ./services/monitoring/arbtt.nix
   ./services/monitoring/bosun.nix
@@ -431,6 +434,7 @@
   ./services/monitoring/dd-agent/dd-agent.nix
   ./services/monitoring/fusion-inventory.nix
   ./services/monitoring/grafana.nix
+  ./services/monitoring/grafana-reporter.nix
   ./services/monitoring/graphite.nix
   ./services/monitoring/hdaps.nix
   ./services/monitoring/heapster.nix

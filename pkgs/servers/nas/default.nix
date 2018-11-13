@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, imake, bison, flex_2_6_1, gccmakedep
+{ stdenv, fetchurl, imake, bison, flex, gccmakedep
 , xorgproto, libXau, libXt, libXext, libXaw, libXpm, xorgcffiles }:
 
 let
@@ -12,7 +12,7 @@ in stdenv.mkDerivation {
     sha256 = "17dk0ckm6mp1ajc0cd6bwyi638ynw2f6bhbn7gynrs0wfmiyldng";
   };
 
-  nativeBuildInputs = [ imake bison flex_2_6_1 gccmakedep ];
+  nativeBuildInputs = [ imake bison flex gccmakedep ];
 
   buildInputs = [ xorgproto libXau libXt libXext libXaw libXpm ];
 
