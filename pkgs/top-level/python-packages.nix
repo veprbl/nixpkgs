@@ -3758,7 +3758,6 @@ in {
   sphinx = callPackage ../development/python-modules/sphinx { };
 
   sphinx_1_2 = self.sphinx.overridePythonAttrs rec {
-    name = "sphinx-1.2.3";
     version = "1.2.3";
     src = pkgs.fetchurl {
       url = "mirror://pypi/s/sphinx/sphinx-1.2.3.tar.gz";
