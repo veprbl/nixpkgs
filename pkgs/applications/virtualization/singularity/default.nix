@@ -40,8 +40,12 @@ stdenv.mkDerivation rec {
       sed -i 's| /sbin/| |g' $f
       sed -i 's| /bin/bash| ${stdenv.shell}|g' $f
       wrapProgram $f --prefix PATH : ${stdenv.lib.makeBinPath buildInputs}
+      substituteInPlace $f --replace /bin/cp ${coreutils}/bin/cp
     done
+
+    substituteInPlace $out/libexec/singularity/bootstrap-scripts/.deffile-sections.sh-wrapped --replace /bin/cp ${coreutils}/bin/cp
   '';
+
 
   src = fetchFromGitHub {
     owner = "singularityware";
