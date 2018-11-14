@@ -278,6 +278,8 @@ in {
 
   browsermob-proxy = disabledIf isPy3k (callPackage ../development/python-modules/browsermob-proxy {});
 
+  bt_proximity = callPackage ../development/python-modules/bt-proximity { };
+
   bugseverywhere = callPackage ../applications/version-management/bugseverywhere {};
 
   cachecontrol = callPackage ../development/python-modules/cachecontrol { };
@@ -389,6 +391,10 @@ in {
   histbook = callPackage ../development/python-modules/histbook { };
 
   hdmedians = callPackage ../development/python-modules/hdmedians { };
+
+  hoomd-blue = toPythonModule (callPackage ../development/python-modules/hoomd-blue {
+    inherit python;
+  });
 
   httpsig = callPackage ../development/python-modules/httpsig { };
 
@@ -523,6 +529,8 @@ in {
   py3exiv2 = callPackage ../development/python-modules/py3exiv2 { };
 
   pyfakefs = callPackage ../development/python-modules/pyfakefs {};
+
+  pyfttt = callPackage ../development/python-modules/pyfttt { };
 
   pygame = callPackage ../development/python-modules/pygame { };
 
@@ -707,6 +715,8 @@ in {
   vidstab = callPackage ../development/python-modules/vidstab { };
 
   pyunbound = callPackage ../tools/networking/unbound/python.nix { };
+
+  WazeRouteCalculator = callPackage ../development/python-modules/WazeRouteCalculator { };
 
   # packages defined here
 

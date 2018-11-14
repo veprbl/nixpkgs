@@ -1182,9 +1182,7 @@ with pkgs;
 
   clipster = callPackage ../tools/misc/clipster { };
 
-  coprthr = callPackage ../development/libraries/coprthr {
-    flex = flex_2_5_35;
-  };
+  coprthr = callPackage ../development/libraries/coprthr { };
 
   cplex = callPackage ../applications/science/math/cplex { releasePath = config.cplex.releasePath or null; };
 
@@ -7723,10 +7721,7 @@ with pkgs;
 
   lush2 = callPackage ../development/interpreters/lush {};
 
-  maude = callPackage ../development/interpreters/maude {
-    bison = bison2;
-    flex = flex_2_5_35;
-  };
+  maude = callPackage ../development/interpreters/maude { };
 
   mesos = callPackage ../applications/networking/cluster/mesos {
     sasl = cyrus_sasl;
@@ -10257,6 +10252,8 @@ with pkgs;
   jsonnet = callPackage ../development/compilers/jsonnet { };
 
   jsonrpc-glib = callPackage ../development/libraries/jsonrpc-glib { };
+
+  jxrlib = callPackage ../development/libraries/jxrlib { };
 
   libjson = callPackage ../development/libraries/libjson { };
 
@@ -14186,9 +14183,7 @@ with pkgs;
 
   gpu-switch = callPackage ../os-specific/linux/gpu-switch { };
 
-  gradm = callPackage ../os-specific/linux/gradm {
-    flex = flex_2_5_35;
-  };
+  gradm = callPackage ../os-specific/linux/gradm { };
 
   hd-idle = callPackage ../os-specific/linux/hd-idle { };
 
@@ -16163,9 +16158,7 @@ with pkgs;
 
   cpp_ethereum = callPackage ../applications/misc/cpp-ethereum { };
 
-  csdp = callPackage ../applications/science/math/csdp {
-    liblapack = liblapackWithoutAtlas;
-  };
+  csdp = callPackage ../applications/science/math/csdp { };
 
   ctop = callPackage ../tools/system/ctop { };
 
@@ -21256,16 +21249,6 @@ with pkgs;
 
   arpack = callPackage ../development/libraries/science/math/arpack { };
 
-  atlas = callPackage ../development/libraries/science/math/atlas {
-    # The build process measures CPU capabilities and optimizes the
-    # library to perform best on that particular machine. That is a
-    # great feature, but it's of limited use with pre-built binaries
-    # coming from a central build farm.
-    tolerateCpuTimingInaccuracy = true;
-    liblapack = liblapackWithoutAtlas;
-    withLapack = false;
-  };
-
   blas = callPackage ../development/libraries/science/math/blas { };
 
   brial = callPackage ../development/libraries/science/math/brial { };
@@ -21288,13 +21271,7 @@ with pkgs;
 
   libhomfly = callPackage ../development/libraries/science/math/libhomfly { };
 
-  # We have essentially 4 permutations of liblapack: version 3.4.1 or 3.5.0,
-  # and with or without atlas as a dependency. The default `liblapack` is 3.4.1
-  # with atlas. Atlas, when built with liblapack as a dependency, uses 3.5.0
-  # without atlas. Etc.
   liblapack = callPackage ../development/libraries/science/math/liblapack {};
-  liblapackWithoutAtlas = liblapackWithAtlas.override { atlas = null; };
-  liblapackWithAtlas = liblapack;
 
   liblbfgs = callPackage ../development/libraries/science/math/liblbfgs { };
 
@@ -21361,9 +21338,7 @@ with pkgs;
 
   QuadProgpp = callPackage ../development/libraries/science/math/QuadProgpp { };
 
-  scs = callPackage ../development/libraries/science/math/scs {
-    liblapack = liblapackWithoutAtlas;
-  };
+  scs = callPackage ../development/libraries/science/math/scs { };
 
   sage = callPackage ../applications/science/math/sage {
     nixpkgs = pkgs;
@@ -21389,12 +21364,15 @@ with pkgs;
 
   ### SCIENCE/MOLECULAR-DYNAMICS
 
+  dl-poly-classic-mpi = callPackage ../applications/science/molecular-dynamics/dl-poly-classic {
+    mpi = openmpi;
+  };
+
   lammps = callPackage ../applications/science/molecular-dynamics/lammps {
     fftw = fftw;
   };
 
-  lammps-mpi = appendToName "mpi" (lammps.override {
-    mpiSupport = true;
+  lammps-mpi = lowPrio (lammps.override {
     mpi = openmpi;
   });
 
@@ -21772,9 +21750,7 @@ with pkgs;
 
   scilab-bin = callPackage ../applications/science/math/scilab-bin {};
 
-  scotch = callPackage ../applications/science/math/scotch {
-    flex = flex_2_5_35;
-  };
+  scotch = callPackage ../applications/science/math/scotch { };
 
   msieve = callPackage ../applications/science/math/msieve { };
 
@@ -22225,7 +22201,7 @@ with pkgs;
          in
            myOS.run-nginx
 
-     Unlike in plain NixOS, the nixpkgs.config, nixpkgs.overlays and
+     Unlike in plain NixOS, the nixpkgs.config and
      nixpkgs.system options will be ignored by default. Instead,
      nixpkgs.pkgs will have the default value of pkgs as it was
      constructed right after invoking the nixpkgs function (e.g. the
