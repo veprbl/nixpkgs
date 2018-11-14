@@ -9,6 +9,6 @@ case "$1" in
     echo "@revision@"
     ;;
   *)
-    echo "@version@ (@codeName@)"
+    echo "@versionString@ (@codeName@)"
     ;;
 esac

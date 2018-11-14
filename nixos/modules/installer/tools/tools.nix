@@ -49,7 +49,8 @@ let
   nixos-version = makeProg {
     name = "nixos-version";
     src = ./nixos-version.sh;
-    inherit (config.system.nixos) version codeName revision;
+    inherit (config.system.nixos) codeName revision;
+    versionString = config.system.nixos.version;
   };
 
   nixos-enter = makeProg {
