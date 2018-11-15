@@ -1,22 +1,22 @@
 { stdenv, lib, fetchpatch, fetchFromGitHub, autoconf, automake, libtool, pkgconfig }:
 
 stdenv.mkDerivation rec {
-  version = "1.23.2";
+  version = "1.24.0";
   name = "libuv-${version}";
 
   src = fetchFromGitHub {
     owner = "libuv";
     repo = "libuv";
     rev = "v${version}";
-    sha256 = "1xfggj0mbbshj7zyccnfw7wyk42qfg4ng3l4aslw014mg8gaskv7";
+    sha256 = "179bl7da0f5zwc4nkfxi6jixx85g6jx90n7h3s7y06mgkwqvwppg";
   };
 
-  patches = [
+  # TODO: drop or fix patch for 1.24.0+
+  patches = stdenv.lib.optional stdenv.hostPlatform.isDarwin
     (fetchpatch {
       url = "https://github.com/libuv/libuv/commit/1a5d4f08238dd532c3718e210078de1186a5920d.patch";
       sha256 = "1s2692h4dvqnzwwicrkpj0zph1i2bhv39w31z5vh7ssgvykaradj";
-    })
-  ];
+    });
 
   postPatch = let
     toDisable = [
