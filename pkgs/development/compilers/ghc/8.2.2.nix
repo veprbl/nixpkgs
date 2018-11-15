@@ -19,8 +19,6 @@
 
 , # If enabled, use -fPIC when compiling static libs.
   enableRelocatedStaticLibs ? stdenv.targetPlatform != stdenv.hostPlatform
-  # anything w/PIE on by default, for now just musl to limit rebuilds
-  || stdenv.hostPlatform.isMusl
 
 , # Whether to build dynamic libs for the standard library (on the target
   # platform). Static libs are always built.
