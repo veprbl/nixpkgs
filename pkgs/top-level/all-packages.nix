@@ -2413,6 +2413,8 @@ with pkgs;
     inherit (pythonPackages) sphinx;
   };
 
+  wl-clipboard = callPackage ../tools/misc/wl-clipboard { };
+
   zabbix-cli = callPackage ../tools/misc/zabbix-cli { };
 
   ### DEVELOPMENT / EMSCRIPTEN
@@ -6646,6 +6648,11 @@ with pkgs;
 
   apache-flex-sdk = callPackage ../development/compilers/apache-flex-sdk { };
 
+  fasm = pkgsi686Linux.callPackage ../development/compilers/fasm {
+    inherit (stdenv) isx86_64;
+  };
+  fasm-bin = callPackage ../development/compilers/fasm/bin.nix { };
+
   fpc = callPackage ../development/compilers/fpc { };
 
   gambit = callPackage ../development/compilers/gambit { stdenv = gccStdenv; };
@@ -8461,9 +8468,11 @@ with pkgs;
 
   egypt = callPackage ../development/tools/analysis/egypt { };
 
-  elfutils = callPackage ../development/tools/misc/elfutils { };
+  elfinfo = callPackage ../development/tools/misc/elfinfo { };
 
   elfkickers = callPackage ../development/tools/misc/elfkickers { };
+
+  elfutils = callPackage ../development/tools/misc/elfutils { };
 
   emma = callPackage ../development/tools/analysis/emma { };
 
@@ -8530,8 +8539,6 @@ with pkgs;
   gnum4 = callPackage ../development/tools/misc/gnum4 { };
   m4 = gnum4;
 
-  gnumake382 = callPackage ../development/tools/build-managers/gnumake/3.82 { };
-  gnumake3 = gnumake382;
   gnumake42 = callPackage ../development/tools/build-managers/gnumake/4.2 { };
   gnumake = gnumake42;
 
@@ -16631,6 +16638,8 @@ with pkgs;
 
   exercism = callPackage ../applications/misc/exercism { };
 
+  go-motion = callPackage ../development/tools/go-motion { };
+
   gpg-mdp = callPackage ../applications/misc/gpg-mdp { };
 
   icesl = callPackage ../applications/misc/icesl { };
@@ -21442,9 +21451,7 @@ with pkgs;
     coqPackages      coq
   ;
 
-  coq2html = callPackage ../applications/science/logic/coq2html {
-    make = pkgs.gnumake3;
-  };
+  coq2html = callPackage ../applications/science/logic/coq2html { };
 
   cryptoverif = callPackage ../applications/science/logic/cryptoverif { };
 
