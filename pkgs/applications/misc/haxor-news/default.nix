@@ -20,6 +20,13 @@ buildPythonApplication rec {
     six
   ];
 
+  postPatch = ''
+    substituteInPlace setup.py \
+      --replace 'click>=5.1,<7.0' \
+                'click>=5.1,<8.0'
+
+  '';
+
   doCheck = false;
 
   checkInputs = [ mock ];
