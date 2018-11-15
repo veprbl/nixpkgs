@@ -11458,13 +11458,6 @@ with pkgs;
 
   minizip = callPackage ../development/libraries/minizip { };
 
-  miro = callPackage ../applications/video/miro {
-    avahi = avahi.override {
-      withLibdnssdCompat = true;
-    };
-    ffmpeg = ffmpeg_2;
-  };
-
   mkvtoolnix = libsForQt5.callPackage ../applications/video/mkvtoolnix { };
 
   mkvtoolnix-cli = callPackage ../applications/video/mkvtoolnix {
@@ -19013,8 +19006,6 @@ with pkgs;
 
   stella = callPackage ../misc/emulators/stella { };
 
-  statsd = nodePackages.statsd;
-
   linuxstopmotion = callPackage ../applications/video/linuxstopmotion { };
 
   sweethome3d = recurseIntoAttrs (  (callPackage ../applications/misc/sweethome3d { })
@@ -22231,6 +22222,61 @@ with pkgs;
                   else [configuration]
                 );
     }).config.system.build;
+
+
+  /*
+   * Run a NixOS VM network test using this evaluation of Nixpkgs.
+   *
+   * It is mostly equivalent to `import ./make-test.nix` from the
+   * NixOS manual[1], except that your `pkgs` will be used instead of
+   * letting NixOS invoke Nixpkgs again. If a test machine needs to
+   * set NixOS options under `nixpkgs`, it must set only the
+   * `nixpkgs.pkgs` option. For the details, see the Nixpkgs
+   * `pkgs.nixos` documentation.
+   *
+   * Parameter:
+   *   A NixOS VM test network, or path to it. Example:
+   *
+   *      { lib, ... }:
+   *      { name = "my-test";
+   *        nodes = {
+   *          machine-1 = someNixOSConfiguration;
+   *          machine-2 = ...;
+   *        }
+   *      }
+   *
+   * Result:
+   *   A derivation that runs the VM test.
+   *
+   * [1]: For writing NixOS tests, see
+   *      https://nixos.org/nixos/manual/index.html#sec-nixos-tests
+   */
+  nixosTest =
+    let
+      /* The nixos/lib/testing.nix module, preapplied with arguments that
+       * make sense for this evaluation of Nixpkgs.
+       */
+      nixosTesting =
+        (import ../../nixos/lib/testing.nix {
+          inherit (pkgs.stdenv.hostPlatform) system;
+          inherit pkgs;
+          extraConfigurations = [(
+            { lib, ... }: {
+              config.nixpkgs.pkgs = lib.mkDefault pkgs;
+            }
+          )];
+        });
+    in
+      test:
+        let
+          loadedTest = if builtins.typeOf test == "path"
+                       then import test
+                       else test;
+          calledTest = if pkgs.lib.isFunction loadedTest
+                       then callPackage loadedTest {}
+                       else loadedTest;
+        in
+          nixosTesting.makeTest calledTest;
 
   nixui = callPackage ../tools/package-management/nixui { node_webkit = nwjs_0_12; };
 
