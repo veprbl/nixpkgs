@@ -2602,8 +2602,8 @@ lib.makeScope newScope (self: with self; {
     builder = ./builder.sh;
     src = fetchgit {
       url = git://anongit.freedesktop.org/xorg/xserver;
-      rev = "52451f1f89890e3088c6fd9d7da0708fd9263950";
-      sha256 = "1kcw1hlscxn7654r09qq141fp93jh4awk23xknxsq18g9nzz772c";
+      rev = "82f8cf8990009f6cac567814dd6b7fd41cfad82d";
+      sha256 = "1b281yqlf4rwb100r6mp585amgp8b6idkam0ddymr00ljmx273z8";
     };
     #src = fetchurl {
     #  url = mirror://xorg/individual/xserver/xorg-server-1.20.3.tar.bz2;
