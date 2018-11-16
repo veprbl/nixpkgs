@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, gdb, zlib }:
+{ stdenv, fetchFromGitHub, bash, coreutils, gdb, zlib }:
 
 stdenv.mkDerivation rec {
   name = "procdump-${version}";
@@ -12,7 +12,19 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ zlib ];
-  buildInputs = [ gdb ];
+  buildInputs = [ bash coreutils gdb ];
+
+  postPatch = ''
+    substituteInPlace src/ProcDumpConfiguration.c \
+      --replace " sigset;" " signalset;" \
+      --replace "&sigset" "&signalset"
+
+    substituteInPlace src/CoreDumpWriter.c \
+      --replace '"gcore ' \
+                '"${gdb}/bin/gcore ' \
+      --replace '"rm ' '"${coreutils}/bin/rm ' \
+      --replace /bin/bash ${bash}/bin/bash
+  '';
 
   makeFlags = [
     "DESTDIR=$(out)"
