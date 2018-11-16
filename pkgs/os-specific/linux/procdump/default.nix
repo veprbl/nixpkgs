@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, bash, coreutils, gdb, zlib }:
+{ stdenv, fetchFromGitHub, fetchpatch, bash, coreutils, gdb, zlib }:
 
 stdenv.mkDerivation rec {
   name = "procdump-${version}";
@@ -14,14 +14,13 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ zlib ];
   buildInputs = [ bash coreutils gdb ];
 
+  patches = [ (fetchpatch {
+    url = https://github.com/Microsoft/ProcDump-for-Linux/pull/50.patch;
+    sha256 = "0h0dj3gi6hw1wdpc0ih9s4kkagv0d9jzrg602cr85r2z19lmb7yk";
+  }) ];
   postPatch = ''
-    substituteInPlace src/ProcDumpConfiguration.c \
-      --replace " sigset;" " signalset;" \
-      --replace "&sigset" "&signalset"
-
     substituteInPlace src/CoreDumpWriter.c \
-      --replace '"gcore ' \
-                '"${gdb}/bin/gcore ' \
+      --replace '"gcore ' '"${gdb}/bin/gcore ' \
       --replace '"rm ' '"${coreutils}/bin/rm ' \
       --replace /bin/bash ${bash}/bin/bash
   '';
