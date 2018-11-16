@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ libnetfilter_conntrack libnftnl libmnl ];
 
   # upstream patch
-  patches = [ ./fix-format-security.patch ];
+  patches = [ ./fix-format-security.patch ./fix-headers-collision.patch ];
 
   configureFlags = [
     "--enable-devel"
