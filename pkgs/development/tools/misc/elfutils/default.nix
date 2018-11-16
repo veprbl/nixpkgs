@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
     sha256 = "0nx6nzbk0rw3pxbzxsfvrjjh37hibzd2gjz5bb8wccpf85ar5vzp";
   };
 
-  patches = [ ./debug-info-from-env.patch ];
+  patches = [ ./debug-info-from-env.patch ./support-pax-flags.patch ];
 
   postPatch = ''
     patchShebangs tests
