@@ -1,7 +1,7 @@
 { stdenv
 
 # Build time
-, fetchurl, pkgconfig, perl, texinfo, setupDebugInfoDirs
+, fetchurl, fetchpatch, pkgconfig, perl, texinfo, setupDebugInfoDirs
 
 # Run time
 , ncurses, readline, gmp, mpfr, expat, zlib, dejagnu
@@ -29,8 +29,17 @@ stdenv.mkDerivation rec {
     sha256 = "0fbw6j4z7kmvywwgavn7w3knp860i5i9qnjffc5p52bwkji43963";
   };
 
-  patches = [ ./debug-info-from-env.patch ]
-    ++ stdenv.lib.optional stdenv.isDarwin ./darwin-target-match.patch;
+  patches = [
+    ./debug-info-from-env.patch
+  ] ++ stdenv.lib.optionals stdenv.isDarwin [
+    ./darwin-target-match.patch
+    (fetchpatch {
+      name = "gdb-aarch64-linux-tdep.patch";
+      url = "https://sourceware.org/git/gitweb.cgi?p=binutils-gdb.git;a=patch;h=0c0a40e0abb9f1a584330a1911ad06b3686e5361";
+      excludes = [ "gdb/ChangeLog" ];
+      sha256 = "16zjw99npyapj68sw52xzmbw671ajm9xv7g5jxfmp94if5y91mnj";
+    })
+  ];
 
   nativeBuildInputs = [ pkgconfig texinfo perl setupDebugInfoDirs ];
 
