@@ -1,83 +1,13 @@
-From a7257d97f297efb1884f3ef5bdfac851535828c1 Mon Sep 17 00:00:00 2001
-From: Will Dietz <w@wdtz.org>
-Date: Thu, 6 Sep 2018 17:09:30 -0500
-Subject: [PATCH] debug from env
+Initialize debug-file-directory from NIX_DEBUG_INFO_DIRS, a colon-separated list
+of directories with separate debugging information files.
 
----
- gdb/build-id.c | 30 +++++++++++++++++++++++++++---
- gdb/symfile.c  |  4 ++--
- 2 files changed, 29 insertions(+), 5 deletions(-)
-
-diff --git a/gdb/build-id.c b/gdb/build-id.c
-index c8eacbd1e8..804205f6df 100644
---- a/gdb/build-id.c
-+++ b/gdb/build-id.c
-@@ -67,8 +67,8 @@ build_id_verify (bfd *abfd, size_t check_len, const bfd_byte *check)
+--- a/gdb/main.c
++++ b/gdb/main.c
+@@ -551,3 +551,6 @@ captured_main_1 (struct captured_main_args *context)
  
- /* See build-id.h.  */
- 
--gdb_bfd_ref_ptr
--build_id_to_debug_bfd (size_t build_id_len, const bfd_byte *build_id)
-+static gdb_bfd_ref_ptr
-+build_id_to_debug_bfd_in (const char *directories, size_t build_id_len, const bfd_byte *build_id)
- {
-   gdb_bfd_ref_ptr abfd;
- 
-@@ -76,7 +76,7 @@ build_id_to_debug_bfd (size_t build_id_len, const bfd_byte *build_id)
-      cause "/.build-id/..." lookups.  */
- 
-   std::vector<gdb::unique_xmalloc_ptr<char>> debugdir_vec
--    = dirnames_to_char_ptr_vec (debug_file_directory);
-+    = dirnames_to_char_ptr_vec (directories /* debug_file_directory */);
- 
-   for (const gdb::unique_xmalloc_ptr<char> &debugdir : debugdir_vec)
-     {
-@@ -123,6 +123,30 @@ build_id_to_debug_bfd (size_t build_id_len, const bfd_byte *build_id)
-   return abfd;
- }
- 
-+gdb_bfd_ref_ptr
-+build_id_to_debug_bfd (size_t build_id_len, const bfd_byte *build_id)
-+{
-+  gdb_bfd_ref_ptr abfd = build_id_to_debug_bfd_in(debug_file_directory, build_id_len, build_id);
+-  debug_file_directory = relocate_gdb_directory (DEBUGDIR,
++  debug_file_directory = getenv("NIX_DEBUG_INFO_DIRS");
 +
-+  if (abfd != NULL)
-+    return abfd;
-+
-+  static int init = 0;
-+  static char *env_var;
-+  if (!init)
-+    {
-+      env_var = getenv("NIX_DEBUG_INFO_DIRS");
-+      init = 1;
-+    }
-+
-+  if (env_var)
-+    {
-+      abfd = build_id_to_debug_bfd_in(env_var, build_id_len, build_id);
-+    }
-+
-+  return abfd;
-+}
-+
- /* See build-id.h.  */
- 
- std::string
-diff --git a/gdb/symfile.c b/gdb/symfile.c
-index 39d06d86fa..e043f91cc4 100644
---- a/gdb/symfile.c
-+++ b/gdb/symfile.c
-@@ -1360,8 +1360,8 @@ show_debug_file_directory (struct ui_file *file, int from_tty,
- 			   struct cmd_list_element *c, const char *value)
- {
-   fprintf_filtered (file,
--		    _("The directory where separate debug "
--		      "symbols are searched for is \"%s\".\n"),
-+		    _("The directories where separate debug "
-+		      "symbols are searched for are \"%s\".\n"),
- 		    value);
- }
- 
--- 
-2.18.0
-
++  if (debug_file_directory == NULL)
++    debug_file_directory = relocate_gdb_directory (DEBUGDIR,
+ 						 DEBUGDIR_RELOCATABLE);
