@@ -22657,8 +22657,6 @@ with pkgs;
 
   unixcw = callPackage ../applications/misc/unixcw { };
 
-  valauncher = callPackage ../applications/misc/valauncher { };
-
   vault = callPackage ../tools/security/vault { };
 
   vaultenv = haskellPackages.vaultenv;
