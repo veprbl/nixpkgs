@@ -2078,7 +2078,7 @@ with pkgs;
 
   crackxls = callPackage ../tools/security/crackxls { };
 
-  create-cycle-app = nodePackages_8_x.create-cycle-app;
+  create-cycle-app = nodePackages.create-cycle-app;
 
   createrepo_c = callPackage ../tools/package-management/createrepo_c { };
 
@@ -3846,7 +3846,7 @@ with pkgs;
     nodejs = pkgs.nodejs-6_x;
   };
 
-  nodePackages = nodePackages_8_x;
+  nodePackages = nodePackages_10_x;
 
   npm2nix = nodePackages.npm2nix;
 
@@ -11403,8 +11403,6 @@ with pkgs;
   mbedtls_1_3 = callPackage ../development/libraries/mbedtls/1.3.nix { };
   polarssl = mbedtls; # TODO: add to aliases.nix
 
-  mdds_0_7_1 = callPackage ../development/libraries/mdds/0.7.1.nix { };
-  mdds_0_12_1 = callPackage ../development/libraries/mdds/0.12.1.nix { };
   mdds = callPackage ../development/libraries/mdds { };
 
   mediastreamer = callPackage ../development/libraries/mediastreamer { };
