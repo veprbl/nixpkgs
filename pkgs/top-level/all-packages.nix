@@ -2898,6 +2898,8 @@ with pkgs;
 
   glmark2 = callPackage ../tools/graphics/glmark2 { };
 
+  glogg = libsForQt5.callPackage ../tools/text/glogg { };
+
   glxinfo = callPackage ../tools/graphics/glxinfo { };
 
   gmrender-resurrect = callPackage ../tools/networking/gmrender-resurrect {
@@ -5969,6 +5971,10 @@ with pkgs;
     # it requires `sixel` enabled terminals such as mlterm
     # or xterm -ti 340
     SDL = SDL_sixel;
+  };
+
+  openconnect_pa = callPackage ../tools/networking/openconnect_pa {
+    openssl = null;    
   };
 
   openconnect = openconnect_gnutls;
@@ -14951,6 +14957,8 @@ with pkgs;
   skopeo = callPackage ../development/tools/skopeo { };
 
   smem = callPackage ../os-specific/linux/smem { };
+
+  speedometer = callPackage ../os-specific/linux/speedometer { };
 
   statifier = callPackage ../os-specific/linux/statifier { };
 
