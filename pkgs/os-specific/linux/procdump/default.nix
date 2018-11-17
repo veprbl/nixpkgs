@@ -14,15 +14,24 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ zlib ];
   buildInputs = [ bash coreutils gdb ];
 
-  patches = [ (fetchpatch {
-    url = https://github.com/Microsoft/ProcDump-for-Linux/pull/50.patch;
-    sha256 = "0h0dj3gi6hw1wdpc0ih9s4kkagv0d9jzrg602cr85r2z19lmb7yk";
-  }) ];
+  patches = [
+    # Fix name conflict when built with musl
+    # TODO: check if fixed upstream https://github.com/Microsoft/ProcDump-for-Linux/pull/50
+    (fetchpatch {
+      url = "https://github.com/Microsoft/ProcDump-for-Linux/commit/1b7b50b910f20b463fb628c8213663c8a8d11d0d.patch";
+      sha256 = "0h0dj3gi6hw1wdpc0ih9s4kkagv0d9jzrg602cr85r2z19lmb7yk";
+    })
+  ];
+
   postPatch = ''
     substituteInPlace src/CoreDumpWriter.c \
       --replace '"gcore ' '"${gdb}/bin/gcore ' \
       --replace '"rm ' '"${coreutils}/bin/rm ' \
+<<<<<<< HEAD
       --replace /bin/bash ${bash}/bin/bash
+=======
+      --replace '/bin/bash' '${bash}/bin/bash'
+>>>>>>> origin/master
   '';
 
   makeFlags = [
