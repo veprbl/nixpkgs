@@ -10,8 +10,8 @@ rustPlatform.buildRustPackage rec {
     domain = "gitlab.gnome.org";
     owner = "World";
     repo = "fractal";
-    rev = "963c9b0e44a5d61612b2c0908b316b20712539f5";
-    sha256 = "1wjikc43pxx4zrjfw0q6zxikcgiicv4z8i8lwdjzgz2s9dc97npa";
+    rev = "408f3da4ac394538eb4c54a7c7fcdf54b56a404d";
+    sha256 = "18z2dqyqnyj1i65msw4hml7xzyi7n59hb7rzdffn58sf7bwvhsfr";
   };
 
   nativeBuildInputs = [
