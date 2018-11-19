@@ -4,13 +4,14 @@
   python3, openssl, glfw, pkgconfig, libpthreadstubs, libXdmcp, libmemcached
 }:
 
-stdenv.mkDerivation {
-  name = "io-2015.11.11";
+stdenv.mkDerivation rec {
+  name = "io-${version}";
+  version = "2017.09.06";
   src = fetchFromGitHub {
     owner = "stevedekorte";
     repo = "io";
-    rev = "1fc725e0a8635e2679cbb20521f4334c25273caa";
-    sha256 = "0ll2kd72zy8vf29sy0nnx3awk7nywpwpv21rvninjjaqkygrc0qw";
+    rev = version;
+    sha256 = "0ll2kd72zy9vf30sy0nnx3awk7nywpwpv21rvninjjaqkygrc0qw";
   };
 
   nativeBuildInputs = [
