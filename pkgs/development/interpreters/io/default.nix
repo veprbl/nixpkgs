@@ -27,6 +27,9 @@ stdenv.mkDerivation rec {
     python3
   ];
 
+  # Fixes things, should be refined/investigated
+  hardeningDisable = [ "all" ];
+
   meta = with stdenv.lib; {
     description = "Io programming language";
     homepage = http://iolanguage.org/;
