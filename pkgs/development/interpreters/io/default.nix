@@ -30,6 +30,10 @@ stdenv.mkDerivation rec {
   # Fixes things, should be refined/investigated
   hardeningDisable = [ "all" ];
 
+  preInstall = ''
+    export HOME=$PWD
+  '';
+
   meta = with stdenv.lib; {
     description = "Io programming language";
     homepage = http://iolanguage.org/;
