@@ -7651,6 +7651,7 @@ with pkgs;
   hadoop = hadoop_2_7;
 
   io = callPackage ../development/interpreters/io { };
+  io-git = callPackage ../development/interpreters/io/git.nix { };
 
   j = callPackage ../development/interpreters/j {};
 
