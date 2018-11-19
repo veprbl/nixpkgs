@@ -1,7 +1,7 @@
 { stdenv, fetchFromGitHub, cmake, zlib, sqlite, gmp, libffi, cairo,
   ncurses, freetype, libGLU_combined, libpng, libtiff, libjpeg, readline, libsndfile,
   libxml2, freeglut, libsamplerate, pcre, libevent, libedit, yajl,
-  python3, openssl, glfw, pkgconfig, libpthreadstubs, libXdmcp, libmemcached
+  python3, openssl, glfw, pkgconfig, libpthreadstubs, libXdmcp
 }:
 
 stdenv.mkDerivation rec {
@@ -11,7 +11,8 @@ stdenv.mkDerivation rec {
     owner = "stevedekorte";
     repo = "io";
     rev = version;
-    sha256 = "0ll2kd72zy9vf30sy0nnx3awk7nywpwpv21rvninjjaqkygrc0qw";
+    sha256 = "07rg1zrz6i6ghp11cm14w7bbaaa1s8sb0y5i7gr2sds0ijlpq223";
+    fetchSubmodules = true;
   };
 
   nativeBuildInputs = [
@@ -23,7 +24,7 @@ stdenv.mkDerivation rec {
     libGLU_combined libpng libtiff libjpeg readline libsndfile libxml2
     freeglut libsamplerate pcre libevent libedit yajl
     pkgconfig glfw openssl libpthreadstubs libXdmcp
-    libmemcached python3
+    python3
   ];
 
   preConfigure = ''
