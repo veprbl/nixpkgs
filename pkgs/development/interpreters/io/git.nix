@@ -29,7 +29,6 @@ stdenv.mkDerivation rec {
 
   # for gcc5; c11 inline semantics breaks the build
   NIX_CFLAGS_COMPILE = "-fgnu89-inline";
-  NIX_CFLAGS_LINK = [ "-pthread" ];
 
   meta = with stdenv.lib; {
     description = "Io programming language";

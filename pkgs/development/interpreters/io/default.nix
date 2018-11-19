@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
     zlib sqlite gmp libffi cairo ncurses freetype
     libGLU_combined libpng libtiff libjpeg readline libsndfile libxml2
     freeglut libsamplerate pcre libevent libedit yajl
-    pkgconfig glfw openssl libpthreadstubs libXdmcp
+    pkgconfig glfw openssl libXdmcp
     libmemcached python3
   ];
 
