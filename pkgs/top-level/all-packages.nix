@@ -7650,7 +7650,7 @@ with pkgs;
     hadoop_3_1;
   hadoop = hadoop_2_7;
 
-  io = callPackage ../development/interpreters/io { };
+  io = callPackage ../development/interpreters/io { stdenv = clangStdenv; };
   io-git = callPackage ../development/interpreters/io/git.nix { };
 
   j = callPackage ../development/interpreters/j {};
