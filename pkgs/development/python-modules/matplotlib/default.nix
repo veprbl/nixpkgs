@@ -28,11 +28,7 @@ buildPythonPackage rec {
 
   src = fetchPypi {
     inherit pname version;
-<<<<<<< HEAD
-    sha256 = "70f8782c50ac2c7617aad0fa5ba59fc49f690a851d6afc0178813c49767644dd";
-=======
     sha256 = "c94b792af431f6adb6859eb218137acd9a35f4f7442cea57e4a59c54751c36af";
->>>>>>> origin/master
   };
 
   NIX_CFLAGS_COMPILE = stdenv.lib.optionalString stdenv.isDarwin "-I${libcxx}/include/c++/v1";
