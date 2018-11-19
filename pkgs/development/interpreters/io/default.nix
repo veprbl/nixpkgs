@@ -27,15 +27,6 @@ stdenv.mkDerivation rec {
     python3
   ];
 
-  preConfigure = ''
-    # The Addon generation (AsyncRequest and a others checked) seems to have
-    # trouble with building on Virtual machines. Disabling them until it
-    # can be fully investigated.
-    sed -ie \
-          "s/add_subdirectory(addons)/#add_subdirectory(addons)/g" \
-          CMakeLists.txt
-  '';
-
   # for gcc5; c11 inline semantics breaks the build
   NIX_CFLAGS_COMPILE = "-fgnu89-inline";
 
