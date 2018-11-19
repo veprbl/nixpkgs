@@ -11,7 +11,7 @@ buildPythonPackage rec {
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "58934a06a6932696e54c9e8af3fab49bf67ca9e9c840ad668cb7f51219808a07";
+    sha256 = "01wah0ci5xdpiikash68x6lprxlvnkxg72ly9kjrc9lklq34m4sq";
   };
 
   # vast dependency list

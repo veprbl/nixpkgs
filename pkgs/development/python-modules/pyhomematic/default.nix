@@ -8,7 +8,7 @@ buildPythonPackage rec {
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "274279cd1b381e7f84bc3ed2b0622833079228b31a896f93ef077ebbc0f2ffb1";
+    sha256 = "1cgzyb0bnzh7xy9nz28sncl941rk51ib1liypj27y7iq3g6pjhi7";
   };
 
   # PyPI tarball does not include tests/ directory

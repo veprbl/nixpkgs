@@ -6,9 +6,8 @@
 }:
 
 let
-  python2Env = python2.withPackages(ps: with ps; [ numpy lxml ]);
-  perlPkgs = with perlPackages; [ perl XMLParser ];
-  scriptDeps = [ python2Env ] ++ perlPkgs;
+  python2Env = python2.withPackages(ps: with ps;
+    [ numpy lxml scour ]);
 in
 
 stdenv.mkDerivation rec {
@@ -41,13 +40,14 @@ stdenv.mkDerivation rec {
       --replace '"python-interpreter", "python"' '"python-interpreter", "${python2Env}/bin/python"'
   '';
 
-  nativeBuildInputs = [ pkgconfig cmake makeWrapper] ++ scriptDeps;
+  nativeBuildInputs = [ pkgconfig cmake makeWrapper python2Env ]
+    ++ (with perlPackages; [ perl XMLParser ]);
   buildInputs = [
     libXft libpng zlib popt boehmgc
     libxml2 libxslt glib gtkmm2 glibmm libsigcxx lcms boost gettext
     gsl poppler imagemagick libwpg librevenge
     libvisio libcdr libexif potrace hicolor-icon-theme
-  ] ++ scriptDeps;
+  ];
 
   enableParallelBuilding = true;
 
@@ -58,7 +58,7 @@ stdenv.mkDerivation rec {
   '';
 
   # 0.92.3 complains about an invalid conversion from const char * to char *
-  NIX_CFLAGS_COMPILE = [ "-fpermissive" ];
+  NIX_CFLAGS_COMPILE = " -fpermissive ";
 
   meta = with stdenv.lib; {
     license = "GPL";

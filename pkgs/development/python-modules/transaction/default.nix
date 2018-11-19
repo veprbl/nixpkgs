@@ -12,7 +12,7 @@ buildPythonPackage rec {
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "726059c461b9ec4e69e5bead6680667a3db01bf2adf901f23e4031228a0f9f9f";
+    sha256 = "17wz1y524ca07vr03yddy8dv0gbscs06dbdywmllxv5rc725jq3j";
   };
 
   propagatedBuildInputs = [ zope_interface mock ];

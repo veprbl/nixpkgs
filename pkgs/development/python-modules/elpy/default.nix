@@ -15,7 +15,7 @@ buildPythonPackage rec {
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "665f6b46a5c9cf2ba9d8d72b8289e6776e81387b34f38ee64732589d80996dd4";
+    sha256 = "1m3dk609sn1j8zk8xwrlgcw82vkpws4q4aypv2ljpky9lm36npv6";
   };
 
   propagatedBuildInputs = [ flake8 autopep8 jedi importmagic ]
