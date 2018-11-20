@@ -8798,13 +8798,17 @@ with pkgs;
 
   pmccabe = callPackage ../development/tools/misc/pmccabe { };
 
-  pkgconf = callPackage ../development/tools/misc/pkgconf {};
+  pkgconf = callPackage ../development/tools/misc/pkgconf {
+    fetchurl = fetchurlBoot;
+  };
 
-  pkgconfig = callPackage ../development/tools/misc/pkgconfig {
+  pkgconfig-freedesktop = callPackage ../development/tools/misc/pkgconfig {
     fetchurl = fetchurlBoot;
   };
 
   pkgconfigUpstream = lowPrio (pkgconfig.override { vanilla = true; });
+
+  pkgconfig = pkgconf;
 
   postiats-utilities = callPackage ../development/tools/postiats-utilities {};
 
