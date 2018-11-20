@@ -934,8 +934,6 @@ with pkgs;
 
   bindfs = callPackage ../tools/filesystems/bindfs { };
 
-  bins = callPackage ../tools/graphics/bins { };
-
   bitbucket-cli = python2Packages.bitbucket-cli;
 
   bittornado = callPackage ../tools/networking/p2p/bittornado { };
@@ -3098,12 +3096,8 @@ with pkgs;
     stdenv = stdenv_32bit;
   };
 
-  gx = callPackage ../tools/package-management/gx {
-    buildGoPackage = buildGo110Package;
-  };
-  gx-go = callPackage ../tools/package-management/gx/go {
-    buildGoPackage = buildGo110Package;
-  };
+  gx = callPackage ../tools/package-management/gx { };
+  gx-go = callPackage ../tools/package-management/gx/go { };
 
   sbsigntool = callPackage ../tools/security/sbsigntool { };
 
@@ -3495,7 +3489,6 @@ with pkgs;
   ispike = callPackage ../development/libraries/science/robotics/ispike { };
 
   isync = callPackage ../tools/networking/isync { };
-  isyncUnstable = callPackage ../tools/networking/isync/unstable.nix { };
 
   jaaa = callPackage ../applications/audio/jaaa { };
 
@@ -4767,8 +4760,6 @@ with pkgs;
     inherit (pythonPackages) pillow;
   };
 
-  pdfshuffler = callPackage ../applications/misc/pdfshuffler { };
-
   briss = callPackage ../tools/graphics/briss { };
 
   brickd = callPackage ../servers/brickd {
@@ -5419,10 +5410,6 @@ with pkgs;
 
   smarty3 = callPackage ../development/libraries/smarty3 { };
   smarty3-i18n = callPackage ../development/libraries/smarty3-i18n { };
-
-  smbldaptools = callPackage ../tools/networking/smbldaptools {
-    inherit (perlPackages) perlldap CryptSmbHash DigestSHA1;
-  };
 
   smbnetfs = callPackage ../tools/filesystems/smbnetfs {};
 
@@ -6218,6 +6205,10 @@ with pkgs;
   volumeicon = callPackage ../tools/audio/volumeicon { };
 
   waf = callPackage ../development/tools/build-managers/waf { python = python3; };
+  wafHook = makeSetupHook {
+    deps = [ python ];
+    substitutions = { inherit waf; };
+  } ../development/tools/build-managers/waf/setup-hook.sh;
 
   wakelan = callPackage ../tools/networking/wakelan { };
 
@@ -6577,11 +6568,6 @@ with pkgs;
     name = "clang-wrapper-with-reexport-hack";
     bintools = darwin.binutils.override {
       useMacosReexportHack = true;
-      bintools = darwin.binutils.bintools.override {
-        cctools = darwin.cctools.override {
-          enableDumpNormalizedLibArgs = true;
-        };
-      };
     };
   };
 
@@ -7834,7 +7820,7 @@ with pkgs;
   # When switching these sets, please update docs at ../../doc/languages-frameworks/python.md
   python = python2;
   python2 = python27;
-  python3 = python36;
+  python3 = python37;
   pypy = pypy27;
 
   # Python interpreter that is build with all modules, including tkinter.
@@ -7878,8 +7864,8 @@ with pkgs;
   # Python package sets.
   python27Packages = lib.hiPrioSet (recurseIntoAttrs python27.pkgs);
   python35Packages = python35.pkgs;
-  python36Packages = recurseIntoAttrs python36.pkgs;
-  python37Packages = python37.pkgs;
+  python36Packages = python36.pkgs;
+  python37Packages = recurseIntoAttrs python37.pkgs;
   pypyPackages = pypy.pkgs;
 
   # Should eventually be moved inside Python interpreters.
@@ -8804,9 +8790,12 @@ with pkgs;
 
   pmccabe = callPackage ../development/tools/misc/pmccabe { };
 
+  pkgconf = callPackage ../development/tools/misc/pkgconf {};
+
   pkgconfig = callPackage ../development/tools/misc/pkgconfig {
     fetchurl = fetchurlBoot;
   };
+
   pkgconfigUpstream = lowPrio (pkgconfig.override { vanilla = true; });
 
   postiats-utilities = callPackage ../development/tools/postiats-utilities {};
@@ -11815,8 +11804,6 @@ with pkgs;
   poco = callPackage ../development/libraries/poco { };
 
   podofo = callPackage ../development/libraries/podofo { lua5 = lua5_1; };
-
-  poker-eval = callPackage ../development/libraries/poker-eval { };
 
   polkit = callPackage ../development/libraries/polkit { };
 
@@ -15687,6 +15674,8 @@ with pkgs;
 
   xorg-rgb = callPackage ../data/misc/xorg-rgb {};
 
+  zafiro-icons = callPackage ../data/icons/zafiro-icons { };
+
   zeal = libsForQt5.callPackage ../data/documentation/zeal { };
 
   zilla-slab = callPackage ../data/fonts/zilla-slab { };
@@ -16001,8 +15990,6 @@ with pkgs;
   bs1770gain = callPackage ../applications/audio/bs1770gain { };
 
   bspwm = callPackage ../applications/window-managers/bspwm { };
-
-  bspwm-unstable = callPackage ../applications/window-managers/bspwm/unstable.nix { };
 
   btops = callPackage ../applications/window-managers/btops { };
 
@@ -16556,8 +16543,6 @@ with pkgs;
     rainbowDelimiters = callPackage ../applications/editors/emacs-modes/rainbow-delimiters { };
 
     rectMark = callPackage ../applications/editors/emacs-modes/rect-mark { };
-
-    remember = callPackage ../applications/editors/emacs-modes/remember { };
 
     rudel = callPackage ../applications/editors/emacs-modes/rudel { };
 
@@ -18248,8 +18233,6 @@ with pkgs;
   sidplayfp = callPackage ../applications/audio/sidplayfp { };
 
   sxhkd = callPackage ../applications/window-managers/sxhkd { };
-
-  sxhkd-unstable = callPackage ../applications/window-managers/sxhkd/unstable.nix { };
 
   mpop = callPackage ../applications/networking/mpop {
     inherit (darwin.apple_sdk.frameworks) Security;
@@ -20211,8 +20194,6 @@ with pkgs;
 
   blackshades = callPackage ../games/blackshades { };
 
-  blackshadeselite = callPackage ../games/blackshadeselite { };
-
   blobby = callPackage ../games/blobby { };
 
   boohu = callPackage ../games/boohu { };
@@ -21999,7 +21980,6 @@ with pkgs;
   dell-530cdn = callPackage ../misc/drivers/dell-530cdn {};
 
   dosbox = callPackage ../misc/emulators/dosbox { };
-  dosbox-unstable = callPackage ../misc/emulators/dosbox/unstable.nix { };
 
   dpkg = callPackage ../tools/package-management/dpkg { };
 
@@ -22592,18 +22572,15 @@ with pkgs;
   sqsh = callPackage ../development/tools/sqsh { };
 
   inherit (callPackage ../applications/networking/cluster/terraform {})
-    terraform_0_8_5
-    terraform_0_8
-    terraform_0_9
-    terraform_0_10
-    terraform_0_10-full
     terraform_0_11
     terraform_0_11-full
+    terraform_0_12
     terraform_plugins_test
     ;
 
   terraform = terraform_0_11;
-  terraform-full = terraform_0_11-full;
+  # deprecated
+  terraform-full = terraform.full;
 
   terraform-providers = recurseIntoAttrs (
     callPackage ../applications/networking/cluster/terraform-providers {}
@@ -22614,14 +22591,6 @@ with pkgs;
   terraform-landscape = callPackage ../applications/networking/cluster/terraform-landscape {};
 
   terragrunt = callPackage ../applications/networking/cluster/terragrunt {};
-
-  terragrunt_0_11_1 = callPackage ../applications/networking/cluster/terragrunt/0.11.1.nix {
-    terraform = terraform_0_8;
-  };
-
-  terragrunt_0_9_8 = callPackage ../applications/networking/cluster/terragrunt/0.9.8.nix {
-    terraform = terraform_0_8_5;
-  };
 
   tetex = callPackage ../tools/typesetting/tex/tetex { libpng = libpng12; };
 
