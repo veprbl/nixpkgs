@@ -1,10 +1,10 @@
-{ stdenv, fetchurl, pkgconfig, file, intltool, vala, glib, liboauth, gtk3
+{ stdenv, fetchurl, meson, ninja, pkgconfig, gettext, vala, glib, liboauth, gtk3
 , gtk-doc, docbook_xsl, docbook_xml_dtd_43
 , libxml2, gnome3, gobjectIntrospection, libsoup }:
 
 let
   pname = "grilo";
-  version = "0.3.6"; # if you change minor, also change ./setup-hook.sh
+  version = "0.3.7"; # if you change minor, also change ./setup-hook.sh
 in stdenv.mkDerivation rec {
   name = "${pname}-${version}";
 
@@ -13,26 +13,17 @@ in stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "14cwpk9jxi8rfjcmkav37zf0m52b1lqpkpkz858h80jqvn1clr8y";
+    sha256 = "1dz965l743r4bhj78wij9k1mb6635gnkb1lnk9j7gw9dd5qsyfza";
   };
 
   setupHook = ./setup-hook.sh;
 
-  configureFlags = [
-    "--enable-grl-pls"
-    "--enable-grl-net"
-    "--enable-gtk-doc"
+  mesonFlags = [
+    "-Denable-gtk-doc=true"
   ];
 
-  preConfigure = ''
-    for f in src/Makefile.in libs/pls/Makefile.in libs/net/Makefile.in; do
-       substituteInPlace $f --replace @INTROSPECTION_GIRDIR@ "$dev/share/gir-1.0/"
-       substituteInPlace $f --replace @INTROSPECTION_TYPELIBDIR@ "$out/lib/girepository-1.0"
-    done
-  '';
-
   nativeBuildInputs = [
-    file intltool pkgconfig gobjectIntrospection vala
+    meson ninja pkgconfig gettext gobjectIntrospection vala
     gtk-doc docbook_xsl docbook_xml_dtd_43
   ];
   buildInputs = [ glib liboauth gtk3 libxml2 libsoup gnome3.totem-pl-parser ];

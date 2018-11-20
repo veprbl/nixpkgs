@@ -115,7 +115,7 @@ stdenv.mkDerivation rec {
     done
 
     # Add gio-launch-desktop to $out so we can refer to it from $dev
-    mkdir -p "$out/bin"
+    mkdir $out/bin
     mv "$dev/bin/gio-launch-desktop" "$out/bin/"
     ln -s "$out/bin/gio-launch-desktop" "$bin/bin/"
 

@@ -3,13 +3,13 @@ pycairo, cairo, which, ncurses, meson, ninja, isPy3k, gnome3 }:
 
 buildPythonPackage rec {
   pname = "pygobject";
-  version = "3.30.1";
+  version = "3.30.2";
 
   format = "other";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "1khivip6fnnv3rn0920610zgrf39lf1i5v07w8dbz1b8wdq5ncz1";
+    sha256 = "15zd4w43js048y7fd1kdi6wpvccz1njjy60xw1ckvfy1qhikbz54";
   };
 
   outputs = [ "out" "dev" ];

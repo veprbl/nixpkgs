@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, meson, ninja, pkgconfig, glib, gettext, python3, gnutls, p11-kit, libproxy, gnome3
+{ stdenv, fetchurl, meson, ninja, pkgconfig, glib, gettext, python3, gnutls, p11-kit, libproxy, gnome3
 , gsettings-desktop-schemas }:
 
 let

@@ -49,12 +49,12 @@
                  g_error_free (error);
 --- a/data/gdm.service.in
 +++ b/data/gdm.service.in
-@@ -28,7 +28,7 @@
+@@ -28,7 +28,7 @@ BusName=org.gnome.DisplayManager
  StandardOutput=syslog
  StandardError=inherit
  EnvironmentFile=-@LANG_CONFIG_FILE@
 -ExecReload=/bin/kill -SIGHUP $MAINPID
 +ExecReload=@coreutils@/bin/kill -SIGHUP $MAINPID
+ KeyringMode=shared
  
  [Install]
- Alias=display-manager.service

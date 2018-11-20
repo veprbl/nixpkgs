@@ -1,15 +1,15 @@
 { fetchurl, stdenv, pkgconfig, gnome3, intltool, gobjectIntrospection, upower, cairo
 , pango, cogl, clutter, libstartup_notification, zenity, libcanberra-gtk3
 , libtool, makeWrapper, xkeyboard_config, libxkbfile, libxkbcommon, libXtst, libinput
-, pipewire, libgudev, libwacom, xwayland, autoreconfHook, fetchpatch }:
+, pipewire, libgudev, libwacom, xwayland, autoreconfHook }:
 
 stdenv.mkDerivation rec {
   name = "mutter-${version}";
-  version = "3.30.1";
+  version = "3.30.2";
 
   src = fetchurl {
     url = "mirror://gnome/sources/mutter/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "094w1kfr7z5c34d1rhq1dncb7ln403n89s8x5xihac7zldlrjldm";
+    sha256 = "0qr3w480p31nbiad49213rj9rk6p9fl82a68pzznpz36p30dq96z";
   };
 
   passthru = {

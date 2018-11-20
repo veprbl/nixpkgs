@@ -19,9 +19,6 @@ stdenv.mkDerivation rec {
     })
   ];
 
-  # fatal error: gio/gunixfdlist.h: No such file or directory
-  NIX_CFLAGS_COMPILE = "-I${glib.dev}/include/gio-unix-2.0";
-
   nativeBuildInputs = [ meson ninja pkgconfig perl gettext libxml2 libxslt docbook_xsl wrapGAppsHook python3 ];
 
   buildInputs = with gnome3; [
