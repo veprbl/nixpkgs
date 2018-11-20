@@ -8,7 +8,7 @@ in
       name = "vscode-wakatime";
       publisher = "WakaTime";
       version = "1.2.3";
-      sha256 = "1n7bxkwgpip11k6d7zc3ifp9zb6p7f27f4x4g584wisrnfnqj1bp";
+      sha256 = "770589adb359474e5079a41377843bd7ac9fae8b83fdd3cc0ce1c6fbf8ecebd8";
     };
 
     postPatch = ''
