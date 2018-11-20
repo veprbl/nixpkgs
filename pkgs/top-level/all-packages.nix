@@ -17107,6 +17107,8 @@ with pkgs;
 
   manul = callPackage ../development/tools/manul { };
 
+  mindforger = libsForQt5.callPackage ../applications/editors/mindforger { };
+
   mi2ly = callPackage ../applications/audio/mi2ly {};
 
   moe =  callPackage ../applications/editors/moe { };
