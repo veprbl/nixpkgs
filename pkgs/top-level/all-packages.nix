@@ -8808,7 +8808,7 @@ with pkgs;
 
   pkgconfigUpstream = lowPrio (pkgconfig.override { vanilla = true; });
 
-  pkgconfig = pkgconf;
+  pkgconfig = pkgconfig-freedesktop;
 
   postiats-utilities = callPackage ../development/tools/postiats-utilities {};
 
