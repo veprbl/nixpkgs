@@ -16,7 +16,12 @@ stdenv.mkDerivation rec {
 
   patches = [ ./build.patch ] ;
 
+  postPatch = ''
+    substituteInPlace deps/discount/version.c.in --subst-var-by TABSTOP 4
+  '';
+
   preConfigure = ''
+    export AC_PATH="$PATH"
     pushd deps/discount
     ./configure.sh
     popd
