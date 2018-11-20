@@ -30,6 +30,8 @@ stdenv.mkDerivation rec {
 
   qmakeFlags = [ "-r mindforger.pro" ] ;
 
+  enableParallelBuilding = true;
+
   meta = with stdenv.lib; {
     description = "Thinking Notebook & Markdown IDE";
     longDescription = ''
