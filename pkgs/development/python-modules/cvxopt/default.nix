@@ -1,4 +1,5 @@
-{ lib
+{ stdenv
+, lib
 , buildPythonPackage
 , fetchPypi
 , isPyPy
@@ -21,7 +22,7 @@ buildPythonPackage rec {
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "0038962d489bb1b2cdbcffad862b7b8394e45ff053b307e9411b2729a98937a6";
+    sha256 = "19ipi6ljj9qv87lhgcsky1gy9543gcmqdbgzpk6v5ccv90nrcf00";
   };
 
   # similar to Gsl, glpk, fftw there is also a dsdp interface
@@ -50,7 +51,7 @@ buildPythonPackage rec {
     ${python.interpreter} -m unittest discover -s tests
   '';
 
-  meta = {
+  meta = with lib; {
     homepage = http://cvxopt.org/;
     description = "Python Software for Convex Optimization";
     longDescription = ''
@@ -63,7 +64,8 @@ buildPythonPackage rec {
       standard library and on the strengths of Python as a high-level
       programming language.
     '';
-    maintainers = with lib.maintainers; [ edwtjo ];
-    license = lib.licenses.gpl3Plus;
+    maintainers = with maintainers; [ edwtjo ];
+    broken = stdenv.targetPlatform.isDarwin;
+    license = licenses.gpl3Plus;
   };
 }
