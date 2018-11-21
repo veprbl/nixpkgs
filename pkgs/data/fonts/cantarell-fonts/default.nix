@@ -13,6 +13,12 @@ in stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ meson ninja gettext appstream-glib ];
 
+  # ad-hoc fix for https://github.com/NixOS/nixpkgs/issues/50855
+  # until we fix gettext's envHook
+  preBuild = ''
+    export GETTEXTDATADIRS="$GETTEXTDATADIRS_FOR_BUILD"
+  '';
+
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
   outputHash = "12ia41pr0rzjfay6y84asw3nxhyp1scq9zl0w4f6wkqj7vf1qfn1";
