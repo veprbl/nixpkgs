@@ -6,7 +6,7 @@ buildPythonPackage rec {
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "fcc293c54bdca8d0e270fd8bfa2e7a63243e093bbdb222c1efb240665a7f2b35";
+    sha256 = "0d9bgxd6ch5jxz0j5cmx7c4kw933g8pgm2zxf3id1a6w9g2r7hpw";
   };
 
   preConfigure = lib.optionalString stdenv.isDarwin ''
