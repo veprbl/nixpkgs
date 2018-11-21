@@ -12,18 +12,17 @@
 , jedi
 , decorator
 , pickleshare
-, simplegeneric
 , traitlets
 , prompt_toolkit
 , pexpect
 , appnope
-, typing
 , backcall
 }:
 
 buildPythonPackage rec {
   pname = "ipython";
   version = "7.1.1";
+  disabled = pythonOlder "3.5";
 
   src = fetchPypi {
     inherit pname version;
@@ -42,13 +41,12 @@ buildPythonPackage rec {
     jedi
     decorator
     pickleshare
-    simplegeneric
     traitlets
     prompt_toolkit
+    pygments
     pexpect
     backcall
-  ] ++ lib.optionals stdenv.isDarwin [appnope]
-    ++ lib.optionals (pythonOlder "3.5") [ typing ];
+  ] ++ lib.optionals stdenv.isDarwin [appnope];
 
   LC_ALL="en_US.UTF-8";
 
@@ -57,11 +55,6 @@ buildPythonPackage rec {
   checkPhase = ''
     nosetests
   '';
-
-  # IPython 6.0.0 and above does not support Python < 3.3.
-  # The last IPython version to support older Python versions
-  # is 5.3.x.
-  disabled = pythonOlder "3.3";
 
   meta = {
     description = "IPython: Productive Interactive Computing";

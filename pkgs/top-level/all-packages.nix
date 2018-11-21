@@ -2359,6 +2359,8 @@ with pkgs;
     # customConfig = builtins.readFile ./dvtm.config.h;
   };
 
+  dvtm-unstable = callPackage ../tools/misc/dvtm/unstable.nix {};
+
   ecmtools = callPackage ../tools/cd-dvd/ecm-tools { };
 
   e2tools = callPackage ../tools/filesystems/e2tools { };
@@ -4109,10 +4111,6 @@ with pkgs;
   };
 
   mdbtools = callPackage ../tools/misc/mdbtools { };
-
-  mdbtools_git = callPackage ../tools/misc/mdbtools/git.nix {
-    inherit (gnome2) scrollkeeper;
-  };
 
   mdk = callPackage ../development/tools/mdk { };
 
@@ -7383,22 +7381,8 @@ with pkgs;
 
   defaultCrateOverrides = callPackage ../build-support/rust/default-crate-overrides.nix { };
 
+  makeRustPlatform = callPackage ../build-support/rust/make-rust-platform.nix {};
   rustPlatform = recurseIntoAttrs (makeRustPlatform rust);
-
-  makeRustPlatform = rust: lib.fix (self:
-    let
-      callPackage = newScope self;
-    in {
-      inherit rust;
-
-      buildRustPackage = callPackage ../build-support/rust {
-        inherit rust;
-      };
-
-      rustcSrc = callPackage ../development/compilers/rust/rust-src.nix {
-        inherit (rust) rustc;
-      };
-    });
 
   cargo-download = callPackage ../tools/package-management/cargo-download { };
   cargo-edit = callPackage ../tools/package-management/cargo-edit { };
@@ -9134,7 +9118,6 @@ with pkgs;
   };
 
   arb = callPackage ../development/libraries/arb {};
-  arb-git = callPackage ../development/libraries/arb/git.nix {};
 
   argp-standalone = callPackage ../development/libraries/argp-standalone {};
 
@@ -9600,6 +9583,10 @@ with pkgs;
   flite = callPackage ../development/libraries/flite { };
 
   fltk13 = callPackage ../development/libraries/fltk {
+    inherit (darwin) cf-private;
+    inherit (darwin.apple_sdk.frameworks) Cocoa AGL GLUT;
+  };
+  fltk14 = callPackage ../development/libraries/fltk/1.4.nix {
     inherit (darwin) cf-private;
     inherit (darwin.apple_sdk.frameworks) Cocoa AGL GLUT;
   };
@@ -11273,7 +11260,6 @@ with pkgs;
   libviper = callPackage ../development/libraries/libviper { };
 
   libvpx = callPackage ../development/libraries/libvpx { };
-  libvpx-git = callPackage ../development/libraries/libvpx/git.nix { };
 
   libvterm = callPackage ../development/libraries/libvterm { };
   libvterm-neovim = callPackage ../development/libraries/libvterm-neovim { };
@@ -15758,7 +15744,7 @@ with pkgs;
 
   antiword = callPackage ../applications/office/antiword {};
 
-  ao = callPackage ../applications/graphics/ao {};
+  ao = libfive;
 
   apache-directory-studio = callPackage ../applications/networking/apache-directory-studio {};
 
@@ -21519,9 +21505,7 @@ with pkgs;
     java = if stdenv.isLinux then jre else jdk;
   };
 
-  iprover = callPackage ../applications/science/logic/iprover {
-    inherit (ocaml-ng.ocamlPackages_4_02) ocaml;
-  };
+  iprover = callPackage ../applications/science/logic/iprover { };
 
   jonprl = callPackage ../applications/science/logic/jonprl {
     smlnj = if stdenv.isDarwin

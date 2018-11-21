@@ -17,6 +17,7 @@
 , pandocfilters
 , tornado
 , jupyter_client
+, defusedxml
 }:
 
 buildPythonPackage rec {
@@ -33,11 +34,14 @@ buildPythonPackage rec {
   propagatedBuildInputs = [
     entrypoints bleach mistune jinja2 pygments traitlets testpath
     jupyter_core nbformat ipykernel pandocfilters tornado jupyter_client
+    defusedxml
   ];
 
+  # disable preprocessor tests for ipython 7
+  # see issue https://github.com/jupyter/nbconvert/issues/898
   checkPhase = ''
-    mkdir tmp
-    LC_ALL=en_US.UTF-8 HOME=`realpath tmp` py.test -v
+    export LC_ALL=en_US.UTF-8
+    HOME=$(mktemp -d) py.test -v --ignore="nbconvert/preprocessors/tests/test_execute.py"
   '';
 
   meta = {

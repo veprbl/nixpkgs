@@ -7,11 +7,13 @@
 , ipykernel
 , prompt_toolkit
 , pygments
+, pythonOlder
 }:
 
 buildPythonPackage rec {
   pname = "jupyter_console";
   version = "6.0.0";
+  disabled = pythonOlder "3.5";
 
   src = fetchPypi {
     inherit pname version;
@@ -34,6 +36,5 @@ buildPythonPackage rec {
     description = "Jupyter terminal console";
     homepage = "http://jupyter.org/";
     license = lib.licenses.bsd3;
-    platforms = lib.platforms.all;
   };
 }
