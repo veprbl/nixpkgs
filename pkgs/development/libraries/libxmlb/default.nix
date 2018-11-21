@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, meson, ninja, pkgconfig, glib, libuuid, gobjectIntrospection, gtk-doc, shared-mime-info }:
+{ stdenv, fetchFromGitHub, meson, ninja, pkgconfig, glib, libuuid, gobjectIntrospection, gtk-doc, shared-mime-info, python3 }:
 
 stdenv.mkDerivation rec {
   name = "libxmlb-${version}";
@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ meson ninja pkgconfig gobjectIntrospection gtk-doc shared-mime-info ];
 
-  buildInputs = [ glib libuuid ];
+  buildInputs = [ glib libuuid python3 ];
 
   mesonFlags = [
     "--libexecdir=${placeholder "out"}/libexec"
