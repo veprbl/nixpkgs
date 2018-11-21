@@ -1,17 +1,8 @@
-{ stdenv, targetPackages, removeReferencesTo
+{ stdenv, removeReferencesTo, targetPackages, buildPackages
 , fetchurl, fetchgit, fetchzip, file, python2, tzdata, ps
-, llvm, jemalloc, ncurses, darwin, rustPlatform, git, cmake, curl
+, llvm, jemalloc, ncurses, darwin, git, cmake, curl, rustBootstrap
 , which, libffi, gdb
-, version
 , withBundledLLVM ? false
-, src
-, configureFlags ? []
-, patches
-, targets
-, targetPatches
-, targetToolchains
-, doCheck ? true
-, broken ? false
 }:
 
 let
@@ -20,16 +11,17 @@ let
 
   llvmShared = llvm.override { enableSharedLibraries = true; };
 
-  prefixedJemalloc = jemalloc.override { stripPrefix = false; };
+  buildJemalloc = buildPackages.jemalloc.override { stripPrefix = false; };
+  hostJemalloc = jemalloc.override { stripPrefix = false; };
+  targetJemalloc = targetPackages.jemalloc.override { stripPrefix = false; };
+in stdenv.mkDerivation rec {
+  pname = "rustc";
+  version = "1.30.1";
 
-  target = builtins.replaceStrings [" "] [","] (builtins.toString targets);
-in
-
-stdenv.mkDerivation {
-  name = "rustc-${version}";
-  inherit version;
-
-  inherit src;
+  src = fetchurl {
+    url = "https://static.rust-lang.org/dist/rustc-${version}-src.tar.gz";
+    sha256 = "0aavdc1lqv0cjzbqwl5n59yd0bqdlhn0zas61ljf38yrvc18k8rn";
+  };
 
   __darwinAllowLocalNetworking = true;
 
@@ -41,6 +33,7 @@ stdenv.mkDerivation {
   #
   # See https://github.com/NixOS/nixpkgs/pull/34227
   stripDebugList = if stdenv.isDarwin then [ "bin" ] else null;
+
 
   NIX_LDFLAGS =
        # when linking stage1 libstd: cc: undefined reference to `__cxa_begin_catch'
@@ -59,27 +52,60 @@ stdenv.mkDerivation {
 
   # We need rust to build rust. If we don't provide it, configure will try to download it.
   # Reference: https://github.com/rust-lang/rust/blob/master/src/bootstrap/configure.py
-  configureFlags = configureFlags
-                ++ [ "--enable-local-rust" "--local-rust-root=${rustPlatform.rust.rustc}" "--enable-rpath"
-                     "--enable-vendor"
-                     "--jemalloc-root=${prefixedJemalloc}/lib"
-                     "--default-linker=${targetPackages.stdenv.cc}/bin/cc" ]
-                ++ optional (!withBundledLLVM) [ "--enable-llvm-link-shared" "--llvm-root=${llvmShared}" ]
-                ++ optional (targets != []) "--target=${target}";
+  configureFlags = let
+    setBuild = "--set=target.${stdenv.hostPlatform.config}";
+    ccForBuild = "${buildPackages.stdenv.cc}/bin/cc";
+    setHost = "--set=target.${stdenv.targetPlatform.config}";
+    ccForHost = "${targetPackages.stdenv.cc}/bin/${targetPackages.stdenv.cc.targetPrefix}cc";
+  in [
+    "--release-channel=stable"
+    "--enable-local-rust"
+    "--local-rust-root=${rustBootstrap.rust.rustc}"
+    "--enable-rpath"
+    "--enable-vendor"
+    "--default-linker=${ccForBuild}"
+    "--host=${stdenv.hostPlatform.config}"
+    "--target=${stdenv.targetPlatform.config}"
+    "${setBuild}.cc=${ccForBuild}"
+    "${setHost}.cc=${ccForHost}"
+
+    "${setBuild}.linker=${ccForBuild}"
+    "${setHost}.linker=${ccForHost}"
+
+    "${setBuild}.cxx=${buildPackages.stdenv.cc}/bin/c++"
+    "${setHost}.cxx=${targetPackages.stdenv.cc}/bin/${targetPackages.stdenv.cc.targetPrefix}c++"
+
+    "${setBuild}.jemalloc=${hostJemalloc}/lib/libjemalloc_pic.a"
+    "${setHost}.jemalloc=${targetJemalloc}/lib/libjemalloc_pic.a"
+  ] ++ optional (!withBundledLLVM) [
+    "--enable-llvm-link-shared"
+    "${setHost}.llvm-config=${llvmShared}/bin/llvm-config"
+    "${setTarget}.llvm-config=${llvmShared}/lib/llvm-config"
+  ];
 
   # The bootstrap.py will generated a Makefile that then executes the build.
   # The BOOTSTRAP_ARGS used by this Makefile must include all flags to pass
   # to the bootstrap builder.
   postConfigure = ''
-    substituteInPlace Makefile --replace 'BOOTSTRAP_ARGS :=' 'BOOTSTRAP_ARGS := --jobs $(NIX_BUILD_CORES)'
+    substituteInPlace Makefile \
+      --replace 'BOOTSTRAP_ARGS :=' 'BOOTSTRAP_ARGS := --jobs $(NIX_BUILD_CORES)'
+     export CC=${buildPackages.stdenv.cc}/bin/cc
   '';
 
-  patches = patches ++ targetPatches;
+  patches = [
+    ./patches/net-tcp-disable-tests.patch
+
+    # Re-evaluate if this we need to disable this one
+    #./patches/stdsimd-disable-doctest.patch
+
+    # Fails on hydra - not locally; the exact reason is unknown.
+    # Comments in the test suggest that some non-reproducible environment
+    # variables such $RANDOM can make it fail.
+    ./patches/disable-test-inherit-env.patch
+  ];
 
   # the rust build system complains that nix alters the checksums
   dontFixLibtool = true;
-
-  passthru.target = target;
 
   postPatch = ''
     patchShebangs src/etc
@@ -124,15 +150,13 @@ stdenv.mkDerivation {
   dontUseCmakeConfigure = true;
 
   # ps is needed for one of the test cases
-  nativeBuildInputs =
-    [ file python2 ps rustPlatform.rust.rustc git cmake
-      which libffi removeReferencesTo
-    ]
-    # Only needed for the debuginfo tests
+  nativeBuildInputs = [
+    file python2 ps rustBootstrap.rust.rustc git cmake
+    which libffi removeReferencesTo buildJemalloc
+  ] # Only needed for the debuginfo tests
     ++ optional (!stdenv.isDarwin) gdb;
 
-  buildInputs = targetToolchains
-    ++ optional stdenv.isDarwin Security
+  buildInputs = optional stdenv.isDarwin Security
     ++ optional (!withBundledLLVM) llvmShared;
 
   outputs = [ "out" "man" "doc" ];
@@ -152,7 +176,14 @@ stdenv.mkDerivation {
     sed -i '28s/home_dir().is_some()/true/' ./src/test/run-pass/env-home-dir.rs
   '';
 
-  inherit doCheck;
+  # 1. Upstream is not running tests on aarch64:
+  # see https://github.com/rust-lang/rust/issues/49807#issuecomment-380860567
+  # So we do the same.
+  # 2. Tests run out of memory for i686
+  #doCheck = !stdenv.isAarch64 && !stdenv.isi686;
+
+  # Disabled for now; see https://github.com/NixOS/nixpkgs/pull/42348#issuecomment-402115598.
+  doCheck = false;
 
   # remove references to llvm-config in lib/rustlib/x86_64-unknown-linux-gnu/codegen-backends/librustc_codegen_llvm-llvm.so
   # and thus a transitive dependency on ncurses
@@ -172,6 +203,5 @@ stdenv.mkDerivation {
     maintainers = with maintainers; [ madjar cstrahan wizeman globin havvy wkennington ];
     license = [ licenses.mit licenses.asl20 ];
     platforms = platforms.linux ++ platforms.darwin;
-    broken = broken;
   };
 }

@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, callPackage }:
+{ stdenv, fetchurl, callPackage, buildPackages }:
 
 let
   # Note: the version MUST be one version prior to the version we're
@@ -35,8 +35,11 @@ let
      sha256 = hashes."${platform}";
   };
 
-in callPackage ./binaryBuild.nix
-  { inherit version src platform;
-    buildRustPackage = null;
-    versionType = "bootstrap";
-  }
+in if (stdenv.hostPlatform == stdenv.buildPlatform) then
+    callPackage ./binaryBuild.nix {
+      inherit version src platform;
+      versionType = "bootstrap";
+    }
+  else
+    buildPackages.rust
+
