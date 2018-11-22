@@ -1,5 +1,5 @@
 { stdenv, lib, buildPythonPackage, fetchFromGitHub, isPy3k
-, notmuch, urwid, urwidtrees, twisted, python_magic, configobj, mock, file, gpgme
+, notmuch, urwid, urwidtrees, twisted, python_magic, configobj, mock, file, gpgme, setuptools
 , service-identity
 , gnupg ? null, sphinx, awk ? null, procps ? null, future ? null
 , withManpage ? false }:
@@ -21,6 +21,8 @@ buildPythonPackage rec {
   };
 
   nativeBuildInputs = lib.optional withManpage sphinx;
+
+  buildInputs = [ setuptools ];
 
   propagatedBuildInputs = [
     notmuch
