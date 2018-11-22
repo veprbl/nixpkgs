@@ -1520,6 +1520,8 @@ with pkgs;
 
   metabase = callPackage ../servers/metabase { };
 
+  miniserve = callPackage ../tools/misc/miniserve { };
+
   mkspiffs = callPackage ../tools/filesystems/mkspiffs { };
 
   mkspiffs-presets = recurseIntoAttrs (callPackages ../tools/filesystems/mkspiffs/presets.nix { });
@@ -11692,20 +11694,11 @@ with pkgs;
 
   inherit (callPackages ../development/libraries/openssl {
       fetchurl = fetchurlBoot;
-      cryptodevHeaders = linuxPackages.cryptodev.override {
-        fetchurl = fetchurlBoot;
-        onlyHeaders = true;
-      };
     })
     openssl_1_0_2
     openssl_1_1;
 
-  openssl-chacha = callPackage ../development/libraries/openssl/chacha.nix {
-    cryptodevHeaders = linuxPackages.cryptodev.override {
-      fetchurl = fetchurlBoot;
-      onlyHeaders = true;
-    };
-  };
+  openssl-chacha = callPackage ../development/libraries/openssl/chacha.nix { };
 
   opensubdiv = callPackage ../development/libraries/opensubdiv {
     cudaSupport = config.cudaSupport or false;
@@ -14624,6 +14617,8 @@ with pkgs;
     };
 
   buildLinux = attrs: callPackage ../os-specific/linux/kernel/generic.nix attrs;
+
+  cryptodev = linuxPackages_4_9.cryptodev;
 
   dpdk = callPackage ../os-specific/linux/dpdk {
     kernel = null; # dpdk modules are in linuxPackages.dpdk.kmod
@@ -18568,6 +18563,8 @@ with pkgs;
 
   pommed_light = callPackage ../os-specific/linux/pommed-light {};
 
+  polymake = callPackage ../applications/science/math/polymake { };
+
   pond = callPackage ../applications/networking/instant-messengers/pond { };
 
   ponymix = callPackage ../applications/audio/ponymix { };
@@ -19406,6 +19403,8 @@ with pkgs;
 
   transgui = callPackage ../applications/networking/p2p/transgui { };
 
+  traverso = libsForQt5.callPackage ../applications/audio/traverso { };
+
   trayer = callPackage ../applications/window-managers/trayer { };
 
   tree = callPackage ../tools/system/tree {};
@@ -20035,6 +20034,10 @@ with pkgs;
 
   roxterm = callPackage ../applications/misc/roxterm {
     inherit (gnome3) gsettings-desktop-schemas vte;
+  };
+
+  termonad-with-packages = callPackage ../applications/misc/termonad {
+    inherit (haskellPackages) ghcWithPackages;
   };
 
   xtrace = callPackage ../tools/X11/xtrace { };
@@ -21024,6 +21027,8 @@ with pkgs;
 
   gnome-themes-extra = gnome3.gnome-themes-extra;
 
+  nordic = callPackage ../misc/themes/nordic { };
+
   numix-gtk-theme = callPackage ../misc/themes/numix { };
 
   numix-solarized-gtk-theme = callPackage ../misc/themes/numix-solarized { };
@@ -21791,6 +21796,8 @@ with pkgs;
   golly-beta = callPackage ../applications/science/misc/golly/beta.nix { wxGTK = wxGTK30; };
 
   megam = callPackage ../applications/science/misc/megam { };
+
+  netlogo = callPackage ../applications/science/misc/netlogo { };
 
   ns-3 = callPackage ../development/libraries/science/networking/ns3 { };
 
@@ -22878,6 +22885,8 @@ with pkgs;
   maphosts = callPackage ../tools/networking/maphosts {};
 
   zimg = callPackage ../development/libraries/zimg { };
+
+  wtf = callPackage ../applications/misc/wtf { };
 
   zk-shell = callPackage ../applications/misc/zk-shell { };
 

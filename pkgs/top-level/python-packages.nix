@@ -613,6 +613,8 @@ in {
 
   pystache = callPackage ../development/python-modules/pystache { };
 
+  pytesseract = callPackage ../development/python-modules/pytesseract { };
+
   pytest-tornado = callPackage ../development/python-modules/pytest-tornado { };
 
   python-binance = callPackage ../development/python-modules/python-binance { };

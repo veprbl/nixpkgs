@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, ccache, qmake, qtbase, qtwebkit }:
+{ stdenv, fetchurl, qmake, qtbase, qtwebkit }:
 
 stdenv.mkDerivation rec {
   name = "mindforger-${version}";
@@ -9,15 +9,18 @@ stdenv.mkDerivation rec {
     sha256 = "1wlrl8hpjcpnq098l3n2d1gbhbjylaj4z366zvssqvmafr72iyw4";
   };
 
-  nativeBuildInputs = [ qmake ccache ] ;
+  nativeBuildInputs = [ qmake ] ;
   buildInputs = [ qtbase qtwebkit ] ;
 
   doCheck = true;
+
+  enableParallelBuilding = true ;
 
   patches = [ ./build.patch ] ;
 
   postPatch = ''
     substituteInPlace deps/discount/version.c.in --subst-var-by TABSTOP 4
+    substituteInPlace app/resources/gnome-shell/mindforger.desktop --replace /usr "$out"
   '';
 
   preConfigure = ''
@@ -25,12 +28,9 @@ stdenv.mkDerivation rec {
     pushd deps/discount
     ./configure.sh
     popd
-    export CCACHE_DIR="$TMP/ccache"
   '';
 
-  qmakeFlags = [ "-r mindforger.pro" ] ;
-
-  enableParallelBuilding = true;
+  qmakeFlags = [ "-r mindforger.pro" "CONFIG+=mfnoccache" ] ;
 
   meta = with stdenv.lib; {
     description = "Thinking Notebook & Markdown IDE";
