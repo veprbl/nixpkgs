@@ -21753,6 +21753,8 @@ with pkgs;
 
   scotch = callPackage ../applications/science/math/scotch { };
 
+  mininet = callPackage ../tools/virtualization/mininet { };
+
   msieve = callPackage ../applications/science/math/msieve { };
 
   weka = callPackage ../applications/science/math/weka { };
