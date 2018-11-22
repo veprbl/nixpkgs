@@ -16,10 +16,10 @@ with stdenv.lib;
 
 let
   os = stdenv.lib.optionalString;
-  majorVersion = "3.12";
-  minorVersion = "1";
-  # from https://cmake.org/files/v3.12/cmake-3.12.1-SHA-256.txt
-  sha256 = "1ckswlaid3p2is1a80fmr4hgwpfsiif66giyx1z9ayhxx0n5qgf5";
+  majorVersion = "3.13";
+  minorVersion = "0";
+  # from https://cmake.org/files/v3.13/cmake-3.13.0-SHA-256.txt
+  sha256 = "4058b2f1a53c026564e8936698d56c3b352d90df067b195cb749a97a3d273c90";
   version = "${majorVersion}.${minorVersion}";
 in
 
