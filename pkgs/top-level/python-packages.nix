@@ -416,6 +416,8 @@ in {
     mpi = pkgs.openmpi;
   };
 
+  libmr = callPackage ../development/python-modules/libmr { };
+
   lmtpd = callPackage ../development/python-modules/lmtpd { };
 
   logster = callPackage ../development/python-modules/logster { };
@@ -1351,10 +1353,10 @@ in {
 
   pytest = self.pytest_39;
 
-  pytest_39 = callPackage ../development/python-modules/pytest {
+  inherit (callPackage ../development/python-modules/pytest {
     # hypothesis tests require pytest that causes dependency cycle
     hypothesis = self.hypothesis.override { doCheck = false; };
-  };
+  }) pytest_39 pytest_37;
 
   pytest-httpbin = callPackage ../development/python-modules/pytest-httpbin { };
 
@@ -5038,6 +5040,10 @@ in {
   })).python;
 
   scour = callPackage ../development/python-modules/scour { };
+
+  pymssql = callPackage ../development/python-modules/pymssql { };
+
+  nanoleaf = callPackage ../development/python-modules/nanoleaf { };
 
 });
 
