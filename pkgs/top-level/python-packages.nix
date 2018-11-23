@@ -4994,6 +4994,10 @@ in {
 
   scour = callPackage ../development/python-modules/scour { };
 
+  pymssql = callPackage ../development/python-modules/pymssql { };
+
+  nanoleaf = callPackage ../development/python-modules/nanoleaf { };
+
 });
 
 in fix' (extends overrides packages)
