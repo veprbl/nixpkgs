@@ -5,11 +5,6 @@ let
 
   inherit (stdenv.lib) optionals optionalString;
 
-  clangHack = writeScriptBin "clang" ''
-    #!${stdenv.shell}
-    exec ${stdenv.cc}/bin/clang "$@" 2> >(sed '/ld: warning:.*ignoring unexpected dylib file/ d' 1>&2)
-  '';
-
   goBootstrap = runCommand "go-bootstrap" {} ''
     mkdir $out
     cp -rf ${go_bootstrap}/* $out/
@@ -164,13 +159,18 @@ stdenv.mkDerivation rec {
     ulimit -a
   '';
 
-  postConfigure = optionalString stdenv.isDarwin ''
-    export PATH=${clangHack}/bin:$PATH
+  installPhase = ''
+    runHook preInstall
+    cp -r . $GOROOT
+    ( cd $GOROOT/src && ./make.bash )
+    runHook postInstall
   '';
 
-  installPhase = ''
-    cp -r . $GOROOT
-    ( cd $GOROOT/src && ./all.bash )
+  doInstallCheck = true;
+  installCheckPhase = ''
+    runHook preCheck
+    ( cd $GOROOT/src && ./run.bash --no-rebuild)
+    runHook postCheck
   '';
 
   preFixup = ''

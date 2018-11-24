@@ -40,6 +40,7 @@ stdenv.mkDerivation rec {
   setupHook = ./setup-hook.sh;
 
   patches = [
+    ./macos-shared-library.patch
     (substituteAll {
       src = ./absolute_shlib_path.patch;
       inherit nixStoreDir;

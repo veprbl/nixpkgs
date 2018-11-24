@@ -1,5 +1,6 @@
-{ lib, stdenv, fetchurl, openssl, openldap, kerberos, db, gettext,
-  pam, fixDarwinDylibNames, autoreconfHook, fetchpatch, enableLdap ? false }:
+{ lib, stdenv, fetchurl, openssl, openldap, kerberos, db, gettext
+, pam, fixDarwinDylibNames, autoreconfHook, fetchpatch, enableLdap ? false
+, buildPackages }:
 
 with stdenv.lib;
 stdenv.mkDerivation rec {
@@ -13,15 +14,16 @@ stdenv.mkDerivation rec {
 
   outputs = [ "bin" "dev" "out" "man" "devdoc" ];
 
+  depsBuildBuild = [ buildPackages.stdenv.cc ];
+  nativeBuildInputs = [ autoreconfHook fixDarwinDylibNames ];
   buildInputs =
     [ openssl db gettext kerberos ]
     ++ lib.optional enableLdap openldap
-    ++ lib.optional stdenv.isFreeBSD autoreconfHook
-    ++ lib.optional stdenv.isLinux pam
-    ++ lib.optional stdenv.isDarwin fixDarwinDylibNames;
+    ++ lib.optional stdenv.isLinux pam;
 
   patches = [
     ./missing-size_t.patch # https://bugzilla.redhat.com/show_bug.cgi?id=906519
+    ./cyrus-sasl-ac-try-run-fix.patch
   ] ++ lib.optional stdenv.isFreeBSD (
       fetchurl {
         url = "http://www.linuxfromscratch.org/patches/blfs/svn/cyrus-sasl-2.1.26-fixes-3.patch";
