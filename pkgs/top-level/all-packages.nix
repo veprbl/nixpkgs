@@ -314,8 +314,8 @@ with pkgs;
     ... # For hash agility
   }@args: fetchzip ({
     inherit name;
-    url = "http://repo.or.cz/${repo}.git/snapshot/${rev}.tar.gz";
-    meta.homepage = "http://repo.or.cz/${repo}.git/";
+    url = "https://repo.or.cz/${repo}.git/snapshot/${rev}.tar.gz";
+    meta.homepage = "https://repo.or.cz/${repo}.git/";
   } // removeAttrs args [ "repo" "rev" ]) // { inherit rev; };
 
   fetchNuGet = callPackage ../build-support/fetchnuget { };
@@ -1580,6 +1580,8 @@ with pkgs;
   psstop = callPackage ../tools/system/psstop { };
 
   parallel-rust = callPackage ../tools/misc/parallel-rust { };
+
+  pyCA = python3Packages.callPackage ../applications/video/pyca {};
 
   scour = with python3Packages; toPythonApplication scour;
 
@@ -6029,6 +6031,8 @@ with pkgs;
 
   woof = callPackage ../tools/misc/woof { };
 
+  wpscan = callPackage ../tools/security/wpscan { };
+
   wsmancli = callPackage ../tools/system/wsmancli {};
 
   wolfebin = callPackage ../tools/networking/wolfebin {
@@ -6319,7 +6323,9 @@ with pkgs;
 
   xiccd = callPackage ../tools/misc/xiccd { };
 
-  xidlehook = callPackage ../tools/X11/xidlehook {};
+  xidlehook = callPackage ../tools/X11/xidlehook {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
 
   xorriso = callPackage ../tools/cd-dvd/xorriso { };
 
@@ -13136,7 +13142,7 @@ with pkgs;
     packages = [];
   };
 
-  rstudioWrapper = callPackage ../development/r-modules/wrapper-rstudio.nix {
+  rstudioWrapper = libsForQt5.callPackage ../development/r-modules/wrapper-rstudio.nix {
     recommendedPackages = with rPackages; [
       boot class cluster codetools foreign KernSmooth lattice MASS
       Matrix mgcv nlme nnet rpart spatial survival
@@ -13510,6 +13516,8 @@ with pkgs;
   postgrey = callPackage ../servers/mail/postgrey { };
 
   pshs = callPackage ../servers/http/pshs { };
+
+  system-sendmail = lowPrio (callPackage ../servers/mail/system-sendmail { });
 
   # PulseAudio daemons
 
@@ -20995,6 +21003,8 @@ with pkgs;
   };
 
   hsetroot = callPackage ../tools/X11/hsetroot { };
+
+  imwheel = callPackage ../tools/X11/imwheel { };
 
   kakasi = callPackage ../tools/text/kakasi { };
 
