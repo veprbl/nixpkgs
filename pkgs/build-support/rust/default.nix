@@ -11,6 +11,7 @@
 , cargoUpdateHook ? ""
 , cargoDepsHook ? ""
 , cargoBuildFlags ? []
+, frozenBuild ? true
 
 , cargoVendorDir ? null
 , ... } @ args:
@@ -72,7 +73,7 @@ in stdenv.mkDerivation (args // {
   buildPhase = with builtins; args.buildPhase or ''
     runHook preBuild
     echo "Running cargo build --release ${concatStringsSep " " cargoBuildFlags}"
-    cargo build --release --frozen ${concatStringsSep " " cargoBuildFlags}
+    cargo build --release ${stdenv.lib.optionalString (frozenBuild) "--frozen"} ${concatStringsSep " " cargoBuildFlags}
     runHook postBuild
   '';
 
