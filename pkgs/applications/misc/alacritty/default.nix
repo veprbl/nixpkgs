@@ -77,6 +77,13 @@ in buildRustPackage rec {
   postPatch = ''
     substituteInPlace copypasta/src/x11.rs \
       --replace Command::new\(\"xclip\"\) Command::new\(\"${xclip}/bin/xclip\"\)
+
+    cp -r ../*-vendor/vte .
+    (cd vte && patch -p1 < ${./no-truncated-clipboard.patch})
+
+    cat >> Cargo.toml <<'EOF'
+    vte = { path = "vte" }
+    EOF
   '';
 
   postBuild = lib.optionalString stdenv.isDarwin "make app";
@@ -108,6 +115,8 @@ in buildRustPackage rec {
 
     runHook postInstall
   '';
+
+  frozenBuild = false;
 
   dontPatchELF = true;
 

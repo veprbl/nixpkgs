@@ -1,0 +1,23 @@
+From 47924e28a50a413fdc4e8306deab2f1a61f7a597 Mon Sep 17 00:00:00 2001
+From: Amos Bird <amosbird@gmail.com>
+Date: Mon, 19 Mar 2018 09:43:29 +0800
+Subject: [PATCH] make osc52 buffer bigger to cover more use cases
+
+This patch is a workaround for issues like https://github.com/jwilm/alacritty/issues/1002 .
+---
+ src/lib.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/lib.rs b/vendor/src/lib.rs
+index f2a38b5..10c5e19 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -63,7 +63,7 @@ impl State {
+ 
+ 
+ const MAX_INTERMEDIATES: usize = 2;
+-const MAX_OSC_RAW: usize = 1024;
++const MAX_OSC_RAW: usize = 65536;
+ const MAX_PARAMS: usize = 16;
+ 
+ struct VtUtf8Receiver<'a, P: Perform + 'a>(&'a mut P, &'a mut State);
