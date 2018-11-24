@@ -28,7 +28,7 @@ in python.pkgs.buildPythonApplication rec {
     pyyaml
     arxiv2bib beautifulsoup4 bibtexparser
     chardet click configparser filetype habanero
-    isbnlib prompt_toolkit_2 pylibgen pyparser pyparsing
+    isbnlib prompt_toolkit pylibgen pyparser pyparsing
     python-slugify requests
 
     # Optional
