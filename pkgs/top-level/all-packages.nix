@@ -786,6 +786,8 @@ with pkgs;
 
   xcodeenv = callPackage ../development/mobile/xcodeenv { };
 
+  ssh-agents = callPackage ../tools/networking/ssh-agents { };
+
   titaniumenv = callPackage ../development/mobile/titaniumenv { };
 
   abootimg = callPackage ../development/mobile/abootimg {};
@@ -13517,6 +13519,8 @@ with pkgs;
 
   pshs = callPackage ../servers/http/pshs { };
 
+  system-sendmail = lowPrio (callPackage ../servers/mail/system-sendmail { });
+
   # PulseAudio daemons
 
   pulseaudio = callPackage ../servers/pulseaudio {
@@ -20981,6 +20985,8 @@ with pkgs;
   };
 
   hsetroot = callPackage ../tools/X11/hsetroot { };
+
+  imwheel = callPackage ../tools/X11/imwheel { };
 
   kakasi = callPackage ../tools/text/kakasi { };
 
