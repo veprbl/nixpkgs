@@ -26,11 +26,11 @@ let
 
 in buildPythonPackage rec {
   pname = "Cython";
-  version = "0.29";
+  version = "0.29.1";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "15zama7fgp7yyi3z39xp3z2lvwcgch8fn3ycscw2cs37vqg6v4cl";
+    sha256 = "15zv9c4ami9hzya28wz1shqljbbk5sxdvqbjxqnf15ssk137daqq";
   };
 
   nativeBuildInputs = [
@@ -49,14 +49,6 @@ in buildPythonPackage rec {
       ${stdenv.lib.optionalString (builtins.length excludedTests != 0)
         ''--exclude="(${builtins.concatStringsSep "|" excludedTests})"''}
   '';
-
-  patches = [
-    (fetchpatch {
-      name = "exclude-pycodestyle-test-if-not-avail.patch";
-      url = https://github.com/cython/cython/commit/5dfefdadf6c20bf631ea3b6e567eede2f1ddd3d0.patch;
-      sha256 = "0hdsy2zdc910vhhfckrvnjfli0v766k8s37k203sk557qnhwvica";
-    })
-  ];
 
   doCheck = !stdenv.isDarwin;
 
