@@ -18,6 +18,18 @@
 
 let
   src = fetch "llvm" "1ybmnid4pw2hxn12ax5qa5kl1ldfns0njg8533y3mzslvd5cx0kf";
+
+  llvmTarget = platform:
+    if platform.parsed.cpu.family == "x86" then
+      "X86"
+    else if platform.parsed.cpu.name == "aarch64" then
+      "AArch64"
+    else if platform.parsed.cpu.family == "arm" then
+      "ARM"
+    else if platform.parsed.cpu.family == "mips" then
+      "Mips"
+    else
+      throw "Unsupported system";
 in stdenv.mkDerivation rec {
   name = "llvm-${version}";
 
@@ -80,7 +92,7 @@ in stdenv.mkDerivation rec {
 
     "-DLLVM_HOST_TRIPLE=${stdenv.hostPlatform.config}"
     "-DLLVM_DEFAULT_TARGET_TRIPLE=${stdenv.targetPlatform.config}"
-    "-DTARGET_TRIPLE=${stdenv.targetPlatform.config}"
+    "-DLLVM_TARGETS_TO_BUILD=${llvmTarget stdenv.hostPlatform};${llvmTarget stdenv.targetPlatform}"
   ] ++ stdenv.lib.optional enableSharedLibraries [
     "-DLLVM_LINK_LLVM_DYLIB=ON"
   ] ++ stdenv.lib.optional (!isDarwin)

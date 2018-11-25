@@ -25,6 +25,18 @@ let
   # Used when creating a version-suffixed symlink of libLLVM.dylib
   shortVersion = with stdenv.lib;
     concatStringsSep "." (take 2 (splitString "." version));
+
+  llvmTarget = platform:
+    if platform.parsed.cpu.family == "x86" then
+      "X86"
+    else if platform.parsed.cpu.name == "aarch64" then
+      "AArch64"
+    else if platform.parsed.cpu.family == "arm" then
+      "ARM"
+    else if platform.parsed.cpu.family == "mips" then
+      "Mips"
+    else
+      throw "Unsupported system";
 in stdenv.mkDerivation rec {
   name = "llvm-${version}";
 
@@ -121,7 +133,7 @@ in stdenv.mkDerivation rec {
 
     "-DLLVM_HOST_TRIPLE=${stdenv.hostPlatform.config}"
     "-DLLVM_DEFAULT_TARGET_TRIPLE=${stdenv.targetPlatform.config}"
-    "-DTARGET_TRIPLE=${stdenv.targetPlatform.config}"
+    "-DLLVM_TARGETS_TO_BUILD=${llvmTarget stdenv.hostPlatform};${llvmTarget stdenv.targetPlatform}"
   ] ++ stdenv.lib.optional enableSharedLibraries [
     "-DLLVM_LINK_LLVM_DYLIB=ON"
   ] ++ stdenv.lib.optional (!isDarwin)
