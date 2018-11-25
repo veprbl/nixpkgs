@@ -7,8 +7,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner  = "hrdwrrsk";
     repo   = "tetra-gtk-theme";
-    rev    = "e8ed095acbdfe5e7c7e253c2015f1f728d8e9739";
-    sha256 = "04i146cl3wzl51wc8qvpzngg0y3m110392f4d6kx6hw9521rgkhi";
+    rev    = "9627438c6e200b0eda34f53c9929c1107ebb6251";
+    sha256 = "0dhrvqsbybsyxpxvnrmbnp4hvay68wkc1aqbh6vljvkklxk153bx";
   };
 
   preBuild = ''
