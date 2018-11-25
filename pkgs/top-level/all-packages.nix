@@ -21997,6 +21997,31 @@ with pkgs;
 
   dpkg = callPackage ../tools/package-management/dpkg { };
 
+  edex-ui = callPackage ../applications/misc/edex-ui {
+    edex-ui-bare = callPackage ../applications/misc/edex-ui/bare.nix rec {
+      fetchNodeModules = callPackage ../applications/networking/instant-messengers/rambox/fetchNodeModules.nix { };
+      buildNativeModule = callPackage ../applications/misc/edex-ui/buildNativeModule.nix {
+        inherit fetchNodeModules;
+      };
+    };
+
+    electron = electron.overrideAttrs (oldAttrs: rec {
+      name = "electron-${version}";
+      version = "2.0.13";
+
+      src = {
+        i686-linux = fetchurl {
+          url = "https://github.com/electron/electron/releases/download/v${version}/electron-v${version}-linux-ia32.zip";
+          sha256 = "0avdjg634ssz62gizyvzd0pvj7ahf42883j7ryidba0bch464jvl";
+        };
+        x86_64-linux = fetchurl {
+          url = "https://github.com/electron/electron/releases/download/v${version}/electron-v${version}-linux-x64.zip";
+          sha256 = "09s7gyfdnw17yzykqinhz6p2x92pqqbr9ls20rqq8axns9g12pmi";
+        };
+      }.${stdenv.hostPlatform.system};
+    });
+  };
+
   ekiga = newScope pkgs.gnome2 ../applications/networking/instant-messengers/ekiga { };
 
   emulationstation = callPackage ../misc/emulators/emulationstation {
