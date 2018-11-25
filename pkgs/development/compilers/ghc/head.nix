@@ -2,7 +2,7 @@
 
 # build-tools
 , bootPkgs
-, autoconf, automake, coreutils, fetchgit, perl, python3, m4, sphinx
+, autoconf, automake, coreutils, fetchgit, perl, python3, m4
 
 , libiconv ? null, ncurses
 
