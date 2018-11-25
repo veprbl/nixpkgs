@@ -681,6 +681,8 @@ with pkgs;
 
   cozy = callPackage ../applications/audio/cozy-audiobooks { };
 
+  deskew = callPackage ../applications/graphics/deskew { };
+
   diskus = callPackage ../tools/misc/diskus { };
 
   djmount = callPackage ../tools/filesystems/djmount { };
@@ -2776,6 +2778,8 @@ with pkgs;
 
   fuse-7z-ng = callPackage ../tools/filesystems/fuse-7z-ng { };
 
+  fusee-launcher = callPackage ../development/tools/fusee-launcher { };
+
   fwknop = callPackage ../tools/security/fwknop { };
 
   exfat = callPackage ../tools/filesystems/exfat { };
@@ -3767,6 +3771,8 @@ with pkgs;
   multitail = callPackage ../tools/misc/multitail { };
 
   mxt-app = callPackage ../misc/mxt-app { };
+
+  mxisd = callPackage ../servers/mxisd { };
 
   nagstamon = callPackage ../tools/misc/nagstamon {
     pythonPackages = python3Packages;
@@ -9345,8 +9351,6 @@ with pkgs;
   cointop = callPackage ../applications/misc/cointop { };
 
   commoncpp2 = callPackage ../development/libraries/commoncpp2 { };
-
-  confuse = callPackage ../development/libraries/confuse { };
 
   coredumper = callPackage ../development/libraries/coredumper { };
 
@@ -15389,6 +15393,8 @@ with pkgs;
 
   maia-icon-theme = callPackage ../data/icons/maia-icon-theme { };
 
+  mailcap = callPackage ../data/misc/mailcap { };
+
   marathi-cursive = callPackage ../data/fonts/marathi-cursive { };
 
   man-pages = callPackage ../data/documentation/man-pages { };
@@ -18582,8 +18588,6 @@ with pkgs;
 
   poezio = python3Packages.poezio;
 
-  pommed = callPackage ../os-specific/linux/pommed {};
-
   pommed_light = callPackage ../os-specific/linux/pommed-light {};
 
   polymake = callPackage ../applications/science/math/polymake { };
@@ -21376,9 +21380,7 @@ with pkgs;
 
   scs = callPackage ../development/libraries/science/math/scs { };
 
-  sage = callPackage ../applications/science/math/sage {
-    nixpkgs = pkgs;
-  };
+  sage = callPackage ../applications/science/math/sage { };
   sageWithDoc = sage.override { withDoc = true; };
 
   suitesparse_4_2 = callPackage ../development/libraries/science/math/suitesparse/4.2.nix { };
@@ -22690,7 +22692,8 @@ with pkgs;
   vimUtils = callPackage ../misc/vim-plugins/vim-utils.nix { };
 
   vimPlugins = recurseIntoAttrs (callPackage ../misc/vim-plugins {
-    llvmPackages = llvmPackages_7;
+    #llvmPackages = llvmPackages_7;
+    llvmPackages = llvmPackages_6;
   });
 
   vimprobable2-unwrapped = callPackage ../applications/networking/browsers/vimprobable2 {
