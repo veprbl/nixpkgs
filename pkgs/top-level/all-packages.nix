@@ -22753,6 +22753,8 @@ with pkgs;
 
   xcftools = callPackage ../tools/graphics/xcftools { };
 
+  xdesktopwaves = callPackage ../applications/misc/xdesktopwaves { };
+
   xhyve = callPackage ../applications/virtualization/xhyve {
     inherit (darwin.apple_sdk.frameworks) Hypervisor vmnet;
     inherit (darwin.apple_sdk.libs) xpc;
