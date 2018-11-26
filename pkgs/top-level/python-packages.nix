@@ -5027,6 +5027,8 @@ in {
 
   simpy = callPackage ../development/python-modules/simpy { };
 
+  yattag = callPackage ../development/python-modules/yattag { };
+
   z3 = (toPythonModule (pkgs.z3.override {
     inherit python;
   })).python;

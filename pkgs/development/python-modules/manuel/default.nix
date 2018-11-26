@@ -7,14 +7,15 @@
 
 buildPythonPackage rec {
   pname = "manuel";
-  version = "1.9.0";
+  version = "1.10.1";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "d324983db5d8e3f36ff20732a723cf0af2e2477d569f871fc649f08b782fa8f1";
+    sha256 = "1bdzay7j70fly5fy6wbdi8fbrxjrrlxnxnw226rwry1c8a351rpy";
   };
 
-  propagatedBuildInputs = [ six zope_testing ];
+  propagatedBuildInputs = [ six ];
+  checkInputs = [ zope_testing ];
 
   meta = with stdenv.lib; {
     description = "A documentation builder";
