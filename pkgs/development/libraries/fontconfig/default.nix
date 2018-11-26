@@ -1,6 +1,5 @@
 { stdenv, substituteAll, fetchurl, fetchgit
 , pkgconfig, freetype, expat, libuuid, libxslt, gperf, dejavu_fonts
-, autoreconfHook
 }:
 
 /** Font configuration scheme
@@ -42,7 +41,7 @@ stdenv.mkDerivation rec {
   outputs = [ "bin" "dev" "lib" "out" ]; # $out contains all the config
 
   propagatedBuildInputs = [ freetype ];
-  nativeBuildInputs = [ autoreconfHook pkgconfig gperf libxslt ];
+  nativeBuildInputs = [ pkgconfig gperf libxslt ];
   buildInputs = [ expat libuuid ];
 
   configureFlags = [
