@@ -15,7 +15,7 @@ let
         else throw "Unsupported system!";
 in stdenv.mkDerivation rec {
   name = "aws-sdk-cpp-${version}";
-  version = "1.6.52";
+  version = "1.7.5";
 
   src = fetchFromGitHub {
     owner = "awslabs";
