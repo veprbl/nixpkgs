@@ -1,5 +1,5 @@
 { stdenv, substituteAll, fetchurl
-, pkgconfig, freetype, expat, libxslt, gperf, dejavu_fonts
+, pkgconfig, freetype, expat, libuuid, libxslt, gperf, dejavu_fonts
 }:
 
 /** Font configuration scheme
@@ -18,11 +18,11 @@ let
 in
 stdenv.mkDerivation rec {
   name = "fontconfig-${version}";
-  version = "2.12.6";
+  version = "2.13.1";
 
   src = fetchurl {
     url = "http://fontconfig.org/release/${name}.tar.bz2";
-    sha256 = "05zh65zni11kgnhg726gjbrd55swspdvhqbcnj5a5xh8gn03036g";
+    sha256 = "0hb700a68kk0ip51wdlnjjc682kvlrmb6q920mzajykdk0mdsmgn";
   };
 
   patches = [
@@ -36,7 +36,7 @@ stdenv.mkDerivation rec {
 
   propagatedBuildInputs = [ freetype ];
   nativeBuildInputs = [ pkgconfig gperf libxslt ];
-  buildInputs = [ expat ];
+  buildInputs = [ expat libuuid ];
 
   configureFlags = [
     "--with-arch=${stdenv.hostPlatform.parsed.cpu.name}"
