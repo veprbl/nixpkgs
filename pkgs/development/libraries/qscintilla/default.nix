@@ -9,10 +9,8 @@ let xcodePatch =
              sha256 = "1a88309fdfd421f4458550b710a562c622d72d6e6fdd697107e4a43161d69bc9"; };
 in
 stdenv.mkDerivation rec {
-  pname = "qscintilla";
+  pname = "qscintilla-${if withQt5 then "qt5" else "qt4"}";
   version = "2.9.4";
-
-  name = "${pname}-${if withQt5 then "qt5" else "qt4"}-${version}";
 
   src = fetchurl {
     url = "mirror://sourceforge/pyqt/QScintilla2/QScintilla-${version}/QScintilla_gpl-${version}.zip";
