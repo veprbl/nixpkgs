@@ -3776,6 +3776,8 @@ with pkgs;
     pythonPackages = python3Packages;
   };
 
+  nbench = callPackage ../tools/misc/nbench { };
+
   netdata = callPackage ../tools/system/netdata {
     inherit (darwin.apple_sdk.frameworks) CoreFoundation IOKit;
   };
@@ -5624,6 +5626,8 @@ with pkgs;
   talkfilters = callPackage ../misc/talkfilters {};
 
   znapzend = callPackage ../tools/backup/znapzend { };
+
+  targetcli = callPackage ../os-specific/linux/targetcli { };
 
   tarsnap = callPackage ../tools/backup/tarsnap { };
 

@@ -999,6 +999,8 @@ in {
 
   colour = callPackage ../development/python-modules/colour {};
 
+  configshell = callPackage ../development/python-modules/configshell { };
+
   constantly = callPackage ../development/python-modules/constantly { };
 
   cornice = callPackage ../development/python-modules/cornice { };
@@ -3789,6 +3791,8 @@ in {
   rpmfluff = callPackage ../development/python-modules/rpmfluff {};
 
   rpy2 = callPackage ../development/python-modules/rpy2 {};
+
+  rtslib = callPackage ../development/python-modules/rtslib {};
 
   Rtree = callPackage ../development/python-modules/Rtree { inherit (pkgs) libspatialindex; };
 
