@@ -15,7 +15,7 @@
 */
 
 let
-  configVersion = "2.11"; # bump whenever fontconfig breaks compatibility with older configurations
+  configVersion = "2.13"; # bump whenever fontconfig breaks compatibility with older configurations
 in
 stdenv.mkDerivation rec {
   name = "fontconfig-${version}";
