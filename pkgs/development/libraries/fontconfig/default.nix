@@ -1,4 +1,4 @@
-{ stdenv, substituteAll, fetchurl, fetchgit
+{ stdenv, substituteAll, fetchurl
 , pkgconfig, freetype, expat, libuuid, libxslt, gperf, dejavu_fonts
 }:
 
@@ -18,18 +18,12 @@ let
 in
 stdenv.mkDerivation rec {
   name = "fontconfig-${version}";
-  version = "2018-11-15"; # 2.13.1+
-  src = fetchgit {
-    url = https://gitlab.freedesktop.org/fontconfig/fontconfig;
-    rev = "2bd559f75d76b514f789e32c5cc9643fd7c1e9a2";
-    sha256 = "187vmsl03p7rgyn3ra4wmdgdhg6xxfcia6f0m05q6n73ahnp5lgi";
-  };
-  #version = "2.13.1";
+  version = "2.13.1";
 
-  #src = fetchurl {
-  #  url = "http://fontconfig.org/release/${name}.tar.bz2";
-  #  sha256 = "0hb700a68kk0ip51wdlnjjc682kvlrmb6q920mzajykdk0mdsmgn";
-  #};
+  src = fetchurl {
+    url = "http://fontconfig.org/release/${name}.tar.bz2";
+    sha256 = "0hb700a68kk0ip51wdlnjjc682kvlrmb6q920mzajykdk0mdsmgn";
+  };
 
   patches = [
     (substituteAll {
