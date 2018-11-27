@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, python3, libreoffice-unwrapped, asciidoc, makeWrapper
+{ stdenv, fetchFromGitHub, python3, libreoffice-unwrapped, asciidoc, makeWrapper
 # whether to install odt2pdf/odt2doc/... symlinks to unoconv
 , installSymlinks ? true
 }:
@@ -7,11 +7,14 @@
 # will not be able to load the pyuno module from libreoffice).
 
 stdenv.mkDerivation rec {
-  name = "unoconv-0.6";
+  name = "unoconv-${version}";
+  version = "0.8.2";
 
-  src = fetchurl {
-    url = "http://dag.wieers.com/home-made/unoconv/${name}.tar.gz";
-    sha256 = "1m3kv942zf5rzyrbkil0nhmyq9mm3007y64bb3s7w88mhr5n23kr";
+  src = fetchFromGitHub {
+    owner = "dagwieers";
+    repo = "unoconv";
+    rev = version;
+    sha256 = "0mxrzzg9bl42lsiw8hcq624qbq8jrhcgmnal7ys68dj0l901snk3";
   };
 
   buildInputs = [ asciidoc makeWrapper ];
