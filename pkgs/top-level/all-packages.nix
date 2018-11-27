@@ -8928,6 +8928,8 @@ with pkgs;
 
   sbt-extras = callPackage ../development/tools/build-managers/sbt-extras { };
 
+  scss-lint = callPackage ../development/tools/scss-lint { };
+
   shallot = callPackage ../tools/misc/shallot { };
 
   shards = callPackage ../development/tools/build-managers/shards { };
@@ -9152,6 +9154,10 @@ with pkgs;
     db = if stdenv.isFreeBSD then db4 else db;
     # XXX: only the db_185 interface was available through
     #      apr with db58 on freebsd (nov 2015), for unknown reasons
+  };
+
+  aravis = callPackage ../development/libraries/aravis {
+    inherit (gst_all_1) gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad;
   };
 
   arb = callPackage ../development/libraries/arb {};
