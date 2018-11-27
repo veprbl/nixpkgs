@@ -1,5 +1,5 @@
 { stdenv, fetchurl, fetchpatch, gtk-doc, pkgconfig, gobjectIntrospection, intltool
-, libgudev, polkit, libxmlb, gusb, sqlite, libarchive, glib-networking
+, libgudev, polkit, libxmlb, gusb, sqlite, libarchive, glib-networking, cairo
 , libsoup, help2man, gpgme, libxslt, elfutils, libsmbios, efivar, glibcLocales
 , gnu-efi, libyaml, valgrind, meson, libuuid, colord, docbook_xml_dtd_43, docbook_xsl
 , ninja, gcab, gnutls, python3, wrapGAppsHook, json-glib, bash-completion
@@ -30,7 +30,7 @@ in stdenv.mkDerivation {
   buildInputs = [
     polkit libxmlb gusb sqlite libarchive libsoup elfutils libsmbios gnu-efi libyaml
     libgudev colord gpgme libuuid gnutls glib-networking efivar json-glib umockdev
-    bash-completion
+    bash-completion cairo
   ];
 
   LC_ALL = "en_US.UTF-8"; # For po/make-images
