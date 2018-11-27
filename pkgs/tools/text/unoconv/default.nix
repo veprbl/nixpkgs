@@ -19,10 +19,6 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ asciidoc makeWrapper ];
 
-  # We need to use python3 because libreoffice 4.x uses it. This patch comes
-  # from unoconv.git, so it will be a part of the next release.
-  patches = [ ./unoconv-python3.patch ];
-
   preBuild = ''
     makeFlags=prefix="$out"
   '';
