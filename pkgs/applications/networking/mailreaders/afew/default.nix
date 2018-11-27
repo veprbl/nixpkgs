@@ -1,15 +1,21 @@
-{ stdenv, pythonPackages, notmuch }:
+{ stdenv, pythonPackages, notmuch, fetchgit, git }:
 
 pythonPackages.buildPythonApplication rec {
   pname = "afew";
-  version = "1.3.0";
+  version = "1.3.0.99-git"; # not really
 
-  src = pythonPackages.fetchPypi {
-    inherit pname version;
-    sha256 = "0105glmlkpkjqbz350dxxasvlfx9dk0him9vwbl86andzi106ygz";
+  src = fetchgit {
+    url = https://github.com/afewmail/afew;
+    rev = "632253193bc6530abc0077f35f11317f9f5affd6";
+    sha256 = "0a27zpdw0nxhdqmiya6bzqnc3ds93a0jinymksfy1c8f325izm0h";
+    leaveDotGit = true;
   };
+  #src = pythonPackages.fetchPypi {
+  #  inherit pname version;
+  #  sha256 = "0105glmlkpkjqbz350dxxasvlfx9dk0him9vwbl86andzi106ygz";
+  #};
 
-  nativeBuildInputs = with pythonPackages; [ sphinx setuptools_scm ];
+  nativeBuildInputs = with pythonPackages; [ sphinx setuptools_scm git ];
 
   propagatedBuildInputs = with pythonPackages; [
     pythonPackages.notmuch chardet dkimpy
