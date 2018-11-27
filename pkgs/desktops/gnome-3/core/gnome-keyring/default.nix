@@ -31,8 +31,10 @@ stdenv.mkDerivation rec {
     patchShebangs build
   '';
 
-  # Disable for now, they get stuck on one of my builders
+  # Disable for now, they get stuck on one of my builders (not 32bit, not failures)
   doCheck = false; # true;
+  # doCheck = !stdenv.isi686; # https://github.com/NixOS/nixpkgs/issues/51121
+
   # In 3.20.1, tests do not support Python 3
   checkInputs = [ dbus python2 ];
 

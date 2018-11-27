@@ -16379,6 +16379,8 @@ with pkgs;
 
   eaglemode = callPackage ../applications/misc/eaglemode { };
 
+  echoip = callPackage ../servers/echoip { };
+
   eclipses = recurseIntoAttrs (callPackage ../applications/editors/eclipse {
     jdk = jdk11;
   });
