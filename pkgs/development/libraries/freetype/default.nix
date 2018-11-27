@@ -49,13 +49,17 @@ in stdenv.mkDerivation rec {
 
   outputs = [ "out" "dev" ];
 
-  configureFlags = [ "--disable-static" "--bindir=$(dev)/bin" "--enable-font-config" ];
+  configureFlags = [ "--disable-static" "--bindir=$(dev)/bin" "--enable-freetype-config" ];
 
   # native compiler to generate building tool
   CC_BUILD = "${buildPackages.stdenv.cc}/bin/cc";
 
   # The asm for armel is written with the 'asm' keyword.
   CFLAGS = optionalString stdenv.isAarch32 "-std=gnu99";
+
+  # Set these to empty string to fix non-windows building
+  ac_cv_prog_RC = "";
+  ac_cv_prog_ac_ct_RC = "";
 
   enableParallelBuilding = true;
 
