@@ -1,9 +1,11 @@
 { stdenv, fetchurl, fetchpatch, gtk-doc, pkgconfig, gobjectIntrospection, intltool
-, libgudev, polkit, libxmlb, gusb, sqlite, libarchive, glib-networking, cairo
+, libgudev, polkit, libxmlb, gusb, sqlite, libarchive, glib-networking
 , libsoup, help2man, gpgme, libxslt, elfutils, libsmbios, efivar, glibcLocales
 , gnu-efi, libyaml, valgrind, meson, libuuid, colord, docbook_xml_dtd_43, docbook_xsl
 , ninja, gcab, gnutls, python3, wrapGAppsHook, json-glib, bash-completion
 , shared-mime-info, umockdev, vala, makeFontsConf, freefont_ttf
+, cairo, freetype, fontconfig, pango
+
 }:
 let
   # Updating? Keep $out/etc synchronized with passthru.filesInstalledToEtc
@@ -30,7 +32,7 @@ in stdenv.mkDerivation {
   buildInputs = [
     polkit libxmlb gusb sqlite libarchive libsoup elfutils libsmbios gnu-efi libyaml
     libgudev colord gpgme libuuid gnutls glib-networking efivar json-glib umockdev
-    bash-completion cairo
+    bash-completion cairo freetype fontconfig pango
   ];
 
   LC_ALL = "en_US.UTF-8"; # For po/make-images
