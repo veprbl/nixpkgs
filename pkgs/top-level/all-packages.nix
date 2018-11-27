@@ -11345,6 +11345,8 @@ with pkgs;
     '';
   };
 
+  libxmlb = callPackage ../development/libraries/libxmlb { };
+
   libxmlxx = callPackage ../development/libraries/libxmlxx { };
   libxmlxx3 = callPackage ../development/libraries/libxmlxx/v3.nix { };
 
@@ -13046,13 +13048,13 @@ with pkgs;
   ### DEVELOPMENT / GO MODULES
 
   buildGo19Package = callPackage ../development/go-modules/generic {
-    go = go_1_9;
+    go = buildPackages.go_1_9;
   };
   buildGo110Package = callPackage ../development/go-modules/generic {
-    go = go_1_10;
+    go = buildPackages.go_1_10;
   };
   buildGo111Package = callPackage ../development/go-modules/generic {
-    go = go_1_11;
+    go = buildPackages.go_1_11;
   };
 
   buildGoPackage = buildGo111Package;
