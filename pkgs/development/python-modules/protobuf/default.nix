@@ -1,5 +1,5 @@
 { stdenv, fetchpatch, python, buildPythonPackage
-, protobuf, google_apputils, pyext, libcxx
+, protobuf, google_apputils, pyext, six, setuptools, libcxx
 , disabled, doCheck ? true }:
 
 with stdenv.lib;
@@ -13,8 +13,8 @@ buildPythonPackage rec {
     optional stdenv.isDarwin "-I${libcxx}/include/c++/v1"
     ++ optional (versionOlder protobuf.version "2.7.0") "-std=c++98";
 
-  propagatedBuildInputs = [ protobuf google_apputils ];
-  buildInputs = [ google_apputils pyext ];
+  propagatedBuildInputs = [ protobuf ]; # google_apputils maybe needed for older?
+  buildInputs = [ pyext six setuptools ];
 
   patches = [
     # Python 3.7 compatibility (remove when protobuf 3.7 is released)
