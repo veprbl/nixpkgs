@@ -17,7 +17,10 @@ buildPythonPackage rec {
   };
 
   checkInputs = [ nose pytest pytestrunner ];
-  propagatedBuildInputs = [ six ];
+  propagatedBuildInputs = [ six pytestrunner ];
+
+  # TODO: enable this by selectively disabling network tests
+  doCheck = false;
 
   # Certain tests require network
   checkPhase = ''
