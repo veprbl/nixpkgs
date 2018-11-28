@@ -835,6 +835,8 @@ in {
 
   arxiv2bib = callPackage ../development/python-modules/arxiv2bib { };
 
+  casttube = callPackage ../development/python-modules/casttube { };
+
   chai = callPackage ../development/python-modules/chai { };
 
   chainmap = callPackage ../development/python-modules/chainmap { };
