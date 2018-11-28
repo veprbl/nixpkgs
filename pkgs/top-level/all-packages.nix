@@ -4677,7 +4677,7 @@ with pkgs;
 
   pal = callPackage ../tools/misc/pal { };
 
-  pandoc = haskell.lib.overrideCabal (haskell.lib.justStaticExecutables haskellPackages.pandoc) (drv: {
+  pandoc = haskell.lib.overrideCabal (haskell.lib.justStaticExecutables haskell.packages.ghc862.pandoc) (drv: {
     configureFlags = drv.configureFlags or [] ++ ["-fembed_data_files"];
     buildDepends = drv.buildDepends or [] ++ [haskellPackages.file-embed];
   });
