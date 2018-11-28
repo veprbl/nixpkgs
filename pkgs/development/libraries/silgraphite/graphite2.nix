@@ -16,7 +16,6 @@ stdenv.mkDerivation rec {
   patches = stdenv.lib.optionals stdenv.isDarwin [ ./macosx.patch ];
 
   checkInputs = [ python ];
-  #doCheck = false; # fails, probably missing something
 
   meta = with stdenv.lib; {
     description = "An advanced font engine";
