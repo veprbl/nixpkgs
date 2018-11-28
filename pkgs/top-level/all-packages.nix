@@ -4677,9 +4677,9 @@ with pkgs;
 
   pal = callPackage ../tools/misc/pal { };
 
-  pandoc = haskell.lib.overrideCabal (haskell.lib.justStaticExecutables haskell.packages.ghc862.pandoc) (drv: {
+  pandoc = let hpkgs = haskell.packages.ghc862; in haskell.lib.overrideCabal (haskell.lib.justStaticExecutables hpkgs.pandoc) (drv: {
     configureFlags = drv.configureFlags or [] ++ ["-fembed_data_files"];
-    buildDepends = drv.buildDepends or [] ++ [haskellPackages.file-embed];
+    buildDepends = drv.buildDepends or [] ++ [ hpkgs.file-embed];
   });
 
   pamtester = callPackage ../tools/security/pamtester { };
