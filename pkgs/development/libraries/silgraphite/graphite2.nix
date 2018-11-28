@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgconfig, freetype, cmake, python }:
+{ stdenv, fetchurl, pkgconfig, freetype, cmake }:
 
 stdenv.mkDerivation rec {
   version = "1.3.12";
@@ -13,9 +13,10 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ pkgconfig cmake ];
   buildInputs = [ freetype ];
 
-  patches = stdenv.lib.optionals stdenv.isDarwin [ ./macosx.patch ];
+  patches = [ ./graphite2-1.2.0-cmakepath.patch ]
+    ++ stdenv.lib.optionals stdenv.isDarwin [ ./macosx.patch ];
 
-  checkInputs = [ python ];
+  doCheck = false; # fontTools
 
   meta = with stdenv.lib; {
     description = "An advanced font engine";
