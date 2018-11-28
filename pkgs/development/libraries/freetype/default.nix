@@ -44,7 +44,7 @@ in stdenv.mkDerivation rec {
 
   patches = [
       ./enable-table-validation.patch
-      ./extra-patch-fix_size_metrics.patch
+      #./extra-patch-fix_size_metrics.patch
   ] ++ optional useEncumberedCode ./enable-subpixel-rendering.patch;
 
   outputs = [ "out" "dev" ];
