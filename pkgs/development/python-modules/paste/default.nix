@@ -3,18 +3,20 @@
 , fetchPypi
 , nose
 , six
+, pytest
+, pytestrunner
 }:
 
 buildPythonPackage rec {
-  pname = "paste";
-  version = "3.0.3";
+  pname = "Paste";
+  version = "3.0.4";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "96b06ff055c4f22a4e5c164551179ed1fa8263bc3ce69b4347c617cd0fcf51f4";
+    sha256 = "01w26w9jyfkh0mfydhfz3dwy3pj3fw7mzvj0lna3vs8hyx1hwl0n";
   };
 
-  checkInputs = [ nose ];
+  checkInputs = [ nose pytest pytestrunner ];
   propagatedBuildInputs = [ six ];
 
   # Certain tests require network
