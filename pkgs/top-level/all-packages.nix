@@ -4680,7 +4680,11 @@ with pkgs;
   pandoc = let hpkgs = haskell.packages.ghc862; in haskell.lib.overrideCabal (haskell.lib.justStaticExecutables hpkgs.pandoc) (drv: {
     configureFlags = drv.configureFlags or [] ++ ["-fembed_data_files"];
     buildDepends = drv.buildDepends or [] ++ [ hpkgs.file-embed];
-    enableSeparateDataOutput = false;
+    #enableSeparateDataOutput = false;
+    postInstall = ''
+      mkdir -p $out/share/man/man1
+      cp man/pandoc.1 $out/share/man/man1/
+    '';
   });
 
   pamtester = callPackage ../tools/security/pamtester { };
@@ -9079,6 +9083,8 @@ with pkgs;
   xcbuildHook = makeSetupHook {
     deps = [ xcbuild ];
   } ../development/tools/xcbuild/setup-hook.sh  ;
+
+  xcpretty = callPackage ../development/tools/xcpretty { };
 
   xmlindent = callPackage ../development/web/xmlindent {};
 
