@@ -10141,7 +10141,7 @@ with pkgs;
     cairo = null; # :(
     withGraphite2 = false;
   };
-  harfbuzz = harfbuzz-bootstrap.override { inherit freetype; };
+  harfbuzz = harfbuzz-bootstrap.override { inherit cairo freetype; };
 
   harfbuzzFull = harfbuzz.override {
     withCoreText = stdenv.isDarwin;
