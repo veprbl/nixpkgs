@@ -22855,6 +22855,8 @@ with pkgs;
 
   yara = callPackage ../tools/security/yara { };
 
+  yaru-theme = callPackage ../misc/themes/yaru { };
+
   yaxg = callPackage ../tools/graphics/yaxg {};
 
   zap = callPackage ../tools/networking/zap { };
