@@ -42,10 +42,10 @@ in stdenv.mkDerivation rec {
     # FreeType requires GNU Make, which is not part of stdenv on FreeBSD.
     ++ optional (!stdenv.isLinux) gnumake;
 
-  patches =
-    [ ./enable-table-validation.patch
-    ] ++
-    optional useEncumberedCode ./enable-subpixel-rendering.patch;
+  patches = [
+      ./enable-table-validation.patch
+      ./extra-patch-fix_size_metrics.diff
+  ] ++ optional useEncumberedCode ./enable-subpixel-rendering.patch;
 
   outputs = [ "out" "dev" ];
 
