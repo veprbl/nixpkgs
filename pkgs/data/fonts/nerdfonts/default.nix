@@ -1,18 +1,19 @@
 { stdenv, fetchFromGitHub, bash, which, withFont ? "" }:
 
 stdenv.mkDerivation rec {
-  version = "2.0.0";
+  #version = "2.0.0";
+  version = "2018-11-25";
   name = "nerdfonts-${version}";
   src = fetchFromGitHub {
     owner = "ryanoasis";
     repo = "nerd-fonts";
-    rev = version;
-    sha256 = "09i467hyskvzj2wn5sj6shvc9pb0a0rx5iknjkkkbg1ng3bla7nm";
+    #rev = version;
+    rev = "e9ec3ae4548e59eb9a6531f38370cb99ca591e16";
+    sha256 = "0g99rmwl7ibdpxcxnnqkc9fj4ibkv63azdcs0hahaysh4azapzsa";
   };
-  dontPatchShebangs = true;
-  buildInputs = [ which ];
+  nativeBuildInputs = [ bash which ];
   patchPhase = ''
-    sed -i -e 's|/bin/bash|${bash}/bin/bash|g' install.sh
+    patchShebangs install.sh
     sed -i -e 's|font_dir="\$HOME/.local/share/fonts|font_dir="$out/share/fonts/truetype|g' install.sh
   '';
   installPhase = ''
