@@ -2775,6 +2775,8 @@ in {
 
   fs = callPackage ../development/python-modules/fs { };
 
+  fs-s3fs = callPackage ../development/python-modules/fs-s3fs { };
+
   libcloud = callPackage ../development/python-modules/libcloud { };
 
   libgpuarray = callPackage ../development/python-modules/libgpuarray {
