@@ -9039,6 +9039,10 @@ with pkgs;
 
   tweak = callPackage ../applications/editors/tweak { };
 
+  tychus = callPackage ../development/tools/tychus {
+    inherit (darwin.apple_sdk.frameworks) CoreFoundation;
+  };
+
   uhd = callPackage ../development/tools/misc/uhd { };
 
   uisp = callPackage ../development/tools/misc/uisp { };
@@ -11104,8 +11108,6 @@ with pkgs;
   };
 
   libosip = callPackage ../development/libraries/osip {};
-
-  libosip_3 = callPackage ../development/libraries/osip/3.nix {};
 
   libosmium = callPackage ../development/libraries/libosmium { };
 
