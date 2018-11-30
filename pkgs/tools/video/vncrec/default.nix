@@ -12,16 +12,17 @@ stdenv.mkDerivation rec {
 
   hardeningDisable = [ "format" ];
 
+  nativeBuildInputs = [ imake gccmakedep ];
   buildInputs = [
-    libX11 xorgproto imake gccmakedep libXt libXmu libXaw
+    libX11 xorgproto libXt libXmu libXaw
     libXext libSM libICE libXpm libXp
   ];
 
-  buildPhase = ''xmkmf && make World'';
-
-  installPhase = ''
-    make DESTDIR=$out BINDIR=/bin MANDIR=/share/man/man1 install install.man
-  '';
+  makeFlags = [
+    "BINDIR=${placeholder "out"}/bin"
+    "MANDIR=${placeholder "out"}/share/man"
+  ];
+  installTargets = "install install.man";
 
   meta = {
     description = "VNC recorder";
