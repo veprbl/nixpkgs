@@ -1,24 +1,21 @@
 { stdenv, fetchFromGitHub }:
 
 stdenv.mkDerivation rec {
-  version = "0.6.2";
+  version = "0.6.2-git";
   name = "reptyr-${version}";
   src = fetchFromGitHub {
     owner = "nelhage";
     repo = "reptyr";
-    rev = "reptyr-${version}";
-    sha256 = "0yfy1p0mz05xg5gzp52vilfz0yl1sjjsvwn0z073mnr4wyam7fg8";
+    #rev = "reptyr-${version}";
+    rev = "40aad4c914eebcfa5d8a310da4165b8652bf6eee";
+    sha256 = "16wv8x9kn6c0gmclmwq737v3wxjwxjnrysiap41yidis0dbdz31n";
   };
 
-  # Avoid a glibc >= 2.25 deprecation warning that gets fatal via -Werror.
-  postPatch = ''
-    sed 1i'#include <sys/sysmacros.h>' -i platform/linux/linux.c
-  '';
+  makeFlags = [
+    "PREFIX=${placeholder "out"}"
+    "BASHCOMPDIR=${placeholder "out"}/share/bash-completion/completions"
+  ];
 
-  # Needed with GCC 7
-  NIX_CFLAGS_COMPILE = "-Wno-error=format-truncation";
-
-  makeFlags = ["PREFIX=$(out)"];
   meta = {
     platforms = [ "i686-linux" "x86_64-linux" ];
     maintainers = with stdenv.lib.maintainers; [raskin];
