@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub }:
+{ stdenv, lib, fetchFromGitHub }:
 
 stdenv.mkDerivation rec {
   version = "0.6.2-git";
@@ -17,9 +17,15 @@ stdenv.mkDerivation rec {
   ];
 
   meta = {
-    platforms = [ "i686-linux" "x86_64-linux" ];
-    maintainers = with stdenv.lib.maintainers; [raskin];
-    license = stdenv.lib.licenses.mit;
-    description = ''A Linux tool to change controlling pty of a process'';
+    platforms = [
+      "i686-linux"
+      "x86_64-linux"
+      "i686-freebsd"
+      "x86_64-freebsd"
+    ] ++ lib.platforms.arm;
+    maintainers = with lib.maintainers; [raskin];
+    license = lib.licenses.mit;
+    description = "Reparent a running program to a new terminal";
+    homepage = https://github.com/nelhage/reptyr;
   };
 }
