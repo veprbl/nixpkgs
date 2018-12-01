@@ -17,8 +17,6 @@ stdenv.mkDerivation {
 
   postUnpack = ''export sourceRoot="$sourceRoot/MiniZincIDE"'';
 
-  qmakeFlags = [ "config+=bundled" ];
-
   enableParallelBuilding = true;
 
   postInstall = ''
