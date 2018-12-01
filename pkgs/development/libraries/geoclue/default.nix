@@ -1,6 +1,5 @@
-{ fetchFromGitLab, stdenv, fetchpatch, meson, ninja, intltool, pkgconfig, gtk-doc, docbook_xsl, docbook_xml_dtd_412, glib, json-glib, libsoup, libnotify, gdk_pixbuf, vala
-, modemmanager, avahi, glib-networking, wrapGAppsHook, gobjectIntrospection
-, python3
+{ stdenv, fetchFromGitLab, meson, ninja, pkgconfig, gtk-doc, docbook_xsl, docbook_xml_dtd_412, glib, json-glib, libsoup, libnotify, gdk_pixbuf
+, modemmanager, avahi, glib-networking, python3, wrapGAppsHook, gobjectIntrospection, vala
 , withDemoAgent ? false
 }:
 
@@ -21,18 +20,18 @@ stdenv.mkDerivation rec {
   outputs = [ "out" "dev" "devdoc" ];
 
   nativeBuildInputs = [
-    meson ninja pkgconfig intltool wrapGAppsHook gobjectIntrospection
+    pkgconfig meson ninja wrapGAppsHook python3 vala gobjectIntrospection
     # devdoc
     gtk-doc docbook_xsl docbook_xml_dtd_412
   ];
 
   buildInputs = [
-    glib json-glib libsoup avahi vala
+    glib json-glib libsoup avahi
   ] ++ optionals withDemoAgent [
     libnotify gdk_pixbuf
   ] ++ optionals (!stdenv.isDarwin) [ modemmanager ];
 
-  propagatedBuildInputs = [ glib glib-networking python3 ];
+  propagatedBuildInputs = [ glib glib-networking ];
 
   mesonFlags = [
     "-Dsystemd-system-unit-dir=${placeholder "out"}/etc/systemd/system"
@@ -43,13 +42,13 @@ stdenv.mkDerivation rec {
   ] ++ optionals stdenv.isDarwin [
     "-D3g-source=false"
     "-Dcdma-source=false"
-    "-Dmodem-gps=source=false"
+    "-Dmodem-gps-source=false"
     "-Dnmea-source=false"
   ];
 
   postPatch = ''
-    substituteInPlace demo/install-file.py \
-      --replace '#!/usr/bin/env python3' '#!${python3.interpreter}'
+    chmod +x demo/install-file.py
+    patchShebangs demo/install-file.py
   '';
 
   meta = with stdenv.lib; {

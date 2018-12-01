@@ -35,42 +35,40 @@
 }:
 
 let
-  version = "3.4.4";
+  version = "4.0.0";
 
   src = fetchFromGitHub {
     owner  = "opencv";
     repo   = "opencv";
     rev    = version;
-    sha256 = "1xzbv0922r2zq4fgpkc1ldyq3kxp4c6x6dizydbspka18jrrxqlr";
+    sha256 = "1r2hszm4044dfx65wv69rcs419jjd7bqllhnpcwk3n28f5ahln50";
   };
 
   contribSrc = fetchFromGitHub {
     owner  = "opencv";
     repo   = "opencv_contrib";
     rev    = version;
-    sha256 = "0ylsljkmgfj5vam05cv0z3qwkqwjwz5fs5f5yif3pwvb99lxlbib";
+    sha256 = "1g4pzw7hv1v9jp1nrqjxqwpi1byl3mxkj6w6ibq6ydsn0138p66z";
   };
 
   # Contrib must be built in order to enable Tesseract support:
-  buildContrib = enableContrib || enableTesseract;
-
-  useSystemProtobuf = ! stdenv.isDarwin;
+  buildContrib = enableContrib || enableTesseract || enableOvis;
 
   # See opencv/3rdparty/ippicv/ippicv.cmake
   ippicv = {
     src = fetchFromGitHub {
       owner  = "opencv";
       repo   = "opencv_3rdparty";
-      rev    = "bdb7bb85f34a8cb0d35e40a81f58da431aa1557a";
-      sha256 = "1ys9mshfpm8iy8h4ml792gnqrq959dsrcv26axx14niivxyjbji8";
+      rev    = "32e315a5b106a7b89dbed51c28f8120a48b368b4";
+      sha256 = "19w9f0r16072s59diqxsr5q6nmwyz9gnxjs49nglzhd66p3ddbkp";
     } + "/ippicv";
-    files = let name = platform : "ippicv_2017u3_${platform}_general_20180518.tgz"; in
+    files = let name = platform : "ippicv_2019_${platform}_general_20180723.tgz"; in
       if stdenv.hostPlatform.system == "x86_64-linux" then
-      { ${name "lnx_intel64"} = "b7cc351267db2d34b9efa1cd22ff0572"; }
+      { ${name "lnx_intel64"} = "c0bd78adb4156bbf552c1dfe90599607"; }
       else if stdenv.hostPlatform.system == "i686-linux" then
-      { ${name "lnx_ia32"}    = "ea72de74dae3c604eb6348395366e78e"; }
+      { ${name "lnx_ia32"}    = "4f38432c30bfd6423164b7a24bbc98a0"; }
       else if stdenv.hostPlatform.system == "x86_64-darwin" then
-      { ${name "mac_intel64"} = "3ae52b9be0fe73dd45bc5e9429cd3732"; }
+      { ${name "mac_intel64"} = "fe6b2bb75ae0e3f19ad3ae1a31dfa4a2"; }
       else
       throw "ICV is not available for this platform (or not yet supported by this package)";
     dst = ".cache/ippicv";
@@ -127,12 +125,27 @@ let
     dst = ".cache/data";
   };
 
+  # See opencv/modules/gapi/cmake/DownloadADE.cmake
+  ade = rec {
+    src = fetchurl {
+      url = "https://github.com/opencv/ade/archive/${name}";
+      sha256 = "1r85vdkvcka7bcxk69pd0ai4hld4iakpj4xl0xbinx3p9pv5a4l8";
+    };
+    name = "v0.1.1d.zip";
+    md5 = "37479d90e3a5d47f132f512b22cbe206";
+    dst = ".cache/ade";
+  };
+
   # See opencv/cmake/OpenCVDownload.cmake
   installExtraFiles = extra : with lib; ''
     mkdir -p "${extra.dst}"
-  '' + concatStrings (mapAttrsToList (name : md5 : ''
+  '' + concatStrings (flip mapAttrsToList extra.files (name : md5 : ''
     ln -s "${extra.src}/${name}" "${extra.dst}/${md5}-${name}"
-  '') extra.files);
+  ''));
+  installExtraFile = extra: ''
+    mkdir -p "${extra.dst}"
+    ln -s "${extra.src}" "${extra.dst}/${extra.md5}-${extra.name}"
+  '';
 
   opencvFlag = name: enabled: "-DWITH_${name}=${printEnabled enabled}";
 
@@ -144,10 +157,18 @@ stdenv.mkDerivation rec {
   inherit version src;
 
   postUnpack = lib.optionalString buildContrib ''
-    cp --no-preserve=mode -r "${contribSrc}/modules" "$NIX_BUILD_TOP/opencv_contrib"
+    cp --no-preserve=mode -r "${contribSrc}/modules" "$NIX_BUILD_TOP/source/opencv_contrib"
   '';
 
   patches =
+    # Fixes issue: https://github.com/opencv/opencv_contrib/issues/1923
+    # PR: https://github.com/opencv/opencv_contrib/pull/1913
+    lib.optional buildContrib (fetchpatch {
+      url = https://github.com/opencv/opencv_contrib/commit/e068b62a1432d4d5688693a9e20bf175dfaa9a3e.patch;
+      sha256 = "102mq1qgmla40hhj8mda70inhakdazm9agyah98kq9931scvf0c9";
+      stripLen = 2;
+      extraPrefix = "opencv_contrib/";
+    }) ++
     # https://github.com/opencv/opencv/pull/13254
     lib.optional enablePython (fetchpatch {
       url = https://github.com/opencv/opencv/commit/ad35b79e3f98b4ce30481e0299cca550ed77aef0.patch;
@@ -165,9 +186,10 @@ stdenv.mkDerivation rec {
   '';
 
   preConfigure =
+    installExtraFile ade +
     lib.optionalString enableIpp (installExtraFiles ippicv) + (
     lib.optionalString buildContrib ''
-      cmakeFlagsArray+=("-DOPENCV_EXTRA_MODULES_PATH=$NIX_BUILD_TOP/opencv_contrib")
+      cmakeFlagsArray+=("-DOPENCV_EXTRA_MODULES_PATH=$NIX_BUILD_TOP/source/opencv_contrib")
 
       ${installExtraFiles vgg}
       ${installExtraFiles boostdesc}
@@ -180,8 +202,7 @@ stdenv.mkDerivation rec {
   '';
 
   buildInputs =
-       [ zlib pcre hdf5 glog boost google-gflags ]
-    ++ lib.optional useSystemProtobuf protobuf
+       [ zlib pcre hdf5 glog boost google-gflags protobuf ]
     ++ lib.optional enablePython pythonPackages.python
     ++ lib.optional enableGtk2 gtk2
     ++ lib.optional enableGtk3 gtk3
@@ -220,9 +241,10 @@ stdenv.mkDerivation rec {
   OpenBLAS_HOME = lib.optionalString enableOpenblas openblas;
 
   cmakeFlags = [
+    "-DOPENCV_GENERATE_PKGCONFIG=ON"
     "-DWITH_OPENMP=ON"
-    "-DBUILD_PROTOBUF=${printEnabled (!useSystemProtobuf)}"
-    "-DPROTOBUF_UPDATE_FILES=${printEnabled useSystemProtobuf}"
+    "-DBUILD_PROTOBUF=OFF"
+    "-DPROTOBUF_UPDATE_FILES=ON"
     "-DOPENCV_ENABLE_NONFREE=${printEnabled enableUnfree}"
     "-DBUILD_TESTS=OFF"
     "-DBUILD_PERF_TESTS=OFF"
@@ -254,20 +276,21 @@ stdenv.mkDerivation rec {
     make doxygen
   '';
 
-  # By default $out/lib/pkgconfig/opencv.pc looks something like this:
+  # By default $out/lib/pkgconfig/opencv4.pc looks something like this:
   #
-  #   prefix=/nix/store/10pzq1a8fkh8q4sysj8n6mv0w0nl0miq-opencv-3.4.1
+  #   prefix=/nix/store/g0wnfyjjh4rikkvp22cpkh41naa43i4i-opencv-4.0.0
   #   exec_prefix=${prefix}
-  #   libdir=${exec_prefix}//nix/store/10pzq1a8fkh8q4sysj8n6mv0w0nl0miq-opencv-3.4.1/lib
+  #   libdir=${exec_prefix}//nix/store/g0wnfyjjh4rikkvp22cpkh41naa43i4i-opencv-4.0.0/lib
+  #   includedir_old=${prefix}//nix/store/g0wnfyjjh4rikkvp22cpkh41naa43i4i-opencv-4.0.0/include/opencv4/opencv
+  #   includedir_new=${prefix}//nix/store/g0wnfyjjh4rikkvp22cpkh41naa43i4i-opencv-4.0.0/include/opencv4
   #   ...
-  #   Libs: -L${exec_prefix}//nix/store/10pzq1a8fkh8q4sysj8n6mv0w0nl0miq-opencv-3.4.1/lib ...
-  #
+  #   Libs: -L${exec_prefix}//nix/store/g0wnfyjjh4rikkvp22cpkh41naa43i4i-opencv-4.0.0/lib ...
   # Note that ${exec_prefix} is set to $out but that $out is also appended to
   # ${exec_prefix}. This causes linker errors in downstream packages so we strip
-  # of $out after the ${exec_prefix} prefix:
+  # of $out after the ${exec_prefix} and ${prefix} prefixes:
   postInstall = ''
-    sed -i "s|{exec_prefix}/$out|{exec_prefix}|" \
-      "$out/lib/pkgconfig/opencv.pc"
+    sed -i "s|{exec_prefix}/$out|{exec_prefix}|;s|{prefix}/$out|{prefix}|" \
+      "$out/lib/pkgconfig/opencv4.pc"
   '';
 
   hardeningDisable = [ "bindnow" "relro" ];
