@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, perl }:
+{ stdenv, fetchFromGitHub, perl, gmp, mpfr }:
 
 stdenv.mkDerivation rec {
   name = "gecode-${version}";
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
   };
 
   enableParallelBuilding = true;
-  buildInputs = [ perl ];
+  buildInputs = [ perl gmp mpfr ];
 
   meta = with stdenv.lib; {
     license = licenses.mit;
