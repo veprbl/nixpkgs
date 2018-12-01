@@ -1,11 +1,11 @@
-{ stdenv, fetchFromGitHub, qtbase, qtwebengine, qtwebkit, qmake }:
+{ stdenv, fetchFromGitHub, qtbase, qtwebengine, qtwebkit, qmake, makeWrapper, minizinc }:
 let
   version = "2.2.3";
 in
 stdenv.mkDerivation {
   name = "minizinc-ide-${version}";
 
-  nativeBuildInputs = [ qmake ];
+  nativeBuildInputs = [ qmake makeWrapper ];
   buildInputs = [ qtbase qtwebengine qtwebkit ];
 
   src = fetchFromGitHub {
@@ -17,7 +17,13 @@ stdenv.mkDerivation {
 
   postUnpack = ''export sourceRoot="$sourceRoot/MiniZincIDE"'';
 
+  qmakeFlags = [ "config+=bundled" ];
+
   enableParallelBuilding = true;
+
+  postInstall = ''
+    wrapProgram $out/bin/MiniZincIDE --prefix PATH ":" ${stdenv.lib.makeBinPath [ minizinc ]}
+  '';
 
   meta = with stdenv.lib; {
     homepage = http://www.minizinc.org/;
