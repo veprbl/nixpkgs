@@ -88,6 +88,17 @@ stdenv.mkDerivation ({
         less linux-*?/arch/x86/kernel/syscall_table_32.S
        */
       ./allow-kernel-2.6.32.patch
+
+      /* Enables utf-8 encoding without picking a country/language locale.
+         Many some software such as python3 or gnome-terminal are not working correctly.
+         without UTF-8 locale. Since we do not ship glibcLocales by default due its
+         size, we provide C.utf-8 as fallback instead.
+         Upstream bug report:
+         - https://sourceware.org/bugzilla/show_bug.cgi?id=17318
+         Patch source:
+         - https://src.fedoraproject.org/rpms/glibc/blob/afea8221580111d20d169edb5c3b6787e58826d3/f/glibc-c-utf8-locale.patch
+      */
+      ./glibc-c-utf8-locale.patch
     ]
     ++ lib.optional stdenv.isx86_64 ./fix-x64-abi.patch
     ++ lib.optional stdenv.hostPlatform.isMusl ./fix-rpc-types-musl-conflicts.patch;
