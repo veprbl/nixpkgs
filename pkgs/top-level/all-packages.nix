@@ -9725,8 +9725,8 @@ with pkgs;
   gdbm = callPackage ../development/libraries/gdbm { };
 
   gecode_3 = callPackage ../development/libraries/gecode/3.nix { };
-  gecode_4 = callPackage ../development/libraries/gecode { };
-  gecode = gecode_4;
+  gecode_5 = qt5.callPackage ../development/libraries/gecode { };
+  gecode = gecode_5;
 
   gephi = callPackage ../applications/science/misc/gephi { };
 
