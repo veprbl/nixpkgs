@@ -1,6 +1,6 @@
 { stdenv, fetchurl, pkgconfig, libdrm, libpciaccess, cairo, udev, xorgproto
 , libX11, libXext, libXv, libXrandr, glib, bison, libunwind, python3, kmod
-, procps, utilmacros, gnome2, openssl, peg, meson, ninja }:
+, procps, utilmacros, gnome2, openssl, peg, meson, ninja, elfutils }:
 
 stdenv.mkDerivation rec {
   name = "intel-gpu-tools-${version}";
@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ pkgconfig utilmacros meson ninja ];
   buildInputs = [ libdrm libpciaccess cairo xorgproto udev libX11 kmod
     libXext libXv libXrandr glib bison libunwind python3 procps
-    gnome2.gtkdoc openssl peg ];
+    gnome2.gtkdoc openssl peg elfutils ];
 
   #preConfigure = ''
   #  ./autogen.sh
