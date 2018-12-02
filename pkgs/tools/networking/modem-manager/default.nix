@@ -27,30 +27,16 @@ stdenv.mkDerivation rec {
     "--with-polkit"
     "--with-udev-base-dir=$(out)/lib/udev"
     "--with-systemdsystemunitdir=$(out)/etc/systemd/system"
+    "--with-dbus-sys-dir=$(out)/etc/dbus-1/system.d"
     "--sysconfdir=/etc"
     "--localstatedir=/var"
     "--with-suspend-resume=systemd"
   ];
 
-  installFlags = [ "DESTDIR=\${out}" ];
-
-  preInstall = ''
-    mkdir -p $out/etc/systemd/system
-  '';
-
   postInstall = ''
-    # rename to modem-manager to be in style
-    mv $out/$out/etc/systemd/system/ModemManager.service $out/etc/systemd/system/modem-manager.service
-    rm -rf $out/$out/etc
-    mv $out/$out/* $out
-    DIR=$out/$out
-    while rmdir $DIR 2>/dev/null; do
-      DIR="$(dirname "$DIR")"
-    done
-
     # systemd in NixOS doesn't use `systemctl enable`, so we need to establish
     # aliases ourselves.
-    ln -s $out/etc/systemd/system/modem-manager.service \
+    ln -s $out/etc/systemd/system/ModemManager.service \
       $out/etc/systemd/system/dbus-org.freedesktop.ModemManager1.service
   '';
 
