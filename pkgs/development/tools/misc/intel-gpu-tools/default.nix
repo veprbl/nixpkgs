@@ -15,14 +15,13 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ pkgconfig utilmacros meson ninja flex ];
   buildInputs = [ libdrm libpciaccess cairo pixman xorgproto udev libX11 kmod
     libXext libXv libXrandr glib bison libunwind python3 procps
-    gnome2.gtkdoc openssl peg elfutils ];
+    /* gnome2.gtkdoc */ openssl peg elfutils ];
 
   #preConfigure = ''
   #  ./autogen.sh
   #'';
 
-  preBuild = ''
-    chmod +x tests/*.sh
+  postPatch = ''
     patchShebangs tests
 
     patchShebangs debugger/system_routine/pre_cpp.py
