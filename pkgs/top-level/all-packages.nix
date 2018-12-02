@@ -19535,7 +19535,9 @@ with pkgs;
 
   vcv-rack = callPackage ../applications/audio/vcv-rack { };
 
-  vdirsyncer = callPackage ../tools/misc/vdirsyncer { };
+  vdirsyncer = callPackage ../tools/misc/vdirsyncer {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
 
   vdpauinfo = callPackage ../tools/X11/vdpauinfo { };
 
