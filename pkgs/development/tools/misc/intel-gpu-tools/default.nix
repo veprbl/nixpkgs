@@ -4,12 +4,13 @@
 
 stdenv.mkDerivation rec {
   name = "intel-gpu-tools-${version}";
-  version = "1.23";
+  version = "1.23-git";
 
-  src = fetchurl {
-    url = "https://xorg.freedesktop.org/archive/individual/app/igt-gpu-tools-${version}.tar.xz";
-    sha256 = "1l4s95m013p2wvddwr4cjqyvsgmc88zxx2887p1fbb1va5n0hjsd";
-  };
+  src = fetchGit https://gitlab.freedesktop.org/drm/igt-gpu-tools;
+  #src = fetchurl {
+  #  url = "https://xorg.freedesktop.org/archive/individual/app/igt-gpu-tools-${version}.tar.xz";
+  #  sha256 = "1l4s95m013p2wvddwr4cjqyvsgmc88zxx2887p1fbb1va5n0hjsd";
+  #};
 
   nativeBuildInputs = [ pkgconfig utilmacros ];
   buildInputs = [ libdrm libpciaccess cairo xorgproto udev libX11 kmod
