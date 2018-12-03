@@ -3560,6 +3560,8 @@ with pkgs;
 
   jp2a = callPackage ../applications/misc/jp2a { };
 
+  jpeginfo = callPackage ../applications/graphics/jpeginfo { };
+
   jpegoptim = callPackage ../applications/graphics/jpegoptim { };
 
   jpegrescan = callPackage ../applications/graphics/jpegrescan { };
@@ -17379,6 +17381,7 @@ with pkgs;
   jackline = callPackage ../applications/networking/instant-messengers/jackline { };
 
   slack = callPackage ../applications/networking/instant-messengers/slack { };
+  slack-dark = self.slack.override { darkMode = true; };
 
   slack-cli = callPackage ../tools/networking/slack-cli { };
 
