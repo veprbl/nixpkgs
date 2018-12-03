@@ -1,14 +1,14 @@
 { stdenv, buildGoPackage, fetchurl, fetchFromGitHub, go-bindata }:
 
 let
-  version = "1.4.13";
+  version = "1.5.0";
 
   # TODO: must build the extension instead of downloading it. But since it's
   # literally an asset that is indifferent regardless of the platform, this
   # might be just enough.
   webext = fetchurl {
     url = "https://github.com/browsh-org/browsh/releases/download/v${version}/browsh-${version}-an.fx.xpi";
-    sha256 = "11477z7mva8lwfxsrfxckvgqkxrjhc80czra8cqhpakf0fih1a4g";
+    sha256 = "063m6rcdyf2zcrswkm56k8h3w15124bw5iykklzm60q5jk4ywn3f";
   };
 
 in buildGoPackage rec {
@@ -22,7 +22,7 @@ in buildGoPackage rec {
     owner = "browsh-org";
     repo = "browsh";
     rev = "v${version}";
-    sha256 = "0lvb20zziknlbgy509ccpvlc21sqjc53xar26blmb6sdl6yqkj0w";
+    sha256 = "14addyb1zdk1b9mizfxdagyzlkd9nf5gawnbrs44j5a3ggnl14ln";
   };
 
   buildInputs = [ go-bindata ];
