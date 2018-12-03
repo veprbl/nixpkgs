@@ -7,8 +7,8 @@ stdenv.mkDerivation rec {
     owner = "nelhage";
     repo = "reptyr";
     #rev = "reptyr-${version}";
-    rev = "40aad4c914eebcfa5d8a310da4165b8652bf6eee";
-    sha256 = "16wv8x9kn6c0gmclmwq737v3wxjwxjnrysiap41yidis0dbdz31n";
+    rev = "44b961829ff876a9ba8ef6f75682bb477a3084c5";
+    sha256 = "1vhhwdhi04vijf9z0w61ks1i49ldgkahkxq81zflvjim1xvg5crr";
   };
 
   makeFlags = [
