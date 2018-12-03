@@ -65,6 +65,8 @@ in stdenv.mkDerivation {
     substituteInPlace meson.build --replace \
       "conf.set_quoted('SYSCONFDIR', sysconfdir)" \
       "conf.set_quoted('SYSCONFDIR', '/etc')"
+
+    substituteInPlace data/installed-tests/meson.build --replace sysconfdir sysconfdir_install
   '';
 
   # /etc/os-release not available in sandbox
