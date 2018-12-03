@@ -21,6 +21,8 @@ stdenv.mkDerivation rec {
   #  ./autogen.sh
   #'';
 
+  mesonFlags = [ "-Dbuild_docs=false" ];
+
   postPatch = ''
     patchShebangs tests
 
