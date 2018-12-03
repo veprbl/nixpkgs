@@ -1,6 +1,7 @@
 { stdenv, fetchFromGitHub, luaPackages, cairo, librsvg, cmake, imagemagick, pkgconfig, gdk_pixbuf
 , xorg, libstartup_notification, libxdg_basedir, libpthreadstubs
-, xcb-util-cursor, makeWrapper, pango, gobjectIntrospection
+, xcb-util-cursor, makeWrapper, pango, gobjectIntrospection, unclutter
+, compton, procps, iproute, coreutils, curl, alsaUtils, findutils, xterm
 , which, dbus, nettools, git, asciidoc, doxygen
 , xmlto, docbook_xml_dtd_45, docbook_xsl, findXMLCatalogs
 , libxkbcommon, xcbutilxrm, hicolor-icon-theme
@@ -50,6 +51,7 @@ with luaPackages; stdenv.mkDerivation rec {
       --add-flags '--search ${lgi}/lib/lua/${lua.luaversion}' \
       --add-flags '--search ${lgi}/share/lua/${lua.luaversion}' \
       --prefix GI_TYPELIB_PATH : "$GI_TYPELIB_PATH" \
+      --prefix PATH : "${stdenv.lib.makeBinPath [ compton unclutter procps iproute coreutils curl alsaUtils findutils xterm lua ]}" \
       --prefix LUA_PATH ';'  "${lgi}/share/lua/${lua.luaversion}/?.lua;${lgi}/share/lua/${lua.luaversion}/lgi/?.lua" \
       --prefix LUA_CPATH ';' "${lgi}/lib/lua/${lua.luaversion}/?.so"
 
