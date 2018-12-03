@@ -2,12 +2,14 @@
 
 stdenv.mkDerivation rec {
   name = "evdi-${version}";
-  version = "1.5.1";
+  version = "2018-10-30";
+  #version = "1.5.1";
 
   src = fetchFromGitHub {
     owner = "DisplayLink";
     repo = "evdi";
-    rev = "v${version}";
+    #rev = "v${version}";
+    rev = "c7e80bc32c2ef96464613fbbda15fd930bf6fb41";
     sha256 = "0jy0ia5fsx54d2wv4d2jqnc8rc5x16781a3bcb857apc47zr387h";
   };
 
@@ -29,6 +31,6 @@ stdenv.mkDerivation rec {
     platforms = platforms.linux;
     license = with licenses; [ lgpl21 gpl2 ];
     homepage = https://www.displaylink.com/;
-    broken = versionOlder kernel.version "4.9" || versionAtLeast kernel.version "4.18" || stdenv.isAarch64;
+    broken = versionOlder kernel.version "4.9" || stdenv.isAarch64;
   };
 }
