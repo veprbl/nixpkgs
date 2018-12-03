@@ -8937,6 +8937,8 @@ with pkgs;
   scons = sconsPackages.scons_3_0_1;
   scons_2_5_1 = sconsPackages.scons_2_5_1;
 
+  mill = callPackage ../development/tools/build-managers/mill { };
+
   sbt = callPackage ../development/tools/build-managers/sbt { };
   sbt-with-scala-native = callPackage ../development/tools/build-managers/sbt/scala-native.nix { };
   simpleBuildTool = sbt;
@@ -23068,7 +23070,7 @@ with pkgs;
     avrgcc = pkgsCross.avr.buildPackages.gcc;
     avrbinutils = pkgsCross.avr.buildPackages.binutils;
     gcc-arm-embedded = pkgsCross.arm-embedded.buildPackages.gcc;
-    binutils-arm-embedded = pkgsCross.arm-embedded.buildPackages.binutils;
+    gcc-armhf-embedded = pkgsCross.armhf-embedded.buildPackages.gcc;
   };
 
   newlib = callPackage ../development/misc/newlib { };
