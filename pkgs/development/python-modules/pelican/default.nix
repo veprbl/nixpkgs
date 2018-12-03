@@ -6,13 +6,13 @@
 
 buildPythonPackage rec {
   pname = "pelican";
-  version = "4.0.0";
+  version = "4.0.1";
 
   src = fetchFromGitHub {
     owner = "getpelican";
     repo = "pelican";
     rev = version;
-    sha256 = "1lm18m8r5pba6r7lvl76q5vcmrvh18ih5iddvpk8jiwmmicn3j91";
+    sha256 = "09fcwnnfln0cl5v0qpxzrllj27znrg6dbhaksxrl0192c3mbyjvl";
   };
 
   doCheck = true;
