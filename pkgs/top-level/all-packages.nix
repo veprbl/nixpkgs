@@ -22669,6 +22669,8 @@ with pkgs;
 
   tup = callPackage ../development/tools/build-managers/tup { };
 
+  trilium = callPackage ../applications/office/trilium { };
+
   trufflehog = callPackage ../tools/security/trufflehog { };
 
   tvbrowser-bin = callPackage ../applications/misc/tvbrowser/bin.nix { };
