@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkgconfig ];
 
-  outputs = [ "out" "bin" "dev" "test" ];
+  outputs = [ "out" "dev" "test" ];
 
   patches = [ ./bluez-5.37-obexd_without_systemd-1.patch ];
 
@@ -69,23 +69,17 @@ stdenv.mkDerivation rec {
 
     # for bluez4 compatibility for NixOS
     mkdir $out/sbin
-    ln -vrs $out/libexec/bluetooth/bluetoothd $out/sbin/bluetoothd
-    ln -vrs $out/libexec/bluetooth/obexd $out/sbin/obexd
+    ln -s ../libexec/bluetooth/bluetoothd $out/sbin/bluetoothd
+    ln -s ../libexec/bluetooth/obexd $out/sbin/obexd
 
     # Add extra configuration
     mkdir $out/etc/bluetooth
     ln -s /etc/bluetooth/main.conf $out/etc/bluetooth/main.conf
 
-    mkdir -p {$out,$bin}/{bin,sbin}
-    mv $bin/bin/* $out/bin/
-    ln -vrs $out/bin/* $bin/bin/
-    ln -vrs $out/sbin/* $bin/sbin/
-
     # Add missing tools, ref https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/bluez
     for files in `find tools/ -type f -perm -755`; do
       filename=$(basename $files)
-      target="$bin/bin/$filename"
-      [[ -e $target ]] || install -vDm755 tools/$filename $target
+      install -Dm755 tools/$filename $out/bin/$filename
     done
   '';
 
