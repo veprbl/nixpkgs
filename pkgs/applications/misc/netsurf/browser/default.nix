@@ -58,13 +58,15 @@ stdenv.mkDerivation rec {
     "TARGET=${uilib}"
   ];
 
-  installPhase = ''
-    mkdir -p $out/bin $out/share/Netsurf/${uilib}
-    cmd=$(case "${uilib}" in framebuffer) echo nsfb;; gtk) echo nsgtk;; esac)
-    cp $cmd $out/bin/netsurf
-    wrapProgram $out/bin/netsurf --set NETSURFRES $out/share/Netsurf/${uilib}/res
-    tar -hcf - ${uilib}/res | (cd $out/share/Netsurf/ && tar -xvpf -)
-  '';
+#  installPhase = ''
+#    mkdir -p $out/bin $out/share/Netsurf/${uilib}
+#    cmd=$(case "${uilib}" in framebuffer) echo nsfb;; gtk) echo nsgtk;; esac)
+#    cp $cmd $out/bin/netsurf
+#    wrapProgram $out/bin/netsurf --set NETSURFRES $out/share/Netsurf/${uilib}/res
+#    tar -hcf - ${uilib}/res | (cd $out/share/Netsurf/ && tar -xvpf -)
+#  '';
+
+  enableParallelBuilding = true;
 
   meta = with stdenv.lib; {
     homepage = http://www.netsurf-browser.org/;
