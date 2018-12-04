@@ -45,13 +45,6 @@ stdenv.mkDerivation rec {
     libutf8proc
  ];
 
-  preConfigure = ''
-    cat <<EOF > Makefile.conf
-    override NETSURF_GTK_RESOURCES := $out/share/Netsurf/${uilib}/res
-    override NETSURF_USE_GRESOURCE := YES
-    EOF
-  '';
-
   makeFlags = [
     "PREFIX=$(out)"
     "NSSHARED=${buildsystem}/share/netsurf-buildsystem"
