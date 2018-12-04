@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "http://download.netsurf-browser.org/libs/releases/nsgenbind-${version}-src.tar.gz";
-    sha256 = "17xsazly7gxwywmlkf2xix9b924sj3skhgdak7218l0nc62a08gg";
+    sha256 = "0v1cb1rz5fix9ql31nzmglj7sybya6d12b2fkaypm1avcca59xwj";
   };
 
   buildInputs = [ buildsystem flex bison ];
