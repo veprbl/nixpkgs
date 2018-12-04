@@ -8,11 +8,11 @@ stdenv.mkDerivation rec {
 
   name = "netsurf-${libname}-${version}";
   libname = "libcss";
-  version = "0.6.0";
+  version = "0.8.0";
 
   src = fetchurl {
     url = "http://download.netsurf-browser.org/libs/releases/${libname}-${version}-src.tar.gz";
-    sha256 = "0qp4p1q1dwgdra4pkrzd081zjzisxkgwx650ijx323j8bj725daf";
+    sha256 = "0pxdqbxn6brj03nv57bsvac5n70k4scn3r5msaw0jgn2k06lk81m";
   };
 
   nativeBuildInputs = [ pkgconfig ];
@@ -27,7 +27,11 @@ stdenv.mkDerivation rec {
     "NSSHARED=${buildsystem}/share/netsurf-buildsystem"
   ];
 
-  NIX_CFLAGS_COMPILE=[ "-Wno-error=implicit-fallthrough" ];
+  NIX_CFLAGS_COMPILE=[
+    "-Wno-error=implicit-fallthrough"
+    "-Wno-error=implicit-function-declaration"
+    "-Wno-error=nested-externs"
+  ];
 
   meta = with stdenv.lib; {
     homepage = http://www.netsurf-browser.org/;

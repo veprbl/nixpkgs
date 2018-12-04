@@ -19,13 +19,13 @@
 stdenv.mkDerivation rec {
 
   name = "netsurf-${version}";
-  version = "3.5";
+  version = "3.8";
 
   # UI libs incldue Framebuffer, and gtk
 
   src = fetchurl {
     url = "http://download.netsurf-browser.org/netsurf/releases/source/netsurf-${version}-src.tar.gz";
-    sha256 = "1k0x8mzgavfy7q9kywl6kzsc084g1xlymcnsxi5v6jp279nsdwwq";
+    sha256 = "0hjm1h4m1i913y4mhkl7yqdifn8k70fwi58zdh6faypawzryc3m0";
   };
 
   nativeBuildInputs = [ pkgconfig ];
