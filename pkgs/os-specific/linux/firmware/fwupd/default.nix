@@ -1,16 +1,13 @@
-{ stdenv, fetchurl, fetchFromGitHub, fetchpatch, gtk-doc, pkgconfig, gobjectIntrospection, intltool
-, libgudev, polkit, libxmlb, gusb, sqlite, libarchive, glib-networking
+{ stdenv, fetchurl, gtk-doc, pkgconfig, gobjectIntrospection, intltool
+, libgudev, polkit, appstream-glib, gusb, sqlite, libarchive, glib-networking
 , libsoup, help2man, gpgme, libxslt, elfutils, libsmbios, efivar, glibcLocales
 , gnu-efi, libyaml, valgrind, meson, libuuid, colord, docbook_xml_dtd_43, docbook_xsl
 , ninja, gcab, gnutls, python3, wrapGAppsHook, json-glib, bash-completion
 , shared-mime-info, umockdev, vala, makeFontsConf, freefont_ttf
-, cairo, freetype, fontconfig, pango
-
 }:
 let
   # Updating? Keep $out/etc synchronized with passthru.filesInstalledToEtc
-  #version = "1.2.1";
-  version = "2018-11-27";
+  version = "1.1.3";
   python = python3.withPackages (p: with p; [ pygobject3 pycairo pillow ]);
   installedTestsPython = python3.withPackages (p: with p; [ pygobject3 requests ]);
 
@@ -19,17 +16,10 @@ let
   };
 in stdenv.mkDerivation {
   name = "fwupd-${version}";
-  src = fetchFromGitHub {
-    owner = "hughsie";
-    repo = "fwupd";
-    rev = "b4fd12a4c6d877820e87598edf5ef5e4867735ba";
-    sha256 = "1wlcn78bxamp5dy469fkc4nimcwk0gqaz3a8kjb0dbdbq9g38ka8";
+  src = fetchurl {
+    url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
+    sha256 = "1bqlhdsjqqs43i5qqqwqv9shhaad5v791nhqbhjq5bpqialnhia7";
   };
-
-  #src = fetchurl {
-  #  url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
-  #  sha256 = "126b3lsh4gkyajsqm2c8l6wqr4dd7m26krz2527khmlps0lxdhg1";
-  #};
 
   outputs = [ "out" "lib" "dev" "devdoc" "man" "installedTests" ];
 
@@ -38,19 +28,15 @@ in stdenv.mkDerivation {
     valgrind gcab docbook_xml_dtd_43 docbook_xsl help2man libxslt python wrapGAppsHook vala
   ];
   buildInputs = [
-    polkit libxmlb gusb sqlite libarchive libsoup elfutils libsmbios gnu-efi libyaml
+    polkit appstream-glib gusb sqlite libarchive libsoup elfutils libsmbios gnu-efi libyaml
     libgudev colord gpgme libuuid gnutls glib-networking efivar json-glib umockdev
-    bash-completion cairo freetype fontconfig pango
+    bash-completion
   ];
 
   LC_ALL = "en_US.UTF-8"; # For po/make-images
 
   patches = [
     ./fix-paths.patch
-    (fetchpatch {
-      url = https://github.com/hughsie/fwupd/commit/2fe9625cc6dec10531482a3947ef75009eb21489.patch;
-      sha256 = "1d48b0jr9rd7a2glrhxwqgck59aa7wyw8261n5i08m97vyx5jl4f";
-    })
   ];
 
   postPatch = ''
@@ -65,8 +51,6 @@ in stdenv.mkDerivation {
     substituteInPlace meson.build --replace \
       "conf.set_quoted('SYSCONFDIR', sysconfdir)" \
       "conf.set_quoted('SYSCONFDIR', '/etc')"
-
-    substituteInPlace data/installed-tests/meson.build --replace sysconfdir sysconfdir_install
   '';
 
   # /etc/os-release not available in sandbox
@@ -84,8 +68,6 @@ in stdenv.mkDerivation {
     "-Defi-ldsdir=${gnu-efi}/lib"
     "-Defi-includedir=${gnu-efi}/include/efi"
     "--localstatedir=/var"
-    "--sysconfdir=/etc"
-    "-Dsysconfdir_install=${placeholder "out"}/etc"
   ];
 
   # TODO: We need to be able to override the directory flags from meson setup hook
