@@ -3808,7 +3808,7 @@ in
     # ui could be gtk, sixel or framebuffer. Note that console display (sixel)
     # requires a terminal that supports `sixel` capabilities such as mlterm
     # or xterm -ti 340
-    ui = "sixel";
+    ui = "gtk";
 
     uilib = if ui == "gtk" then "gtk" else "framebuffer";
 
