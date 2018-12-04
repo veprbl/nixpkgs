@@ -291,7 +291,7 @@ let
           ${optionalString cfg.fprintAuth
               "auth sufficient ${pkgs.fprintd}/lib/security/pam_fprintd.so"}
           ${optionalString cfg.u2fAuth
-              "auth sufficient ${pkgs.pam_u2f}/lib/security/pam_u2f.so" + optionalString config.security.pam.enableU2FCue " cue" }
+              "auth sufficient ${pkgs.pam_u2f}/lib/security/pam_u2f.so"}
           ${optionalString cfg.usbAuth
               "auth sufficient ${pkgs.pam_usb}/lib/security/pam_usb.so"}
           ${let oath = config.security.pam.oath; in optionalString cfg.oathAuth
@@ -356,7 +356,6 @@ let
           ${optionalString cfg.setEnvironment ''
             session required pam_env.so envfile=${config.system.build.pamEnvironment}
           ''}
-          session required pam_keyinit.so force revoke
           session required pam_unix.so
           ${optionalString cfg.setLoginUid
               "session ${
@@ -502,14 +501,6 @@ in
       default = false;
       description = ''
         Enable the U2F PAM module.
-      '';
-    };
-
-    security.pam.enableU2FCue = mkOption {
-      default = false;
-      type = types.bool;
-      description = ''
-        If set, users are reminded about using the U2F key.
       '';
     };
 
