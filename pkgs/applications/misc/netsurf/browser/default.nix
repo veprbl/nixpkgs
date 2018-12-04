@@ -58,9 +58,6 @@ stdenv.mkDerivation rec {
     "TARGET=${uilib}"
   ];
 
-  postInstall = ''
-    wrapProgram $out/bin/* --set NETSURFRES $out/share/netsurf
-  '';
   enableParallelBuilding = true;
 
   meta = with stdenv.lib; {
