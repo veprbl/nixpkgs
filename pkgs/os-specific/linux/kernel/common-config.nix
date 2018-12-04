@@ -370,12 +370,9 @@ let
     };
 
     container = {
-      NAMESPACES     = yes; #  Required by 'unshare' used by 'nixos-install'
+      NAMESPACES     = option yes; #  Required by 'unshare' used by 'nixos-install'
       RT_GROUP_SCHED = no;
-      CGROUP_DEVICE  = yes;
-      CGROUP_HUGETLB = yes;
-      CGROUP_PERF    = yes;
-      CGROUP_RDMA    = whenAtLeast "4.11" yes;
+      CGROUP_DEVICE  = option yes;
 
       MEMCG                    = yes;
       MEMCG_SWAP               = yes;
