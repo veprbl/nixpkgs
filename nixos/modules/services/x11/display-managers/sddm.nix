@@ -260,7 +260,7 @@ in
       home = "/var/lib/sddm";
       group = "sddm";
       uid = config.ids.uids.sddm;
-      extraGroups = [ "video" ];
+      #extraGroups = [ "video" ];
     };
 
     environment.etc."sddm.conf".source = cfgFile;
@@ -276,7 +276,7 @@ in
     # To enable user switching, allow sddm to allocate TTYs/displays dynamically.
     services.xserver.tty = null;
     services.xserver.display = null;
-    services.xserver.verbose = null;
+    #services.xserver.verbose = null;
 
     systemd.tmpfiles.rules = [
       # Prior to Qt 5.9.2, there is a QML cache invalidation bug which sometimes
