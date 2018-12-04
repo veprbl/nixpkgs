@@ -3,14 +3,13 @@
 rustPlatform.buildRustPackage rec {
   name = "${pname}-${version}";
   pname = "vivid";
-  version = "2018-12-02";
+  version = "0.4.0";
 
   src = fetchFromGitHub {
     owner = "sharkdp";
     repo = pname;
-    #rev = "v${version}";
-    rev = "39f510cbcc3f7acea47305cd9c7c8efd3dcdddf4";
-    sha256 = "1v2jnc4aqisz38q7la9y2igjqqnf0gri1dgf3k3453c7ifb5ndhg";
+    rev = "v${version}";
+    sha256 = "13x0295v5blvv8dxhimbdjh81l7xl0vm6zni3qjd85psfn61371q";
   };
 
   cargoSha256 = "156wapa2ds7ij1jhrpa8mm6dicwq934qxl56sqw3bgz6pfa8fldz";
