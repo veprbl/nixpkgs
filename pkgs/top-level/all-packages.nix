@@ -8877,6 +8877,8 @@ in
 
   puppet-lint = callPackage ../development/tools/puppet/puppet-lint { };
 
+  pyflame = callPackage ../development/tools/profiling/pyflame { };
+
   pyrseas = callPackage ../development/tools/database/pyrseas { };
 
   qtcreator = libsForQt5.callPackage ../development/tools/qtcreator { };
@@ -14610,7 +14612,9 @@ in
   linuxPackages_4_9 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_4_9);
   linuxPackages_4_14 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_4_14);
   linuxPackages_4_19 = recurseIntoAttrs (linuxPackagesFor pkgs.linux_4_19);
-  # Don't forget to update linuxPackages_latest!
+  # When adding to this list:
+  # - Update linuxPackages_latest to the latest version
+  # - Update the rev in ../os-specific/linux/kernel/linux-libre.nix to the latest one.
 
   # Intentionally lacks recurseIntoAttrs, as -rc kernels will quite likely break out-of-tree modules and cause failed Hydra builds.
   linuxPackages_testing = linuxPackagesFor pkgs.linux_testing;
@@ -15446,6 +15450,8 @@ in
 
   man-pages = callPackage ../data/documentation/man-pages { };
 
+  materia-theme = callPackage ../data/themes/materia-theme { };
+
   material-icons = callPackage ../data/fonts/material-icons { };
 
   meslo-lg = callPackage ../data/fonts/meslo-lg {};
@@ -15485,6 +15491,8 @@ in
   myrica = callPackage ../data/fonts/myrica { };
 
   nafees = callPackage ../data/fonts/nafees { };
+
+  nordic-polar = callPackage ../data/themes/nordic-polar { };
 
   inherit (callPackages ../data/fonts/noto-fonts {})
     noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra;
@@ -22230,9 +22238,6 @@ in
   martyr = callPackage ../development/libraries/martyr { };
 
   matcha = callPackage ../misc/themes/matcha { };
-
-  # previously known as flat-plat
-  materia-theme = callPackage ../misc/themes/materia-theme { };
 
   mess = callPackage ../misc/emulators/mess {
     inherit (pkgs.gnome2) GConf;
