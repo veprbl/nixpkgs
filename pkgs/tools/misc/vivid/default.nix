@@ -12,11 +12,15 @@ rustPlatform.buildRustPackage rec {
     sha256 = "13x0295v5blvv8dxhimbdjh81l7xl0vm6zni3qjd85psfn61371q";
   };
 
+  postPatch = ''
+    substituteInPlace src/main.rs --replace /usr/share $out/share
+  '';
+
   cargoSha256 = "156wapa2ds7ij1jhrpa8mm6dicwq934qxl56sqw3bgz6pfa8fldz";
 
   postInstall = ''
     mkdir -p $out/share/${pname}
-    cp -rv config themes $out/share/${pname}
+    cp -rv config/* themes $out/share/${pname}
   '';
 
   meta = with stdenv.lib; {
