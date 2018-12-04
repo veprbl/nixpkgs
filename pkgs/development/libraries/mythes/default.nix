@@ -8,8 +8,8 @@ stdenv.mkDerivation rec {
     sha256 = "0prh19wy1c74kmzkkavm9qslk99gz8h8wmjvwzjc6lf8v2az708y";
   };
 
-  buildInputs = [ hunspell ncurses ];
-  nativeBuildInputs = [ pkgconfig perl ];
+  buildInputs = [ hunspell ];
+  nativeBuildInputs = [ ncurses pkgconfig perl ];
 
   meta = {
     homepage = http://hunspell.sourceforge.net/;
