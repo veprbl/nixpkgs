@@ -3314,6 +3314,8 @@ in
 
   hiera-eyaml = callPackage ../tools/system/hiera-eyaml { };
 
+  hivemind = callPackage ../applications/misc/hivemind { };
+
   hfsprogs = callPackage ../tools/filesystems/hfsprogs { };
 
   highlight = callPackage ../tools/text/highlight ({
@@ -5014,6 +5016,8 @@ in
   pywal = callPackage ../tools/graphics/pywal {};
 
   remarshal = callPackage ../development/tools/remarshal { };
+
+  rig = callPackage ../tools/misc/rig { };
 
   rocket = libsForQt5.callPackage ../tools/graphics/rocket { };
 
@@ -10807,6 +10811,8 @@ in
   };
 
   libgphoto2 = callPackage ../development/libraries/libgphoto2 { };
+
+  libgpiod = callPackage ../development/libraries/libgpiod { };
 
   libgpod = callPackage ../development/libraries/libgpod {
     inherit (pkgs.pythonPackages) mutagen;
