@@ -4,14 +4,14 @@ flake8, future, mock, pytest, pytestcov, pytest-forked, pytest-timeout, pytest_x
 
 buildPythonPackage rec {
   pname = "httplib2";
-  version = "0.11.3-pr111";
+  version = "0.12.0.1"; # 0.12.0 + pr111
 
   # Upstream PR 111, using my fork to ensure commits don't go anywhere
   src = fetchFromGitHub {
-    owner = "dtzWill";
+    owner = "httplib2";
     repo = "httplib2";
-    rev = "7ee25dbcc24fbe42d2f7b2839327d58ecf3c8e71";
-    sha256 = "0mvqmbv9ccrshcngjdm6yrrd90n5mwa2qcr4nlpkz00ravsarzr9";
+    rev = "d26ed028c0eccdfdc94316eaaf07982d8520ee9e";
+    sha256 = "02na5cb3s14lq0wawyzqilg9b13h3ra6dyin04rr5fqvmfsn9hbp";
   };
 
   # Eep, avoid test dep we haven't packaged yet :3
