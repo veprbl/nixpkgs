@@ -17398,7 +17398,7 @@ in
   jackline = callPackage ../applications/networking/instant-messengers/jackline { };
 
   slack = callPackage ../applications/networking/instant-messengers/slack { };
-  slack-dark = self.slack.override { darkMode = true; };
+  slack-dark = pkgs.slack.override { darkMode = true; };
 
   slack-cli = callPackage ../tools/networking/slack-cli { };
 
@@ -19771,11 +19771,15 @@ in
 
   webtorrent_desktop = callPackage ../applications/video/webtorrent_desktop {};
 
-  weechat = callPackage ../applications/networking/irc/weechat {
+  wrapWeechat = callPackage ../applications/networking/irc/weechat/wrapper.nix { };
+
+  weechat-unwrapped = callPackage ../applications/networking/irc/weechat {
     inherit (darwin) libobjc;
     inherit (darwin) libresolv;
     guile = guile_2_0;
   };
+
+  weechat = wrapWeechat weechat-unwrapped { };
 
   weechatScripts = callPackage ../applications/networking/irc/weechat/scripts { };
 
