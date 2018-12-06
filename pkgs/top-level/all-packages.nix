@@ -9728,8 +9728,9 @@ in
     inherit (darwin.apple_sdk.frameworks) Cocoa GLUT;
   };
 
-  freetype-bootstrap = callPackage ../development/libraries/freetype { harfbuzz = null; };
-  freetype = freetype-bootstrap.override { harfbuzz = harfbuzz-bootstrap; };
+  #freetype-bootstrap = callPackage ../development/libraries/freetype { harfbuzz = null; };
+  #freetype = freetype-bootstrap.override { harfbuzz = harfbuzz-bootstrap; };
+  freetype = callPackage ../development/libraries/freetype { };
 
   frei0r = callPackage ../development/libraries/frei0r { };
 
@@ -10174,13 +10175,16 @@ in
   };
   libheimdal = heimdal;
 
-  harfbuzz-bootstrap = callPackage ../development/libraries/harfbuzz {
+  harfbuzz = callPackage ../development/libraries/harfbuzz {
     inherit (darwin.apple_sdk.frameworks) ApplicationServices CoreText;
-    freetype = freetype-bootstrap;
-    cairo = null; # :(
-    withGraphite2 = false;
   };
-  harfbuzz = harfbuzz-bootstrap.override { inherit cairo freetype; };
+  #harfbuzz-bootstrap = callPackage ../development/libraries/harfbuzz {
+  #  inherit (darwin.apple_sdk.frameworks) ApplicationServices CoreText;
+  #  freetype = freetype-bootstrap;
+  #  cairo = null; # :(
+  #  withGraphite2 = false;
+  #};
+  #harfbuzz = harfbuzz-bootstrap.override { inherit cairo freetype; };
 
   harfbuzzFull = harfbuzz.override {
     withCoreText = stdenv.isDarwin;

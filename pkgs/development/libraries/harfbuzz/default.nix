@@ -48,15 +48,15 @@ stdenv.mkDerivation {
   doInstallCheck = false; # fails, probably a bug
 
   # Slightly hacky; some pkgs expect them in a single directory.
-  #postInstall = optionalString withIcu ''
-  #  rm "$out"/lib/libharfbuzz.* "$dev/lib/pkgconfig/harfbuzz.pc"
-  #  ln -s {'${harfbuzz.out}',"$out"}/lib/libharfbuzz.la
-  #  ln -s {'${harfbuzz.dev}',"$dev"}/lib/pkgconfig/harfbuzz.pc
-  #  ${optionalString stdenv.isDarwin ''
-  #    ln -s {'${harfbuzz.out}',"$out"}/lib/libharfbuzz.dylib
-  #    ln -s {'${harfbuzz.out}',"$out"}/lib/libharfbuzz.0.dylib
-  #  ''}
-  #'';
+  postInstall = optionalString withIcu ''
+    rm "$out"/lib/libharfbuzz.* "$dev/lib/pkgconfig/harfbuzz.pc"
+    ln -s {'${harfbuzz.out}',"$out"}/lib/libharfbuzz.la
+    ln -s {'${harfbuzz.dev}',"$dev"}/lib/pkgconfig/harfbuzz.pc
+    ${optionalString stdenv.isDarwin ''
+      ln -s {'${harfbuzz.out}',"$out"}/lib/libharfbuzz.dylib
+      ln -s {'${harfbuzz.out}',"$out"}/lib/libharfbuzz.0.dylib
+    ''}
+  '';
 
   meta = with stdenv.lib; {
     description = "An OpenType text shaping engine";
