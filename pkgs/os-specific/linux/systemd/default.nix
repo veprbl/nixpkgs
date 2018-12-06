@@ -37,8 +37,8 @@ in stdenv.mkDerivation rec {
         # When the URL disappears, it typically means that Debian has new patches
         # (probably security) and updating to new tarball will apply them as well.
         name = "systemd-debian-patches.tar.xz";
-        url = mirror://debian/pool/main/s/systemd/systemd_239-11~bpo9+1.debian.tar.xz;
-        sha256 = "136f6p4jbi4z94mf4g099dfcacwka8jwhza0wxxw2q5l5q3xiysh";
+        url = mirror://debian/pool/main/s/systemd/systemd_239-14.debian.tar.xz;
+        sha256 = "02s6yzlfn3iigvma0i4fj3bqz94ig3bbjyda81vpvb5y57l83d56";
       };
       # Note that we skip debian-specific patches, i.e. ./debian/patches/debian/*
     in ''
@@ -87,7 +87,7 @@ in stdenv.mkDerivation rec {
     "-Dlibcurl=false"
     "-Dlibidn=false"
     "-Dlibidn2=true"
-    "-Dlink-udev-shared=false"
+    #"-Dlink-udev-shared=false"
     "-Dquotacheck=false"
     "-Dldconfig=false"
     "-Dsmack=true"
