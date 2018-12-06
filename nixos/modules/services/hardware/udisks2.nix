@@ -43,12 +43,12 @@ with lib;
 
     systemd.packages = [ pkgs.udisks2 ];
 
-    environment.etc = lib.listToAttrs (
-      map (f:
-        let p = "libblockdev/conf.d/${f}";
-        in lib.nameValuePair p { source = "${pkgs.libblockdev}/etc/${p}"; }
-        )
-        [ "00-default.cfg" "10-lvm-dbus.cfg" ]
-      );
+    #environment.etc = lib.listToAttrs (
+    #  map (f:
+    #    let p = "libblockdev/conf.d/${f}";
+    #    in lib.nameValuePair p { source = "${pkgs.libblockdev}/etc/${p}"; }
+    #    )
+    #    [ "00-default.cfg" "10-lvm-dbus.cfg" ]
+    #  );
   };
 }
