@@ -7,13 +7,11 @@ stdenv.mkDerivation rec {
   phases = [ "unpackPhase" "installPhase" ];
 
   src = fetchurl {
-    url = "https://github.com/zadam/trilium/releases/download/${version}/trilium-linux-x64-${version}.7z";
+    url = "https://github.com/zadam/trilium/releases/download/v${version}/trilium-linux-x64-${version}.7z";
     sha256 = "0dpkw875k941wkj14r3x86q15da3kjihb4lg4sjxbmhq2gv4jdjv";
   };
 
-  unpackCmd = ''
-    ${p7zip}/bin/7zr x $curSrc
-  '';
+  nativeBuildInputs = [ p7zip /* for unpacking */ ];
 
   installPhase = ''
     mkdir -p $out/bin
