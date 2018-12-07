@@ -1,39 +1,7 @@
 { stdenv, fetchurl, p7zip, autoPatchelfHook,
-glib, gio, nss, nspr, gtk3, pango, atk, cairo, gdk_pixbuf,
-libX11
-gio-2.0.so.0 => not found
-nss3.so => not found
-nssutil3.so => not found
-smime3.so => not found
-nspr4.so => not found
-gtk-3.so.0 => not found
-gdk-3.so.0 => not found
-pangocairo-1.0.so.0 => not found
-pango-1.0.so.0 => not found
-atk-1.0.so.0 => not found
-cairo.so.2 => not found
-gdk_pixbuf-2.0.so.0 => not found
-X11.so.6 => not found
-X11-xcb.so.1 => not found
-xcb.so.1 => not found
-Xcomposite.so.1 => not found
-Xcursor.so.1 => not found
-Xdamage.so.1 => not found
-Xext.so.6 => not found
-Xfixes.so.3 => not found
-Xi.so.6 => not found
-Xrender.so.1 => not found
-Xtst.so.6 => not found
-expat.so.1 => not found
-uuid.so.1 => not found
-Xrandr.so.2 => not found
-Xss.so.1 => not found
-asound.so.2 => not found
-dbus-1.so.3 => not found
-atk-bridge-2.0.so.0 => not found
-m.so.6 => /nix/store/mrfcv8ipiksfdrx3xq7dvcrzgg2jdfsw-glibc-2.27/lib/libm.so.6
-libcups.so.2 => not found
-zlib }:
+dbus, glib,  nss, nspr, gtk3, pango, atk, cairo, gdk_pixbuf,
+libX11, libxcb, libXcomposite, libXext, libXfixes, libXi, libXrender,
+libXtst, expat, libuuid, libXrandr, alsaLib, cups, zlib }:
 
 stdenv.mkDerivation rec {
   name = "trilium-${version}";
@@ -49,7 +17,11 @@ stdenv.mkDerivation rec {
     autoPatchelfHook
   ];
 
-  buildInputs = [ stdenv.cc.cc ffmpeg zlib ];
+  buildInputs = [ stdenv.cc.cc
+    dbus glib nss nspr gtk3 pango atk cairo gdk_pixbuf
+    libX11 libxcb libXcomposite libXext libXfixes libXi libXrender
+    libXtst expat libuuid libXrandr alsaLib cups zlib
+  ];
 
   installPhase = ''
     mkdir -p $out/bin
