@@ -1,17 +1,20 @@
-{ stdenv, fetchurl, p7zip }:
+{ stdenv, fetchurl, p7zip, autoPatchelfHook, ffmpeg, zlib }:
 
 stdenv.mkDerivation rec {
   name = "trilium-${version}";
   version = "0.24.5";
-
-  phases = [ "unpackPhase" "installPhase" ];
 
   src = fetchurl {
     url = "https://github.com/zadam/trilium/releases/download/v${version}/trilium-linux-x64-${version}.7z";
     sha256 = "0dpkw875k941wkj14r3x86q15da3kjihb4lg4sjxbmhq2gv4jdjv";
   };
 
-  nativeBuildInputs = [ p7zip /* for unpacking */ ];
+  nativeBuildInputs = [
+    p7zip /* for unpacking */
+    autoPatchelfHook
+  ];
+
+  buildInputs = [ stdenv.cc.cc ffmpeg zlib ];
 
   installPhase = ''
     mkdir -p $out/bin
@@ -19,6 +22,8 @@ stdenv.mkDerivation rec {
 
     cp -r ./* $out/usr/share/trilium
     ln -s $out/usr/share/trilium/trilium $out/bin/trilium
+
+    find $out/usr/share -name "*-ia32-*" -print0 | xargs -0 rm -rf
   '';
 
   meta = with stdenv.lib; {
