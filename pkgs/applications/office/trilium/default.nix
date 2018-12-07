@@ -1,7 +1,7 @@
 { stdenv, fetchurl, p7zip, autoPatchelfHook,
 dbus, glib,  nss, nspr, gtk3, pango, atk, cairo, gdk_pixbuf,
 libX11, libxcb, libXcomposite, libXext, libXfixes, libXi, libXrender,
-libXtst, expat, libuuid, libXrandr, alsaLib, cups, zlib }:
+libXtst, expat, libuuid, libXrandr, libXScrnSaver, alsaLib, cups, zlib }:
 
 stdenv.mkDerivation rec {
   name = "trilium-${version}";
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ stdenv.cc.cc
     dbus glib nss nspr gtk3 pango atk cairo gdk_pixbuf
     libX11 libxcb libXcomposite libXext libXfixes libXi libXrender
-    libXtst expat libuuid libXrandr alsaLib cups zlib
+    libXtst expat libuuid libXrandr libXScrnSaver alsaLib cups zlib
   ];
 
   installPhase = ''
