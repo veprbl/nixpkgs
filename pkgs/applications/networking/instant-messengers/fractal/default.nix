@@ -32,7 +32,7 @@ rustPlatform.buildRustPackage rec {
   checkPhase = null;
   installPhase = null;
 
-  cargoSha256 = "15yfh7wvj95g47i777sgxz7zc4xcx6frmpi82ywjgj59fzwndjsg";
+  cargoSha256 = "15frrwhxap04lyiyyjiwirciyf9kyv0l0gn09qj51zgp75izybkc";
 
   meta = with stdenv.lib; {
     # TODO
