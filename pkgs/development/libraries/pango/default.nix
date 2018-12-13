@@ -7,13 +7,13 @@ with stdenv.lib;
 
 let
   pname = "pango";
-  version = "1.43.0";
+  version = "1.42.4";
 in stdenv.mkDerivation rec {
   name = "${pname}-${version}";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "1lnxldmv1a12dq5h0dlq5jyzl4w75k76dp8cn360x2ijlm9w5h6j";
+    sha256 = "17bwb7dgbncrfsmchlib03k9n3xaalirb39g3yb43gg8cg6p8aqx";
   };
 
   outputs = [ "bin" "dev" "out" "devdoc" ];
