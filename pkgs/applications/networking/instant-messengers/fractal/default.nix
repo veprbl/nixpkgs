@@ -10,8 +10,8 @@ rustPlatform.buildRustPackage rec {
     domain = "gitlab.gnome.org";
     owner = "World";
     repo = "fractal";
-    rev = "408f3da4ac394538eb4c54a7c7fcdf54b56a404d";
-    sha256 = "18z2dqyqnyj1i65msw4hml7xzyi7n59hb7rzdffn58sf7bwvhsfr";
+    rev = "4413d22e3d63acce241b32b33b487469c0dbe429";
+    sha256 = "0y2bsfwh34xjr24k8rqn8vq2l386sdxlb4a9ppdi0lyrrm4ajh6j";
   };
 
   nativeBuildInputs = [
@@ -32,7 +32,7 @@ rustPlatform.buildRustPackage rec {
   checkPhase = null;
   installPhase = null;
 
-  cargoSha256 = "15yfh7wvj95g47i777sgxz7zc4xcx6frmpi82ywjgj58fzwndjsg";
+  cargoSha256 = "15yfh7wvj95g47i777sgxz7zc4xcx6frmpi82ywjgj59fzwndjsg";
 
   meta = with stdenv.lib; {
     # TODO
