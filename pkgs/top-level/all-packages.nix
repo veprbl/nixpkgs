@@ -1231,6 +1231,8 @@ in
 
   crip = callPackage ../applications/audio/crip { };
 
+  crosvm = callPackage ../applications/virtualization/crosvm { };
+
   crunch = callPackage ../tools/security/crunch { };
 
   crudini = callPackage ../tools/misc/crudini { };
