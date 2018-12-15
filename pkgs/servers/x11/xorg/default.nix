@@ -2603,7 +2603,7 @@ lib.makeScope newScope (self: with self; {
     src = fetchgit {
       url = git://anongit.freedesktop.org/xorg/xserver;
       rev = "fde27b9b4814b18aca6ec587bd3cfe9ab04b0c72";
-      sha256 = "025dpgcihp9rz5px1rdya9a7z7d2i8cj75m9p9h764p1qw5way0l";
+      sha256 = "0zqkpqapkh7iapla2jjxpld9a0avdpmfdb5mjrx9hg6qdidq045c";
     };
     #src = fetchurl {
     #  url = mirror://xorg/individual/xserver/xorg-server-1.20.3.tar.bz2;
