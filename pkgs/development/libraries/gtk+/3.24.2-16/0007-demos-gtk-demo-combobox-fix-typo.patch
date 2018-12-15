@@ -1,0 +1,37 @@
+From f535443da6721fb1e77d2ffae8a2439bc2dad524 Mon Sep 17 00:00:00 2001
+From: Jeremy Bicha <jbicha@ubuntu.com>
+Date: Sun, 9 Dec 2018 23:25:02 -0500
+Subject: [PATCH 07/11] demos/gtk-demo/combobox: fix typo
+
+Fix typo that prevented the P-S submenu from displaying correctly
+
+(cherry picked from commit 462193ae26fe0474808ab95e9ceac5158aba59e1)
+---
+ demos/gtk-demo/combobox.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/demos/gtk-demo/combobox.c b/demos/gtk-demo/combobox.c
+index 7044c8fb19..9b2b4a6dce 100644
+--- a/demos/gtk-demo/combobox.c
++++ b/demos/gtk-demo/combobox.c
+@@ -144,7 +144,7 @@ create_capital_store (void)
+     { NULL, "Jackson" },
+     { NULL, "Jefferson City" },
+     { NULL, "Juneau" },
+-    { "K - O" },
++    { "K - O", NULL },
+     { NULL, "Lansing" },
+     { NULL, "Lincoln" },
+     { NULL, "Little Rock" },
+@@ -154,7 +154,7 @@ create_capital_store (void)
+     { NULL, "Nashville" },
+     { NULL, "Oklahoma City" },
+     { NULL, "Olympia" },
+-    { NULL, "P - S" },
++    { "P - S", NULL },
+     { NULL, "Phoenix" },
+     { NULL, "Pierre" },
+     { NULL, "Providence" },
+-- 
+2.20.0
+

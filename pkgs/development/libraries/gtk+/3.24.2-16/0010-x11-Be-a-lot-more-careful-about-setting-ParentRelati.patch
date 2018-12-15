@@ -1,0 +1,36 @@
+From 6a47e9a8b901b05b7a3ffb6e3929e339bbe7abc0 Mon Sep 17 00:00:00 2001
+From: Benjamin Otte <otte@redhat.com>
+Date: Thu, 13 Dec 2018 05:22:18 +0100
+Subject: [PATCH 10/11] x11: Be a lot more careful about setting ParentRelative
+
+We don't want to set ParentRelative when:
+
+- the parent window is NULL
+  In that case we are unsure about the depth, so better err on the side
+  of caution and avoid a BadMatch by accepting ugly output.
+- the cairo pattern is in an error status
+  This should never happen - unless you start up in OOM - but better
+  be safe than sorry.
+
+Might help with the spurious crashes in #1280.
+---
+ gdk/x11/gdkwindow-x11.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/gdk/x11/gdkwindow-x11.c b/gdk/x11/gdkwindow-x11.c
+index f1f2081b6b..97ada6d739 100644
+--- a/gdk/x11/gdkwindow-x11.c
++++ b/gdk/x11/gdkwindow-x11.c
+@@ -3005,7 +3005,8 @@ G_GNUC_END_IGNORE_DEPRECATIONS
+       /* X throws BadMatch if the parent has a different depth when
+        * using ParentRelative */
+       parent = gdk_window_get_parent (window);
+-      if (parent == NULL || window->depth == parent->depth)
++      if (parent != NULL && window->depth == parent->depth &&
++          cairo_pattern_status (pattern) == CAIRO_STATUS_SUCCESS)
+         {
+           XSetWindowBackgroundPixmap (GDK_WINDOW_XDISPLAY (window),
+                                       GDK_WINDOW_XID (window), ParentRelative);
+-- 
+2.20.0
+

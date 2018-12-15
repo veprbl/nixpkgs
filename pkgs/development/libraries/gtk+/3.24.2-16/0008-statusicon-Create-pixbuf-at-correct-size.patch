@@ -1,0 +1,30 @@
+From 31d896c5cf5449fb1c24c7180cf3eea62c2f506e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Alberts=20Muktup=C4=81vels?= <alberts.muktupavels@gmail.com>
+Date: Wed, 12 Dec 2018 19:55:20 +0200
+Subject: [PATCH 08/11] statusicon: Create pixbuf at correct size
+
+Surface returned from gtk_icon_helper_load_surface can be smaller
+then requested pixel size. This happens when icon is embedded in
+panel that has bigger size then loaded pixbuf.
+---
+ gtk/deprecated/gtkstatusicon.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/gtk/deprecated/gtkstatusicon.c b/gtk/deprecated/gtkstatusicon.c
+index 28535df491..b67f74791a 100644
+--- a/gtk/deprecated/gtkstatusicon.c
++++ b/gtk/deprecated/gtkstatusicon.c
+@@ -1420,7 +1420,9 @@ gtk_status_icon_update_image (GtkStatusIcon *status_icon)
+   surface = gtk_icon_helper_load_surface (icon_helper, 1);
+   if (surface)
+     {
+-      pixbuf = gdk_pixbuf_get_from_surface (surface, 0, 0, round_size, round_size);
++      pixbuf = gdk_pixbuf_get_from_surface (surface, 0, 0,
++                                            cairo_image_surface_get_width (surface),
++                                            cairo_image_surface_get_height (surface));
+       cairo_surface_destroy (surface);
+     }
+   else
+-- 
+2.20.0
+

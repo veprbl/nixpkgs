@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, fetchFromGitHub, pkgconfig, gettext, perl, makeWrapper, shared-mime-info
+{ stdenv, fetchurl, fetchpatch, pkgconfig, gettext, perl, makeWrapper, shared-mime-info
 , expat, glib, cairo, pango, gdk_pixbuf, atk, at-spi2-atk, gobject-introspection
 , xorg, epoxy, json-glib, libxkbcommon, gmp, gnome3
 , x11Support ? stdenv.isLinux
@@ -13,21 +13,15 @@ assert cupsSupport -> cups != null;
 with stdenv.lib;
 
 let
-  version = "3.24.2-16"; # 3.24.2 with some fixes
+  version = "3.24.2"; # 3.24.2 with some fixes
 in
 stdenv.mkDerivation rec {
   name = "gtk+3-${version}";
 
-  src = fetchFromGitHub {
-    owner = "GNOME";
-    repo = "gtk";
-    rev = "3e6fd50d96cfe63ea428da7f9094f19cb36e2860";
-    sha256 = "0vd9i00k28wswj81vgyn5zny38wsi12p8w1q403g4adayksvw0ga";
+  src = fetchurl {
+    url = "mirror://gnome/sources/gtk+/${stdenv.lib.versions.majorMinor version}/gtk+-${version}.tar.xz";
+    sha256 = "14l8mimdm44r3h5pn5hzigl1z25jna8jxvb16l88v4nc4zj0afsv";
   };
-  #src = fetchurl {
-  #  url = "mirror://gnome/sources/gtk+/${stdenv.lib.versions.majorMinor version}/gtk+-${version}.tar.xz";
-  #  sha256 = "14l8mimdm44r3h5pn5hzigl1z25jna8jxvb16l88v4nc4zj0afsv";
-  #};
 
   outputs = [ "out" "dev" ];
   outputBin = "dev";
@@ -41,6 +35,19 @@ stdenv.mkDerivation rec {
       url = "https://bug757142.bugzilla-attachments.gnome.org/attachment.cgi?id=344123";
       sha256 = "0g6fhqcv8spfy3mfmxpyji93k8d4p4q4fz1v9a1c1cgcwkz41d7p";
     })
+
+    # Upstream patches
+    ./3.24.2-16/0001-imwayland-Handle-enter-and-leave-events.patch
+    ./3.24.2-16/0002-imwayland-rearrange-functions-to-remove-prototypes.patch
+    ./3.24.2-16/0003-imwayland.c-fix-formatting.patch
+    ./3.24.2-16/0004-placesview-Set-.error-style-if-unsupported-protocol.patch
+    ./3.24.2-16/0005-placesview-List-only-available-protocols-as-availabl.patch
+    ./3.24.2-16/0006-imwayland-Respect-maximum-length-of-4000-Bytes-on-st.patch
+    ./3.24.2-16/0007-demos-gtk-demo-combobox-fix-typo.patch
+    ./3.24.2-16/0008-statusicon-Create-pixbuf-at-correct-size.patch
+    ./3.24.2-16/0009-Revert-Fix-deprecation-warnings.patch
+    ./3.24.2-16/0010-x11-Be-a-lot-more-careful-about-setting-ParentRelati.patch
+    ./3.24.2-16/0011-x11-Fix-deprecation-macro-use.patch
   ];
 
   buildInputs = [ libxkbcommon epoxy json-glib ]
