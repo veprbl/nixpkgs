@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, meson, ninja, pkgconfig, glib, libuuid, gobjectIntrospection, gtk-doc, shared-mime-info, python3, docbook_xsl, docbook_xml_dtd_43 }:
+{ stdenv, fetchFromGitHub, meson, ninja, pkgconfig, glib, libuuid, gobject-introspection, gtk-doc, shared-mime-info, python3, docbook_xsl, docbook_xml_dtd_43 }:
 
 stdenv.mkDerivation rec {
   name = "libxmlb-${version}";
@@ -13,9 +13,9 @@ stdenv.mkDerivation rec {
     sha256 = "037j9fwkzsy3765gl2grkrmbxrfs67wlai213qbgsa5xn6fb8y68";
   };
 
-  nativeBuildInputs = [ meson ninja pkgconfig gobjectIntrospection gtk-doc shared-mime-info docbook_xsl docbook_xml_dtd_43 ];
+  nativeBuildInputs = [ meson ninja python3 pkgconfig gobject-introspection gtk-doc shared-mime-info docbook_xsl docbook_xml_dtd_43 ];
 
-  buildInputs = [ glib libuuid python3 ];
+  buildInputs = [ glib libuuid ];
 
   mesonFlags = [
     "--libexecdir=${placeholder "out"}/libexec"

@@ -1,4 +1,5 @@
-{ stdenv, lib, fetchFromGitHub, fetchpatch, qtbase, qtquickcontrols, qttools, cmake, libqmatrixclient }:
+{ stdenv, lib, fetchFromGitHub, qtbase, qtquickcontrols, cmake
+, qttools, libqmatrixclient }:
 
 stdenv.mkDerivation rec {
   name = "quaternion-${version}";

@@ -3,7 +3,7 @@
 , substituteAll, nixStoreDir ? builtins.storeDir
 , x11Support ? true
 }:
-# now that gobjectIntrospection creates large .gir files (eg gtk3 case)
+# now that gobject-introspection creates large .gir files (eg gtk3 case)
 # it may be worth thinking about using multiple derivation outputs
 # In that case its about 6MB which could be separated
 
@@ -42,6 +42,10 @@ stdenv.mkDerivation rec {
   patches = [
     ./macos-shared-library.patch
     (substituteAll {
+      src = ./test_shlibs.patch;
+      inherit nixStoreDir;
+    })
+    (substituteAll {
       src = ./absolute_shlib_path.patch;
       inherit nixStoreDir;
     })
@@ -56,7 +60,6 @@ stdenv.mkDerivation rec {
   passthru = {
     updateScript = gnome3.updateScript {
       packageName = pname;
-      attrPath = "gobjectIntrospection";
     };
   };
 

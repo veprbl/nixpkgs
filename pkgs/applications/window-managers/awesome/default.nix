@@ -1,6 +1,6 @@
 { stdenv, fetchFromGitHub, luaPackages, cairo, librsvg, cmake, imagemagick, pkgconfig, gdk_pixbuf
 , xorg, libstartup_notification, libxdg_basedir, libpthreadstubs
-, xcb-util-cursor, makeWrapper, pango, gobjectIntrospection
+, xcb-util-cursor, makeWrapper, pango, gobject-introspection
 , which, dbus, nettools, git, asciidoc, doxygen
 , xmlto, docbook_xml_dtd_45, docbook_xsl, findXMLCatalogs
 , libxkbcommon, xcbutilxrm, hicolor-icon-theme
@@ -29,7 +29,7 @@ with luaPackages; stdenv.mkDerivation rec {
   ];
 
   propagatedUserEnvPkgs = [ hicolor-icon-theme ];
-  buildInputs = [ cairo librsvg dbus gdk_pixbuf gobjectIntrospection
+  buildInputs = [ cairo librsvg dbus gdk_pixbuf gobject-introspection
                   git lgi libpthreadstubs libstartup_notification
                   libxdg_basedir lua nettools pango xcb-util-cursor
                   xorg.libXau xorg.libXdmcp xorg.libxcb xorg.libxshmfence

@@ -1,17 +1,17 @@
-{ fetchurl, stdenv, substituteAll, pkgconfig, gnome3, python3, gobjectIntrospection
+{ fetchurl, stdenv, substituteAll, pkgconfig, gnome3, python3, gobject-introspection
 , intltool, libsoup, libxml2, libsecret, icu, sqlite, tzdata, libcanberra-gtk3
 , p11-kit, db, nspr, nss, libical, gperf, wrapGAppsHook, glib-networking, pcre
 , vala, cmake, ninja, kerberos, openldap, webkitgtk, libaccounts-glib, json-glib }:
 
 stdenv.mkDerivation rec {
   name = "evolution-data-server-${version}";
-  version = "3.30.2";
+  version = "3.30.3";
 
   outputs = [ "out" "dev" ];
 
   src = fetchurl {
     url = "mirror://gnome/sources/evolution-data-server/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "0h4f71kpf2ypdgifg369z35pk4cq99daw540yzjpax52grav2fjv";
+    sha256 = "1q1wpsc3p6b1cacwgkgqbni7rdx3skvb2fm6fyjs2wjgq6zi5753";
   };
 
   patches = [
@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
   ];
 
   nativeBuildInputs = [
-    cmake ninja pkgconfig intltool python3 gperf wrapGAppsHook gobjectIntrospection vala
+    cmake ninja pkgconfig intltool python3 gperf wrapGAppsHook gobject-introspection vala
   ];
   buildInputs = with gnome3; [
     glib libsoup libxml2 gtk gnome-online-accounts

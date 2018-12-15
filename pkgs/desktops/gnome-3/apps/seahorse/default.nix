@@ -1,25 +1,23 @@
 { stdenv, fetchurl, vala, meson, ninja
-, pkgconfig, gtk3, glib, gobjectIntrospection
+, pkgconfig, gtk3, glib, gobject-introspection
 , wrapGAppsHook, itstool, gnupg, libsoup
 , gnome3, gpgme, python3, openldap
 , libsecret, avahi, p11-kit, openssh }:
 
-let
+stdenv.mkDerivation rec {
   pname = "seahorse";
-  version = "3.30";
-in stdenv.mkDerivation rec {
-  name = "${pname}-${version}";
+  version = "3.30.1.1";
 
   src = fetchurl {
-    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "1sbj1czlx1fakm72dwgbn0bwm12j838yaky4mkf6hf8j8afnxmzp";
+    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+    sha256 = "12x7xmwh62yl0ax90v8nkx3jqzviaz9hz2g56yml78wzww20gawy";
   };
 
   doCheck = true;
 
   nativeBuildInputs = [
     meson ninja pkgconfig vala itstool wrapGAppsHook
-    python3 gobjectIntrospection
+    python3 gobject-introspection
   ];
   buildInputs = [
     gtk3 glib gnome3.gcr

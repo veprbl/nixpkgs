@@ -8,11 +8,11 @@
 
 buildPythonPackage rec {
   pname = "splinter";
-  version = "0.9.0";
+  version = "0.10.0";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "08c6ed2209ce0520c2f898ad30822ba8f52ed9226bda10c0253c5ea9fe418146";
+    sha256 = "1x5g7pfj813rnci7dc46y01bq24qzw5qwlzm4iw61hg66q2kg7rd";
   };
 
   propagatedBuildInputs = [ selenium ];

@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [
     meson ninja pkgconfig gettext wrapGAppsHook libxslt docbook_xml_dtd_42 docbook_xml_dtd_43
-    valgrind-light docbook_xsl gtk-doc desktop-file-utils gobjectIntrospection
+    valgrind-light docbook_xsl gtk-doc desktop-file-utils gobject-introspection
   ];
 
   buildInputs = [

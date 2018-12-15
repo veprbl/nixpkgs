@@ -1144,7 +1144,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libxcb = callPackage ({ stdenv, pkgconfig, fetchurl, libxslt, libpthreadstubs, python, libXau, xorgproto, xcbproto, libXdmcp }: stdenv.mkDerivation {
+  libxcb = callPackage ({ stdenv, pkgconfig, fetchurl, libxslt, libpthreadstubs, libXau, xcbproto, libXdmcp, python }: stdenv.mkDerivation {
     name = "libxcb-1.13.1";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1152,8 +1152,8 @@ lib.makeScope newScope (self: with self; {
       sha256 = "1i27lvrcsygims1pddpl5c4qqs6z715lm12ax0n3vx0igapvg7x8";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xcbproto xorgproto libxslt libpthreadstubs python libXau libXdmcp ];
+    nativeBuildInputs = [ pkgconfig python ];
+    buildInputs = [ libxslt libpthreadstubs libXau xcbproto libXdmcp /* XXX: xorgproto? */];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -1411,8 +1411,8 @@ lib.makeScope newScope (self: with self; {
       sha256 = "1qdxw9syhbvswiqj5dvj278lrmfhs81apzmvx6205s4vcqg7563v";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ python ];
+    nativeBuildInputs = [ pkgconfig python ];
+    buildInputs = [ ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
