@@ -26,17 +26,17 @@
 }:
 
 buildPythonApplication rec {
-    version = "2.1.6-beta2";
+    version = "2.1.6";
     name = "anki-${version}";
 
     src = fetchurl {
       urls = [
-        "https://apps.ankiweb.net/downloads/beta/${name}-source.tgz"
-        # "https://apps.ankiweb.net/downloads/current/${name}-source.tgz"
+        #"https://apps.ankiweb.net/downloads/beta/${name}-source.tgz"
+        "https://apps.ankiweb.net/downloads/current/${name}-source.tgz"
         # "http://ankisrs.net/download/mirror/${name}.tgz"
         # "http://ankisrs.net/download/mirror/archive/${name}.tgz"
       ];
-      sha256 = "0h71s1j1269x0b8481z8xf019caqglcjs32xlpzk72087ps169fa";
+      sha256 = "0l2f5h9vaxhkr9icphxx26l06cxaldwn4rjkxl349yky39gwhkqh";
     };
 
     propagatedBuildInputs = [ pyqt5 sqlalchemy
