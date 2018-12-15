@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, pkgconfig, gettext, perl, makeWrapper, shared-mime-info
+{ stdenv, fetchurl, fetchpatch, fetchFromGitHub, pkgconfig, gettext, perl, makeWrapper, shared-mime-info
 , expat, glib, cairo, pango, gdk_pixbuf, atk, at-spi2-atk, gobject-introspection
 , xorg, epoxy, json-glib, libxkbcommon, gmp, gnome3
 , x11Support ? stdenv.isLinux
@@ -13,15 +13,21 @@ assert cupsSupport -> cups != null;
 with stdenv.lib;
 
 let
-  version = "3.24.2";
+  version = "3.24.2-16"; # 3.24.2 with some fixes
 in
 stdenv.mkDerivation rec {
   name = "gtk+3-${version}";
 
-  src = fetchurl {
-    url = "mirror://gnome/sources/gtk+/${stdenv.lib.versions.majorMinor version}/gtk+-${version}.tar.xz";
-    sha256 = "14l8mimdm44r3h5pn5hzigl1z25jna8jxvb16l88v4nc4zj0afsv";
+  src = fetchFromGitHub {
+    owner = "GNOME";
+    repo = "gtk";
+    rev = "3e6fd50d96cfe63ea428da7f9094f19cb36e2860";
+    sha256 = "0vd9i00k28wswj81vgyn5zny38wsi12p8w1q403g4adayksvw0ga";
   };
+  #src = fetchurl {
+  #  url = "mirror://gnome/sources/gtk+/${stdenv.lib.versions.majorMinor version}/gtk+-${version}.tar.xz";
+  #  sha256 = "14l8mimdm44r3h5pn5hzigl1z25jna8jxvb16l88v4nc4zj0afsv";
+  #};
 
   outputs = [ "out" "dev" ];
   outputBin = "dev";
