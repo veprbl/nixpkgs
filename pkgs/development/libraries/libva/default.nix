@@ -35,6 +35,11 @@ stdenv.mkDerivation rec {
     "dummy_drv_video_ladir=$(out)/lib/dri"
   ];
 
+  patches = [
+    ./0001-High-Dynamic-Range-Tone-Mapping-Add-a-new-filter-for.patch
+    ./0001-Remove-restrictions-on-vaSetDriverName.patch
+  ];
+
   meta = with stdenv.lib; {
     description = "VAAPI library: Video Acceleration API";
     homepage = http://www.freedesktop.org/wiki/Software/vaapi;

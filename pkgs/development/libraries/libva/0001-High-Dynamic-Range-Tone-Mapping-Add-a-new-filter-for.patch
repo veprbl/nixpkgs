@@ -1,0 +1,77 @@
+From cf11abe5e1b9c93ee75cf974076957162c1605b9 Mon Sep 17 00:00:00 2001
+From: furongzh <furong.zhang@intel.com>
+Date: Tue, 13 Nov 2018 19:37:55 +0800
+Subject: [PATCH] High Dynamic Range Tone Mapping: Add a new filter for input
+ metadata and some comments.
+
+1. Add comments for HDR10 metadata, it can be used to describe the content which was authoured and the display which will be presented;
+2. Add a new filter for metadata, mainly for input surface;
+
+Signed-off-by: furongzh <furong.zhang@intel.com>
+---
+ va/va_vpp.h | 35 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 33 insertions(+), 2 deletions(-)
+
+diff --git a/va/va_vpp.h b/va/va_vpp.h
+index db1db14..673ddc7 100755
+--- a/va/va_vpp.h
++++ b/va/va_vpp.h
+@@ -436,7 +436,9 @@ typedef enum _VAProcTotalColorCorrectionType {
+ typedef enum _VAProcHighDynamicRangeMetadataType {
+     VAProcHighDynamicRangeMetadataNone = 0,
+     /** \brief Metadata type for HDR10. */
+-    VAProcHighDynamicRangeMetadataHDR10
++    VAProcHighDynamicRangeMetadataHDR10,
++    /** \brief Number of Metadata type. */
++    VAProcHighDynamicRangeMetadataTypeCount
+ } VAProcHighDynamicRangeMetadataType;
+ 
+ /** \brief Video Processing Mode. */
+@@ -703,7 +705,20 @@ typedef struct _VAProcColorProperties {
+     uint8_t reserved[3];
+ } VAProcColorProperties;
+ 
+-/** \berief Describes High Dynamic Range Meta Data for HDR10. */
++/** \berief Describes High Dynamic Range Meta Data for HDR10.
++ *
++ *  Specifies the colour volume(the colour primaries, white point and luminance range) of
++ *  a display considered to be the mastering display for the associated video content -e.g.,
++ *  the colour volume of a display that was used for viewing while authoring the video content.
++ *  See ITU-T H.265 D.3.27 Mastering display colour volume SEI message semantics.
++ *
++ *  Specifies upper bounds for the nominal light level of the content. See ITU-T H.265 D.3.35
++ *  Content light level information SEI message semantics.
++ *
++ *  This structure can be used to indicate the HDR10 metadata for 1) the content which was authored;
++ *  2) the display on which the content will be presented. If it is for display, max_content_light_level
++ *  and max_pic_average_light_level are ignored.
++ */
+ typedef struct _VAHdrMetaDataHDR10
+ {
+     /**
+@@ -1217,6 +1232,22 @@ typedef struct _VAProcFilterParameterBufferHVSNoiseReduction {
+     uint16_t            va_reserved[VA_PADDING_HIGH];
+ } VAProcFilterParameterBufferHVSNoiseReduction;
+ 
++/** \brief High Dynamic Range(HDR) Tone Mapping filter parametrization. */
++typedef struct _VAProcFilterParameterBufferHDRToneMapping {
++    /** \brief Filter type. Shall be set to #VAProcFilterHighDynamicRangeToneMapping.*/
++    VAProcFilterType    type;
++    /**
++     *  \brief High Dynamic Range metadata, could be HDR10 etc.
++     *
++     *  This metadata is mainly for the input surface. Given that dynamic metadata is changing
++     *  on frame-by-frame or scene-by-scene basis for HDR10 plus, differentiate the metadata
++     *  for the input and output.
++     */
++    VAHdrMetaData       data;
++    /** \brief Reserved bytes for future use, must be zero */
++    uint32_t            va_reserved[VA_PADDING_HIGH];
++} VAProcFilterParameterBufferHDRToneMapping;
++
+ /**
+  * \brief Default filter cap specification (single range value).
+  *
+-- 
+2.20.1
+
