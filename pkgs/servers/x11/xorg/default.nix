@@ -2598,12 +2598,12 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   xorgserver = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, openssl, libX11, libXau, libXaw, libxcb, xcbutil, xcbutilwm, xcbutilimage, xcbutilkeysyms, xcbutilrenderutil, libXdmcp, libXfixes, libxkbfile, libXmu, libXpm, libXrender, libXres, libXt, autoreconfHook }: stdenv.mkDerivation {
-    name = "xorg-server-1.20.99.0.99";
+    name = "xorg-server-1.20.99.0.99"; # 2018-12-14
     builder = ./builder.sh;
     src = fetchgit {
       url = git://anongit.freedesktop.org/xorg/xserver;
-      rev = "e6cd1c9bdefe83e7d99b703a68d26eebb451f889";
-      sha256 = "025dpgcihp9rz5px1rdya9a7z7d2i8cj75m9p8h764p1qw5way0l";
+      rev = "fde27b9b4814b18aca6ec587bd3cfe9ab04b0c72";
+      sha256 = "025dpgcihp9rz5px1rdya9a7z7d2i8cj75m9p9h764p1qw5way0l";
     };
     #src = fetchurl {
     #  url = mirror://xorg/individual/xserver/xorg-server-1.20.3.tar.bz2;
