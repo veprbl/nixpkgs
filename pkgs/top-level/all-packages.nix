@@ -10019,6 +10019,8 @@ in
 
   gperftools = callPackage ../development/libraries/gperftools { };
 
+  grab-site = callPackage ../tools/backup/grab-site { };
+
   grib-api = callPackage ../development/libraries/grib-api { };
 
   grpc = callPackage ../development/libraries/grpc { };
