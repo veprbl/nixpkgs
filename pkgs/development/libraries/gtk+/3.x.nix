@@ -13,20 +13,14 @@ assert cupsSupport -> cups != null;
 with stdenv.lib;
 
 let
-  version = "3.24.1";
-
-  gtk_mushrooms-version = "2";
-  gtk_mushrooms = fetchTarball {
-    url = "https://github.com/TomaszGasior/gtk3-mushrooms/archive/${version}-${gtk_mushrooms-version}.tar.gz";
-    sha256 = "10j4h4q6yisgdrclfxd8ma7p7n367jl9pvx952zfxm2813g9gpsc";
-  };
+  version = "3.24.2";
 in
 stdenv.mkDerivation rec {
   name = "gtk+3-${version}";
 
   src = fetchurl {
     url = "mirror://gnome/sources/gtk+/${stdenv.lib.versions.majorMinor version}/gtk+-${version}.tar.xz";
-    sha256 = "0bxhsp7cjph7szg1iyv16nwi60bz59x1smjkqv6sv6mr0zipnf38";
+    sha256 = "14l8mimdm44r3h5pn5hzigl1z25jna8jxvb16l88v4nc4zj0afsv";
   };
 
   outputs = [ "out" "dev" ];
@@ -42,12 +36,6 @@ stdenv.mkDerivation rec {
       sha256 = "0g6fhqcv8spfy3mfmxpyji93k8d4p4q4fz1v9a1c1cgcwkz41d7p";
     })
   ];
-  postPatch = ''
-    for x in ${gtk_mushrooms}/fixes__*.patch ${gtk_mushrooms}/file-chooser__typeahead.patch ${gtk_mushrooms}/other__mnemonics-delay.patch; do
-      echo "Applying $x..."
-      patch -p2 -i $x
-    done
-  '';
 
   buildInputs = [ libxkbcommon epoxy json-glib ]
     ++ optional stdenv.isDarwin AppKit;
