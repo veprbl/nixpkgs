@@ -62,7 +62,7 @@ stdenv.mkDerivation rec {
   #TODO: colord?
 
   # demos fail to install, no idea where's the problem
-  #preConfigure = "sed '/^SRC_SUBDIRS /s/demos//' -i Makefile.in";
+  preConfigure = "sed '/^SRC_SUBDIRS /s/demos//' -i Makefile.in";
 
   enableParallelBuilding = true;
 
