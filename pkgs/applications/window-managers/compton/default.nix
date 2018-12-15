@@ -2,7 +2,7 @@
 , docbook_xsl, libxslt, libxml2, makeWrapper, meson, ninja
 , xorgproto, libxcb ,xcbutilrenderutil, xcbutilimage, pixman, libev
 , dbus, libconfig, libdrm, libGL, pcre, libX11, libXcomposite, libXdamage
-, libXinerama, libXrandr, libXrender, libXext, xwininfo }:
+, libXinerama, libXrandr, libXrender, libXext, xwininfo, libxdg_basedir }:
 
 let
   common = source: stdenv.mkDerivation (source // rec {
@@ -64,7 +64,7 @@ let
   gitSource = rec {
     pname = "compton-git";
     #version = "4";
-    version = "2018-12-04";
+    version = "2018-12-15";
 
     COMPTON_VERSION = "v${version}";
 
@@ -73,8 +73,8 @@ let
     src = fetchFromGitHub {
       owner  = "yshui";
       repo   = "compton";
-      rev    = "f97cf48865d240ce620fb6055b5df2fe09597adb"; # COMPTON_VERSION;
-      sha256 = "0ly6lh5qnnack519vg5icb5m78gsigas81z8df3klvjglz7mr3q3";
+      rev    = "85c5d34ce15b8c29e8e3bd979939c4c074d6a61b"; # COMPTON_VERSION;
+      sha256 = "03dcg7fwzs8mzz20g1mcy56jqgswrx07ajvs1j56wsfkfy16ipd3";
     };
 
     buildInputs = [
@@ -87,12 +87,13 @@ let
       # New:
       libxcb xcbutilrenderutil xcbutilimage
       pixman libev
+      libxdg_basedir
     ];
 
     postPatch = ''
       substituteInPlace meson.build \
-        --replace "version = run_command('git', 'describe').stdout().strip()" \
-                  "version = 'v${version}'";
+        --replace "run_command('git', 'describe')" \
+                  "run_command('echo', 'v${version}')"
     '';
 
     mesonFlags = [
