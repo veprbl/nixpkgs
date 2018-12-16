@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchFromGitHub, fetchpatch, gtk-doc, pkgconfig, gobjectIntrospection, intltool
+{ stdenv, fetchurl, fetchFromGitHub, fetchpatch, gtk-doc, pkgconfig, gobject-introspection, intltool
 , libgudev, polkit, libxmlb, gusb, sqlite, libarchive, glib-networking
 , libsoup, help2man, gpgme, libxslt, elfutils, libsmbios, efivar, glibcLocales
 , gnu-efi, libyaml, valgrind, meson, libuuid, colord, docbook_xml_dtd_43, docbook_xsl
