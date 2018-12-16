@@ -9398,6 +9398,7 @@ in
   boost166 = callPackage ../development/libraries/boost/1.66.nix { };
   boost167 = callPackage ../development/libraries/boost/1.67.nix { };
   boost168 = callPackage ../development/libraries/boost/1.68.nix { };
+  boost169 = callPackage ../development/libraries/boost/1.69.nix { };
   boost16x = boost167;
   boost = boost16x;
 
@@ -16003,7 +16004,7 @@ in
   astah-community = callPackage ../applications/graphics/astah-community { };
 
   astroid = callPackage ../applications/networking/mailreaders/astroid {
-    boost = boost168;
+    boost = boost169;
   };
 
   audacious = callPackage ../applications/audio/audacious { };
@@ -18521,7 +18522,7 @@ in
 
   nedit = callPackage ../applications/editors/nedit { };
 
-  nheko = libsForQt5.callPackage ../applications/networking/instant-messengers/nheko { boost = boost168; };
+  nheko = libsForQt5.callPackage ../applications/networking/instant-messengers/nheko { boost = boost169; };
 
   nomacs = libsForQt5.callPackage ../applications/graphics/nomacs { };
 
