@@ -5,7 +5,7 @@
 
 stdenv.mkDerivation rec {
   name = "intel-vaapi-driver-${version}";
-  version = "2.3.0";
+  version = "2.3.0"; # generally try to match libva version, but not required
 
   src = fetchFromGitHub {
     owner  = "intel";
