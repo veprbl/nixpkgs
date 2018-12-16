@@ -9850,8 +9850,8 @@ in
   gdbm = callPackage ../development/libraries/gdbm { };
 
   gecode_3 = callPackage ../development/libraries/gecode/3.nix { };
-  gecode_5 = qt5.callPackage ../development/libraries/gecode { };
-  gecode = gecode_5;
+  gecode_6 = qt5.callPackage ../development/libraries/gecode { };
+  gecode = gecode_6;
 
   gephi = callPackage ../applications/science/misc/gephi { };
 
