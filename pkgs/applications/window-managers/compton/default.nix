@@ -96,6 +96,9 @@ let
                   "run_command('echo', 'v${version}')"
     '';
 
+    # temporary workaround
+    patches = [ ./vsync-includes.patch ];
+
     mesonFlags = [
       "-Dvsync_drm=true"
     ];
