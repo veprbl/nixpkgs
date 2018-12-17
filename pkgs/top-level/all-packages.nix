@@ -11230,6 +11230,8 @@ in
 
   liboop = callPackage ../development/libraries/liboop { };
 
+  libopenaptx = callPackage ../development/libraries/libopenaptx { };
+
   libopus = callPackage ../development/libraries/libopus { };
 
   libopusenc = callPackage ../development/libraries/libopusenc { };
