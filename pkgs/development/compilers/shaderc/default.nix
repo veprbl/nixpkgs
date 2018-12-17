@@ -25,12 +25,12 @@ let
   };
 in stdenv.mkDerivation rec {
   name = "shaderc-git-${version}";
-  version = "2018-06-01";
+  version = "2018.0";
 
   src = fetchFromGitHub {
     owner = "google";
     repo = "shaderc";
-    rev = "be8e0879750303a1de09385465d6b20ecb8b380d";
+    rev = "v${version}";
     sha256 = "16p25ry2i4zrj00zihfpf210f8xd7g398ffbw25igvi9mbn4nbfd";
   };
 
