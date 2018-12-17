@@ -99,6 +99,8 @@ let
     # temporary workaround
     patches = [ ./vsync-includes.patch ];
 
+    NIX_CFLAGS_COMPILE = [ "-fno-strict-aliasing" ];
+
     mesonFlags = [
       "-Dvsync_drm=true"
     ];
