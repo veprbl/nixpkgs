@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   name = "glslang-git-${version}";
-  version = "2018-09-26";
+  version = "2018-12-14";
 
   src = fetchFromGitHub {
     owner = "KhronosGroup";
     repo = "glslang";
-    rev = "91ac4290bcf2cb930b4fb0981f09c00c0b6797e1";
-    sha256 = "0q477pm0n495acnss16ddlf82a6i5l2dfmvc7r8yi0bgmgpzi4av";
+    rev = "e26630fe2020db48bbd697b0070e61a2bfdea00b";
+    sha256 = "1mc06vvxdzbf5yaq2bkd18ip6bhyg5gmabk36fczab6fg7y83jwh";
   };
 
   buildInputs = [ cmake bison jq ] ++ spirv-tools.buildInputs;
