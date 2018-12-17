@@ -96,10 +96,6 @@ let
                   "run_command('echo', 'v${version}')"
     '';
 
-    mesonFlags = [
-      "-Dvsync_drm=true"
-    ];
-
     meta = {
       homepage = https://github.com/yshui/compton/;
     };
