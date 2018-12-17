@@ -1,5 +1,5 @@
 { stdenv, fetchurl, pkgconfig, libXft, cairo, harfbuzz
-, libintl, gobject-introspection, darwin, fribidi, gnome3
+, libintl, gobject-introspection, darwin, fribidi, gnome3, glib
 , gtk-doc, docbook_xsl, docbook_xml_dtd_43, makeFontsConf, freefont_ttf
 , meson, ninja
 }:
@@ -25,7 +25,7 @@ in stdenv.mkDerivation rec {
     CoreGraphics
     CoreText
   ]);
-  propagatedBuildInputs = [ cairo harfbuzz libXft libintl fribidi ];
+  propagatedBuildInputs = [ cairo harfbuzz libXft libintl fribidi glib ];
 
   mesonFlags = [ "-Denable_docs=true" ];
 
