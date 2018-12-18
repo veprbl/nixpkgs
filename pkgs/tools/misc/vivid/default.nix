@@ -28,6 +28,6 @@ rustPlatform.buildRustPackage rec {
     homepage = https://github.com/sharkdp/vivid;
     license = with licenses; [ asl20 /* or */ mit ];
     maintainers = [ maintainers.dtzWill ];
-    platforms = platforms.linux;
+    platforms = platforms.unix;
   };
 }
