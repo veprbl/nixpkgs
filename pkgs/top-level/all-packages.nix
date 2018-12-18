@@ -622,7 +622,7 @@ in
 
   aws-env = callPackage ../tools/admin/aws-env { };
 
-  aws-google-auth = pythonPackages.callPackage ../tools/admin/aws-google-auth { };
+  aws-google-auth = python3Packages.callPackage ../tools/admin/aws-google-auth { };
 
   aws-okta = callPackage ../tools/security/aws-okta { };
 
@@ -730,6 +730,8 @@ in
 
   genymotion = callPackage ../development/mobile/genymotion { };
 
+  gamecube-tools = callPackage ../development/tools/gamecube-tools { };
+
   gams = callPackage ../tools/misc/gams {
     licenseFile = config.gams.licenseFile or null;
     optgamsFile = config.gams.optgamsFile or null;
@@ -806,6 +808,8 @@ in
   qes = callPackage ../os-specific/darwin/qes {
     inherit (darwin.apple_sdk.frameworks) Carbon;
   };
+
+  wiiload = callPackage ../development/tools/wiiload { };
 
   xcodeenv = callPackage ../development/mobile/xcodeenv { };
 
@@ -2753,8 +2757,6 @@ in
   fprot = callPackage ../tools/security/fprot { };
 
   fprintd = callPackage ../tools/security/fprintd { };
-
-  fprint_demo = callPackage ../tools/security/fprint_demo { };
 
   franz = callPackage ../applications/networking/instant-messengers/franz { };
 
@@ -6604,7 +6606,7 @@ in
   };
 
   ccl = callPackage ../development/compilers/ccl {
-    inherit (darwin) bootstrap_cmds;
+    inherit (buildPackages.darwin) bootstrap_cmds;
   };
 
   cdb = callPackage ../development/tools/database/cdb { };
@@ -9176,7 +9178,7 @@ in
   jhiccup = callPackage ../development/tools/java/jhiccup { };
 
   valgrind = callPackage ../development/tools/analysis/valgrind {
-    inherit (darwin) xnu bootstrap_cmds cctools;
+    inherit (buildPackages.darwin) xnu bootstrap_cmds cctools;
   };
   valgrind-light = res.valgrind.override { gdb = null; };
 
@@ -10468,7 +10470,7 @@ in
   kinetic-cpp-client = callPackage ../development/libraries/kinetic-cpp-client { };
 
   krb5 = callPackage ../development/libraries/kerberos/krb5.nix {
-    inherit (darwin) bootstrap_cmds;
+    inherit (buildPackages.darwin) bootstrap_cmds;
   };
   krb5Full = krb5;
   libkrb5 = krb5.override {
@@ -12057,6 +12059,14 @@ in
 
   pybind11 = callPackage ../development/libraries/pybind11 { };
 
+  python-qt = callPackage ../development/libraries/python-qt {
+    python = python27;
+    qmake = qt59.qmake;
+    qttools = qt59.qttools;
+    qtwebengine = qt59.qtwebengine;
+    qtxmlpatterns = qt59.qtxmlpatterns;
+  };
+
   re2 = callPackage ../development/libraries/re2 { };
 
   qbs = libsForQt5.callPackage ../development/tools/build-managers/qbs { };
@@ -13523,6 +13533,7 @@ in
 
   freeswitch = callPackage ../servers/sip/freeswitch {
     openssl = openssl_1_0_2;
+    inherit (darwin.apple_sdk.frameworks) SystemConfiguration;
   };
 
   fusionInventory = callPackage ../servers/monitoring/fusion-inventory { };
@@ -14136,7 +14147,7 @@ in
     inherit (darwin) cf-private;
     inherit (darwin.apple_sdk.frameworks) ApplicationServices Carbon Cocoa;
     inherit (darwin.apple_sdk.libs) Xplugin;
-    bootstrap_cmds = if stdenv.isDarwin then darwin.bootstrap_cmds else null;
+    inherit (buildPackages.darwin) bootstrap_cmds;
     udev = if stdenv.isLinux then udev else null;
     libdrm = if stdenv.isLinux then libdrm else null;
     abiCompat = config.xorg.abiCompat # `config` because we have no `xorg.override`
@@ -14658,6 +14669,8 @@ in
     rtl8812au = callPackage ../os-specific/linux/rtl8812au { };
 
     rtl8814au = callPackage ../os-specific/linux/rtl8814au { };
+
+    rtl8821au = callPackage ../os-specific/linux/rtl8821au { };
 
     rtlwifi_new = callPackage ../os-specific/linux/rtlwifi_new { };
 
@@ -16346,7 +16359,15 @@ in
 
   csa = callPackage ../applications/audio/csa { };
 
-  csound = callPackage ../applications/audio/csound { };
+  csound = callPackage ../applications/audio/csound {
+    fluidsynth = fluidsynth_1;
+  };
+
+  csound-qt = callPackage ../applications/audio/csound/csound-qt {
+    python = python27;
+    qmake = qt59.qmake;
+    qtwebengine = qt59.qtwebengine;
+  };
 
   cinepaint = callPackage ../applications/graphics/cinepaint {
     fltk = fltk13;
@@ -16915,6 +16936,7 @@ in
   fluidsynth = callPackage ../applications/audio/fluidsynth {
      inherit (darwin.apple_sdk.frameworks) AudioUnit CoreAudio CoreMIDI CoreServices;
   };
+  fluidsynth_1 = fluidsynth.override { version = "1"; };
 
   fmit = libsForQt5.callPackage ../applications/audio/fmit { };
 
