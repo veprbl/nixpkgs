@@ -25,14 +25,14 @@ in stdenv.mkDerivation rec {
   preConfigure = ''
     substituteInPlace configure --replace /usr/bin/uname ${coreutils}/bin/uname
     substituteInPlace configure --replace /usr/bin/file ${file}/bin/file
-    substituteInPlace data/84-nm-drivers.rules \
-      --replace /bin/sh ${stdenv.shell}
-    substituteInPlace data/85-nm-unmanaged.rules \
-      --replace /bin/sh ${stdenv.shell} \
-      --replace /usr/sbin/ethtool ${ethtool}/sbin/ethtool \
-      --replace /bin/sed ${gnused}/bin/sed
-    substituteInPlace data/NetworkManager.service.in \
-      --replace /bin/kill ${coreutils}/bin/kill
+
+    for x in data/*.rules data/*.in; do
+      substituteInPlace "$x" \
+        --replace /bin/sh ${stdenv.shell} \
+        --replace /usr/sbin/ethtool ${ethtool}/sbin/ethtool \
+        --replace /bin/sed ${gnused}/bin/sed \
+        --replace /bin/kill ${coreutils}/bin/kill
+    done
     # to enable link-local connections
     configureFlags="$configureFlags --with-udev-dir=$out/lib/udev"
 
