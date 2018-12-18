@@ -1,4 +1,4 @@
-{ stdenv, fetchpatch, python, buildPythonPackage
+{ stdenv, fetchpatch, python, buildPythonPackage, isPy37
 , protobuf, google_apputils, pyext, six, setuptools, libcxx
 , disabled, doCheck ? true }:
 
