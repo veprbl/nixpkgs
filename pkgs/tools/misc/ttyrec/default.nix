@@ -9,10 +9,11 @@ stdenv.mkDerivation rec {
     sha256 = "ef5e9bf276b65bb831f9c2554cd8784bd5b4ee65353808f82b7e2aef851587ec";
   };
 
-  patches = [ ./clang-fixes.patch ];
+  patches = [ ./clang-fixes.patch ./musl.patch ./tty.diff ];
 
-  makeFlags = stdenv.lib.optional stdenv.buildPlatform.isLinux "CFLAGS=-DSVR4"
-    ++ stdenv.lib.optional stdenv.cc.isClang "CC=clang";
+  NIX_CFLAGS_COMPILE = [ "-DHAVE_openpty" ];
+  NIX_LDFLAGS = [ "-lutil" ];
+  makeFlags = stdenv.lib.optional stdenv.cc.isClang "CC=clang";
 
   installPhase = ''
     mkdir -p $out/{bin,man}
