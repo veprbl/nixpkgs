@@ -15736,6 +15736,8 @@ in
 
   shaderc = callPackage ../development/compilers/shaderc { };
 
+  shades-of-gray-theme = callPackage ../data/themes/shades-of-gray { };
+
   mime-types = callPackage ../data/misc/mime-types { };
 
   shared-mime-info = callPackage ../data/misc/shared-mime-info { };
@@ -18027,7 +18029,7 @@ in
 
   linuxsampler = callPackage ../applications/audio/linuxsampler { };
 
-  llpp = ocaml-ng.ocamlPackages_4_04.callPackage ../applications/misc/llpp { };
+  llpp = ocaml-ng.ocamlPackages_4_07.callPackage ../applications/misc/llpp { };
 
   lmms = libsForQt5.callPackage ../applications/audio/lmms {
     lame = null;
@@ -22701,7 +22703,7 @@ in
 
   pjsip = callPackage ../applications/networking/pjsip { };
 
-  plano-theme = callPackage ../misc/themes/plano { };
+  plano-theme = callPackage ../data/themes/plano { };
 
   ppsspp = libsForQt5.callPackage ../misc/emulators/ppsspp { };
 
@@ -22823,8 +22825,6 @@ in
     libselinux = libselinux.override { python = python3; };
     libsemanage = libsemanage.override { python = python3; };
   };
-
-  shades-of-gray-theme = callPackage ../misc/themes/shades-of-gray { };
 
   sierra-gtk-theme = callPackage ../misc/themes/sierra { };
 
