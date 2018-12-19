@@ -1,6 +1,6 @@
 { stdenv, lib, buildPythonPackage, fetchFromGitHub, isPy3k
 , notmuch, urwid, urwidtrees, twisted, python_magic, configobj, mock, file, gpgme
-, service-identity
+, service-identity, glibcLocales
 , gnupg ? null, sphinx, awk ? null, procps ? null, future ? null
 , withManpage ? false }:
 
@@ -33,11 +33,14 @@ buildPythonPackage rec {
     gpgme
   ];
 
-  # some twisted tests need the network (test_env_set... )
+  # Some minor tests fail, but AFAiCT tests are bad?
+  # If I knew how to specify skipping certain tests that'd be better!
   doCheck = false;
   postBuild = lib.optionalString withManpage "make -C docs man";
 
-  checkInputs =  [ awk future mock gnupg procps ];
+  LC_ALL = "en_US.utf8";
+
+  checkInputs =  [ awk future mock gnupg procps glibcLocales ];
 
   postInstall = lib.optionalString withManpage ''
     mkdir -p $out/man
