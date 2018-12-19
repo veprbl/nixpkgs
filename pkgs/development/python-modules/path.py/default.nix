@@ -6,6 +6,9 @@
 , pytest
 , glibcLocales
 , packaging
+, isPy27
+, backports_os
+, importlib-metadata
 }:
 
 buildPythonPackage rec {
@@ -20,8 +23,12 @@ buildPythonPackage rec {
 
   checkInputs = [ pytest pytestrunner glibcLocales packaging ];
   buildInputs = [ setuptools_scm ];
+  propagatedBuildInputs = [
+    importlib-metadata
+  ] ++ lib.optional isPy27 backports_os
+  ;
 
-  LC_ALL="en_US.UTF-8";
+  LC_ALL = "en_US.UTF-8";
 
   meta = {
     description = "A module wrapper for os.path";

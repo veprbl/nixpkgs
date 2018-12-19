@@ -5,15 +5,25 @@
 }:
 
 let
-  py = python;
+  py = python.override {
+    packageOverrides = self: super: {
+      rsa = super.rsa.overridePythonAttrs (oldAttrs: rec {
+        version = "3.4.2";
+        src = oldAttrs.src.override {
+          inherit version;
+          sha256 = "25df4e10c263fb88b5ace923dd84bf9aa7f5019687b5e55382ffcdb8bede9db5";
+        };
+      });
+    };
+  };
 
 in py.pkgs.buildPythonApplication rec {
   pname = "awscli";
-  version = "1.16.47";
+  version = "1.16.72"; # N.B: if you change this, change botocore to a matching version too
 
   src = py.pkgs.fetchPypi {
     inherit pname version;
-    sha256 = "678d178e05440b4912d218d81feb2106b59050d7435f4f424c45afb9906113da";
+    sha256 = "1ld4a6yxnh0v96fjjp8wjf7zvx41grl57mqg92p6zbfssr2jbqfv";
   };
 
   # No tests included

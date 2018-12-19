@@ -8,18 +8,18 @@ assert pythonOlder "3.3" -> ipaddress != null;
 
 buildPythonPackage rec {
   pname = "Faker";
-  version = "0.9.2";
+  version = "0.9.3";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "2621643b80a10b91999925cfd20f64d2b36f20bf22136bbdc749bb57d6ffe124";
+    sha256 = "8c6df7903c7b4a51f4ac273bc5fec79a249e3220c47b35d1ac1175b41982d772";
   };
 
+  buildInputs = [ pytestrunner ];
   checkInputs = [
     email_validator
     mock
     ukpostcodeparser
-    pytestrunner
     pytest
   ];
 
@@ -28,6 +28,10 @@ buildPythonPackage rec {
     six
     text-unidecode
   ] ++ lib.optional (pythonOlder "3.3") ipaddress;
+
+  postPatch = ''
+    substituteInPlace setup.py --replace "pytest>=3.8.0,<3.9" "pytest"
+  '';
 
   meta = with lib; {
     description = "A Python library for generating fake user data";

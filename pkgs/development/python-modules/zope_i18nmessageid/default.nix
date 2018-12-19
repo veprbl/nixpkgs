@@ -1,6 +1,7 @@
 { stdenv
 , buildPythonPackage
 , fetchPypi
+, six
 }:
 
 buildPythonPackage rec {
@@ -11,6 +12,8 @@ buildPythonPackage rec {
     inherit pname version;
     sha256 = "e511edff8e75d3a6f84d8256e1e468c85a4aa9d89c2ea264a919334fae7081e3";
   };
+
+  propagatedBuildInputs = [ six ];
 
   meta = with stdenv.lib; {
     homepage = https://github.com/zopefoundation/zope.i18nmessageid;

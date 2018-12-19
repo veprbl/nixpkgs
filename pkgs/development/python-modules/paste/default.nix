@@ -1,30 +1,28 @@
 { stdenv
 , buildPythonPackage
 , fetchPypi
-, nose
 , six
-, pytest
 , pytestrunner
+, pytest
 }:
 
 buildPythonPackage rec {
-  pname = "Paste";
-  version = "3.0.4";
+  pname = "paste";
+  version = "3.0.5";
 
   src = fetchPypi {
-    inherit pname version;
-    sha256 = "01w26w9jyfkh0mfydhfz3dwy3pj3fw7mzvj0lna3vs8hyx1hwl0n";
+    pname = "Paste";
+    inherit version;
+    sha256 = "1bb2068807ce3592d313ce9b1a25a7ac842a504e7e3b005027193d17a043d1a8";
   };
 
-  checkInputs = [ nose pytest pytestrunner ];
-  propagatedBuildInputs = [ six pytestrunner ];
+  propagatedBuildInputs = [ six ];
 
-  # TODO: enable this by selectively disabling network tests
-  doCheck = false;
+  checkInputs = [ pytestrunner pytest ];
 
   # Certain tests require network
   checkPhase = ''
-    NOSE_EXCLUDE=test_ok,test_form,test_error,test_stderr,test_paste_website nosetests
+    py.test -k "not test_cgiapp and not test_proxy"
   '';
 
   meta = with stdenv.lib; {

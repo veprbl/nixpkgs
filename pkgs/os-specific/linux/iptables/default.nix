@@ -1,5 +1,5 @@
-{ stdenv, fetchurl, bison, flex, pkgconfig
-, libnetfilter_conntrack, libnftnl, libmnl }:
+{ stdenv, fetchurl, fetchpatch, bison, flex, pkgconfig
+, libnetfilter_conntrack, libnftnl, libmnl, libpcap }:
 
 stdenv.mkDerivation rec {
   name = "iptables-${version}";
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ bison flex pkgconfig ];
 
-  buildInputs = [ libnetfilter_conntrack libnftnl libmnl ];
+  buildInputs = [ libnetfilter_conntrack libnftnl libmnl libpcap ];
 
   # upstream patch
   patches = [ ./fix-format-security.patch ./fix-headers-collision.patch ];
@@ -20,17 +20,18 @@ stdenv.mkDerivation rec {
   configureFlags = [
     "--enable-devel"
     "--enable-shared"
+    "--enable-bpf-compiler"
   ];
 
   outputs = [ "out" "dev" ];
 
   meta = with stdenv.lib; {
     description = "A program to configure the Linux IP packet filtering ruleset";
-    homepage = http://www.netfilter.org/projects/iptables/index.html;
+    homepage = https://www.netfilter.org/projects/iptables/index.html;
     platforms = platforms.linux;
     maintainers = with maintainers; [ fpletz ];
     license = licenses.gpl2;
-    downloadPage = "http://www.netfilter.org/projects/iptables/files/";
+    downloadPage = "https://www.netfilter.org/projects/iptables/files/";
     updateWalker = true;
     inherit version;
   };
