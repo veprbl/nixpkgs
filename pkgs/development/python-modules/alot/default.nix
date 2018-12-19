@@ -15,8 +15,8 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "dtzWill";
     repo = "alot";
-    rev = "${version}";
-    sha256 = "1isn0p0i2a7dlbrdk5ib01xa1wgi6bi9ka4xl4vj8iw1q4i5fqv9";
+    rev = "f6f3d9159554ae28dce582d5a5502612e612741a";
+    sha256 = "1iaza19vmlhapkp9y1hkybpzlp03kaiwdqhvx2k1kz9vmx9jqssm";
   };
 
   nativeBuildInputs = lib.optional withManpage sphinx;
