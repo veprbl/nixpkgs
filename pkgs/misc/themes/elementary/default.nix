@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   name = "elementary-gtk-theme-${version}";
-  version = "5.2.0";
+  version = "5.2.1";
 
   src = fetchFromGitHub {
     owner = "elementary";
     repo = "stylesheet";
     rev = version;
-    sha256 = "0rfpqkbrrbaga8mdpr5s48f13w634dfyk4l44bmg8nxhvzcd88m4";
+    sha256 = "03l8m87f7z25svxk0hhcqnn4qnnqvasr5qwzq3s87lx25gwjml29";
   };
 
   nativeBuildInputs = [ meson ninja ];
