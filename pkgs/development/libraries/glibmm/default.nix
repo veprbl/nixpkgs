@@ -1,15 +1,15 @@
 { stdenv, fetchurl, fetchpatch, pkgconfig, gnum4, glib, libsigcxx }:
 
 let
-  ver_maj = "2.59";
-  ver_min = "1";
+  ver_maj = "2.58";
+  ver_min = "0";
 in
 stdenv.mkDerivation rec {
   name = "glibmm-${ver_maj}.${ver_min}";
 
   src = fetchurl {
     url = "mirror://gnome/sources/glibmm/${ver_maj}/${name}.tar.xz";
-    sha256 = "1f36sr8hj1zqwn1alkyw05p8rwvwh5gc6fwv96z62gwc30wh3ilv";
+    sha256 = "0idnaii4h3mdym2a55gkavipyxigwvbgfmzmwql85s4rgciqjhfk";
   };
 
   outputs = [ "out" "dev" ];
