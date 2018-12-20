@@ -73,8 +73,8 @@ let
     src = fetchFromGitHub {
       owner  = "yshui";
       repo   = "compton";
-      rev    = "8bc052929e9f90202eea0ac8f8e72ac69ce2c02b"; # COMPTON_VERSION;
-      sha256 = "0rc4y58nisl9jkgy57hfr452hdd3bzi2f14flbv9zmqhxphi84rf";
+      rev    = "185c0ce97c2b80f913c28f14f439a7dfd8e9e0f8"; # COMPTON_VERSION;
+      sha256 = "1ljn1pr20dassby2hppgw9226a9x56qvjfxa2qdsg41nhdzzcqdi";
     };
 
     buildInputs = [
