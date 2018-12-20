@@ -3,7 +3,7 @@
 , libgcrypt, dnsmasq, bluez5, readline
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
 , ethtool, gnused, coreutils, file, inetutils, kmod, jansson, libxslt
-, python3Packages, docbook_xsl, openconnect, curl, autoreconfHook }:
+, python3Packages, docbook_xsl, openconnect, curl, autoconf, automake, libtool, gtk-doc }:
 
 let
   pname = "NetworkManager";
@@ -29,9 +29,6 @@ in stdenv.mkDerivation rec {
   '';
 
   preConfigure = ''
-    substituteInPlace configure --replace /usr/bin/uname ${coreutils}/bin/uname
-    substituteInPlace configure --replace /usr/bin/file ${file}/bin/file
-
     for x in data/*.rules data/*.in; do
       substituteInPlace "$x" \
         --replace /bin/sh ${stdenv.shell} \
@@ -46,7 +43,13 @@ in stdenv.mkDerivation rec {
     configureFlags="$configureFlags --with-udev-dir=$out/lib/udev"
 
     # Fixes: error: po/Makefile.in.in was not created by intltoolize.
-    intltoolize --automake --copy --force
+    #intltoolize --automake --copy --force
+
+    NOCONFIGURE=1 ./autogen.sh
+
+    substituteInPlace configure --replace /usr/bin/uname ${coreutils}/bin/uname
+    substituteInPlace configure --replace /usr/bin/file ${file}/bin/file
+
   '';
 
   # Right now we hardcode quite a few paths at build time. Probably we should
@@ -69,7 +72,8 @@ in stdenv.mkDerivation rec {
     "--with-session-tracking=systemd"
     "--with-modem-manager-1"
     "--with-nmtui"
-    "--disable-gtk-doc"
+    #"--disable-gtk-doc"
+    "--enable-gtk-doc"
     "--with-libnm-glib" # legacy library, TODO: remove
     "--disable-tests"
   ];
@@ -94,7 +98,7 @@ in stdenv.mkDerivation rec {
 
   propagatedBuildInputs = [ dbus-glib gnutls libgcrypt python3Packages.pygobject3 ];
 
-  nativeBuildInputs = [ autoreconfHook intltool pkgconfig libxslt docbook_xsl ];
+  nativeBuildInputs = [ autoconf automake libtool intltool pkgconfig libxslt docbook_xsl gtk-doc ];
 
   doCheck = false; # requires /sys, the net
 
