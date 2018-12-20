@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, substituteAll, intltool, pkgconfig, dbus-glib
+{ stdenv, fetchurl, fetchpatch, substituteAll, intltool, pkgconfig, dbus-glib, dbus
 , gnome3, systemd, libuuid, polkit, gnutls, ppp, dhcp, iptables
 , libgcrypt, dnsmasq, bluez5, readline
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
@@ -30,8 +30,11 @@ in stdenv.mkDerivation rec {
       substituteInPlace "$x" \
         --replace /bin/sh ${stdenv.shell} \
         --replace /usr/sbin/ethtool ${ethtool}/sbin/ethtool \
+        --replace "'ethtool " "'${ethtool}/sbin/ethtool " \
         --replace /bin/sed ${gnused}/bin/sed \
-        --replace /bin/kill ${coreutils}/bin/kill
+        --replace "| sed " "| ${gnused}/bin/sed " \
+        --replace /bin/kill ${coreutils}/bin/kill \
+        --replace /usr/bin/dbus-send ${dbus}/bin/dbus-send
     done
     # to enable link-local connections
     configureFlags="$configureFlags --with-udev-dir=$out/lib/udev"
