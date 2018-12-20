@@ -18,7 +18,7 @@ rustPlatform.buildRustPackage rec {
     substituteInPlace src/main.rs --replace /usr/share $out/share
   '';
 
-  cargoSha256 = "156wapa2ds7ij1jhrpa8mm6dicwq934qxl56sqw3bgz6pfa9fldz";
+  cargoSha256 = "156wapa2ds7ij1jhrpa8mm6dicwq934qxl56sqw3bgz6pfa8fldz";
 
   postInstall = ''
     mkdir -p $out/share/${pname}
