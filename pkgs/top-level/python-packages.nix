@@ -1877,6 +1877,8 @@ in {
 
   jupyterlab = callPackage ../development/python-modules/jupyterlab {};
 
+  jupytext = callPackage ../development/python-modules/jupytext { };
+
   PyLTI = callPackage ../development/python-modules/pylti { };
 
   lmdb = callPackage ../development/python-modules/lmdb { };
