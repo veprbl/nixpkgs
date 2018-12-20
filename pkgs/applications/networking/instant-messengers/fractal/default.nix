@@ -3,15 +3,15 @@
 
 #stdenv.mkDerivation rec {
 rustPlatform.buildRustPackage rec {
-  version = "3.30.0-git";
+  version = "3.99.1"; # beta
   name = "fractal-${version}";
 
   src = fetchFromGitLab {
     domain = "gitlab.gnome.org";
-    owner = "World";
+    owner = "GNOME";
     repo = "fractal";
-    rev = "4413d22e3d63acce241b32b33b487469c0dbe429";
-    sha256 = "0y2bsfwh34xjr24k8rqn8vq2l386sdxlb4a9ppdi0lyrrm4ajh6j";
+    rev = "9a13a32f463cd0b0f7d5b02b1a97954100234345";
+    sha256 = "0b1rhjp9fph82bx52fnhhm1p645dpclbdq4qqzqc2xbf4mcp3qbw";
   };
 
   nativeBuildInputs = [
@@ -32,7 +32,7 @@ rustPlatform.buildRustPackage rec {
   checkPhase = null;
   installPhase = null;
 
-  cargoSha256 = "15frrwhxap04lyiyyjiwirciyf9kyv0l0gn09qj51zgp75izybkc";
+  cargoSha256 = "1cx68sndw573acszf0x56l6ghxy91w8mvwg223nlm54hcj32g4w1";
 
   meta = with stdenv.lib; {
     # TODO
