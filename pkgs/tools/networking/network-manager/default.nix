@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, substituteAll, intltool, pkgconfig, dbus-glib, dbus
+{ stdenv, fetchurl, fetchpatch, substituteAll, intltool, pkgconfig, dbus-glib
 , gnome3, systemd, libuuid, polkit, gnutls, ppp, dhcp, iptables
 , libgcrypt, dnsmasq, bluez5, readline
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
@@ -27,11 +27,8 @@ in stdenv.mkDerivation rec {
       substituteInPlace "$x" \
         --replace /bin/sh ${stdenv.shell} \
         --replace /usr/sbin/ethtool ${ethtool}/sbin/ethtool \
-        --replace "'ethtool " "'${ethtool}/sbin/ethtool " \
         --replace /bin/sed ${gnused}/bin/sed \
-        --replace "| sed " "| ${gnused}/bin/sed " \
-        --replace /bin/kill ${coreutils}/bin/kill \
-        --replace /usr/bin/dbus-send ${dbus}/bin/dbus-send
+        --replace /bin/kill ${coreutils}/bin/kill
     done
 
     # Fixes: error: po/Makefile.in.in was not created by intltoolize.
