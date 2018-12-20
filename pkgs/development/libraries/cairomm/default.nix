@@ -1,7 +1,7 @@
 { fetchurl, stdenv, pkgconfig, darwin, cairo, fontconfig, freetype, libsigcxx }:
 let
-  ver_maj = "1.12";
-  ver_min = "2";
+  ver_maj = "1.15"; # unstable!
+  ver_min = "5";
 in
 stdenv.mkDerivation rec {
   name = "cairomm-${ver_maj}.${ver_min}";
@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
     url = "https://www.cairographics.org/releases/${name}.tar.gz";
     # gnome doesn't have the latest version ATM; beware: same name but different hash
     # url = "mirror://gnome/sources/cairomm/${ver_maj}/${name}.tar.xz";
-    sha256 = "16fmigxsaz85c3lgcls7biwyz8zy8c8h3jndfm54cxxas3a7zi25";
+    sha256 = "1lg3q5ixs6igd2b4674mq5i4w0il0d92bxri94mwdjkq8gs2kdld";
   };
 
   outputs = [ "out" "dev" ];
