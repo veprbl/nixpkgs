@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, substituteAll, intltool, pkgconfig, dbus-glib, dbus
+{ stdenv, fetchurl, fetchpatch, fetchFromGitHub, substituteAll, intltool, pkgconfig, dbus-glib, dbus
 , gnome3, systemd, libuuid, polkit, gnutls, ppp, dhcp, iptables
 , libgcrypt, dnsmasq, bluez5, readline
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
@@ -9,11 +9,17 @@ let
   pname = "NetworkManager";
 in stdenv.mkDerivation rec {
   name = "network-manager-${version}";
-  version = "1.14.4";
+  version = "1.14.5-git";
 
-  src = fetchurl {
-    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "064cgj9za0kzarks0lrv0qw2ysdphb5l97iw0c964bfiqzjfv8rm";
+  #src = fetchurl {
+  #  url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+  #  sha256 = "064cgj9za0kzarks0lrv0qw2ysdphb5l97iw0c964bfiqzjfv8rm";
+  #};
+  src = fetchFromGitHub {
+    owner = "NetworkManager";
+    repo = "NetworkManager";
+    rev = "1445b5b2966db464ca1a2f164a49cebaacf9e68c";
+    sha256 = "0ia9ix715cgmp7pqn82kh2q8zclmf1y0abxd3pyhcbq4iaba4l6i";
   };
 
   outputs = [ "out" "dev" ];
