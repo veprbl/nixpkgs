@@ -1,0 +1,118 @@
+From 576cff7654a4c3e0c94498977ce7b28ce8f00251 Mon Sep 17 00:00:00 2001
+From: David Edmondson <dme@dme.org>
+Date: Mon, 1 Oct 2018 17:50:47 +0100
+Subject: [PATCH] reply: Include sender as recipient if they were the original
+ recipient
+
+When generating a reply message, if the user was the originator and
+only recipient of the original message, include the user as a
+recipient of the reply.
+---
+ notmuch-reply.c              | 8 ++++++++
+ test/T220-reply.sh           | 1 +
+ test/T230-reply-to-sender.sh | 1 +
+ test/T310-emacs.sh           | 5 ++---
+ test/T350-crypto.sh          | 5 +++--
+ 5 files changed, 15 insertions(+), 5 deletions(-)
+
+diff --git a/notmuch-reply.c b/notmuch-reply.c
+index 75cf7ecb..d87ec06d 100644
+--- a/notmuch-reply.c
++++ b/notmuch-reply.c
+@@ -369,6 +369,14 @@ add_recipients_from_message (GMimeMessage *reply,
+ 	}
+     }
+ 
++    /* If no recipients were added but we found one of the user's
++     * addresses to use as a from address then the message is from the
++     * user to the user - add the discovered from address to the list
++     * of recipients so that the reply goes back to the user.
++     */
++    if (n == 0 && from_addr)
++	g_mime_message_add_recipient (reply, GMIME_ADDRESS_TYPE_TO, NULL, from_addr);
++
+     return from_addr;
+ }
+ 
+diff --git a/test/T220-reply.sh b/test/T220-reply.sh
+index ebe710f9..4db3a958 100755
+--- a/test/T220-reply.sh
++++ b/test/T220-reply.sh
+@@ -180,6 +180,7 @@ test_expect_equal "$output" "From: Notmuch Test Suite <test_suite@notmuchmail.or
+ Subject: Re: This subject is exactly 200 bytes in length. Other than its
+  length there is not much of note here. Note that the length of 200 bytes
+  includes the Subject: and Re: prefixes with two spaces
++To: test_suite@notmuchmail.org
+ In-Reply-To: <${gen_msg_id}>
+ References: <${gen_msg_id}>
+ 
+diff --git a/test/T230-reply-to-sender.sh b/test/T230-reply-to-sender.sh
+index 134a1063..bbeaa2b9 100755
+--- a/test/T230-reply-to-sender.sh
++++ b/test/T230-reply-to-sender.sh
+@@ -203,6 +203,7 @@ test_expect_equal "$output" "From: Notmuch Test Suite <test_suite@notmuchmail.or
+ Subject: Re: This subject is exactly 200 bytes in length. Other than its
+  length there is not much of note here. Note that the length of 200 bytes
+  includes the Subject: and Re: prefixes with two spaces
++To: test_suite@notmuchmail.org
+ In-Reply-To: <${gen_msg_id}>
+ References: <${gen_msg_id}>
+ 
+diff --git a/test/T310-emacs.sh b/test/T310-emacs.sh
+index 5935819f..cb9e99a5 100755
+--- a/test/T310-emacs.sh
++++ b/test/T310-emacs.sh
+@@ -610,7 +610,7 @@ test_emacs "(let ((message-hidden-headers '()))
+ 	    (test-output))"
+ cat <<EOF >EXPECTED
+ From: Notmuch Test Suite <test_suite@notmuchmail.org>
+-To: 
++To: test_suite@notmuchmail.org
+ Subject: Re: Reply within emacs to an html-only message
+ In-Reply-To: <${gen_msg_id}>
+ Fcc: ${MAIL_DIR}/sent
+@@ -623,7 +623,6 @@ EOF
+ test_expect_equal_file EXPECTED OUTPUT
+ 
+ test_begin_subtest "Reply within emacs to message from self"
+-test_subtest_known_broken
+ add_message '[from]="test_suite@notmuchmail.org"' \
+ 	    '[to]="test_suite@notmuchmail.org"'
+ test_emacs "(let ((message-hidden-headers '()))
+@@ -657,7 +656,7 @@ test_emacs "(let ((message-hidden-headers '()))
+ 	      (test-output))"
+ cat <<EOF >EXPECTED
+ From: Notmuch Test Suite <test_suite@notmuchmail.org>
+-To: 
++To: test_suite@notmuchmail.org
+ Subject: Re: Quote MML tags in reply
+ In-Reply-To: <test-emacs-mml-quoting@message.id>
+ Fcc: ${MAIL_DIR}/sent
+diff --git a/test/T350-crypto.sh b/test/T350-crypto.sh
+index a776ec35..73aa58de 100755
+--- a/test/T350-crypto.sh
++++ b/test/T350-crypto.sh
+@@ -388,6 +388,7 @@ output=$(notmuch reply --decrypt=true subject:"test encrypted message 002" \
+     | notmuch_drop_mail_headers In-Reply-To References)
+ expected='From: Notmuch Test Suite <test_suite@notmuchmail.org>
+ Subject: Re: test encrypted message 002
++To: test_suite@notmuchmail.org
+ 
+ On 01 Jan 2000 12:00:00 -0000, Notmuch Test Suite <test_suite@notmuchmail.org> wrote:
+ > This is another test encrypted message.'
+@@ -401,10 +402,10 @@ test_emacs "(let ((message-hidden-headers '())
+   (notmuch-show \"subject:test.encrypted.message.002\")
+   (notmuch-show-reply)
+   (test-output))"
+-# the empty To: is probably a bug, but it's not to do with encryption
+-grep -v -e '^In-Reply-To:' -e '^References:' -e '^Fcc:' -e 'To:' < OUTPUT > OUTPUT.clean
++grep -v -e '^In-Reply-To:' -e '^References:' -e '^Fcc:' < OUTPUT > OUTPUT.clean
+ cat <<EOF >EXPECTED
+ From: Notmuch Test Suite <test_suite@notmuchmail.org>
++To: test_suite@notmuchmail.org
+ Subject: Re: test encrypted message 002
+ --text follows this line--
+ <#secure method=pgpmime mode=signencrypt>
+-- 
+2.20.1
+

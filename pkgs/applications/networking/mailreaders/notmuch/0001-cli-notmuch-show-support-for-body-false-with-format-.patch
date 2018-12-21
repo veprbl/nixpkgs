@@ -1,0 +1,102 @@
+From 37e5bc00aeb9123dd88367b7506a19f74877dfe4 Mon Sep 17 00:00:00 2001
+From: Maxime Coste <mawww@kakoune.org>
+Date: Wed, 31 Oct 2018 10:54:31 +1100
+Subject: [PATCH] cli: notmuch show support for --body=false with --format=text
+
+---
+ NEWS                      |  8 ++++++++
+ doc/man1/notmuch-show.rst |  4 ++--
+ notmuch-show.c            | 11 +++++++++--
+ test/T190-multipart.sh    | 15 +++++++++++++++
+ 4 files changed, 34 insertions(+), 4 deletions(-)
+
+diff --git a/NEWS b/NEWS
+index ca3ba99e..64de9999 100644
+--- a/NEWS
++++ b/NEWS
+@@ -1,3 +1,11 @@
++Notmuch 0.29 (UNRELEASED)
++=========================
++
++Command Line Interface
++----------------------
++
++`notmuch show` now supports --body=false with --format=text
++
+ Notmuch 0.28 (2018-10-12)
+ =========================
+ 
+diff --git a/doc/man1/notmuch-show.rst b/doc/man1/notmuch-show.rst
+index 8bfa87c6..f3c32fd2 100644
+--- a/doc/man1/notmuch-show.rst
++++ b/doc/man1/notmuch-show.rst
+@@ -176,8 +176,8 @@ Supported options for **show** include
+ ``--body=(true|false)``
+     If true (the default) **notmuch show** includes the bodies of the
+     messages in the output; if false, bodies are omitted.
+-    ``--body=false`` is only implemented for the json and sexp formats
+-    and it is incompatible with ``--part > 0.``
++    ``--body=false`` is only implemented for the text, json and sexp
++    formats and it is incompatible with ``--part > 0.``
+ 
+     This is useful if the caller only needs the headers as body-less
+     output is much faster and substantially smaller.
+diff --git a/notmuch-show.c b/notmuch-show.c
+index c3a3783a..42fe27cc 100644
+--- a/notmuch-show.c
++++ b/notmuch-show.c
+@@ -574,6 +574,11 @@ format_part_text (const void *ctx, sprinter_t *sp, mime_node_t *node,
+ 	g_mime_stream_printf (stream, "Date: %s\n", date_string);
+ 	g_mime_stream_printf (stream, "\fheader}\n");
+ 
++	if (!params->output_body)
++	{
++	    g_mime_stream_printf (stream, "\f%s}\n", part_type);
++	    return NOTMUCH_STATUS_SUCCESS;
++	}
+ 	g_mime_stream_printf (stream, "\fbody{\n");
+     }
+ 
+@@ -1204,9 +1209,11 @@ notmuch_show_command (notmuch_config_t *config, int argc, char *argv[])
+ 	    fprintf (stderr, "Warning: --body=false is incompatible with --part > 0. Disabling.\n");
+ 	    params.output_body = true;
+ 	} else {
+-	    if (format != NOTMUCH_FORMAT_JSON && format != NOTMUCH_FORMAT_SEXP)
++	    if (format != NOTMUCH_FORMAT_TEXT &&
++		format != NOTMUCH_FORMAT_JSON &&
++		format != NOTMUCH_FORMAT_SEXP)
+ 		fprintf (stderr,
+-			 "Warning: --body=false only implemented for format=json and format=sexp\n");
++			 "Warning: --body=false only implemented for format=text, format=json and format=sexp\n");
+ 	}
+     }
+ 
+diff --git a/test/T190-multipart.sh b/test/T190-multipart.sh
+index 3eeac1db..81c4d772 100755
+--- a/test/T190-multipart.sh
++++ b/test/T190-multipart.sh
+@@ -190,6 +190,21 @@ Non-text part: application/pgp-signature
+ EOF
+ test_expect_equal_file EXPECTED OUTPUT
+ 
++test_begin_subtest "--format=text --part=0 --body=false, message header"
++notmuch show --format=text --part=0  --body=false 'id:87liy5ap00.fsf@yoom.home.cworth.org' >OUTPUT
++cat <<EOF >EXPECTED
++message{ id:87liy5ap00.fsf@yoom.home.cworth.org depth:0 match:1 excluded:0 filename:${MAIL_DIR}/multipart
++header{
++Carl Worth <cworth@cworth.org> (2001-01-05) (attachment inbox signed unread)
++Subject: Multipart message
++From: Carl Worth <cworth@cworth.org>
++To: cworth@cworth.org
++Date: Fri, 05 Jan 2001 15:43:57 +0000
++header}
++message}
++EOF
++test_expect_equal_file EXPECTED OUTPUT
++
+ test_begin_subtest "--format=text --part=1, message body"
+ notmuch show --format=text --part=1 'id:87liy5ap00.fsf@yoom.home.cworth.org' >OUTPUT
+ cat <<EOF >EXPECTED
+-- 
+2.20.1
+

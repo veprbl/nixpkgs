@@ -1,0 +1,99 @@
+From baa4185c302a246e632054dc6becb46c0024b99d Mon Sep 17 00:00:00 2001
+From: Maxime Coste <mawww@kakoune.org>
+Date: Wed, 31 Oct 2018 10:54:32 +1100
+Subject: [PATCH] cli: notmuch show support for --include-html with
+ --format=text
+
+---
+ NEWS                      |  3 ++-
+ doc/man1/notmuch-show.rst | 11 ++++++-----
+ notmuch-show.c            |  9 ++++++---
+ test/T190-multipart.sh    |  9 +++++++++
+ 4 files changed, 23 insertions(+), 9 deletions(-)
+
+diff --git a/NEWS b/NEWS
+index 64de9999..434f920a 100644
+--- a/NEWS
++++ b/NEWS
+@@ -4,7 +4,8 @@ Notmuch 0.29 (UNRELEASED)
+ Command Line Interface
+ ----------------------
+ 
+-`notmuch show` now supports --body=false with --format=text
++`notmuch show` now supports --body=false and --include-html with
++--format=text
+ 
+ Notmuch 0.28 (2018-10-12)
+ =========================
+diff --git a/doc/man1/notmuch-show.rst b/doc/man1/notmuch-show.rst
+index f3c32fd2..a2708a04 100644
+--- a/doc/man1/notmuch-show.rst
++++ b/doc/man1/notmuch-show.rst
+@@ -183,11 +183,12 @@ Supported options for **show** include
+     output is much faster and substantially smaller.
+ 
+ ``--include-html``
+-    Include "text/html" parts as part of the output (currently only
+-    supported with ``--format=json`` and ``--format=sexp``). By default,
+-    unless ``--part=N`` is used to select a specific part or
+-    ``--include-html`` is used to include all "text/html" parts, no
+-    part with content type "text/html" is included in the output.
++    Include "text/html" parts as part of the output (currently
++    only supported with ``--format=text``, ``--format=json`` and
++    ``--format=sexp``). By default, unless ``--part=N`` is used to
++    select a specific part or ``--include-html`` is used to include all
++    "text/html" parts, no part with content type "text/html" is included
++    in the output.
+ 
+ A common use of **notmuch show** is to display a single thread of email
+ messages. For this, use a search term of "thread:<thread-id>" as can be
+diff --git a/notmuch-show.c b/notmuch-show.c
+index 42fe27cc..07e9a5db 100644
+--- a/notmuch-show.c
++++ b/notmuch-show.c
+@@ -584,7 +584,8 @@ format_part_text (const void *ctx, sprinter_t *sp, mime_node_t *node,
+ 
+     if (leaf) {
+ 	if (g_mime_content_type_is_type (content_type, "text", "*") &&
+-	    !g_mime_content_type_is_type (content_type, "text", "html"))
++	    (params->include_html ||
++	     ! g_mime_content_type_is_type (content_type, "text", "html")))
+ 	{
+ 	    show_text_part_content (node->part, stream, 0);
+ 	} else {
+@@ -1218,8 +1219,10 @@ notmuch_show_command (notmuch_config_t *config, int argc, char *argv[])
+     }
+ 
+     if (params.include_html &&
+-        (format != NOTMUCH_FORMAT_JSON && format != NOTMUCH_FORMAT_SEXP)) {
+-	fprintf (stderr, "Warning: --include-html only implemented for format=json and format=sexp\n");
++        (format != NOTMUCH_FORMAT_TEXT &&
++	 format != NOTMUCH_FORMAT_JSON &&
++	 format != NOTMUCH_FORMAT_SEXP)) {
++	fprintf (stderr, "Warning: --include-html only implemented for format=text, format=json and format=sexp\n");
+     }
+ 
+     query_string = query_string_from_args (config, argc-opt_index, argv+opt_index);
+diff --git a/test/T190-multipart.sh b/test/T190-multipart.sh
+index 81c4d772..9ad141cb 100755
+--- a/test/T190-multipart.sh
++++ b/test/T190-multipart.sh
+@@ -325,6 +325,15 @@ Non-text part: text/html
+ EOF
+ test_expect_equal_file EXPECTED OUTPUT
+ 
++test_begin_subtest "--format=text --include-html --part=5, rfc822's html part"
++notmuch show --format=text --include-html --part=5 'id:87liy5ap00.fsf@yoom.home.cworth.org' >OUTPUT
++cat <<EOF >EXPECTED
++part{ ID: 5, Content-type: text/html
++<p>This is an embedded message, with a multipart/alternative part.</p>
++part}
++EOF
++test_expect_equal_file EXPECTED OUTPUT
++
+ test_begin_subtest "--format=text --part=6, rfc822's text part"
+ notmuch show --format=text --part=6 'id:87liy5ap00.fsf@yoom.home.cworth.org' >OUTPUT
+ cat <<EOF >EXPECTED
+-- 
+2.20.1
+

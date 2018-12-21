@@ -1,0 +1,45 @@
+From daec80eedabcafaf85ac58802451d165e0696745 Mon Sep 17 00:00:00 2001
+From: Daniel Kahn Gillmor <dkg@fifthhorseman.net>
+Date: Sat, 6 Oct 2018 15:34:49 -0500
+Subject: [PATCH] Avoid spurious gcc warning in debugger.c
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Without this patch, gcc 8.2.0-7 complains:
+
+debugger.c: In function ‘debugger_is_active’:
+debugger.c:40:24: warning: passing argument 2 to restrict-qualified parameter aliases with argument 1 [-Wrestrict]
+     if (readlink (buf, buf, sizeof (buf)) != -1 &&
+                   ~~~  ^~~
+
+This is pretty silly, but it seems simplest to just avoid passing the
+same buffer to readlink as both pathname and buf.
+---
+ debugger.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/debugger.c b/debugger.c
+index 5cb38ac4..0febf170 100644
+--- a/debugger.c
++++ b/debugger.c
+@@ -32,13 +32,14 @@ bool
+ debugger_is_active (void)
+ {
+     char buf[1024];
++    char buf2[1024];
+ 
+     if (RUNNING_ON_VALGRIND)
+ 	return true;
+ 
+     sprintf (buf, "/proc/%d/exe", getppid ());
+-    if (readlink (buf, buf, sizeof (buf)) != -1 &&
+-	strncmp (basename (buf), "gdb", 3) == 0)
++    if (readlink (buf, buf2, sizeof (buf2)) != -1 &&
++	strncmp (basename (buf2), "gdb", 3) == 0)
+     {
+ 	return true;
+     }
+-- 
+2.20.1
+

@@ -36,6 +36,14 @@ stdenv.mkDerivation rec {
     ruby  # (optional) ruby bindings
   ];
 
+  patches = [
+    ./0001-Avoid-spurious-gcc-warning-in-debugger.c.patch
+    ./0001-cli-notmuch-show-support-for-body-false-with-format-.patch
+    ./0001-cli-notmuch-show-support-for-include-html-with-forma.patch
+    ./0001-index-explicitly-follow-GObject-conventions.patch
+    ./0001-reply-Include-sender-as-recipient-if-they-were-the-o.patch
+  ];
+
   postPatch = ''
     patchShebangs configure
     patchShebangs test/
