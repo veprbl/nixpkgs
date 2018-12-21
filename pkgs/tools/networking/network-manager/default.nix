@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, substituteAll, intltool, pkgconfig, dbus-glib
+{ stdenv, fetchurl, fetchpatch, substituteAll, intltool, pkgconfig, dbus, dbus-glib
 , gnome3, systemd, libuuid, polkit, gnutls, ppp, dhcp, iptables
 , libgcrypt, dnsmasq, bluez5, readline
 , gobjectIntrospection, modemmanager, openresolv, libndp, newt, libsoup
@@ -25,14 +25,6 @@ in stdenv.mkDerivation rec {
   preConfigure = ''
     substituteInPlace configure --replace /usr/bin/uname ${coreutils}/bin/uname
     substituteInPlace configure --replace /usr/bin/file ${file}/bin/file
-    substituteInPlace data/84-nm-drivers.rules \
-      --replace /bin/sh ${stdenv.shell}
-    substituteInPlace data/85-nm-unmanaged.rules \
-      --replace /bin/sh ${stdenv.shell} \
-      --replace /usr/sbin/ethtool ${ethtool}/sbin/ethtool \
-      --replace /bin/sed ${gnused}/bin/sed
-    substituteInPlace data/NetworkManager.service.in \
-      --replace /bin/kill ${coreutils}/bin/kill
     # to enable link-local connections
     configureFlags="$configureFlags --with-udev-dir=$out/lib/udev"
 
@@ -73,7 +65,8 @@ in stdenv.mkDerivation rec {
     })
     (substituteAll {
       src = ./fix-paths.patch;
-      inherit inetutils kmod openconnect;
+      inherit inetutils kmod openconnect ethtool coreutils dbus;
+      inherit (stdenv) shell;
     })
 
   ];
