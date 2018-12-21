@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, texinfo, libXext, libX11, xorgproto
+{ stdenv, fetchFromGitHub, fetchpatch, texinfo, libXext, xextproto, libX11, xproto
 , libXpm, libXt, libXcursor, alsaLib, cmake, zlib, libpng, libvorbis
 , libXxf86dga, libXxf86misc, libXxf86vm, openal, libGLU_combined, libjpeg, flac
 , libXi, libXfixes, freetype, libopus, libtheora , physfs, enet, pkgconfig, gtk2
@@ -23,7 +23,15 @@ stdenv.mkDerivation rec {
     pkgconfig gtk2 pcre libXdmcp libpulseaudio libpthreadstubs
   ];
 
-  patchPhase = ''
+  patches = [
+   # fix compilation with mesa 18.2.5
+   (fetchpatch {
+     url = "https://github.com/liballeg/allegro5/commit/a40d30e21802ecf5c9382cf34af9b01bd3781e47.patch";
+     sha256 = "1f1xlj5y2vr6wzmcz04s8kxn8cfdwrg9kjlnvpz9dix1z3qjnd4m";
+   })
+  ];
+
+  postPatch = ''
     sed -e 's@/XInput2.h@/XI2.h@g' -i CMakeLists.txt "src/"*.c
   '';
 
