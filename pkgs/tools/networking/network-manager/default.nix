@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, substituteAll, intltool, pkgconfig, dbus-glib
+{ stdenv, fetchurl, fetchpatch, substituteAll, intltool, pkgconfig, dbus, dbus-glib
 , gnome3, systemd, libuuid, polkit, gnutls, ppp, dhcp, iptables
 , libgcrypt, dnsmasq, bluez5, readline
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
@@ -9,11 +9,11 @@ let
   pname = "NetworkManager";
 in stdenv.mkDerivation rec {
   name = "network-manager-${version}";
-  version = "1.12.6";
+  version = "1.14.4";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "04q091prvk3msvd875qrgp1zw1rhpfc3az59m44pw3194wfkfn54";
+    sha256 = "064cgj9za0kzarks0lrv0qw2ysdphb5l97iw0c964bfiqzjfv8rm";
   };
 
   outputs = [ "out" "dev" ];
@@ -76,7 +76,8 @@ in stdenv.mkDerivation rec {
     })
     (substituteAll {
       src = ./fix-paths.patch;
-      inherit inetutils kmod openconnect;
+      inherit inetutils kmod openconnect ethtool coreutils dbus;
+      inherit (stdenv) shell;
     })
 
   ];
