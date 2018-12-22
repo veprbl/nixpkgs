@@ -64,7 +64,7 @@ let
   gitSource = rec {
     pname = "compton-git";
     #version = "4";
-    version = "2018-12-21";
+    version = "2018-12-22";
 
     COMPTON_VERSION = "v${version}";
 
@@ -73,8 +73,8 @@ let
     src = fetchFromGitHub {
       owner  = "yshui";
       repo   = "compton";
-      rev    = "d2cc4e02436ee68f188eeb6e2a8d2d292882ed93"; # COMPTON_VERSION;
-      sha256 = "0kr4adph4q1rmmk931vhkwrpbibjsxiv3rr443hklmqh4z7np6d4";
+      rev    = "1b947658ffd31f51ed07b8aa91bd774f784ca7b5"; # COMPTON_VERSION;
+      sha256 = "0cyzxvls4ni93hskl0jwwd1mdxng99jq15z9msaxp6gw2c7n79sg";
     };
 
     buildInputs = [
@@ -95,9 +95,6 @@ let
         --replace "run_command('git', 'describe')" \
                   "run_command('echo', 'v${version}')"
     '';
-
-    # temporary workaround
-    patches = [ ./vsync-includes.patch ];
 
     NIX_CFLAGS_COMPILE = [ "-fno-strict-aliasing" ];
 
