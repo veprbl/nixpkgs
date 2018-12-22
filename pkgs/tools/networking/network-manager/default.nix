@@ -1,9 +1,9 @@
-{ stdenv, fetchurl, fetchpatch, substituteAll, intltool, pkgconfig, dbus, dbus-glib
+{ stdenv, fetchurl, substituteAll, intltool, pkgconfig, dbus, dbus-glib
 , gnome3, systemd, libuuid, polkit, gnutls, ppp, dhcp, iptables
 , libgcrypt, dnsmasq, bluez5, readline
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
 , ethtool, gnused, coreutils, file, inetutils, kmod, jansson, libxslt
-, python3Packages, docbook_xsl, openconnect, curl, autoconf, automake, libtool, gtk-doc }:
+, python3Packages, docbook_xsl, openconnect, curl, autoreconfHook }:
 
 let
   pname = "NetworkManager";
@@ -23,22 +23,11 @@ in stdenv.mkDerivation rec {
   '';
 
   preConfigure = ''
-    for x in data/*.rules data/*.in; do
-      substituteInPlace "$x" \
-        --replace /bin/sh ${stdenv.shell} \
-        --replace /usr/sbin/ethtool ${ethtool}/sbin/ethtool \
-        --replace /bin/sed ${gnused}/bin/sed \
-        --replace /bin/kill ${coreutils}/bin/kill
-    done
-
-    # Fixes: error: po/Makefile.in.in was not created by intltoolize.
-    #intltoolize --automake --copy --force
-
-    NOCONFIGURE=1 ./autogen.sh
-
     substituteInPlace configure --replace /usr/bin/uname ${coreutils}/bin/uname
     substituteInPlace configure --replace /usr/bin/file ${file}/bin/file
 
+    # Fixes: error: po/Makefile.in.in was not created by intltoolize.
+    intltoolize --automake --copy --force
   '';
 
   # Right now we hardcode quite a few paths at build time. Probably we should
@@ -62,18 +51,12 @@ in stdenv.mkDerivation rec {
     "--with-session-tracking=systemd"
     "--with-modem-manager-1"
     "--with-nmtui"
-    #"--disable-gtk-doc"
-    "--enable-gtk-doc"
+    "--disable-gtk-doc"
     "--with-libnm-glib" # legacy library, TODO: remove
     "--disable-tests"
   ];
 
   patches = [
-    # https://bugzilla.gnome.org/show_bug.cgi?id=796751
-    (fetchpatch {
-      url = https://bugzilla.gnome.org/attachment.cgi?id=372953;
-      sha256 = "0xg7bzs6dvkbv2qp67i7mi1c5yrmfd471xgmlkn15b33pqkzy3mc";
-    })
     (substituteAll {
       src = ./fix-paths.patch;
       inherit inetutils kmod openconnect ethtool coreutils dbus;
@@ -89,7 +72,7 @@ in stdenv.mkDerivation rec {
 
   propagatedBuildInputs = [ dbus-glib gnutls libgcrypt python3Packages.pygobject3 ];
 
-  nativeBuildInputs = [ autoconf automake libtool intltool pkgconfig libxslt docbook_xsl gtk-doc ];
+  nativeBuildInputs = [ autoreconfHook intltool pkgconfig libxslt docbook_xsl ];
 
   doCheck = false; # requires /sys, the net
 
