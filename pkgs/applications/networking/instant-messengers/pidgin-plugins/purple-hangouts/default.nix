@@ -12,12 +12,8 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ pidgin glib json-glib protobuf protobufc ];
 
-  installPhase = ''
-    install -Dm755 -t $out/lib/pidgin/ libhangouts.so
-    for size in 16 22 24 48; do
-      install -TDm644 hangouts$size.png $out/share/pixmaps/pidgin/protocols/$size/hangouts.png
-    done
-  '';
+  PKG_CONFIG_PURPLE_PLUGINDIR = "${placeholder "out"}/lib/purple-2";
+  PKG_CONFIG_PURPLE_DATADIR = "${placeholder "out"}/share";
 
   meta = with stdenv.lib; {
     homepage = https://bitbucket.org/EionRobb/purple-hangouts;
