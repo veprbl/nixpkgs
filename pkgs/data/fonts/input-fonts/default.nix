@@ -5,9 +5,12 @@ stdenv.mkDerivation rec {
   version = "2017-08-10"; # date of the download and checksum
 
   src = requireFile {
-    name = "Input-Font.zip";
+    # round 'a'
+    # round 'g'
+    # slash zero
+    name = "Input-Font-tweaks.zip";
     url = "http://input.fontbureau.com/download/";
-    sha256 = "07fkyvbb12agkb2kpnq2j45nycgbjvb4n1s5hjyqsipdh2z9zihq";
+    sha256 = "04sg06i07w526ysnv1xk58pkm62n006w3796j8crcs0cb2kcb0am";
   };
 
   nativeBuildInputs = [ unzip ];
@@ -25,7 +28,7 @@ stdenv.mkDerivation rec {
 
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
-  outputHash = "0k7xqkgqldd110ch9s144ilh762q777qcjvg3plmrb9s6xiaqvvd";
+  outputHash = "1dsvnr5ickdgig42gn7dnw3p3f0q3102qzi4xn0jv60cyc3pbfx3";
 
   meta = with stdenv.lib; {
     description = "Fonts for Code, from Font Bureau";
