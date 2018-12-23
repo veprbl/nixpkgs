@@ -1,4 +1,4 @@
-From 2d6b1690f866caf674c8970ee11af5684ae6dbc0 Mon Sep 17 00:00:00 2001
+From 8aa95bef4bf3cca1aef391b9b9068b1973cf801e Mon Sep 17 00:00:00 2001
 From: Will Dietz <w@wdtz.org>
 Date: Mon, 22 Oct 2018 00:52:30 -0500
 Subject: [PATCH 3/3] lists
@@ -10,10 +10,10 @@ Subject: [PATCH 3/3] lists
  3 files changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/src/index_view.m b/src/index_view.m
-index 88330b0..2a1977e 100644
+index 45eb289..d4c76a7 100644
 --- a/src/index_view.m
 +++ b/src/index_view.m
-@@ -1852,7 +1852,8 @@ draw_index_line(IAttrs, Panel, Line, _LineNr, IsCursor, !IO) :-
+@@ -1851,7 +1851,8 @@ draw_index_line(IAttrs, Panel, Line, _LineNr, IsCursor, !IO) :-
  draw_display_tag(Panel, Tag, !IO) :-
      ( display_tag(Tag) ->
          Tag = tag(TagName),
@@ -61,5 +61,5 @@ index d27a47a..2e8ad14 100644
          true
      ).
 -- 
-2.19.1
+2.20.1
 
