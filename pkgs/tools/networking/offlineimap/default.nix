@@ -1,25 +1,20 @@
 { stdenv, fetchFromGitHub, python2Packages,
-  asciidoc, libxml2, libxslt, docbook_xsl }:
+  asciidoc, libxml2, libxslt, docbook_xsl, docbook_xml_dtd_45 }:
 
 python2Packages.buildPythonApplication rec {
-  version = "7.2.1";
+  version = "7.2.2";
   pname = "offlineimap";
 
   src = fetchFromGitHub {
     owner = "OfflineIMAP";
     repo = "offlineimap";
     rev = "v${version}";
-    sha256 = "1m5i74baazwazqp98ssma968rnwzfl1nywb7icf0swc8447ps97q";
+    sha256 = "11nj7y9fa7v6vcxk3wr8smfgm3mxxnmq3l8q69rrjxlfzcv7dl8m";
   };
-
-  postPatch = ''
-    # Skip xmllint to stop failures due to no network access
-    sed -i docs/Makefile -e "s|a2x -v -d |a2x -L -v -d |"
-  '';
 
   doCheck = false;
 
-  nativeBuildInputs = [ asciidoc libxml2 libxslt docbook_xsl ];
+  nativeBuildInputs = [ asciidoc libxml2 libxslt docbook_xsl docbook_xml_dtd_45 ];
   propagatedBuildInputs = with python2Packages; [ six kerberos ];
 
   postInstall = ''
