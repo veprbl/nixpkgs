@@ -1,7 +1,7 @@
-{ stdenv, fetchFromGitHub, autoreconfHook, pkgconfig, libxml2, glib, pipewire, fuse }:
+{ stdenv, fetchFromGitHub, autoreconfHook, pkgconfig, libxml2, glib, pipewire, geoclue2, fontconfig, fuse }:
 
 let
-  version = "1.0.3";
+  version = "1.1.0";
 in stdenv.mkDerivation rec {
   name = "xdg-desktop-portal-${version}";
 
@@ -11,7 +11,7 @@ in stdenv.mkDerivation rec {
     owner = "flatpak";
     repo = "xdg-desktop-portal";
     rev = version;
-    sha256 = "113k5sr4l58rm8sgp4qbjrhyjg37c5ad54i58njsm98knb5r2ppv";
+    sha256 = "10dv628gci6vcs0rbyp4wb6yvigw2i1jj9x7ii6ckxjir5rff5dx";
   };
 
   patches = [
@@ -19,7 +19,7 @@ in stdenv.mkDerivation rec {
   ];
 
   nativeBuildInputs = [ autoreconfHook pkgconfig libxml2 ];
-  buildInputs = [ glib pipewire fuse ];
+  buildInputs = [ glib pipewire geoclue2 fontconfig fuse ];
 
   doCheck = true;
 
