@@ -46,7 +46,7 @@ in stdenv.mkDerivation rec {
     "--sysconfdir=/etc" "--localstatedir=/var"
     "--with-dbus-sys-dir=${placeholder "out"}/etc/dbus-1/system.d"
     "--with-crypto=gnutls" "--disable-more-warnings"
-    "--with-systemdsystemunitdir=$(out)/etc/systemd/system"
+    "--with-systemdsystemunitdir=${placeholder "out"}/etc/systemd/system"
     "--with-kernel-firmware-dir=/run/current-system/firmware"
     "--with-session-tracking=systemd"
     "--with-modem-manager-1"
