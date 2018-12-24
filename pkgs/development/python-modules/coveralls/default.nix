@@ -15,7 +15,7 @@
 
 buildPythonPackage rec {
   pname = "coveralls";
-  name = "${pname}-python-${version}";
+  #name = "${pname}-python-${version}";
   version = "1.5.1";
 
   # wanted by tests
