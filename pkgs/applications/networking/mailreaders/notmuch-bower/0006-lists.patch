@@ -1,7 +1,7 @@
-From 8aa95bef4bf3cca1aef391b9b9068b1973cf801e Mon Sep 17 00:00:00 2001
+From 17139b0a159e8ea9b038c89a81825f508f4b16ce Mon Sep 17 00:00:00 2001
 From: Will Dietz <w@wdtz.org>
 Date: Mon, 22 Oct 2018 00:52:30 -0500
-Subject: [PATCH 3/3] lists
+Subject: [PATCH 6/6] lists
 
 ---
  src/index_view.m   | 3 ++-
@@ -10,7 +10,7 @@ Subject: [PATCH 3/3] lists
  3 files changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/src/index_view.m b/src/index_view.m
-index 45eb289..d4c76a7 100644
+index 638ba1a..eac78ae 100644
 --- a/src/index_view.m
 +++ b/src/index_view.m
 @@ -1851,7 +1851,8 @@ draw_index_line(IAttrs, Panel, Line, _LineNr, IsCursor, !IO) :-
@@ -47,7 +47,7 @@ index 8000349..042e0db 100644
          true
      ).
 diff --git a/src/thread_pager.m b/src/thread_pager.m
-index d27a47a..2e8ad14 100644
+index 3c3ca57..e4943bf 100644
 --- a/src/thread_pager.m
 +++ b/src/thread_pager.m
 @@ -2958,7 +2958,8 @@ draw_thread_line(TAttrs, Panel, Line, _LineNr, IsCursor, !IO) :-

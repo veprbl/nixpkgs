@@ -20,9 +20,12 @@ stdenv.mkDerivation rec {
   makeFlags = [ "PARALLEL=-j$(NIX_BUILD_CORES)" "bower" "man" ];
 
   patches = [
-    ./0001-convert-inbox-tag-to-single-char-indicator-hide-impo.patch
-    ./0002-hide-more-tags-that-would-be-painful-to-mass-change.patch
-    ./0003-lists.patch
+    ./0001-Use-some-emoticons-for-status.patch
+    ./0002-Good-signature.patch
+    ./0003-tick-for-selected.patch
+    ./0004-convert-inbox-tag-to-single-char-indicator-hide-impo.patch
+    ./0005-hide-more-tags-that-would-be-painful-to-mass-change.patch
+    ./0006-lists.patch
   ];
 
   installPhase = ''
