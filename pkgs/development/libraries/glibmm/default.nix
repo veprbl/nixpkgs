@@ -1,14 +1,11 @@
-{ stdenv, fetchurl, fetchpatch, pkgconfig, gnum4, glib, libsigcxx }:
+{ stdenv, fetchurl, pkgconfig, gnum4, glib, libsigcxx, gnome3 }:
 
-let
-  ver_maj = "2.58";
-  ver_min = "0";
-in
 stdenv.mkDerivation rec {
-  name = "glibmm-${ver_maj}.${ver_min}";
+  pname = "glibmm";
+  version = "2.58.0";
 
   src = fetchurl {
-    url = "mirror://gnome/sources/glibmm/${ver_maj}/${name}.tar.xz";
+    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
     sha256 = "0idnaii4h3mdym2a55gkavipyxigwvbgfmzmwql85s4rgciqjhfk";
   };
 
@@ -20,6 +17,12 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
 
   doCheck = false; # fails. one test needs the net, another /etc/fstab
+
+  passthru = {
+    updateScript = gnome3.updateScript {
+      packageName = pname;
+    };
+  };
 
   meta = with stdenv.lib; {
     description = "C++ interface to the GLib library";

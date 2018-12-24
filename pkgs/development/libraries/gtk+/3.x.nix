@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, pkgconfig, gettext, perl, makeWrapper, shared-mime-info
+{ stdenv, fetchurl, fetchpatch, pkgconfig, gettext, perl, makeWrapper, shared-mime-info, isocodes
 , expat, glib, cairo, pango, gdk_pixbuf, atk, at-spi2-atk, gobject-introspection
 , xorg, epoxy, json-glib, libxkbcommon, gmp, gnome3
 , x11Support ? stdenv.isLinux
@@ -13,7 +13,7 @@ assert cupsSupport -> cups != null;
 with stdenv.lib;
 
 let
-  version = "3.24.2"; # 3.24.2 with some fixes
+  version = "3.24.2";
 in
 stdenv.mkDerivation rec {
   name = "gtk+3-${version}";
@@ -35,7 +35,13 @@ stdenv.mkDerivation rec {
       url = "https://bug757142.bugzilla-attachments.gnome.org/attachment.cgi?id=344123";
       sha256 = "0g6fhqcv8spfy3mfmxpyji93k8d4p4q4fz1v9a1c1cgcwkz41d7p";
     })
-
+    # XXX: DTZ: This is included in patch series listed below
+    # (but keeping this as a reminder of such when merging)
+    # https://gitlab.gnome.org/GNOME/gtk/issues/1521
+    #(fetchpatch {
+    #  url = https://gitlab.gnome.org/GNOME/gtk/commit/2905fc861acda3d134a198e56ef2f6c962ad3061.patch;
+    #  sha256 = "0y8ljny59kgdhrcfpimi2r082bax60d5kflw1qj9k1mnzjcvjjwl";
+    #})
     # Upstream patches
     ./3.24.2-16/0001-imwayland-Handle-enter-and-leave-events.patch
     ./3.24.2-16/0002-imwayland-rearrange-functions-to-remove-prototypes.patch
@@ -50,7 +56,7 @@ stdenv.mkDerivation rec {
     ./3.24.2-16/0011-x11-Fix-deprecation-macro-use.patch
   ];
 
-  buildInputs = [ libxkbcommon epoxy json-glib ]
+  buildInputs = [ libxkbcommon epoxy json-glib isocodes ]
     ++ optional stdenv.isDarwin AppKit;
   propagatedBuildInputs = with xorg; with stdenv.lib;
     [ expat glib cairo pango gdk_pixbuf atk at-spi2-atk gnome3.gsettings-desktop-schemas
