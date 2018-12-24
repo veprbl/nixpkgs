@@ -1,5 +1,5 @@
 { stdenv, fetchurl, substituteAll, pkgconfig, meson, ninja, gettext, gnome3, wrapGAppsHook, packagekit, ostree
-, glib, appstream-glib, glib-networking, libsoup, polkit, isocodes, gspell, libxslt, gobjectIntrospection, flatpak, fwupd
+, glib, appstream-glib, glib-networking, libsoup, polkit, isocodes, gspell, libxslt, gobject-introspection, flatpak, fwupd
 , json-glib, libsecret, valgrind-light, docbook_xsl, docbook_xml_dtd_42, docbook_xml_dtd_43, gtk-doc, desktop-file-utils }:
 
 stdenv.mkDerivation rec {
