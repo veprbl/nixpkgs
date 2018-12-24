@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, autoreconfHook, pkgconfig, libxml2, glib, pipewire, fontconfig, fuse }:
+{ stdenv, fetchFromGitHub, autoreconfHook, pkgconfig, libxml2, glib, pipewire, fontconfig, flatpak, fuse }:
 
 let
   version = "1.1.0";
@@ -19,7 +19,7 @@ in stdenv.mkDerivation rec {
   ];
 
   nativeBuildInputs = [ autoreconfHook pkgconfig libxml2 ];
-  buildInputs = [ glib pipewire fontconfig fuse ];
+  buildInputs = [ glib pipewire fontconfig flatpak fuse ];
 
   doCheck = true;
 
