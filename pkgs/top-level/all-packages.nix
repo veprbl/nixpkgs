@@ -7596,7 +7596,6 @@ in
   urweb = callPackage ../development/compilers/urweb { };
 
   inherit (callPackage ../development/compilers/vala { })
-    vala_0_34
     vala_0_36
     vala_0_38
     vala_0_40
