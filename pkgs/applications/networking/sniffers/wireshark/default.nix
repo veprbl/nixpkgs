@@ -1,5 +1,5 @@
 { stdenv, fetchurl, pkgconfig, pcre, perl, flex, bison, gettext, libpcap, libnl, c-ares
-, gnutls, libgcrypt, libgpgerror, geoip, openssl, lua5, python, libcap, glib
+, gnutls, libgcrypt, libgpgerror, geoip, openssl, lua5, nghttp2, lz4, snappy, python, libcap, glib
 , libssh, zlib, cmake, extra-cmake-modules, fetchpatch, makeWrapper
 , withGtk ? false, gtk3 ? null, librsvg ? null, gsettings-desktop-schemas ? null, wrapGAppsHook ? null
 , withQt ? false, qt5 ? null
@@ -38,6 +38,7 @@ in stdenv.mkDerivation {
   buildInputs = [
     gettext pcre perl libpcap lua5 libssh openssl libgcrypt
     libgpgerror gnutls geoip c-ares python glib zlib makeWrapper
+    nghttp2 lz4 snappy
   ] ++ optionals withQt  (with qt5; [ qtbase qtmultimedia qtsvg qttools ])
     ++ optionals withGtk [ gtk3 librsvg gsettings-desktop-schemas ]
     ++ optionals stdenv.isLinux  [ libcap libnl ]
