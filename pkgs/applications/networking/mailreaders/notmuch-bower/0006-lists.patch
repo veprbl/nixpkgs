@@ -1,7 +1,7 @@
 From 17139b0a159e8ea9b038c89a81825f508f4b16ce Mon Sep 17 00:00:00 2001
 From: Will Dietz <w@wdtz.org>
 Date: Mon, 22 Oct 2018 00:52:30 -0500
-Subject: [PATCH 6/6] lists
+Subject: [PATCH 6/7] lists
 
 ---
  src/index_view.m   | 3 ++-

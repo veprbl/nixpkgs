@@ -1,7 +1,7 @@
 From c300e9216b61364e6f9b550c90a2ae2c2271d416 Mon Sep 17 00:00:00 2001
 From: Stian Soiland-Reyes <stain@apache.org>
 Date: Thu, 16 Mar 2017 15:47:54 +0000
-Subject: [PATCH 3/6] tick for selected
+Subject: [PATCH 3/7] tick for selected
 
 ---
  src/index_view.m   | 4 ++--
