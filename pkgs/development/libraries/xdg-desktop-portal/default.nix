@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, autoreconfHook, pkgconfig, libxml2, glib, pipewire, fontconfig, fuse }:
+{ stdenv, fetchFromGitHub, autoreconfHook, pkgconfig, libxml2, glib, pipewire, fontconfig, flatpak, acl, dbus, fuse }:
 
 let
   version = "1.1.0";
@@ -16,12 +16,13 @@ in stdenv.mkDerivation rec {
 
   patches = [
     ./respect-path-env-var.patch
+    ./0001-test-doc-portal-Skip-all-tests-if-FUSE-isn-t-support.patch
   ];
 
   nativeBuildInputs = [ autoreconfHook pkgconfig libxml2 ];
-  buildInputs = [ glib pipewire fontconfig fuse ];
+  buildInputs = [ glib pipewire fontconfig flatpak acl dbus fuse ];
 
-  doCheck = true;
+  doCheck = true; # XXX: investigate!
 
   configureFlags = [
     "--enable-installed-tests"
