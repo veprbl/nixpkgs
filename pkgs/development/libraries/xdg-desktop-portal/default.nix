@@ -25,6 +25,7 @@ in stdenv.mkDerivation rec {
 
   configureFlags = [
     "--enable-installed-tests"
+    "--disable-geoclue" # Requires 2.5.2, not released yet
   ];
 
   makeFlags = [
