@@ -24,6 +24,25 @@
      gpg-connect-agent --homedir "${FL_GPG_HOMEDIR}" killagent /bye || true
      fusermount -u $XDG_RUNTIME_DIR/doc || :
      if test -n "${TEST_SKIP_CLEANUP:-}"; then
+diff --git a/tests/make-test-app.sh b/tests/make-test-app.sh
+--- a/tests/make-test-app.sh
++++ b/tests/make-test-app.sh
+@@ -114,13 +114,13 @@ msgid "Hello world"
+ msgstr "Hallo Welt"
+ EOF
+ mkdir -p ${DIR}/files/de/share/de/LC_MESSAGES
+-msgfmt --output-file ${DIR}/files/de/share/de/LC_MESSAGES/helloworld.mo de.po
++@gettext@/bin/msgfmt --output-file ${DIR}/files/de/share/de/LC_MESSAGES/helloworld.mo de.po
+ cat > fr.po <<EOF
+ msgid "Hello world"
+ msgstr "Bonjour le monde"
+ EOF
+ mkdir -p ${DIR}/files/fr/share/fr/LC_MESSAGES
+-msgfmt --output-file ${DIR}/files/fr/share/fr/LC_MESSAGES/helloworld.mo fr.po
++@gettext@/bin/msgfmt --output-file ${DIR}/files/fr/share/fr/LC_MESSAGES/helloworld.mo fr.po
+ 
+ flatpak build-finish ${DIR}
+ mkdir -p repos
 --- a/tests/make-test-runtime.sh
 +++ b/tests/make-test-runtime.sh
 @@ -26,6 +26,7 @@
