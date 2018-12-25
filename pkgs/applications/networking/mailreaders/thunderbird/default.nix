@@ -105,18 +105,9 @@ in stdenv.mkDerivation rec {
       cd ../objdir
     '';
 
-  preInstall =
-    ''
-      # The following is needed for startup cache creation on grsecurity kernels.
-      paxmark m ../objdir/dist/bin/xpcshell
-    '';
-
   dontWrapGApps = true; # we do it ourselves
   postInstall =
     ''
-      # For grsecurity kernels
-      paxmark m $out/lib/thunderbird/thunderbird
-
       # TODO: Move to a dev output?
       rm -rf $out/include $out/lib/thunderbird-devel-* $out/share/idl
 

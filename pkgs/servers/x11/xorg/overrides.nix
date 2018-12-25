@@ -136,7 +136,8 @@ self: super:
     configureFlags = attrs.configureFlags or []
       ++ malloc0ReturnsNullCrossFlag;
     propagatedBuildInputs = [ self.libSM ];
-    CPP = stdenv.lib.optionalString stdenv.isDarwin "clang -E -";
+    depsBuildBuild = [ buildPackages.stdenv.cc ];
+    CPP = if stdenv.isDarwin then "clang -E -" else "${stdenv.cc.targetPrefix}cc -E -";
     outputs = [ "out" "dev" "devdoc" ];
   });
 
@@ -200,6 +201,8 @@ self: super:
 
   libXinerama = super.libXinerama.overrideAttrs (attrs: {
     outputs = [ "out" "dev" ];
+    configureFlags = attrs.configureFlags or []
+      ++ malloc0ReturnsNullCrossFlag;
   });
 
   libXmu = super.libXmu.overrideAttrs (attrs: {
@@ -238,6 +241,8 @@ self: super:
 
   libXvMC = super.libXvMC.overrideAttrs (attrs: {
     outputs = [ "out" "dev" "doc" ];
+    configureFlags = attrs.configureFlags or []
+      ++ malloc0ReturnsNullCrossFlag;
     buildInputs = attrs.buildInputs ++ [self.xorgproto];
   });
 
