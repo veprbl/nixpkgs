@@ -21531,6 +21531,8 @@ in
 
   ioquake3 = callPackage ../games/quake3/ioquake { };
 
+  ioquake3pointrelease = callPackage ../games/quake3/content/ioquake.nix { };
+
   quantumminigolf = callPackage ../games/quantumminigolf {};
 
   racer = callPackage ../games/racer { };
