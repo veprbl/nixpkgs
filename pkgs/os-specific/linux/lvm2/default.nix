@@ -40,7 +40,7 @@ stdenv.mkDerivation {
       sed -i /DEFAULT_PROFILE_DIR/d conf/Makefile.in
     '';
 
-  enableParallelBuilding = true;
+  enableParallelBuilding = false;
 
   #patches = [ ./purity.patch ];
   patches = stdenv.lib.optionals stdenv.hostPlatform.isMusl [
