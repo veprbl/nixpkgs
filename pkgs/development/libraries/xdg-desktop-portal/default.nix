@@ -16,6 +16,7 @@ in stdenv.mkDerivation rec {
 
   patches = [
     ./respect-path-env-var.patch
+    # https://github.com/flatpak/xdg-desktop-portal/pull/263
     ./0001-test-doc-portal-Skip-all-tests-if-FUSE-isn-t-support.patch
   ];
 
