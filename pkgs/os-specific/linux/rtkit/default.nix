@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, pkgconfig, dbus, libcap }:
+{ stdenv, fetchurl, fetchpatch, pkgconfig, autoreconfHook, dbus, libcap }:
 
 stdenv.mkDerivation rec {
   name = "rtkit-0.11";
@@ -30,9 +30,11 @@ stdenv.mkDerivation rec {
       url = "https://sources.debian.org/data/main/r/rtkit/0.11-6/debian/patches/0006-fix-format-strings.patch";
       sha256 = "09mr89lh16jvz6cqw00zmh0xk919bjfhjkvna1czwmafwy9p7kgp";
     })
+
+    ./rtkit-0.11-gettime.patch
   ];
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ autoreconfHook pkgconfig ];
   buildInputs = [ dbus libcap ];
 
   meta = with stdenv.lib; {
