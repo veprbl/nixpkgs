@@ -699,7 +699,9 @@ in
 
   deskew = callPackage ../applications/graphics/deskew { };
 
-  diskus = callPackage ../tools/misc/diskus { };
+  diskus = callPackage ../tools/misc/diskus {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
 
   djmount = callPackage ../tools/filesystems/djmount { };
 
@@ -1692,9 +1694,7 @@ in
 
   mongodb-tools = callPackage ../tools/misc/mongodb-tools { };
 
-  mozlz4a = callPackage ../tools/compression/mozlz4a {
-    pylz4 = python3Packages.lz4;
-  };
+  mozlz4a = callPackage ../tools/compression/mozlz4a { };
 
   msr-tools = callPackage ../os-specific/linux/msr-tools { };
 
@@ -4777,7 +4777,7 @@ in
 
   fmodex = callPackage ../games/zandronum/fmod.nix { };
 
-  pdfmod = callPackage ../applications/misc/pdfmod { mono = mono4; };
+  pdfmod = callPackage ../applications/misc/pdfmod { };
 
   pdf-quench = callPackage ../applications/misc/pdf-quench { };
 
@@ -10295,7 +10295,7 @@ in
 
   hydraAntLogger = callPackage ../development/libraries/java/hydra-ant-logger { };
 
-  hyena = callPackage ../development/libraries/hyena { mono = mono4; };
+  hyena = callPackage ../development/libraries/hyena { };
 
   hyperscan = callPackage ../development/libraries/hyperscan { };
 
@@ -10681,6 +10681,8 @@ in
   };
 
   libde265 = callPackage ../development/libraries/libde265 {};
+
+  libdeflate = callPackage ../development/libraries/libdeflate { };
 
   libdevil = callPackage ../development/libraries/libdevil {
     inherit (darwin.apple_sdk.frameworks) OpenGL;
