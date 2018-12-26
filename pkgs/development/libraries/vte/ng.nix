@@ -2,6 +2,7 @@
 
 vte.overrideAttrs (oldAttrs: rec {
   name = "vte-ng-${version}";
+  pname = "vte-ng";
   version = "0.54.2";
 
   src = fetchFromGitHub {
