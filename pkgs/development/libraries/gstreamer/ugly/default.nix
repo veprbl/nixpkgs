@@ -28,6 +28,8 @@ stdenv.mkDerivation rec {
     sha256 = "08vd1xgwmapnviah47zv5h2r02qdd20y4f07rvv5zhv6y4vxh0mc";
   };
 
+  NIX_CFLAGS_LINK = [ "-lm" ];
+
   outputs = [ "out" "dev" ];
 
   nativeBuildInputs = [ meson ninja gettext pkgconfig python ];
