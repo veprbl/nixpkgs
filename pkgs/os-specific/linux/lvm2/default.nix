@@ -1,18 +1,18 @@
-{ stdenv, fetchurl, fetchpatch, pkgconfig, systemd, udev, utillinux, libuuid
+{ stdenv, fetchgit, fetchpatch, pkgconfig, systemd, udev, utillinux, libuuid
 , thin-provisioning-tools, libaio
 , enable_dmeventd ? false }:
 
 let
-  version = "2.03.02";
+  version = "2.03.01";
 in
 
 stdenv.mkDerivation {
   name = "lvm2-${version}";
 
-  src = fetchurl {
-    #url = "ftp://sources.redhat.com/pub/lvm2/releases/LVM2.${version}.tgz";
-    url = "ftp://sources.redhat.com/pub/lvm2/LVM2.${version}.tgz";
-    sha256 = "03vjdkjxw04pggqzdmznpc3gbzmzr9jpb1y9a9z5pmwz4d8af2sm";
+  src = fetchgit {
+    url = "git://sourceware.org/git/lvm2.git";
+    rev = "v${builtins.replaceStrings [ "." ] [ "_" ] version}";
+    sha256 = "0jlaswf1srdxiqpgpp97j950ddjds8z0kr4pbwmal2za2blrgvbl";
   };
 
   configureFlags = [
