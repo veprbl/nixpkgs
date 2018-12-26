@@ -42,7 +42,6 @@ stdenv.mkDerivation {
 
   enableParallelBuilding = false;
 
-  #patches = [ ./purity.patch ];
   patches = stdenv.lib.optionals stdenv.hostPlatform.isMusl [
     (fetchpatch {
       name = "fix-stdio-usage.patch";
