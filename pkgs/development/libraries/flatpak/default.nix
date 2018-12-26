@@ -55,6 +55,9 @@ in stdenv.mkDerivation rec {
     "--enable-installed-tests"
   ];
 
+  # Uses pthread_sigmask but doesn't link to pthread
+  NIX_CFLAGS_LINK = [ "-lpthread" ];
+
   makeFlags = [
     "installed_testdir=$(installedTests)/libexec/installed-tests/flatpak"
     "installed_test_metadir=$(installedTests)/share/installed-tests/flatpak"
