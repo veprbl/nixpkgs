@@ -3739,6 +3739,8 @@ in {
 
   pyutil = callPackage ../development/python-modules/pyutil { };
 
+  pywal = callPackage ../development/python-modules/pywal { };
+
   pywebkitgtk = callPackage ../development/python-modules/pywebkitgtk { };
 
   pywinrm = callPackage ../development/python-modules/pywinrm { };
