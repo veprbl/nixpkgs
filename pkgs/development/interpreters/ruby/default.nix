@@ -32,7 +32,7 @@ let
   generic = { version, sha256 }: let
     ver = version;
     tag = ver.gitTag;
-    isRuby25 = ver.majMin == "2.5";
+    atLeast25 = lib.versionAtLeast ver.majMin "2.5";
     baseruby = self.override { useRailsExpress = false; };
     self = lib.makeOverridable (
       { stdenv, buildPackages, lib
@@ -56,7 +56,7 @@ let
           rev    = tag;
           sha256 = sha256.git;
         } else fetchurl {
-          url = "http://cache.ruby-lang.org/pub/ruby/${ver.majMin}/ruby-${ver}.tar.gz";
+          url = "https://cache.ruby-lang.org/pub/ruby/${ver.majMin}/ruby-${ver}.tar.gz";
           sha256 = sha256.src;
         };
       in
@@ -105,7 +105,7 @@ let
           popd
         '';
 
-        postPatch = if isRuby25 then ''
+        postPatch = if atLeast25 then ''
           sed -i configure.ac -e '/config.guess/d'
           cp --remove-destination ${config}/config.guess tool/
           cp --remove-destination ${config}/config.sub tool/
@@ -218,6 +218,14 @@ in {
     sha256 = {
       src = "0v4442aqqlzxwc792kbkfs2k61qg97r680is6gx20z63a8wd0a4q";
       git = "0r9mgvqk6gj8pc9q6qmy7j2kbln7drc8wy67sb2ij8ciclcw9nn2";
+    };
+  };
+
+  ruby_2_6 = generic {
+    version = rubyVersion "2" "6" "0" "";
+    sha256 = {
+      src = "0wn0gxlx6xhhqrm2caxp0h6cj4nw7knnv5gh27qqzj0i9a95phzk";
+      git = "0bwbl4hz18dd5aij2l4s6xy90dc17d03kk577gdl34l9mbd9m7mn";
     };
   };
 }
