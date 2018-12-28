@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchurl, libkate, pango, cairo, glib, pkgconfig, darwin }:
+{ stdenv, lib, fetchurl, libkate, pango, cairo, pkgconfig, darwin }:
 
 stdenv.mkDerivation rec {
   name = "libtiger-0.3.4";
@@ -9,7 +9,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ pkgconfig ];
-  buildInputs = [ libkate pango cairo /* workaround */ glib ]
+  buildInputs = [ libkate pango cairo ]
     ++ lib.optional stdenv.isDarwin darwin.apple_sdk.frameworks.ApplicationServices;
 
   meta = {
