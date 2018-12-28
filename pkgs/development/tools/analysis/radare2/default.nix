@@ -3,12 +3,14 @@
 , callPackage
 , pkgconfig
 , libusb, readline, libewf, perl, zlib, openssl
-, libuv, file, libzip, xxHash
+, libuv, libzip, xxHash
 , gtk2 ? null, vte ? null, gtkdialog ? null
 , python3 ? null
 , ruby ? null
 , lua ? null
 , useX11, rubyBindings, pythonBindings, luaBindings
+, file ? null
+, useSysMagic ? false
 }:
 
 assert useX11 -> (gtk2 != null && vte != null && gtkdialog != null);
@@ -64,8 +66,8 @@ let
         "GITTIP=${gittip}"
         "RANLIB=${stdenv.cc.bintools.bintools}/bin/${stdenv.cc.bintools.targetPrefix}ranlib"
       ];
-      configureFlags = [
-        "--with-sysmagic"
+      configureFlags = optional useSysMagic "--with-sysmagic"
+      ++ [
         "--with-syszip"
         "--with-sysxxhash"
         "--with-openssl"
@@ -75,11 +77,14 @@ let
       depsBuildBuild = [ buildPackages.stdenv.cc ];
 
       nativeBuildInputs = [ pkgconfig ];
-      buildInputs = [ file libzip xxHash readline libusb libewf perl zlib openssl libuv ]
+      buildInputs = [ readline libusb libewf perl libuv ]
         ++ optional useX11 [ gtkdialog vte gtk2 ]
         ++ optional rubyBindings [ ruby ]
         ++ optional pythonBindings [ python3 ]
         ++ optional luaBindings [ lua ];
+
+      propagatedBuildInputs = [ zlib libzip xxHash openssl ]
+        ++ optional useSysMagic [ file ];
 
       meta = {
         description = "unix-like reverse engineering framework and commandline tools";
