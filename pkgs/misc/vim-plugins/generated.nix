@@ -2577,7 +2577,8 @@ let
   };
 
   vim-hackernews = buildVimPluginFrom2Nix {
-    name = "vim-hackernews-2018-04-11";
+    pname = "vim-hackernews";
+    version = "2018-04-11";
     src = fetchFromGitHub {
       owner = "adelarsq";
       repo = "vim-hackernews";
