@@ -63,7 +63,7 @@ let
 
   gitSource = rec {
     pname = "compton-git";
-    version = "5-rc1";
+    version = "5-rc2";
     #version = "2018-12-22";
 
     COMPTON_VERSION = "v${version}";
@@ -74,7 +74,7 @@ let
       owner  = "yshui";
       repo   = "compton";
       rev    = COMPTON_VERSION;
-      sha256 = "1sbah1s0a7mpx1984ny0nrnbi5kgdncyfgb1l70n8qlr7i8vd9f6";
+      sha256 = "0sgphbs4h6z29ypr4b1a5h5ycx1sjns81in3kl1d5ndmpd7rvgpd";
     };
 
     buildInputs = [
