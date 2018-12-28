@@ -38,8 +38,6 @@ in stdenv.mkDerivation rec {
 
   doCheck = false; # /layout/valid-1.markup: FAIL
 
-  patches = [ ./glib-dep.patch ];
-
   passthru = {
     updateScript = gnome3.updateScript {
       packageName = pname;
