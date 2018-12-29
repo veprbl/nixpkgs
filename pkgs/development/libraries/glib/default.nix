@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, gettext, meson, ninja, pkgconfig, perl, python3, glibcLocales
+{ stdenv, fetchurl, fetchpatch, gettext, meson, ninja, pkgconfig, perl, python3, glibcLocales
 , libiconv, zlib, libffi, pcre, libelf, gnome3, libselinux, bash, gnum4, gtk-doc, docbook_xsl, docbook_xml_dtd_45
 # use utillinuxMinimal to avoid circular dependency (utillinux, systemd, glib)
 , utillinuxMinimal ? null
@@ -64,6 +64,12 @@ stdenv.mkDerivation rec {
       ./schema-override-variable.patch
       # Require substituteInPlace in postPatch
       ./fix-gio-launch-desktop-path.patch
+      # https://gitlab.gnome.org/GNOME/glib/issues/1626
+      # https://gitlab.gnome.org/GNOME/glib/merge_requests/557
+      (fetchpatch {
+        url = https://gitlab.gnome.org/GNOME/glib/commit/85c4031696add9797e2334ced20678edcd96c869.patch;
+        sha256 = "1hmyvhx89wip2a26gk1rvd87k0pjfia51s0ysybjyzf5f1pzw877";
+      })
     ];
 
   outputs = [ "bin" "out" "dev" "devdoc" ];
