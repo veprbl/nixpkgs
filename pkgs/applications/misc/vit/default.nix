@@ -1,16 +1,17 @@
-{ pkgs, fetchgit, stdenv, makeWrapper, taskwarrior, ncurses,
-perl, perlPackages }:
+{ pkgs, fetchFromGitHub, stdenv, makeWrapper, taskwarrior, ncurses,
+perl, perlPackages, which }:
 
 let
-  version = "1.2";
+  version = "1.3.beta1";
 in
 stdenv.mkDerivation {
   name = "vit-${version}";
 
-  src = fetchgit {
-    url = "https://git.tasktools.org/scm/ex/vit.git";
-    rev = "7d0042ca30e9d09cfbf9743b3bc72096e4a8fe1e";
-    sha256 = "92cad7169b3870145dff02256e547ae270996a314b841d3daed392ac6722827f";
+  src = fetchFromGitHub {
+    owner = "scottkosty";
+    repo = "vit";
+    rev = "v${version}";
+    sha256 = "1hxki4m8ahgkzh3d389xrxhq6ac73ihavsw3cn1b4mn1kygcl3j2";
   };
 
   preConfigure = ''
@@ -24,7 +25,8 @@ stdenv.mkDerivation {
     wrapProgram $out/bin/vit --prefix PERL5LIB : $PERL5LIB
   '';
 
-  buildInputs = [ taskwarrior ncurses perlPackages.Curses perl makeWrapper ];
+  nativeBuildInputs = [ makeWrapper which ];
+  buildInputs = [ taskwarrior ncurses perlPackages.Curses perl ];
 
   meta = {
     description = "Visual Interactive Taskwarrior";
