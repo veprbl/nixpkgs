@@ -19,6 +19,8 @@ stdenv.mkDerivation {
       --replace sudo ""
     substituteInPlace configure \
       --replace /usr/bin/perl ${perl}/bin/perl
+    substituteInPlace cmdline.pl \
+      --replace "view " "vim -R "
   '';
 
   postInstall = ''
