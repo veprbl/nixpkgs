@@ -35,7 +35,7 @@ in stdenv.mkDerivation rec {
 
     cp -r ./* $out/share/trilium
     ln -s $out/share/trilium/trilium $out/bin/trilium
-    
+
     ln -s $out/share/trilium/resources/app/src/public/images/trilium.svg $out/share/icons/hicolor/scalable/apps/trilium.svg
     cp ${desktopItem}/share/applications/* $out/share/applications
   '';
