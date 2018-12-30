@@ -31,7 +31,7 @@ in stdenv.mkDerivation {
   #  sha256 = "126b3lsh4gkyajsqm2c8l6wqr4dd7m26krz2527khmlps0lxdhg1";
   #};
 
-  outputs = [ "out" "lib" "dev" "devdoc" "man" "installedTests" ];
+  outputs = [ "out" /* "lib" */ "dev" "devdoc" "man" "installedTests" ];
 
   nativeBuildInputs = [
     meson ninja gtk-doc pkgconfig gobject-introspection intltool glibcLocales shared-mime-info
