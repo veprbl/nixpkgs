@@ -1,6 +1,17 @@
-{ stdenv, fetchurl, p7zip, autoPatchelfHook, atomEnv, makeWrapper }:
+{ stdenv, fetchurl, p7zip, autoPatchelfHook, atomEnv, makeWrapper, makeDesktopItem }:
 
-stdenv.mkDerivation rec {
+let
+  description = "Trilium Notes is a hierarchical note taking application with focus on building large personal knowledge bases.";
+  desktopItem = makeDesktopItem {
+    name = "Trilium";
+    exec = "trilium";
+    icon = "trilium";
+    comment = description;
+    desktopName = "Trilium Notes";
+    categories = "Office";
+  };
+
+in stdenv.mkDerivation rec {
   name = "trilium-${version}";
   version = "0.26.1";
 
@@ -20,9 +31,13 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/bin
     mkdir -p $out/share/trilium
+    mkdir -p $out/share/{applications,icons/hicolor/scalable/apps}
 
     cp -r ./* $out/share/trilium
     ln -s $out/share/trilium/trilium $out/bin/trilium
+    
+    ln -s $out/share/trilium/resources/app/src/public/images/trilium.svg $out/share/icons/hicolor/scalable/apps/trilium.svg
+    cp ${desktopItem}/share/applications/* $out/share/applications
   '';
 
 
@@ -34,7 +49,7 @@ stdenv.mkDerivation rec {
   dontStrip = true;
 
   meta = with stdenv.lib; {
-    description = "Trilium Notes is a hierarchical note taking application with focus on building large personal knowledge bases.";
+    inherit description;
     homepage = https://github.com/zadam/trilium;
     license = licenses.agpl3;
     platforms = platforms.linux;
