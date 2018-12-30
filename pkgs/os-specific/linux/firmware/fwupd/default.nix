@@ -10,7 +10,7 @@
 let
   # Updating? Keep $out/etc synchronized with passthru.filesInstalledToEtc
   #version = "1.2.1";
-  version = "2018-12-14";
+  version = "2018-12-26";
   python = python3.withPackages (p: with p; [ pygobject3 pycairo pillow ]);
   installedTestsPython = python3.withPackages (p: with p; [ pygobject3 requests ]);
 
@@ -22,8 +22,8 @@ in stdenv.mkDerivation {
   src = fetchFromGitHub {
     owner = "hughsie";
     repo = "fwupd";
-    rev = "45bbfc9cae0928fc06c422e64db9d1f2add2f151";
-    sha256 = "0jyvhwmxs71d1zfk41vxhryw4i24l5zs0n3bx1wq2g5vk74l6265";
+    rev = "8be03791c7b552ae4b0ccde530ab15266e2df01f";
+    sha256 = "0h2b3rvqbz2z8h1x77asip7d2c5pjlxlqxh9khclxflhaavkq11b";
   };
 
   #src = fetchurl {
