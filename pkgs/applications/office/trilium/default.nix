@@ -13,11 +13,11 @@ let
 
 in stdenv.mkDerivation rec {
   name = "trilium-${version}";
-  version = "0.26.1";
+  version = "0.27.0-beta";
 
   src = fetchurl {
     url = "https://github.com/zadam/trilium/releases/download/v${version}/trilium-linux-x64-${version}.7z";
-    sha256 = "184b0b0s8q32h1mpkrin8x1q0kjvard7r7xqrclziwwxg4khp3cz";
+    sha256 = "1fvhssckp0yb3fkb9wxr2chvjlf2jiy9fhkxh4gyxg4zrk46z04g";
   };
 
   nativeBuildInputs = [
