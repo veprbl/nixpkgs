@@ -5857,6 +5857,8 @@ in
 
   triggerhappy = callPackage ../tools/inputmethods/triggerhappy {};
 
+  trilium = callPackage ../applications/office/trilium { };
+
   trousers = callPackage ../tools/security/trousers { };
 
   tryton = callPackage ../applications/office/tryton { };
