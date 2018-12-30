@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, autoreconfHook, pkgconfig, libxml2, glib, pipewire, fontconfig, flatpak, acl, dbus, fuse }:
+{ stdenv, fetchFromGitHub, fetchpatch, autoreconfHook, pkgconfig, libxml2, glib, pipewire, fontconfig, flatpak, acl, dbus, fuse }:
 
 let
   version = "1.1.0";
@@ -16,7 +16,11 @@ in stdenv.mkDerivation rec {
 
   patches = [
     ./respect-path-env-var.patch
-    ./0001-test-doc-portal-Skip-all-tests-if-FUSE-isn-t-support.patch
+    # https://github.com/flatpak/xdg-desktop-portal/pull/263
+    (fetchpatch {
+      url = https://github.com/flatpak/xdg-desktop-portal/commit/5e5993b64ea43f7ba77335f98e3d6c5bf99a51b9.patch;
+      sha256 = "1i753q35dgihj6vp3961i0hn2sxy2pyfx0dbqa385z0y6wz8k9xq";
+    })
   ];
 
   nativeBuildInputs = [ autoreconfHook pkgconfig libxml2 ];
