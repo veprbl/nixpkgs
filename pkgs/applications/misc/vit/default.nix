@@ -26,7 +26,8 @@ stdenv.mkDerivation {
   '';
 
   nativeBuildInputs = [ makeWrapper which ];
-  buildInputs = [ taskwarrior ncurses perlPackages.Curses perl ];
+  buildInputs = [ taskwarrior ncurses perl ]
+    ++ (with perlPackages; [ Curses TryTiny TextCharWidth ]);
 
   meta = {
     description = "Visual Interactive Taskwarrior";
