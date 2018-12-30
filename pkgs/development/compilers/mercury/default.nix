@@ -80,10 +80,10 @@ in rec {
   mercury-14-bootstrap = mercury-14.override { enableMinimal = true; };
   mercury-14-full = mercury-14.override { compilers = [ gcc erlang jdk ]; };
   mercury-rotd = mkMercury rec {
-    version = "rotd-2018-10-19";
+    version = "rotd-2018-12-29"; # 29412a767db6c4c837270bffacaff529868f2d79
     src = fetchurl {
       url = "https://dl.mercurylang.org/rotd/mercury-srcdist-${version}.tar.gz";
-      sha256 = "1drn1jp4xc263zwpjzcdbjgh24c03n8dhxpq5nmg8cy4sh36dg9q";
+      sha256 = "0c6z1jmgqijwyc6aqls4vafvf4k5fi72rhsjhjb8xd25faqs4748";
     };
   };
   mercury-rotd-bootstrap = mercury-rotd.override { enableMinimal = true; };
