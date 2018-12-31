@@ -1448,6 +1448,8 @@ in
 
   gh-ost = callPackage ../tools/misc/gh-ost { };
 
+  gif-for-cli = callPackage ../tools/misc/gif-for-cli { };
+
   gist = callPackage ../tools/text/gist { };
 
   gixy = callPackage ../tools/admin/gixy { };
@@ -4421,7 +4423,9 @@ in
 
   networkmanager_dmenu = callPackage ../tools/networking/network-manager/dmenu.nix  { };
 
-  newsboat = callPackage ../applications/networking/feedreaders/newsboat { };
+  newsboat = callPackage ../applications/networking/feedreaders/newsboat {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
 
   nextcloud = callPackage ../servers/nextcloud { };
 

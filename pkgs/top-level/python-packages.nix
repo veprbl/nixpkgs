@@ -2429,6 +2429,10 @@ in {
     cudaSupport = pkgs.config.cudaSupport or false;
   };
 
+  pyro-ppl = callPackage ../development/python-modules/pyro-ppl {};
+
+  opt-einsum = callPackage ../development/python-modules/opt-einsum {};
+
   pytorchWithCuda = self.pytorch.override {
     cudaSupport = true;
   };
@@ -5108,6 +5112,8 @@ in {
   qasm2image = callPackage ../development/python-modules/qasm2image { };
 
   simpy = callPackage ../development/python-modules/simpy { };
+
+  x256 = callPackage ../development/python-modules/x256 { };
 
   yattag = callPackage ../development/python-modules/yattag { };
 
