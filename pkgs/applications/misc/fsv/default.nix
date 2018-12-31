@@ -41,7 +41,7 @@ in stdenv.mkDerivation rec {
     '';
     homepage    = https://github.com/mcuelenaere/fsv;
     license     = licenses.lgpl2;
-    platform    = platforms.mesaPlatforms;
+    platforms   = platforms.mesaPlatforms;
     maintainers = with maintainers; [ rnhmjoj ];
   };
 }
