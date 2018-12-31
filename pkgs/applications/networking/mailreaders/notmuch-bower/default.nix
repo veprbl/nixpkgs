@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ ncurses gpgme ];
 
-  makeFlags = [ "PARALLEL=-j$(NIX_BUILD_CORES)" "bower" "man" ];
+  makeFlags = [ "PARALLEL=-j$NIX_BUILD_CORES" "bower" "man" ];
 
   patches = [
     #./0001-Use-some-emoticons-for-status.patch
