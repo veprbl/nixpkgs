@@ -2,15 +2,16 @@
 , hicolor-icon-theme, glib, libhandy, gtk3, libsecret, dbus, openssl, sqlite, gst_all_1, wrapGAppsHook }:
 
 rustPlatform.buildRustPackage rec {
-  version = "4.0.0";
+  version = "4.0.0.0.1"; # not really
   name = "fractal-${version}";
 
   src = fetchFromGitLab {
     domain = "gitlab.gnome.org";
     owner = "GNOME";
     repo = "fractal";
-    rev = version;
-    sha256 = "05q47jdgbi5jz01280msb8gxnbsrgf2jvglfm6k40f1xw4wxkrzy";
+    #rev = version;
+    rev = "30809bccd1c80ae412b99378d45c99c64027c921";
+    sha256 = "0hfdcdgidi7sgpiplrg8sg9yc142jwkdylspkhmm3v2ghini6rlb";
   };
 
   nativeBuildInputs = [
