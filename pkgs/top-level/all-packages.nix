@@ -4704,10 +4704,9 @@ in
 
   pal = callPackage ../tools/misc/pal { };
 
-  pandoc = let hpkgs = haskell.packages.ghc863; in haskell.lib.overrideCabal (haskell.lib.justStaticExecutables hpkgs.pandoc) (drv: {
+  pandoc = haskell.lib.overrideCabal (haskell.lib.justStaticExecutables haskellPackages.pandoc) (drv: {
     configureFlags = drv.configureFlags or [] ++ ["-fembed_data_files"];
-    buildDepends = drv.buildDepends or [] ++ [ hpkgs.file-embed];
-    #enableSeparateDataOutput = false;
+    buildDepends = drv.buildDepends or [] ++ [haskellPackages.file-embed];
     postInstall = ''
       mkdir -p $out/share/man/man1
       cp man/pandoc.1 $out/share/man/man1/
