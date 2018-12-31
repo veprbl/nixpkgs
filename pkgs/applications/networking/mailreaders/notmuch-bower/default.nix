@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
     echo "MCFLAGS += --intermod-opt -O6 --verbose" > src/Mercury.params
   '';
 
-  makeFlags = [ "PARALLEL=-j$NIX_BUILD_CORES" "bower" "man" ];
+  makeFlags = [ "PARALLEL=-j$(NIX_BUILD_CORES)" "bower" "man" ];
 
   patches = [
     #./0001-Use-some-emoticons-for-status.patch
