@@ -45,7 +45,8 @@ stdenv.mkDerivation rec {
     libvpx makeWrapper libGLU_combined nspr nss pango perl pkgconfig python
     libpulseaudio sqlite unzip which yasm zip zlib
   ] ++ (with xorg; [
-    libX11 libXext libXft libXi libXrender xorgproto libXScrnSaver libXt pixman
+    libX11 libXext libXft libXi libXrender libXScrnSaver
+    libXt pixman xorgproto
   ]);
 
   enableParallelBuilding = true;

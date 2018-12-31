@@ -88,7 +88,8 @@ let version = "4.8.5";
     };
 
     xlibs = [
-      libX11 libXt libSM libICE libXtst libXrender libXrandr libXi xorgproto
+      libX11 libXt libSM libICE libXtst libXrender libXrandr libXi
+      xorgproto
     ];
 
     javaAwtGtk = langJava && x11Support;

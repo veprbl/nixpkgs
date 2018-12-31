@@ -1,5 +1,5 @@
 { stdenv, lib, fetchurl
-, xorgserver
+, xorgproto, xorgserver
 , pkgconfig
 , xpra }:
 
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
     ./0005-support-for-30-bit-depth-in-dummy-driver.patch
   ];
   nativeBuildInputs = [ pkgconfig ];
-  buildInputs = [ xorgserver ];
+  buildInputs = [ xorgproto xorgserver ];
 
   meta = {
     description = "Dummy driver for Xorg with xpra patches";

@@ -22,6 +22,7 @@ stdenv.mkDerivation {
     ++ stdenv.lib.optional enableSDL SDL
     ++ stdenv.lib.optionals enableX11 (with xorg; [
       xorgproto libX11 libXext
+      libXrender
     ]);
 
   NIX_LDFLAGS="-lgcc_s";

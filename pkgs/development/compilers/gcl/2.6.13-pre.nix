@@ -26,8 +26,10 @@ stdenv.mkDerivation rec {
   patches = [];
 
   buildInputs = [
-    mpfr m4 binutils emacs gmp libX11 xorgproto libXi libXext libXt libXaw
-    libXmu zlib which texinfo readline strace
+    mpfr m4 binutils emacs gmp
+    libX11 xorgproto libXi
+    libXext libXt libXaw libXmu
+    zlib which texinfo readline strace
   ];
 
   configureFlags = [

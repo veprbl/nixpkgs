@@ -1,5 +1,5 @@
-{ stdenv, fetchFromGitHub, freetype, libXrender, libXft, xinput, libXi
-, libXext, libXtst, libXpm, libX11, xorgproto, autoreconfHook
+{ stdenv, fetchFromGitHub, freetype, libXrender, libXft, xorgproto
+, xinput, libXi, libXext, libXtst, libXpm, libX11, autoreconfHook
 }:
 
 stdenv.mkDerivation rec {
@@ -14,8 +14,8 @@ stdenv.mkDerivation rec {
   };
 
   buildInputs = [
-    freetype libXrender libXft libXext libXtst libXpm libX11 libXi xinput
-    xorgproto
+    freetype libXrender libXft libXext libXtst libXpm libX11
+    libXi xorgproto xinput
   ];
 
   nativeBuildInputs = [ autoreconfHook ];

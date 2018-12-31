@@ -21,7 +21,7 @@
 }:
 
 assert x11Support -> (libX11 != null && libXau != null && libXt != null
-  && libXpm != null && xorgproto != null && libXext != null );
+  && libXpm != null && xorgproto != null && libXext != null);
 
 stdenv.mkDerivation rec {
   v = "2.49";

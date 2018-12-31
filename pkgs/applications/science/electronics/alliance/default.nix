@@ -14,7 +14,7 @@ stdenv.mkDerivation rec {
 
 
   nativeBuildInputs = [ libtool automake autoconf flex ];
-  buildInputs = [ xorgproto motif xorgproto libX11 libXt libXpm bison ];
+  buildInputs = [ xorgproto motif libX11 libXt libXpm bison ];
 
   sourceRoot = "alliance/src/";
 

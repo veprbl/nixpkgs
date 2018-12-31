@@ -8,8 +8,9 @@ stdenv.mkDerivation rec {
     sha256 = "00bh9j3m6snyd2fgnzhj5vlkj9ibh69gfny9bfzlxbnivb06s1yw";
   };
 
-  buildInputs =
-    [ xorg.libX11 xorg.xorgproto xorg.libXext xorg.libXrandr ];
+  buildInputs = with xorg; [
+      libX11 xorgproto libXext libXrandr
+    ];
 
   hardeningDisable = [ "format" ];
 

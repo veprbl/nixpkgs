@@ -1,6 +1,6 @@
-{ fetchurl, stdenv, libGLU_combined, freeglut, libX11, plib, openal, freealut, libXrandr
-, libXext, libSM, libICE, libXi, libXt, libXrender, libXxf86vm, openscenegraph, expat
-, libpng, zlib, bash, SDL2, enet, libjpeg, cmake, pkgconfig, libvorbis, xorgproto}:
+{ fetchurl, stdenv, libGLU_combined, freeglut, libX11, plib, openal, freealut, libXrandr, xorgproto,
+libXext, libSM, libICE, libXi, libXt, libXrender, libXxf86vm, openscenegraph, expat,
+libpng, zlib, bash, SDL2, enet, libjpeg, cmake, pkgconfig, libvorbis}:
 
 stdenv.mkDerivation rec {
   version = "2.2.1-r6404";
@@ -60,11 +60,9 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkgconfig cmake ];
 
-  buildInputs =
-    [ libpng libGLU_combined freeglut libX11 plib openal freealut
-      libXrandr xorgproto libXext libSM libICE libXi libXt libXrender libXxf86vm
-      zlib bash expat SDL2 enet libjpeg openscenegraph libvorbis
-    ];
+  buildInputs = [ libpng libGLU_combined freeglut libX11 plib openal freealut libXrandr xorgproto
+    libXext libSM libICE libXi libXt libXrender libXxf86vm zlib bash expat
+    SDL2 enet libjpeg openscenegraph libvorbis ];
 
   meta = {
     description = "Car racing game - TORCS fork with more experimental approach";

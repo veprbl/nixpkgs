@@ -1,4 +1,5 @@
-{ stdenv, fetchFromGitHub, pkgconfig, libX11, libXtst, xorgproto, libXi }:
+{ stdenv, fetchFromGitHub, pkgconfig, libX11, libXtst, xorgproto,
+libXi }:
 
 let
   baseName = "xcape";

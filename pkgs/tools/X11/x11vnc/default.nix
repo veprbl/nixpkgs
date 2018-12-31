@@ -16,10 +16,12 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ autoreconfHook pkgconfig ];
 
   buildInputs =
-    [ xorg.libXfixes openssl xorg.libXdamage
-      zlib xorg.libX11 xorg.xorgproto libjpeg
+    [ xorg.libXfixes xorg.xorgproto openssl xorg.libXdamage
+      zlib xorg.libX11 libjpeg
       xorg.libXtst xorg.libXinerama xorg.libXrandr
-      xorg.libXext xorg.libXi xorg.libXrender libvncserver
+      xorg.libXext
+      xorg.libXi xorg.libXrender
+      libvncserver
     ];
 
   postPatch = ''

@@ -51,6 +51,7 @@ stdenv.mkDerivation rec {
   libXrandr = xorg.libXrandr;
   libXrender = xorg.libXrender;
   libXxf86vm = xorg.libXxf86vm;
+  xorgproto = xorg.xorgproto;
   libSM = xorg.libSM;
   libICE = xorg.libICE;
   libfreetype = freetype;
@@ -86,7 +87,7 @@ stdenv.mkDerivation rec {
 
   buildInputs =
     [ xorg.libXrender xorg.libXext xorg.libX11 xorg.libXinerama xorg.libSM
-      xorg.libXrandr xorg.libXxf86vm xorg.imake xorg.libICE xorg.xorgproto
+      xorg.libXrandr xorg.libXxf86vm xorg.xorgproto xorg.imake xorg.libICE
       patchelf
       unzip
       libGLU_combined

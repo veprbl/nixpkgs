@@ -1,7 +1,8 @@
-{ stdenv, fetchurl, makeWrapper , freeglut, freealut, libGLU_combined, libICE
-, libjpeg, openal, openscenegraph , plib , libSM, libunwind, libX11, xorgproto
-, libXext, libXi, libXmu , libXt, simgear, zlib, boost, cmake, libpng
-, udev, fltk13, apr , makeDesktopItem , qtbase, qtdeclarative, glew
+{ stdenv, fetchurl, makeWrapper
+, freeglut, freealut, libGLU_combined, libICE, libjpeg, openal, openscenegraph, plib
+, libSM, libunwind, libX11, xorgproto, libXext, libXi
+, libXmu, libXt, simgear, zlib, boost, cmake, libpng, udev, fltk13, apr
+, makeDesktopItem, qtbase, qtdeclarative, glew
 }:
 
 let
@@ -51,10 +52,11 @@ stdenv.mkDerivation rec {
   };
 
   buildInputs = [
-    makeWrapper freeglut freealut libGLU_combined libICE libjpeg openal
-    openscenegraph plib libSM libunwind libX11 xorgproto libXext libXi libXmu
-    libXt simgear zlib boost cmake libpng udev fltk13 apr qtbase glew
-    qtdeclarative
+    makeWrapper
+    freeglut freealut libGLU_combined libICE libjpeg openal openscenegraph plib
+    libSM libunwind libX11 xorgproto libXext libXi
+    libXmu libXt simgear zlib boost cmake libpng udev fltk13 apr qtbase
+    glew qtdeclarative
   ];
 
   postInstall = ''
