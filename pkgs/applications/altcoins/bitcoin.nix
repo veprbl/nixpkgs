@@ -5,13 +5,13 @@
 with stdenv.lib;
 stdenv.mkDerivation rec{
   name = "bitcoin" + (toString (optional (!withGui) "d")) + "-" + version;
-  version = "0.17.1";
+  version = "0.17.0";
 
   src = fetchurl {
     urls = [ "https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}.tar.gz"
              "https://bitcoin.org/bin/bitcoin-core-${version}/bitcoin-${version}.tar.gz"
            ];
-    sha256 = "3e564fb5cf832f39e930e19c83ea53e09cfe6f93a663294ed83a32e194bda42a";
+    sha256 = "0pkq28d2dj22qrxyyg9kh0whmhj7ghyabnhyqldbljv4a7l3kvwq";
   };
 
   nativeBuildInputs = [ pkgconfig autoreconfHook ]
