@@ -2685,8 +2685,8 @@ lib.makeScope newScope (self: with self; {
       url = mirror://xorg/individual/app/xrandr-1.5.0.tar.bz2;
       sha256 = "1kaih7rmzxr1vp5a5zzjhm5x7dn9mckya088sqqw026pskhx9ky1";
     };
-    nativeBuildInputs = [ pkgconfig meson ninja ];
     hardeningDisable = [ "bindnow" "relro" ];
+    nativeBuildInputs = [ pkgconfig ];
     buildInputs = [ libX11 xorgproto libXrandr libXrender ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
