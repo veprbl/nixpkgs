@@ -2,7 +2,6 @@
 , buildPythonPackage
 , fetchPypi
 , pyasn1
-, pycrypto
 , pycryptodomex
 , pysmi
 }:
@@ -19,7 +18,7 @@ buildPythonPackage rec {
   # NameError: name 'mibBuilder' is not defined
   doCheck = false;
 
-  propagatedBuildInputs = [ pyasn1 pycrypto pycryptodomex pysmi ];
+  propagatedBuildInputs = [ pyasn1 pycryptodomex pysmi ];
 
   meta = with stdenv.lib; {
     homepage = http://pysnmp.sf.net;
