@@ -4704,7 +4704,7 @@ in
 
   pal = callPackage ../tools/misc/pal { };
 
-  pandoc = let hpkgs = haskell.packages.ghc862; in haskell.lib.overrideCabal (haskell.lib.justStaticExecutables hpkgs.pandoc) (drv: {
+  pandoc = let hpkgs = haskell.packages.ghc863; in haskell.lib.overrideCabal (haskell.lib.justStaticExecutables hpkgs.pandoc) (drv: {
     configureFlags = drv.configureFlags or [] ++ ["-fembed_data_files"];
     buildDepends = drv.buildDepends or [] ++ [ hpkgs.file-embed];
     #enableSeparateDataOutput = false;
