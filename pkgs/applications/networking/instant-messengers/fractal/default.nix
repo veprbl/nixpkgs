@@ -1,7 +1,6 @@
 { stdenv, fetchurl, fetchFromGitLab, meson, ninja, gettext, cargo, rustc, python3, rustPlatform, pkgconfig, gtksourceview
 , hicolor-icon-theme, glib, libhandy, gtk3, libsecret, dbus, openssl, sqlite, gst_all_1, wrapGAppsHook }:
 
-#stdenv.mkDerivation rec {
 rustPlatform.buildRustPackage rec {
   version = "4.0.0";
   name = "fractal-${version}";
@@ -35,8 +34,10 @@ rustPlatform.buildRustPackage rec {
   cargoSha256 = "0hlvdcdzkggc2adggmlxz0yxigwp3320wfav77gddlvfip1f90sw";
 
   meta = with stdenv.lib; {
-    # TODO
+    description = "Matrix group messaging app";
+    homepage = https://gitlab.gnome.org/GNOME/fractal;
     license = licenses.gpl3;
+    maintainers = with maintainers; [ dtzWill ];
   };
 }
 

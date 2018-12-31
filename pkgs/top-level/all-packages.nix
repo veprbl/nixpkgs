@@ -9641,8 +9641,6 @@ in
 
   epoxy = callPackage ../development/libraries/epoxy {};
 
-  esdl = callPackage ../development/libraries/esdl { };
-
   libesmtp = callPackage ../development/libraries/libesmtp { };
 
   exiv2 = callPackage ../development/libraries/exiv2 { };
@@ -13915,7 +13913,6 @@ in
 
   pgbouncer = callPackage ../servers/sql/pgbouncer { };
 
-  pgpool93 = pgpool.override { postgresql = postgresql_9_3; };
   pgpool94 = pgpool.override { postgresql = postgresql_9_4; };
 
   pgpool = callPackage ../servers/sql/pgpool {
@@ -13928,7 +13925,6 @@ in
   postgresql = postgresql_9_6;
 
   inherit (callPackages ../servers/sql/postgresql { })
-    postgresql_9_3
     postgresql_9_4
     postgresql_9_5
     postgresql_9_6
@@ -20013,8 +20009,7 @@ in
   winswitch = callPackage ../tools/X11/winswitch { };
 
   wings = callPackage ../applications/graphics/wings {
-    esdl = esdl.override { erlang = erlangR18; };
-    erlang = erlangR18;
+    erlang = erlangR21;
   };
 
   write_stylus = libsForQt5.callPackage ../applications/graphics/write_stylus { };
