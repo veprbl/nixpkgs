@@ -5348,6 +5348,8 @@ in
 
   scrypt = callPackage ../tools/security/scrypt { };
 
+  sdate = callPackage ../tools/misc/sdate { };
+
   sdcv = callPackage ../applications/misc/sdcv { };
 
   sdl-jstest = callPackage ../tools/misc/sdl-jstest { };
