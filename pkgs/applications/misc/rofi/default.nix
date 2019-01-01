@@ -18,11 +18,6 @@ stdenv.mkDerivation rec {
     sed -i 's/~root/~nobody/g' test/helper-expand.c
   '';
 
-  postFixup = ''
-    substituteInPlace "$out"/bin/rofi-theme-selector \
-        --replace "%ROFIOUT%" "$out/share"
-  '';
-
   nativeBuildInputs = [ autoreconfHook pkgconfig ];
   buildInputs = [ libxkbcommon pango cairo git bison flex librsvg check
     libstartup_notification libxcb xcbutil xcbutilwm xcbutilxrm which
