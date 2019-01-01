@@ -4,16 +4,13 @@
 }:
 
 stdenv.mkDerivation rec {
-  version = "1.5.1";
+  version = "1.5.2";
   name = "rofi-unwrapped-${version}";
 
   src = fetchurl {
     url = "https://github.com/DaveDavenport/rofi/releases/download/${version}/rofi-${version}.tar.gz";
-    sha256 = "1dc33zf33z38jcxb0lxpyd31waalpf6d4cd9z5f9m5qphdk1g679";
+    sha256 = "1rczxz6l32vnclarzga1sm1d5iq9rfscb9j7f8ih185n59hf0517";
   };
-
-  # config.patch may be removed in the future - https://github.com/DaveDavenport/rofi/pull/781
-  patches = [ ./config.patch ];
 
   preConfigure = ''
     patchShebangs "script"
