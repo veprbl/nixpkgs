@@ -27,10 +27,6 @@ stdenv.mkDerivation rec {
       --replace "/sbin/modprobe" "modprobe" \
       --replace "/bin/mount" "mount"
     substituteInPlace src/calibrate/calibrate.cpp --replace "/usr/bin/xset" "xset"
-
-    substituteInPlace src/tuning/bluetooth.cpp \
-      --replace "/usr/sbin/hciconfig hci0 up" "bluetoothctl power on" \
-      --replace "/usr/sbin/hciconfig hci0 down" "bluetoothctl power off"
   '';
 
   meta = with stdenv.lib; {
