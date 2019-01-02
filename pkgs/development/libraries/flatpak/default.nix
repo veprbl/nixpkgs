@@ -1,11 +1,9 @@
 { stdenv, fetchurl, autoreconfHook, docbook_xml_dtd_412, docbook_xml_dtd_42, docbook_xml_dtd_43, docbook_xsl, which, libxml2
 , gobject-introspection, gtk-doc, intltool, libxslt, pkgconfig, xmlto, appstream-glib, substituteAll, glibcLocales, yacc, xdg-dbus-proxy, p11-kit
 , bubblewrap, bzip2, dbus, glib, gpgme, json-glib, libarchive, libcap, libseccomp, coreutils, gettext, python2, hicolor-icon-theme
-, libsoup, lzma, ostree, polkit, python3, systemd, xorg, valgrind, glib-networking, makeWrapper, gnome3 }:
+, libsoup, lzma, ostree, polkit, python3, systemd, xorg, valgrind, glib-networking, wrapGAppsHook, gnome3 }:
 
-let
-  desktop_schemas = gnome3.gsettings-desktop-schemas;
-in stdenv.mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "flatpak";
   version = "1.1.2";
 
@@ -34,12 +32,13 @@ in stdenv.mkDerivation rec {
 
   nativeBuildInputs = [
     autoreconfHook libxml2 docbook_xml_dtd_412 docbook_xml_dtd_42 docbook_xml_dtd_43 docbook_xsl which gobject-introspection
-    gtk-doc intltool libxslt pkgconfig xmlto appstream-glib yacc makeWrapper
+    gtk-doc intltool libxslt pkgconfig xmlto appstream-glib yacc wrapGAppsHook
   ];
 
   buildInputs = [
     bubblewrap bzip2 dbus glib gpgme json-glib libarchive libcap libseccomp
     libsoup lzma ostree polkit python3 systemd xorg.libXau
+    gnome3.gsettings-desktop-schemas glib-networking
   ];
 
   checkInputs = [ valgrind ];
@@ -63,12 +62,6 @@ in stdenv.mkDerivation rec {
   postPatch = ''
     patchShebangs buildutil
     patchShebangs tests
-  '';
-
-  postFixup = ''
-    wrapProgram $out/bin/flatpak \
-      --prefix GIO_EXTRA_MODULES : "${glib-networking.out}/lib/gio/modules" \
-      --prefix XDG_DATA_DIRS : "${desktop_schemas}/share/gsettings-schemas/${desktop_schemas.name}"
   '';
 
   meta = with stdenv.lib; {
