@@ -1,5 +1,5 @@
 { lib, stdenv, zlib, lzo, libtasn1, nettle, pkgconfig, lzip
-, guileBindings, guile, perl, gmp, autogen, libidn, libidn2, p11-kit, libiconv
+, guileBindings, guile, perl, gmp, autogen, libidn, p11-kit, libiconv
 , tpmSupport ? false, trousers, which, nettools, datefudge, libunistring
 , unbound, dns-root-data, gettext
 
@@ -48,7 +48,7 @@ stdenv.mkDerivation {
   nativeBuildInputs = [ perl pkgconfig ] ++ nativeBuildInputs
     ++ lib.optionals doCheck [ which nettools datefudge ];
 
-  propagatedBuildInputs = [ nettle libidn2 ];
+  propagatedBuildInputs = [ nettle ];
 
   inherit doCheck;
 
