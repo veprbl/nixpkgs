@@ -45,8 +45,8 @@ stdenv.mkDerivation {
     ++ lib.optional guileBindings guile
     ++ buildInputs;
 
-  nativeBuildInputs = [ perl pkgconfig ] ++ nativeBuildInputs;
-  checkInputs = [ which nettools datefudge ];
+  nativeBuildInputs = [ perl pkgconfig ] ++ nativeBuildInputs
+    ++ lib.optionals doCheck [ which nettools datefudge ];
 
   propagatedBuildInputs = [ nettle ];
 
