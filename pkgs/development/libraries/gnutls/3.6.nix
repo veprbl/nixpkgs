@@ -18,6 +18,11 @@ callPackage ./generic.nix (args // rec {
     sed 's:/usr/lib64/pkcs11/ /usr/lib/pkcs11/ /usr/lib/x86_64-linux-gnu/pkcs11/:`pkg-config --variable=p11_module_path p11-kit-1`:' -i tests/p11-kit-trust.sh
 
     # Test passes outside sandbox?
-    sed '/^void doit(void)/,$s/{/{ exit(77);/; t' -i tests/psk-file.c
+    cat > tests/psk-file.c <<EOF
+      #include <stdlib.h>
+      int main() {
+        exit(77);
+      }
+    EOF
   '';
 })
