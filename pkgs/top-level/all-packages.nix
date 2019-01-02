@@ -17016,7 +17016,7 @@ in
 
   fritzing = libsForQt5.callPackage ../applications/science/electronics/fritzing { };
 
-  fsv = callPackages ../applications/misc/fsv { };
+  fsv = callPackage ../applications/misc/fsv { };
 
   fvwm = callPackage ../applications/window-managers/fvwm { };
 
@@ -20643,6 +20643,8 @@ in
   freesweep = callPackage ../games/freesweep { };
 
   frotz = callPackage ../games/frotz { };
+
+  frogatto = callPackage ../games/frogatto { };
 
   fsg = callPackage ../games/fsg {
     wxGTK = wxGTK28.override { unicode = false; };

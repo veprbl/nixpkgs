@@ -53,6 +53,6 @@ in stdenv.mkDerivation rec {
     homepage = https://github.com/zadam/trilium;
     license = licenses.agpl3;
     platforms = platforms.linux;
-    maintainers = with maintainers; [ emmanuelrosa ];
+    maintainers = with maintainers; [ emmanuelrosa dtzWill ];
   };
 }
