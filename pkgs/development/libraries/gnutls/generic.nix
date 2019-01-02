@@ -40,7 +40,7 @@ stdenv.mkDerivation {
 
   enableParallelBuilding = true;
 
-  buildInputs = [ lzo lzip libtasn1 libidn libidn2 p11-kit zlib gmp autogen libunistring unbound gettext libiconv ]
+  buildInputs = [ lzo lzip libtasn1 libidn p11-kit zlib gmp autogen libunistring unbound gettext libiconv ]
     ++ lib.optional (tpmSupport && stdenv.isLinux) trousers
     ++ lib.optional guileBindings guile
     ++ buildInputs;
@@ -48,7 +48,7 @@ stdenv.mkDerivation {
   nativeBuildInputs = [ perl pkgconfig ] ++ nativeBuildInputs
     ++ lib.optionals doCheck [ which nettools datefudge ];
 
-  propagatedBuildInputs = [ nettle ];
+  propagatedBuildInputs = [ nettle libidn2 ];
 
   inherit doCheck;
 
