@@ -5,7 +5,6 @@ stdenv.mkDerivation rec {
   version = "2017-08-10"; # date of the download and checksum
 
   src = requireFile {
-    # round 'a'
     # round 'g'
     # slash zero
     name = "Input-Font-tweaks.zip";
