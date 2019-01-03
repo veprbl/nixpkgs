@@ -7,12 +7,12 @@
 }:
 
 buildPythonPackage rec {
-  version = "4.4.6";
+  version = "4.4.8";
   pname = "pysnmp";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "e34ffa0dce5f69adabd478ff76c3e1b08e32ebb0767df8b178d0704f4a1ac406";
+    sha256 = "1c42qicrh56m49374kxna2s2nmdwna3yqgnz16frzj0dw7vxrrhk";
   };
 
   # NameError: name 'mibBuilder' is not defined
@@ -26,5 +26,4 @@ buildPythonPackage rec {
     license = licenses.bsd2;
     maintainers = with maintainers; [ koral ];
   };
-
 }
