@@ -24,7 +24,6 @@
      gpg-connect-agent --homedir "${FL_GPG_HOMEDIR}" killagent /bye || true
      fusermount -u $XDG_RUNTIME_DIR/doc || :
      if test -n "${TEST_SKIP_CLEANUP:-}"; then
-diff --git a/tests/make-test-app.sh b/tests/make-test-app.sh
 --- a/tests/make-test-app.sh
 +++ b/tests/make-test-app.sh
 @@ -114,13 +114,13 @@ msgid "Hello world"
