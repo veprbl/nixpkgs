@@ -1,0 +1,51 @@
+From c07351a4931d82eeba414b544049e0ae652ed9c2 Mon Sep 17 00:00:00 2001
+From: Will Dietz <w@wdtz.org>
+Date: Thu, 3 Jan 2019 12:50:43 -0600
+Subject: [PATCH] favorite: use more appropriate icon than 'help about'
+
+In selecting this, these factors were considered:
+
+* use symbolic icon as elsewhere and Elementary style guidelines
+* use action for icons on buttons
+
+The current icon appears to have been selected for its visual
+representation in the Elementary icon theme
+(apparently "help about" is a star)
+which is the wrong way around.
+
+Using appropriate icon name is needed to work well with other
+themes, or if Elementary changes the icon in the future.
+---
+ src/API/NotificationType.vala | 2 +-
+ src/Widgets/StatusWidget.vala | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/API/NotificationType.vala b/src/API/NotificationType.vala
+index 53598b5..ffb5332 100644
+--- a/src/API/NotificationType.vala
++++ b/src/API/NotificationType.vala
+@@ -71,7 +71,7 @@ public enum Tootle.NotificationType {
+             case REBLOG:
+                 return "media-playlist-repeat-symbolic";
+             case FAVORITE:
+-                return "help-about-symbolic";
++                return "star-new-symbolic";
+             case FOLLOW:
+             case FOLLOW_REQUEST:
+                 return "contact-new-symbolic";
+diff --git a/src/Widgets/StatusWidget.vala b/src/Widgets/StatusWidget.vala
+index 092072d..675ced9 100644
+--- a/src/Widgets/StatusWidget.vala
++++ b/src/Widgets/StatusWidget.vala
+@@ -86,7 +86,7 @@ public class Tootle.StatusWidget : Gtk.EventBox {
+             if (reblog.sensitive)
+                 this.status.get_formal ().set_reblogged (reblog.get_active ());
+         });
+-        favorite = new ImageToggleButton ("help-about-symbolic");
++        favorite = new ImageToggleButton ("star-new-symbolic");
+         favorite.set_action ();
+         favorite.tooltip_text = _("Favorite");
+         favorite.toggled.connect (() => {
+-- 
+2.20.1
+
