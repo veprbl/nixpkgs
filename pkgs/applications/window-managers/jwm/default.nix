@@ -1,7 +1,7 @@
-{ stdenv, fetchFromGitHub, pkgconfig, automake, autoconf, libtool, gettext
-, which, xorg, libX11, libXext, libXinerama, libXpm, libXft, libXau, libXdmcp
-, libXmu, libpng, libjpeg, expat, xorgproto, librsvg, freetype, fontconfig
-}:
+{ stdenv, fetchFromGitHub, pkgconfig, automake, autoconf, libtool,
+  gettext, which, xorg, libX11, libXext, libXinerama, libXpm, libXft,
+  libXau, libXdmcp, libXmu, libpng, libjpeg, expat, xorgproto,
+  librsvg, freetype, fontconfig }:
 
 stdenv.mkDerivation rec {
   name = "jwm-${version}";
@@ -16,10 +16,9 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkgconfig automake autoconf libtool gettext which ];
 
-  buildInputs =
-    [ libX11 libXext libXinerama libXpm libXft xorg.libXrender libXau libXdmcp
-      libXmu libpng libjpeg expat xorgproto librsvg freetype fontconfig
-    ];
+  buildInputs = [ libX11 libXext libXinerama libXpm libXft xorg.libXrender
+    libXau libXdmcp libXmu libpng libjpeg expat xorgproto
+    librsvg freetype fontconfig ];
 
   enableParallelBuilding = true;
 

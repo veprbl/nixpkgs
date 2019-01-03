@@ -57,7 +57,6 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-
   encodings = callPackage ({ stdenv, pkgconfig, fetchurl }: stdenv.mkDerivation {
     name = "encodings-1.0.4";
     builder = ./builder.sh;
@@ -527,7 +526,8 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ]; configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
+    buildInputs = [ bdftopcf mkfontdir ];
+    configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -711,12 +711,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    propagatedBuildInputs = [ xorgproto ];
-    buildInputs = [ libxcb xorgproto xtrans ];
+    buildInputs = [ xorgproto libxcb xtrans ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXScrnSaver = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXext, xorgproto }: stdenv.mkDerivation {
+  libXScrnSaver = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXext }: stdenv.mkDerivation {
     name = "libXScrnSaver-1.2.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -751,7 +750,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 libXext libXmu libXpm xorgproto libXt ];
+    buildInputs = [ libX11 libXext xorgproto libXmu libXpm libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -762,12 +761,13 @@ lib.makeScope newScope (self: with self; {
       url = mirror://xorg/individual/lib/libXaw3d-1.6.3.tar.bz2;
       sha256 = "0i653s8g25cc0mimkwid9366bqkbyhdyjhckx7bw77j20hzrkfid";
     };
+    hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
     buildInputs = [ libX11 libXext libXmu libXpm xorgproto libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXcomposite = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXfixes, xorgproto }: stdenv.mkDerivation {
+  libXcomposite = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXfixes }: stdenv.mkDerivation {
     name = "libXcomposite-0.4.4";
     builder = ./builder.sh;
     src = fetchurl {
@@ -776,11 +776,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 libXfixes xorgproto ];
+    buildInputs = [ xorgproto libX11 libXfixes ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXcursor = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXfixes, xorgproto, libXrender }: stdenv.mkDerivation {
+  libXcursor = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXfixes, libXrender }: stdenv.mkDerivation {
     name = "libXcursor-1.1.15";
     builder = ./builder.sh;
     src = fetchurl {
@@ -789,11 +789,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 libXfixes xorgproto libXrender ];
+    buildInputs = [ xorgproto libX11 libXfixes libXrender ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXdamage = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, xorgproto, libXfixes }: stdenv.mkDerivation {
+  libXdamage = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXfixes }: stdenv.mkDerivation {
     name = "libXdamage-1.1.4";
     builder = ./builder.sh;
     src = fetchurl {
@@ -802,7 +802,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 libXfixes xorgproto ];
+    buildInputs = [ xorgproto libX11 libXfixes ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -832,7 +832,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXfixes = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, xorgproto }: stdenv.mkDerivation {
+  libXfixes = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11 }: stdenv.mkDerivation {
     name = "libXfixes-5.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -841,11 +841,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 xorgproto ];
+    buildInputs = [ xorgproto libX11 ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXfont = callPackage ({ stdenv, pkgconfig, fetchurl, libfontenc, freetype, xorgproto, xtrans, zlib }: stdenv.mkDerivation {
+  libXfont = callPackage ({ stdenv, pkgconfig, fetchurl, libfontenc, xorgproto, freetype, xtrans, zlib }: stdenv.mkDerivation {
     name = "libXfont-1.5.4";
     builder = ./builder.sh;
     src = fetchurl {
@@ -854,11 +854,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libfontenc freetype xorgproto xtrans zlib ];
+    buildInputs = [ libfontenc xorgproto freetype xtrans zlib ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXfont2 = callPackage ({ stdenv, pkgconfig, fetchurl, libfontenc, freetype, xorgproto, xtrans, zlib }: stdenv.mkDerivation {
+  libXfont2 = callPackage ({ stdenv, pkgconfig, fetchurl, libfontenc, xorgproto, freetype, xtrans, zlib }: stdenv.mkDerivation {
     name = "libXfont2-2.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -867,7 +867,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libfontenc freetype xorgproto xtrans zlib ];
+    buildInputs = [ libfontenc xorgproto freetype xtrans zlib ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -884,7 +884,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXi = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXext, libXfixes, xorgproto }: stdenv.mkDerivation {
+  libXi = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXext, libXfixes }: stdenv.mkDerivation {
     name = "libXi-1.7.9";
     builder = ./builder.sh;
     src = fetchurl {
@@ -893,7 +893,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 libXext libXfixes xorgproto ];
+    buildInputs = [ xorgproto libX11 libXext libXfixes ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -923,7 +923,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXp = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXau, libXext, xorgproto }: stdenv.mkDerivation {
+  libXp = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXau, libXext }: stdenv.mkDerivation {
     name = "libXp-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -949,7 +949,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXpresent = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, xorgproto }: stdenv.mkDerivation {
+  libXpresent = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11 }: stdenv.mkDerivation {
     name = "libXpresent-1.0.0";
     builder = ./builder.sh;
     src = fetchurl {
@@ -958,11 +958,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 xorgproto ];
+    buildInputs = [ xorgproto libX11 ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXrandr = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXext, xorgproto, libXrender }: stdenv.mkDerivation {
+  libXrandr = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXext, libXrender }: stdenv.mkDerivation {
     name = "libXrandr-1.5.1";
     builder = ./builder.sh;
     src = fetchurl {
@@ -971,11 +971,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 libXext xorgproto libXrender ];
+    buildInputs = [ xorgproto libX11 libXext libXrender ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXrender = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, xorgproto }: stdenv.mkDerivation {
+  libXrender = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11 }: stdenv.mkDerivation {
     name = "libXrender-0.9.10";
     builder = ./builder.sh;
     src = fetchurl {
@@ -984,11 +984,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 xorgproto ];
+    buildInputs = [ xorgproto libX11 ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXres = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXext, xorgproto }: stdenv.mkDerivation {
+  libXres = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXext }: stdenv.mkDerivation {
     name = "libXres-1.2.0";
     builder = ./builder.sh;
     src = fetchurl {
@@ -997,11 +997,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 libXext xorgproto ];
+    buildInputs = [ xorgproto libX11 libXext ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXt = callPackage ({ stdenv, pkgconfig, fetchurl, libICE, libSM, libX11, xorgproto }: stdenv.mkDerivation {
+  libXt = callPackage ({ stdenv, pkgconfig, fetchurl, libICE, xorgproto, libSM, libX11 }: stdenv.mkDerivation {
     name = "libXt-1.1.5";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1010,11 +1010,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libICE libSM libX11 xorgproto ];
+    buildInputs = [ libICE xorgproto libSM libX11 ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXtst = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXext, xorgproto, libXi }: stdenv.mkDerivation {
+  libXtst = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXext, libXi }: stdenv.mkDerivation {
     name = "libXtst-1.2.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1027,7 +1027,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXv = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXext, xorgproto }: stdenv.mkDerivation {
+  libXv = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXext }: stdenv.mkDerivation {
     name = "libXv-1.0.11";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1036,11 +1036,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 libXext xorgproto ];
+    buildInputs = [ xorgproto libX11 libXext ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXvMC = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXext, xorgproto, libXv }: stdenv.mkDerivation {
+  libXvMC = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXext, libXv }: stdenv.mkDerivation {
     name = "libXvMC-1.0.10";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1049,7 +1049,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 libXext xorgproto libXv ];
+    buildInputs = [ xorgproto libX11 libXext libXv ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -1092,7 +1092,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libdmx = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXext, xorgproto }: stdenv.mkDerivation {
+  libdmx = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXext }: stdenv.mkDerivation {
     name = "libdmx-1.1.4";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1166,7 +1166,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 xorgproto ];
+    buildInputs = [ xorgproto libX11 ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -1183,13 +1183,14 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  listres = callPackage ({ stdenv, pkgconfig, fetchurl, libXaw, libXmu, libXt, xorgproto }: stdenv.mkDerivation {
+  listres = callPackage ({ stdenv, pkgconfig, fetchurl, libXaw, libXmu, xorgproto, libXt }: stdenv.mkDerivation {
     name = "listres-1.0.4";
     builder = ./builder.sh;
     src = fetchurl {
       url = mirror://xorg/individual/app/listres-1.0.4.tar.bz2;
       sha256 = "041bxkvv6f92sm3hhm977c4gdqdv5r1jyxjqcqfi8vkrg3s2j4ka";
     };
+    hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
     buildInputs = [ libXaw libXmu xorgproto libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
@@ -1208,16 +1209,16 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  luit = callPackage ({ stdenv, pkgconfig, fetchurl, libfontenc }: stdenv.mkDerivation {
-    name = "luit-1.1.1";
+  luit = callPackage ({ stdenv, pkgconfig, fetchurl }: stdenv.mkDerivation {
+    name = "luit-20181211";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/app/luit-1.1.1.tar.bz2;
-      sha256 = "0dn694mk56x6hdk6y9ylx4f128h5jcin278gnw2gb807rf3ygc1h";
+      url = ftp://ftp.invisible-island.net/luit/luit-20181211.tgz;
+      sha256 = "18mf3savxjs29hf4xhhc5h278qy0bbj9ddssx44w0bnlg107jhp1";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libfontenc ];
+    buildInputs = [ ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -1257,6 +1258,19 @@ lib.makeScope newScope (self: with self; {
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
     buildInputs = [ libfontenc freetype xorgproto zlib ];
+    meta.platforms = stdenv.lib.platforms.unix;
+  }) {};
+
+  oclock = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXext, libXmu, libXt }: stdenv.mkDerivation {
+    name = "oclock-1.0.4";
+    builder = ./builder.sh;
+    src = fetchurl {
+      url = mirror://xorg/individual/app/oclock-1.0.4.tar.bz2;
+      sha256 = "1zmfzfmdp42nvapf0qz1bc3i3waq5sjrpkgfw64qs4nmq30wy86c";
+    };
+    hardeningDisable = [ "bindnow" "relro" ];
+    nativeBuildInputs = [ pkgconfig ];
+    buildInputs = [ libX11 libXext libXmu libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -1338,7 +1352,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  viewres = callPackage ({ stdenv, pkgconfig, fetchurl, libXau, libXmu, libXt }: stdenv.mkDerivation {
+  viewres = callPackage ({ stdenv, pkgconfig, fetchurl, libXaw, libXmu, libXt }: stdenv.mkDerivation {
     name = "viewres-1.0.5";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1416,7 +1430,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xcbutil = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb, xorgproto }: stdenv.mkDerivation {
+  xcbutil = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb }: stdenv.mkDerivation {
     name = "xcb-util-0.4.0";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1425,11 +1439,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ gperf m4 libxcb xorgproto ];
+    buildInputs = [ gperf m4 libxcb ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xcbutilcursor = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb, xcbutilimage, xcbutilrenderutil, xorgproto }: stdenv.mkDerivation {
+  xcbutilcursor = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb, xcbutilimage, xcbutilrenderutil }: stdenv.mkDerivation {
     name = "xcb-util-cursor-0.1.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1438,11 +1452,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ gperf m4 libxcb xcbutilimage xcbutilrenderutil xorgproto ];
+    buildInputs = [ gperf m4 libxcb xcbutilimage xcbutilrenderutil ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xcbutilerrors = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb, xcbproto, xorgproto }: stdenv.mkDerivation {
+  xcbutilerrors = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb, xcbproto }: stdenv.mkDerivation {
     name = "xcb-util-errors-1.0";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1451,7 +1465,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ gperf m4 libxcb xcbproto xorgproto ];
+    buildInputs = [ gperf m4 libxcb xcbproto ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -1481,7 +1495,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xcbutilrenderutil = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb, xorgproto }: stdenv.mkDerivation {
+  xcbutilrenderutil = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb }: stdenv.mkDerivation {
     name = "xcb-util-renderutil-0.3.9";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1490,11 +1504,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ gperf m4 libxcb xorgproto ];
+    buildInputs = [ gperf m4 libxcb ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xcbutilwm = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb, xorgproto }: stdenv.mkDerivation {
+  xcbutilwm = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb }: stdenv.mkDerivation {
     name = "xcb-util-wm-0.4.1";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1503,7 +1517,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ gperf m4 libxcb xorgproto ];
+    buildInputs = [ gperf m4 libxcb ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -1553,6 +1567,7 @@ lib.makeScope newScope (self: with self; {
       url = mirror://xorg/individual/app/xconsole-1.0.7.tar.bz2;
       sha256 = "1q2ib1626i5da0nda09sp3vzppjrcn82fff83cw7hwr0vy14h56i";
     };
+    hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
     buildInputs = [ libX11 libXaw libXmu xorgproto libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
@@ -1649,7 +1664,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86inputevdev = callPackage ({ stdenv, pkgconfig, fetchurl, udev, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86inputevdev = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, udev, xorgserver }: stdenv.mkDerivation {
     name = "xf86-input-evdev-2.10.6";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1658,11 +1673,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ udev xorgserver xorgproto ];
+    buildInputs = [ xorgproto udev xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86inputjoystick = callPackage ({ stdenv, pkgconfig, fetchurl, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86inputjoystick = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, xorgserver }: stdenv.mkDerivation {
     name = "xf86-input-joystick-1.6.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1671,11 +1686,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgserver xorgproto ];
+    buildInputs = [ xorgproto xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86inputkeyboard = callPackage ({ stdenv, pkgconfig, fetchurl, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86inputkeyboard = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, xorgserver }: stdenv.mkDerivation {
     name = "xf86-input-keyboard-1.9.0";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1684,11 +1699,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgserver xorgproto ];
+    buildInputs = [ xorgproto xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86inputlibinput = callPackage ({ stdenv, pkgconfig, fetchurl, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86inputlibinput = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, xorgserver }: stdenv.mkDerivation {
     name = "xf86-input-libinput-0.28.1";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1697,11 +1712,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgserver xorgproto ];
+    buildInputs = [ xorgproto xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86inputmouse = callPackage ({ stdenv, pkgconfig, fetchurl, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86inputmouse = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, xorgserver }: stdenv.mkDerivation {
     name = "xf86-input-mouse-1.9.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1710,11 +1725,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgserver xorgproto ];
+    buildInputs = [ xorgproto xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86inputsynaptics = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXi, xorgserver, xorgproto, libXtst }: stdenv.mkDerivation {
+  xf86inputsynaptics = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXi, xorgserver, libXtst }: stdenv.mkDerivation {
     name = "xf86-input-synaptics-1.9.1";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1723,11 +1738,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 libXi xorgserver xorgproto libXtst ];
+    buildInputs = [ xorgproto libX11 libXi xorgserver libXtst ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86inputvmmouse = callPackage ({ stdenv, pkgconfig, fetchurl, udev, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86inputvmmouse = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, udev, xorgserver }: stdenv.mkDerivation {
     name = "xf86-input-vmmouse-13.1.0";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1736,7 +1751,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ udev xorgserver xorgproto ];
+    buildInputs = [ xorgproto udev xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -1762,11 +1777,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ mesa_noglu libGL libdrm udev xorgserver xorgproto ];
+    buildInputs = [ xorgproto mesa_noglu libGL libdrm udev xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videoark = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videoark = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-ark-0.7.5";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1775,11 +1790,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videoast = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videoast = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-ast-1.1.5";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1788,11 +1803,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videoati = callPackage ({ stdenv, pkgconfig, fetchurl, libdrm, udev, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videoati = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libdrm, udev, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-ati-18.0.1";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1801,24 +1816,24 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libdrm udev libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libdrm udev libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videochips = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
-    name = "xf86-video-chips-1.2.7";
+  xf86videochips = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
+    name = "xf86-video-chips-1.3.0";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/driver/xf86-video-chips-1.2.7.tar.bz2;
-      sha256 = "0n4zypmbkjzkw36cjy2braaivhvj60np6w80lcs9mfpabs66ia3f";
+      url = mirror://xorg/individual/driver/xf86-video-chips-1.3.0.tar.bz2;
+      sha256 = "00nsyz0z8mkzinr5czkkajbw1fm6437q7f3dx027017jdhh4qb4p";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videocirrus = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videocirrus = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-cirrus-1.5.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1827,11 +1842,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videodummy = callPackage ({ stdenv, pkgconfig, fetchurl, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videodummy = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-dummy-0.3.8";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1840,11 +1855,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgserver xorgproto ];
+    buildInputs = [ xorgproto xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videofbdev = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videofbdev = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-fbdev-0.5.0";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1853,11 +1868,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videogeode = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videogeode = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-geode-2.11.19";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1866,11 +1881,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videoglide = callPackage ({ stdenv, pkgconfig, fetchurl, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videoglide = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-glide-1.2.2";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1879,11 +1894,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgserver xorgproto ];
+    buildInputs = [ xorgproto xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videoglint = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videoglint = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgproto, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-glint-1.2.9";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1892,37 +1907,37 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ libpciaccess xorgproto xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videoi128 = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
-    name = "xf86-video-i128-1.3.6";
+  xf86videoi128 = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
+    name = "xf86-video-i128-1.4.0";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/driver/xf86-video-i128-1.3.6.tar.bz2;
-      sha256 = "171b8lbxr56w3isph947dnw7x87hc46v6m3mcxdcz44gk167x0pq";
+      url = mirror://xorg/individual/driver/xf86-video-i128-1.4.0.tar.bz2;
+      sha256 = "1snhpv1igrhifcls3r498kjd14ml6x2xvih7zk9xlsd1ymmhlb4g";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videoi740 = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
-    name = "xf86-video-i740-1.3.6";
+  xf86videoi740 = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
+    name = "xf86-video-i740-1.4.0";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/driver/xf86-video-i740-1.3.6.tar.bz2;
-      sha256 = "0c8nl0yyyw08n4zd6sgw9p3a858wpgf6raczjd70gf47lncms389";
+      url = mirror://xorg/individual/driver/xf86-video-i740-1.4.0.tar.bz2;
+      sha256 = "0l3s1m95bdsg4gki943qipq8agswbb84dzcflpxa3vlckwhh3r26";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videointel = callPackage ({ stdenv, pkgconfig, fetchurl, libdrm, libpng, udev, libpciaccess, libX11, xcbutil, libxcb, libXcursor, libXdamage, libXext, libXfixes, xorgserver, xorgproto, libXrandr, libXrender, libxshmfence, libXtst, libXvMC }: stdenv.mkDerivation {
+  xf86videointel = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libdrm, libpng, udev, libpciaccess, libX11, xcbutil, libxcb, libXcursor, libXdamage, libXext, libXfixes, xorgserver, libXrandr, libXrender, libxshmfence, libXtst, libXvMC }: stdenv.mkDerivation {
     name = "xf86-video-intel-2.99.917";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1931,11 +1946,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libdrm libpng udev libpciaccess libX11 xcbutil libxcb libXcursor libXdamage libXext libXfixes xorgserver xorgproto libXrandr libXrender libxshmfence libXtst libXvMC ];
+    buildInputs = [ xorgproto libdrm libpng udev libpciaccess libX11 xcbutil libxcb libXcursor libXdamage libXext libXfixes xorgserver libXrandr libXrender libxshmfence libXtst libXvMC ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videomach64 = callPackage ({ stdenv, pkgconfig, fetchurl, libdrm, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videomach64 = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libdrm, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-mach64-6.9.6";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1944,37 +1959,37 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libdrm libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libdrm libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videomga = callPackage ({ stdenv, pkgconfig, fetchurl, libdrm, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
-    name = "xf86-video-mga-1.6.5";
+  xf86videomga = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libdrm, libpciaccess, xorgserver }: stdenv.mkDerivation {
+    name = "xf86-video-mga-2.0.0";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/driver/xf86-video-mga-1.6.5.tar.bz2;
-      sha256 = "08ll52hlar9z446v0wwca5qkj3hxhswwm7vvcgic9xv4cf7csqxn";
+      url = mirror://xorg/individual/driver/xf86-video-mga-2.0.0.tar.bz2;
+      sha256 = "0yaxpgyyj9398nzzr5vnsfxcis76z46p9814yzj8179yl7hld296";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libdrm libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libdrm libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videoneomagic = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
-    name = "xf86-video-neomagic-1.2.9";
+  xf86videoneomagic = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
+    name = "xf86-video-neomagic-1.3.0";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/driver/xf86-video-neomagic-1.2.9.tar.bz2;
-      sha256 = "1whb2kgyqaxdjim27ya404acz50izgmafwnb6y9m89q5n6b97y3j";
+      url = mirror://xorg/individual/driver/xf86-video-neomagic-1.3.0.tar.bz2;
+      sha256 = "0r4h673kw8fl7afc30anwbjlbhp82mg15fvaxf470xg7z983k0wk";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videonewport = callPackage ({ stdenv, pkgconfig, fetchurl, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videonewport = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-newport-0.2.4";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1983,11 +1998,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgserver xorgproto ];
+    buildInputs = [ xorgproto xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videonouveau = callPackage ({ stdenv, pkgconfig, fetchurl, libdrm, udev, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videonouveau = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libdrm, udev, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-nouveau-1.0.15";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1996,11 +2011,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libdrm udev libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libdrm udev libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videonv = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videonv = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-nv-2.1.21";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2009,23 +2024,24 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videoomap = callPackage ({ stdenv, pkgconfig, fetchurl, libdrm, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videoomap = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libdrm, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-omap-0.4.5";
     builder = ./builder.sh;
     src = fetchurl {
       url = mirror://xorg/individual/driver/xf86-video-omap-0.4.5.tar.bz2;
       sha256 = "0nmbrx6913dc724y8wj2p6vqfbj5zdjfmsl037v627jj0whx9rwk";
     };
+    hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libdrm xorgserver xorgproto ];
+    buildInputs = [ xorgproto libdrm xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videoopenchrome = callPackage ({ stdenv, pkgconfig, fetchurl, libdrm, udev, libpciaccess, libX11, libXext, xorgserver, xorgproto, libXvMC }: stdenv.mkDerivation {
+  xf86videoopenchrome = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libdrm, udev, libpciaccess, libX11, libXext, xorgserver, libXvMC }: stdenv.mkDerivation {
     name = "xf86-video-openchrome-0.6.0";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2034,11 +2050,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libdrm udev libpciaccess libX11 libXext xorgserver xorgproto libXvMC ];
+    buildInputs = [ xorgproto libdrm udev libpciaccess libX11 libXext xorgserver libXvMC ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videoqxl = callPackage ({ stdenv, pkgconfig, fetchurl, libdrm, udev, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videoqxl = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libdrm, udev, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-qxl-0.1.5";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2047,11 +2063,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libdrm udev libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libdrm udev libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videor128 = callPackage ({ stdenv, pkgconfig, fetchurl, libdrm, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videor128 = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libdrm, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-r128-6.11.0";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2060,11 +2076,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libdrm libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libdrm libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videorendition = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videorendition = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-rendition-4.2.7";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2073,11 +2089,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videos3virge = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videos3virge = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-s3virge-1.10.7";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2086,11 +2102,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videosavage = callPackage ({ stdenv, pkgconfig, fetchurl, libdrm, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videosavage = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libdrm, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-savage-2.3.9";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2099,11 +2115,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libdrm libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libdrm libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videosiliconmotion = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videosiliconmotion = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-siliconmotion-1.7.9";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2112,11 +2128,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videosis = callPackage ({ stdenv, pkgconfig, fetchurl, libdrm, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videosis = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libdrm, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-sis-0.10.9";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2125,11 +2141,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libdrm libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libdrm libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videosisusb = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videosisusb = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-sisusb-0.9.7";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2138,11 +2154,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videosuncg6 = callPackage ({ stdenv, pkgconfig, fetchurl, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videosuncg6 = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-suncg6-1.1.2";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2151,11 +2167,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgserver xorgproto ];
+    buildInputs = [ xorgproto xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videosunffb = callPackage ({ stdenv, pkgconfig, fetchurl, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videosunffb = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-sunffb-1.2.2";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2164,11 +2180,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgserver xorgproto ];
+    buildInputs = [ xorgproto xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videosunleo = callPackage ({ stdenv, pkgconfig, fetchurl, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videosunleo = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-sunleo-1.2.2";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2177,11 +2193,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgserver xorgproto ];
+    buildInputs = [ xorgproto xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videotdfx = callPackage ({ stdenv, pkgconfig, fetchurl, libdrm, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videotdfx = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libdrm, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-tdfx-1.4.7";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2190,11 +2206,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libdrm libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libdrm libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videotga = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videotga = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-tga-1.2.2";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2203,11 +2219,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videotrident = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videotrident = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-trident-1.3.8";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2216,11 +2232,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videov4l = callPackage ({ stdenv, pkgconfig, fetchurl, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videov4l = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-v4l-0.3.0";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2229,11 +2245,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgserver xorgproto ];
+    buildInputs = [ xorgproto xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videovboxvideo = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgproto, xorgserver }: stdenv.mkDerivation {
+  xf86videovboxvideo = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-vboxvideo-1.0.0";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2242,11 +2258,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgproto xorgserver ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videovesa = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videovesa = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-vesa-2.4.0";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2255,11 +2271,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videovmware = callPackage ({ stdenv, pkgconfig, fetchurl, libdrm, udev, libpciaccess, libX11, libXext, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videovmware = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libdrm, udev, libpciaccess, libX11, libXext, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-vmware-13.3.0";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2268,11 +2284,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libdrm udev libpciaccess libX11 libXext xorgserver xorgproto ];
+    buildInputs = [ xorgproto libdrm udev libpciaccess libX11 libXext xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videovoodoo = callPackage ({ stdenv, pkgconfig, fetchurl, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videovoodoo = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-voodoo-1.2.5";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2281,7 +2297,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -2298,7 +2314,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videoxgi = callPackage ({ stdenv, pkgconfig, fetchurl, libdrm, libpciaccess, xorgserver, xorgproto }: stdenv.mkDerivation {
+  xf86videoxgi = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libdrm, libpciaccess, xorgserver }: stdenv.mkDerivation {
     name = "xf86-video-xgi-1.6.1";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2307,7 +2323,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libdrm libpciaccess xorgserver xorgproto ];
+    buildInputs = [ xorgproto libdrm libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -2324,7 +2340,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xfs = callPackage ({ stdenv, pkgconfig, fetchurl, libXfont, xorgproto, xtrans }: stdenv.mkDerivation {
+  xfs = callPackage ({ stdenv, pkgconfig, fetchurl, libXfont2, xorgproto, xtrans }: stdenv.mkDerivation {
     name = "xfs-1.2.0";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2398,7 +2414,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 libXext libXi libXinerama libXrandr ];
+    buildInputs = [ xorgproto libX11 libXext libXi libXinerama libXrandr ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -2441,7 +2457,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xkbutils = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXaw, xorgproto, libXt }: stdenv.mkDerivation {
+  xkbutils = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXaw, libXt }: stdenv.mkDerivation {
     name = "xkbutils-1.0.4";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2450,7 +2466,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 libXaw xorgproto libXt ];
+    buildInputs = [ xorgproto libX11 libXaw libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -2464,7 +2480,6 @@ lib.makeScope newScope (self: with self; {
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
     buildInputs = [ libX11 xorgproto ];
-    #configureFlags = [ "--with-xkb-rules-symlink=xorg" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -2488,6 +2503,7 @@ lib.makeScope newScope (self: with self; {
       url = mirror://xorg/individual/app/xload-1.1.3.tar.bz2;
       sha256 = "01sr6yd6yhyyfgn88l867w6h9dn5ikcynaz5rwji6xqxhw1lhkpk";
     };
+    hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
     buildInputs = [ libX11 libXaw libXmu xorgproto libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
@@ -2597,20 +2613,28 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xorgserver = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, openssl, libX11, libXau, libXaw, libxcb, xcbutil, xcbutilwm, xcbutilimage, xcbutilkeysyms, xcbutilrenderutil, libXdmcp, libXfixes, libxkbfile, libXmu, libXpm, libXrender, libXres, libXt, autoreconfHook }: stdenv.mkDerivation {
-    name = "xorg-server-1.20.99.0.99"; # 2018-12-19
+  xorgproto = callPackage ({ stdenv, pkgconfig, fetchurl, meson, ninja }: stdenv.mkDerivation {
+    name = "xorgproto-2018.4";
     builder = ./builder.sh;
-    src = fetchgit {
-      url = git://anongit.freedesktop.org/xorg/xserver;
-      rev = "a3d01ee9d0b5e523b0771e2a26542ac15e29a33f";
-      sha256 = "0y6agkf0sbmn6sja66vyw96wcspppa6wswc4874ypn1qpc1d89gx";
+    src = fetchurl {
+      url = mirror://xorg/individual/proto/xorgproto-2018.4.tar.bz2;
+      sha256 = "180mqkp70i44rkmj430pmn9idssvffrgv4y5h19fm698a7h8bs7y";
     };
-    #src = fetchurl {
-    #  url = mirror://xorg/individual/xserver/xorg-server-1.20.3.tar.bz2;
-    #  sha256 = "1ph1j8gy5cazsq05krq9kppjx5v1sl75pbdka8ibxb1cq5kf8g0v";
-    #};
+    nativeBuildInputs = [ pkgconfig meson ninja ];
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig autoreconfHook ];
+    buildInputs = [ ];
+    meta.platforms = stdenv.lib.platforms.unix;
+  }) {};
+
+  xorgserver = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, openssl, libX11, libXau, libXaw, libxcb, xcbutil, xcbutilwm, xcbutilimage, xcbutilkeysyms, xcbutilrenderutil, libXdmcp, libXfixes, libxkbfile, libXmu, libXpm, libXrender, libXres, libXt }: stdenv.mkDerivation {
+    name = "xorg-server-1.20.3";
+    builder = ./builder.sh;
+    src = fetchurl {
+      url = mirror://xorg/individual/xserver/xorg-server-1.20.3.tar.bz2;
+      sha256 = "1ph1j8gy5cazsq05krq9kppjx5v1sl75pbdka8ibxb1cq5kf8g0v";
+    };
+    hardeningDisable = [ "bindnow" "relro" ];
+    nativeBuildInputs = [ pkgconfig ];
     buildInputs = [ xorgproto openssl libX11 libXau libXaw libxcb xcbutil xcbutilwm xcbutilimage xcbutilkeysyms xcbutilrenderutil libXdmcp libXfixes libxkbfile libXmu libXpm libXrender libXres libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
@@ -2651,19 +2675,6 @@ lib.makeScope newScope (self: with self; {
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
     buildInputs = [ libX11 xorgproto ];
-    meta.platforms = stdenv.lib.platforms.unix;
-  }) {};
-
-  xorgproto = callPackage ({ stdenv, pkgconfig, fetchurl, meson, ninja }: stdenv.mkDerivation {
-    name = "xorgproto-2018.4";
-    builder = ./builder.sh;
-    src = fetchurl {
-      url = mirror://xorg/individual/proto/xorgproto-2018.4.tar.bz2;
-      sha256 = "180mqkp70i44rkmj430pmn9idssvffrgv4y5h19fm698a7h8bs7y";
-    };
-    nativeBuildInputs = [ pkgconfig meson ninja ];
-    hardeningDisable = [ "bindnow" "relro" ];
-    buildInputs = [ ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -2719,13 +2730,14 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xsetroot = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, xbitmaps, libXcursor, libXmu }: stdenv.mkDerivation {
+  xsetroot = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, xbitmaps, libXcursor, libXmu, xorgproto }: stdenv.mkDerivation {
     name = "xsetroot-1.1.2";
     builder = ./builder.sh;
     src = fetchurl {
       url = mirror://xorg/individual/app/xsetroot-1.1.2.tar.bz2;
       sha256 = "0z21mqvmdl6rl63q77479wgkfygnll57liza1i3va7sr4fx45i0h";
     };
+    hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
     buildInputs = [ libX11 xbitmaps libXcursor libXmu xorgproto ];
     meta.platforms = stdenv.lib.platforms.unix;
@@ -2764,6 +2776,7 @@ lib.makeScope newScope (self: with self; {
       url = mirror://xorg/individual/app/xtrap-1.0.3.tar.bz2;
       sha256 = "0sqm4j1zflk1s94iq4waa70hna1xcys88v9a70w0vdw66czhvj2j";
     };
+    hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
     buildInputs = [ libX11 libXt ];
     meta.platforms = stdenv.lib.platforms.unix;

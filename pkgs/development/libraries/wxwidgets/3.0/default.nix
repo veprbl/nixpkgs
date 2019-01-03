@@ -1,6 +1,6 @@
 { stdenv, fetchFromGitHub, fetchurl, fetchpatch, pkgconfig
-, gtk2, gtk3, libXinerama, libSM, libXxf86vm, xorgproto
-, gstreamer, gst-plugins-base, GConf, setfile
+, gtk2, gtk3, libXinerama, libSM, libXxf86vm
+, xorgproto, gstreamer, gst-plugins-base, GConf, setfile
 , withMesa ? true, libGLU ? null, libGL ? null
 , compat24 ? false, compat26 ? true, unicode ? true
 , withGtk2 ? true

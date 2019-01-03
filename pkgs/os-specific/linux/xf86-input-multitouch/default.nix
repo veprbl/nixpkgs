@@ -1,8 +1,6 @@
 { stdenv
 , fetchgit
 , mtdev
-, xorgserver
-, xorgproto
 , pixman
 , xorg
 , libpciaccess
@@ -26,10 +24,12 @@ stdenv.mkDerivation {
     EndSection
   '';
 
-  buildInputs = with xorg; [ mtdev xorgproto libpciaccess libxcb ];
+  buildInputs = with xorg; [
+    mtdev xorgproto libpciaccess libxcb
+  ];
 
   buildPhase = ''
-    make INCLUDE="$NIX_CFLAGS_COMPILE -I${xorgserver.dev}/include/xorg -I${pixman}/include/pixman-1 -Iinclude"
+    make INCLUDE="$NIX_CFLAGS_COMPILE -I${xorg.xorgserver.dev}/include/xorg -I${pixman}/include/pixman-1 -Iinclude"
   '';
 
   installPhase = ''

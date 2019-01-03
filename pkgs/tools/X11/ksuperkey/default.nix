@@ -1,10 +1,12 @@
-{ stdenv, fetchgit, libX11, libXtst, pkgconfig, libXi, xorgproto }:
+{ stdenv, fetchgit, libX11, libXtst, pkgconfig, xorgproto, libXi }:
 
 stdenv.mkDerivation rec {
   name = "ksuperkey-git-2015-07-21";
 
   nativeBuildInputs = [ pkgconfig ];
-  buildInputs = [ libX11 libXtst libXi xorgproto ];
+  buildInputs = [
+    libX11 libXtst xorgproto libXi
+  ];
 
   src = fetchgit {
     url = "https://github.com/hanschen/ksuperkey";

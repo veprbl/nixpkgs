@@ -29,12 +29,12 @@ in buildPythonApplication rec {
   ];
 
   nativeBuildInputs = [ pkgconfig gobject-introspection wrapGAppsHook ];
-  buildInputs = [
+  buildInputs = with xorg; [
+    libX11 xorgproto libXrender libXi
+    libXtst libXfixes libXcomposite libXdamage
+    libXrandr libxkbfile
+    ] ++ [
     cython
-
-    xorg.libX11 xorg.libXrender xorg.libXi xorg.xorgproto xorg.libXtst
-    xorg.libXfixes xorg.libXcomposite xorg.libXdamage xorg.libXrandr
-    xorg.libxkbfile
 
     pango cairo gdk_pixbuf atk gtk3 glib
 

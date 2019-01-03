@@ -1,4 +1,4 @@
-{ stdenv, fetchgit, autoreconfHook, libX11, libXext, xorgproto
+{ stdenv, fetchgit, autoreconfHook, xorgproto, libX11, libXext
 , pixman, pkgconfig, utilmacros, xorgserver
 }:
 
@@ -12,8 +12,8 @@ stdenv.mkDerivation {
   };
 
   buildInputs =
-    [ autoreconfHook xorgproto libX11 libXext pixman pkgconfig utilmacros
-      xorgserver
+    [ autoreconfHook xorgproto libX11 libXext pixman
+      pkgconfig utilmacros xorgserver
     ];
 
   hardeningDisable = [ "fortify" ];

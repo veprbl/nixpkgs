@@ -18,7 +18,10 @@ stdenv.mkDerivation rec {
     '';
 
   buildInputs =
-    [ libX11 xorgproto libXext libXtst gtk2 libXi pkgconfig texinfo ];
+    [ libX11 xorgproto libXext libXtst gtk2
+      libXi pkgconfig
+      texinfo
+    ];
 
   configureFlags =
     # Do a static build because `libxnee' doesn't get installed anyway.

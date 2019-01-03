@@ -67,8 +67,7 @@ stdenv.mkDerivation rec {
   freetype_dev = freetype.dev;
   zlib_dev = zlib.dev;
   
-  xproto_exp = xorgproto;
-  xextproto_exp = xorgproto;
+  xorgproto_exp = xorgproto;
   libX11_exp = libX11;
   libXt_exp = libXt;
   libXext_exp = libXext;

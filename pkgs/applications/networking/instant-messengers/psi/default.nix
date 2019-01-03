@@ -1,5 +1,6 @@
 { stdenv, fetchurl, enchant, qt4, zlib, sox, libX11, xorgproto, libSM
-, libICE, qca2, pkgconfig, which, glib, libXScrnSaver
+, libICE, qca2, pkgconfig, which, glib
+, libXScrnSaver
 }:
 
 stdenv.mkDerivation rec {

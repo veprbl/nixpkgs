@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, libX11, libXtst, libXi, xorgproto }:
+{ stdenv, fetchurl, libX11, libXtst, xorgproto, libXi }:
 
 stdenv.mkDerivation rec {
   name = "xmacro-${version}";

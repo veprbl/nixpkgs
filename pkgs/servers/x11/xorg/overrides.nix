@@ -94,6 +94,7 @@ self: super:
         rm -rf $out/share/doc
       '';
     CPP = stdenv.lib.optionalString stdenv.isDarwin "clang -E -";
+    propagatedBuildInputs = [ self.xorgproto ];
   });
 
   libAppleWM = super.libAppleWM.overrideAttrs (attrs: {
@@ -105,6 +106,7 @@ self: super:
 
   libXau = super.libXau.overrideAttrs (attrs: {
     outputs = [ "out" "dev" ];
+    propagatedBuildInputs = [ self.xorgproto ];
   });
 
   libXdmcp = super.libXdmcp.overrideAttrs (attrs: {
@@ -434,7 +436,14 @@ self: super:
     let
       version = (builtins.parseDrvName attrs_passed.name).version;
       attrs =
-        if (abiCompat == null || lib.hasPrefix abiCompat version) then attrs_passed
+        if (abiCompat == null || lib.hasPrefix abiCompat version) then
+          attrs_passed // {
+            buildInputs = attrs_passed.buildInputs ++ [ libdrm.dev ]; patchPhase = ''
+            for i in dri3/*.c
+            do
+              sed -i -e "s|#include <drm_fourcc.h>|#include <libdrm/drm_fourcc.h>|" $i
+            done
+          '';}
         else if (abiCompat == "1.17") then {
           name = "xorg-server-1.17.4";
           builder = ./builder.sh;
@@ -468,7 +477,8 @@ self: super:
       commonBuildInputs = attrs.buildInputs ++ [ xtrans ];
       commonPropagatedBuildInputs = [
         zlib libGL libGLU dbus
-        xorgproto libXext pixman libXfont libxshmfence libunwind
+        xorgproto
+        libXext pixman libXfont libxshmfence libunwind
         libXfont2
       ];
       # XQuartz requires two compilations: the first to get X / XQuartz,
@@ -526,7 +536,7 @@ self: super:
           Xplugin Carbon Cocoa
         ];
         propagatedBuildInputs = commonPropagatedBuildInputs ++ [
-          libAppleWM xorgproto 
+          libAppleWM xorgproto
         ];
 
         # XQuartz patchset

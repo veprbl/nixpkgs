@@ -21,8 +21,8 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
-    zlib libxml2 libxslt xorgproto libX11 libGLU_combined SDL SDL_mixer
-    SDL_image SDL_ttf SDL_gfx physfs
+    zlib libxml2 libxslt xorgproto libX11 libGLU_combined SDL SDL_mixer SDL_image
+    SDL_ttf SDL_gfx physfs
   ];
 
   autoreconfPhase = ''

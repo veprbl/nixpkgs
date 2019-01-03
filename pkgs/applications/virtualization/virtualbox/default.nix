@@ -36,7 +36,7 @@ in stdenv.mkDerivation {
 
   buildInputs =
     [ iasl dev86 libxslt libxml2 xorgproto libX11 libXext libXcursor libIDL
-      libcap glib lvm2 alsaLib curl libvpx pam makeself perl /* XXX: xorriso ? */
+      libcap glib lvm2 alsaLib curl libvpx pam makeself perl
       libXmu libpng libopus python ]
     ++ optional javaBindings jdk
     ++ optional pythonBindings python # Python is needed even when not building bindings

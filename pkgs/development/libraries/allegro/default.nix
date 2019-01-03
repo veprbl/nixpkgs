@@ -1,6 +1,7 @@
-{ stdenv, fetchurl, texinfo, libXext, libX11, xorgproto
+{ stdenv, fetchurl, texinfo, libXext, xorgproto, libX11
 , libXpm, libXt, libXcursor, alsaLib, cmake, zlib, libpng, libvorbis
-, libXxf86dga, libXxf86misc, libXxf86vm, openal, libGLU_combined }:
+, libXxf86dga, libXxf86misc
+, libXxf86vm, openal, libGLU_combined }:
 
 stdenv.mkDerivation rec {
   name = "allegro-${version}";
@@ -17,8 +18,9 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
-    texinfo libXext libX11 xorgproto libXpm libXt libXcursor alsaLib cmake zlib
-    libpng libvorbis libXxf86dga libXxf86misc libXxf86vm openal libGLU_combined
+    texinfo libXext xorgproto libX11 libXpm libXt libXcursor
+    alsaLib cmake zlib libpng libvorbis libXxf86dga libXxf86misc
+    libXxf86vm openal libGLU_combined
   ];
 
   hardeningDisable = [ "format" ];

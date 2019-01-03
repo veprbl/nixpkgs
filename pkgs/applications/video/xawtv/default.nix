@@ -1,5 +1,5 @@
-{stdenv, fetchurl, ncurses, libjpeg, libX11, libXt, alsaLib, aalib, libXft, libv4l
-, xorgproto, libFS, libXaw, libXpm, libXext, libSM, libICE, perl, linux}:
+{stdenv, fetchurl, ncurses, libjpeg, libX11, libXt, alsaLib, aalib, libXft, xorgproto, libv4l
+, libFS, libXaw, libXpm, libXext, libSM, libICE, perl, linux}:
 
 stdenv.mkDerivation rec {
   name = "xawtv-3.105";
