@@ -1,4 +1,4 @@
-{ lib, buildPythonPackage, fetchPypi, requests }:
+{ stdenv, buildPythonPackage, fetchPypi, requests }:
 
 buildPythonPackage rec {
   pname = "casttube";
@@ -11,11 +11,13 @@ buildPythonPackage rec {
 
   propagatedBuildInputs = [ requests ];
 
-  doCheck = false; # network or X session?
+  # no tests
+  doCheck = false;
 
-  meta = with lib; {
+  meta = with stdenv.lib; {
+    description = "Interact with the Youtube Chromecast api";
     homepage = http://github.com/ur1katz/casttube;
-    description = "YouTube chromecast api";
     license = licenses.mit;
+    maintainers = with maintainers; [ fpletz ];
   };
 }
