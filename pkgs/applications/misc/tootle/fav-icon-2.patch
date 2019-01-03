@@ -1,0 +1,40 @@
+From 18124f2c2a093c00774782b490da66119605c86b Mon Sep 17 00:00:00 2001
+From: Will Dietz <w@wdtz.org>
+Date: Thu, 3 Jan 2019 13:12:00 -0600
+Subject: [PATCH] Since the button also shows status, use emblem (and nicer
+ IMO)
+
+---
+ src/API/NotificationType.vala | 2 +-
+ src/Widgets/StatusWidget.vala | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/API/NotificationType.vala b/src/API/NotificationType.vala
+index ffb5332..6c12b5b 100644
+--- a/src/API/NotificationType.vala
++++ b/src/API/NotificationType.vala
+@@ -71,7 +71,7 @@ public enum Tootle.NotificationType {
+             case REBLOG:
+                 return "media-playlist-repeat-symbolic";
+             case FAVORITE:
+-                return "star-new-symbolic";
++                return "emblem-favorite-symbolic";
+             case FOLLOW:
+             case FOLLOW_REQUEST:
+                 return "contact-new-symbolic";
+diff --git a/src/Widgets/StatusWidget.vala b/src/Widgets/StatusWidget.vala
+index 675ced9..b5327db 100644
+--- a/src/Widgets/StatusWidget.vala
++++ b/src/Widgets/StatusWidget.vala
+@@ -86,7 +86,7 @@ public class Tootle.StatusWidget : Gtk.EventBox {
+             if (reblog.sensitive)
+                 this.status.get_formal ().set_reblogged (reblog.get_active ());
+         });
+-        favorite = new ImageToggleButton ("star-new-symbolic");
++        favorite = new ImageToggleButton ("emblem-favorite-symbolic");
+         favorite.set_action ();
+         favorite.tooltip_text = _("Favorite");
+         favorite.toggled.connect (() => {
+-- 
+2.20.1
+

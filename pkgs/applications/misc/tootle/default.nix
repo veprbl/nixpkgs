@@ -32,7 +32,7 @@ in stdenv.mkDerivation rec {
     gnome3.libgee gnome3.libsoup gnome3.gsettings-desktop-schemas
   ];
 
-  patches = [ ./fav-icon.patch ];
+  patches = [ ./fav-icon.patch ./fav-icon-2.patch ];
 
   postPatch = ''
     chmod +x ./meson/post_install.py
