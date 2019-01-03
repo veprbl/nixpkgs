@@ -116,7 +116,7 @@ stdenv.mkDerivation rec {
       done
     '';
     genericPatches = ''
-      find src/main/java/com/google/devtools -type f -print0 | while IFS="" read -r -d "" path; do
+      grep -rlZ /bin src/main/java/com/google/devtools | while IFS="" read -r -d "" path; do
         substituteInPlace "$path" \
           --replace /bin/bash ${customBash}/bin/bash \
           --replace /usr/bin/env ${coreutils}/bin/env \
