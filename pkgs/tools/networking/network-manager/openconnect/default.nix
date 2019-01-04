@@ -18,6 +18,8 @@ in stdenv.mkDerivation rec {
       inherit kmod openconnect;
     })
     ./can-persist.patch
+    ./0001-Bug-770880-Revamp-certificate-warning-accept-dialog.patch
+    ./0001-Bug-770880-Disallow-manual-cert-acceptance.patch
   ];
 
   buildInputs = [ openconnect networkmanager ]
