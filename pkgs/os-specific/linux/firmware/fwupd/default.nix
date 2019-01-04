@@ -10,7 +10,6 @@
 let
   # Updating? Keep $out/etc synchronized with passthru.filesInstalledToEtc
   version = "1.2.3";
-  #version = "2018-12-26";
   python = python3.withPackages (p: with p; [ pygobject3 pycairo pillow ]);
   installedTestsPython = python3.withPackages (p: with p; [ pygobject3 requests ]);
 
@@ -19,20 +18,12 @@ let
   };
 in stdenv.mkDerivation {
   name = "fwupd-${version}";
-  src = fetchFromGitHub {
-    owner = "hughsie";
-    repo = "fwupd";
-    #rev = "8be03791c7b552ae4b0ccde530ab15266e2df01f";
-    rev = version;
-    sha256 = "1xln1cc61f6f1nd5x4w5pvnh7g76gv6w55p565arz4ksvbdiprn5";
+  src = fetchurl {
+    url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
+    sha256 = "11qpgincndahq96rbm2kgcy9kw5n9cmbbilsrqcqcyk7mvv464sl";
   };
 
-  #src = fetchurl {
-  #  url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
-  #  sha256 = "126b3lsh4gkyajsqm2c8l6wqr4dd7m26krz2527khmlps0lxdhg1";
-  #};
-
-  outputs = [ "out" /* "lib" */ "dev" "devdoc" "man" "installedTests" ];
+  outputs = [ "out" "dev" "devdoc" "man" "installedTests" ];
 
   nativeBuildInputs = [
     meson ninja gtk-doc pkgconfig gobject-introspection intltool glibcLocales shared-mime-info
@@ -58,12 +49,6 @@ in stdenv.mkDerivation {
 
     patchShebangs .
     substituteInPlace data/installed-tests/fwupdmgr.test.in --subst-var-by installedtestsdir "$installedTests/share/installed-tests/fwupd"
-
-    # /etc/daemon.conf
-    substituteInPlace meson.build --replace \
-      "conf.set_quoted('SYSCONFDIR', sysconfdir)" \
-      "conf.set_quoted('SYSCONFDIR', '/etc')"
-
     substituteInPlace data/installed-tests/meson.build --replace sysconfdir sysconfdir_install
   '';
 
@@ -120,6 +105,7 @@ in stdenv.mkDerivation {
       "fwupd/remotes.d/lvfs-testing.conf"
       "fwupd/remotes.d/lvfs.conf"
       "fwupd/remotes.d/vendor.conf"
+      "fwupd/remotes.d/fwupd-tests.conf"
       "pki/fwupd/GPG-KEY-Hughski-Limited"
       "pki/fwupd/GPG-KEY-Linux-Foundation-Firmware"
       "pki/fwupd/GPG-KEY-Linux-Vendor-Firmware-Service"
