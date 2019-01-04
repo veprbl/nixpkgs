@@ -17,6 +17,7 @@ in stdenv.mkDerivation rec {
       src = ./fix-paths.patch;
       inherit kmod openconnect;
     })
+    ./can-persist.patch
   ];
 
   buildInputs = [ openconnect networkmanager ]
