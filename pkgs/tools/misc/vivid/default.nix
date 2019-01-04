@@ -14,6 +14,13 @@ rustPlatform.buildRustPackage rec {
     sha256 = "0lyhln1gdh4f96jsvwl3qhmp1dac8mfpzmadpb0w2mjix4fhf4ha";
   };
 
+  patches = [
+    # PR 26
+    ./jellybean.patch
+    # PR 27
+    ./llvm.patch
+  ];
+
   postPatch = ''
     substituteInPlace src/main.rs --replace /usr/share $out/share
   '';
