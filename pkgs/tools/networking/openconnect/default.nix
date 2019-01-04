@@ -1,4 +1,5 @@
-{ stdenv, fetchgit, fetchurl, pkgconfig, autoreconfHook, vpnc, openssl ? null, gnutls ? null, gmp, libxml2, stoken, zlib, lz4, libtasn1 } :
+{ stdenv, fetchgit, fetchurl, pkgconfig, autoreconfHook, vpnc, openssl ? null, gnutls ? null, gmp, libxml2, stoken, zlib, lz4, libtasn1
+, libproxy, pcsclite }:
 
 assert (openssl != null) == (gnutls == null);
 
@@ -7,8 +8,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = git://git.infradead.org/users/dwmw2/openconnect.git;
-    rev = "0263090429f1b5ce0617774a1826278adb402fc2";
-    sha256 = "07a4kicvqq68bsm3wdqc0v2lsk46frajg4711jzwh5bx81a0iigi";
+    rev = "a25e844477b4662f0ede159a3c633c91597c8813";
+    sha256 = "1pc9bxlb76p2a790df725dv4666y8q41gl870z3dzdhvsmgx75bi";
   };
   #src = fetchurl {
   #  urls = [
@@ -32,7 +33,7 @@ stdenv.mkDerivation rec {
   ];
 
   nativeBuildInputs = [ pkgconfig autoreconfHook ];
-  propagatedBuildInputs = [ vpnc openssl gnutls gmp libxml2 stoken zlib lz4 libtasn1 ];
+  propagatedBuildInputs = [ vpnc openssl gnutls gmp libxml2 stoken zlib lz4 libtasn1 libproxy pcsclite ];
 
   meta = {
     description = "VPN Client for Cisco's AnyConnect SSL VPN";
