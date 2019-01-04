@@ -1,5 +1,5 @@
 { stdenv, fetchgit, fetchurl, pkgconfig, autoreconfHook, vpnc, openssl ? null, gnutls ? null, gmp, libxml2, stoken, zlib, lz4, libtasn1
-, libproxy, pcsclite }:
+, pcsclite }:
 
 assert (openssl != null) == (gnutls == null);
 
@@ -33,7 +33,7 @@ stdenv.mkDerivation rec {
   ];
 
   nativeBuildInputs = [ pkgconfig autoreconfHook ];
-  propagatedBuildInputs = [ vpnc openssl gnutls gmp libxml2 stoken zlib lz4 libtasn1 libproxy pcsclite ];
+  propagatedBuildInputs = [ vpnc openssl gnutls gmp libxml2 stoken zlib lz4 libtasn1 pcsclite ];
 
   meta = {
     description = "VPN Client for Cisco's AnyConnect SSL VPN";
