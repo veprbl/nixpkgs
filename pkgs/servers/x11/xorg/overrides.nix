@@ -436,14 +436,15 @@ self: super:
     let
       version = (builtins.parseDrvName attrs_passed.name).version;
       attrs =
-        if (abiCompat == null || lib.hasPrefix abiCompat version) then
-          attrs_passed // {
-            buildInputs = attrs_passed.buildInputs ++ [ libdrm.dev ]; patchPhase = ''
-            for i in dri3/*.c
-            do
-              sed -i -e "s|#include <drm_fourcc.h>|#include <libdrm/drm_fourcc.h>|" $i
-            done
-          '';}
+        if (abiCompat == null || lib.hasPrefix abiCompat version) then attrs_passed
+        #if (abiCompat == null || lib.hasPrefix abiCompat version) then
+        #  attrs_passed // {
+        #    buildInputs = attrs_passed.buildInputs ++ [ libdrm.dev ]; patchPhase = ''
+        #    for i in dri3/*.c
+        #    do
+        #      sed -i -e "s|#include <drm_fourcc.h>|#include <libdrm/drm_fourcc.h>|" $i
+        #    done
+        #  '';}
         else if (abiCompat == "1.17") then {
           name = "xorg-server-1.17.4";
           builder = ./builder.sh;
