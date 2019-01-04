@@ -27,7 +27,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgproto ];
+    buildInputs = [ ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -2613,16 +2613,16 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xorgproto = callPackage ({ stdenv, pkgconfig, fetchurl, meson, ninja }: stdenv.mkDerivation {
+  xorgproto = callPackage ({ stdenv, pkgconfig, fetchurl, libXt }: stdenv.mkDerivation {
     name = "xorgproto-2018.4";
     builder = ./builder.sh;
     src = fetchurl {
       url = mirror://xorg/individual/proto/xorgproto-2018.4.tar.bz2;
       sha256 = "180mqkp70i44rkmj430pmn9idssvffrgv4y5h19fm698a7h8bs7y";
     };
-    nativeBuildInputs = [ pkgconfig meson ninja ];
     hardeningDisable = [ "bindnow" "relro" ];
-    buildInputs = [ ];
+    nativeBuildInputs = [ pkgconfig ];
+    buildInputs = [ libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 

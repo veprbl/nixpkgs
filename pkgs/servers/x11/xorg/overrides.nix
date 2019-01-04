@@ -2,7 +2,7 @@
   stdenv, makeWrapper, lib, fetchurl, fetchpatch, buildPackages,
 
   automake, autoconf, libtool, intltool, mtdev, libevdev, libinput,
-  freetype, tradcpp, fontconfig,
+  freetype, tradcpp, fontconfig, meson, ninja,
   libGL, spice-protocol, zlib, libGLU, dbus, libunwind, libdrm,
   mesa_noglu, udev, bootstrap_cmds, bison, flex, clangStdenv, autoreconfHook,
   mcpp, epoxy, openssl, pkgconfig, llvm_6,
@@ -431,20 +431,26 @@ self: super:
     meta = attrs.meta // { license = lib.licenses.mit; };
   });
 
+  xorgproto = super.xorgproto.overrideAttrs (attrs: {
+    buildInputs = [];
+    nativeBuildInputs = attrs.nativeBuildInputs ++ [ meson ninja ];
+    # adds support for printproto needed for libXp
+    mesonFlags = [ "-Dlegacy=true" ];
+  });
+
   xorgserver = with self; super.xorgserver.overrideAttrs (attrs_passed:
     # exchange attrs if abiCompat is set
     let
       version = (builtins.parseDrvName attrs_passed.name).version;
       attrs =
-        if (abiCompat == null || lib.hasPrefix abiCompat version) then attrs_passed
-        #if (abiCompat == null || lib.hasPrefix abiCompat version) then
-        #  attrs_passed // {
-        #    buildInputs = attrs_passed.buildInputs ++ [ libdrm.dev ]; patchPhase = ''
-        #    for i in dri3/*.c
-        #    do
-        #      sed -i -e "s|#include <drm_fourcc.h>|#include <libdrm/drm_fourcc.h>|" $i
-        #    done
-        #  '';}
+        if (abiCompat == null || lib.hasPrefix abiCompat version) then
+          attrs_passed // {
+            buildInputs = attrs_passed.buildInputs ++ [ libdrm.dev ]; patchPhase = ''
+            for i in dri3/*.c
+            do
+              sed -i -e "s|#include <drm_fourcc.h>|#include <libdrm/drm_fourcc.h>|" $i
+            done
+          '';}
         else if (abiCompat == "1.17") then {
           name = "xorg-server-1.17.4";
           builder = ./builder.sh;
@@ -668,10 +674,6 @@ self: super:
 
   xwd = super.xwd.overrideAttrs (attrs: {
     buildInputs = with self; attrs.buildInputs ++ [libXt libxkbfile];
-  });
-
-  xorgproto = super.xorgproto.overrideAttrs (attrs: {
-    mesonFlags = [ "-Dlegacy=true" ];
   });
 
   xrdb = super.xrdb.overrideAttrs (attrs: {

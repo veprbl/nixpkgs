@@ -1,6 +1,6 @@
 { stdenv, fetchgit, mpfr, m4, binutils, emacs, zlib, which
 , texinfo, libX11, xorgproto, libXi, gmp, readline, strace
-, libXext, libXt, libXaw, libXmu }:
+, libXext, libXt, libXaw, libXmu } :
 
 assert stdenv ? cc ;
 assert stdenv.cc.isGNU ;
