@@ -2,6 +2,7 @@
 , buildPythonPackage
 , fetchFromGitHub
 , urwid
+, mock
 }:
 
 buildPythonPackage rec {
@@ -16,7 +17,7 @@ buildPythonPackage rec {
     sha256 = "18zyq94f5vpyxavr20183jn94h9kxan3v5cnv1pfwgkx1qnahjiq";
   };
 
-  propagatedBuildInputs = [ urwid ];
+  propagatedBuildInputs = [ urwid mock ];
 
   meta = with stdenv.lib; {
     description = "Tree widgets for urwid";
