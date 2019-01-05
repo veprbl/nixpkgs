@@ -23,7 +23,7 @@ in stdenv.mkDerivation {
     sha256 = "11qpgincndahq96rbm2kgcy9kw5n9cmbbilsrqcqcyk7mvv464sl";
   };
 
-  outputs = [ "out" "dev" "devdoc" "man" "installedTests" ];
+  outputs = [ "out" "lib" "dev" "devdoc" "man" "installedTests" ];
 
   nativeBuildInputs = [
     meson ninja gtk-doc pkgconfig gobject-introspection intltool glibcLocales shared-mime-info
@@ -50,6 +50,9 @@ in stdenv.mkDerivation {
     patchShebangs .
     substituteInPlace data/installed-tests/fwupdmgr.test.in --subst-var-by installedtestsdir "$installedTests/share/installed-tests/fwupd"
     substituteInPlace data/installed-tests/meson.build --replace sysconfdir sysconfdir_install
+    substituteInPlace meson.build \
+      --replace "plugin_dir = join_paths(libdir, 'fwupd-plugins-3')" \
+                "plugin_dir = join_paths('${placeholder "out"}', 'fwupd_plugins-3')"
   '';
 
   # /etc/os-release not available in sandbox
