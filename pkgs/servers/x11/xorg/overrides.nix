@@ -2,7 +2,7 @@
   stdenv, makeWrapper, lib, fetchurl, fetchpatch, buildPackages,
 
   automake, autoconf, libtool, intltool, mtdev, libevdev, libinput,
-  freetype, tradcpp, fontconfig, meson, ninja,
+  freetype, tradcpp, fontconfig, meson, ninja, cmake,
   libGL, spice-protocol, zlib, libGLU, dbus, libunwind, libdrm,
   mesa_noglu, udev, bootstrap_cmds, bison, flex, clangStdenv, autoreconfHook,
   mcpp, epoxy, openssl, pkgconfig, llvm_6,
@@ -642,9 +642,18 @@ self: super:
           + "e5ff8e1828f97891c819c919d7115c6e18b2eb1f.tar.gz";
       sha256 = "01136zljk6liaqbk8j9m43xxzqj6xy4v50yjgi7l7g6pp8pw0gx6";
     };
-    buildInputs = attrs.buildInputs ++ [self.libXfixes self.libXScrnSaver self.pixman];
-    nativeBuildInputs = attrs.nativeBuildInputs ++ [autoreconfHook self.utilmacros];
-    configureFlags = [ "--with-default-dri=3" "--enable-tools" ];
+    buildInputs = attrs.buildInputs ++ [self.libXfixes self.libXScrnSaver self.pixman self.libXinerama self.libXxf86vm self.utilmacros ];
+    #nativeBuildInputs = attrs.nativeBuildInputs ++ [autoreconfHook self.utilmacros];
+    nativeBuildInputs = [ meson ninja pkgconfig ];
+    #configureFlags = [ "--with-default-dri=3" "--enable-tools" ];
+    mesonFlags = [
+      "-Dvalgrind=false"
+      "-Ddefault-dri=3"
+    ];
+
+    prePatch = ''
+    substituteInPlace tools/meson.build --replace "dependency('dri', required : true)," ""
+    '';
 
     meta = attrs.meta // {
       platforms = ["i686-linux" "x86_64-linux"];
