@@ -11,11 +11,11 @@ stdenv.mkDerivation {
   src = fetchFromGitHub {
     owner = "MiniZinc";
     repo = "MiniZincIDE";
-    rev = version; # XXX chance it//revisit: "3d66971a0cad6edbe797f4dd940229d38e5bfe3d"; # tags on the repo are disappearing: See https://github.com/MiniZinc/libminizinc/issues/257
+    rev = version;
     sha256 = "1hanq7c6li59awlwghgvpd8w93a7zb6iw7p4062nphnbd1dmg92f";
   };
 
-  postUnpack = ''export sourceRoot="$sourceRoot/MiniZincIDE"'';
+  sourceRoot = "source/MiniZincIDE";
 
   enableParallelBuilding = true;
 
@@ -24,8 +24,8 @@ stdenv.mkDerivation {
   '';
 
   meta = with stdenv.lib; {
-    homepage = http://www.minizinc.org/;
-    description = "IDE for MiniZinc, a medium-level constraint modelling language.";
+    homepage = https://www.minizinc.org/;
+    description = "IDE for MiniZinc, a medium-level constraint modelling language";
 
     longDescription = ''
       MiniZinc is a medium-level constraint modelling
@@ -37,6 +37,6 @@ stdenv.mkDerivation {
 
     license = licenses.mpl20;
     platforms = platforms.linux;
-    maintainers = [ maintainers.sheenobu ];
+    maintainers = [ maintainers.dtzWill ];
   };
 }
