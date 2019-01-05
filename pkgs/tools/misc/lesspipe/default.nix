@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
     })
   ];
 
-  configureFlags = [ "--yes" ];
+  configureFlags = [ "--fixed" ];
 
   meta = with stdenv.lib; {
     description = "A preprocessor for less";
