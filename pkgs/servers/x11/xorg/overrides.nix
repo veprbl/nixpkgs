@@ -652,7 +652,9 @@ self: super:
     ];
 
     prePatch = ''
-    substituteInPlace tools/meson.build --replace "dependency('dri', required : true)," ""
+      substituteInPlace tools/meson.build \
+        --replace "dependency('dri', required : true)," "" \
+        --replace "install : false" "install : true"
     '';
 
     meta = attrs.meta // {
