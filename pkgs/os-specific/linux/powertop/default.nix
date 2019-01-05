@@ -2,11 +2,11 @@
 
 stdenv.mkDerivation rec {
   name = "powertop-${version}";
-  version = "2.9";
+  version = "2.10";
 
   src = fetchurl {
     url = "https://01.org/sites/default/files/downloads/powertop/powertop-v${version}.tar.gz";
-    sha256 = "0l4jjlf05li2mc6g8nrss3h435wjhmnqd8m7v3kha3x0x7cbfzxa";
+    sha256 = "0l5jjlf05li2mc6g8nrss3h435wjhmnqd8m7v3kha3x0x7cbfzxa";
   };
 
   outputs = [ "out" "man" ];
