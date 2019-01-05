@@ -10,16 +10,16 @@ rustPlatform.buildRustPackage rec {
     owner = "GNOME";
     repo = "fractal";
     #rev = version;
-    rev = "0bd8a9f6bae6608c12ab0dc91953952b8a26898a";
-    sha256 = "19z4pjcwcf8w1qgifqjybx9lwhafldql2a6vn3qpav02b0zczpg4";
+    rev = "4205a6a980118e29bf060bac985127e87a72150f";
+    sha256 = "1avblcvn039vjyhrjrv98dpb1slag37bvpiim7rpm5clxnijsp25";
   };
 
   nativeBuildInputs = [
     meson ninja pkgconfig gettext cargo rustc python3 wrapGAppsHook
   ];
   buildInputs = [
-    glib gtk3 libhandy dbus openssl sqlite gst_all_1.gstreamer gst_all_1.gst-plugins-base gst_all_1.gst-plugins-bad
-    gtksourceview hicolor-icon-theme libsecret
+    glib gtk3 libhandy dbus openssl sqlite gst_all_1.gstreamer gst_all_1.gst-plugins-base
+    gtksourceview hicolor-icon-theme
   ];
 
   postPatch = ''
