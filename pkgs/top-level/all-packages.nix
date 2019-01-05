@@ -8574,7 +8574,7 @@ in
 
   elfkickers = callPackage ../development/tools/misc/elfkickers { };
 
-  elfutils = callPackage ../development/tools/misc/elfutils { };
+  elfutils = callPackage ../development/tools/misc/elfutils { stdenv = gcc8Stdenv; };
 
   emma = callPackage ../development/tools/analysis/emma { };
 
