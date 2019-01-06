@@ -6525,7 +6525,9 @@ in
   fish-foreign-env = callPackage ../shells/fish/fish-foreign-env { };
 
   ion = callPackage ../shells/ion { };
-
+  
+  ksh = callPackage ../shells/ksh { };
+  
   mksh = callPackage ../shells/mksh { };
 
   oh = callPackage ../shells/oh { };
@@ -9811,7 +9813,7 @@ in
 
   gcab = callPackage ../development/libraries/gcab { };
 
-  gcr = callPackages ../development/libraries/gcr { };
+  gcr = callPackage ../development/libraries/gcr { };
 
   gdome2 = callPackage ../development/libraries/gdome2 {
     inherit (gnome2) gtkdoc;
@@ -10113,7 +10115,7 @@ in
 
   gsoap = callPackage ../development/libraries/gsoap { };
 
-  gsound = callPackages ../development/libraries/gsound { };
+  gsound = callPackage ../development/libraries/gsound { };
 
   gss = callPackage ../development/libraries/gss { };
 
