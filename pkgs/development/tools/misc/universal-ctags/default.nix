@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, autoreconfHook, pkgconfig, perl, pythonPackages, libiconv,
-jansson, libxml2, libyaml }:
+jansson, libxml2, libyaml, libseccomp }:
 
 stdenv.mkDerivation rec {
   name = "universal-ctags-${version}";
@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ autoreconfHook pkgconfig pythonPackages.docutils ];
-  buildInputs = [ libxml2 jansson libyaml ] ++ stdenv.lib.optional stdenv.isDarwin libiconv;
+  buildInputs = [ libxml2 jansson libyaml libseccomp ] ++ stdenv.lib.optional stdenv.isDarwin libiconv;
 
   # to generate makefile.in
   autoreconfPhase = ''
