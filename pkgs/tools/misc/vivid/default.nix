@@ -4,21 +4,19 @@ rustPlatform.buildRustPackage rec {
   name = "${pname}-${version}";
   pname = "vivid";
   #version = "0.4.0";
-  version = "2018-12-09";
+  version = "2019-01-04";
 
   src = fetchFromGitHub {
     owner = "sharkdp";
     repo = pname;
     #rev = "v${version}";
-    rev = "d95afe5204c5927a75ffb99570307a90badf3c46";
-    sha256 = "0lyhln1gdh4f96jsvwl3qhmp1dac8mfpzmadpb0w2mjix4fhf4ha";
+    rev = "9a11c00563e009e940ef5bee5808f55b36c0f5b1";
+    sha256 = "1d47zgapsfg2acg1929372g8ivrrx4aqxgq3n1lhwar37wqndin6";
   };
 
   patches = [
     # PR 26
     ./jellybean.patch
-    # PR 27
-    ./llvm.patch
   ];
 
   postPatch = ''
