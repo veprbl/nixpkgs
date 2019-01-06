@@ -5,11 +5,13 @@ stdenv.mkDerivation rec {
   version = "2017-08-10"; # date of the download and checksum
 
   src = requireFile {
+    # round 'a'
     # round 'g'
     # slash zero
-    name = "Input-Font-tweaks.zip";
+    # builtin line-spacing 1x (let terminal add as desired)
+    name = "Input-Font-dtz.zip";
     url = "http://input.fontbureau.com/download/";
-    sha256 = "1kb4agq6q27hizk5q6issp1bh2j5aki67j6c20h57h0111p2izig";
+    sha256 = "0xphgl0037psjjixb3rk22gyfwczn8znyhnkh641wqsjqbc99icz";
   };
 
   nativeBuildInputs = [ unzip ];
@@ -27,7 +29,7 @@ stdenv.mkDerivation rec {
 
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
-  outputHash = "0jcgz1w0zrf981c66h1ga2f60kxiiwjc479vbdnczysyxlii0b6y";
+  outputHash = "1kx12brrh32kzv2hdpphgs96c6794wiybx5r154d9ia083hz0hp8";
 
   meta = with stdenv.lib; {
     description = "Fonts for Code, from Font Bureau";
