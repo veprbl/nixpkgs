@@ -1,13 +1,13 @@
-From ee95dc0e78dbcf6661343bfc0fc5be312c6e5178 Mon Sep 17 00:00:00 2001
+From 18592e085367ebd8db2b19740e42f471ef79c648 Mon Sep 17 00:00:00 2001
 From: Chandler Carruth <chandlerc@gmail.com>
 Date: Fri, 4 Jan 2019 03:03:50 -0800
 Subject: [PATCH] Add LLVM file types and extensions as well as extensions used
  by LLVM in various places.
 
-This includes the LLVM textual IR (.ll), generated bitcode files (.bc),
-a custom language used in LLVM's implementation called "TableGen" (.td),
-and C++ extensions used for generated code and X-macro files (.def and
-.inc).
+This includes the LLVM textual IR (`.ll`), machine IR (`.mir`) generated
+bitcode files (`.bc`), a custom language used in LLVM's implementation
+called "TableGen" (`.td`), and C++ extensions used for generated code
+and X-macro files (`.def` and `.inc`).
 
 Bitcode files are treated similarly to object files, although that is
 a bit odd. They are somewhere between archives and object files in terms
@@ -19,7 +19,7 @@ so this seems the least confusing scheme to me.
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/config/filetypes.yml b/config/filetypes.yml
-index d2092e4..08e7d38 100644
+index d2092e4..5ed14c6 100644
 --- a/config/filetypes.yml
 +++ b/config/filetypes.yml
 @@ -104,7 +104,7 @@ programming:
@@ -35,7 +35,7 @@ index d2092e4..08e7d38 100644
      kotlin: [.kt, .kts]
      latex: [.tex, .ltx]
      less: [.less]
-+    llvm: [.ll]
++    llvm: [.ll, .mir]
      lisp: [.lisp, .el]
      lua: [.lua]
      mathematica: [.nb]
