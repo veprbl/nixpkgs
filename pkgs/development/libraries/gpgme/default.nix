@@ -52,6 +52,8 @@ stdenv.mkDerivation rec {
 
   doCheck = true;
 
+  enableParallelChecking = false;
+
   meta = with stdenv.lib; {
     homepage = https://gnupg.org/software/gpgme/index.html;
     description = "Library for making GnuPG easier to use";
