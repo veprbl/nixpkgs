@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
   CXXFLAGS = stdenv.lib.optionalString stdenv.cc.isClang "-std=c++11";
 
   cmakeFlags = [
-    (mkFlag true "XPDF_HEADERS")
+    (mkFlag true "UNSTABLE_API_ABI_HEADERS") # previously "XPDF_HEADERS"
     (mkFlag (!minimal) "GLIB")
     (mkFlag (!minimal) "CPP")
     (mkFlag (!minimal) "LIBCURL")
