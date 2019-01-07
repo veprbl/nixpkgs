@@ -4,13 +4,13 @@ let
   python3Packages = python37.pkgs;
 in python3Packages.buildPythonApplication rec {
   pname = "pubs";
-  version = "0.8.1";
+  version = "0.8.2";
 
   src = fetchFromGitHub {
     owner = "pubs";
     repo = "pubs";
     rev = "v${version}";
-    sha256 = "1wrwanz905r3h97ipyws25vzmx7k2pdpns8rypiy0m9arq29zc64";
+    sha256 = "16zwdqfbmlla6906g3a57a4nj8wnl11fq78r20qms717bzv211j0";
   };
 
   propagatedBuildInputs = with python3Packages; [
