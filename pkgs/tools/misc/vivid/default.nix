@@ -10,14 +10,9 @@ rustPlatform.buildRustPackage rec {
     owner = "sharkdp";
     repo = pname;
     #rev = "v${version}";
-    rev = "9a11c00563e009e940ef5bee5808f55b36c0f5b1";
-    sha256 = "1d47zgapsfg2acg1929372g8ivrrx4aqxgq3n1lhwar37wqndin6";
+    rev = "a4269db334b4dc4207f876afa26f5e5650fdff53";
+    sha256 = "0v1v1m1ryblib38fs8vyihgb4xsf0k7fr2m2lf6myl73cg5pp2j8";
   };
-
-  patches = [
-    # PR 26
-    ./jellybean.patch
-  ];
 
   postPatch = ''
     substituteInPlace src/main.rs --replace /usr/share $out/share
