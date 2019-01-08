@@ -1,8 +1,6 @@
-{ stdenv, fetchFromGitHub, python37 /* 3.7 instead of locale fixups */ }:
+{ stdenv, fetchFromGitHub, python3Packages }:
 
-let
-  python3Packages = python37.pkgs;
-in python3Packages.buildPythonApplication rec {
+python3Packages.buildPythonApplication rec {
   pname = "pubs";
   version = "0.8.2";
 
