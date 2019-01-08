@@ -9,6 +9,7 @@ stdenv.mkDerivation rec {
     sha256 = "06jn720nk4qg1nyswlxdq1swn6kbx5a85kc8jw9dw84aqqvxa1zc";
   };
 
+  patches = [ ./backtrace-only-with-glibc.patch ];
 
   nativeBuildInputs = [ autoreconfHook ];
 
