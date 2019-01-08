@@ -71,9 +71,6 @@ in buildRustPackage rec {
 
   outputs = [ "out" "terminfo" ];
 
-  # https://github.com/NixOS/nixpkgs/issues/49693
-  doCheck = !stdenv.isDarwin;
-
   postPatch = ''
     substituteInPlace copypasta/src/x11.rs \
       --replace Command::new\(\"xclip\"\) Command::new\(\"${xclip}/bin/xclip\"\)
