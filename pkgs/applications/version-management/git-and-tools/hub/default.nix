@@ -1,4 +1,4 @@
-{ stdenv, buildGoPackage, fetchFromGitHub, ruby, groff, Security, utillinux }:
+{ stdenv, buildGoPackage, fetchFromGitHub, ruby, groff, Security, utillinux, glibcLocales }:
 
 buildGoPackage rec {
   name = "hub-${version}";
@@ -15,12 +15,14 @@ buildGoPackage rec {
     sha256 = "1s5p3kj8yd9686w1dx2ay547k7k5i96bd8rx2cmvrh5yw54smzqg";
   };
 
-  nativeBuildInputs = [ groff ruby utillinux ];
+  nativeBuildInputs = [ groff ruby utillinux glibcLocales ];
   buildInputs = stdenv.lib.optional stdenv.isDarwin Security;
 
   postPatch = ''
     patchShebangs .
   '';
+
+  LC_ALL = "en_US.UTF-8";
 
   postInstall = ''
     cd go/src/${goPackagePath}
@@ -28,6 +30,8 @@ buildGoPackage rec {
     install -D etc/hub.bash_completion.sh "$bin/share/bash-completion/completions/hub"
     install -D etc/hub.fish_completion  "$bin/share/fish/vendor_completions.d/hub.fish"
 
+    # Need just-built tool for man-pages, at least with git version
+    PATH=$bin/bin:$PATH
     make man-pages
     cp -vr --parents share/man/man[1-9]/*.[1-9] $bin/
   '';
