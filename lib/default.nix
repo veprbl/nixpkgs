@@ -125,13 +125,14 @@ let
       traceShowValMarked showVal traceCall traceCall2 traceCall3
       traceValIfNot runTests testAllTrue traceCallXml attrNamesToStr;
     inherit (misc) maybeEnv defaultMergeArg defaultMerge foldArgs
+      defaultOverridableDelayableArgs composedArgsAndFun
       maybeAttrNullable maybeAttr ifEnable checkFlag getValue
       checkReqs uniqList uniqListExt condConcat lazyGenericClosure
       innerModifySumArgs modifySumArgs innerClosePropagation
       closePropagation mapAttrsFlatten nvs setAttr setAttrMerge
       mergeAttrsWithFunc mergeAttrsConcatenateValues
       mergeAttrsNoOverride mergeAttrByFunc mergeAttrsByFuncDefaults
-      mergeAttrsByFuncDefaultsClean mergeAttrBy
-      nixType imap;
+      mergeAttrsByFuncDefaultsClean mergeAttrBy prepareDerivationArgs
+      nixType imap overridableDelayableArgs;
   });
 in lib

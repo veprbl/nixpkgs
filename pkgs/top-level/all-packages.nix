@@ -398,6 +398,8 @@ in
 
   releaseTools = callPackage ../build-support/release { };
 
+  composableDerivation = callPackage ../../lib/composable-derivation.nix { };
+
   inherit (lib.systems) platforms;
 
   setJavaClassPath = makeSetupHook { } ../build-support/setup-hooks/set-java-classpath.sh;
