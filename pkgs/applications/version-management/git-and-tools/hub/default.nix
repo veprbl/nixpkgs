@@ -1,25 +1,24 @@
-{ stdenv, buildGoPackage, fetchFromGitHub, ronn, ruby, groff, Security, utillinux }:
+{ stdenv, buildGoPackage, fetchFromGitHub, ruby, groff, Security, utillinux }:
 
 buildGoPackage rec {
   name = "hub-${version}";
-  version = "2.7.0";
+  #version = "2.7.0";
+  version = "2019-01-08";
 
   goPackagePath = "github.com/github/hub";
 
   src = fetchFromGitHub {
     owner = "github";
     repo = "hub";
-    rev = "v${version}";
-    sha256 = "1p90m1xp3jahs5y0lp0qfmfa7wqn7gxyygn7x45a6cbf2zzlb86l";
+    #rev = "v${version}";
+    rev = "ddf0d825100e1b5b218888ade2fa554336002cae";
+    sha256 = "1s5p3kj8yd9686w1dx2ay547k7k5i96bd8rx2cmvrh5yw54smzqg";
   };
 
-  nativeBuildInputs = [ groff ronn utillinux ];
-  buildInputs = [ ruby ] ++
-    stdenv.lib.optional stdenv.isDarwin Security;
+  nativeBuildInputs = [ groff ruby utillinux ];
+  buildInputs = stdenv.lib.optional stdenv.isDarwin Security;
 
   postPatch = ''
-    mkdir bin
-    ln -s ${ronn}/bin/ronn bin/ronn
     patchShebangs .
   '';
 
