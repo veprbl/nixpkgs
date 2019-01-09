@@ -53,7 +53,6 @@ in {
     systemd.sockets.pcscd = {
       description = "PCSC-Lite Socket";
       wantedBy = [ "sockets.target" ];
-      before = [ "multi-user.target" ];
       socketConfig.ListenStream = "/run/pcscd/pcscd.comm";
     };
 
