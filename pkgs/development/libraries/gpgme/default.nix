@@ -26,11 +26,10 @@ stdenv.mkDerivation rec {
 
   propagatedBuildInputs =
     [ libgpgerror glib libassuan pth ]
-    ++ lib.optional (qtbase != null) qtbase
-    ++ lib.optionals pythonSupport [ python swig2 ncurses ];
+    ++ lib.optional (qtbase != null) qtbase;
 
   nativeBuildInputs = [ file pkgconfig gnupg autoreconfHook git texinfo ]
-  ++ lib.optional pythonSupport which;
+  ++ lib.optionals pythonSupport [ python swig2 which ncurses ];
 
   patches = [
     (fetchpatch {
@@ -58,9 +57,7 @@ stdenv.mkDerivation rec {
 
   checkInputs = [ which ];
 
-  doCheck = false; # XXX: revisit, t-tofuinfo
-
-  enableParallelChecking = false;
+  doCheck = true;
 
   meta = with stdenv.lib; {
     homepage = https://gnupg.org/software/gpgme/index.html;
