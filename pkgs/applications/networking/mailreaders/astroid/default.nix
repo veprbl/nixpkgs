@@ -30,9 +30,11 @@ stdenv.mkDerivation rec {
     sed -i "s~ -geom 10x10~~g" src/config.cc
   '';
 
-#  postInstall = ''
-#    wrapProgram "$out/bin/astroid" --set CHARSET=en_us.UTF-8
-#  '';
+  postInstall = ''
+    wrapProgram "$out/bin/astroid" \
+      --set CHARSET en_us.UTF-8 \
+      --prefix PYTHONPATH : "$PYTHONPATH"
+  '';
 
   doCheck = false; # needs X, likely works w/Xvfb if needed
 
