@@ -1502,6 +1502,8 @@ in
 
   hexio = callPackage ../development/tools/hexio { };
 
+  hexyl = callPackage ../tools/misc/hexyl { };
+
   hid-listen = callPackage ../tools/misc/hid-listen { };
 
   home-manager = callPackage ../tools/package-management/home-manager {};
@@ -5913,6 +5915,8 @@ in
 
   ua = callPackage ../tools/networking/ua { };
 
+  ubridge = callPackage ../tools/networking/ubridge { };
+
   ucl = callPackage ../development/libraries/ucl { };
 
   ucspi-tcp = callPackage ../tools/networking/ucspi-tcp { };
@@ -6721,7 +6725,7 @@ in
 
   eql = callPackage ../development/compilers/eql {};
 
-  elm2nix = haskell.lib.justStaticExecutables (haskellPackages.callPackage ../development/tools/elm2nix {});
+  elm2nix = haskell.lib.justStaticExecutables haskellPackages.elm2nix;
 
   elmPackages = recurseIntoAttrs (callPackage ../development/compilers/elm { });
 
@@ -20782,9 +20786,11 @@ in
 
   multimc = libsForQt5.callPackage ../games/multimc { };
 
-  minetest = callPackage ../games/minetest {
-    libpng = libpng12;
-  };
+  inherit (callPackages ../games/minetest { })
+    minetestclient_4 minetestserver_4
+    minetestclient_5 minetestserver_5;
+
+  minetest = minetestclient_4;
 
   mnemosyne = callPackage ../games/mnemosyne {
     python = python3;
@@ -20836,7 +20842,9 @@ in
 
   openmw-tes3mp = libsForQt5.callPackage ../games/openmw/tes3mp.nix { };
 
-  openra = callPackage ../games/openra { lua = lua5_1; };
+  openraPackages = import ../games/openra pkgs;
+
+  openra = openraPackages.engines.release;
 
   openrw = callPackage ../games/openrw { };
 

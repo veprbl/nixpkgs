@@ -217,7 +217,7 @@
     name = "Nix Committers";
   };
   alunduil = {
-    email = "alunduil@alunduil.com";
+    email = "alunduil@gmail.com";
     github = "alunduil";
     name = "Alex Brandt";
   };
@@ -1953,6 +1953,11 @@
     github = "jakelogemann";
     name = "Jake Logemann";
   };
+  jakewaksbaum = {
+    email = "jake.waksbaum@gmail.com";
+    github = "jbaum98";
+    name = "Jake Waksbaum";
+  };
   jammerful = {
     email = "jammerful@gmail.com";
     github = "jammerful";
@@ -3061,6 +3066,11 @@
     email = "nadrieril@gmail.com";
     github = "nadrieril";
     name = "Nadrieril Feneanar";
+  };
+  nalbyuites = {
+    email = "ashijit007@gmail.com";
+    github = "nalbyuites";
+    name = "Ashijit Pramanik";
   };
   namore = {
     email = "namor@hemio.de";
