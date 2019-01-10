@@ -4584,6 +4584,8 @@ in
 
   ola = callPackage ../applications/misc/ola { };
 
+  omping = callPackage ../applications/networking/omping { };
+
   onioncircuits = callPackage ../tools/security/onioncircuits {
     inherit (gnome3) defaultIconTheme;
   };
@@ -21450,6 +21452,8 @@ in
   bedtools = callPackage ../applications/science/biology/bedtools { };
 
   bcftools = callPackage ../applications/science/biology/bcftools { };
+
+  bftools = callPackage ../applications/science/biology/bftools { };
 
   conglomerate = callPackage ../applications/science/biology/conglomerate { };
 
