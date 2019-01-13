@@ -3155,7 +3155,9 @@ in {
 
   sleekxmpp = callPackage ../development/python-modules/sleekxmpp { };
 
-  slixmpp = callPackage ../development/python-modules/slixmpp { };
+  slixmpp = callPackage ../development/python-modules/slixmpp {
+    inherit (pkgs) gnupg;
+  };
 
   netaddr = callPackage ../development/python-modules/netaddr { };
 
@@ -3601,6 +3603,8 @@ in {
   pygments = callPackage ../development/python-modules/Pygments { };
 
   pygpgme = callPackage ../development/python-modules/pygpgme { };
+
+  pyment = callPackage ../development/python-modules/pyment { };
 
   pylint = if isPy3k then callPackage ../development/python-modules/pylint { }
            else callPackage ../development/python-modules/pylint/1.9.nix { };

@@ -97,7 +97,7 @@
 , libXv ? null # Xlib support
 , libXext ? null # Xlib support
 , lzma ? null # xz-utils
-, nvenc ? false, nvidia-video-sdk ? null # NVIDIA NVENC support
+, nvenc ? false, nvidia-video-sdk ? null, nv-codec-headers ? null # NVIDIA NVENC support
 , callPackage # needed for NVENC to access external ffmpeg nvidia headers
 , openal ? null # OpenAL 1.1 capture support
 #, opencl ? null # OpenCL code
@@ -177,8 +177,6 @@
 let
   inherit (stdenv) isCygwin isFreeBSD isLinux;
   inherit (stdenv.lib) optional optionals optionalString enableFeature;
-
-  nv-codec-headers = callPackage ./nv-codec-headers.nix { };
 in
 
 /*

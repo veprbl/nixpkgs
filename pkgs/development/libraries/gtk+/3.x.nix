@@ -37,11 +37,18 @@ stdenv.mkDerivation rec {
     })
     # XXX: DTZ: This is included in patch series listed below
     # (but keeping this as a reminder of such when merging)
-    # https://gitlab.gnome.org/GNOME/gtk/issues/1521
-    #(fetchpatch {
-    #  url = https://gitlab.gnome.org/GNOME/gtk/commit/2905fc861acda3d134a198e56ef2f6c962ad3061.patch;
-    #  sha256 = "0y8ljny59kgdhrcfpimi2r082bax60d5kflw1qj9k1mnzjcvjjwl";
-    #})
+    ## # 3.24.2: https://gitlab.gnome.org/GNOME/gtk/issues/1521
+    ## (fetchpatch {
+    ##   url = https://gitlab.gnome.org/GNOME/gtk/commit/2905fc861acda3d134a198e56ef2f6c962ad3061.patch;
+    ##   sha256 = "0y8ljny59kgdhrcfpimi2r082bax60d5kflw1qj9k1mnzjcvjjwl";
+    ## })
+    # same here:
+    ## # 3.24.2: https://gitlab.gnome.org/GNOME/gtk/issues/1523
+    ## (fetchpatch {
+    ##   url = https://gitlab.gnome.org/GNOME/gtk/commit/e3a1593a0984cc0156ec1892a46af8f256a64878.patch;
+    ##   sha256 = "0akvp1r8xlzf5amk9gmk7b5sabr1wbmg3ak15rppsid7nf9f5dqf";
+    ## })
+
     # Upstream patches
     ./3.24.2-16/0001-imwayland-Handle-enter-and-leave-events.patch
     ./3.24.2-16/0002-imwayland-rearrange-functions-to-remove-prototypes.patch
