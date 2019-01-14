@@ -38,8 +38,6 @@ stdenv.mkDerivation rec {
     done
   '';
 
-  patches = [ ./xlocale.patch ];
-
   #TODO: make .desktop entry
 
   meta = {
