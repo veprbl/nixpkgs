@@ -1,13 +1,6 @@
 { buildPythonPackage
 , fetchPypi
-# See README.rst regarding "extras" and preferred deps
-, scipy
-, lxml
-, fs
-, pygobject3
-, gtk3
-, gobject-introspection
-, wrapGAppsHook
+, numpy
 , pytest
 , pytestrunner
 , glibcLocales
@@ -24,14 +17,7 @@ buildPythonPackage rec {
   };
 
   buildInputs = [
-    scipy lxml fs
-    gtk3
-    gobject-introspection
-    wrapGAppsHook
-  ];
-
-  propagatedBuildInputs = [
-    pygobject3
+    numpy
   ];
 
   checkInputs = [
