@@ -3,13 +3,13 @@ jansson, libxml2, libyaml, libseccomp }:
 
 stdenv.mkDerivation rec {
   name = "universal-ctags-${version}";
-  version = "2019-01-06";
+  version = "2019-01-14";
 
   src = fetchFromGitHub {
     owner = "universal-ctags";
     repo = "ctags";
-    rev = "284610ba5bbc70247c333c2d92a8c599828e44ab";
-    sha256 = "0v9667pkmj7a8ncy7pv8mvwnxk6sa8p7w780b1a5aarppgd6yr84";
+    rev = "3d01d9934e24c1eb7b908191fee7ab9c703a09d8";
+    sha256 = "0f8aap87cn0221wdrpq5ywq4bkcn1zraf7kbwzh3shgfiwyhzc79";
   };
 
   nativeBuildInputs = [ autoreconfHook pkgconfig pythonPackages.docutils ];
