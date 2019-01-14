@@ -71,6 +71,7 @@
 , "madoko"
 , "markdown-link-check"
 , "mathjax"
+, "mbed-simulator"
 , "meat"
 , "meguca"
 , "mocha"
