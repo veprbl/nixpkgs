@@ -2089,6 +2089,8 @@ in {
 
   jug = callPackage ../development/python-modules/jug {};
 
+  junit-xml = callPackage ../development/python-modules/junit-xml {};
+
   jsmin = callPackage ../development/python-modules/jsmin { };
 
   jsonpatch = callPackage ../development/python-modules/jsonpatch { };
@@ -2950,6 +2952,8 @@ in {
 
   icalendar = callPackage ../development/python-modules/icalendar { };
 
+  icetea = callPackage ../development/python-modules/icetea { };
+
   ifaddr = callPackage ../development/python-modules/ifaddr { };
 
   imageio = callPackage ../development/python-modules/imageio { };
@@ -3185,6 +3189,8 @@ in {
     inherit (pkgs.darwin.apple_sdk.frameworks) CoreFoundation CoreServices;
   };
 
+  manifest-tool = callPackage ../development/python-modules/manifest-tool.nix {};
+
   manifestparser = callPackage ../development/python-modules/marionette-harness/manifestparser.nix {};
   marionette_driver = callPackage ../development/python-modules/marionette-harness/marionette_driver.nix {};
   mozcrash = callPackage ../development/python-modules/marionette-harness/mozcrash.nix {};
@@ -3241,6 +3247,12 @@ in {
   mautrix-appservice = callPackage ../development/python-modules/mautrix-appservice { };
 
   maya = callPackage ../development/python-modules/maya { };
+
+  mbed-cloud-sdk = callPackage ../development/python-modules/mbed-cloud-sdk {  };
+
+  mbed-host-tests = callPackage ../development/python-modules/mbed-host-tests {  };
+
+  mbed-greentea = callPackage ../development/python-modules/mbed-greentea {  };
 
   mbed-ls = callPackage ../development/python-modules/mbed-ls {  };
 
@@ -3941,6 +3953,8 @@ in {
 
   pyocr = callPackage ../development/python-modules/pyocr { };
 
+  pyocd = callPackage ../development/python-modules/pyocd { };
+
   pyparsing = callPackage ../development/python-modules/pyparsing { };
 
   pyparted = callPackage ../development/python-modules/pyparted { };
@@ -4286,6 +4300,8 @@ in {
   serpy = callPackage ../development/python-modules/serpy { };
 
   setuptools_scm = callPackage ../development/python-modules/setuptools_scm { };
+
+  setuptools_scm_git_archive = callPackage ../development/python-modules/setuptools_scm_git_archive { };
 
   serverlessrepo = callPackage ../development/python-modules/serverlessrepo { };
 
