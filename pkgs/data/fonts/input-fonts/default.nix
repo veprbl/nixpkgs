@@ -9,6 +9,7 @@ stdenv.mkDerivation rec {
     # round 'g'
     # slash zero
     # builtin line-spacing 1x (let terminal add as desired)
+    # http://input.fontbureau.com/download/?customize&fontSelection=whole&a=ss&g=ss&i=0&l=0&zero=slash&asterisk=0&braces=0&preset=default&line-height=1.0&accept=I+do&email=
     name = "Input-Font-dtz.zip";
     url = "http://input.fontbureau.com/download/";
     sha256 = "0xphgl0037psjjixb3rk22gyfwczn8znyhnkh641wqsjqbc99icz";
