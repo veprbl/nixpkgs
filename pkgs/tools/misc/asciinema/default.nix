@@ -4,9 +4,6 @@ python3Packages.buildPythonApplication rec {
   pname = "asciinema";
   version = "2.0.2";
 
-  buildInputs = with python3Packages; [ nose ];
-  propagatedBuildInputs = with python3Packages; [ requests ];
-
   src = fetchFromGitHub {
     owner = "asciinema";
     repo = "asciinema";
@@ -14,12 +11,7 @@ python3Packages.buildPythonApplication rec {
     sha256 = "1a2pysxnp6icyd08mgf66xr6f6j0irnfxdpf3fmzcz31ix7l9kc4";
   };
 
-#  patchPhase = ''
-#    # disable one test which is failing with -> OSError: out of pty devices
-#    rm tests/pty_recorder_test.py
-#  '';
-#
-  checkInputs = [ glibcLocales ];
+  checkInputs = [ glibcLocales python3Packages.nose ];
 
   checkPhase = ''
     LC_ALL=en_US.UTF-8 nosetests
