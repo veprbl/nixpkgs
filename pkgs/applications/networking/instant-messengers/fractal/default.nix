@@ -2,7 +2,7 @@
 , hicolor-icon-theme, glib, libhandy, gtk3, libsecret, dbus, openssl, sqlite, gst_all_1, wrapGAppsHook }:
 
 rustPlatform.buildRustPackage rec {
-  version = "4.0.0.0.1"; # not really
+  version = "4.0.0.0.52"; # not really
   name = "fractal-${version}";
 
   src = fetchFromGitLab {
@@ -10,8 +10,8 @@ rustPlatform.buildRustPackage rec {
     owner = "GNOME";
     repo = "fractal";
     #rev = version;
-    rev = "4205a6a980118e29bf060bac985127e87a72150f";
-    sha256 = "1avblcvn039vjyhrjrv98dpb1slag37bvpiim7rpm5clxnijsp25";
+    rev = "9e98846c734e3fb538f2ffab5e5703a61f33530b";
+    sha256 = "09yq06gbz219q75sz6lgid9h7g2kjv0is3lbdqasb20ghk2fr5vf";
   };
 
   nativeBuildInputs = [
@@ -32,7 +32,7 @@ rustPlatform.buildRustPackage rec {
   checkPhase = null;
   installPhase = null;
 
-  cargoSha256 = "0hlvdcdzkggc2adggmlxz0yxigwp3320wfav77gddlvfip1f90sw";
+  cargoSha256 = "0hlvdcdzkggc3adggmlxz0yxigwp3320wfav77gddlvfip1f90sw";
 
   meta = with stdenv.lib; {
     description = "Matrix group messaging app";
