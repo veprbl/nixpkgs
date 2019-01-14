@@ -3240,6 +3240,8 @@ in {
 
   maya = callPackage ../development/python-modules/maya { };
 
+  mbed-ls = callPackage ../development/python-modules/mbed-ls {  };
+
   mccabe = callPackage ../development/python-modules/mccabe { };
 
   mechanize = callPackage ../development/python-modules/mechanize { };
