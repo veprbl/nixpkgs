@@ -61,8 +61,9 @@ let
     '';
 
     # remove when removing synctex-missing-header.patch
-    preAutoreconf = "pushd texk/web2c";
-    postAutoreconf = "popd";
+    autoreconfPhase = ''
+      ./reautoconf
+    '';
 
     configureFlags = [
       "--with-banner-add=/NixOS.org"
@@ -94,7 +95,7 @@ texliveYear = year;
 core = stdenv.mkDerivation rec {
   name = "texlive-bin-${version}";
 
-  inherit (common) src patches postPatch preAutoreconf postAutoreconf;
+  inherit (common) src patches postPatch autoreconfPhase;
 
   outputs = [ "out" "doc" ];
 
@@ -186,7 +187,7 @@ inherit (core-big) metafont metapost luatex xetex;
 core-big = stdenv.mkDerivation { #TODO: upmendex
   name = "texlive-core-big.bin-${version}";
 
-  inherit (common) src patches postPatch preAutoreconf postAutoreconf;
+  inherit (common) src patches postPatch autoreconfPhase;
 
   hardeningDisable = [ "format" ];
 
