@@ -15,7 +15,8 @@
 , enableManpages ? false
 , enableSharedLibraries ? true
 # Mesa requires AMDGPU target
-, enableTargets ? [ stdenv.hostPlatform stdenv.targetPlatform "AMDGPU" ]
+# BPF is used by bcc
+, enableTargets ? [ stdenv.hostPlatform stdenv.targetPlatform "AMDGPU" "BPF" ]
 , enablePFM ? !stdenv.isDarwin
 }:
 
@@ -134,7 +135,7 @@ in stdenv.mkDerivation (rec {
     ln -s $lib/lib/libLLVM.dylib $lib/lib/libLLVM-${release_version}.dylib
   '';
 
-  doCheck = stdenv.isLinux && (!stdenv.isi686);
+  doCheck = stdenv.isLinux && (!stdenv.isx86_32);
 
   checkTarget = "check-all";
 
