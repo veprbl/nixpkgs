@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, p7zip, autoPatchelfHook, atomEnv, makeWrapper, makeDesktopItem }:
+{ stdenv, fetchurl, autoPatchelfHook, atomEnv, makeWrapper, makeDesktopItem }:
 
 let
   description = "Trilium Notes is a hierarchical note taking application with focus on building large personal knowledge bases.";
@@ -13,18 +13,19 @@ let
 
 in stdenv.mkDerivation rec {
   name = "trilium-${version}";
-  version = "0.27.4";
+  version = "0.28.0-beta";
 
   src = fetchurl {
-    url = "https://github.com/zadam/trilium/releases/download/v${version}/trilium-linux-x64-${version}.7z";
-    sha256 = "1qb11axaifw5xjycrc6qsyd8h36rgjd7rjql8895v8agckf3g2c1";
+    url = "https://github.com/zadam/trilium/releases/download/v${version}/trilium-linux-x64-${version}.tar.xz";
+    sha256 = "05dclzqqwg0is1liximj2mibvb9hxxb2v8350lfl6mx8h5p8gzsk";
   };
 
   nativeBuildInputs = [
-    p7zip /* for unpacking */
     autoPatchelfHook
     makeWrapper
   ];
+
+  sourceRoot = "dist/trilium-linux-x64";
 
   buildInputs = atomEnv.packages;
 
