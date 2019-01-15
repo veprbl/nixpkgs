@@ -9,19 +9,26 @@
 }:
 let
   # Updating? Keep $out/etc synchronized with passthru.filesInstalledToEtc
-  version = "1.2.3";
+  version = "1.2.3.99"; # XXX: not really
   python = python3.withPackages (p: with p; [ pygobject3 pycairo pillow ]);
   installedTestsPython = python3.withPackages (p: with p; [ pygobject3 requests ]);
 
   fontsConf = makeFontsConf {
     fontDirectories = [ freefont_ttf ];
   };
-in stdenv.mkDerivation {
-  name = "fwupd-${version}";
-  src = fetchurl {
-    url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
-    sha256 = "11qpgincndahq96rbm2kgcy9kw5n9cmbbilsrqcqcyk7mvv464sl";
+in stdenv.mkDerivation rec {
+  pname = "fwupd";
+  inherit version;
+  src = fetchFromGitHub {
+    owner = "hughsie";
+    repo = pname;
+    rev = "b78d2706606a45a26a42fd57fe6235b82f10e5b5";
+    sha256 = "1sn7kpgnv1vswz451sfl1r9mmqa7lgfi40vym8iq6mywnaiw7g64";
   };
+  #src = fetchurl {
+  #  url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
+  #  sha256 = "11qpgincndahq96rbm2kgcy9kw5n9cmbbilsrqcqcyk7mvv464sl";
+  #};
 
   outputs = [ "out" "lib" "dev" "devdoc" "man" "installedTests" ];
 
