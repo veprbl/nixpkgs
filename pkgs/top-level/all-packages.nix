@@ -17655,6 +17655,8 @@ in
 
   sway = callPackage ../applications/window-managers/sway { };
   sway-beta = callPackage ../applications/window-managers/sway/beta.nix { };
+  swayidle = callPackage ../applications/window-managers/sway/idle.nix { };
+  swaylock = callPackage ../applications/window-managers/sway/lock.nix { };
 
   velox = callPackage ../applications/window-managers/velox {
     stConf = config.st.conf or null;
