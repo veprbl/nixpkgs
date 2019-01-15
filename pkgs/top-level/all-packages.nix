@@ -4893,6 +4893,8 @@ in
 
   pirate-get = callPackage ../tools/networking/pirate-get { };
 
+  pipreqs = callPackage ../tools/misc/pipreqs { };
+
   pius = callPackage ../tools/security/pius { };
 
   pixiewps = callPackage ../tools/networking/pixiewps {};
@@ -8858,6 +8860,8 @@ in
   go-md2man = callPackage ../development/tools/misc/md2man {};
 
   mage = callPackage ../development/tools/build-managers/mage { };
+
+  mbed-cli = callPackage ../development/tools/mbed-cli { };
 
   minify = callPackage ../development/web/minify { };
 
