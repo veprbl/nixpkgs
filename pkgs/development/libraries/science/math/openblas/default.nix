@@ -13,54 +13,54 @@ let
   # To add support for a new platform, add an element to this set.
   configs = {
     armv6l-linux = {
-      BINARY = 32;
+      BINARY = "32";
       TARGET = "ARMV6";
-      DYNAMIC_ARCH = false;
+      DYNAMIC_ARCH = "0";
       CC = "gcc";
-      USE_OPENMP = true;
+      USE_OPENMP = "1";
     };
 
     armv7l-linux = {
-      BINARY = 32;
+      BINARY = "32";
       TARGET = "ARMV7";
-      DYNAMIC_ARCH = false;
+      DYNAMIC_ARCH = "0";
       CC = "gcc";
-      USE_OPENMP = true;
+      USE_OPENMP = "1";
     };
 
     aarch64-linux = {
-      BINARY = 64;
+      BINARY = "64";
       TARGET = "ARMV8";
-      DYNAMIC_ARCH = true;
+      DYNAMIC_ARCH = "1";
       CC = "gcc";
-      USE_OPENMP = true;
+      USE_OPENMP = "1";
     };
 
     i686-linux = {
-      BINARY = 32;
+      BINARY = "32";
       TARGET = "P2";
-      DYNAMIC_ARCH = true;
+      DYNAMIC_ARCH = "1";
       CC = "gcc";
-      USE_OPENMP = true;
+      USE_OPENMP = "1";
     };
 
     x86_64-darwin = {
-      BINARY = 64;
+      BINARY = "64";
       TARGET = "ATHLON";
-      DYNAMIC_ARCH = true;
+      DYNAMIC_ARCH = "1";
       # Note that clang is available through the stdenv on OSX and
       # thus is not an explicit dependency.
       CC = "clang";
-      USE_OPENMP = false;
+      USE_OPENMP = "0";
       MACOSX_DEPLOYMENT_TARGET = "10.7";
     };
 
     x86_64-linux = {
-      BINARY = 64;
+      BINARY = "64";
       TARGET = "ATHLON";
-      DYNAMIC_ARCH = true;
+      DYNAMIC_ARCH = "1";
       CC = "gcc";
-      USE_OPENMP = true;
+      USE_OPENMP = "1";
     };
   };
 in
@@ -79,15 +79,24 @@ let
 in
 stdenv.mkDerivation rec {
   name = "openblas-${version}";
-  version = "0.3.5";
+  version = "0.3.4";
   src = fetchFromGitHub {
     owner = "xianyi";
     repo = "OpenBLAS";
     rev = "v${version}";
-    sha256 = "0hwfplr6ciqjvfqkya5vz92z2rx8bhdg5mkh923z246ylhs6d94k";
+    sha256 = "1jdq4msfyg13pdmwwfqpixf4fshss68qzls820lmn0i6y7h4aix3";
   };
 
   inherit blas64;
+
+  patches = [
+    # Fixes build on x86_64-darwin. See:
+    # https://github.com/xianyi/OpenBLAS/issues/1926
+    (fetchpatch {
+      url = https://github.com/xianyi/OpenBLAS/commit/701ea88347461e4c5d896765438dc870281b3834.patch;
+      sha256 = "18rcfgkjsijl9d2510jn961wqvz7zdlz2fgy1yjmax29kvv8fqd9";
+    })
+  ];
 
   # Some hardening features are disabled due to sporadic failures in
   # OpenBLAS-based programs. The problem may not be with OpenBLAS itself, but
@@ -108,13 +117,15 @@ stdenv.mkDerivation rec {
     [gfortran perl which]
     ++ optionals stdenv.isDarwin [coreutils];
 
-  makeFlags = mapAttrsToList (var: val: "${var}=${toString val}") (config // {
-    FC = "gfortran";
-    NUM_THREADS = 64;
-    INTERFACE64 = blas64;
-    NO_STATIC = true;
-    PREFIX = placeholder "out";
-  });
+  makeFlags =
+    [
+      "FC=gfortran"
+      ''PREFIX="''$(out)"''
+      "NUM_THREADS=64"
+      "INTERFACE64=${if blas64 then "1" else "0"}"
+      "NO_STATIC=1"
+    ] ++ stdenv.lib.optional (stdenv.hostPlatform.libc == "musl") "NO_AFFINITY=1"
+    ++ mapAttrsToList (var: val: var + "=" + val) config;
 
   doCheck = true;
   checkTarget = "tests";
