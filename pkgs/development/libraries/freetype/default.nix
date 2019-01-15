@@ -6,7 +6,7 @@
 , # FreeType supports LCD filtering (colloquially referred to as sub-pixel rendering).
   # LCD filtering is also known as ClearType and covered by several Microsoft patents.
   # This option allows it to be disabled. See http://www.freetype.org/patents.html.
-  useClearType ? false
+  useEncumberedCode ? true
 }:
 
 let
@@ -45,7 +45,7 @@ in stdenv.mkDerivation rec {
   patches =
     [ ./enable-table-validation.patch
     ] ++
-    optional useClearType ./enable-subpixel-rendering.patch;
+    optional useEncumberedCode ./enable-subpixel-rendering.patch;
 
   outputs = [ "out" "dev" ];
 
