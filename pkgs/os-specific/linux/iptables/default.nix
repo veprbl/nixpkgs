@@ -47,9 +47,6 @@ stdenv.mkDerivation rec {
     "--enable-devel"
     "--enable-shared"
     "--enable-bpf-compiler"
-    "--enable-nfsynproxy"
-    "--enable-nftables"
-    "--enable-ipv6"
   ];
 
   outputs = [ "out" "dev" ];
