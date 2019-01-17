@@ -4,14 +4,15 @@
 with python3.pkgs;
 
 buildPythonApplication rec {
-  version = "4.0.0a4";
+  version = "4.0.0a4.0.1"; # XXX: not really
   name = "gcalcli-${version}";
 
   src = fetchFromGitHub {
     owner  = "insanum";
     repo   = "gcalcli";
-    rev    = "v${version}";
-    sha256 = "00giq5cdigidzv5bz4wgzi1yp6xlf2rdcy6ynmsc6bcf0cl5x64d";
+    #rev    = "v${version}";
+    rev = "92fab4d39db319d91e5473d8df4cfef80b27e49c";
+    sha256 = "1z52dh8p7p0b7v70n9jkvgqs81iwx7bhpzimxmfa0ka6gf2bvvxv";
   };
 
   propagatedBuildInputs = [
