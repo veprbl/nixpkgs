@@ -25,8 +25,6 @@ in stdenv.mkDerivation rec {
     makeWrapper
   ];
 
-  sourceRoot = "dist/trilium-linux-x64";
-
   buildInputs = atomEnv.packages;
 
   installPhase = ''
