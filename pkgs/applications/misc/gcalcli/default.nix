@@ -15,16 +15,16 @@ buildPythonApplication rec {
     sha256 = "1z52dh8p7p0b7v70n9jkvgqs81iwx7bhpzimxmfa0ka6gf2bvvxv";
   };
 
+  postPatch = lib.optionalString stdenv.isLinux ''
+    substituteInPlace gcalcli/gcalcli.py --replace \
+      "command = 'notify-send -u critical" \
+      "command = '${libnotify}/bin/notify-send -u critical"
+  '';
+
   propagatedBuildInputs = [
     dateutil gflags httplib2 parsedatetime six vobject
     google_api_python_client oauth2client uritemplate
   ] ++ lib.optional (!isPy3k) futures;
-
-  postInstall = lib.optionalString stdenv.isLinux ''
-    substituteInPlace $out/bin/gcalcli --replace \
-      "command = 'notify-send -u critical -a gcalcli %s'" \
-      "command = '${libnotify}/bin/notify-send -i view-calendar-upcoming-events -u critical -a Calendar %s'"
-  '';
 
   # There are no tests as of 4.0.0a4
   doCheck = false;
