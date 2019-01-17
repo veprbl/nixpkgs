@@ -3,9 +3,7 @@
 , libgcrypt, dnsmasq, bluez5, readline
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
 , ethtool, gnused, coreutils, file, inetutils, kmod, jansson, libxslt
-, python3Packages, docbook_xsl, openconnect, curl, autoreconfHook
-, iwd ? null, enableIWD ? true
-}:
+, python3Packages, docbook_xsl, openconnect, curl, autoreconfHook }:
 
 let
   pname = "NetworkManager";
@@ -53,12 +51,11 @@ in stdenv.mkDerivation rec {
     "--with-session-tracking=systemd"
     "--with-modem-manager-1"
     "--with-nmtui"
-    # XXX: next rebuild: use this, drop enableIWD option and remove iwd input?
-    #"--with-iwd"
+    "--with-iwd"
     "--disable-gtk-doc"
     "--with-libnm-glib" # legacy library, TODO: remove
     "--disable-tests"
-  ] ++ stdenv.lib.optional enableIWD "--with-iwd=yes";
+  ];
 
   patches = [
     (substituteAll {
@@ -72,7 +69,7 @@ in stdenv.mkDerivation rec {
   buildInputs = [
     systemd libuuid polkit ppp libndp curl
     bluez5 dnsmasq gobject-introspection modemmanager readline newt libsoup jansson
-  ] ++ stdenv.lib.optional enableIWD iwd;
+  ];
 
   propagatedBuildInputs = [ dbus-glib gnutls libgcrypt python3Packages.pygobject3 ];
 
