@@ -53,7 +53,8 @@ in stdenv.mkDerivation rec {
     "--with-session-tracking=systemd"
     "--with-modem-manager-1"
     "--with-nmtui"
-    "--with-iwd"
+    # XXX: next rebuild: use this, drop enableIWD option and remove iwd input?
+    #"--with-iwd"
     "--disable-gtk-doc"
     "--with-libnm-glib" # legacy library, TODO: remove
     "--disable-tests"
