@@ -408,11 +408,12 @@ in {
           networking.networkmanager.dns = "dnsmasq"
         '';
       }
-      { assertion = !config.networking.wireless.iwd.enable;
-        message = ''
-          Only one option to enable iwd is allowed: networking.wireless.iwd.enable
-          and networking.networkmanager.wifi.backend = "iwd" are mutually exclusive.
-        '';
+      { assertion = config.networking.wireless.iwd.enable;
+      message = ''need to enable iwd maybe'';
+        #message = ''
+        #  Only one option to enable iwd is allowed: networking.wireless.iwd.enable
+        #  and networking.networkmanager.wifi.backend = "iwd" are mutually exclusive.
+        #'';
       }
     ];
 
@@ -529,9 +530,7 @@ in {
       ++ optional cfg.enableStrongSwan pkgs.networkmanager_strongswan;
 
     services.dbus.packages =
-      optional cfg.enableStrongSwan pkgs.strongswanNM
-      ++ optional (cfg.wifi.backend == "iwd") pkgs.iwd
-      ++ cfg.packages;
+      optional cfg.enableStrongSwan pkgs.strongswanNM ++ cfg.packages;
 
     services.udev.packages = cfg.packages;
   };
