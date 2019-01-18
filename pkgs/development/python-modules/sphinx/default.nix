@@ -25,12 +25,12 @@
 }:
 
 buildPythonPackage rec {
-  pname = "Sphinx";
-  version = "1.8.2";
+  pname = "sphinx";
+  version = "1.8.3";
   src = fetchPypi {
     pname = "Sphinx";
     inherit version;
-    sha256 = "1sia2h5rfzy76rbsd69ghr8bbidhsjzzinf3f523dcmivp5k41qj";
+    sha256 = "c4cb17ba44acffae3d3209646b6baec1e215cad3065e852c68cc569d4df1b9f8";
   };
   LC_ALL = "en_US.UTF-8";
 

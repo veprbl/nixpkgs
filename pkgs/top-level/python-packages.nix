@@ -366,7 +366,9 @@ in {
 
   fdint = callPackage ../development/python-modules/fdint { };
 
-  fuse = callPackage ../development/python-modules/fuse-python { fuse = pkgs.fuse; };
+  fuse = callPackage ../development/python-modules/fuse-python {
+    inherit (pkgs) fuse pkgconfig;
+  };
 
   genanki = callPackage ../development/python-modules/genanki { };
 
@@ -534,7 +536,9 @@ in {
 
   pyannotate = callPackage ../development/python-modules/pyannotate { };
 
-  pyatspi = callPackage ../development/python-modules/pyatspi { };
+  pyatspi = callPackage ../development/python-modules/pyatspi {
+    inherit (pkgs) pkgconfig;
+  };
 
   pyaxmlparser = callPackage ../development/python-modules/pyaxmlparser { };
 
@@ -589,8 +593,8 @@ in {
   pygtail = callPackage ../development/python-modules/pygtail { };
 
   pygtk = callPackage ../development/python-modules/pygtk {
-    libglade = null;
     inherit (pkgs) pkgconfig;
+    libglade = null;
   };
 
   pygtksourceview = callPackage ../development/python-modules/pygtksourceview { };
@@ -1806,6 +1810,7 @@ in {
   grip = callPackage ../development/python-modules/grip { };
 
   gst-python = callPackage ../development/python-modules/gst-python {
+    inherit (pkgs) pkgconfig;
     gst-plugins-base = pkgs.gst_all_1.gst-plugins-base;
   };
 
@@ -2996,6 +3001,7 @@ in {
   in callPackage path {
     stdenv = if stdenv.isDarwin then pkgs.clangStdenv else pkgs.stdenv;
     inherit (pkgs.darwin.apple_sdk.frameworks) Cocoa;
+    inherit (pkgs) pkgconfig;
   };
 
   matrix-client = callPackage ../development/python-modules/matrix-client { };
@@ -3139,7 +3145,7 @@ in {
   };
 
   pygraphviz = callPackage ../development/python-modules/pygraphviz {
-    graphviz = pkgs.graphviz; # not the python package
+    inherit (pkgs) graphviz pkgconfig; # not the python package
   };
 
   pymc3 = callPackage ../development/python-modules/pymc3 { };
