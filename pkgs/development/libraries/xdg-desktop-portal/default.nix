@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, fetchpatch, autoreconfHook, pkgconfig, libxml2, glib, pipewire, fontconfig, flatpak, acl, dbus, fuse, wrapGAppsHook, gnome3 }:
+{ stdenv, fetchFromGitHub, fetchpatch, autoreconfHook, pkgconfig, libxml2, glib, pipewire, fontconfig, flatpak, acl, dbus, fuse, wrapGAppsHook, gdk_pixbuf, gnome3 }:
 
 stdenv.mkDerivation rec {
   pname = "xdg-desktop-portal";
@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
   ];
 
   nativeBuildInputs = [ autoreconfHook pkgconfig libxml2 wrapGAppsHook ];
-  buildInputs = [ glib pipewire fontconfig flatpak acl dbus fuse gnome3.gsettings-desktop-schemas ];
+  buildInputs = [ glib pipewire fontconfig flatpak acl dbus fuse gdk_pixbuf gnome3.gsettings-desktop-schemas ];
 
   doCheck = true; # XXX: investigate!
 
