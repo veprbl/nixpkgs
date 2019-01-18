@@ -1,4 +1,4 @@
-{ stdenv, pkgs, python3, fetchFromGitHub }:
+{ stdenv, pkgs, python3, fetchgit, git }:
 
 with python3.pkgs; buildPythonApplication rec {
   pname = "khal";
@@ -8,11 +8,12 @@ with python3.pkgs; buildPythonApplication rec {
   #  inherit pname version;
   #  sha256 = "03h0j0d3xyqh98x5v2gv63wv3g91hip3vsaxvybsn5iz331d23h4";
   #};
-  src = fetchFromGitHub {
-    owner = "pimutils";
-    repo = pname;
+  buildInputs = [ git ];
+  src = fetchgit {
+    url = "https://github.com/pimutils/${pname}";
     rev = "1bc431f5390b280d1f162131f592cde03028fabb";
-    sha256 = "0k3hvglbnlj6axxg12y784847y4mrngv0dwjm9rkiq5xmrmi43cg";
+    sha256 = "1srsy993z8vj3l7a7bw6vfl7n5b17wvnx0rqfylbsl0d1v5wsbc1";
+    leaveDotGit = true;
   };
 
   LC_ALL = "en_US.UTF-8";
