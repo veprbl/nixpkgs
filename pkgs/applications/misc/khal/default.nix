@@ -1,12 +1,18 @@
-{ stdenv, pkgs, python3 }:
+{ stdenv, pkgs, python3, fetchFromGitHub }:
 
 with python3.pkgs; buildPythonApplication rec {
   pname = "khal";
-  version = "0.9.10";
+  version = "0.9.9999"; # not really
 
-  src = fetchPypi {
-    inherit pname version;
-    sha256 = "03h0j0d3xyqh98x5v2gv63wv3g91hip3vsaxvybsn5iz331d23h4";
+  #src = fetchPypi {
+  #  inherit pname version;
+  #  sha256 = "03h0j0d3xyqh98x5v2gv63wv3g91hip3vsaxvybsn5iz331d23h4";
+  #};
+  src = fetchFromGitHub {
+    owner = "pimutils";
+    repo = pname;
+    rev = "1bc431f5390b280d1f162131f592cde03028fabb";
+    sha256 = "0k3hvglbnlj6axxg12y784847y4mrngv0dwjm9rkiq5xmrmi43cg";
   };
 
   LC_ALL = "en_US.UTF-8";
