@@ -529,7 +529,9 @@ in {
       ++ optional cfg.enableStrongSwan pkgs.networkmanager_strongswan;
 
     services.dbus.packages =
-      optional cfg.enableStrongSwan pkgs.strongswanNM ++ cfg.packages;
+      optional cfg.enableStrongSwan pkgs.strongswanNM
+      ++ optional (cfg.wifi.backend == "iwd") pkgs.iwd
+      ++ cfg.packages;
 
     services.udev.packages = cfg.packages;
   };
