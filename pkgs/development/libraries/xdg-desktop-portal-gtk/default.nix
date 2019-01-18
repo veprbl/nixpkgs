@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   pname = "xdg-desktop-portal-gtk";
-  version = "1.1.0";
+  version = "1.1.1";
 
   src = fetchFromGitHub {
     owner = "flatpak";
     repo = pname;
     rev = version;
-    sha256 = "1djgsp3n10w6lamwwjn64p9722lvxpalj26h19zscbspnhfldb4f";
+    sha256 = "0ka08z5803v7lmacfc5cnpq7b1nq4kgwrdskbni4qh7c8gkmyh0h";
   };
 
   nativeBuildInputs = [ autoreconfHook pkgconfig libxml2 xdg-desktop-portal wrapGAppsHook ];
