@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   pname = "xdg-desktop-portal";
-  version = "1.1.0";
+  version = "1.1.1";
 
   outputs = [ "out" "installedTests" ];
 
@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
     owner = "flatpak";
     repo = pname;
     rev = version;
-    sha256 = "10dv628gci6vcs0rbyp4wb6yvigw2i1jj9x7ii6ckxjir5rff5dx";
+    sha256 = "1p1fanmabprhygkb6lxvnn9kc3mizz9mhmz8727dx4zr3ra90jfp";
   };
 
   patches = [
