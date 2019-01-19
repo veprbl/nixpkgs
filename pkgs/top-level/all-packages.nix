@@ -2175,10 +2175,6 @@ in
     brotliSupport = true;
   };
 
-  curl_7_59 = callPackage ../tools/networking/curl/7_59.nix rec {
-    fetchurl = fetchurlBoot;
-  };
-
   curl = callPackage ../tools/networking/curl rec {
     fetchurl = fetchurlBoot;
   };
@@ -5425,9 +5421,7 @@ in
 
   sieve-connect = callPackage ../applications/networking/sieve-connect {};
 
-  sigal = callPackage ../applications/misc/sigal {
-    inherit (pythonPackages) buildPythonApplication fetchPypi;
-  };
+  sigal = callPackage ../applications/misc/sigal { };
 
   sigil = libsForQt5.callPackage ../applications/editors/sigil { };
 
@@ -5995,6 +5989,8 @@ in
   vacuum = callPackage ../applications/networking/instant-messengers/vacuum {};
 
   vampire = callPackage ../applications/science/logic/vampire {};
+
+  vdmfec = callPackage ../applications/backup/vdmfec {};
 
   vk-messenger = callPackage ../applications/networking/instant-messengers/vk-messenger {};
 
@@ -9767,7 +9763,7 @@ in
     vid-stab = if stdenv.isDarwin then null else vid-stab;
     x265 = if stdenv.isDarwin then null else x265;
     xavs = if stdenv.isDarwin then null else xavs;
-    inherit (darwin) CF;
+    inherit (darwin) cf-private;
     inherit (darwin.apple_sdk.frameworks)
       Cocoa CoreServices CoreAudio AVFoundation MediaToolbox
       VideoDecodeAcceleration;
@@ -18186,7 +18182,9 @@ in
 
   mediainfo-gui = callPackage ../applications/misc/mediainfo-gui { };
 
-  mediathekview = callPackage ../applications/video/mediathekview { };
+  # mediathekview needs JavaFX, which currently only is available inside OracleJRE
+  # we might be able to get rid of it, as soon as we have an OpenJRE with OpenJFX included
+  mediathekview = callPackage ../applications/video/mediathekview { jre = oraclejre; };
 
   meteo = callPackage ../applications/networking/weather/meteo { };
 
@@ -18397,6 +18395,8 @@ in
     x11Support         = !stdenv.isDarwin;
     xineramaSupport    = !stdenv.isDarwin;
     xvSupport          = !stdenv.isDarwin;
+    # Use docutils from python3 to avoid python2 in the closure
+    inherit (python3Packages) docutils;
   };
 
   mpv-with-scripts = callPackage ../applications/video/mpv/wrapper.nix { };
@@ -21439,6 +21439,8 @@ in
 
   jmol = callPackage ../applications/science/chemistry/jmol { };
 
+  marvin = callPackage ../applications/science/chemistry/marvin { };
+
   molden = callPackage ../applications/science/chemistry/molden { };
 
   octopus = callPackage ../applications/science/chemistry/octopus { openblas=openblasCompat; };
@@ -23149,8 +23151,6 @@ in
   yaxg = callPackage ../tools/graphics/yaxg {};
 
   zap = callPackage ../tools/networking/zap { };
-
-  zdfmediathk = callPackage ../applications/video/zdfmediathk { };
 
   zopfli = callPackage ../tools/compression/zopfli { };
 
