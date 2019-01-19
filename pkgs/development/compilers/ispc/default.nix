@@ -32,14 +32,7 @@ stdenv.mkDerivation rec {
     llvmPackages.clang-unwrapped # we need to link against libclang, so we need the unwrapped
   ];
 
-  patches = [
-    (fetchpatch {
-      url = https://github.com/ispc/ispc/commit/d504641f5af9d5992e7c8f0ed42c1063a39ede5b.patch;
-      sha256 = "192q3gyvam79469bmlwf0jpfi2y4f8hl2vgcvjngsqhvscwira0s";
-    })
-  ];
-
-  postPatch = "sed -i -e 's/\\/bin\\///g' -e 's/-lcurses/-lncurses/g' Makefile";
+  postPatch = "sed -i -e 's,/bin/,,g' -e 's/-lcurses/-lncurses/g' Makefile";
 
   # TODO: this correctly catches errors early, but also some things that are just weird and don't seem to be real
   # errors
