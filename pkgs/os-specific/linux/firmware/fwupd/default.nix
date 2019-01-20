@@ -87,6 +87,10 @@ in stdenv.mkDerivation rec {
     mesonFlagsArray+=("--libexecdir=$out/libexec")
   '';
 
+  postConfigure = ''
+    ninja src/fu-hash.h
+  '';
+
   postInstall = ''
     moveToOutput share/installed-tests "$installedTests"
     wrapProgram $installedTests/share/installed-tests/fwupd/hardware.py \
