@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub
+{ stdenv, fetchFromGitHub, fetchpatch
 , cmake, pkgconfig, perl
 , gettext, fuse, openssl, tinyxml2
 }:
@@ -16,6 +16,14 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ gettext fuse openssl tinyxml2 ];
   nativeBuildInputs = [ cmake pkgconfig perl ];
+
+  patches = [
+    # https://github.com/vgough/encfs/pull/536 (fix nanosecond times)
+    (fetchpatch {
+      url = "https://github.com/vgough/encfs/commit/50552b1197868abb3eb6dd857577ee3029da3357.patch";
+      sha256 = "1zd81d82ji6zgddaaah4z1qq8fk06rg9i120ah4q0lpbqa0lizpq";
+    })
+  ];
 
   cmakeFlags =
     [ "-DUSE_INTERNAL_TINYXML=OFF"
