@@ -44,7 +44,10 @@ stdenv.mkDerivation rec {
 
   pinentryBinaryPath = pinentry.binaryPath or "bin/pinentry";
   configureFlags = optional guiSupport "--with-pinentry-pgm=${pinentry}/${pinentryBinaryPath}"
-    ++ [ "--enable-maintainer-mode" /* generate audit-events.h */ ];
+    ++ [
+      "--enable-maintainer-mode" # generate audit-events.h
+      "--disable-doc"
+  ];
 
   postInstall = ''
     mkdir -p $out/lib/systemd/user
