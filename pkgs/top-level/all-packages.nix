@@ -18768,6 +18768,10 @@ in
 
   packet = callPackage ../development/tools/packet { };
 
+  pb_cli = callPackage ../tools/misc/pb_cli {};
+
+  capture = callPackage ../tools/misc/capture {};
+
   pbrt = callPackage ../applications/graphics/pbrt { };
 
   pcsxr = callPackage ../misc/emulators/pcsxr {
@@ -22783,6 +22787,8 @@ in
   fsuae = callPackage ../misc/emulators/fs-uae { };
 
   putty = callPackage ../applications/networking/remote/putty { };
+
+  qMasterPassword = libsForQt5.callPackage ../applications/misc/qMasterPassword { };
 
   redprl = callPackage ../applications/science/logic/redprl { };
 
