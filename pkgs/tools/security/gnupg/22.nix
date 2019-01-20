@@ -1,5 +1,5 @@
-{ fetchurl, stdenv, pkgconfig, libgcrypt, libassuan, libksba
-, libiconv, npth, gettext, texinfo, pcsclite, sqlite
+{ fetchurl, stdenv, fetchgit, pkgconfig, libgcrypt, libassuan, libksba
+, libiconv, npth, gettext, texinfo, pcsclite, sqlite, autoreconfHook
 
 # Each of the dependencies below are optional.
 # Gnupg can be built without them at the cost of reduced functionality.
@@ -17,20 +17,25 @@ stdenv.mkDerivation rec {
 
   version = "2.2.12";
 
-  src = fetchurl {
-    url = "mirror://gnupg/gnupg/${name}.tar.bz2";
-    sha256 = "1jw282iy27j1qygym52aa44zxy7ly4bdadhd628hwr4q9j5hy0yv";
+  src = fetchgit {
+    url = https://dev.gnupg.org/source/gnupg.git;
+    rev = "d93797c8a7892fe26672c551017468e9f8099ef6";
+    sha256 = "1qj2xd0ihpp9nbfd2kkkl0mp211sr8cidw5b6p6yfmmw4qhcxzwl";
   };
+  #src = fetchurl {
+  #  url = "mirror://gnupg/gnupg/${name}.tar.bz2";
+  #  sha256 = "1jw282iy27j1qygym52aa44zxy7ly4bdadhd628hwr4q9j5hy0yv";
+  #};
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig autoreconfHook ];
   buildInputs = [
     libgcrypt libassuan libksba libiconv npth gettext texinfo
     readline libusb gnutls adns openldap zlib bzip2 sqlite
   ];
 
-  patches = [
-    ./fix-libusb-include-path.patch
-  ];
+  #patches = [
+  #  ./fix-libusb-include-path.patch
+  #];
   postPatch = stdenv.lib.optionalString stdenv.isLinux ''
     sed -i 's,"libpcsclite\.so[^"]*","${stdenv.lib.getLib pcsclite}/lib/libpcsclite.so",g' scd/scdaemon.c
   ''; #" fix Emacs syntax highlighting :-(
