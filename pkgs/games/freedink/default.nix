@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, SDL2, SDL2_mixer, SDL2_image, SDL2_ttf, SDL2_gfx
+{ stdenv, fetchurl, SDL2, SDL2_mixer, SDL2_image, SDL2_ttf, SDL2_gfx, glm
 , pkgconfig, intltool, fontconfig, libzip, zip, zlib, cxxtest }:
 
 let
@@ -28,7 +28,7 @@ in stdenv.mkDerivation rec {
   ];
   buildInputs = [
     SDL2 SDL2_mixer SDL2_image SDL2_ttf SDL2_gfx
-    fontconfig libzip zip zlib
+    fontconfig libzip zip zlib glm
     cxxtest
   ];
 
