@@ -75,8 +75,8 @@ let
 in {
 
   linuxHeaders = common {
-    version = "4.19";
-    sha256 = "18a92z17alh5kkvjv7l9z8wk5jgdb6raawdfkpwx9bi8amjzas0c";
+    version = "4.19.16";
+    sha256 = "1pqvn6dsh0xhdpawz4ag27vkw1abvb6sn3869i4fbrz33ww8i86q";
     patches = [
        ./no-relocs.patch # for building x86 kernel headers on non-ELF platforms
        ./no-dynamic-cc-version-check.patch # so we can use `stdenvNoCC`, see `makeFlags` above
