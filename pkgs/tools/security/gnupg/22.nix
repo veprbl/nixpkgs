@@ -1,5 +1,5 @@
 { fetchurl, stdenv, fetchgit, pkgconfig, libgcrypt, libassuan, libksba
-, libiconv, npth, gettext, texinfo, pcsclite, sqlite, autoreconfHook
+, libiconv, npth, gettext, texinfo, pcsclite, sqlite, autoreconfHook, gawk
 
 # Each of the dependencies below are optional.
 # Gnupg can be built without them at the cost of reduced functionality.
@@ -27,21 +27,24 @@ stdenv.mkDerivation rec {
   #  sha256 = "1jw282iy27j1qygym52aa44zxy7ly4bdadhd628hwr4q9j5hy0yv";
   #};
 
-  nativeBuildInputs = [ pkgconfig autoreconfHook ];
+  nativeBuildInputs = [ pkgconfig autoreconfHook gawk ];
   buildInputs = [
     libgcrypt libassuan libksba libiconv npth gettext texinfo
     readline libusb gnutls adns openldap zlib bzip2 sqlite
   ];
 
-  #patches = [
-  #  ./fix-libusb-include-path.patch
-  #];
+  autoreconfPhase = "./autogen.sh";
+
+  patches = [
+    ./fix-libusb-include-path.patch
+  ];
   postPatch = stdenv.lib.optionalString stdenv.isLinux ''
     sed -i 's,"libpcsclite\.so[^"]*","${stdenv.lib.getLib pcsclite}/lib/libpcsclite.so",g' scd/scdaemon.c
   ''; #" fix Emacs syntax highlighting :-(
 
   pinentryBinaryPath = pinentry.binaryPath or "bin/pinentry";
-  configureFlags = optional guiSupport "--with-pinentry-pgm=${pinentry}/${pinentryBinaryPath}";
+  configureFlags = optional guiSupport "--with-pinentry-pgm=${pinentry}/${pinentryBinaryPath}"
+    ++ [ "--enable-maintainer-mode" /* generate audit-events.h */ ];
 
   postInstall = ''
     mkdir -p $out/lib/systemd/user

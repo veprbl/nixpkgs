@@ -1,8 +1,10 @@
---- a/configure
-+++ b/configure
-@@ -8987,8 +8987,7 @@
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking libusb include dir" >&5
- $as_echo_n "checking libusb include dir... " >&6; }
+diff --git a/configure.ac b/configure.ac
+index 89ef9398e..89b5c4e0b 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -853,8 +853,7 @@ if test x"$LIBUSB_NAME" != x ; then
+                   have_libusb=yes ])
+    AC_MSG_CHECKING([libusb include dir])
     usb_incdir_found="no"
 -   for _incdir in "" "/usr/include/libusb-1.0" \
 -       "/usr/local/include/libusb-1.0" "/usr/pkg/include/libusb-1.0"; do
