@@ -3215,17 +3215,36 @@ in
 
   pgf_graphics = callPackage ../tools/graphics/pgf { };
 
-  pgjwt = callPackage ../servers/sql/postgresql/pgjwt {};
 
-  cstore_fdw = callPackage ../servers/sql/postgresql/cstore_fdw {};
+  # postgresql extensions
 
-  pg_hll = callPackage ../servers/sql/postgresql/pg_hll {};
+  cstore_fdw = callPackage ../servers/sql/postgresql/ext/cstore_fdw.nix {};
 
-  pg_cron = callPackage ../servers/sql/postgresql/pg_cron {};
+  pg_cron = callPackage ../servers/sql/postgresql/ext/pg_cron.nix {};
 
-  pgtap = callPackage ../servers/sql/postgresql/pgtap {};
+  pg_hll = callPackage ../servers/sql/postgresql/ext/pg_hll.nix {};
 
-  pg_topn = callPackage ../servers/sql/postgresql/topn {};
+  pgjwt = callPackage ../servers/sql/postgresql/ext/pgjwt.nix {};
+
+  pg_repack = callPackage ../servers/sql/postgresql/ext/pg_repack.nix {};
+
+  pgroonga = callPackage ../servers/sql/postgresql/ext/pgroonga.nix {};
+
+  plv8 = callPackage ../servers/sql/postgresql/ext/plv8.nix {
+    v8 = callPackage ../development/libraries/v8/plv8_6_x.nix {
+      inherit (python2Packages) python;
+    };
+  };
+
+  pg_similarity = callPackage ../servers/sql/postgresql/ext/pg_similarity.nix {};
+
+  pgtap = callPackage ../servers/sql/postgresql/ext/pgtap.nix {};
+
+  pg_topn = callPackage ../servers/sql/postgresql/ext/pg_topn.nix {};
+
+  timescaledb = callPackage ../servers/sql/postgresql/ext/timescaledb.nix {};
+
+  tsearch_extras = callPackage ../servers/sql/postgresql/ext/tsearch_extras.nix { };
 
   pigz = callPackage ../tools/compression/pigz { };
 
@@ -7066,7 +7085,7 @@ in
   tamarin-prover =
     (haskellPackages.callPackage ../applications/science/logic/tamarin-prover {
       # NOTE: do not use the haskell packages 'graphviz' and 'maude'
-      inherit maude which sapic;
+      inherit maude which;
       graphviz = graphviz-nox;
     });
 
@@ -12004,18 +12023,6 @@ in
 
   pdf2xml = callPackage ../development/libraries/pdf2xml {} ;
 
-  pg_repack = callPackage ../servers/sql/postgresql/pg_repack {};
-
-  pg_similarity = callPackage ../servers/sql/postgresql/pg_similarity {};
-
-  pgroonga = callPackage ../servers/sql/postgresql/pgroonga {};
-
-  plv8 = callPackage ../servers/sql/postgresql/plv8 {
-    v8 = callPackage ../development/libraries/v8/plv8_6_x.nix {
-      inherit (python2Packages) python;
-    };
-  };
-
   phonon = callPackage ../development/libraries/phonon {};
 
   phonon-backend-gstreamer = callPackage ../development/libraries/phonon/backends/gstreamer.nix {};
@@ -13957,7 +13964,7 @@ in
     postgresql_10
     postgresql_11;
 
-  postgresql_jdbc = callPackage ../servers/sql/postgresql/jdbc { };
+  postgresql_jdbc = callPackage ../development/java-modules/postgresql_jdbc { };
 
   inherit (callPackage ../servers/monitoring/prometheus {
     buildGoPackage = buildGo110Package;
@@ -13997,7 +14004,7 @@ in
   prometheus-varnish-exporter = callPackage ../servers/monitoring/prometheus/varnish-exporter.nix { };
   prometheus-jmx-httpserver = callPackage ../servers/monitoring/prometheus/jmx-httpserver.nix {  };
 
-  psqlodbc = callPackage ../servers/sql/postgresql/psqlodbc { };
+  psqlodbc = callPackage ../development/libraries/psqlodbc { };
 
   pure-ftpd = callPackage ../servers/ftp/pure-ftpd { };
 
@@ -19656,8 +19663,6 @@ in
     fftw = fftwSinglePrec;
   };
 
-  timescaledb = callPackage ../servers/sql/postgresql/timescaledb {};
-
   timewarrior = callPackage ../applications/misc/timewarrior { };
 
   timidity = callPackage ../tools/misc/timidity { };
@@ -19742,8 +19747,6 @@ in
   tribler = callPackage ../applications/networking/p2p/tribler { };
 
   trojita = libsForQt5.callPackage ../applications/networking/mailreaders/trojita { };
-
-  tsearch_extras = callPackage ../servers/sql/postgresql/tsearch_extras { };
 
   tudu = callPackage ../applications/office/tudu { };
 
@@ -21896,10 +21899,6 @@ in
   prover9 = callPackage ../applications/science/logic/prover9 { };
 
   proverif = callPackage ../applications/science/logic/proverif { };
-
-  sapic = callPackage ../applications/science/logic/sapic {
-    inherit (ocaml-ng.ocamlPackages_4_05) ocaml;
-  };
 
   satallax = callPackage ../applications/science/logic/satallax {
     ocaml = ocaml-ng.ocamlPackages_4_01_0.ocaml;
