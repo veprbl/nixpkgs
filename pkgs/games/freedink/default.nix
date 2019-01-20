@@ -32,11 +32,6 @@ in stdenv.mkDerivation rec {
     cxxtest
   ];
 
-  preConfigure = ''
-    # Build fails on Linux with windres.
-    export ac_cv_prog_ac_ct_WINDRES=
-  '';
-
   postInstall = ''
     mkdir -p "$out/share/"
     ln -s ${freedink_data}/share/dink "$out/share/"
