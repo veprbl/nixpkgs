@@ -1,15 +1,14 @@
-{ stdenv, fetchurl, SDL, SDL_mixer, SDL_image, SDL_ttf, SDL_gfx
-, pkgconfig, intltool, fontconfig, libzip, zip, zlib }:
+{ stdenv, fetchurl, SDL2, SDL2_mixer, SDL2_image, SDL2_ttf, SDL2_gfx
+, pkgconfig, intltool, fontconfig, libzip, zip, zlib, cxxtest }:
 
 let
-  version = "1.08.20121209";
-
   freedink_data = stdenv.mkDerivation rec {
     name = "freedink-data-${version}";
+    version = "1.08.20190120";
 
     src = fetchurl {
       url = "mirror://gnu/freedink/${name}.tar.gz";
-      sha256 = "1mhns09l1s898x18ahbcy9gabrmgsr8dv7pm0a2ivid8mhxahn1j";
+      sha256 = "17gvryadlxk172mblbsil7hina1z5wahwaxnr6g3mdq57dvl8pvi";
     };
 
     prePatch = "substituteInPlace Makefile --replace /usr/local $out";
@@ -17,15 +16,20 @@ let
 
 in stdenv.mkDerivation rec {
   name = "freedink-${version}";
+  version = "109.2";
 
   src = fetchurl {
     url = "mirror://gnu/freedink/${name}.tar.gz";
-    sha256 = "19xximbcm6506kvpf3s0q96697kmzca3yrjdr6dgphklp33zqsqr";
+    sha256 = "0rk53ld20qafrrappljws0wbjf46cc31frxhqxd2ws9idcp0282l";
   };
 
+  nativeBuildInputs = [
+    pkgconfig intltool 
+  ];
   buildInputs = [
-    SDL SDL_mixer SDL_image SDL_ttf SDL_gfx
-    pkgconfig intltool fontconfig libzip zip zlib
+    SDL2 SDL2_mixer SDL2_image SDL2_ttf SDL2_gfx
+    fontconfig libzip zip zlib
+    cxxtest
   ];
 
   preConfigure = ''
