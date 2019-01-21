@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, substituteAll, intltool, pkgconfig, dbus, dbus-glib
+{ stdenv, fetchurl, fetchpatch, substituteAll, intltool, pkgconfig, dbus, dbus-glib
 , gnome3, systemd, libuuid, polkit, gnutls, ppp, dhcp, iptables
 , libgcrypt, dnsmasq, bluez5, readline
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
@@ -64,6 +64,14 @@ in stdenv.mkDerivation rec {
       inherit (stdenv) shell;
     })
 
+    (fetchpatch {
+      url = https://gitlab.freedesktop.org/NetworkManager/NetworkManager/commit/bff948b96ddb0824a258fa4f8ab8c797139643f0.patch;
+      sha256 = "0x9cl1nl26hmpb0ck5w4yf23hi22xb642lqx29qd56zw1qkh42r5";
+    })
+    (fetchpatch {
+      url = https://github.com/NetworkManager/NetworkManager/compare/nm-1-14...dtzWill:experimental/iwd-misc.patch;
+      sha256 = "1s8l76kc0k3kw7kza1bngh4ya3wn26q47ahxqppq6bq3xndvzik9";
+    })
   ];
 
   buildInputs = [
