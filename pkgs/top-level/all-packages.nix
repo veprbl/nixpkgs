@@ -208,6 +208,8 @@ in
 
   fetchMavenArtifact = callPackage ../build-support/fetchmavenartifact { };
 
+  prefer-remote-fetch = import ../build-support/prefer-remote-fetch;
+
   global-platform-pro = callPackage ../development/tools/global-platform-pro/default.nix { };
 
   graph-easy = callPackage ../tools/graphics/graph-easy { };
@@ -8636,7 +8638,7 @@ in
 
   doclifter = callPackage ../development/tools/misc/doclifter { };
 
-  docutils = pythonPackages.docutils;
+  docutils = with python3Packages; toPythonApplication docutils;
 
   doctl = callPackage ../development/tools/doctl { };
 
@@ -9894,6 +9896,8 @@ in
   gcab = callPackage ../development/libraries/gcab { };
 
   gcr = callPackage ../development/libraries/gcr { };
+
+  gdl = callPackage ../development/libraries/gdl { };
 
   gdome2 = callPackage ../development/libraries/gdome2 {
     inherit (gnome2) gtkdoc;
@@ -18410,8 +18414,6 @@ in
     x11Support         = !stdenv.isDarwin;
     xineramaSupport    = !stdenv.isDarwin;
     xvSupport          = !stdenv.isDarwin;
-    # Use docutils from python3 to avoid python2 in the closure
-    inherit (python3Packages) docutils;
   };
 
   mpv-with-scripts = callPackage ../applications/video/mpv/wrapper.nix { };
