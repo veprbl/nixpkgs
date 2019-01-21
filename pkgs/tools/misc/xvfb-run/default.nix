@@ -2,8 +2,8 @@
 , xauth, utillinux, which, fontsConf, gawk, coreutils }:
 let
   xvfb_run = fetchurl {
-    url = https://salsa.debian.org/xorg-team/xserver/xorg-server/raw/9cad896318c78554d982f3d59f022c8ad87f7b61/debian/local/xvfb-run;
-    sha256 = "1950na6k35d9rzyr9pd649plm70w70vz1840p623jz10wvwf01gx";
+    url = https://projects.archlinux.org/svntogit/packages.git/plain/trunk/xvfb-run?h=packages/xorg-server;
+    sha256 = "1f9mrhqy0l72i3674n98bqlq9a10h0rh9qfjiwvivz3hjhq5c0gz";
   };
 in
 stdenv.mkDerivation {
