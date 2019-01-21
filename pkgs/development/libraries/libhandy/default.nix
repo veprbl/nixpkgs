@@ -37,10 +37,11 @@ in stdenv.mkDerivation rec {
   PKG_CONFIG_GLADEUI_2_0_MODULEDIR = "${placeholder "glade"}/lib/glade/modules";
   PKG_CONFIG_GLADEUI_2_0_CATALOGDIR = "${placeholder "glade"}/share/glade/catalogs";
 
-  doCheck = false; # revisit, fix
+  doCheck = true;
 
   checkPhase = ''
-    export NO_AT_BRIDGE=1
+    NO_AT_BRIDGE=1 \
+    XDG_ICON_DIRS="$XDG_ICON_DIRS:${gnome3.defaultIconTheme}/share" \
     xvfb-run -s '-screen 0 800x600x24' dbus-run-session \
       --config-file=${dbus.daemon}/share/dbus-1/session.conf \
       meson test --print-errorlogs
