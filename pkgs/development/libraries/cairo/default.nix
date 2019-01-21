@@ -23,11 +23,6 @@ in stdenv.mkDerivation rec {
   outputs = [ "out" "dev" "devdoc" ];
   outputBin = "dev"; # very small
 
-  patches = [
-    ./0001-Set-default-LCD-filter-to-FreeType-s-default.patch
-    ./0001-ft-Use-FT_Done_MM_Var-instead-of-free-when-available.patch
-  ];
-
   nativeBuildInputs = [
     pkgconfig
     libiconv
