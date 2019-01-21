@@ -1,6 +1,6 @@
 { lib, stdenv, zlib, lzo, libtasn1, nettle, pkgconfig, lzip
 , guileBindings, guile, perl, gmp, autogen, libidn, p11-kit, libiconv
-, tpmSupport ? false, trousers, which, nettools, datefudge, libunistring
+, tpmSupport ? false, trousers, which, nettools, libunistring
 , unbound, dns-root-data, gettext
 
 # Version dependent args
@@ -13,7 +13,7 @@ let
   # XXX: Gnulib's `test-select' fails on FreeBSD:
   # http://hydra.nixos.org/build/2962084/nixlog/1/raw .
   doCheck = !stdenv.isFreeBSD && !stdenv.isDarwin && lib.versionAtLeast version "3.4"
-      && stdenv.buildPlatform == stdenv.hostPlatform && /* XXX */ false;
+      && stdenv.buildPlatform == stdenv.hostPlatform;
 in
 stdenv.mkDerivation {
   name = "gnutls-${version}";
@@ -46,7 +46,7 @@ stdenv.mkDerivation {
     ++ buildInputs;
 
   nativeBuildInputs = [ perl pkgconfig ] ++ nativeBuildInputs
-    ++ lib.optionals doCheck [ which nettools datefudge ];
+    ++ lib.optionals doCheck [ which nettools ];
 
   propagatedBuildInputs = [ nettle ];
 
