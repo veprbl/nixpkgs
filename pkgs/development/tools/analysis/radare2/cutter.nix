@@ -8,7 +8,7 @@
 , python3 }:
 
 let
-  version = "1.7.3";
+  version = "1.7.4";
 in
 stdenv.mkDerivation rec {
   name = "radare2-cutter-${version}";

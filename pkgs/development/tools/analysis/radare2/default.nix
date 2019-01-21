@@ -109,14 +109,14 @@ in {
     cs_sha256 = "1ak8ysgivq28d23r77881p0z5v65jhpap5plm10p9j3y2x00n3zn";
   };
   r2-for-cutter = generic {
-    version_commit = "20677";
-    gittap = "3.1.3-140-g2462653a2";
-    gittip = "2462653a232b40ac43dfcf4db9c5226c8cbbad9f";
-    rev = "2462653a232b40ac43dfcf4db9c5226c8cbbad9f";
-    version = "2018-12-25";
-    sha256 = "12fpwfp4y3w6837jl5y8jrpw92rzwd9hkgcg6h6b7dw3yydbw3s4";
-    cs_tip = "81e424c50a7eace8bcb286f7142b587eda20c437";
-    cs_sha256 = "1p3dbrlqbyicqszm3vz4jwd0z5x0mbl2v606drb0m12bsndmqqhd";
+    version_commit = "20611";
+    gittap = "3.2.1-123-gbbe5c2a31";
+    gittip = "bbe5c2a31e984a93e465afbc4892352857e8aae9";
+    rev = "bbe5c2a31e984a93e465afbc4892352857e8aae9";
+    version = "2019-01-20";
+    sha256 = "108cqpvq5pk348340jdpj74x1kxpakskhr4q9k2qn2vml8paywd2";
+    cs_tip = "0ff8220adef16a942697afd245afc5ab0f70cbf8";
+    cs_sha256 = "1ak8ysgivq28d23r77881p0z5v65jhpap5plm10p9j3y2x00n3zn";
   };
   #</generated>
 }
