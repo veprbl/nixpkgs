@@ -5198,6 +5198,8 @@ in {
     inherit python;
   })).python;
 
+  zm-py = callPackage ../development/python-modules/zm-py { };
+
   rfc7464 = callPackage ../development/python-modules/rfc7464 { };
 
   foundationdb51 = callPackage ../servers/foundationdb/python.nix { foundationdb = pkgs.foundationdb51; };
@@ -5217,6 +5219,8 @@ in {
   pymssql = callPackage ../development/python-modules/pymssql { };
 
   nanoleaf = callPackage ../development/python-modules/nanoleaf { };
+
+  nanotime = callPackage ../development/python-modules/nanotime { };
 
   importlib-metadata = callPackage ../development/python-modules/importlib-metadata {};
 
