@@ -23,6 +23,9 @@ stdenv.mkDerivation rec {
   ];
 
   doCheck = true;
+  preCheck = ''
+    XDG_DATA_DIRS="$XDG_DATA_DIRS:${shared-mime-info}/share"
+  '';
 
   meta = with stdenv.lib; {
     description = "A library to help create and query binary XML blobs";
