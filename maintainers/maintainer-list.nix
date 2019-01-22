@@ -1456,6 +1456,10 @@
     email = "elis@hirwing.se";
     github = "etu";
     name = "Elis Hirwing";
+    keys = [{
+      longkeyid = "rsa4096/0xD57EFA625C9A925F";
+      fingerprint = "67FE 98F2 8C44 CF22 1828  E12F D57E FA62 5C9A 925F";
+    }];
   };
   evck = {
     email = "eric@evenchick.com";
@@ -4183,6 +4187,10 @@
     email = "sebastien.maret@icloud.com";
     github = "smaret";
     name = "Sébastien Maret";
+    keys = [{
+      longkeyid = "rsa4096/0x86E30E5A0F5FC59C";
+      fingerprint = "4242 834C D401 86EF 8281  4093 86E3 0E5A 0F5F C59C";
+    }];
   };
   smironov = {
     email = "grrwlf@gmail.com";
