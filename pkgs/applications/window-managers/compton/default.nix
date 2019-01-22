@@ -112,17 +112,17 @@ let
   };
 
   neocomp = stdenv.mkDerivation rec {
-     pname = "neocomp";
-     version = "2019-01-06";
+    pname = "neocomp";
+    version = "2019-01-06";
 
-     COMPTON_VERSION = version;
+    COMPTON_VERSION = version;
 
-     src = fetchFromGitHub {
-       owner = "delusionallogic";
-       repo = pname;
-       rev = "740ba749f9a8227b2c9420b4ae3c948a505376f2";
-       sha256 = "0w4yvhz3p9z0h59j7v415d85j3ybd5j7szsjp7xzzdqp2lq9gxkz";
-     };
+    src = fetchFromGitHub {
+      owner = "delusionallogic";
+      repo = pname;
+      rev = "740ba749f9a8227b2c9420b4ae3c948a505376f2";
+      sha256 = "0w4yvhz3p9z0h59j7v415d85j3ybd5j7szsjp7xzzdqp2lq9gxkz";
+    };
 
     nativeBuildInputs = [
       pkgconfig
@@ -131,14 +131,17 @@ let
       docbook_xsl
       makeWrapper
     ];
-     buildInputs = stableSource.buildInputs ++ gitSource.buildInputs # lol
-       ++ [ freetype judy ];
+    buildInputs = stableSource.buildInputs ++ gitSource.buildInputs # lol
+    ++ [ freetype judy ];
 
-     makeFlags = [ "DESTDIR=${placeholder "out"}" "PREFIX=" ];
-     meta = with stdenv.lib; {
-       description = "neocomp";
-       # TODO
-     };
+    makeFlags = [
+      "DESTDIR=${placeholder "out"}"
+      "PREFIX="
+    ];
+    meta = with stdenv.lib; {
+      description = "neocomp";
+      # TODO
+    };
   };
 in {
   compton-old = common stableSource;
