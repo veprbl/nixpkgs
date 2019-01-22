@@ -1,7 +1,7 @@
 { stdenv, fetchFromGitLab, meson, ninja, pkgconfig, gobject-introspection, vala
 , gtk-doc, docbook_xsl, docbook_xml_dtd_43
 , gtk3, gnome3
-, dbus, xvfb_run, libxml2
+, dbus, xvfb_run, libxml2, hicolor-icon-theme
 }:
 
 let
@@ -41,7 +41,7 @@ in stdenv.mkDerivation rec {
 
   checkPhase = ''
     NO_AT_BRIDGE=1 \
-    XDG_ICON_DIRS="$XDG_ICON_DIRS:${gnome3.defaultIconTheme}/share" \
+    XDG_DATA_DIRS="$XDG_DATA_DIRS:${hicolor-icon-theme}/share" \
     xvfb-run -s '-screen 0 800x600x24' dbus-run-session \
       --config-file=${dbus.daemon}/share/dbus-1/session.conf \
       meson test --print-errorlogs
