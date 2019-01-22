@@ -1,5 +1,6 @@
 { stdenv, lib, fetchFromGitHub, pkgconfig, asciidoc, docbook_xml_dtd_45
 , docbook_xsl, libxslt, libxml2, makeWrapper, meson, ninja
+, judy, freetype
 , xorgproto, libxcb ,xcbutilrenderutil, xcbutilimage, pixman, libev
 , dbus, libconfig, libdrm, libGL, pcre, libX11, libXcomposite, libXdamage
 , libXinerama, libXrandr, libXrender, libXext, xwininfo, libxdg_basedir }:
@@ -109,7 +110,38 @@ let
       homepage = https://github.com/yshui/compton/;
     };
   };
+
+  neocomp = stdenv.mkDerivation rec {
+     pname = "neocomp";
+     version = "2019-01-06";
+
+     COMPTON_VERSION = version;
+
+     src = fetchFromGitHub {
+       owner = "delusionallogic";
+       repo = pname;
+       rev = "740ba749f9a8227b2c9420b4ae3c948a505376f2";
+       sha256 = "0w4yvhz3p9z0h59j7v415d85j3ybd5j7szsjp7xzzdqp2lq9gxkz";
+     };
+
+    nativeBuildInputs = [
+      pkgconfig
+      asciidoc
+      docbook_xml_dtd_45
+      docbook_xsl
+      makeWrapper
+    ];
+     buildInputs = stableSource.buildInputs ++ gitSource.buildInputs # lol
+       ++ [ freetype judy ];
+
+     makeFlags = [ "DESTDIR=${placeholder "out"}" "PREFIX=" ];
+     meta = with stdenv.lib; {
+       description = "neocomp";
+       # TODO
+     };
+  };
 in {
   compton-old = common stableSource;
   compton-git = common gitSource;
+  inherit neocomp;
 }

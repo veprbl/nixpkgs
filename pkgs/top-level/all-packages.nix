@@ -20278,7 +20278,7 @@ in
 
   inherit (xorg) xcompmgr;
 
-  inherit (callPackage ../applications/window-managers/compton {}) compton-old compton-git;
+  inherit (callPackage ../applications/window-managers/compton {}) compton-old compton-git neocomp;
   compton = compton-git;
 
   xdaliclock = callPackage ../tools/misc/xdaliclock {};
