@@ -263,6 +263,12 @@ self: super:
   });
 
   libXpresent = super.libXpresent.overrideAttrs (attrs: {
+    patches = [
+      (fetchpatch {
+        url = "https://cgit.freedesktop.org/xorg/lib/libXpresent/patch/?id=dd6771cdf6f04cde37eb14891573c0e55be83241";
+        sha256 = "0wf8m11jpp0w5bmk1kd813i33ykb9q57b5rw8rkzc5b972k3ay17";
+      })
+    ];
     buildInputs = with self; attrs.buildInputs ++ [ libXext libXfixes libXrandr ];
   });
 
