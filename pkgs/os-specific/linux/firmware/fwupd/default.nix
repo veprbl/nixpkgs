@@ -22,8 +22,8 @@ in stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "hughsie";
     repo = pname;
-    rev = "088c258894f21835fb4211155d3b2f60b1b1884c";
-    sha256 = "06qibw807lrs23ly8i2shkd632c0zz0fcz0hx1wc4s3dz27q64ww";
+    rev = "3f243a9e9e431b6175462a0ea08c16e38f840176";
+    sha256 = "1szgjmws3w4ljw52a3y44z9qhnx6jc3479y81zdn2sq5h9cg0mnn";
   };
   #src = fetchurl {
   #  url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
