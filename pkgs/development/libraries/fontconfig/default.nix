@@ -15,6 +15,15 @@
 
 let
   configVersion = "2.11"; # bump whenever fontconfig breaks compatibility with older configurations
+  # TODO: handle double alignment (4 or 8) on some 32bit architectures
+  fcarch = let
+    inherit (stdenv.hostPlatform.parsed) cpu;
+    endian = {
+      littleEndian = "le";
+      bigEndian = "be";
+    }."${cpu.significantByte.name}" or (throw "unhandled endianness");
+    in
+      endian + (toString cpu.bits);
 in
 stdenv.mkDerivation rec {
   name = "fontconfig-${version}";
@@ -39,13 +48,11 @@ stdenv.mkDerivation rec {
   buildInputs = [ expat ];
 
   configureFlags = [
-    "--with-arch=${stdenv.hostPlatform.parsed.cpu.name}"
+    "--with-arch=${fcarch}" # really only needed w/cross
     "--with-cache-dir=/var/cache/fontconfig" # otherwise the fallback is in $out/
     "--disable-docs"
     # just <1MB; this is what you get when loading config fails for some reason
     "--with-default-fonts=${dejavu_fonts.minimal}"
-  ] ++ stdenv.lib.optionals (stdenv.hostPlatform != stdenv.buildPlatform) [
-    "--with-arch=${stdenv.hostPlatform.parsed.cpu.name}"
   ];
 
   enableParallelBuilding = true;
