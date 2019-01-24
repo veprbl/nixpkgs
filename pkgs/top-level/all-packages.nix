@@ -1349,6 +1349,15 @@ in
 
   duperemove = callPackage ../tools/filesystems/duperemove { };
 
+  dvc = callPackage ../applications/version-management/dvc { };
+
+  dvc-with-remotes = callPackage ../applications/version-management/dvc {
+    enableGoogle = true;
+    enableAWS = true;
+    enableAzure = true;
+    enableSSH = true;
+  };
+
   dylibbundler = callPackage ../tools/misc/dylibbundler { };
 
   dynamic-colors = callPackage ../tools/misc/dynamic-colors { };
@@ -9113,7 +9122,7 @@ in
   selendroid = callPackage ../development/tools/selenium/selendroid { };
 
   sconsPackages = callPackage ../development/tools/build-managers/scons { };
-  scons = sconsPackages.scons_3_0_3;
+  scons = sconsPackages.scons_latest;
 
   mill = callPackage ../development/tools/build-managers/mill { };
 
@@ -18776,7 +18785,9 @@ in
 
   vivaldi-ffmpeg-codecs = callPackage ../applications/networking/browsers/vivaldi/ffmpeg-codecs.nix {};
 
-  openmpt123 = callPackage ../applications/audio/openmpt123 {};
+  openmpt123 = callPackage ../applications/audio/openmpt123 {
+    usePulseAudio = config.pulseaudio or false;
+  };
 
   opusfile = callPackage ../applications/audio/opusfile { };
 
@@ -19604,6 +19615,7 @@ in
   syncthing-tray = callPackage ../applications/misc/syncthing-tray { };
 
   synergy = callPackage ../applications/misc/synergy {
+    inherit (darwin) cf-private;
     inherit (darwin.apple_sdk.frameworks) ApplicationServices Carbon Cocoa CoreServices ScreenSaver;
   };
 
@@ -22734,6 +22746,8 @@ in
   nix-template-rpm = callPackage ../build-support/templaterpm { inherit (pythonPackages) python toposort; };
 
   nix-top = callPackage ../tools/package-management/nix-top { };
+
+  nix-universal-prefetch = callPackage ../tools/package-management/nix-universal-prefetch { };
 
   nix-repl = throw (
     "nix-repl has been removed because it's not maintained anymore, " +
