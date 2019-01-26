@@ -1,4 +1,4 @@
-{ stdenv, buildGoPackage, fetchFromGitHub, ronn, ruby, groff, Security, utillinux }:
+{ stdenv, buildGoPackage, fetchFromGitHub, groff, Security, utillinux }:
 
 buildGoPackage rec {
   name = "hub-${version}";
@@ -13,13 +13,10 @@ buildGoPackage rec {
     sha256 = "0vym13c9qx6nr6gd5w842mi1wpzirjn309dd1533hh7919v67sii";
   };
 
-  nativeBuildInputs = [ groff ronn utillinux ];
-  buildInputs = [ ruby ] ++
-    stdenv.lib.optional stdenv.isDarwin Security;
+  nativeBuildInputs = [ groff utillinux ];
+  buildInputs = stdenv.lib.optional stdenv.isDarwin Security;
 
   postPatch = ''
-    mkdir bin
-    ln -s ${ronn}/bin/ronn bin/ronn
     patchShebangs .
   '';
 
