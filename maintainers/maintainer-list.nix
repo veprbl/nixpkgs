@@ -21,7 +21,7 @@
   - `github` is your GitHub handle (as it appears in the URL of your profile page, `https://github.com/<userhandle>`),
   - `keys` is a list of your PGP/GPG key IDs and fingerprints.
 
-  `handle == github` is strongly preffered whenever `github` is an acceptable attribute name and is short and convenient.
+  `handle == github` is strongly preferred whenever `github` is an acceptable attribute name and is short and convenient.
 
   Add PGP/GPG keys only if you actually use them to sign commits and/or mail.
 
@@ -2886,6 +2886,11 @@
     email = "joerg@thalheim.io";
     github = "mic92";
     name = "Jörg Thalheim";
+    keys = [{
+      # compare with https://keybase.io/Mic92
+      longkeyid = "rsa4096/0x003F2096411B5F92";
+      fingerprint = "3DEE 1C55 6E1C 3DC5 54F5  875A 003F 2096 411B 5F92";
+    }];
   };
   michaelpj = {
     email = "michaelpj@gmail.com";
@@ -3680,6 +3685,10 @@
     email = "hi@alyssa.is";
     github = "alyssais";
     name = "Alyssa Ross";
+    keys = [{
+      longkeyid = "rsa4096/736CCDF9EF51BD97";
+      fingerprint = "7573 56D7 79BB B888 773E  415E 736C CDF9 EF51 BD97";
+    }];
   };
   ragge = {
     email = "r.dahlen@gmail.com";
@@ -4389,6 +4398,10 @@
     email = "me@tadeo.ca";
     github = "tadeokondrak";
     name = "Tadeo Kondrak";
+    keys = [{
+      longkeyid = "ed25519/0xFBE607FCC49516D3";
+      fingerprint = "0F2B C0C7 E77C 5B42 AC5B  4C18 FBE6 07FC C495 16D3";
+    }];
   };
   tadfisher = {
     email = "tadfisher@gmail.com";

@@ -15,15 +15,7 @@
 
 let
   configVersion = "2.11"; # bump whenever fontconfig breaks compatibility with older configurations
-  # TODO: handle double alignment (4 or 8) on some 32bit architectures
-  fcarch = let
-    inherit (stdenv.hostPlatform.parsed) cpu;
-    endian = {
-      littleEndian = "le";
-      bigEndian = "be";
-    }."${cpu.significantByte.name}" or (throw "unhandled endianness");
-    in
-      endian + (toString cpu.bits);
+  FC_ARCHITECTURE = import ./fc-arch.nix { platform = stdenv.hostPlatform; };
 in
 stdenv.mkDerivation rec {
   name = "fontconfig-${version}";
@@ -48,7 +40,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ expat ];
 
   configureFlags = [
-    "--with-arch=${fcarch}" # really only needed w/cross
+    "--with-arch=${FC_ARCHITECTURE}"
     "--with-cache-dir=/var/cache/fontconfig" # otherwise the fallback is in $out/
     "--disable-docs"
     # just <1MB; this is what you get when loading config fails for some reason
