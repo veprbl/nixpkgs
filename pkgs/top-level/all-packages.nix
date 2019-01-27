@@ -5022,6 +5022,8 @@ in
 
   qjoypad = callPackage ../tools/misc/qjoypad { };
 
+  qownnotes = libsForQt5.callPackage ../applications/office/qownnotes { };
+
   qpdf = callPackage ../development/libraries/qpdf { };
 
   qprint = callPackage ../tools/text/qprint { };
