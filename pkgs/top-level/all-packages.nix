@@ -261,78 +261,15 @@ in
 
   fetchCrate = callPackage ../build-support/rust/fetchcrate.nix { };
 
-  fetchFromGitHub = {
-    owner, repo, rev, name ? "source",
-    fetchSubmodules ? false, private ? false,
-    githubBase ? "github.com", varPrefix ? null,
-    ... # For hash agility
-  }@args: assert private -> !fetchSubmodules;
-  let
-    baseUrl = "https://${githubBase}/${owner}/${repo}";
-    passthruAttrs = removeAttrs args [ "owner" "repo" "rev" "fetchSubmodules" "private" "githubBase" "varPrefix" ];
-    varBase = "NIX${if varPrefix == null then "" else "_${varPrefix}"}_GITHUB_PRIVATE_";
-    # We prefer fetchzip in cases we don't need submodules as the hash
-    # is more stable in that case.
-    fetcher = if fetchSubmodules then fetchgit else fetchzip;
-    privateAttrs = lib.optionalAttrs private {
-      netrcPhase = ''
-        if [ -z "''$${varBase}USERNAME" -o -z "''$${varBase}PASSWORD" ]; then
-          echo "Error: Private fetchFromGitHub requires the nix building process (nix-daemon in multi user mode) to have the ${varBase}USERNAME and ${varBase}PASSWORD env vars set." >&2
-          exit 1
-        fi
-        cat > netrc <<EOF
-        machine ${githubBase}
-                login ''$${varBase}USERNAME
-                password ''$${varBase}PASSWORD
-        EOF
-      '';
-      netrcImpureEnvVars = [ "${varBase}USERNAME" "${varBase}PASSWORD" ];
-    };
-    fetcherArgs = (if fetchSubmodules
-        then { inherit rev fetchSubmodules; url = "${baseUrl}.git"; }
-        else ({ url = "${baseUrl}/archive/${rev}.tar.gz"; } // privateAttrs)
-      ) // passthruAttrs // { inherit name; };
-  in fetcher fetcherArgs // { meta.homepage = baseUrl; inherit rev; };
+  fetchFromGitHub = callPackage ../build-support/fetchgithub {};
 
-  fetchFromBitbucket = {
-    owner, repo, rev, name ? "source",
-    ... # For hash agility
-  }@args: fetchzip ({
-    inherit name;
-    url = "https://bitbucket.org/${owner}/${repo}/get/${rev}.tar.gz";
-    meta.homepage = "https://bitbucket.org/${owner}/${repo}/";
-    extraPostFetch = ''rm -f "$out"/.hg_archival.txt''; # impure file; see #12002
-  } // removeAttrs args [ "owner" "repo" "rev" ]) // { inherit rev; };
+  fetchFromBitbucket = callPackage ../build-support/fetchbitbucket {};
 
-  # cgit example, snapshot support is optional in cgit
-  fetchFromSavannah = {
-    repo, rev, name ? "source",
-    ... # For hash agility
-  }@args: fetchzip ({
-    inherit name;
-    url = "https://git.savannah.gnu.org/cgit/${repo}.git/snapshot/${repo}-${rev}.tar.gz";
-    meta.homepage = "https://git.savannah.gnu.org/cgit/${repo}.git/";
-  } // removeAttrs args [ "repo" "rev" ]) // { inherit rev; };
+  fetchFromSavannah = callPackage ../build-support/fetchsavannah {};
 
-  # gitlab example
-  fetchFromGitLab = {
-    owner, repo, rev, domain ? "gitlab.com", name ? "source", group ? null,
-    ... # For hash agility
-  }@args: fetchzip ({
-    inherit name;
-    url = "https://${domain}/api/v4/projects/${lib.optionalString (group != null) "${lib.replaceStrings ["."] ["%2E"] group}%2F"}${lib.replaceStrings ["."] ["%2E"] owner}%2F${lib.replaceStrings ["."] ["%2E"] repo}/repository/archive.tar.gz?sha=${rev}";
-    meta.homepage = "https://${domain}/${lib.optionalString (group != null) "${group}/"}${owner}/${repo}/";
-  } // removeAttrs args [ "domain" "owner" "group" "repo" "rev" ]) // { inherit rev; };
+  fetchFromGitLab = callPackage ../build-support/fetchgitlab {};
 
-  # gitweb example, snapshot support is optional in gitweb
-  fetchFromRepoOrCz = {
-    repo, rev, name ? "source",
-    ... # For hash agility
-  }@args: fetchzip ({
-    inherit name;
-    url = "https://repo.or.cz/${repo}.git/snapshot/${rev}.tar.gz";
-    meta.homepage = "https://repo.or.cz/${repo}.git/";
-  } // removeAttrs args [ "repo" "rev" ]) // { inherit rev; };
+  fetchFromRepoOrCz = callPackage ../build-support/fetchrepoorcz {};
 
   fetchNuGet = callPackage ../build-support/fetchnuget { };
   buildDotnetPackage = callPackage ../build-support/build-dotnet-package { };
@@ -458,7 +395,7 @@ in
   acme-sh = callPackage ../tools/admin/acme.sh { };
 
   acoustidFingerprinter = callPackage ../tools/audio/acoustid-fingerprinter {
-    ffmpeg = ffmpeg_1;
+    ffmpeg = ffmpeg_2;
   };
 
   acpica-tools = callPackage ../tools/system/acpica-tools { };
@@ -1859,7 +1796,6 @@ in
 
   cantata = libsForQt5.callPackage ../applications/audio/cantata {
     inherit vlc;
-    ffmpeg = ffmpeg_2;
   };
 
   can-utils = callPackage ../os-specific/linux/can-utils { };
@@ -1894,9 +1830,7 @@ in
 
   certmgr = callPackage ../tools/security/certmgr { };
 
-  cfdg = callPackage ../tools/graphics/cfdg {
-    ffmpeg = ffmpeg_2;
-  };
+  cfdg = callPackage ../tools/graphics/cfdg { };
 
   checkinstall = callPackage ../tools/package-management/checkinstall { };
 
@@ -8104,9 +8038,7 @@ in
 
   inherit (ocamlPackages) reason;
 
-  renpy = callPackage ../development/interpreters/renpy {
-    ffmpeg = ffmpeg_2;
-  };
+  renpy = callPackage ../development/interpreters/renpy { };
 
   pixie = callPackage ../development/interpreters/pixie { };
   dust = callPackage ../development/interpreters/pixie/dust.nix { };
@@ -9743,12 +9675,6 @@ in
     blas = if stdenv.isDarwin then blas else openblas;
   };
 
-  ffmpeg_0_10 = callPackage ../development/libraries/ffmpeg/0.10.nix {
-    inherit (darwin.apple_sdk.frameworks) Cocoa;
-  };
-  ffmpeg_1_2 = callPackage ../development/libraries/ffmpeg/1.2.nix {
-    inherit (darwin.apple_sdk.frameworks) Cocoa;
-  };
   ffmpeg_2_8 = callPackage ../development/libraries/ffmpeg/2.8.nix {
     inherit (darwin.apple_sdk.frameworks) Cocoa;
   };
@@ -9760,8 +9686,6 @@ in
   };
 
   # Aliases
-  ffmpeg_0 = ffmpeg_0_10;
-  ffmpeg_1 = ffmpeg_1_2;
   ffmpeg_2 = ffmpeg_2_8;
   ffmpeg_3 = ffmpeg_3_4;
   ffmpeg = ffmpeg_3;
@@ -9784,15 +9708,11 @@ in
       VideoDecodeAcceleration;
   };
 
-  ffmpegthumbnailer = callPackage ../development/libraries/ffmpegthumbnailer {
-    ffmpeg = ffmpeg_2;
-  };
+  ffmpegthumbnailer = callPackage ../development/libraries/ffmpegthumbnailer { };
 
   ffmpeg-sixel = callPackage ../development/libraries/ffmpeg-sixel { };
 
-  ffms = callPackage ../development/libraries/ffms {
-    ffmpeg = ffmpeg_2;
-  };
+  ffms = callPackage ../development/libraries/ffms { };
 
   fftw = callPackage ../development/libraries/fftw { };
   fftwSinglePrec = fftw.override { precision = "single"; };
@@ -10119,10 +10039,6 @@ in
   gst-plugins-bad = callPackage ../development/libraries/gstreamer/legacy/gst-plugins-bad {};
 
   gst-plugins-ugly = callPackage ../development/libraries/gstreamer/legacy/gst-plugins-ugly {};
-
-  gst-ffmpeg = callPackage ../development/libraries/gstreamer/legacy/gst-ffmpeg {
-    ffmpeg = ffmpeg_0;
-  };
 
   gst-python = callPackage ../development/libraries/gstreamer/legacy/gst-python {};
 
@@ -11257,6 +11173,8 @@ in
 
   libnet = callPackage ../development/libraries/libnet { };
 
+  libnetfilter_acct = callPackage ../development/libraries/libnetfilter_acct { };
+
   libnetfilter_conntrack = callPackage ../development/libraries/libnetfilter_conntrack { };
 
   libnetfilter_cthelper = callPackage ../development/libraries/libnetfilter_cthelper { };
@@ -11898,7 +11816,6 @@ in
   openct = callPackage ../development/libraries/openct { };
 
   opencv = callPackage ../development/libraries/opencv {
-    ffmpeg = ffmpeg_2;
     inherit (darwin) cf-private;
     inherit (darwin.apple_sdk.frameworks) Cocoa QTKit;
   };
@@ -13095,9 +13012,7 @@ in
 
   xdo = callPackage ../tools/misc/xdo { };
 
-  xineLib = callPackage ../development/libraries/xine-lib {
-    ffmpeg = ffmpeg_2;
-  };
+  xineLib = callPackage ../development/libraries/xine-lib { };
 
   xautolock = callPackage ../misc/screensavers/xautolock { };
 
@@ -13654,7 +13569,7 @@ in
 
   lighttpd = callPackage ../servers/http/lighttpd { };
 
-  livepeer = callPackage ../servers/livepeer { ffmpeg = ffmpeg_3; };
+  livepeer = callPackage ../servers/livepeer { };
 
   lwan = callPackage ../servers/http/lwan { };
 
@@ -16210,7 +16125,6 @@ in
 
   avxsynth = callPackage ../applications/video/avxsynth {
     libjpeg = libjpeg_original; # error: 'JCOPYRIGHT_SHORT' was not declared in this scope
-    ffmpeg = ffmpeg_2;
   };
 
   awesome-4-0 = callPackage ../applications/window-managers/awesome {
@@ -16233,9 +16147,7 @@ in
 
   bandwidth = callPackage ../tools/misc/bandwidth { };
 
-  baresip = callPackage ../applications/networking/instant-messengers/baresip {
-    ffmpeg = ffmpeg_1;
-  };
+  baresip = callPackage ../applications/networking/instant-messengers/baresip { };
 
   barrier = callPackage ../applications/misc/barrier {};
 
@@ -17368,7 +17280,7 @@ in
   # This must go when weston v2 is released
   freerdp_legacy = callPackage ../applications/networking/remote/freerdp/legacy.nix {
     cmake = cmake_2_8;
-    ffmpeg = ffmpeg_1;
+    ffmpeg = ffmpeg_2;
   };
 
   fte = callPackage ../applications/editors/fte { };
@@ -17586,7 +17498,6 @@ in
 
   guvcview = callPackage ../os-specific/linux/guvcview {
     pulseaudioSupport = config.pulseaudio or true;
-    ffmpeg = ffmpeg_2;
   };
 
   gxmessage = callPackage ../applications/misc/gxmessage { };
@@ -18300,9 +18211,7 @@ in
     wxGTK30 = wxGTK30.override { withWebKit  = true ; };
   };
 
-  moc = callPackage ../applications/audio/moc {
-    ffmpeg = ffmpeg_2;
-  };
+  moc = callPackage ../applications/audio/moc { };
 
   mod-distortion = callPackage ../applications/audio/mod-distortion { };
 
@@ -19487,6 +19396,7 @@ in
   spotify = callPackage ../applications/audio/spotify {
     libgcrypt = libgcrypt_1_5;
     libpng = libpng12;
+    ffmpeg = ffmpeg_2;
     curl = curl.override {
       sslSupport = false; gnutlsSupport = true;
     };
