@@ -1427,6 +1427,10 @@
     email = "justin.humm@posteo.de";
     github = "erictapen";
     name = "Justin Humm";
+    keys = [{
+      longkeyid = "rsa4096/0x438871E000AA178E";
+      fingerprint = "984E 4BAD 9127 4D0E AE47  FF03 4388 71E0 00AA 178E";
+    }];
   };
   erikryb = {
     email = "erik.rybakken@math.ntnu.no";
@@ -4907,11 +4911,6 @@
     email = "willroe@gmail.com";
     github = "wjlroe";
     name = "William Roe";
-  };
-  wkennington = {
-    email = "william@wkennington.com";
-    github = "wkennington";
-    name = "William A. Kennington III";
   };
   wmertens = {
     email = "Wout.Mertens@gmail.com";

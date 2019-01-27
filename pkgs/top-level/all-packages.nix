@@ -597,6 +597,8 @@ in
 
   asciinema = callPackage ../tools/misc/asciinema {};
 
+  asciiquarium = callPackage ../applications/misc/asciiquarium {};
+
   asymptote = callPackage ../tools/graphics/asymptote {
     texLive = texlive.combine { inherit (texlive) scheme-small epsf cm-super; };
     gsl = gsl_1;
@@ -3826,9 +3828,7 @@ in
     inherit (darwin.apple_sdk.frameworks) CoreServices;
   };
 
-  medfile = callPackage ../development/libraries/medfile {
-    hdf5 = hdf5_1_8;
-  };
+  medfile = callPackage ../development/libraries/medfile { };
 
   memtester = callPackage ../tools/system/memtester { };
 
@@ -8924,6 +8924,8 @@ in
 
   mbed-cli = callPackage ../development/tools/mbed-cli { };
 
+  mdl = callPackage ../development/tools/misc/mdl { };
+
   minify = callPackage ../development/web/minify { };
 
   minizinc = callPackage ../development/tools/minizinc { };
@@ -12123,8 +12125,6 @@ in
     buildPythonApplication click future six;
   };
 
-  postgis = callPackage ../development/libraries/postgis { };
-
   protobuf = protobuf3_6;
 
   protobuf3_6 = callPackage ../development/libraries/protobuf/3.6.nix { };
@@ -13984,14 +13984,15 @@ in
 
   timescaledb-parallel-copy = callPackage ../development/tools/database/timescaledb-parallel-copy { };
 
-  postgresql = postgresql_9_6;
-
-  inherit (callPackages ../servers/sql/postgresql { })
+  inherit (import ../servers/sql/postgresql pkgs super)
     postgresql_9_4
     postgresql_9_5
     postgresql_9_6
     postgresql_10
-    postgresql_11;
+    postgresql_11
+  ;
+  postgresql = postgresql_9_6.override { this = postgresql; };
+  postgresqlPackages = recurseIntoAttrs postgresql.pkgs;
 
   postgresql_jdbc = callPackage ../development/java-modules/postgresql_jdbc { };
 
@@ -14375,7 +14376,7 @@ in
   cockroachdb = callPackage ../servers/sql/cockroachdb { };
 
   conky = callPackage ../os-specific/linux/conky ({
-    lua = lua5_1; # conky can use 5.2, but toluapp can not
+    lua = lua5_3_compat;
     libXNVCtrl = linuxPackages.nvidia_x11.settings.libXNVCtrl;
     pulseSupport = config.pulseaudio or false;
   } // config.conky or {});
@@ -16299,6 +16300,11 @@ in
   bevelbar = callPackage ../applications/window-managers/bevelbar { };
 
   bibletime = callPackage ../applications/misc/bibletime { };
+
+  bino3d = libsForQt5.callPackage ../applications/video/bino3d {
+    ffmpeg = ffmpeg_4;
+    glew = glew110;
+  };
 
   bitcoinarmory = callPackage ../applications/misc/bitcoinarmory { pythonPackages = python2Packages; };
 
@@ -21941,6 +21947,8 @@ in
 
   leo2 = callPackage ../applications/science/logic/leo2 {
      ocaml = ocaml-ng.ocamlPackages_4_01_0.ocaml;};
+
+  leo3-bin = callPackage ../applications/science/logic/leo3/binary.nix {};
 
   logisim = callPackage ../applications/science/logic/logisim {};
 
