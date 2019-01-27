@@ -1,4 +1,4 @@
-{ stdenv, appimage-run, fetchurl }:
+{ stdenv, appimageTools, fetchurl }:
 
 let
   version = "2.3.12";
@@ -14,26 +14,14 @@ let
   }.${stdenv.hostPlatform.system};
 in
 
-stdenv.mkDerivation rec {
-  name = "standardnotes-${version}";
-
+(appimageTools.wrapType2 rec {
+  name = "standardnotes";
   src = fetchurl {
     url = "https://github.com/standardnotes/desktop/releases/download/v${version}/standard-notes-${version}-${plat}.AppImage";
     inherit sha256;
   };
-
-  buildInputs = [ appimage-run ];
-
-  unpackPhase = ":";
-
-  installPhase = ''
-    mkdir -p $out/{bin,share}
-    cp $src $out/share/standardNotes.AppImage
-    echo "#!${stdenv.shell}" > $out/bin/standardnotes
-    echo "${appimage-run}/bin/appimage-run $out/share/standardNotes.AppImage" >> $out/bin/standardnotes
-    chmod +x $out/bin/standardnotes $out/share/standardNotes.AppImage
-  '';
-
+}).overrideAttrs(old: {
+  name = "standardnotes-${version}";
   meta = with stdenv.lib; {
     description = "A simple and private notes app";
     longDescription = ''
@@ -45,4 +33,4 @@ stdenv.mkDerivation rec {
     maintainers = with maintainers; [ mgregoire ];
     platforms = [ "i386-linux" "x86_64-linux" ];
   };
-}
+})
