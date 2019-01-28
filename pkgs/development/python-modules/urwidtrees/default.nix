@@ -3,6 +3,7 @@
 , fetchFromGitHub
 , urwid
 , mock
+, glibcLocales
 }:
 
 buildPythonPackage rec {
@@ -17,6 +18,7 @@ buildPythonPackage rec {
     sha256 = "18zyq94f5vpyxavr20183jn94h9kxan3v5cnv1pfwgkx1qnahjiq";
   };
 
+  checkInputs = [ glibcLocales ];
   propagatedBuildInputs = [ urwid mock ];
 
   meta = with stdenv.lib; {
