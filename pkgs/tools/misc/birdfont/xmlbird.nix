@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, python3, pkgconfig, vala, glib }:
+{ stdenv, fetchurl, python3, pkgconfig, vala, glib, gobject-introspection }:
 
 stdenv.mkDerivation rec {
   pname = "xmlbird";
@@ -9,9 +9,9 @@ stdenv.mkDerivation rec {
     sha256 = "0qpqpqqd4wj711jzczfsr38fgcz1rzxchrqbssxnan659ycd9c78";
   };
 
-  nativeBuildInputs = [ python3 pkgconfig ];
+  nativeBuildInputs = [ python3 pkgconfig vala gobject-introspection ];
 
-  buildInputs = [ vala glib ];
+  buildInputs = [ glib ];
 
   postPatch = "patchShebangs .";
 
@@ -19,6 +19,3 @@ stdenv.mkDerivation rec {
 
   installPhase = "./install.py";
 }
-
-
-
