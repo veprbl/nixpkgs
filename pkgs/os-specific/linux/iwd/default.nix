@@ -1,4 +1,4 @@
-{ stdenv, fetchgit, autoreconfHook, pkgconfig, coreutils, readline, python3Packages, systemd }:
+{ stdenv, fetchgit, autoreconfHook, pkgconfig, coreutils, readline, python3Packages }:
 
 let
   ell = fetchgit {
@@ -28,7 +28,6 @@ in stdenv.mkDerivation rec {
   buildInputs = [
     readline
     python3Packages.python
-    systemd
   ];
 
   pythonPath = [
@@ -40,6 +39,7 @@ in stdenv.mkDerivation rec {
     "--with-dbus-datadir=${placeholder "out"}/etc/"
     "--with-dbus-busdir=${placeholder "out"}/share/dbus-1/system-services/"
     "--with-systemd-unitdir=${placeholder "out"}/lib/systemd/system/"
+    "--with-systemd-modloaddir=${placeholder "out"}/etc/modules-load.d/" # maybe
     "--localstatedir=/var/"
     "--enable-wired"
   ];
