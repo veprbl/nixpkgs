@@ -14789,7 +14789,7 @@ in
   # Hardened linux
   hardenedLinuxPackagesFor = kernel: linuxPackagesFor (kernel.override {
     features.ia32Emulation = false;
-    extraConfig = import ../os-specific/linux/kernel/hardened-config.nix {
+    structuredExtraConfig = import ../os-specific/linux/kernel/hardened-config.nix {
       inherit stdenv;
       inherit (kernel) version;
     };
@@ -16879,7 +16879,8 @@ in
       inherit (haskellPackages) ghc-mod structured-haskell-mode Agda hindent;
       inherit (pythonPackages) elpy;
       inherit
-        autoconf automake git libffi libpng pkgconfig poppler rtags w3m zlib;
+        autoconf automake git libffi libpng pkgconfig poppler rtags w3m zlib
+        substituteAll rustPlatform;
     };
   };
 
@@ -19368,7 +19369,9 @@ in
     libpng = libpng12;
   };
 
-  smartgithg = callPackage ../applications/version-management/smartgithg { };
+  smartgithg = callPackage ../applications/version-management/smartgithg {
+    jre = openjdk11;
+  };
 
   slimThemes = recurseIntoAttrs (callPackage ../applications/display-managers/slim/themes.nix {});
 
