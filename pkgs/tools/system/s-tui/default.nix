@@ -1,4 +1,4 @@
-{ stdenv, pythonPackages, fetchpatch }:
+{ stdenv, pythonPackages, fetchpatch, glibcLocales }:
 
 pythonPackages.buildPythonPackage rec {
   name = "${pname}-${version}";
@@ -10,6 +10,7 @@ pythonPackages.buildPythonPackage rec {
     sha256 = "00lsh2v4i8rwfyjyxx5lijd6rnk9smcfffhzg5sv94ijpcnh216m";
   };
 
+  checkInputs = [ glibcLocales ];
   propagatedBuildInputs = with pythonPackages; [
     urwid
     psutil
