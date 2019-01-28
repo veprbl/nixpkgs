@@ -5,7 +5,7 @@ let
      url = https://git.kernel.org/pub/scm/libs/ell/ell.git;
      #rev = "0.17";
      rev = "6604930e7bd37468894a1cdd1475b2d7cd198c74"; # 2019-01-27
-     sha256 = "0yk1qmvpy61qp82bb0w55n062jqzlkzbz0b1v5k763j99czz9rvz";
+     sha256 = "1r2mlrcy1g4jxk1zqfm82nbhq2j2qmvi2slrqji397cbqvlfrd5r";
   };
 in stdenv.mkDerivation rec {
   name = "iwd-${version}";
@@ -16,7 +16,7 @@ in stdenv.mkDerivation rec {
     url = https://git.kernel.org/pub/scm/network/wireless/iwd.git;
     rev = "e4f22f0a5d65886f93642688ac795388f02dd940";
     #rev = version;
-    sha256 = "08ijlnwvj2w354gbv3hdnm3l4iy24qzq4bq5a9z0wynysasw10lv";
+    sha256 = "0w4ans7yvdyr1k3839xf3xg4sckrjlw7s56mgh6qhzws4snarqf1";
   };
 
   nativeBuildInputs = [
