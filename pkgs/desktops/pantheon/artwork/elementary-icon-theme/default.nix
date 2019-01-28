@@ -1,22 +1,22 @@
 { stdenv, fetchFromGitHub, pantheon, meson, python3,ninja, hicolor-icon-theme, gtk3 }:
 
 stdenv.mkDerivation rec {
-  pname = "icons";
+  pname = "elementary-icon-theme";
   version = "5.0.2";
+  repoName = "icons";
 
-  name = "elementary-icon-theme-${version}";
 
   src = fetchFromGitHub {
     owner = "elementary";
-    repo = pname;
+    repo = repoName;
     rev = version;
     sha256 = "12j582f0kggv2lp935r75xg7q26zpl0f05s11xcs4qxazhj1ly2r";
   };
 
   passthru = {
     updateScript = pantheon.updateScript {
-      repoName = pname;
-      attrPath = "elementary-icon-theme";
+      repoName = repoName;
+      attrPath = pname;
     };
   };
 
