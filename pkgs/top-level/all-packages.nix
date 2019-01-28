@@ -1744,6 +1744,9 @@ in
 
   biber = callPackage ../tools/typesetting/biber { };
 
+  birdfont = callPackage ../tools/misc/birdfont { };
+  xmlbird = callPackage ../tools/misc/birdfont/xmlbird.nix { };
+
   blastem = callPackage ../misc/emulators/blastem {
     inherit (python27Packages) pillow;
   };
