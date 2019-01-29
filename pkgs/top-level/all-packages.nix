@@ -3531,6 +3531,8 @@ in
 
   john = callPackage ../tools/security/john { };
 
+  joplin-desktop = callPackage ../applications/misc/joplin-desktop { };
+
   journalbeat = callPackage ../tools/system/journalbeat { };
 
   journaldriver = callPackage ../tools/misc/journaldriver { };
