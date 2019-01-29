@@ -7009,6 +7009,7 @@ in
 
   stack = haskell.lib.justStaticExecutables haskellPackages.stack;
   hlint = haskell.lib.justStaticExecutables haskellPackages.hlint;
+  stylish-cabal = haskell.lib.justStaticExecutables haskell.packages.ghc844.stylish-cabal;
 
   all-cabal-hashes = callPackage ../data/misc/hackage { };
 
@@ -19246,6 +19247,8 @@ in
   slop = callPackage ../tools/misc/slop {};
 
   slrn = callPackage ../applications/networking/newsreaders/slrn { };
+
+  slurp = callPackage ../tools/misc/slurp { };
 
   sniproxy = callPackage ../applications/networking/sniproxy { };
 
