@@ -3611,6 +3611,8 @@ in {
 
   pycurl2 = callPackage ../development/python-modules/pycurl2 { };
 
+  pydantic = callPackage ../development/python-modules/pydantic { };
+
   pydispatcher = callPackage ../development/python-modules/pydispatcher { };
 
   pydot = callPackage ../development/python-modules/pydot {
