@@ -161,8 +161,9 @@ in
   openssh = handleTest ./openssh.nix {};
   osquery = handleTest ./osquery.nix {};
   ostree = handleTest ./ostree.nix {};
-  pam-oath-login = handleTest ./pam-oath-login.nix {};
   pantheon = handleTest ./pantheon.nix {};
+  pam-oath-login = handleTest ./pam-oath-login.nix {};
+  pam-u2f = handleTest ./pam-u2f.nix {};
   peerflix = handleTest ./peerflix.nix {};
   pgjwt = handleTest ./pgjwt.nix {};
   pgmanage = handleTest ./pgmanage.nix {};
