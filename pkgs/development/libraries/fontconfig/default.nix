@@ -15,7 +15,6 @@
 
 let
   configVersion = "2.11"; # bump whenever fontconfig breaks compatibility with older configurations
-  FC_ARCHITECTURE = import ./fc-arch.nix { platform = stdenv.hostPlatform; };
 in
 stdenv.mkDerivation rec {
   name = "fontconfig-${version}";
@@ -40,11 +39,13 @@ stdenv.mkDerivation rec {
   buildInputs = [ expat ];
 
   configureFlags = [
-    "--with-arch=${FC_ARCHITECTURE}"
+    "--with-arch=${stdenv.hostPlatform.parsed.cpu.name}"
     "--with-cache-dir=/var/cache/fontconfig" # otherwise the fallback is in $out/
     "--disable-docs"
     # just <1MB; this is what you get when loading config fails for some reason
     "--with-default-fonts=${dejavu_fonts.minimal}"
+  ] ++ stdenv.lib.optionals (stdenv.hostPlatform != stdenv.buildPlatform) [
+    "--with-arch=${stdenv.hostPlatform.parsed.cpu.name}"
   ];
 
   enableParallelBuilding = true;

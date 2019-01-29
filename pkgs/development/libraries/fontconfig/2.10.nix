@@ -1,11 +1,8 @@
 { stdenv, fetchurl, pkgconfig, freetype, expat
 }:
-let
-  FC_ARCHITECTURE = import ./fc-arch.nix { platform = stdenv.hostPlatform; };
-in
+
 stdenv.mkDerivation rec {
-  name = "fontconfig-${version}";
-  version = "2.10.2";
+  name = "fontconfig-2.10.2";
 
   src = fetchurl {
     url = "http://fontconfig.org/release/${name}.tar.bz2";
@@ -19,11 +16,13 @@ stdenv.mkDerivation rec {
   buildInputs = [ expat ];
 
   configureFlags = [
-    "--with-arch=${FC_ARCHITECTURE}"
+    "--with-arch=${stdenv.hostPlatform.parsed.cpu.name}"
     "--sysconfdir=/etc"
     "--with-cache-dir=/var/cache/fontconfig"
     "--disable-docs"
     "--with-default-fonts="
+  ] ++ stdenv.lib.optionals (stdenv.hostPlatform != stdenv.buildPlatform) [
+    "--with-arch=${stdenv.hostPlatform.parsed.cpu.name}"
   ];
 
   enableParallelBuilding = true;
