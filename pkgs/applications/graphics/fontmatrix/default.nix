@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ cmake ];
 
-  #hardeningDisable = [ "format" ];
+  hardeningDisable = [ "format" ];
 
   meta = with stdenv.lib; {
     description = "Fontmatrix is a free/libre font explorer for Linux, Windows and Mac";
