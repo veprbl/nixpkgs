@@ -1187,6 +1187,8 @@ in
 
   cppclean = callPackage ../development/tools/cppclean {};
 
+  crex = callPackage ../tools/misc/crex { };
+
   cri-tools = callPackage ../tools/virtualization/cri-tools {};
 
   crip = callPackage ../applications/audio/crip { };
