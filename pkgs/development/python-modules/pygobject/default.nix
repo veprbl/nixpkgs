@@ -2,13 +2,13 @@
 
 buildPythonPackage rec {
   pname = "pygobject";
-  version = "2.28.6";
+  version = "2.28.7";
   format = "other";
   name = pname + "-" + version;
 
   src = fetchurl {
     url = "mirror://gnome/sources/pygobject/2.28/${name}.tar.xz";
-    sha256 = "1f5dfxjnil2glfwxnqr14d2cjfbkghsbsn8n04js2c2icr7iv2pv";
+    sha256 = "0nkam61rsn7y3wik3vw46wk5q2cjfh2iph57hl9m39rc8jijb7dv";
   };
 
   outputs = [ "out" "devdoc" ];
