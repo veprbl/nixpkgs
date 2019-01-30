@@ -1,5 +1,4 @@
-{ stdenv, fetchurl, meson, ninja, pkgconfig, exiv2, glib, gnome3, gobject-introspection, vala, gtk-doc, docbook_xsl, docbook_xml_dtd_43
-, enablePython ? false, python ? null }:
+{ stdenv, fetchurl, meson, ninja, pkgconfig, exiv2, glib, gnome3, gobject-introspection, vala, gtk-doc, docbook_xsl, docbook_xml_dtd_43 }:
 
 stdenv.mkDerivation rec {
   pname = "gexiv2";
@@ -13,7 +12,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ meson ninja pkgconfig gobject-introspection vala gtk-doc docbook_xsl docbook_xml_dtd_43 ];
-  buildInputs = [ glib ] ++ stdenv.lib.optional enablePython python;
+  buildInputs = [ glib ];
   propagatedBuildInputs = [ exiv2 ];
 
   mesonFlags = [
