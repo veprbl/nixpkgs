@@ -137,9 +137,6 @@ source @out@/nix-support/add-hardening.sh
 extraAfter=($NIX_@infixSalt@_CFLAGS_COMPILE)
 extraBefore=(${hardeningCFlags[@]+"${hardeningCFlags[@]}"})
 
-# Prefer pipes
-extraBefore+=(-pipe)
-
 if [ "$dontLink" != 1 ]; then
 
     # Add the flags that should only be passed to the compiler when
