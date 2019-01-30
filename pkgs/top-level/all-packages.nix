@@ -19787,6 +19787,7 @@ in
 
   vimiv = callPackage ../applications/graphics/vimiv {
     inherit (gnome3) defaultIconTheme;
+    gexiv2 = gexiv2.override { enablePython = true; python = python3; };
   };
 
   macvim = callPackage ../applications/editors/vim/macvim.nix { stdenv = clangStdenv; };

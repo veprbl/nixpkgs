@@ -42,8 +42,9 @@ python3Packages.buildPythonApplication rec {
   '';
 
   checkInputs = [ python3Packages.nose dbus.daemon xvfb_run xdotool ];
-  buildInputs = [ hicolor-icon-theme defaultIconTheme librsvg gobject-introspection wrapGAppsHook ];
-  propagatedBuildInputs = with python3Packages; [ pillow pygobject3 gtk3 gexiv2 ];
+  nativeBuildInputs = [ wrapGAppsHook ];
+  buildInputs = [ hicolor-icon-theme defaultIconTheme librsvg gobject-introspection gexiv2 ];
+  propagatedBuildInputs = with python3Packages; [ pillow pygobject3 gtk3 ];
 
   doCheck = true;
 
