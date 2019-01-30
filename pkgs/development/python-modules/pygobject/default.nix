@@ -13,11 +13,7 @@ buildPythonPackage rec {
 
   outputs = [ "out" "devdoc" ];
 
-  patches = [
-    # Fix warning spam
-    ./pygobject-2.28.6-set_qdata.patch
-    ./pygobject-2.28.6-gio-types-2.32.patch
-  ] ++ stdenv.lib.optionals stdenv.isDarwin [
+  patches = stdenv.lib.optionals stdenv.isDarwin [
     ./pygobject-2.0-fix-darwin.patch
   ];
 
