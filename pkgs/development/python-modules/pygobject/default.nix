@@ -28,7 +28,7 @@ buildPythonPackage rec {
   # effect, but we leave it in case somebody expects and calls it.
   postInstall = ''
     mv $out/lib/${python.libPrefix}/site-packages/{pygtk.pth,${name}.pth}
-
+  '' + stdenv.lib.optionalString (!python.isPy3) /* codegen not installed w/py3 */ ''
     # Prevent wrapping of codegen files as these are meant to be
     # executed by the python program
     chmod a-x $out/share/pygobject/*/codegen/*.py
