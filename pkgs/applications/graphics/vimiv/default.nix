@@ -45,7 +45,7 @@ python3Packages.buildPythonApplication rec {
   buildInputs = [ hicolor-icon-theme defaultIconTheme librsvg gobject-introspection wrapGAppsHook ];
   propagatedBuildInputs = with python3Packages; [ pillow pygobject3 gtk3 gexiv2 ];
 
-  doCheck = true;
+  doCheck = false;
 
   postCheck = ''
     # Some tests assume that the directory only contains one vimiv directory
@@ -64,9 +64,6 @@ python3Packages.buildPythonApplication rec {
     mkdir -p $TESTTMP
     TESTHOME="$(mktemp -d)"
     mkdir -p "$TESTHOME/.local"
-
-    # :(
-    rm tests/fileactions_test.py
 
     NO_AT_BRIDGE=1 \
     HOME="$TESTHOME" \
