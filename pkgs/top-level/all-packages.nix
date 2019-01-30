@@ -1365,6 +1365,8 @@ in
 
   fd = callPackage ../tools/misc/fd { };
 
+  fdroidserver = python3Packages.callPackage ../development/tools/fdroidserver { };
+
   filebench = callPackage ../tools/misc/filebench { };
 
   fileshelter = callPackage ../servers/web-apps/fileshelter { };
@@ -1779,7 +1781,9 @@ in
 
   burp = callPackage ../tools/backup/burp { };
 
-  buku = callPackage ../applications/misc/buku { };
+  buku = callPackage ../applications/misc/buku {
+    python3 = python36; # due to #52766
+  };
 
   byzanz = callPackage ../applications/video/byzanz {};
 
@@ -1835,7 +1839,8 @@ in
   };
   ceph-dev = ceph;
 
-  certmgr = callPackage ../tools/security/certmgr { };
+  inherit (callPackages ../tools/security/certmgr { })
+    certmgr certmgr-selfsigned;
 
   cfdg = callPackage ../tools/graphics/cfdg { };
 
@@ -7776,28 +7781,43 @@ in
   wabt = callPackage ../development/tools/wabt { };
 
   ### LUA MODULES
-
-  lua5_1 = callPackage ../development/interpreters/lua-5/5.1.nix { };
-  lua5_2 = callPackage ../development/interpreters/lua-5/5.2.nix { };
+  lua5_1 = callPackage ../development/interpreters/lua-5/5.1.nix {
+    self = lua5_1;
+  };
+  lua5_2 = callPackage ../development/interpreters/lua-5/5.2.nix {
+    self = lua5_2;
+  };
   lua5_2_compat = callPackage ../development/interpreters/lua-5/5.2.nix {
     compat = true;
+    self = lua5_2_compat;
   };
-  lua5_3 = callPackage ../development/interpreters/lua-5/5.3.nix { };
+  lua5_3 = callPackage ../development/interpreters/lua-5/5.3.nix {
+    self = lua5_3;
+  };
   lua5_3_compat = callPackage ../development/interpreters/lua-5/5.3.nix {
     compat = true;
+    self = lua5_3_compat;
   };
   lua5 = lua5_2_compat;
   lua = lua5;
 
-  lua51Packages = recurseIntoAttrs (callPackage ./lua-packages.nix { lua = lua5_1; });
-  lua52Packages = recurseIntoAttrs (callPackage ./lua-packages.nix { lua = lua5_2; });
-  lua53Packages = recurseIntoAttrs (callPackage ./lua-packages.nix { lua = lua5_3; });
-  luajitPackages = recurseIntoAttrs (callPackage ./lua-packages.nix { lua = luajit; });
+  lua51Packages = recurseIntoAttrs lua5_1.pkgs;
+  lua52Packages = recurseIntoAttrs lua5_2.pkgs;
+  lua53Packages = recurseIntoAttrs lua5_3.pkgs;
+  luajitPackages = recurseIntoAttrs luajit.pkgs;
 
   luaPackages = lua52Packages;
 
-  inherit (callPackages ../development/interpreters/luajit {})
-    luajit luajit_2_0 luajit_2_1;
+  # override instead ?
+  luajit_2_0 = callPackage ../development/interpreters/luajit/2.0.nix {
+    self = luajit_2_0;
+  };
+
+  luajit_2_1 = callPackage ../development/interpreters/luajit/2.1.nix {
+    self = luajit_2_1;
+  };
+
+  luajit = luajit_2_1;
 
   luarocks = luaPackages.luarocks;
   luarocks-nix = luaPackages.luarocks-nix;
@@ -13609,9 +13629,7 @@ in
 
   meteor = callPackage ../servers/meteor { };
 
-  minio = callPackage ../servers/minio {
-    buildGoPackage = buildGo110Package;
-  };
+  minio = callPackage ../servers/minio { };
 
   # Backwards compatibility.
   mod_dnssd = pkgs.apacheHttpdPackages.mod_dnssd;
@@ -14070,6 +14088,8 @@ in
   slurm-spank-x11 = callPackage ../servers/computing/slurm-spank-x11 { };
 
   systemd-journal2gelf = callPackage ../tools/system/systemd-journal2gelf { };
+
+  syncserver = callPackage ../servers/syncserver { };
 
   inherit (callPackages ../servers/http/tomcat { })
     tomcat7
@@ -16053,6 +16073,8 @@ in
   };
 
   inherit (python3Packages) arelle;
+
+  argo = callPackage ../applications/networking/cluster/argo { };
 
   ario = callPackage ../applications/audio/ario { };
 

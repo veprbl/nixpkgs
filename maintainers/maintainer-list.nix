@@ -1773,6 +1773,11 @@
     github = "dguibert";
     name = "David Guibert";
   };
+  groodt = {
+    email = "groodt@gmail.com";
+    github = "groodt";
+    name = "Greg Roodt";
+  };
   guibou = {
     email = "guillaum.bouchard@gmail.com";
     github = "guibou";
@@ -3665,6 +3670,11 @@
     email = "iuns@outlook.fr";
     github = "PsyanticY";
     name = "Psyanticy";
+  };
+  ptival = {
+    email = "valentin.robert.42@gmail.com";
+    github = "Ptival";
+    name = "Valentin Robert";
   };
   puffnfresh = {
     email = "brian@brianmckenna.org";

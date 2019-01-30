@@ -1,6 +1,5 @@
 { stdenv, lib, fetchFromGitHub, pkgconfig, asciidoc, docbook_xml_dtd_45
 , docbook_xsl, libxslt, libxml2, makeWrapper, meson, ninja
-, judy, freetype
 , xorgproto, libxcb ,xcbutilrenderutil, xcbutilimage, pixman, libev
 , dbus, libconfig, libdrm, libGL, pcre, libX11, libXcomposite, libXdamage
 , libXinerama, libXrandr, libXrender, libXext, xwininfo, libxdg_basedir }:
@@ -76,7 +75,6 @@ let
       repo   = "compton";
       #rev    = COMPTON_VERSION;
       rev    = "c11c24b3f27b654b5e81df470de35dc2d0d74c4e";
-      #rev    = "4bdbd48e55ff961654d2b2e1145a1b0e6e249461";
       sha256 = "0bdnww9647aqsi3nap92215xl09fiwz5s728zs69bqc7syzwxs5x";
     };
 
@@ -93,10 +91,9 @@ let
       libxdg_basedir
     ];
 
-    postPatch = ''
-      substituteInPlace meson.build \
-        --replace "run_command('git', 'describe')" \
-                  "run_command('echo', 'v${version}')"
+    preBuild = ''
+      git() { echo "v${version}"; }
+      export -f git
     '';
 
     NIX_CFLAGS_COMPILE = [ "-fno-strict-aliasing" ];

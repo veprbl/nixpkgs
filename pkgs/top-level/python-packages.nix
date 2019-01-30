@@ -158,6 +158,8 @@ in {
 
   alerta-server = callPackage ../development/python-modules/alerta-server { };
 
+  androguard = callPackage ../development/python-modules/androguard { };
+
   phonenumbers = callPackage ../development/python-modules/phonenumbers { };
 
   agate-excel = callPackage ../development/python-modules/agate-excel { };
@@ -274,6 +276,8 @@ in {
 
   braintree = callPackage ../development/python-modules/braintree { };
 
+  django-sesame = callPackage ../development/python-modules/django-sesame { };
+
   breathe = callPackage ../development/python-modules/breathe { };
 
   brotli = callPackage ../development/python-modules/brotli { };
@@ -365,6 +369,8 @@ in {
   face = callPackage ../development/python-modules/face { };
 
   fastpbkdf2 = callPackage ../development/python-modules/fastpbkdf2 {  };
+
+  favicon = callPackage ../development/python-modules/favicon {  };
 
   fido2 = callPackage ../development/python-modules/fido2 {  };
 
@@ -794,8 +800,6 @@ in {
   sumo = callPackage ../development/python-modules/sumo { };
 
   supervise_api = callPackage ../development/python-modules/supervise_api { };
-
-  syncserver = callPackage ../development/python-modules/syncserver {};
 
   tables = callPackage ../development/python-modules/tables {
     hdf5 = pkgs.hdf5.override { zlib = pkgs.zlib; };
@@ -1659,6 +1663,8 @@ in {
 
   docker = callPackage ../development/python-modules/docker {};
 
+  docker-py = disabledIf isPy27 (callPackage ../development/python-modules/docker-py {});
+
   dockerpty = callPackage ../development/python-modules/dockerpty {};
 
   docker_pycreds = callPackage ../development/python-modules/docker-pycreds {};
@@ -2404,8 +2410,6 @@ in {
   pyfribidi = callPackage ../development/python-modules/pyfribidi { };
 
   pyftpdlib = callPackage ../development/python-modules/pyftpdlib { };
-
-  fdroidserver = callPackage ../development/python-modules/fdroidserver { };
 
   filebrowser_safe = callPackage ../development/python-modules/filebrowser_safe { };
 
@@ -4352,6 +4356,8 @@ in {
     in if isPy3k then py3 else py2;
 
   python-daemon = callPackage ../development/python-modules/python-daemon { };
+
+  python-vagrant = callPackage ../development/python-modules/python-vagrant { };
 
   sympy = callPackage ../development/python-modules/sympy { };
 
