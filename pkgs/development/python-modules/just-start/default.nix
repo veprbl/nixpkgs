@@ -11,7 +11,7 @@ buildPythonPackage rec {
     sha256 = "0vm3jp3a8nibmbgik2daq4wb437qrc2ri2zwb3c49rnl6y7dw258";
   };
 
-  buildInputs = [ pexpect urwid toml pydantic ];
+  propagatedBuildInputs = [ pexpect urwid toml pydantic ];
 
   checkInputs = [ glibcLocales ];
 
