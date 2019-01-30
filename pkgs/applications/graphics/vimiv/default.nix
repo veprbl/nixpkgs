@@ -61,7 +61,9 @@ python3Packages.buildPythonApplication rec {
   #    ./run-tests -c 'python tests/main_test.py && nosetests -vx'
   #'';
 
-  #postInstall = "make DESTDIR=\"$out\" install";
+  postInstall = ''
+    make PREFIX= DESTDIR="${placeholder "out"}" install
+  '';
 
   meta = {
     homepage = https://github.com/karlch/vimiv;
