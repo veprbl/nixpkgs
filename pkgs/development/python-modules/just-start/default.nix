@@ -1,6 +1,6 @@
-{ stdenv, lib, buildPythonPackage, fetchFromGitHub, pexpect, urwid, toml, pydantic, glibcLocales }:
+{ stdenv, lib, buildPythonApplication, fetchFromGitHub, pexpect, urwid, toml, pydantic, glibcLocales }:
 
-buildPythonPackage rec {
+buildPythonApplication rec {
   pname = "just-start";
   version = "2018-10-25";
 
@@ -19,6 +19,11 @@ buildPythonPackage rec {
 
   # Fails with message complaining about our fake $HOME
   doCheck = false;
+
+  meta = with lib; {
+    description = "An app to defeat procrastination (terminal pomodoro w/taskwarrior)";
+    license = licenses.gpl3;
+    homepage = https://github.com/AliGhahraei/just-start;
+    maintainers = with maintainers; [ dtzWill ];
+  };
 }
-
-

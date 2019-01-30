@@ -18,6 +18,7 @@ buildPythonPackage rec {
 
   meta = with lib; {
     description = "Data validation and settings management using python type hinting";
+    homepage = https://pydantic-docs.helpmanual.io/;
     license = licenses.mit;
     maintainers = with maintainers; [ dtzWill ];
   };
