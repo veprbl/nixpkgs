@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, gettext, makeWrapper, tcl, which, writeScript
-, ncurses, perl , cyrus_sasl, gss, gpgme, kerberos, libidn, libxml2, notmuch, openssl
+, ncurses, perl , cyrus_sasl, gss, gpgme, libgpgerror, kerberos, libidn2, libxml2, notmuch, openssl
 , lmdb, libxslt, docbook_xsl, docbook_xml_dtd_42, mailcap
 }:
 
@@ -16,18 +16,19 @@ let
   '';
 
 in stdenv.mkDerivation rec {
-  version = "20180716";
+  version = "20190124";
   name = "neomutt-${version}";
 
   src = fetchFromGitHub {
     owner  = "neomutt";
     repo   = "neomutt";
-    rev    = "neomutt-${version}";
-    sha256 = "0im2kkahkr04q04irvcimfawxi531ld6wrsa92r2m7l10gmijkl8";
+    #rev    = "neomutt-${version}";
+    rev = "40af0561629e106ee6918b8a487082f25373c3ac";
+    sha256 = "110iaz4crhlrvr4q0md847lm5g9ccm6qv7d0x1fip0xwz7sghxca";
   };
 
   buildInputs = [
-    cyrus_sasl gss gpgme kerberos libidn ncurses
+    cyrus_sasl gss gpgme libgpgerror kerberos libidn2 ncurses
     notmuch openssl perl lmdb
     mailcap
   ];
@@ -54,15 +55,13 @@ in stdenv.mkDerivation rec {
     substituteInPlace sendlib.c \
       --replace /etc/mime.types ${mailcap}/etc/mime.types
 
-    # The string conversion tests all fail with the first version of neomutt
-    # that has tests (20180223) as well as 20180716 so we disable them for now.
-    # I don't know if that is related to the tests or our build environment.
-    # Try again with a later release.
-    sed -i '/rfc2047/d' test/Makefile.autosetup test/main.c
   '';
 
   configureFlags = [
     "--gpgme"
+    "--with-gpgme=${gpgme.dev}"
+    "--disable-idn"
+    "--idn2"
     "--gss"
     "--lmdb"
     "--notmuch"
@@ -72,12 +71,8 @@ in stdenv.mkDerivation rec {
     "--with-mailpath="
     # Look in $PATH at runtime, instead of hardcoding /usr/bin/sendmail
     "ac_cv_path_SENDMAIL=sendmail"
+    "--debug"
   ];
-
-  # Fix missing libidn in mutt;
-  # this fix is ugly since it links all binaries in mutt against libidn
-  # like pgpring, pgpewrap, ...
-  NIX_LDFLAGS = "-lidn";
 
   postInstall = ''
     cp ${muttWrapper} $out/bin/mutt
