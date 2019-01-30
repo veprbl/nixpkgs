@@ -65,6 +65,9 @@ python3Packages.buildPythonApplication rec {
     TESTHOME="$(mktemp -d)"
     mkdir -p "$TESTHOME/.local"
 
+    # :(
+    rm tests/fileactions_test.py
+
     NO_AT_BRIDGE=1 \
     HOME="$TESTHOME" \
     TMPDIR="$TESTTMP" \
