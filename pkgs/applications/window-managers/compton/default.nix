@@ -1,5 +1,6 @@
 { stdenv, lib, fetchFromGitHub, pkgconfig, asciidoc, docbook_xml_dtd_45
 , docbook_xsl, libxslt, libxml2, makeWrapper, meson, ninja
+/* neocomp deps */ , judy, freetype
 , xorgproto, libxcb ,xcbutilrenderutil, xcbutilimage, pixman, libev
 , dbus, libconfig, libdrm, libGL, pcre, libX11, libXcomposite, libXdamage
 , libXinerama, libXrandr, libXrender, libXext, xwininfo, libxdg_basedir }:
