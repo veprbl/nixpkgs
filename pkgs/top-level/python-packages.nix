@@ -1891,6 +1891,8 @@ in {
 
   jug = callPackage ../development/python-modules/jug {};
 
+  just-start = callPackage ../development/python-modules/just-start { };
+
   jsmin = callPackage ../development/python-modules/jsmin { };
 
   jsonpatch = callPackage ../development/python-modules/jsonpatch { };
