@@ -16,26 +16,28 @@ python3Packages.buildPythonApplication rec {
     sha256 = "1jq9s9nkfh6dzbpa68mf38hf2l4ks4g9kwsrliqhq2b41s9xhwkr";
   };
 
-  #testimages = fetchFromGitHub {
-  #  owner = "karlch";
-  #  repo = "vimiv";
-  #  rev = "6f4d1372b27f2065c56eafdb521d230d9bb8f4e2";
-  #  sha256 = "0a3aybzpms0381dz9japhm4c7j5klhmw91prcac6zaww6x34nmxb";
-  #};
+  testimages = fetchFromGitHub {
+    owner = "karlch";
+    repo = "vimiv";
+    rev = "e5044ee9ec65ef5b7c601426ed3644a12952ff59";
+    sha256 = "1la9vnmqs28rfgvvbhfh0ka4mzacfjbbyz2lw19xr8zl9bbai4wy";
+  };
 
-  #postPatch = ''
-  #  patchShebangs scripts/install_icons.sh
-  #  sed -i -e 's,/usr,,g' -e '/setup\.py/d' Makefile scripts/install_icons.sh
+  postPatch = ''
+    patchShebangs scripts/install_icons.sh
+    sed -i -e 's,/usr,,g' -e '/setup\.py/d' Makefile scripts/install_icons.sh
 
-  #  sed -i \
-  #    -e 's,/etc/vimiv/\(vimivrc\|keys\.conf\),'"$out"'&,g' \
-  #    man/* vimiv/parser.py
+    sed -i \
+      -e 's,/etc/vimiv/\(vimivrc\|keys\.conf\),'"$out"'&,g' \
+      man/* vimiv/config_parser.py
 
-  #  sed -i \
-  #    -e 's!"mogrify"!"${imagemagick}/bin/mogrify"!g' \
-  #    -e '/cmd *=/s!"jhead"!"${jhead}/bin/jhead"!g' \
-  #    vimiv/imageactions.py
-  #'';
+    substituteInPlace vimiv/helpers.py --replace /usr/share/man $out/share/man
+
+    sed -i \
+      -e 's!"mogrify"!"${imagemagick}/bin/mogrify"!g' \
+      -e '/cmd *=/s!"jhead"!"${jhead}/bin/jhead"!g' \
+      vimiv/imageactions.py
+  '';
 
   checkInputs = [ python3Packages.nose dbus.daemon xvfb_run xdotool ];
   buildInputs = [ hicolor-icon-theme defaultIconTheme librsvg gobject-introspection wrapGAppsHook ];
