@@ -1,9 +1,9 @@
-{ stdenv, buildPythonPackage, fetchPypi
+{ stdenv, buildPythonApplication, fetchPypi
 , mock, unittest2, nose
 , twiggy, requests, offtrac, bugzilla, taskw, dateutil, pytz, keyring, six
 , jinja2, pycurl, dogpile_cache, lockfile, click, pyxdg, future }:
 
-buildPythonPackage rec {
+buildPythonApplication rec {
   pname = "bugwarrior";
   version = "1.6.0";
 
