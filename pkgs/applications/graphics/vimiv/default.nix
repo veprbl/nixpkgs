@@ -1,5 +1,6 @@
 { lib, python3Packages, fetchFromGitHub, imagemagick, librsvg, gtk3, jhead
 , hicolor-icon-theme, defaultIconTheme, gobject-introspection, wrapGAppsHook
+, gexiv2
 
 # Test requirements
 , dbus, xvfb_run, xdotool
@@ -32,6 +33,7 @@ python3Packages.buildPythonApplication rec {
       man/* vimiv/config_parser.py
 
     substituteInPlace vimiv/helpers.py --replace /usr/share/man $out/share/man
+    substituteInPlace vimiv/information.py --replace /usr/share/ $out/share/
 
     sed -i \
       -e 's!"mogrify"!"${imagemagick}/bin/mogrify"!g' \
@@ -41,27 +43,36 @@ python3Packages.buildPythonApplication rec {
 
   checkInputs = [ python3Packages.nose dbus.daemon xvfb_run xdotool ];
   buildInputs = [ hicolor-icon-theme defaultIconTheme librsvg gobject-introspection wrapGAppsHook ];
-  propagatedBuildInputs = with python3Packages; [ pillow pygobject3 gtk3 ];
+  propagatedBuildInputs = with python3Packages; [ pillow pygobject3 gtk3 gexiv2 ];
 
-  ##makeWrapperArgs = [
-  ##  "--prefix GI_TYPELIB_PATH : \"$GI_TYPELIB_PATH\""
-  ##  "--suffix XDG_DATA_DIRS : \"$XDG_ICON_DIRS:$out/share\""
-  ##  "--set GDK_PIXBUF_MODULE_FILE \"$GDK_PIXBUF_MODULE_FILE\""
-  ##];
+  doCheck = true;
 
-  #postCheck = ''
-  #  # Some tests assume that the directory only contains one vimiv directory
-  #  rm -rf vimiv.egg-info vimiv.desktop
+  postCheck = ''
+    # Some tests assume that the directory only contains one vimiv directory
+    rm -rf vimiv.egg-info vimiv.desktop
 
-  #  # Re-use the wrapper args from the main program
-  #  makeWrapper "$SHELL" run-tests $makeWrapperArgs
+    # Re-use the wrapper args from the main program
+    makeWrapper "$SHELL" run-tests "''${gappsWrapperArgs[@]}"
 
-  #  cp -Rd --no-preserve=mode "$testimages/testimages" vimiv/testimages
-  #  HOME="$(mktemp -d)" PATH="$out/bin:$PATH" \
-  #    xvfb-run -s '-screen 0 800x600x24' dbus-run-session \
-  #    --config-file=${dbus.daemon}/share/dbus-1/session.conf \
-  #    ./run-tests -c 'python tests/main_test.py && nosetests -vx'
-  #'';
+    cp -Rd --no-preserve=mode "$testimages/testimages" vimiv/testimages
+    ls vimiv/testimages
+    ls $testimages
+
+    find $testimages
+
+    TESTTMP="$PWD/tmp"
+    mkdir -p $TESTTMP
+    TESTHOME="$(mktemp -d)"
+    mkdir -p "$TESTHOME/.local"
+
+    NO_AT_BRIDGE=1 \
+    HOME="$TESTHOME" \
+    TMPDIR="$TESTTMP" \
+    PATH="$out/bin:$PATH" \
+      xvfb-run -s '-screen 0 800x600x24' dbus-run-session \
+      --config-file=${dbus.daemon}/share/dbus-1/session.conf \
+      ./run-tests -c 'python tests/vimiv_testcase.py && nosetests -vx'
+  '';
 
   postInstall = ''
     make PREFIX= DESTDIR="${placeholder "out"}" install
