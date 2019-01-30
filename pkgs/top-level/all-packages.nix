@@ -10025,6 +10025,10 @@ in
     stdenv = crossLibcStdenv;
   };
 
+  webmusl = callPackage ../os-specific/linux/musl/web.nix {
+    stdenv = crossLibcStdenv;
+  };
+
   muslCross = musl.override {
     stdenv = crossLibcStdenv;
   };
@@ -10042,6 +10046,7 @@ in
     else if name == "msvcrt" then targetPackages.windows.mingw_w64 or windows.mingw_w64
     else if stdenv.targetPlatform.useiOSPrebuilt then targetPackages.darwin.iosSdkPkgs.libraries or darwin.iosSdkPkgs.libraries
     else if name == "libSystem" then targetPackages.darwin.xcode
+    else if name == "webmusl" then targetPackages.webmusl
     else throw "Unknown libc";
 
   libcCross = assert stdenv.targetPlatform != stdenv.buildPlatform; libcCrossChooser stdenv.targetPlatform.libc;

@@ -245,6 +245,7 @@ rec {
     linux   = { execFormat = elf;     families = { }; };
     netbsd  = { execFormat = elf;     families = { inherit bsd; }; };
     none    = { execFormat = unknown; families = { }; };
+    unknown = { execFormat = unknown; families = { }; };
     openbsd = { execFormat = elf;     families = { inherit bsd; }; };
     solaris = { execFormat = elf;     families = { }; };
     windows = { execFormat = pe;      families = { }; };
@@ -309,6 +310,8 @@ rec {
     uclibceabihf = { float = "soft"; };
     uclibceabi   = { float = "hard"; };
     uclibc       = {};
+
+    wasm       = {};
 
     unknown = {};
   };

@@ -20,6 +20,8 @@ stdenv.mkDerivation rec {
     "-DCMAKE_C_COMPILER_TARGET=${stdenv.hostPlatform.config}"
     "-DCMAKE_ASM_COMPILER_TARGET=${stdenv.hostPlatform.config}"
     "-DCOMPILER_RT_BAREMETAL_BUILD=ON"
+    "-DCMAKE_SIZEOF_VOID_P=${toString (stdenv.hostPlatform.parsed.cpu.bits / 8)}"
+    "-DCOMPILER_RT_BUILD_CRT=${if stdenv.hostPlatform.isWasm then "OFF" else "ON"}"
   ];
 
   outputs = [ "out" "dev" ];
@@ -55,6 +57,11 @@ stdenv.mkDerivation rec {
     ln -s $out/lib/*/cclang_rt.crtend-*.o $out/lib/linux/crtend.o
     ln -s $out/lib/*/clang_rt.crtbegin_shared-*.o $out/lib/linux/crtbeginS.o
     ln -s $out/lib/*/clang_rt.crtend_shared-*.o $out/lib/linux/crtendS.o
+  '' + stdenv.lib.optionalString stdenv.hostPlatform.isWasm ''
+    for f in crtbegin crtend crtbeginS crtendS; do
+      touch $f.c
+      $CC -c -o $out/lib/$f.o $f.c
+    done
   '';
 
   enableParallelBuilding = true;

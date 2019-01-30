@@ -212,4 +212,21 @@ rec {
     libc = "msvcrt"; # This distinguishes the mingw (non posix) toolchain
     platform = {};
   };
+
+  #
+  # WASM
+  #
+
+  wasm32 = {
+    config = "wasm32-unknown-unknown-wasm";
+    libc = "webmusl";
+    useLLVM = true;
+  };
+
+  wasm64 = {
+    config = "wasm64-unknown-unknown-wasm";
+    libc = "webmusl";
+    useLLVM = true;
+  };
+
 }
