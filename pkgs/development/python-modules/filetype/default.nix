@@ -1,19 +1,28 @@
-{ buildPythonPackage, lib, fetchPypi }:
+{ lib
+, buildPythonPackage
+, fetchFromGitHub
+, python
+}:
 
 buildPythonPackage rec {
   pname = "filetype";
-  version = "1.0.1";
+  version = "1.0.2";
 
-  src = fetchPypi {
-    inherit pname version;
-    sha256 = "97b4ec0974b07cbddb3e74cf323d8688749807014055cc91cdbfef5442a94dc5";
+  src = fetchFromGitHub {
+    owner = "h2non";
+    repo = "filetype.py";
+    rev = "v${version}";
+    sha256 = "000gl3q2cadfnmqnbxg31ppc3ak8blzb4nfn75faxbp7b6r5qgr2";
   };
 
-  doCheck = false; # XXX: missing dep? not sure
+  checkPhase = ''
+    ${python.interpreter} -m unittest discover
+  '';
 
   meta = with lib; {
+    description = "Infer file type and MIME type of any file/buffer";
     homepage = https://github.com/h2non/filetype.py;
-    description = "Small and fast Python package to infer file types checking the magic numbers signature";
     license = licenses.mit;
+    maintainers = with maintainers; [ dotlambda ];
   };
 }

@@ -1,22 +1,35 @@
-{ buildPythonPackage, lib, fetchPypi, nose, coverage }:
+{ lib
+, buildPythonPackage
+, fetchFromGitHub
+, nose
+, coverage
+}:
 
 buildPythonPackage rec {
   pname = "isbnlib";
-  version = "3.9.3";
+  version = "3.9.4";
 
-  src = fetchPypi {
-    inherit pname version;
-    sha256 = "84a33ea57804d0329df7875cc48ac5ad2bab5a4c1c8f8bd177bafea10f79917e";
+  # PyPI tarball is missing LICENSE file
+  # See https://github.com/xlcnd/isbnlib/pull/53
+  src = fetchFromGitHub {
+    owner = "xlcnd";
+    repo = "isbnlib";
+    rev = "v${version}";
+    sha256 = "0gc0k5khf34b4zz56a9zc3rscdhj3bx849lbzgmzpji30sbyy1fh";
   };
 
-  postUnpack = "mv $sourceRoot/{COPYRIGHT.txt,LICENSE}";
+  checkInputs = [
+    nose
+    coverage
+  ];
 
-  doCheck = false; # XXX: network but can probably be asked to omit those
-  checkInputs = [ nose coverage ];
+  # requires network connection
+  doCheck = false;
 
   meta = with lib; {
+    description = "Extract, clean, transform, hyphenate and metadata for ISBNs";
     homepage = https://github.com/xlcnd/isbnlib;
-    description = "Extract, clean, transform, hyphenate and metadata for ISBNs (International Standard Book Number)";
     license = licenses.lgpl3;
+    maintainers = with maintainers; [ dotlambda ];
   };
 }
