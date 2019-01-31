@@ -334,6 +334,8 @@ lib.makeScope pkgs.newScope (self: with self; {
 
 #### Misc -- other packages on http://ftp.gnome.org/pub/GNOME/sources/
 
+  evolution-ews = callPackage ./misc/evolution-ews { };
+
   geary = callPackage ./misc/geary { };
 
   gitg = callPackage ./misc/gitg { };
