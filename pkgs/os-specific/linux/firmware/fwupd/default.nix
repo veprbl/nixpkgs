@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchFromGitHub, fetchpatch, gtk-doc, pkgconfig, gobject-introspection, intltool
+{ stdenv, fetchurl, fetchFromGitHub, substituteAll, gtk-doc, pkgconfig, gobject-introspection, intltool
 , libgudev, polkit, libxmlb, gusb, sqlite, libarchive, glib-networking
 , libsoup, help2man, gpgme, libxslt, elfutils, libsmbios, efivar, glibcLocales
 , gnu-efi, libyaml, valgrind, meson, libuuid, colord, docbook_xml_dtd_43, docbook_xsl
@@ -7,9 +7,10 @@
 , cairo, freetype, fontconfig, pango
 
 }:
+
+# Updating? Keep $out/etc synchronized with passthru.filesInstalledToEtc
+
 let
-  # Updating? Keep $out/etc synchronized with passthru.filesInstalledToEtc
-  version = "1.2.3.99"; # XXX: not really
   python = python3.withPackages (p: with p; [ pygobject3 pycairo pillow ]);
   installedTestsPython = python3.withPackages (p: with p; [ pygobject3 requests ]);
 
@@ -18,7 +19,8 @@ let
   };
 in stdenv.mkDerivation rec {
   pname = "fwupd";
-  inherit version;
+  version = "1.2.3.99"; # XXX: not really
+
   src = fetchFromGitHub {
     owner = "hughsie";
     repo = pname;
@@ -47,16 +49,24 @@ in stdenv.mkDerivation rec {
   patches = [
     ./fix-paths.patch
     ./add-option-for-installation-sysconfdir.patch
+
+    # installed tests are installed to different output
+    # we also cannot have fwupd-tests.conf in $out/etc since it would form a cycle
+    (substituteAll {
+      src = ./installed-tests-path.patch;
+      # needs a different set of modules than po/make-images
+      inherit installedTestsPython;
+    })
   ];
 
   postPatch = ''
-    # needs a different set of modules than po/make-images
-    escapedInterpreterLine=$(echo "${installedTestsPython}/bin/python3" | sed 's|\\|\\\\|g')
-    sed -i -e "1 s|.*|#\!$escapedInterpreterLine|" data/installed-tests/hardware.py
-
     patchShebangs .
-    substituteInPlace data/installed-tests/fwupdmgr.test.in --subst-var-by installedtestsdir "$installedTests/share/installed-tests/fwupd"
-    substituteInPlace data/installed-tests/meson.build --replace sysconfdir sysconfdir_install
+
+    # we cannot use placeholder in substituteAll
+    # https://github.com/NixOS/nix/issues/1846
+    substituteInPlace data/installed-tests/meson.build --subst-var installedTests
+
+    # install plug-ins to out, they are not really part of the library
     substituteInPlace meson.build \
       --replace "plugin_dir = join_paths(libdir, 'fwupd-plugins-3')" \
                 "plugin_dir = join_paths('${placeholder "out"}', 'fwupd_plugins-3')"
