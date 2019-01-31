@@ -8,14 +8,15 @@ assert sslSupport -> openssl != null;
 
 stdenv.mkDerivation rec {
   name = "lynx-${version}";
-  version = "2.8.9rel.1";
+  #version = "2.8.9rel.1";
+  version = "2.9.0dev.1";
 
   src = fetchurl {
     urls = [
       "ftp://ftp.invisible-island.net/lynx/tarballs/lynx${version}.tar.bz2"
       "https://invisible-mirror.net/archives/lynx/tarballs/lynx${version}.tar.bz2"
     ];
-    sha256 = "15cmyyma2kz1hfaa6mwjgli8zwdzq3jv0q2cl6nwzycjfwyijzrq";
+    sha256 = "1fgcr83dbh372n1hw8wp8kyjpbnjyrgmvkmlqv3qrhygr6ksy1x9";
   };
 
   enableParallelBuilding = true;
