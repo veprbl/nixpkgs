@@ -7,8 +7,9 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "wangp";
     repo = "bower";
-    rev = version;
-    sha256 = "0jpaxlfxz7mj76z3cyj8sq053p0mkp46kaw05nimzwaq5yx923fv";
+    #rev = version;
+    rev = "a9bb14b3763df75e68fa900e97486161f0e1039c";
+    sha256 = "1hx2j2aqqp3xja0d62dp4yxh081wg1izh3xmfig6pykadixi4mih";
   };
 
   nativeBuildInputs = [ gawk mercury pandoc ];
