@@ -3739,6 +3739,8 @@ in
 
   matrix-synapse = callPackage ../servers/matrix-synapse { };
 
+  mautrix-telegram = callPackage ../servers/mautrix-telegram { };
+
   mdbook = callPackage ../tools/text/mdbook {
     inherit (darwin.apple_sdk.frameworks) CoreServices;
   };
@@ -22387,9 +22389,9 @@ in
 
   foomatic-filters = callPackage ../misc/drivers/foomatic-filters {};
 
-  gajim = python3.pkgs.callPackage ../applications/networking/instant-messengers/gajim {
+  gajim = callPackage ../applications/networking/instant-messengers/gajim {
     inherit (gst_all_1) gstreamer gst-plugins-base gst-libav gst-plugins-ugly;
-    inherit (gnome3) gspell;
+    inherit (gnome3) gspell defaultIconTheme;
   };
 
   gammu = callPackage ../applications/misc/gammu { };

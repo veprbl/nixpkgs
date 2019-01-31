@@ -805,6 +805,8 @@ in {
     hdf5 = pkgs.hdf5.override { zlib = pkgs.zlib; };
   };
 
+  tableaudocumentapi = callPackage ../development/python-modules/tableaudocumentapi { };
+
   trueskill = callPackage ../development/python-modules/trueskill { };
 
   trustme = callPackage ../development/python-modules/trustme {};
@@ -1787,6 +1789,8 @@ in {
   fastcache = callPackage ../development/python-modules/fastcache { };
 
   functools32 = callPackage ../development/python-modules/functools32 { };
+
+  future-fstrings = callPackage ../development/python-modules/future-fstrings { };
 
   gateone = callPackage ../development/python-modules/gateone { };
 
@@ -3035,6 +3039,8 @@ in {
 
   matrix-client = callPackage ../development/python-modules/matrix-client { };
 
+  mautrix-appservice = callPackage ../development/python-modules/mautrix-appservice { };
+
   maya = callPackage ../development/python-modules/maya { };
 
   mccabe = callPackage ../development/python-modules/mccabe { };
@@ -3485,6 +3491,8 @@ in {
   }).overrideAttrs (oldAttrs: {
     name = "${python.libPrefix}-${pkgs.kmsxx.name}";
   });
+
+  precis-i18n = callPackage ../development/python-modules/precis-i18n { };
 
   pvlib = callPackage ../development/python-modules/pvlib { };
 
@@ -4449,6 +4457,10 @@ in {
   freezegun = callPackage ../development/python-modules/freezegun { };
 
   taskw = callPackage ../development/python-modules/taskw { };
+
+  telethon = callPackage ../development/python-modules/telethon { };
+
+  telethon-session-sqlalchemy = callPackage ../development/python-modules/telethon-session-sqlalchemy { };
 
   terminaltables = callPackage ../development/python-modules/terminaltables { };
 
