@@ -4,6 +4,10 @@
 # (for compatibility with reference BLAS).
 , blas64 ? null
 , buildPackages
+
+# Select a specific optimization target (other than the default)
+# See https://github.com/xianyi/OpenBLAS/blob/develop/TargetList.txt
+, target ? null
 }:
 
 with stdenv.lib;
@@ -11,6 +15,7 @@ with stdenv.lib;
 let blas64_ = blas64; in
 
 let
+
   # To add support for a new platform, add an element to this set.
   configs = {
     armv6l-linux = {
@@ -59,9 +64,11 @@ let
 in
 
 let
-  config =
+  config_base =
     configs.${stdenv.hostPlatform.system}
     or (throw "unsupported system: ${stdenv.hostPlatform.system}");
+  # if target override specified then use that instead of platform default
+  config = config_base // optionalAttrs (target != null) { TARGET = target; };
 in
 
 let
