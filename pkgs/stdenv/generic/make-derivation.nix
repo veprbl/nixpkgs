@@ -186,9 +186,8 @@ rec {
            "checkInputs" "installCheckInputs"
            "__impureHostDeps" "__propagatedImpureHostDeps"
            "sandboxProfile" "propagatedSandboxProfile"])
-        // (lib.optionalAttrs (name == "")) {
-          name = "${attrs.pname}-${attrs.version}";
-        } // (lib.optionalAttrs (stdenv.hostPlatform != stdenv.buildPlatform && !dontAddHostSuffix)) {
+        // { inherit name; }
+        // (lib.optionalAttrs (stdenv.hostPlatform != stdenv.buildPlatform && !dontAddHostSuffix)) {
           # Fixed-output derivations like source tarballs shouldn't get a host
           # suffix. But we have some weird ones with run-time deps that are
           # just used for their side-affects. Those might as well since the
