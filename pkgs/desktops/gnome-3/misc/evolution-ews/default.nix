@@ -35,8 +35,11 @@ in stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ cmake ninja intltool itstool libxml2 pkgconfig wrapGAppsHook ];
 
-  postPatch = ''
-    sed -i CMakeLists.txt -e 's,set(ewsdatadir.*,set(ewsdatadir "${placeholder "out"}/share/evolution-data-dir/ews"),'
-  '';
+  # TODO:
+  # - [ ] fix install paths
+  # - [ ] ensure evolution and other bits actually find what is installed!
+  #postPatch = ''
+  #  sed -i CMakeLists.txt -e 's,set(ewsdatadir.*,set(ewsdatadir "${placeholder "out"}/share/evolution-data-dir/ews"),'
+  #'';
 }
 
