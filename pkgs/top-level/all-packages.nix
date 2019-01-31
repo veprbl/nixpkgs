@@ -7783,20 +7783,25 @@ in
   ### LUA MODULES
   lua5_1 = callPackage ../development/interpreters/lua-5/5.1.nix {
     self = lua5_1;
+    readline = readline80;
   };
   lua5_2 = callPackage ../development/interpreters/lua-5/5.2.nix {
     self = lua5_2;
+    readline = readline80;
   };
   lua5_2_compat = callPackage ../development/interpreters/lua-5/5.2.nix {
     compat = true;
     self = lua5_2_compat;
+    readline = readline80;
   };
   lua5_3 = callPackage ../development/interpreters/lua-5/5.3.nix {
     self = lua5_3;
+    readline = readline80;
   };
   lua5_3_compat = callPackage ../development/interpreters/lua-5/5.3.nix {
     compat = true;
     self = lua5_3_compat;
+    readline = readline80;
   };
   lua5 = lua5_2_compat;
   lua = lua5;
