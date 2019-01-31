@@ -1,6 +1,6 @@
-{ otfcc, fetchFromGitHub }:
+{ otfcc-stable, fetchFromGitHub }:
 
-otfcc.overrideAttrs (o: rec {
+otfcc-stable.overrideAttrs (o: rec {
   name = "otfcc-${version}";
   version = "0.10.3-alpha";
 

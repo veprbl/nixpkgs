@@ -4642,8 +4642,9 @@ in
 
   ostree = callPackage ../tools/misc/ostree { };
 
-  otfcc = callPackage ../tools/misc/otfcc { };
+  otfcc-stable = callPackage ../tools/misc/otfcc { };
   otfcc-unstable = callPackage ../tools/misc/otfcc/unstable.nix { };
+  otfcc = otfcc-unstable;
 
   otpw = callPackage ../os-specific/linux/otpw { };
 
