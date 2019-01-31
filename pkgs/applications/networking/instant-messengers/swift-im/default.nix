@@ -21,6 +21,8 @@ stdenv.mkDerivation rec {
     lua miniupnpc openssl qtbase qtmultimedia qtsvg qtwebkit qtx11extras zlib
   ];
 
+  enableParallelBuilding = true;
+
   propagatedUserEnvPkgs = [ GConf ];
 
   NIX_CFLAGS_COMPILE = [
