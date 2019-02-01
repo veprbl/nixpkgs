@@ -1,5 +1,5 @@
-{ stdenv, fetchFromGitHub, autoreconfHook, pkgconfig
-, libdrm, libva
+{ stdenv, fetchFromGitHub, pkgconfig
+, libdrm, libva, meson, ninja
 }:
 
 stdenv.mkDerivation rec {
@@ -13,9 +13,15 @@ stdenv.mkDerivation rec {
     sha256 = "1yk9bg1wg4nqva3l01s6bghcvc3hb02gp62p1sy5qk0r9mn5kpik";
   };
 
-  nativeBuildInputs = [ autoreconfHook pkgconfig ];
+  nativeBuildInputs = [ meson ninja pkgconfig ];
 
   buildInputs = [ libdrm libva ];
+
+  mesonFlags = [
+    "-Ddrm=true"
+    "-Dx11=true"
+    "-Dwayland=true"
+  ];
 
   enableParallelBuilding = true;
 
