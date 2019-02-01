@@ -88,8 +88,6 @@ let
     libcxxabi = callPackage ./libc++abi.nix {};
 
     openmp = callPackage ./openmp.nix {};
-
-    polly = callPackage ./polly.nix {};
   });
 
 in { inherit tools libraries; } // libraries // tools
