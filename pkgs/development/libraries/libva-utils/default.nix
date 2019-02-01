@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, pkgconfig
-, libdrm, libva, meson, ninja
+, libdrm, libva, libX11, libXext, libXfixes, wayland, meson, ninja
 }:
 
 stdenv.mkDerivation rec {
@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ meson ninja pkgconfig ];
 
-  buildInputs = [ libdrm libva ];
+  buildInputs = [ libdrm libva libX11 libXext libXfixes wayland ];
 
   mesonFlags = [
     "-Ddrm=true"
