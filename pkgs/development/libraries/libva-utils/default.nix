@@ -4,7 +4,8 @@
 
 stdenv.mkDerivation rec {
   name = "libva-utils-${version}";
-  inherit (libva) version;
+  #inherit (libva) version;
+  version = "2.3.0"; # no 2.4.0 "yet"
 
   src = fetchFromGitHub {
     owner  = "01org";
