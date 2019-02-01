@@ -16,7 +16,7 @@
 , enableManpages ? false
 , enableSharedLibraries ? true
 , enablePFM ? !stdenv.isDarwin
-, enablePolly ? true
+, enablePolly ? false
 }:
 
 let
