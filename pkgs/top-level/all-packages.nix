@@ -6633,8 +6633,8 @@ in
       useMacosReexportHack = true;
     };
   };
-  llvm-polly = llvm_7.override { enablePolly = true; };
-  clang-polly = clang_7.override { cc = clang_7.cc.override { llvm = llvm-polly; }; };
+  llvm-polly = llvmPackages_7.llvm-polly;
+  clang-polly = clang_7.override { cc = llvmPackages_7.clang-polly-unwrapped; };
 
   clang_7  = llvmPackages_7.clang;
   clang_6  = llvmPackages_6.clang;
