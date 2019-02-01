@@ -12,7 +12,7 @@
 with stdenv.lib;
 
 stdenv.mkDerivation rec {
-  version = "0.28";
+  version = "0.28.1";
   name = "notmuch-${version}";
 
   passthru = {
@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://notmuchmail.org/releases/${name}.tar.gz";
-    sha256 = "0dqarmjc8544m2w7bqrqmvsfy55fw82707z3lz9cql8nr777bjmc";
+    sha256 = "0mcsfkrp6mpy374m5rwwgm9md8qzvwa3s4rbzid4cnkx2cwfj4fi";
   };
 
   nativeBuildInputs = [ pkgconfig ];
@@ -34,14 +34,6 @@ stdenv.mkDerivation rec {
     bash-completion  # (optional) dependency to install bash completion
     emacs  # (optional) to byte compile emacs code, also needed for tests
     ruby  # (optional) ruby bindings
-  ];
-
-  patches = [
-    ./0001-Avoid-spurious-gcc-warning-in-debugger.c.patch
-    ./0001-cli-notmuch-show-support-for-body-false-with-format-.patch
-    ./0001-cli-notmuch-show-support-for-include-html-with-forma.patch
-    ./0001-index-explicitly-follow-GObject-conventions.patch
-    ./0001-reply-Include-sender-as-recipient-if-they-were-the-o.patch
   ];
 
   postPatch = ''
