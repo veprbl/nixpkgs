@@ -129,7 +129,6 @@ in stdenv.mkDerivation rec {
       "fwupd/remotes.d/lvfs-testing.conf"
       "fwupd/remotes.d/lvfs.conf"
       "fwupd/remotes.d/vendor.conf"
-      "fwupd/remotes.d/fwupd-tests.conf"
       "pki/fwupd/GPG-KEY-Hughski-Limited"
       "pki/fwupd/GPG-KEY-Linux-Foundation-Firmware"
       "pki/fwupd/GPG-KEY-Linux-Vendor-Firmware-Service"
