@@ -1,15 +1,21 @@
-{ stdenv, fetchzip }:
+{ stdenv, fetchzip, variableFont ? true }:
 
 let
   version = "0.37";
+  pattern = if variableFont
+    then ''\*/SudoVariable.ttf''
+    else ''\*/Sudo-\*.ttf'';
+  sha256 = if variableFont
+    then "13l1bp4ym3743hc2mp5hiw928kv9g6gmsj4a2jf9wvfrakpfxxs5"
+    else "1nsp43za6b8snfwdpq2h3k5jhapz0w0zknx4wn55kg76kmx0br4a";
 in fetchzip rec {
   name = "sudo-font-${version}";
   url = "https://github.com/jenskutilek/sudo-font/releases/download/v${version}/sudo.zip";
-  sha256 = "16x6vs016wz6rmd4p248ri9fn35xq7r3dc8hv4w2c4rz1xl8c099";
+  inherit sha256;
 
   postFetch = ''
     mkdir -p $out/share/fonts/truetype/
-    unzip -j $downloadedFile \*.ttf -d $out/share/fonts/truetype/
+    unzip -j $downloadedFile ${pattern} -d $out/share/fonts/truetype/
   '';
   meta = with stdenv.lib; {
     description = "Font for programmers and command line users";
