@@ -8,6 +8,8 @@ buildPythonPackage rec {
   pname = "filetype";
   version = "1.0.2";
 
+  # No tests in PyPI tarball
+  # See https://github.com/h2non/filetype.py/pull/33
   src = fetchFromGitHub {
     owner = "h2non";
     repo = "filetype.py";
