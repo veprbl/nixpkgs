@@ -23,7 +23,7 @@ rustPlatform.buildRustPackage rec {
   meta = with stdenv.lib; {
     description = "Unit-aware calculator";
     homepage = http://rink.tiffnix.com;
-    license = [ licenses.mpl2 licenses.gpl3 ];
-    maintainers = maintainers.sb0;
+    license = with licenses; [ mpl20 gpl3 ];
+    maintainers = [ maintainers.sb0 ];
   };
 }
