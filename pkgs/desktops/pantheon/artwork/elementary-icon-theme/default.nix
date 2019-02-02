@@ -2,15 +2,17 @@
 
 stdenv.mkDerivation rec {
   pname = "elementary-icon-theme";
-  version = "5.0.2";
+  #version = "5.0.2";
+  version = "5.0.2.0.1"; # not really
   repoName = "icons";
 
 
   src = fetchFromGitHub {
     owner = "elementary";
     repo = repoName;
-    rev = version;
-    sha256 = "12j582f0kggv2lp935r75xg7q26zpl0f05s11xcs4qxazhj1ly2r";
+    #rev = version;
+    rev = "d9fe8bc75be4e365cd3832fb0b7eebb2a43a6436";
+    sha256 = "0yv71avpa7q3sr6613ga1pqhilcc0w9j18r83njns65r1v3d1hb0";
   };
 
   passthru = {
