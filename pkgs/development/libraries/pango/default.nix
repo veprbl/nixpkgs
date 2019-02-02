@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgconfig, libXft, cairo, harfbuzz
+{ stdenv, fetchurl, fetchFromGitHub, pkgconfig, libXft, cairo, harfbuzz
 , libintl, gobject-introspection, darwin, fribidi, gnome3
 , gtk-doc, docbook_xsl, docbook_xml_dtd_43, makeFontsConf, freefont_ttf
 , meson, ninja
@@ -12,10 +12,16 @@ let
 in stdenv.mkDerivation rec {
   name = "${pname}-${version}";
 
-  src = fetchurl {
-    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "1lnxldmv1a12dq5h0dlq5jyzl4w75k76dp8cn360x2ijlm9w5h6j";
+  src = fetchFromGitHub {
+    owner = "GNOME";
+    repo = pname;
+    rev = "982445fe1c234b1ef5173556a73f659946c1a288";
+    sha256 = "04gi7prrpp9y94zmdzgfnyp9bd9my3gzcbhc0dcqp3d5q8rcr0cr";
   };
+  #src = fetchurl {
+  #  url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
+  #  sha256 = "1lnxldmv1a12dq5h0dlq5jyzl4w75k76dp8cn360x2ijlm9w5h6j";
+  #};
 
   outputs = [ "bin" "dev" "out" "devdoc" ];
 
