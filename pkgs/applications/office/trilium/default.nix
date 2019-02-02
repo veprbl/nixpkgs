@@ -51,7 +51,7 @@ in stdenv.mkDerivation rec {
 
   # This "shouldn't" be needed, remove when possible :)
   preFixup = ''
-    wrapProgram $out/bin/trilium --prefix LD_LIBRARY_PATH : "${atomEnv.libPath}"
+    wrapProgram $out/bin/trilium --prefix LD_LIBRARY_PATH : "${atomEnv.libPath}:$out/share/trilium"
   '';
 
   dontStrip = true;
