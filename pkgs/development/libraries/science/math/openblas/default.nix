@@ -20,35 +20,35 @@ let
   configs = {
     armv6l-linux = {
       BINARY = 32;
-      TARGET = setTarget "ARMV6";
+      TARGET = "ARMV6";
       DYNAMIC_ARCH = false;
       USE_OPENMP = true;
     };
 
     armv7l-linux = {
       BINARY = 32;
-      TARGET = setTarget "ARMV7";
+      TARGET = "ARMV7";
       DYNAMIC_ARCH = false;
       USE_OPENMP = true;
     };
 
     aarch64-linux = {
       BINARY = 64;
-      TARGET = setTarget "ARMV8";
+      TARGET = "ARMV8";
       DYNAMIC_ARCH = true;
       USE_OPENMP = true;
     };
 
     i686-linux = {
       BINARY = 32;
-      TARGET = setTarget "P2";
+      TARGET = "P2";
       DYNAMIC_ARCH = true;
       USE_OPENMP = true;
     };
 
     x86_64-darwin = {
       BINARY = 64;
-      TARGET = setTarget "ATHLON";
+      TARGET = "ATHLON";
       DYNAMIC_ARCH = true;
       USE_OPENMP = false;
       MACOSX_DEPLOYMENT_TARGET = "10.7";
@@ -56,7 +56,7 @@ let
 
     x86_64-linux = {
       BINARY = 64;
-      TARGET = setTarget "ATHLON";
+      TARGET = "ATHLON";
       DYNAMIC_ARCH = true;
       USE_OPENMP = true;
     };
