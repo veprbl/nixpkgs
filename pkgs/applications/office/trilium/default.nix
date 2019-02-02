@@ -10,10 +10,19 @@ let
     desktopName = "Trilium Notes";
     categories = "Office";
   };
+  version = "0.28.3";
+
+  # Fetch from source repo, no longer included in release.
+  # (they did special-case icon.png but we want the scalable svg)
+  # Use the version here to ensure we get any changes.
+  trilium_svg = fetchurl {
+    url = "https://raw.githubusercontent.com/zadam/trilium/v${version}/src/public/images/trilium.svg";
+    sha256 = "1rgj7pza20yndfp8n12k93jyprym02hqah36fkk2b3if3kcmwnfg";
+  };
 
 in stdenv.mkDerivation rec {
   name = "trilium-${version}";
-  version = "0.28.3";
+  inherit version;
 
   src = fetchurl {
     url = "https://github.com/zadam/trilium/releases/download/v${version}/trilium-linux-x64-${version}.tar.xz";
@@ -35,7 +44,7 @@ in stdenv.mkDerivation rec {
     cp -r ./* $out/share/trilium
     ln -s $out/share/trilium/trilium $out/bin/trilium
 
-    ln -s $out/share/trilium/resources/app/src/public/images/trilium.svg $out/share/icons/hicolor/scalable/apps/trilium.svg
+    ln -s ${trilium_svg} $out/share/icons/hicolor/scalable/apps/trilium.svg
     cp ${desktopItem}/share/applications/* $out/share/applications
   '';
 
