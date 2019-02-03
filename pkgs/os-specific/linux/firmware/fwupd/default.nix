@@ -1,11 +1,10 @@
-{ stdenv, fetchurl, fetchFromGitHub, substituteAll, gtk-doc, pkgconfig, gobject-introspection, intltool
+{ stdenv, fetchurl, substituteAll, gtk-doc, pkgconfig, gobject-introspection, intltool
 , libgudev, polkit, libxmlb, gusb, sqlite, libarchive, glib-networking
 , libsoup, help2man, gpgme, libxslt, elfutils, libsmbios, efivar, glibcLocales
 , gnu-efi, libyaml, valgrind, meson, libuuid, colord, docbook_xml_dtd_43, docbook_xsl
 , ninja, gcab, gnutls, python3, wrapGAppsHook, json-glib, bash-completion
 , shared-mime-info, umockdev, vala, makeFontsConf, freefont_ttf
 , cairo, freetype, fontconfig, pango
-
 }:
 
 # Updating? Keep $out/etc synchronized with passthru.filesInstalledToEtc
@@ -19,18 +18,12 @@ let
   };
 in stdenv.mkDerivation rec {
   pname = "fwupd";
-  version = "1.2.3.99"; # XXX: not really
+  version = "1.2.3";
 
-  src = fetchFromGitHub {
-    owner = "hughsie";
-    repo = pname;
-    rev = "3f243a9e9e431b6175462a0ea08c16e38f840176";
-    sha256 = "1szgjmws3w4ljw52a3y44z9qhnx6jc3479y81zdn2sq5h9cg0mnn";
+  src = fetchurl {
+    url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
+    sha256 = "11qpgincndahq96rbm2kgcy9kw5n9cmbbilsrqcqcyk7mvv464sl";
   };
-  #src = fetchurl {
-  #  url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
-  #  sha256 = "11qpgincndahq96rbm2kgcy9kw5n9cmbbilsrqcqcyk7mvv464sl";
-  #};
 
   outputs = [ "out" "lib" "dev" "devdoc" "man" "installedTests" ];
 
@@ -95,10 +88,6 @@ in stdenv.mkDerivation rec {
   # better – declaring them multiple times might become an error.
   preConfigure = ''
     mesonFlagsArray+=("--libexecdir=$out/libexec")
-  '';
-
-  postConfigure = ''
-    ninja src/fu-hash.h
   '';
 
   postInstall = ''
