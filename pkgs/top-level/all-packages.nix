@@ -8975,8 +8975,6 @@ in
   pkg-configUpstream = lowPrio (pkg-config.override { vanilla = true; });
   pkgconfigUpstream = pkg-configUpstream; # added 2018-02-02
 
-  pkgconfig = pkgconfig-freedesktop;
-
   postiats-utilities = callPackage ../development/tools/postiats-utilities {};
 
   postman = callPackage ../development/web/postman {};
