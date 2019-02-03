@@ -631,6 +631,7 @@ let
       MEGARAID_NEWGEN       = yes;
 
       MLX4_EN_VXLAN = whenOlder "4.8" yes;
+      # restore this?
       #MLX5_CORE_EN       = option yes;
 
       MODVERSIONS        = whenOlder "4.9" yes;
