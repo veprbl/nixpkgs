@@ -71,8 +71,6 @@ let
 
     nativeBuildInputs = [ meson ninja ];
 
-    patches = [ ./resize_region.patch ];
-
     src = fetchFromGitHub {
       owner  = "yshui";
       repo   = "compton";
