@@ -10,7 +10,7 @@ let
     desktopName = "Trilium Notes";
     categories = "Office";
   };
-  version = "0.28.3";
+  version = "0.29.0-beta";
 
   # Fetch from source repo, no longer included in release.
   # (they did special-case icon.png but we want the scalable svg)
@@ -26,7 +26,7 @@ in stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://github.com/zadam/trilium/releases/download/v${version}/trilium-linux-x64-${version}.tar.xz";
-    sha256 = "0bg7fzb0drw6692hcskiwwd4d9s9547cqp3m1s4qj0y7ca3wrx8r";
+    sha256 = "0p6xhp3a43vn9ibj4n54bljjw8d3wcq4c77q7v7wnfjarv3x1s58";
   };
 
   nativeBuildInputs = [
