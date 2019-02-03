@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, meson, ninja, intltool, gtk-doc, pkgconfig, networkmanager, gnome3
+{ stdenv, fetchurl, fetchFromGitHub, meson, ninja, intltool, gtk-doc, pkgconfig, networkmanager, gnome3
 , libnotify, libsecret, polkit, isocodes, modemmanager, libxml2, docbook_xsl, docbook_xml_dtd_43
 , mobile-broadband-provider-info, glib-networking, gsettings-desktop-schemas
 , libgudev, jansson, wrapGAppsHook, gobject-introspection, python3
@@ -6,14 +6,21 @@
 
 let
   pname = "network-manager-applet";
-  version = "1.8.18";
+  version = "1.8.18.0.1"; # not really
 in stdenv.mkDerivation rec {
   name = "${pname}-${version}";
 
-  src = fetchurl {
-    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "0y31g0lxr93370xi74hbpvcy9m81n5wdkdhq8xy2nqp0y4219p13";
+  # should be gitlab oh well
+  src = fetchFromGitHub {
+    owner = "GNOME";
+    repo = pname;
+    rev = "d7a03bb45f0050206be4d4c551fdb36c7c725645";
+    sha256 = "0w13k7r1w22dd9l5lshwcffvqjspl7kdw0rm0rzqgm6z3h9hhy4h";
   };
+  #src = fetchurl {
+  #  url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
+  #  sha256 = "0y31g0lxr93370xi74hbpvcy9m81n5wdkdhq8xy2nqp0y4219p13";
+  #};
 
   mesonFlags = [
     "-Dlibnm_gtk=false" # It is deprecated
