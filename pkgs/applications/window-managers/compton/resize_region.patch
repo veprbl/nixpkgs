@@ -20,8 +20,8 @@ index 9855b32..761cbc1 100644
 -		int y1 = rects[i].y1 - mod;
 +		int x1 = max_i(rects[i].x1 - mod, 0);
 +		int y1 = max_i(rects[i].y1 - mod, 0);
-+		if (rects[i].x1 - mod < 0 || rects[i].y1 - mod < 0)
-+			log_warn("damage resize created negative coord, using 0 instead");
++		//if (rects[i].x1 - mod < 0 || rects[i].y1 - mod < 0)
++		//	log_warn("damage resize created negative coord, using 0 instead");
  		int x2 = rects[i].x2 + mod;
  		int y2 = rects[i].y2 + mod;
  		int wid = x2 - x1;
