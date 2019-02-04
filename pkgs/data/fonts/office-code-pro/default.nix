@@ -29,7 +29,7 @@ stdenv.mkDerivation rec {
       and coding environments, but are still very usable in other applications.
     '';
     homepage = https://github.com/nathco/Office-Code-Pro;
-    license = licenses.sil;
+    license = licenses.ofl;
     maintainers = [ maintainers.AndersonTorres ];
     platforms = platforms.unix;
   };
