@@ -79,6 +79,7 @@ in rec {
   };
   mercury-14-bootstrap = mercury-14.override { enableMinimal = true; };
   mercury-14-full = mercury-14.override { compilers = [ gcc erlang jdk ]; };
+
   mercury-rotd = mkMercury rec {
     version = "rotd-2019-02-03";
     src = fetchFromGitHub {
@@ -87,6 +88,10 @@ in rec {
       rev = version;
       sha256 = "0ksgllarkabgy829wz5ix4khqn108rgfh41jdy6pvwgjmhkb0nfw";
     };
+    bootstrapMercury = mercury-rotd-bootstrap;
   };
-  mercury-rotd-bootstrap = mercury-rotd.override { enableMinimal = true; };
+  mercury-rotd-bootstrap = mercury-rotd.override {
+    enableMinimal = true;
+    bootstrapMercury = null;
+  };
 }
