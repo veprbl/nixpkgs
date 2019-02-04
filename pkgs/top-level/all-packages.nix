@@ -7351,7 +7351,7 @@ in
     mercury-rotd
     mercury-rotd-bootstrap
     ;
-  mercury = mercury-14;
+  mercury = mercury-rotd;
 
   microscheme = callPackage ../development/compilers/microscheme { };
 
