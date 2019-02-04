@@ -12,9 +12,7 @@ rec {
   # * https://nixos.org/nix/manual/#ssec-derivation
   #   Explanation about derivations in general
   mkDerivation =
-    { name ? if attrs ? pname && attrs ? version
-        then "${attrs.pname}-${attrs.version}"
-        else ""
+    {
 
     # These types of dependencies are all exhaustively documented in
     # the "Specifying Dependencies" section of the "Standard
@@ -23,7 +21,7 @@ rec {
     # TODO(@Ericson2314): Stop using legacy dep attribute names
 
     #                           host offset -> target offset
-    , depsBuildBuild              ? [] # -1 -> -1
+      depsBuildBuild              ? [] # -1 -> -1
     , depsBuildBuildPropagated    ? [] # -1 -> -1
     , nativeBuildInputs           ? [] # -1 ->  0  N.B. Legacy name
     , propagatedNativeBuildInputs ? [] # -1 ->  0  N.B. Legacy name
@@ -186,13 +184,14 @@ rec {
            "checkInputs" "installCheckInputs"
            "__impureHostDeps" "__propagatedImpureHostDeps"
            "sandboxProfile" "propagatedSandboxProfile"])
-        // { inherit name; }
-        // (lib.optionalAttrs (stdenv.hostPlatform != stdenv.buildPlatform && !dontAddHostSuffix)) {
+        // (lib.optionalAttrs (!(attrs ? name) && attrs ? pname && attrs ? version)) {
+          name = "${attrs.pname}-${attrs.version}";
+        } // (lib.optionalAttrs (stdenv.hostPlatform != stdenv.buildPlatform && !dontAddHostSuffix && (attrs ? name || (attrs ? pname && attrs ? version)))) {
           # Fixed-output derivations like source tarballs shouldn't get a host
           # suffix. But we have some weird ones with run-time deps that are
           # just used for their side-affects. Those might as well since the
           # hash can't be the same. See #32986.
-          name = "${if name != "" then name else "${attrs.pname}-${attrs.version}"}-${stdenv.hostPlatform.config}";
+          name = "${attrs.name or "${attrs.pname}-${attrs.version}"}-${stdenv.hostPlatform.config}";
         } // {
           builder = attrs.realBuilder or stdenv.shell;
           args = attrs.args or ["-e" (attrs.builder or ./default-builder.sh)];
@@ -282,7 +281,7 @@ rec {
       meta = {
           # `name` above includes cross-compilation cruft (and is under assert),
           # lets have a clean always accessible version here.
-          name = if name != "" then name else "${attrs.pname}-${attrs.version}";
+          name = attrs.name or "${attrs.pname}-${attrs.version}";
 
           # If the packager hasn't specified `outputsToInstall`, choose a default,
           # which is the name of `p.bin or p.out or p`;

@@ -284,4 +284,5 @@ stdenv.mkDerivation rec {
     badPlatforms = platforms.i686;
     broken = stdenv.isAarch64; # 2018-09-04, never built on Hydra
   };
+  passthru = { inherit sources; };
 }
