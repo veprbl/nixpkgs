@@ -82,6 +82,7 @@ google/vim-jsonnet
 google/vim-maktaba
 gregsexton/gitv
 guns/xterm-color-table.vim
+gyim/vim-boxdraw
 hashivim/vim-terraform
 haya14busa/incsearch-easymotion.vim
 haya14busa/incsearch.vim
@@ -140,6 +141,7 @@ keith/swift.vim
 kien/rainbow_parentheses.vim
 konfekt/fastfold
 kshenoy/vim-signature
+KurtPreston/vimcolors
 lambdalisue/vim-gista
 lambdalisue/vim-pager
 latex-box-team/latex-box
@@ -231,6 +233,10 @@ posva/vim-vue
 powerman/vim-plugin-AnsiEsc
 PProvost/vim-ps1
 prettier/vim-prettier
+prabirshrestha/async.vim
+prabirshrestha/asyncomplete-lsp.vim
+prabirshrestha/asyncomplete.vim
+prabirshrestha/vim-lsp
 python-mode/python-mode
 Quramy/tsuquyomi
 racer-rust/vim-racer
