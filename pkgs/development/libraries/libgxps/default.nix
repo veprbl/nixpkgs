@@ -4,11 +4,11 @@
 
 stdenv.mkDerivation rec {
   pname = "libgxps";
-  version = "0.3.0";
+  version = "0.3.1";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "412b1343bd31fee41f7204c47514d34c563ae34dafa4cc710897366bd6cd0fae";
+    sha256 = "157s4c9gjjss6yd7qp7n4q6s72gz1k4ilsx4xjvp357azk49z4qs";
   };
 
   patches = [
