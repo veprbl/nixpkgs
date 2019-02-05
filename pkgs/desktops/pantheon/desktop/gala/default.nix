@@ -5,13 +5,13 @@
 
 stdenv.mkDerivation rec {
   pname = "gala";
-  version = "unstable-2018-12-16";
+  version = "unstable-2019-01-28";
 
   src = fetchFromGitHub {
     owner = "elementary";
     repo = pname;
-    rev = "7f1e392e03000df0bd47e7832bb3adab81f39ae5";
-    sha256 = "1syqq0xfyg5nbnnmy0wp5d66k1bvq9qn27lvr37abxxqig9acpc8";
+    rev = "6654145bb2d53062e6ade1cb8901ff382bbc0e78";
+    sha256 = "0ncmcprn9f2km0qbwgzv11b4r2q5zpa4k5cc4gx4cqpvc1ha16xq";
   };
 
   passthru = {
