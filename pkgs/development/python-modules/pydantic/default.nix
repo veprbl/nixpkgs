@@ -2,11 +2,11 @@
 
 buildPythonPackage rec {
   pname = "pydantic";
-  version = "0.18.2";
+  version = "0.19";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "1rw2386qkhxxmbpv5miff060lsj6ai5mxwn0fi9m1npyc6shifzd";
+    sha256 = "7bcc991083c1c0113fd207a4c38f6432d1a640864ac19371e6a18551398f1ae8";
   };
 
   # https://github.com/samuelcolvin/pydantic/issues/376
