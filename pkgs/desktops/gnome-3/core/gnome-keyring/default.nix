@@ -23,17 +23,18 @@ stdenv.mkDerivation rec {
   ];
 
   configureFlags = [
-    "--with-pkcs11-config=$$out/etc/pkcs11/" # installation directories
-    "--with-pkcs11-modules=$$out/lib/pkcs11/"
+    "--with-pkcs11-config=${placeholder ''out''}/etc/pkcs11/" # installation directories
+    "--with-pkcs11-modules=${placeholder ''out''}/lib/pkcs11/"
   ];
 
   postPatch = ''
     patchShebangs build
   '';
 
-  # Disable for now, they get stuck on one of my builders (not 32bit, not failures)
-  doCheck = false; # true;
-  # doCheck = !stdenv.isi686; # https://github.com/NixOS/nixpkgs/issues/51121
+  # Tends to fail non-deterministically.
+  # - https://github.com/NixOS/nixpkgs/issues/55293
+  # - https://github.com/NixOS/nixpkgs/issues/51121
+  doCheck = false;
 
   # In 3.20.1, tests do not support Python 3
   checkInputs = [ dbus python2 ];

@@ -7,9 +7,9 @@ stdenv.mkDerivation rec {
   version = "4.3.2";
 
   src = fetchFromGitHub {
-    repo = "pdfpc";
-    owner = "pdfpc";
-    rev = "refs/tags/v${version}";
+    repo = product;
+    owner = product;
+    rev = "v${version}";
     sha256 = "15y6g92fp6x6dwwhrhkfny5z20w7pq9c8w19fh2vzff9aa6m2h9z";
   };
 

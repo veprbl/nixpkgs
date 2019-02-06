@@ -3,7 +3,7 @@
 with stdenv.lib;
 
 buildLinux (args // rec {
-  version = "4.19.19";
+  version = "4.19.20";
 
   # modDirVersion needs to be x.y.z, will automatically add .0 if needed
 
@@ -12,6 +12,6 @@ buildLinux (args // rec {
 
   src = fetchurl {
     url = "mirror://kernel/linux/kernel/v4.x/linux-${version}.tar.xz";
-    sha256 = "1gb98s14w8gzbgd9r6hmppal92lqfjhf1s1rn1p6k7a7f3vcmbwr";
+    sha256 = "1904zamsxxzm0qbjv9mprxamhs7a3dymxl0yfj777gylv9v2fzfw";
   };
 } // (args.argsOverride or {}))
