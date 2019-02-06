@@ -64,8 +64,8 @@ let
 
   gitSource = rec {
     pname = "compton-git";
-    #version = "5";
-    version = "2019-02-03";
+    version = "5.1";
+    #version = "2019-02-03";
 
     COMPTON_VERSION = "v${version}";
 
@@ -74,9 +74,9 @@ let
     src = fetchFromGitHub {
       owner  = "yshui";
       repo   = "compton";
-      #rev    = COMPTON_VERSION;
-      rev    = "f19766f15a24976c475e966e85192ee69bb79810";
-      sha256 = "05pmz5bqhv50w8gq3cajjdrbw1mlnvd2xadrfm211pqkkkzshs9s";
+      rev    = COMPTON_VERSION;
+      #rev    = "f19766f15a24976c475e966e85192ee69bb79810";
+      sha256 = "0gg213fv075dl3f8m5s1ings4s0zfxsdyjw6gmz8r03756sl55rl";
     };
 
     buildInputs = [
@@ -92,9 +92,9 @@ let
       libxdg_basedir
     ];
 
-    postPatch = ''
-      substituteInPlace meson.build --replace "version: '4'" "version: '${version}'"
-    '';
+    #postPatch = ''
+    #  substituteInPlace meson.build --replace "version: '4'" "version: '${version}'"
+    #'';
 
     NIX_CFLAGS_COMPILE = [ "-fno-strict-aliasing" ];
 
