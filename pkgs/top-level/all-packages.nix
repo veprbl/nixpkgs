@@ -1447,6 +1447,8 @@ in
 
   gosu = callPackage ../tools/misc/gosu { };
 
+  gping = callPackage ../tools/networking/gping { };
+
   greg = callPackage ../applications/audio/greg {
     pythonPackages = python3Packages;
   };
@@ -2402,6 +2404,8 @@ in
   mcrcon = callPackage ../tools/networking/mcrcon {};
 
   s-tar = callPackage ../tools/archivers/s-tar {};
+
+  sonota = callPackage ../tools/misc/sonota { };
 
   tealdeer = callPackage ../tools/misc/tealdeer { };
 
@@ -5383,6 +5387,8 @@ in
   sigal = callPackage ../applications/misc/sigal { };
 
   sigil = libsForQt5.callPackage ../applications/editors/sigil { };
+
+  signal-cli = callPackage ../applications/networking/instant-messengers/signal-cli { };
 
   signal-desktop = callPackage ../applications/networking/instant-messengers/signal-desktop { };
 
@@ -17454,6 +17460,8 @@ in
     inherit (darwin) IOKit;
   };
 
+  glowing-bear = callPackage ../applications/networking/irc/glowing-bear { };
+
   gmtk = callPackage ../development/libraries/gmtk { };
 
   gmu = callPackage ../applications/audio/gmu { };
@@ -20379,6 +20387,8 @@ in
   xscreensaver = callPackage ../misc/screensavers/xscreensaver {
     inherit (gnome2) libglade;
   };
+
+  xsuspender = callPackage ../applications/misc/xsuspender {  };
 
   xss-lock = callPackage ../misc/screensavers/xss-lock { };
 
