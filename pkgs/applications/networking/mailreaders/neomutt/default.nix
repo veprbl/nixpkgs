@@ -16,15 +16,15 @@ let
   '';
 
 in stdenv.mkDerivation rec {
-  version = "20190124";
+  version = "20190208";
   name = "neomutt-${version}";
 
   src = fetchFromGitHub {
     owner  = "neomutt";
     repo   = "neomutt";
     #rev    = "neomutt-${version}";
-    rev = "40af0561629e106ee6918b8a487082f25373c3ac";
-    sha256 = "110iaz4crhlrvr4q0md847lm5g9ccm6qv7d0x1fip0xwz7sghxca";
+    rev = "844319ad9daa5101417261f465b18b412960e044";
+    sha256 = "1249asjwslw8980lpdqqhcbbk76360n8p5h1clm2s173l4hlbpg5";
   };
 
   buildInputs = [
