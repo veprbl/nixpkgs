@@ -4,19 +4,19 @@
 with python3.pkgs;
 
 buildPythonApplication rec {
-  version = "4.0.0a4.0.1"; # XXX: not really
-  name = "gcalcli-${version}";
+  pname = "gcalcli";
+  version = "4.0.3";
 
+  # XXX: why not fetchPyPi?
   src = fetchFromGitHub {
     owner  = "insanum";
-    repo   = "gcalcli";
-    #rev    = "v${version}";
-    rev = "92fab4d39db319d91e5473d8df4cfef80b27e49c";
-    sha256 = "1z52dh8p7p0b7v70n9jkvgqs81iwx7bhpzimxmfa0ka6gf2bvvxv";
+    repo   = pname;
+    rev    = "v${version}";
+    sha256 = "15hpm7b09p5qnha0hpp0mgdl2pgsyq2sjcqihk3fsv7arngdbr5q";
   };
 
   postPatch = lib.optionalString stdenv.isLinux ''
-    substituteInPlace gcalcli/gcalcli.py --replace \
+    substituteInPlace gcalcli/argparsers.py --replace \
       "command = 'notify-send -u critical" \
       "command = '${libnotify}/bin/notify-send -u critical"
   '';
