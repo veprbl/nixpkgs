@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, cmake, gbenchmark }:
+{ stdenv, fetchFromGitHub, cmake }:
 
 let
   generic = { version, sha256 }:
@@ -14,8 +14,6 @@ let
       };
 
       nativeBuildInputs = [ cmake ];
-
-      buildInputs = [ gbenchmark ];
 
       cmakeFlags = [ "-DSPDLOG_BUILD_EXAMPLES=OFF" ];
 
@@ -37,8 +35,8 @@ let
 in
 {
   spdlog_1 = generic {
-    version = "1.3.1";
-    sha256 = "1rd4zmrlkcdjx0m0wpmjm1g9srj7jak6ai08qkhbn2lsn0niifzd";
+    version = "1.2.1";
+    sha256 = "0gdj8arfz4r9419zbcxk9y9nv47qr7kyjjzw9m3ijgmn2pmxk88n";
   };
 
   spdlog_0 = generic {
