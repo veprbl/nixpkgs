@@ -4658,6 +4658,10 @@ in
 
   olsrd = callPackage ../tools/networking/olsrd { };
 
+  opl3bankeditor = libsForQt5.callPackage ../tools/audio/opl3bankeditor { };
+
+  opn2bankeditor = callPackage ../tools/audio/opl3bankeditor/opn2bankeditor.nix { };
+
   os-prober = callPackage ../tools/misc/os-prober {};
 
   osl = callPackage ../development/compilers/osl { };
@@ -13655,6 +13659,8 @@ in
 
   mailman = callPackage ../servers/mail/mailman { };
 
+  mailman-rss = callPackage ../development/python-modules/mailman-rss { };
+
   mattermost = callPackage ../servers/mattermost { };
   matterircd = callPackage ../servers/mattermost/matterircd.nix { };
   matterbridge = callPackage ../servers/matterbridge { };
@@ -17271,6 +17277,7 @@ in
   icecat-unwrapped = firefoxPackages.icecat;
 
   firefox = wrapFirefox firefox-unwrapped { };
+  firefox-wayland = wrapFirefox firefox-unwrapped { gdkWayland = true; };
   firefox-esr-52 = wrapFirefox firefox-esr-52-unwrapped { };
   firefox-esr-60 = wrapFirefox firefox-esr-60-unwrapped { };
   firefox-esr = firefox-esr-60;
