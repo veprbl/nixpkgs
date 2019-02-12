@@ -9203,6 +9203,8 @@ in
 
   texi2mdoc = callPackage ../tools/misc/texi2mdoc { };
 
+  todoist = callPackage ../applications/misc/todoist { };
+
   todolist = callPackage ../applications/misc/todolist { };
 
   travis = callPackage ../development/tools/misc/travis { };
