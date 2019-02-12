@@ -58,6 +58,8 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
+  autoreconfPhase = "./autogen.sh";
+
   configureFlags = [
     "--with-system-bubblewrap=${bubblewrap}/bin/bwrap"
     "--with-system-dbus-proxy=${xdg-dbus-proxy}/bin/xdg-dbus-proxy"
