@@ -5,7 +5,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://dri.freedesktop.org/libdrm/${name}.tar.bz2";
-    sha256 = "08yimlp6jir1rs5ajgdx74xa5qdzcqahpdzdk0rmkmhh7vdcrl3p";
+    sha256 = "14xkip83qgljjaahzq41qgl60j54q7k00la1hbf5kk5lgg7ilmhd";
   };
 
   outputs = [ "out" "dev" "bin" ];
