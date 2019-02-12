@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, autoreconfHook, docbook_xml_dtd_412, docbook_xml_dtd_42, docbook_xml_dtd_43, docbook_xsl, which, libxml2
+{ stdenv, fetchurl, fetchFromGitHub, autoreconfHook, docbook_xml_dtd_412, docbook_xml_dtd_42, docbook_xml_dtd_43, docbook_xsl, which, libxml2
 , gobject-introspection, gtk-doc, intltool, libxslt, pkgconfig, xmlto, appstream-glib, substituteAll, glibcLocales, yacc, xdg-dbus-proxy, p11-kit
 , bubblewrap, bzip2, dbus, glib, gpgme, json-glib, libarchive, libcap, libseccomp, coreutils, gettext, python2, hicolor-icon-theme
 , libsoup, lzma, ostree, polkit, python3, systemd, xorg, valgrind, glib-networking, wrapGAppsHook, gnome3 }:
@@ -10,10 +10,17 @@ stdenv.mkDerivation rec {
   # TODO: split out lib once we figure out what to do with triggerdir
   outputs = [ "out" "man" "doc" "installedTests" ];
 
-  src = fetchurl {
-    url = "https://github.com/flatpak/flatpak/releases/download/${version}/${pname}-${version}.tar.xz";
-    sha256 = "0i0dn3w3545lvmjlzqj3j70lk8yrq64r9frp1rk6a161gwq20ixv";
+  src = fetchFromGitHub {
+    owner = pname;
+    repo = pname;
+    rev = "4fe2d19ed2eb8e0917eaa683ba213727c85ae373";
+    sha256 = "13979vwsa1hqw8diiahm1pddv1046i6j51n8cdzk4snr7gaq61hy";
+    fetchSubmodules = true;
   };
+  #src = fetchurl {
+  #  url = "https://github.com/flatpak/flatpak/releases/download/${version}/${pname}-${version}.tar.xz";
+  #  sha256 = "0i0dn3w3545lvmjlzqj3j70lk8yrq64r9frp1rk6a161gwq20ixv";
+  #};
 
   patches = [
     (substituteAll {
