@@ -169,9 +169,9 @@ in
   osquery = handleTest ./osquery.nix {};
   osrm-backend = handleTest ./osrm-backend.nix {};
   ostree = handleTest ./ostree.nix {};
-  pantheon = handleTest ./pantheon.nix {};
   pam-oath-login = handleTest ./pam-oath-login.nix {};
   pam-u2f = handleTest ./pam-u2f.nix {};
+  pantheon = handleTest ./pantheon.nix {};
   peerflix = handleTest ./peerflix.nix {};
   pgjwt = handleTest ./pgjwt.nix {};
   pgmanage = handleTest ./pgmanage.nix {};
