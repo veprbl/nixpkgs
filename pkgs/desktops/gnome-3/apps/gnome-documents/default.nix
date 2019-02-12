@@ -1,4 +1,4 @@
-{ stdenv, meson, ninja, gettext, fetchurl, fetchpatch, evince, gjs
+{ stdenv, meson, ninja, gettext, fetchurl, evince, gjs
 , pkgconfig, gtk3, glib, tracker, tracker-miners
 , itstool, libxslt, webkitgtk, libgdata
 , gnome-desktop, libzapojit, libgepub
@@ -7,17 +7,20 @@
 , desktop-file-utils, wrapGAppsHook, python3 }:
 
 stdenv.mkDerivation rec {
-  name = "gnome-documents-${version}";
+  pname = "gnome-documents";
   version = "3.30.1";
 
   src = fetchurl {
-    url = "mirror://gnome/sources/gnome-documents/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
+    url = "mirror://gnome/sources/gnome-documents/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
     sha256 = "1z8gkfi2wyyd3bbv73rcdzi1gzaaaskabyscmbj51prayiw106b6";
   };
 
   doCheck = true;
 
-  mesonFlags = [ "-Dgetting-started=true" ];
+  mesonFlags = [
+    "-Dgetting_started=true"
+    "-Dno_network=true"
+  ];
 
   nativeBuildInputs = [
     meson ninja pkgconfig gettext itstool libxslt desktop-file-utils docbook_xsl docbook_xml_dtd_42 wrapGAppsHook python3
@@ -31,12 +34,9 @@ stdenv.mkDerivation rec {
     gnome-desktop libzapojit libgepub
   ];
 
+  # Don't try to keep git submodules in sync for build
   patches = [
-    # fix RPATH to libgd
-    (fetchpatch {
-      url = "https://gitlab.gnome.org/GNOME/gnome-documents/commit/d18a92e0a940073ac766f609937539e4fc6cdbb7.patch";
-      sha256 = "0s3mk8vrl1gzk93yvgqbnz44i27qw1d9yvvmnck3fv23phrxkzk9";
-    })
+    ./no-network-option.patch
   ];
 
   postPatch = ''
