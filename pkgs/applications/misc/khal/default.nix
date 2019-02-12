@@ -12,7 +12,7 @@ with python3.pkgs; buildPythonApplication rec {
   src = fetchgit {
     url = "https://github.com/pimutils/${pname}";
     rev = "1bc431f5390b280d1f162131f592cde03028fabb";
-    sha256 = "1srsy993z8vj3l7a7bw6vfl7n5b17wvnx0rqfylbsl0d1v5wsbc1";
+    sha256 = "01w7rjp3clvv1lv8vagw28k0kj2q9qaiyf7fjvllzsxy6dx6gcis";
     leaveDotGit = true;
   };
 
