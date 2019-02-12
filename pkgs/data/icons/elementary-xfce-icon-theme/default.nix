@@ -2,16 +2,19 @@
 
 stdenv.mkDerivation rec {
   name = "elementary-xfce-icon-theme-${version}";
-  version = "0.13.1";
+  version = "0.13.1.0.1"; # not really, git
 
   src = fetchFromGitHub {
     owner = "shimmerproject";
     repo = "elementary-xfce";
-    rev = "v${version}";
-    sha256 = "16msdrazhbv80cvh5ffvgj13xmkpf87r7mq6xz071fza6nv7g0jn";
+    #rev = "v${version}";
+    rev = "5a5d511bd5b19cc708f8b43cc2a2ff41bfc06c8f";
+    sha256 = "0cp1ijayd65p14nbid5ppz75cnxic66i59za4z2w79559j3z872j";
   };
 
   nativeBuildInputs = [ pkgconfig gdk_pixbuf librsvg optipng gtk3 hicolor-icon-theme ];
+
+  enableParallelBuilding = true;
 
   postPatch = ''
     substituteInPlace svgtopng/Makefile --replace "-O0" "-O"
