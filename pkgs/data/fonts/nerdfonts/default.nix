@@ -2,19 +2,21 @@
 
 stdenv.mkDerivation rec {
   #version = "2.0.0";
-  version = "2018-11-25";
+  version = "2019-01-24";
   name = "nerdfonts-${version}";
   src = fetchFromGitHub {
     owner = "ryanoasis";
     repo = "nerd-fonts";
     #rev = version;
-    rev = "e9ec3ae4548e59eb9a6531f38370cb99ca591e16";
-    sha256 = "0g99rmwl7ibdpxcxnnqkc9fj4ibkv63azdcs0hahaysh4azapzsa";
+    rev = "b84647df4fae0e0801900784d92fc0b6cf6f3102";
+    sha256 = "129534ga6ipyjw2dpjlgqpyv4mf6wh9xpdbbh0krq3zls2gqwppd";
   };
   nativeBuildInputs = [ bash which ];
   patchPhase = ''
     patchShebangs install.sh
-    sed -i -e 's|font_dir="\$HOME/.local/share/fonts|font_dir="$out/share/fonts/truetype|g' install.sh
+    substituteInPlace install.sh \
+      --replace '$HOME/.local/share/fonts' \
+                '${placeholder "out"}/share/fonts/truetype'
   '';
   installPhase = ''
     mkdir -p $out/share/fonts/truetype
