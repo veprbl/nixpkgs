@@ -1,5 +1,5 @@
 { lib, stdenv, fetchFromGitHub, fetchurl
-, cmake, cmark, lmdb, qt5, qtmacextras, mtxclient
+, cmake, cmark, lmdb, qt5, qtmacextras /* , mtxclient */
 , boost, spdlog, olm, pkgconfig
 }:
 
@@ -7,8 +7,8 @@ let
   tweeny = fetchFromGitHub {
     owner = "mobius3";
     repo = "tweeny";
-    rev = "5e683d735be18427f7b5736f590cd12e71911f97";
-    sha256 = "1w381zf0k4cn8jxm492ib7mgr06ybjg2gbfak5map8ixixnsyjmp";
+    rev = "b94ce07cfb02a0eb8ac8aaf66137dabdaea857cf";
+    sha256 = "1wyyq0j7dhjd6qgvnh3knr70li47hmf5394yznkv9b1indqjx4mi";
   };
 
   lmdbxx = fetchFromGitHub {
@@ -16,6 +16,12 @@ let
     repo = "lmdbxx";
     rev = "0b43ca87d8cfabba392dfe884eb1edb83874de02";
     sha256 = "1whsc5cybf9rmgyaj6qjji03fv5jbgcgygp956s3835b9f9cjg1n";
+  };
+  mtxclient = fetchFromGitHub {
+    owner = "Nheko-Reborn";
+    repo = "mtxclient";
+    rev = "8659d011f93cad63de34a79f9b0543705d5da825";
+    sha256 = "1l3hwdcbjhhxjqm7c96cn5z95s3snplxh165pmkxs5q2nla769mm";
   };
 in
 stdenv.mkDerivation rec {
@@ -49,6 +55,7 @@ stdenv.mkDerivation rec {
     mkdir -p .deps/include/
     ln -s ${tweeny}/include .deps/include/tweeny
     ln -s ${spdlog} .deps/spdlog
+    ln -s ${mtxclient} .deps/mtxclient
   '';
 
   cmakeFlags = [
