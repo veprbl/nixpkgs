@@ -1,5 +1,5 @@
 { stdenv, fetchurl, lib
-, pkgconfig, intltool, autoreconfHook
+, pkgconfig, intltool, meson, ninja, bison, flex
 , file, expat, libdrm, xorg, wayland, wayland-protocols, openssl
 , llvmPackages, libffi, libomxil-bellagio, libva-minimal
 , libelf, libvdpau, valgrind-light, python2, python2Packages
@@ -36,16 +36,17 @@ let
     then ["virgl" "nouveau" "freedreno" "vc4" "etnaviv" "imx"]
     else if stdenv.isAarch64
     then ["virgl" "nouveau" "vc4" ]
-    else ["virgl" "svga" "i915" "r300" "r600" "radeonsi" "nouveau"]);
+    # XXX: can't have i915 provider for gallium and dri
+    else ["virgl" "svga" /* "i915" */ "r300" "r600" "radeonsi" "nouveau"]);
   defaultDriDrivers =
     optionals (elem "drm" eglPlatforms)
     (if (stdenv.isAarch32 || stdenv.isAarch64)
     then ["nouveau"]
-    else ["i915" "i965" "nouveau" "radeon" "r200"]);
+    else ["i915" "i965" "nouveau" /* XXX: new name? / /* "radeon" */ "r200"]);
   defaultVulkanDrivers =
     optionals stdenv.isLinux (if (stdenv.isAarch32 || stdenv.isAarch64)
     then []
-    else ["intel"] ++ lib.optional enableRadv "radeon");
+    else ["intel"] ++ lib.optional enableRadv "amd" /* "radeon" */);
 in
 
 let gallium_ = galliumDrivers; dri_ = driDrivers; vulkan_ = vulkanDrivers; in
@@ -59,7 +60,8 @@ let
   driDrivers =
     (if dri_ == null
       then optionals (elem "drm" eglPlatforms) defaultDriDrivers
-      else dri_) ++ lib.optional stdenv.isLinux "swrast";
+      # "Only one swrast provider can be built"
+      else dri_); # ++ lib.optional stdenv.isLinux "swrast";
   vulkanDrivers =
     if vulkan_ == null
     then defaultVulkanDrivers
@@ -67,7 +69,7 @@ let
 in
 
 let
-  version = "18.3.3";
+  version = "19.0.0-rc3";
   branch  = head (splitString "." version);
 in
 
@@ -81,7 +83,7 @@ let self = stdenv.mkDerivation {
       "ftp://ftp.freedesktop.org/pub/mesa/older-versions/${branch}.x/${version}/mesa-${version}.tar.xz"
       "https://mesa.freedesktop.org/archive/mesa-${version}.tar.xz"
     ];
-    sha256 = "16b2jgrmlqajsyz0qkr4b2v68538bs941cn3pk635ib6d5m8idia";
+    sha256 = "19piwldkpwzh9qpn1dbc44a1vwf553i0r4fqz35km1h5yffshcpg";
   };
 
   prePatch = "patchShebangs .";
@@ -99,43 +101,100 @@ let self = stdenv.mkDerivation {
             ++ lib.optional (elem "swrast" galliumDrivers) "osmesa";
 
   # TODO: Figure out how to enable opencl without having a runtime dependency on clang
-  configureFlags = [
+  mesonFlags = [
     "--sysconfdir=${libglvnd.driverLink}/etc"
-    "--localstatedir=/var"
-    "--with-dri-driverdir=$(drivers)/lib/dri"
-    "--with-dri-searchpath=${libglvnd.driverLink}/lib/dri"
-    "--with-platforms=${concatStringsSep "," eglPlatforms}"
-    "--with-gallium-drivers=${concatStringsSep "," galliumDrivers}"
-    "--with-dri-drivers=${concatStringsSep "," driDrivers}"
-    "--with-vulkan-drivers=${concatStringsSep "," vulkanDrivers}"
-    "--enable-texture-float"
-    (enableFeature stdenv.isLinux "dri3")
-    (enableFeature stdenv.isLinux "nine") # Direct3D in Wine
-    "--enable-libglvnd"
-    "--enable-dri"
-    "--enable-driglx-direct"
-    "--enable-gles1"
-    "--enable-gles2"
-    "--enable-glx"
+    "-Dglvnd=true"
+    "-Dglx-read-only-text=true"
+#    "--localstatedir=/var"
+    "-Ddri-drivers-path=${placeholder "drivers"}/lib/dri"
+    "-Ddri-search-path=${libglvnd.driverLink}/lib/dri"
+    "-Dplatforms=${concatStringsSep "," eglPlatforms}"
+    "-Dgallium-drivers=${concatStringsSep "," galliumDrivers}"
+    "-Ddri-drivers=${concatStringsSep "," driDrivers}"
+    "-Dvulkan-drivers=${concatStringsSep "," vulkanDrivers}"
+  ] ++ optionals stdenv.isLinux [
+    "-Ddri3=true"
+    "-Dgallium-nine=true"
+  ] ++ [
+   # "--enable-libglvnd"
+    #"-Dgallium
+    #"--enable-dri"
+    "-Dglx-direct=true" # -enable-driglx-direct"
+    "-Dgles1=true"
+    "-Dgles2=true"
+    #"-Dglx=true"
+    "-Dglx=dri"
+    "-Dopengl=true"
     # https://bugs.freedesktop.org/show_bug.cgi?id=35268
-    (enableFeature (!stdenv.hostPlatform.isMusl) "glx-tls")
+    #(enableFeature (!stdenv.hostPlatform.isMusl) "glx-tls")
+    # TODO: musl-only
+    #"-Dglx-use-tls=false"
     # used by wine
-    (enableFeature (elem "swrast" galliumDrivers) "gallium-osmesa")
-    "--enable-llvm"
-    (enableFeature stdenv.isLinux "egl")
-    (enableFeature stdenv.isLinux "xa") # used in vmware driver
-    (enableFeature stdenv.isLinux "gbm")
-    "--enable-xvmc"
-    "--enable-vdpau"
-    "--enable-shared-glapi"
-    "--enable-llvm-shared-libs"
-    (enableFeature stdenv.isLinux "omx-bellagio")
-    (enableFeature stdenv.isLinux "va")
-    "--disable-opencl"
+    #(enableFeature (elem "swrast" galliumDrivers) "gallium-osmesa")
+  ] ++ optional (elem "swrast" galliumDrivers) [
+    "-Dosmesa=gallium"
+  ] ++ [
+    #"--enable-llvm"
+    "-Dllvm=true"
+    #(enableFeature stdenv.isLinux "egl")
+    "-Degl=true"
+    #(enableFeature stdenv.isLinux "xa") # used in vmware driver
+    "-Dgallium-xa=true"
+    #(enableFeature stdenv.isLinux "gbm")
+    "-Dgbm=true"
+    #"--enable-xvmc"
+    "-Dgallium-xvmc=true"
+    #"--enable-vdpau"
+    "-Dgallium-vdpau=true"
+    #"--enable-shared-glapi"
+    "-Dshared-glapi=true"
+    #"--enable-llvm-shared-libs"
+    "-Dshared-llvm=true"
+    #(enableFeature stdenv.isLinux "omx-bellagio")
+    "-Dgallium-omx=bellagio"
+    #(enableFeature stdenv.isLinux "va")
+    "-Dgallium-va=true"
+    #"--disable-opencl"
+    "-Dgallium-opencl=disabled"
   ];
+#  configureFlags = [
+#    "--sysconfdir=${libglvnd.driverLink}/etc"
+#    "--localstatedir=/var"
+#    "--with-dri-driverdir=$(drivers)/lib/dri"
+#    "--with-dri-searchpath=${libglvnd.driverLink}/lib/dri"
+#    "--with-platforms=${concatStringsSep "," eglPlatforms}"
+#    "--with-gallium-drivers=${concatStringsSep "," galliumDrivers}"
+#    "--with-dri-drivers=${concatStringsSep "," driDrivers}"
+#    "--with-vulkan-drivers=${concatStringsSep "," vulkanDrivers}"
+#    "--enable-texture-float"
+#    (enableFeature stdenv.isLinux "dri3")
+#    (enableFeature stdenv.isLinux "nine") # Direct3D in Wine
+#    "--enable-libglvnd"
+#    "--enable-dri"
+#    "--enable-driglx-direct"
+#    "--enable-gles1"
+#    "--enable-gles2"
+#    "--enable-glx"
+#    # https://bugs.freedesktop.org/show_bug.cgi?id=35268
+#    (enableFeature (!stdenv.hostPlatform.isMusl) "glx-tls")
+#    # used by wine
+#    (enableFeature (elem "swrast" galliumDrivers) "gallium-osmesa")
+#    "--enable-llvm"
+#    (enableFeature stdenv.isLinux "egl")
+#    (enableFeature stdenv.isLinux "xa") # used in vmware driver
+#    (enableFeature stdenv.isLinux "gbm")
+#    "--enable-xvmc"
+#    "--enable-vdpau"
+#    "--enable-shared-glapi"
+#    "--enable-llvm-shared-libs"
+#    (enableFeature stdenv.isLinux "omx-bellagio")
+#    (enableFeature stdenv.isLinux "va")
+#    "--disable-opencl"
+#  ];
 
   nativeBuildInputs = [
-    autoreconfHook intltool pkgconfig file
+    meson ninja
+    intltool pkgconfig file
     python2 python2Packages.Mako
   ];
 
@@ -145,6 +204,7 @@ let self = stdenv.mkDerivation {
     ++ optionals stdenv.isDarwin [ OpenGL Xplugin ];
 
   buildInputs = with xorg; [
+    bison flex
     expat llvmPackages.llvm libglvnd xorgproto
     libX11 libXext libxcb libXt libXfixes libxshmfence libXrandr
     libffi libvdpau libelf libXvMC
