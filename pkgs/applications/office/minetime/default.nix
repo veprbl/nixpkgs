@@ -1,4 +1,4 @@
-{ appimageTools, fetchurl }:
+{ appimageTools, fetchurl, lib }:
 
 let
   pname = "MineTime";
@@ -32,5 +32,15 @@ appimageTools.wrapType2 rec {
     export LC_ALL=C.UTF8
   '';
 
-  # TODO: meta!
+  meta = with lib; {
+    description = "Modern, intuitive and smart calendar application";
+    homepage = https://minetime.ai;
+    # No license seems to be mentioned so mark as unfree for now :(
+    # Unfortunate given their repo/website include statements such as:
+    # "MineTime is totally free but not open-source (yet)."
+    license = licenses.unfree;
+    # Should be cross-platform, but for now we just grab the appimage
+    platforms = [ "x86_64-linux" ];
+    maintainers = with maintainers; [ dtzWill ];
+  };
 }
