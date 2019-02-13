@@ -1804,9 +1804,7 @@ in
 
   burp = callPackage ../tools/backup/burp { };
 
-  buku = callPackage ../applications/misc/buku {
-    python3 = python36; # due to #52766
-  };
+  buku = callPackage ../applications/misc/buku { };
 
   byzanz = callPackage ../applications/video/byzanz {};
 
@@ -19200,7 +19198,9 @@ in
 
   rdesktop = callPackage ../applications/networking/remote/rdesktop { };
 
-  rdedup = callPackage ../tools/backup/rdedup { };
+  rdedup = callPackage ../tools/backup/rdedup {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
 
   rdup = callPackage ../tools/backup/rdup { };
 

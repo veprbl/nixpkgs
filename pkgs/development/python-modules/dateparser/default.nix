@@ -1,4 +1,4 @@
-{ lib, fetchPypi, fetchFromGitHub, buildPythonPackage
+{ lib, fetchPypi, buildPythonPackage
 , nose
 , parameterized
 , mock
@@ -14,19 +14,12 @@
 
 buildPythonPackage rec {
   pname = "dateparser";
-  version = "0.7.0.1"; # XXX: not really :(
+  version = "0.7.1";
 
-  # Build from git for py3.7 fixes
-  src = fetchFromGitHub {
-    owner = "scrapinghub";
-    repo = "dateparser";
-    rev = "6540c33caaf6923c4affedda2ef92b29f814d6fc";
-    sha256 = "1c720hq5m0q7c517fa5675l3knrhgg245dpsq0d9r5hnrw2sgyf3";
+  src = fetchPypi {
+    inherit pname version;
+    sha256 = "42d51be54e74a8e80a4d76d1fa6e4edd997098fce24ad2d94a2eab5ef247193e";
   };
-  #src = fetchPypi {
-  #  inherit pname version;
-  #  sha256 = "940828183c937bcec530753211b70f673c0a9aab831e43273489b310538dff86";
-  #};
 
   checkInputs = [ nose mock parameterized six glibcLocales ];
   preCheck =''
