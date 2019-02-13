@@ -11,20 +11,7 @@ appimageTools.wrapType2 rec {
     sha256 = "11w1v9vlg51masxgigraqp5547dl02jrrwhzz5gcckv4l9y8rlyw";
   };
 
-  extraPkgs = p: [ 
-    p.gnome3.gnome-keyring
-    p.gnome3.seahorse
-    p.gnome3.libsecret
-    p.at-spi2-core
-    p.dbus
-    p.gnome3.gnome-online-accounts
-    p.libgpgerror
-    p.desktop-file-utils
-    p.appstream-glib
-    p.gnome3.gsettings-desktop-schemas
-
-    p.libnotify
-  ];
+  extraPkgs = p: p.atomEnv.packages;
 
   # our glibc doesn't actually support this yet,
   # but even so this fixes account creation.
@@ -35,9 +22,7 @@ appimageTools.wrapType2 rec {
   meta = with lib; {
     description = "Modern, intuitive and smart calendar application";
     homepage = https://minetime.ai;
-    # No license seems to be mentioned so mark as unfree for now :(
-    # Unfortunate given their repo/website include statements such as:
-    # "MineTime is totally free but not open-source (yet)."
+    # May become open-source in the future
     license = licenses.unfree;
     # Should be cross-platform, but for now we just grab the appimage
     platforms = [ "x86_64-linux" ];
