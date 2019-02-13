@@ -58,5 +58,8 @@ rec {
     };
   };
 
-  binprm_buf_size = ./binprm-buf-size.patch;
+  binprm_buf_size = rec {
+    name = "binprm_buf_size";
+    patch = ./binprm-buf-size.patch;
+  };
 }
