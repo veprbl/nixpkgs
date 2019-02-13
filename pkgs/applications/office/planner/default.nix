@@ -8,9 +8,10 @@
 , gnome2
 , libxslt
 , python
+, python27Packages
 }:
 
-let version = "unstable-2018-03-25";
+let version = "unstable-2019-02-13";
 
 in stdenv.mkDerivation {
   name = "planner-${version}";
@@ -19,12 +20,9 @@ in stdenv.mkDerivation {
     domain = "gitlab.gnome.org";
     owner = "GNOME";
     repo = "planner";
-    rev = "2a2bf11d96a7f5d64f05c9053661baa848e47797";
-    sha256 = "1bhh05kkbnhibldc1fc7kv7bwf8aa1vh4q379syqd3jbas8y521g";
+    rev = "76d31defae4979aa51dd37e8888f61e9a6a51367";
+    sha256 = "0lbch4drg6005216hgcys93rq92p7zd20968x0gk254kckd9ag5w";
   };
-
-  # planner-popup-button.c:81:2: error: 'g_type_class_add_private' is deprecated [-Werror=deprecated-declarations]
-  NIX_CFLAGS_COMPILE = "-Wno-error=deprecated-declarations";
 
   nativeBuildInputs = with gnome2; [
     pkgconfig
@@ -45,9 +43,15 @@ in stdenv.mkDerivation {
     libglade
     libxslt
     python
+    python27Packages.pygtk
   ];
 
   preConfigure = ''./autogen.sh'';
+  configureFlags = [
+    "--enable-python"
+    "--enable-python-plugin"
+#    "--enable-simple-priority-scheduling"
+    ];
 
   enableParallelBuilding = true;
 
