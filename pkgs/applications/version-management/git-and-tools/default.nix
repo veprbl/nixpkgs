@@ -120,6 +120,9 @@ let
 
   hub = callPackage ./hub {
     inherit (darwin) Security;
+    #inherit (pkgsMusl) groff utillinux;
+    inherit (pkgsMusl) groff;
+    utillinux = pkgsMusl.utillinuxMinimal;
   };
 
   hubUnstable = throw "use gitAndTools.hub instead";

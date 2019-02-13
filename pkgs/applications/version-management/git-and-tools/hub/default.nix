@@ -1,8 +1,8 @@
-{ stdenv, buildGoPackage, fetchFromGitHub, ronn, ruby, groff, Security, utillinux }:
+{ stdenv, buildGoPackage, fetchFromGitHub, groff, Security, utillinux }:
 
 buildGoPackage rec {
   name = "hub-${version}";
-  version = "2.7.1";
+  version = "2.9.0";
 
   goPackagePath = "github.com/github/hub";
 
@@ -10,16 +10,13 @@ buildGoPackage rec {
     owner = "github";
     repo = "hub";
     rev = "v${version}";
-    sha256 = "1cbh139f77wsyc21a972zqcafbfhifl1jz4f1ahk9wy26qhpf2dr";
+    sha256 = "0yxpr606xx23l8823hjqj16cvjjrwb28c7z08ml1pkfvaf7w4n81";
   };
 
-  nativeBuildInputs = [ groff ronn utillinux ];
-  buildInputs = [ ruby ] ++
-    stdenv.lib.optional stdenv.isDarwin Security;
+  nativeBuildInputs = [ groff utillinux ];
+  buildInputs = stdenv.lib.optional stdenv.isDarwin Security;
 
   postPatch = ''
-    mkdir bin
-    ln -s ${ronn}/bin/ronn bin/ronn
     patchShebangs .
   '';
 
@@ -29,6 +26,7 @@ buildGoPackage rec {
     install -D etc/hub.bash_completion.sh "$bin/share/bash-completion/completions/hub"
     install -D etc/hub.fish_completion  "$bin/share/fish/vendor_completions.d/hub.fish"
 
+    LC_ALL=C.UTF8 \
     make man-pages
     cp -vr --parents share/man/man[1-9]/*.[1-9] $bin/
   '';
