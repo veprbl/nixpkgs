@@ -232,9 +232,7 @@ in
 
   fetchsvnrevision = import ../build-support/fetchsvnrevision runCommand subversion;
 
-  fetchsvnssh = callPackage ../build-support/fetchsvnssh {
-    sshSupport = true;
-  };
+  fetchsvnssh = callPackage ../build-support/fetchsvnssh { };
 
   fetchhg = callPackage ../build-support/fetchhg { };
 
@@ -513,10 +511,7 @@ in
 
   arduino = arduino-core.override { withGui = true; };
 
-  arduino-core = callPackage ../development/arduino/arduino-core {
-    jdk = jdk;
-    withGui = false;
-  };
+  arduino-core = callPackage ../development/arduino/arduino-core { };
 
   arduino-mk = callPackage ../development/arduino/arduino-mk {};
 
@@ -694,10 +689,7 @@ in
 
   gamecube-tools = callPackage ../development/tools/gamecube-tools { };
 
-  gams = callPackage ../tools/misc/gams {
-    licenseFile = config.gams.licenseFile or null;
-    optgamsFile = config.gams.optgamsFile or null;
-  };
+  gams = callPackage ../tools/misc/gams (config.gams or {});
 
   git-fire = callPackage ../tools/misc/git-fire { };
 
@@ -839,9 +831,7 @@ in
 
   autorandr = callPackage ../tools/misc/autorandr {};
 
-  avahi = callPackage ../development/libraries/avahi {
-    qt4Support = config.avahi.qt4Support or false;
-  };
+  avahi = callPackage ../development/libraries/avahi (config.avahi or {});
 
   avro-c = callPackage ../development/libraries/avro-c { };
 
@@ -1187,7 +1177,7 @@ in
 
   coprthr = callPackage ../development/libraries/coprthr { };
 
-  cplex = callPackage ../applications/science/math/cplex { releasePath = config.cplex.releasePath or null; };
+  cplex = callPackage ../applications/science/math/cplex (config.cplex or {});
 
   cpulimit = callPackage ../tools/misc/cpulimit { };
 
@@ -2045,7 +2035,6 @@ in
 
   ibus-with-plugins = callPackage ../tools/inputmethods/ibus/wrapper.nix {
     inherit (gnome3) dconf;
-    plugins = [ ];
   };
 
   interception-tools = callPackage ../tools/inputmethods/interception-tools { };
@@ -3104,10 +3093,9 @@ in
 
   grpcurl = callPackage ../tools/networking/grpcurl { };
 
-  grub = pkgsi686Linux.callPackage ../tools/misc/grub {
-    buggyBiosCDSupport = config.grub.buggyBiosCDSupport or true;
+  grub = pkgsi686Linux.callPackage ../tools/misc/grub ({
     stdenv = overrideCC stdenv pkgsi686Linux.gcc6;
-  };
+  } // (config.grub or {}));
 
   trustedGrub = pkgsi686Linux.callPackage ../tools/misc/grub/trusted.nix { };
 
@@ -4228,9 +4216,7 @@ in
 
   mitmproxy = callPackage ../tools/networking/mitmproxy { };
 
-  mjpegtools = callPackage ../tools/video/mjpegtools {
-    withMinimal = true;
-  };
+  mjpegtools = callPackage ../tools/video/mjpegtools { };
 
   mjpegtoolsFull = mjpegtools.override {
     withMinimal = false;
@@ -5598,9 +5584,7 @@ in
 
   sslmate = callPackage ../development/tools/sslmate { };
 
-  ssmtp = callPackage ../tools/networking/ssmtp {
-    tlsSupport = true;
-  };
+  ssmtp = callPackage ../tools/networking/ssmtp { };
 
   ssocr = callPackage ../applications/misc/ssocr { };
 
@@ -5612,9 +5596,7 @@ in
 
   stress-ng = callPackage ../tools/system/stress-ng { };
 
-  stoken = callPackage ../tools/security/stoken {
-    withGTK3 = config.stoken.withGTK3 or true;
-  };
+  stoken = callPackage ../tools/security/stoken (config.stoken or {});
 
   storeBackup = callPackage ../tools/backup/store-backup { };
 
@@ -5973,11 +5955,7 @@ in
 
   usync = callPackage ../applications/misc/usync { };
 
-  uwsgi = callPackage ../servers/uwsgi {
-    plugins = [];
-    withPAM = stdenv.isLinux;
-    withSystemd = stdenv.isLinux;
-  };
+  uwsgi = callPackage ../servers/uwsgi { };
 
   vacuum = callPackage ../applications/networking/instant-messengers/vacuum {};
 
@@ -6246,12 +6224,7 @@ in
 
   uptimed = callPackage ../tools/system/uptimed { };
 
-  urjtag = callPackage ../tools/misc/urjtag {
-    svfSupport = true;
-    bsdlSupport = true;
-    staplSupport = true;
-    jedecSupport = true;
-  };
+  urjtag = callPackage ../tools/misc/urjtag { };
 
   urlwatch = callPackage ../tools/networking/urlwatch { };
 
@@ -9343,7 +9316,6 @@ in
   apr = callPackage ../development/libraries/apr { };
 
   aprutil = callPackage ../development/libraries/apr-util {
-    bdbSupport = true;
     db = if stdenv.isFreeBSD then db4 else db;
     # XXX: only the db_185 interface was available through
     #      apr with db58 on freebsd (nov 2015), for unknown reasons
@@ -10970,7 +10942,6 @@ in
 
   libgpod = callPackage ../development/libraries/libgpod {
     inherit (pkgs.pythonPackages) mutagen;
-    monoSupport = false;
   };
 
   libgssglue = callPackage ../development/libraries/libgssglue { };
@@ -11980,6 +11951,8 @@ in
   openwsman = callPackage ../development/libraries/openwsman {};
 
   ortp = callPackage ../development/libraries/ortp { };
+
+  openhmd = callPackage ../development/libraries/openhmd { };
 
   openrct2 = callPackage ../games/openrct2 { };
 
@@ -13689,13 +13662,7 @@ in
   mod_python = pkgs.apacheHttpdPackages.mod_python;
   mod_wsgi = pkgs.apacheHttpdPackages.mod_wsgi;
 
-  mpd = callPackage ../servers/mpd {
-    aacSupport    = config.mpd.aacSupport or true;
-    clientSupport = config.mpd.clientSupport or true;
-    ffmpegSupport = config.mpd.ffmpegSupport or true;
-    opusSupport   = config.mpd.opusSupport or true;
-
-  };
+  mpd = callPackage ../servers/mpd (config.mpd or {});
 
   mpd_clientlib = callPackage ../servers/mpd/clientlib.nix { };
 
@@ -13808,13 +13775,11 @@ in
     bluetoothSupport = true;
     remoteControlSupport = true;
     zeroconfSupport = true;
-    inherit (darwin.apple_sdk.frameworks) CoreServices AudioUnit Cocoa;
   };
 
   # libpulse implementations
   libpulseaudio-vanilla = pulseaudio.override {
     libOnly = true;
-    inherit (darwin.apple_sdk.frameworks) CoreServices AudioUnit Cocoa;
   };
 
   apulse = callPackage ../misc/apulse { };
@@ -17033,9 +16998,7 @@ in
 
   etherape = callPackage ../applications/networking/sniffers/etherape { };
 
-  evilvte = callPackage ../applications/misc/evilvte {
-    configH = config.evilvte.config or "";
-  };
+  evilvte = callPackage ../applications/misc/evilvte (config.evilvte or {});
 
   evopedia = callPackage ../applications/misc/evopedia { };
 
@@ -17252,9 +17215,7 @@ in
   welle-io = libsForQt5.callPackage ../applications/radio/welle-io { };
 
   wireshark = callPackage ../applications/networking/sniffers/wireshark {
-    withQt = true;
     qt5 = qt59;
-    withGtk = false;
     inherit (darwin.apple_sdk.frameworks) ApplicationServices SystemConfiguration;
   };
   wireshark-qt = wireshark;
@@ -17354,13 +17315,9 @@ in
 
   flameshot = libsForQt5.callPackage ../tools/misc/flameshot { };
 
-  flashplayer = callPackage ../applications/networking/browsers/mozilla-plugins/flashplayer {
-    debug = config.flashplayer.debug or false;
-  };
+  flashplayer = callPackage ../applications/networking/browsers/mozilla-plugins/flashplayer (config.flashplayer or {});
 
-  flashplayer-standalone = callPackage ../applications/networking/browsers/mozilla-plugins/flashplayer/standalone.nix {
-    debug = config.flashplayer.debug or false;
-  };
+  flashplayer-standalone = callPackage ../applications/networking/browsers/mozilla-plugins/flashplayer/standalone.nix (config.flashplayer or {});
 
   flashplayer-standalone-debugger = flashplayer-standalone.override {
     debug = true;
@@ -18279,7 +18236,6 @@ in
 
   mercurial = callPackage ../applications/version-management/mercurial {
     inherit (darwin.apple_sdk.frameworks) ApplicationServices;
-    guiSupport = false; # use mercurialFull to get hgk GUI
   };
 
   mercurialFull = appendToName "full" (pkgs.mercurial.override { guiSupport = true; });
@@ -19000,12 +18956,9 @@ in
   # And I don't want to rewrite all rules
   procmail = callPackage ../applications/misc/procmail { };
 
-  profanity = callPackage ../applications/networking/instant-messengers/profanity {
-    notifySupport   = config.profanity.notifySupport   or true;
-    traySupport     = config.profanity.traySupport     or true;
-    autoAwaySupport = config.profanity.autoAwaySupport or true;
+  profanity = callPackage ../applications/networking/instant-messengers/profanity ({
     python = python3;
-  };
+  } // (config.profanity or {}));
 
   protonmail-bridge = libsForQt5.callPackage ../applications/networking/protonmail-bridge { };
 
@@ -19109,12 +19062,7 @@ in
   quantomatic = callPackage ../applications/science/physics/quantomatic { };
 
   quassel = libsForQt5.callPackage ../applications/networking/irc/quassel {
-    monolithic = true;
-    daemon = false;
-    client = false;
-    withKDE = true;
-    dconf = gnome3.dconf;
-    tag = "-kf5";
+    inherit (gnome3) dconf;
   };
 
   quasselClient = quassel.override {
@@ -19126,8 +19074,8 @@ in
   quasselDaemon = quassel.override {
     monolithic = false;
     daemon = true;
-    tag = "-daemon-qt5";
     withKDE = false;
+    tag = "-daemon-qt5";
   };
 
   quirc = callPackage ../tools/graphics/quirc {};
@@ -19257,10 +19205,7 @@ in
     llvmPackages = llvmPackages_7;
   };
 
-  rsync = callPackage ../applications/networking/sync/rsync {
-    enableACLs = !(stdenv.isDarwin || stdenv.isSunOS || stdenv.isFreeBSD);
-    enableCopyDevicesPatch = (config.rsync.enableCopyDevicesPatch or false);
-  };
+  rsync = callPackage ../applications/networking/sync/rsync (config.rsync or {});
   rrsync = callPackage ../applications/networking/sync/rsync/rrsync.nix {};
 
   rtl_433 = callPackage ../applications/radio/rtl_433 { };
@@ -19276,11 +19221,7 @@ in
   rxvt = callPackage ../applications/misc/rxvt { };
 
   # urxvt
-  rxvt_unicode = callPackage ../applications/misc/rxvt_unicode {
-    perlSupport = true;
-    gdkPixbufSupport = true;
-    unicode3Support = true;
-  };
+  rxvt_unicode = callPackage ../applications/misc/rxvt_unicode { };
 
   rxvt_unicode-with-plugins = callPackage ../applications/misc/rxvt_unicode/wrapper.nix {
     plugins = [
@@ -19540,9 +19481,7 @@ in
     };
   };
 
-  libspotify = callPackage ../development/libraries/libspotify {
-    apiKey = config.libspotify.apiKey or null;
-  };
+  libspotify = callPackage ../development/libraries/libspotify (config.libspotify or {});
 
   sourcetrail = callPackage ../development/tools/sourcetrail { };
 
@@ -19585,16 +19524,7 @@ in
 
   sublime3-dev = sublime3Packages.sublime3-dev;
 
-  inherit (callPackages ../applications/version-management/subversion {
-      bdbSupport = true;
-      httpServer = false;
-      httpSupport = true;
-      pythonBindings = false;
-      perlBindings = false;
-      javahlBindings = false;
-      saslSupport = false;
-      sasl = cyrus_sasl;
-    })
+  inherit (callPackages ../applications/version-management/subversion { sasl = cyrus_sasl; })
     subversion18 subversion19 subversion_1_10 subversion_1_11;
 
   subversion = subversion_1_11;
@@ -19780,14 +19710,11 @@ in
 
   toggldesktop = libsForQt5.callPackage ../applications/misc/toggldesktop { };
 
-  tomahawk = callPackage ../applications/audio/tomahawk {
+  tomahawk = callPackage ../applications/audio/tomahawk ({
     taglib = taglib_1_9;
-    enableXMPP      = config.tomahawk.enableXMPP      or true;
-    enableKDE       = config.tomahawk.enableKDE       or false;
-    enableTelepathy = config.tomahawk.enableTelepathy or false;
     quazip = quazip_qt4;
     boost = boost155;
-  };
+  } // (config.tomahawk or {}));
 
   topydo = callPackage ../applications/misc/topydo {};
 
@@ -20052,9 +19979,7 @@ in
 
   vym = qt5.callPackage ../applications/misc/vym { };
 
-  w3m = callPackage ../applications/networking/browsers/w3m {
-    graphicsSupport = !stdenv.isDarwin;
-  };
+  w3m = callPackage ../applications/networking/browsers/w3m { };
 
   # Should always be the version with the most features
   w3m-full = w3m;
@@ -21050,9 +20975,7 @@ in
 
   racer = callPackage ../games/racer { };
 
-  residualvm = callPackage ../games/residualvm {
-    openglSupport = libGLSupported;
-  };
+  residualvm = callPackage ../games/residualvm { };
 
   rftg = callPackage ../games/rftg { };
 
@@ -22186,13 +22109,7 @@ in
 
   singular = callPackage ../applications/science/math/singular { };
 
-  scilab = callPackage ../applications/science/math/scilab {
-    withXaw3d = false;
-    withTk = true;
-    withGtk = false;
-    withOCaml = true;
-    withX = true;
-  };
+  scilab = callPackage ../applications/science/math/scilab { };
 
   scilab-bin = callPackage ../applications/science/math/scilab-bin {};
 
@@ -22502,10 +22419,7 @@ in
 
   gensgs = pkgsi686Linux.callPackage ../misc/emulators/gens-gs { };
 
-  ghostscript = callPackage ../misc/ghostscript rec {
-    cupsSupport = config.ghostscript.cups or (!stdenv.isDarwin);
-    x11Support = cupsSupport; # with CUPS, X11 only adds very little
-  };
+  ghostscript = callPackage ../misc/ghostscript { };
 
   ghostscriptX = appendToName "with-X" (ghostscript.override {
     cupsSupport = true;
@@ -22811,15 +22725,7 @@ in
 
   disnix = callPackage ../tools/package-management/disnix { };
 
-  dysnomia = callPackage ../tools/package-management/disnix/dysnomia {
-    enableApacheWebApplication = config.disnix.enableApacheWebApplication or false;
-    enableAxis2WebService = config.disnix.enableAxis2WebService or false;
-    enableEjabberdDump = config.disnix.enableEjabberdDump or false;
-    enableMySQLDatabase = config.disnix.enableMySQLDatabase or false;
-    enablePostgreSQLDatabase = config.disnix.enablePostgreSQLDatabase or false;
-    enableSubversionRepository = config.disnix.enableSubversionRepository or false;
-    enableTomcatWebApplication = config.disnix.enableTomcatWebApplication or false;
-  };
+  dysnomia = callPackage ../tools/package-management/disnix/dysnomia (config.disnix or {});
 
   disnixos = callPackage ../tools/package-management/disnix/disnixos { };
 
@@ -22961,15 +22867,9 @@ in
   samsung-unified-linux-driver_4_01_17 = callPackage ../misc/cups/drivers/samsung/4.01.17.nix { };
   samsung-unified-linux-driver = res.samsung-unified-linux-driver_4_01_17;
 
-  sane-backends = callPackage ../applications/graphics/sane/backends {
-    gt68xxFirmware = config.sane.gt68xxFirmware or null;
-    snapscanFirmware = config.sane.snapscanFirmware or null;
-  };
+  sane-backends = callPackage ../applications/graphics/sane/backends (config.sane or {});
 
-  sane-backends-git = callPackage ../applications/graphics/sane/backends/git.nix {
-    gt68xxFirmware = config.sane.gt68xxFirmware or null;
-    snapscanFirmware = config.sane.snapscanFirmware or null;
-  };
+  sane-backends-git = callPackage ../applications/graphics/sane/backends/git.nix (config.sane or {});
 
   brlaser = callPackage ../misc/cups/drivers/brlaser { };
 
