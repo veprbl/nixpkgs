@@ -44,7 +44,6 @@ rec {
       export APPDIR=${src}
       export APPIMAGE_SILENT_INSTALL=1
       cd $APPDIR
-      export LC_ALL=C.UTF8
       exec ./AppRun "$@"
     '';
   } // (builtins.removeAttrs args [ "name" "src" "extraPkgs" ]));
