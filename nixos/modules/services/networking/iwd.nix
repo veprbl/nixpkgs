@@ -9,7 +9,7 @@ in {
 
   config = mkIf cfg.enable {
     assertions = [{
-      assertion = !config.networking.wireless.enable;
+      assertion = !config.networking.wireless.enable || config.networking.connman.enable;
       message = ''
         Only one wireless daemon is allowed at the time: networking.wireless.enable and networking.wireless.iwd.enable are mutually exclusive.
       '';
