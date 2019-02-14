@@ -20,7 +20,7 @@ in {
 
     services.dbus.packages = [ pkgs.iwd ];
 
-#    systemd.packages = [ pkgs.iwd ];
+    systemd.packages = [ pkgs.iwd ];
 
     systemd.services.iwd.wantedBy = [ "multi-user.target" ];
 
