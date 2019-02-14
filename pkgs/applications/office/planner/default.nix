@@ -8,13 +8,13 @@
 , gnome2
 , libxslt
 , python
-, python27Packages
 }:
 
 let version = "unstable-2019-02-13";
 
 in stdenv.mkDerivation {
-  name = "planner-${version}";
+  pname = "planner";
+  inherit version;
 
   src = fetchFromGitLab {
     domain = "gitlab.gnome.org";
@@ -43,13 +43,17 @@ in stdenv.mkDerivation {
     libglade
     libxslt
     python
-    python27Packages.pygtk
+    python.pkgs.pygtk
+    #evolution-data-server
+    #libsoup
   ];
 
-  preConfigure = ''./autogen.sh'';
+  preConfigure = ''NOCONFIGURE=1 ./autogen.sh'';
   configureFlags = [
     "--enable-python"
     "--enable-python-plugin"
+    #"--enable-eds"
+  #  "--enable-eds-backend"
 #    "--enable-simple-priority-scheduling"
     ];
 
