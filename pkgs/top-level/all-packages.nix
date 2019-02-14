@@ -14572,7 +14572,6 @@ in
   linux_rpi = callPackage ../os-specific/linux/kernel/linux-rpi.nix {
     kernelPatches = with kernelPatches; [
       bridge_stp_helper
-      binprm_buf_size
     ];
   };
 
@@ -14586,7 +14585,6 @@ in
         # upstream! Fixes https://github.com/NixOS/nixpkgs/issues/42755
         kernelPatches.xen-netfront_fix_mismatched_rtnl_unlock
         kernelPatches.xen-netfront_update_features_after_registering_netdev
-        kernelPatches.binprm_buf_size
       ];
   };
 
@@ -14595,7 +14593,6 @@ in
       [ kernelPatches.bridge_stp_helper
         kernelPatches.cpu-cgroup-v2."4.9"
         kernelPatches.modinst_arg_list_too_long
-        kernelPatches.binprm_buf_size
       ];
   };
 
@@ -14606,7 +14603,6 @@ in
         # when adding a new linux version
         kernelPatches.cpu-cgroup-v2."4.11"
         kernelPatches.modinst_arg_list_too_long
-        kernelPatches.binprm_buf_size
       ];
   };
 
@@ -14614,7 +14610,6 @@ in
     kernelPatches =
       [ kernelPatches.bridge_stp_helper
         kernelPatches.modinst_arg_list_too_long
-        kernelPatches.binprm_buf_size
       ];
   };
 
@@ -14622,7 +14617,6 @@ in
     kernelPatches =
       [ kernelPatches.bridge_stp_helper
         kernelPatches.modinst_arg_list_too_long
-#        kernelPatches.binprm_buf_size
       ];
   };
 
@@ -14630,7 +14624,6 @@ in
     kernelPatches = [
       kernelPatches.bridge_stp_helper
       kernelPatches.modinst_arg_list_too_long
-      kernelPatches.binprm_buf_size
     ];
   };
 
@@ -14638,7 +14631,6 @@ in
     kernelPatches =
       [ kernelPatches.bridge_stp_helper
         kernelPatches.modinst_arg_list_too_long
-        kernelPatches.binprm_buf_size
       ];
   };
 
@@ -14646,7 +14638,6 @@ in
     kernelPatches = [
       kernelPatches.bridge_stp_helper
       kernelPatches.modinst_arg_list_too_long
-      kernelPatches.binprm_buf_size
     ];
   };
 
@@ -14861,7 +14852,7 @@ in
       inherit stdenv;
       inherit (kernel) version;
     };
-    kernelPatches = kernel.kernelPatches ++ [ kernelPatches.tag_hardened kernelPatches.binprm_buf_size];
+    kernelPatches = kernel.kernelPatches ++ [ kernelPatches.tag_hardened ];
     modDirVersionArg = kernel.modDirVersion + "-hardened";
   });
 
