@@ -1,19 +1,15 @@
 { stdenv, fetchFromGitHub, sassc, autoreconfHook, pkgconfig, gtk3, gnome3
 , gtk-engine-murrine, optipng, inkscape }:
 
-let
-  pname = "arc-theme";
-in
-
 stdenv.mkDerivation rec {
-  name = "${pname}-${version}";
-  version = "20190129";
+  pname = "arc-theme";
+  version = "20190213";
 
   src = fetchFromGitHub {
     owner  = "NicoHood";
     repo   = pname;
-    rev    = "2bac3c1a8fd5db058b031b4f2d45f5098462d65e";
-    sha256 = "17i0yqwmp5bhzji81z0w2mmib2ik20khw33ax3aqzrqigd4xvnbc";
+    rev    = version;
+    sha256 = "1qalf61xh6a8yz2a98z3ih0w9ky12v3wc61gdczbfnyfasgzc254";
   };
 
   nativeBuildInputs = [
