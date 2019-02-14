@@ -1,6 +1,7 @@
 { stdenv, fetchurl, pkgconfig, openconnect, file, gawk,
   openvpn, vpnc, glib, dbus, iptables, gnutls, polkit,
-  wpa_supplicant, readline6, pptp, ppp }:
+  wpa_supplicant ? null, enableWPASupplicant ? false,
+  readline80, pptp, ppp }:
 
 stdenv.mkDerivation rec {
   name = "connman-${version}";
@@ -12,22 +13,23 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ openconnect polkit
                   openvpn vpnc glib dbus iptables gnutls
-                  wpa_supplicant readline6 pptp ppp ];
+                  readline80 pptp ppp ] ++ stdenv.lib.optional enableWPASupplicant wpa_supplicant;
 
   nativeBuildInputs = [ pkgconfig file gawk ];
 
-  preConfigure = ''
+  preConfigure = stdenv.lib.optionalString enableWPASupplicant ''
     export WPASUPPLICANT=${wpa_supplicant}/sbin/wpa_supplicant
+  '' + ''
     export PPPD=${ppp}/sbin/pppd
     export AWK=${gawk}/bin/gawk
-    sed -i "s/\/usr\/bin\/file/file/g" ./configure
+    substituteInPlace configure --replace /usr/bin/file file
   '';
 
   configureFlags = [
-    "--sysconfdir=\${out}/etc"
+    "--sysconfdir=${placeholder "out"}/etc"
     "--localstatedir=/var"
-    "--with-dbusconfdir=\${out}/etc"
-    "--with-dbusdatadir=\${out}/usr/share"
+    "--with-dbusconfdir=${placeholder "out"}/etc"
+    "--with-dbusdatadir=${placeholder "out"}/usr/share"
     "--disable-maintainer-mode"
     "--enable-openconnect=builtin"
     "--with-openconnect=${openconnect}/sbin/openconnect"
