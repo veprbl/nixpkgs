@@ -175,7 +175,7 @@ in
 
   dump1090 = callPackage ../applications/misc/dump1090 { };
 
-  ebook2cw = callPackage ../applications/misc/ebook2cw { };
+  ebook2cw = callPackage ../applications/radio/ebook2cw { };
 
   etBook = callPackage ../data/fonts/et-book { };
 
@@ -9365,7 +9365,9 @@ in
     inherit (darwin.apple_sdk.frameworks) AudioUnit CoreServices;
   };
 
-  aws-sdk-cpp = callPackage ../development/libraries/aws-sdk-cpp { };
+  aws-sdk-cpp = callPackage ../development/libraries/aws-sdk-cpp {
+    inherit (darwin.apple_sdk.frameworks) CoreAudio AudioToolbox;
+  };
 
   babl = callPackage ../development/libraries/babl { };
 
@@ -18549,6 +18551,8 @@ in
 
   shogun = callPackage ../applications/science/machine-learning/shogun { };
 
+  slirp4netns = callPackages ../tools/networking/slirp4netns/default.nix { };
+
   smplayer = libsForQt5.callPackage ../applications/video/smplayer { };
 
   smtube = libsForQt5.callPackage ../applications/video/smtube {};
@@ -19738,7 +19742,8 @@ in
 
   toxiproxy = callPackage ../development/tools/toxiproxy { };
 
-  tqsl = callPackage ../applications/misc/tqsl { };
+  tqsl = callPackage ../applications/radio/tqsl { };
+  trustedqsl = tqsl; # Alias added 2019-02-10
 
   transcode = callPackage ../applications/audio/transcode { };
 
@@ -21509,7 +21514,7 @@ in
 
   bftools = callPackage ../applications/science/biology/bftools { };
 
-  cmtk = callPackage ../applications/science/biology/cmtk { }; 
+  cmtk = callPackage ../applications/science/biology/cmtk { };
 
   conglomerate = callPackage ../applications/science/biology/conglomerate { };
 
