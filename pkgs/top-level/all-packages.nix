@@ -994,6 +994,8 @@ in
   };
   bro = callPackage ../applications/networking/ids/bro { };
 
+  broot = callPackage ../tools/misc/broot { };
+
   bruteforce-luks = callPackage ../tools/security/bruteforce-luks { };
 
   breakpointHook = assert stdenv.isLinux;
@@ -4206,6 +4208,8 @@ in
   };
 
   mkcue = callPackage ../tools/cd-dvd/mkcue { };
+
+  mkp224o = callPackage ../tools/security/mkp224o { };
 
   mkpasswd = hiPrio (callPackage ../tools/security/mkpasswd { });
 
@@ -14566,6 +14570,7 @@ in
       [ kernelPatches.bridge_stp_helper
         kernelPatches.cpu-cgroup-v2."4.9"
         kernelPatches.modinst_arg_list_too_long
+        kernelPatches.interpreter-trunc
       ];
   };
 
@@ -14576,6 +14581,7 @@ in
         # when adding a new linux version
         kernelPatches.cpu-cgroup-v2."4.11"
         kernelPatches.modinst_arg_list_too_long
+        kernelPatches.interpreter-trunc
       ];
   };
 
@@ -14583,6 +14589,7 @@ in
     kernelPatches =
       [ kernelPatches.bridge_stp_helper
         kernelPatches.modinst_arg_list_too_long
+        kernelPatches.interpreter-trunc
       ];
   };
 
@@ -14590,6 +14597,7 @@ in
     kernelPatches =
       [ kernelPatches.bridge_stp_helper
         kernelPatches.modinst_arg_list_too_long
+        kernelPatches.interpreter-trunc
       ];
   };
 
@@ -14597,6 +14605,7 @@ in
     kernelPatches = [
       kernelPatches.bridge_stp_helper
       kernelPatches.modinst_arg_list_too_long
+      kernelPatches.interpreter-trunc
     ];
   };
 
@@ -14611,6 +14620,7 @@ in
     kernelPatches = [
       kernelPatches.bridge_stp_helper
       kernelPatches.modinst_arg_list_too_long
+      kernelPatches.interpreter-trunc
     ];
   };
 
@@ -18948,7 +18958,7 @@ in
   qdirstat = libsForQt5.callPackage ../applications/misc/qdirstat {};
 
   qemu = callPackage ../applications/virtualization/qemu {
-    inherit (darwin.apple_sdk.frameworks) CoreServices Cocoa;
+    inherit (darwin.apple_sdk.frameworks) CoreServices Cocoa Hypervisor;
     inherit (darwin.stubs) rez setfile;
   };
 
