@@ -46,6 +46,10 @@ in stdenv.mkDerivation rec {
     patchShebangs build-aux/meson/meson_post_install.py
   '';
 
+  mesonFlags = [
+    "-Dgnome_session_libexecdir=${gnome3.gnome-session}/libexec"
+  ];
+
   preFixup = ''
     gappsWrapperArgs+=(
       --prefix XDG_DATA_DIRS : "${sound-theme-freedesktop}/share"
