@@ -8641,6 +8641,7 @@ in
   elfkickers = callPackage ../development/tools/misc/elfkickers { };
 
   elfutils = callPackage ../development/tools/misc/elfutils { };
+  elfutils-clang = callPackage ../development/tools/misc/elfutils { stdenv = clangStdenv; };
 
   emma = callPackage ../development/tools/analysis/emma { };
 
