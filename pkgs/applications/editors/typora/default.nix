@@ -29,21 +29,21 @@ stdenv.mkDerivation rec {
     }
 
     cat > $out/bin/typora <<EOF
-      #!${electron_3}/bin/electron
+    #!${electron_3}/bin/electron
 
-      const { join } = require('path');
-      const { app } = require('electron');
+    const { join } = require('path');
+    const { app } = require('electron');
 
-      const APP_DIR = '${placeholder "out"}/share/typora/';
+    const APP_DIR = '${placeholder "out"}/share/typora/';
 
-      const conf = require(APP_DIR + 'package.json');
+    const conf = require(APP_DIR + 'package.json');
 
-      app.setName(conf.name);
-      app.setPath('userData', join(app.getPath('appData'), conf.name));
-      app.getVersion = () => conf.version;
+    app.setName(conf.name);
+    app.setPath('userData', join(app.getPath('appData'), conf.name));
+    app.getVersion = () => conf.version;
 
-      process.argv.shift();
-      require(APP_DIR + conf.main);
+    process.argv.shift();
+    require(APP_DIR + conf.main);
     EOF
     chmod +x $out/bin/typora
   '';
