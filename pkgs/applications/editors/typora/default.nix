@@ -1,4 +1,5 @@
-{ stdenv, fetchurl, makeWrapper, electron_3, dpkg, gtk3, glib, gnome3, wrapGAppsHook }:
+{ stdenv, fetchurl, makeWrapper, wrapGAppsHook, dpkg
+, electron_3, xdg_utils, gtk3, glib, gnome3, }:
 
 stdenv.mkDerivation rec {
   pname = "typora";
@@ -15,7 +16,7 @@ stdenv.mkDerivation rec {
 
   unpackPhase = "dpkg-deb -x $src .";
 
-  dontWrapGApps = true;
+  #dontWrapGApps = true;
 
   installPhase = ''
     mkdir -p $out/bin $out/share/typora
@@ -27,10 +28,24 @@ stdenv.mkDerivation rec {
       mv share/doc $out/share
     }
 
-    makeWrapper ${electron_3}/bin/electron $out/bin/typora \
-      --add-flags $out/share/typora \
-      "''${gappsWrapperArgs[@]}" \
-      --prefix LD_LIBRARY_PATH : "${stdenv.lib.makeLibraryPath [ stdenv.cc.cc ]}"
+    cat > $out/bin/typora <<EOF
+      #!${electron_3}/bin/electron
+
+      const { join } = require('path');
+      const { app } = require('electron');
+
+      const APP_DIR = '${placeholder "out"}/share/typora/';
+
+      const conf = require(APP_DIR + 'package.json');
+
+      app.setName(conf.name);
+      app.setPath('userData', join(app.getPath('appData'), conf.name));
+      app.getVersion = () => conf.version;
+
+      process.argv.shift();
+      require(APP_DIR + conf.main);
+    EOF
+    chmod +x $out/bin/typora
   '';
 
   meta = with stdenv.lib; {
