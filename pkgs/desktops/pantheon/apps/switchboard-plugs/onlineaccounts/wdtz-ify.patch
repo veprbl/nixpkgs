@@ -1,0 +1,32 @@
+From 15809769ca1c65c67d30a662299e0191eed621dc Mon Sep 17 00:00:00 2001
+From: Will Dietz <w@wdtz.org>
+Date: Fri, 15 Feb 2019 12:49:09 -0600
+Subject: [PATCH] wdtz-ify
+
+---
+ providers/Google/google.provider.in | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/providers/Google/google.provider.in b/providers/Google/google.provider.in
+index 84330f3..d5e5eae 100644
+--- a/providers/Google/google.provider.in
++++ b/providers/Google/google.provider.in
+@@ -18,12 +18,12 @@
+           <setting name="AuthPath">/o/oauth2/auth</setting>
+           <setting name="TokenPath">/o/oauth2/token</setting>
+           <setting type="int" name="UiPolicy">0</setting>
+-          <setting name="RedirectUri">http://elementaryos.org</setting>
++          <setting name="RedirectUri">http://wdtz.org</setting>
+           <setting name="ResponseType">code</setting>
+           <setting name="Scope">email profile https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/contacts https://www.googleapis.com/auth/drive https://mail.google.com/ https://picasaweb.google.com/data/</setting>
+           <setting name="AuthQuery">access_type=offline&amp;approval_prompt=force</setting>
+-          <setting name="ClientId">14954701535-q8brnt0l1o1sknuftm7tt3iqlaa1c95f.apps.googleusercontent.com</setting>
+-          <setting name="ClientSecret">9sUlZ0q5-xBgAf5Rw7ZtuSjC</setting>
++          <setting name="ClientId">187528936654-01m2v7te6m4d3h6jdo3qj6a6ffkg5dlu.apps.googleusercontent.com</setting>
++          <setting name="ClientSecret">ZNIFs81bMsMKd12ESHX-rcf1</setting>
+           <setting type="as" name="AllowedSchemes">['https']</setting>
+           <setting type="as" name="AllowedRealms">['google.com']</setting>
+           <setting type="as" name="Realms">['accounts.google.com']</setting>
+-- 
+2.21.0-rc0
+

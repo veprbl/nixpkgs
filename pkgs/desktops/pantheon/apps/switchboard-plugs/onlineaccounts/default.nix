@@ -13,6 +13,8 @@ stdenv.mkDerivation rec {
     sha256 = "03h8ii8zz59fpp4fwlvyx3m3550096fn7a6w612b1rbj3dqhlmh9";
   };
 
+  patches = [ ./wdtz-ify.patch ];
+
   passthru = {
     updateScript = pantheon.updateScript {
       repoName = pname;
