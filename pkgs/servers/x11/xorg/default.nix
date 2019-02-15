@@ -2634,7 +2634,7 @@ lib.makeScope newScope (self: with self; {
       rev = "8f8d358bad2d33de36686e8405ade8b5b921cafd";
       sha256 = "05s8anq9ah3g6h9yixwp5psryp5z7a338cly0yf4mjsxs2ql06gx";
     };
-    patches = [ ./24.patch ];
+    #patches = [ ./24.patch ];
     #name = "xorg-server-1.20.3";
     #builder = ./builder.sh;
     #src = fetchurl {
