@@ -1,7 +1,7 @@
-{ stdenv, fetchurl, intltool, pkgconfig, gtk3, vala_0_40, enchant
-, wrapGAppsHook, gdk_pixbuf, cmake, ninja, desktop-file-utils
+{ stdenv, fetchurl, fetchFromGitHub, intltool, pkgconfig, gtk3, vala_0_40, enchant
+, wrapGAppsHook, gdk_pixbuf, meson, ninja, desktop-file-utils
 , libnotify, libcanberra-gtk3, libsecret, gmime, isocodes
-, gobject-introspection, libpthreadstubs, sqlite, gcr
+, gobject-introspection, libpthreadstubs, sqlite, gcr, json-glib, enchant2, libunwind
 , gnome3, librsvg, gnome-doc-utils, webkitgtk, fetchpatch }:
 
 let
@@ -11,46 +11,57 @@ in
 stdenv.mkDerivation rec {
   name = "${pname}-${version}";
 
-  src = fetchurl {
-    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "01ykhkjfkprvh9kp4rzrl6xs2pqibiw44ckvqsn5cs3xy2rlq8mm";
+  #src = fetchurl {
+  #  url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
+  #  sha256 = "01ykhkjfkprvh9kp4rzrl6xs2pqibiw44ckvqsn5cs3xy2rlq8mm";
+  #};
+  src = fetchFromGitHub {
+    owner = "GNOME";
+    repo = pname;
+    rev = "292498b00fb6fb2de2576cb95c5682b4f8602dd5";
+    sha256 = "0gwwvv39d268kgp5l6bkpnixidbfpgbd70ia6gq0xibzypca9kcc";
   };
 
-  patches = [
-    # Fix build with webkitgtk-2.22
-    (fetchpatch {
-      url = https://gitlab.gnome.org/GNOME/geary/commit/5d0f711426d76f878cf9b71f7e8f785199c7cde1.patch;
-      sha256 = "1yifng5lfsc6wp7irmi8gjdcfig1cr0chf7rdv3asrk567nmwrsi";
-    })
-    (fetchpatch {
-      url = https://gitlab.gnome.org/GNOME/geary/commit/0d966950a2cba888873cd3a7f4f42bb7a017dc6d.patch;
-      sha256 = "1y6v4fnik4w3paj9nl0yqs54998sx1zr9w3940d579p6dsa8f3fg";
-    })
-    (fetchpatch {
-      url = https://gitlab.gnome.org/GNOME/geary/commit/e091f24b00ec421e1aadd5e360d1550e658ad5ef.patch;
-      sha256 = "0d5hc4h9c1hnn2sk18nkpmzdvwm3h746n2zj8n22ax9rj6lxl38l";
-    })
-    # Fix build with vala 0.40.12
-    # See: https://gitlab.gnome.org/GNOME/vala/blob/0.40.12/NEWS#L22
-    (fetchpatch {
-      url = "https://gitlab.gnome.org/GNOME/geary/commit/088cb2c0aa35ad4b54ea5a0a2edaf0ff96c64b45.patch";
-      sha256 = "0cnjmbd3snm8ggmprqa32f7i3w86gs3ylab9p5ffj921dcpvvlb2";
-    })
-  ];
+  ## patches = [
+  ##   # Fix build with webkitgtk-2.22
+  ##   (fetchpatch {
+  ##     url = https://gitlab.gnome.org/GNOME/geary/commit/5d0f711426d76f878cf9b71f7e8f785199c7cde1.patch;
+  ##     sha256 = "1yifng5lfsc6wp7irmi8gjdcfig1cr0chf7rdv3asrk567nmwrsi";
+  ##   })
+  ##   (fetchpatch {
+  ##     url = https://gitlab.gnome.org/GNOME/geary/commit/0d966950a2cba888873cd3a7f4f42bb7a017dc6d.patch;
+  ##     sha256 = "1y6v4fnik4w3paj9nl0yqs54998sx1zr9w3940d579p6dsa8f3fg";
+  ##   })
+  ##   (fetchpatch {
+  ##     url = https://gitlab.gnome.org/GNOME/geary/commit/e091f24b00ec421e1aadd5e360d1550e658ad5ef.patch;
+  ##     sha256 = "0d5hc4h9c1hnn2sk18nkpmzdvwm3h746n2zj8n22ax9rj6lxl38l";
+  ##   })
+  ##   # Fix build with vala 0.40.12
+  ##   # See: https://gitlab.gnome.org/GNOME/vala/blob/0.40.12/NEWS#L22
+  ##   (fetchpatch {
+  ##     url = "https://gitlab.gnome.org/GNOME/geary/commit/088cb2c0aa35ad4b54ea5a0a2edaf0ff96c64b45.patch";
+  ##     sha256 = "0cnjmbd3snm8ggmprqa32f7i3w86gs3ylab9p5ffj921dcpvvlb2";
+  ##   })
+  ## ];
 
-  nativeBuildInputs = [ vala_0_40 intltool pkgconfig wrapGAppsHook cmake ninja desktop-file-utils gnome-doc-utils gobject-introspection ];
+  nativeBuildInputs = [ vala_0_40 intltool pkgconfig wrapGAppsHook meson ninja desktop-file-utils gnome-doc-utils gobject-introspection ];
   buildInputs = [
     gtk3 enchant webkitgtk libnotify libcanberra-gtk3 gnome3.libgee libsecret gmime sqlite
-    libpthreadstubs gnome3.gsettings-desktop-schemas gcr isocodes
-    gdk_pixbuf librsvg gnome3.defaultIconTheme
+    libpthreadstubs gnome3.gsettings-desktop-schemas gcr isocodes json-glib enchant2 libunwind
+    gdk_pixbuf librsvg gnome3.defaultIconTheme gnome3.gnome-online-accounts
   ];
 
-  cmakeFlags = [
-    "-DISOCODES_DIRECTORY=${isocodes}/share/xml/iso-codes"
-  ];
+  ## cmakeFlags = [
+  ##   "-DISOCODES_DIRECTORY=${isocodes}/share/xml/iso-codes"
+  ## ];
 
-  # TODO: This is bad, upstream should fix their code.
-  PKG_CONFIG_GOBJECT_INTROSPECTION_1_0_GIRDIR = "${webkitgtk.dev}/share/gir-1.0";
+  ## # TODO: This is bad, upstream should fix their code.
+  ## PKG_CONFIG_GOBJECT_INTROSPECTION_1_0_GIRDIR = "${webkitgtk.dev}/share/gir-1.0";
+
+  postPatch = ''
+    chmod +x build-aux/post_install.py # patchShebangs requires executable file
+    patchShebangs build-aux/post_install.py
+  '';
 
   preFixup = ''
     # Add geary to path for geary-attach
