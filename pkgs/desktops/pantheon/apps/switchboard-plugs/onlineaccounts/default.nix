@@ -9,8 +9,9 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "elementary";
     repo = pname;
-    rev = version;
-    sha256 = "03h8ii8zz59fpp4fwlvyx3m3550096fn7a6w612b1rbj3dqhlmh9";
+  #  rev = version;
+    rev = "96c57ced630a9062dcd6238bf7dd4e9facc70436";
+    sha256 = "1x2cyhdpzdnkn9mrf46lld0ya4q2rw754kh3qvz27b2rf5fxc0p6";
   };
 
   patches = [ ./wdtz-ify.patch ];
