@@ -1,5 +1,5 @@
-{ stdenv, fetchurl, fetchFromGitHub, intltool, pkgconfig, gtk3, vala_0_40, enchant
-, wrapGAppsHook, gdk_pixbuf, meson, ninja, desktop-file-utils
+{ stdenv, fetchurl, fetchFromGitHub, intltool, itstool, pkgconfig, gtk3, vala_0_40, enchant
+, wrapGAppsHook, gdk_pixbuf, meson, ninja, desktop-file-utils, python3
 , libnotify, libcanberra-gtk3, libsecret, gmime, isocodes
 , gobject-introspection, libpthreadstubs, sqlite, gcr, json-glib, enchant2, libunwind
 , gnome3, librsvg, gnome-doc-utils, webkitgtk, fetchpatch }:
@@ -44,11 +44,11 @@ stdenv.mkDerivation rec {
   ##   })
   ## ];
 
-  nativeBuildInputs = [ vala_0_40 intltool pkgconfig wrapGAppsHook meson ninja desktop-file-utils gnome-doc-utils gobject-introspection ];
+  nativeBuildInputs = [ vala_0_40 intltool itstool pkgconfig wrapGAppsHook meson ninja desktop-file-utils gnome-doc-utils gobject-introspection python3 ];
   buildInputs = [
     gtk3 enchant webkitgtk libnotify libcanberra-gtk3 gnome3.libgee libsecret gmime sqlite
     libpthreadstubs gnome3.gsettings-desktop-schemas gcr isocodes json-glib enchant2 libunwind
-    gdk_pixbuf librsvg gnome3.defaultIconTheme gnome3.gnome-online-accounts
+    gdk_pixbuf librsvg gnome3.defaultIconTheme gnome3.gnome-online-accounts gnome3.glib-networking
   ];
 
   ## cmakeFlags = [
