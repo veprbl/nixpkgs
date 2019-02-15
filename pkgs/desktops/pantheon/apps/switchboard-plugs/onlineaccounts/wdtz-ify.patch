@@ -1,4 +1,4 @@
-From 15809769ca1c65c67d30a662299e0191eed621dc Mon Sep 17 00:00:00 2001
+From b03b985cf09f4d96b2bd9df4a0d37ca454bef0fa Mon Sep 17 00:00:00 2001
 From: Will Dietz <w@wdtz.org>
 Date: Fri, 15 Feb 2019 12:49:09 -0600
 Subject: [PATCH] wdtz-ify
@@ -8,7 +8,7 @@ Subject: [PATCH] wdtz-ify
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/providers/Google/google.provider.in b/providers/Google/google.provider.in
-index 84330f3..d5e5eae 100644
+index 84330f3..43bc025 100644
 --- a/providers/Google/google.provider.in
 +++ b/providers/Google/google.provider.in
 @@ -18,12 +18,12 @@
@@ -16,7 +16,7 @@ index 84330f3..d5e5eae 100644
            <setting name="TokenPath">/o/oauth2/token</setting>
            <setting type="int" name="UiPolicy">0</setting>
 -          <setting name="RedirectUri">http://elementaryos.org</setting>
-+          <setting name="RedirectUri">http://wdtz.org</setting>
++          <setting name="RedirectUri">http://localhost</setting>
            <setting name="ResponseType">code</setting>
            <setting name="Scope">email profile https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/contacts https://www.googleapis.com/auth/drive https://mail.google.com/ https://picasaweb.google.com/data/</setting>
            <setting name="AuthQuery">access_type=offline&amp;approval_prompt=force</setting>
