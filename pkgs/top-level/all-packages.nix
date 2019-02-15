@@ -996,6 +996,8 @@ in
   };
   bro = callPackage ../applications/networking/ids/bro { };
 
+  broot = callPackage ../tools/misc/broot { };
+
   bruteforce-luks = callPackage ../tools/security/bruteforce-luks { };
 
   breakpointHook = assert stdenv.isLinux;
@@ -4223,6 +4225,8 @@ in
   };
 
   mkcue = callPackage ../tools/cd-dvd/mkcue { };
+
+  mkp224o = callPackage ../tools/security/mkp224o { };
 
   mkpasswd = hiPrio (callPackage ../tools/security/mkpasswd { });
 
@@ -14597,6 +14601,7 @@ in
       [ kernelPatches.bridge_stp_helper
         kernelPatches.cpu-cgroup-v2."4.9"
         kernelPatches.modinst_arg_list_too_long
+        kernelPatches.interpreter-trunc
       ];
   };
 
