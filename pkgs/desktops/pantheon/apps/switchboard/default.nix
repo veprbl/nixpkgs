@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, pantheon, pkgconfig, meson, python3, ninja
-, vala, gtk3, libgee, granite, gettext, clutter-gtk, libunity
+, vala, gtk3, libgee, granite, gettext, clutter-gtk, libunity, glib-networking
 , elementary-icon-theme, wrapGAppsHook, gobject-introspection }:
 
 stdenv.mkDerivation rec {
@@ -37,6 +37,7 @@ stdenv.mkDerivation rec {
     gtk3
     libgee
     libunity
+    glib-networking
   ];
 
   patches = [ ./plugs-path-env.patch ];
