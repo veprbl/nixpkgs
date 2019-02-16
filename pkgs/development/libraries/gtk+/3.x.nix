@@ -1,6 +1,6 @@
 { stdenv, fetchurl, fetchpatch, pkgconfig, gettext, perl, makeWrapper, shared-mime-info, isocodes
 , expat, glib, cairo, pango, gdk_pixbuf, atk, at-spi2-atk, gobject-introspection, fribidi
-, xorg, epoxy, json-glib, libxkbcommon, gmp, gnome3
+, xorg, epoxy, json-glib, libxkbcommon, gmp, gnome3, autoreconfHook
 , x11Support ? stdenv.isLinux
 , waylandSupport ? stdenv.isLinux, mesa_noglu, wayland, wayland-protocols
 , xineramaSupport ? stdenv.isLinux
@@ -26,7 +26,7 @@ stdenv.mkDerivation rec {
   outputs = [ "out" "dev" ];
   outputBin = "dev";
 
-  nativeBuildInputs = [ pkgconfig gettext gobject-introspection perl makeWrapper ];
+  nativeBuildInputs = [ pkgconfig gettext gobject-introspection perl makeWrapper autoreconfHook ];
 
   patches = [
     ./3.0-immodules.cache.patch
@@ -35,7 +35,11 @@ stdenv.mkDerivation rec {
       url = "https://bug757142.bugzilla-attachments.gnome.org/attachment.cgi?id=344123";
       sha256 = "0g6fhqcv8spfy3mfmxpyji93k8d4p4q4fz1v9a1c1cgcwkz41d7p";
     })
-    ./fix-fribidi.patch
+    (fetchpatch {
+      name = "fix-fribidi-linking.patch";
+      url = https://github.com/gnome/gtk/compare/3.24.5..47e4a111c2666961ab47b6df48460d3c9075d92d.patch;
+      sha256 = "0ky4kmgcywg0qlwndn9aw083bkwnkr49bnlsz0ii93fxzvbiqglr";
+    })
   ] ++ optionals stdenv.isDarwin [
     # X11 module requires <gio/gdesktopappinfo.h> which is not installed on Darwin
     # let’s drop that dependency in similar way to how other parts of the library do it
