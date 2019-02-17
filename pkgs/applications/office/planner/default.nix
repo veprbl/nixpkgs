@@ -7,7 +7,7 @@
 , libtool
 , gnome2
 , libxslt
-, python
+, python2
 }:
 
 let version = "unstable-2019-02-13";
