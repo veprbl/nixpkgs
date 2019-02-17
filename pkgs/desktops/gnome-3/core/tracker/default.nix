@@ -35,14 +35,6 @@ in stdenv.mkDerivation rec {
     "-Dfunctional_tests=false"
   ];
 
-  patches = [
-    # Always generate tracker-sparql.h in time
-    (fetchurl {
-      url = https://gitlab.gnome.org/GNOME/tracker/commit/3cbfaa5b374e615098e60eb4430f108b642ebe76.diff;
-      sha256 = "0smavzvsglpghggrcl8sjflki13nh7pr0jl2yv6ymbf5hr1c4dws";
-    })
-  ];
-
   postPatch = ''
     patchShebangs utils/g-ir-merge/g-ir-merge
     patchShebangs utils/data-generators/cc/generate
