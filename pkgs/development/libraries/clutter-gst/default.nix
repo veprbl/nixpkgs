@@ -2,13 +2,13 @@
 
 let
   pname = "clutter-gst";
-  version = "3.0.26";
+  version = "3.0.27";
 in stdenv.mkDerivation rec {
   name = "${pname}-${version}";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "0fnblqm4igdx4rn3681bp1gm1y2i00if3iblhlm0zv6ck9nqlqfq";
+    sha256 = "17czmpl92dzi4h3rn5rishk015yi3jwiw29zv8qan94xcmnbssgy";
   };
 
   propagatedBuildInputs = [ clutter gtk3 glib cogl ];
