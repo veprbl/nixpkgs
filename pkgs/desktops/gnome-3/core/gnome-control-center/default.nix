@@ -4,7 +4,7 @@
 , libxml2, polkit, libxslt, libgtop, libsoup, colord, colord-gtk
 , cracklib, libkrb5, networkmanagerapplet, networkmanager, glibc
 , libwacom, samba, shared-mime-info, tzdata, libtool, libgnomekbd
-, docbook_xsl, modemmanager, clutter, clutter-gtk, cheese
+, docbook_xsl, modemmanager, clutter, clutter-gtk, cheese, gnome-session
 , fontconfig, sound-theme-freedesktop, grilo, python3 }:
 
 let
@@ -47,7 +47,7 @@ in stdenv.mkDerivation rec {
   '';
 
   mesonFlags = [
-    "-Dgnome_session_libexecdir=${gnome3.gnome-session}/libexec"
+    "-Dgnome_session_libexecdir=${gnome-session}/libexec"
   ];
 
   preFixup = ''
