@@ -60,7 +60,7 @@ rec {
     };
     updateScript = callPackage ./update.nix {
       attrPath = "firefox-esr-52-unwrapped";
-      ffversionSuffix = "esr";
+      versionSuffix = "esr";
       versionKey = "ffversion";
     };
   };
