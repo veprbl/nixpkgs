@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   pname = "agave";
-  version = "0010a";
+  version = "010";
 
   src = fetchurl {
     url = https://github.com/agarick/agave/raw/296fceb7964185c940c48d414f2cbf1b1ab58320/dist/agave-r.ttf;
