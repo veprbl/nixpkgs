@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "builder for '/nix/store/6czc5xqmhqhah2331r826yka5zvhdr2v-geary-0.13.0.tar.xz.drv' failed with exit code 1";
+    sha256 = "0zxy7mixnjsjlv8718r5q2vh9hr96v5pqvjf28y652v7a6lbrnag";
   };
 
   nativeBuildInputs = [ vala_0_40 intltool itstool pkgconfig wrapGAppsHook meson ninja desktop-file-utils gnome-doc-utils gobject-introspection python3 ];
@@ -22,13 +22,6 @@ stdenv.mkDerivation rec {
     libpthreadstubs gnome3.gsettings-desktop-schemas gcr isocodes json-glib enchant2 libunwind
     gdk_pixbuf librsvg gnome3.defaultIconTheme gnome3.gnome-online-accounts gnome3.glib-networking
   ];
-
-  ## cmakeFlags = [
-  ##   "-DISOCODES_DIRECTORY=${isocodes}/share/xml/iso-codes"
-  ## ];
-
-  ## # TODO: This is bad, upstream should fix their code.
-  ## PKG_CONFIG_GOBJECT_INTROSPECTION_1_0_GIRDIR = "${webkitgtk.dev}/share/gir-1.0";
 
   postPatch = ''
     chmod +x build-aux/post_install.py # patchShebangs requires executable file
