@@ -1,14 +1,17 @@
 { stdenv, buildGoPackage, fetchFromGitHub, groff, Security, utillinux }:
 
 buildGoPackage rec {
-  name = "hub-${version}";
+  pname = "hub";
   version = "2.9.0";
 
   goPackagePath = "github.com/github/hub";
 
+  # Only needed to build the man-pages
+  excludedPackages = [ "github.com/github/hub/md2roff-bin" ];
+
   src = fetchFromGitHub {
     owner = "github";
-    repo = "hub";
+    repo = pname;
     rev = "v${version}";
     sha256 = "0yxpr606xx23l8823hjqj16cvjjrwb28c7z08ml1pkfvaf7w4n81";
   };
@@ -33,7 +36,6 @@ buildGoPackage rec {
 
   meta = with stdenv.lib; {
     description = "Command-line wrapper for git that makes you better at GitHub";
-
     license = licenses.mit;
     homepage = https://hub.github.com/;
     maintainers = with maintainers; [ the-kenny ];

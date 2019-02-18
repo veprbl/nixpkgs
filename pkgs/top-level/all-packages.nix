@@ -161,6 +161,8 @@ in
 
   docker-ls = callPackage ../tools/misc/docker-ls { };
 
+  docker-sync = callPackage ../tools/misc/docker-sync { };
+
   dotfiles = callPackage ../applications/misc/dotfiles { };
 
   dotnetenv = callPackage ../build-support/dotnetenv {
@@ -1596,6 +1598,8 @@ in
   parallel-rust = callPackage ../tools/misc/parallel-rust { };
 
   pyCA = python3Packages.callPackage ../applications/video/pyca {};
+
+  pyznap = python3Packages.callPackage ../tools/backup/pyznap {};
 
   scour = with python3Packages; toPythonApplication scour;
 
@@ -7573,6 +7577,8 @@ in
   stalin = callPackage ../development/compilers/stalin { };
 
   metaBuildEnv = callPackage ../development/compilers/meta-environment/meta-build-env { };
+
+  svd2rust = callPackage ../development/tools/rust/svd2rust { };
 
   swift = callPackage ../development/compilers/swift { clang = clang_5; };
 
@@ -14148,6 +14154,7 @@ in
   torque = callPackage ../servers/computing/torque { };
 
   tt-rss = callPackage ../servers/tt-rss { };
+  tt-rss-plugin-ff-instagram = callPackage ../servers/tt-rss/plugin-ff-instagram { };
   tt-rss-plugin-tumblr-gdpr = callPackage ../servers/tt-rss/plugin-tumblr-gdpr { };
   tt-rss-plugin-auth-ldap = callPackage ../servers/tt-rss/plugin-auth-ldap { };
   tt-rss-theme-feedly = callPackage ../servers/tt-rss/theme-feedly { };
@@ -22316,6 +22323,8 @@ in
   epson-escpr = callPackage ../misc/drivers/epson-escpr { };
 
   epson_201207w = callPackage ../misc/drivers/epson_201207w { };
+
+  epson-201106w = callPackage ../misc/drivers/epson-201106w { };
 
   epson-workforce-635-nx625-series = callPackage ../misc/drivers/epson-workforce-635-nx625-series { };
 
