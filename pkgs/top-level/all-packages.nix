@@ -8832,6 +8832,8 @@ in
 
   kustomize = callPackage ../development/tools/kustomize { };
 
+  ktlint = callPackage ../development/tools/ktlint { };
+
   kythe = callPackage ../development/tools/kythe { };
 
   lazygit = callPackage ../development/tools/lazygit { };
@@ -11846,6 +11848,8 @@ in
 
   olm = callPackage ../development/libraries/olm { };
 
+  one_gadget = callPackage ../development/tools/misc/one_gadget { };
+
   oneko = callPackage ../applications/misc/oneko { };
 
   oniguruma = callPackage ../development/libraries/oniguruma { };
@@ -11860,6 +11864,7 @@ in
   openbabel = callPackage ../development/libraries/openbabel { };
 
   opencascade = callPackage ../development/libraries/opencascade { };
+  opencascade-occt = callPackage ../development/libraries/opencascade-occt { };
 
   opencl-headersGen = v: callPackage ../development/libraries/opencl-headers { version = v; };
   opencl-headers_1_2 = opencl-headersGen "12";
@@ -13614,6 +13619,8 @@ in
 
   hbase = callPackage ../servers/hbase {};
 
+  headphones = callPackage ../servers/headphones {};
+
   hiawatha = callPackage ../servers/http/hiawatha {};
 
   home-assistant = callPackage ../servers/home-assistant { };
@@ -13623,6 +13630,13 @@ in
   hydron = callPackage ../servers/hydron { };
 
   icingaweb2 = callPackage ../servers/icingaweb2 { };
+  icingaweb2Modules = {
+    theme-april = callPackage ../servers/icingaweb2/theme-april { };
+    theme-lsd = callPackage ../servers/icingaweb2/theme-lsd { };
+    theme-particles = callPackage ../servers/icingaweb2/theme-particles { };
+    theme-snow = callPackage ../servers/icingaweb2/theme-snow { };
+    theme-spring = callPackage ../servers/icingaweb2/theme-spring { };
+  };
 
   ircdHybrid = callPackage ../servers/irc/ircd-hybrid { };
 
@@ -19578,7 +19592,7 @@ in
 
   tambura = callPackage ../applications/audio/tambura { };
 
-  teamspeak_client = libsForQt5.callPackage ../applications/networking/instant-messengers/teamspeak/client.nix { };
+  teamspeak_client = libsForQt511.callPackage ../applications/networking/instant-messengers/teamspeak/client.nix { };
   teamspeak_server = callPackage ../applications/networking/instant-messengers/teamspeak/server.nix { };
 
   taskell = callPackage ../applications/misc/taskell { };
