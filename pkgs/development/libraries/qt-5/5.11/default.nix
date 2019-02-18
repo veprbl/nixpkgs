@@ -61,7 +61,11 @@ let
     qtserialport = [ ./qtserialport.patch ];
     qttools = [ ./qttools.patch ];
     qtwebengine = optional stdenv.needsPax ./qtwebengine-paxmark-mksnapshot.patch;
-    qtwebkit = [ ./qtwebkit.patch ];
+    qtwebkit = [ ./qtwebkit.patch ]
+      ++ optionals stdenv.isDarwin [
+        ./qtwebkit-darwin-no-readline.patch
+        ./qtwebkit-darwin-no-qos-classes.patch
+      ];
   };
 
   mkDerivation =
