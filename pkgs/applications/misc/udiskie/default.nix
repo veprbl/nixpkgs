@@ -15,7 +15,7 @@ buildPythonApplication rec {
     owner = "coldfix";
     repo = "udiskie";
     rev = version;
-    sha256 = "builder for '/nix/store/fany3isdhh6fw1326yjlgd2ifg2g4n4d-source.drv' failed with exit code 1";
+    sha256 = "1j17z26vy44il2s9zgchvhq280vq8ag64ddi35f35b444wz2azlb";
   };
 
   buildInputs = [
