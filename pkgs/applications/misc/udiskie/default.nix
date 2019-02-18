@@ -9,13 +9,13 @@
 
 buildPythonApplication rec {
   name = "udiskie-${version}";
-  version = "1.7.6";
+  version = "1.7.7";
 
   src = fetchFromGitHub {
     owner = "coldfix";
     repo = "udiskie";
     rev = version;
-    sha256 = "0yrzn2vi8mh4vg5d9m2v79pijlal1lws7h4h1s7x9h9ccl275f7l";
+    sha256 = "builder for '/nix/store/fany3isdhh6fw1326yjlgd2ifg2g4n4d-source.drv' failed with exit code 1";
   };
 
   buildInputs = [
