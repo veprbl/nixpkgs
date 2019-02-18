@@ -2,11 +2,11 @@
 
 stdenv.mkDerivation rec {
   pname = "agave";
-  version = "009";
+  version = "0010a";
 
   src = fetchurl {
-    url = "https://github.com/agarick/agave/releases/download/v${version}/agave-r.ttf";
-    sha256 = "05766gp2glm1p2vknk1nncxigq28hg8s58kjwsbn8zpwy8ivywpk";
+    url = https://github.com/agarick/agave/raw/296fceb7964185c940c48d414f2cbf1b1ab58320/dist/agave-r.ttf;
+    sha256 = "0rb7d44xx8yl12b38lc59aynd974bqndnwpzxlx7vi9h2d96l63q";
   };
 
   sourceRoot = ".";
