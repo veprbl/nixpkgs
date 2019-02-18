@@ -311,6 +311,8 @@ in
 
   nixBufferBuilders = import ../build-support/emacs/buffer.nix { inherit (pkgs) lib writeText; inherit (emacsPackagesNg) inherit-local; };
 
+  nix-gitignore = callPackage ../build-support/nix-gitignore { };
+
   pathsFromGraph = ../build-support/kernel/paths-from-graph.pl;
 
   pruneLibtoolFiles = makeSetupHook { name = "prune-libtool-files"; }
@@ -622,6 +624,8 @@ in
   autorevision = callPackage ../tools/misc/autorevision { };
 
   bcachefs-tools = callPackage ../tools/filesystems/bcachefs-tools { };
+
+  bitwarden-cli = callPackage ../tools/security/bitwarden-cli { };
 
   bmap-tools = callPackage ../tools/misc/bmap-tools { };
 
@@ -7036,7 +7040,7 @@ in
 
   stack = haskell.lib.justStaticExecutables haskellPackages.stack;
   hlint = haskell.lib.justStaticExecutables haskellPackages.hlint;
-  stylish-cabal = haskell.lib.justStaticExecutables haskell.packages.ghc844.stylish-cabal;
+  stylish-cabal = haskell.lib.justStaticExecutables haskellPackages.stylish-cabal;
 
   all-cabal-hashes = callPackage ../data/misc/hackage { };
 
@@ -7830,12 +7834,14 @@ in
   luaPackages = lua52Packages;
 
   # override instead ?
-  luajit_2_0 = callPackage ../development/interpreters/luajit/2.0.nix {
+  luajit_2_0 = import ../development/interpreters/luajit/2.0.nix {
     self = luajit_2_0;
+    inherit (super) callPackage lib;
   };
 
-  luajit_2_1 = callPackage ../development/interpreters/luajit/2.1.nix {
+  luajit_2_1 = import ../development/interpreters/luajit/2.1.nix {
     self = luajit_2_1;
+    inherit (super) callPackage lib;
   };
 
   luajit = luajit_2_1;
