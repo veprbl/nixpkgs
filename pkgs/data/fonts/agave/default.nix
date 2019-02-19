@@ -5,8 +5,8 @@ stdenv.mkDerivation rec {
   version = "010";
 
   src = fetchurl {
-    url = https://github.com/agarick/agave/raw/296fceb7964185c940c48d414f2cbf1b1ab58320/dist/agave-r.ttf;
-    sha256 = "0rb7d44xx8yl12b38lc59aynd974bqndnwpzxlx7vi9h2d96l63q";
+    url = https://github.com/agarick/agave/releases/download/v010/agave-r.ttf;
+    sha256 = "0s8dgs4avlr4y1cgffmmj5m1qfhaaja9yj64y98ismav357x0x1s";
   };
 
   sourceRoot = ".";
