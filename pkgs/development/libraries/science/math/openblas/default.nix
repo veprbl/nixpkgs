@@ -112,12 +112,14 @@ stdenv.mkDerivation rec {
     "relro" "bindnow"
   ];
 
+  depsBuildBuild = [ buildPackages.stdenv.cc ]; # HOSTCC
+
   nativeBuildInputs = [
     perl
     which
-    buildPackages.gfortran
-    buildPackages.stdenv.cc
   ];
+
+  buildInputs = [ gfortran ];
 
   makeFlags = mkMakeFlagsFromConfig (config // {
     FC = "${stdenv.cc.targetPrefix}gfortran";
