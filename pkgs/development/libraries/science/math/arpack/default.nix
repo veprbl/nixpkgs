@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, autoconf, automake, gettext, libtool
+{ stdenv, fetchurl, autoconf, automake, gettext, libtool, pkgconfig
 , gfortran, openblas, eigen }:
 
 with stdenv.lib;
@@ -14,7 +14,7 @@ stdenv.mkDerivation {
     sha256 = "1mn27kx683lp0vxlz79i95jhsp2i0zyzd6vwfdd6p78brp1kyblp";
   };
 
-  nativeBuildInputs = [ autoconf automake gettext libtool ];
+  nativeBuildInputs = [ autoconf automake gettext libtool pkgconfig ];
   buildInputs = [ gfortran openblas eigen ];
 
   doCheck = true;
