@@ -119,7 +119,7 @@ stdenv.mkDerivation rec {
     which
   ];
 
-  buildInputs = [ gfortran gfortran.cc.lib ];
+  buildInputs = [ gfortran ];
 
   makeFlags = mkMakeFlagsFromConfig (config // {
     FC = "${stdenv.cc.targetPrefix}gfortran";
