@@ -938,7 +938,6 @@ in
   tensor = libsForQt5.callPackage ../applications/networking/instant-messengers/tensor { };
 
   libtensorflow = callPackage ../development/libraries/libtensorflow {
-    cudaSupport = config.cudaSupport or false;
     inherit (linuxPackages) nvidia_x11;
     cudatoolkit = cudatoolkit_9_0;
     cudnn = cudnn_cudatoolkit_9_0;
@@ -3376,6 +3375,8 @@ in
 
   iannix = libsForQt5.callPackage ../applications/audio/iannix { };
 
+  ibm-sw-tpm2 = callPackage ../tools/security/ibm-sw-tpm2 { };
+
   ibniz = callPackage ../tools/graphics/ibniz { };
 
   icecast = callPackage ../servers/icecast { };
@@ -3763,6 +3764,8 @@ in
   matrix-synapse = callPackage ../servers/matrix-synapse { };
 
   mautrix-telegram = callPackage ../servers/mautrix-telegram { };
+
+  mautrix-whatsapp = callPackage ../servers/mautrix-whatsapp { };
 
   mdbook = callPackage ../tools/text/mdbook {
     inherit (darwin.apple_sdk.frameworks) CoreServices;
@@ -5839,6 +5842,8 @@ in
 
   tpm-luks = callPackage ../tools/security/tpm-luks { };
 
+  tpm2-tools = callPackage ../tools/security/tpm2-tools { };
+
   trezord = callPackage ../servers/trezord { };
 
   tthsum = callPackage ../applications/misc/tthsum { };
@@ -6972,9 +6977,7 @@ in
     inherit (gnome2) libart_lgpl;
   });
 
-  gnu-smalltalk = callPackage ../development/compilers/gnu-smalltalk {
-    emacsSupport = config.emacsSupport or false;
-  };
+  gnu-smalltalk = callPackage ../development/compilers/gnu-smalltalk { };
 
   gccgo = gccgo6;
   gccgo6 = wrapCC (gcc6.cc.override {
@@ -9386,6 +9389,12 @@ in
     inherit (darwin.apple_sdk.frameworks) AudioUnit CoreServices;
   };
 
+  aws-c-common = callPackage ../development/libraries/aws-c-common { };
+
+  aws-c-event-stream = callPackage ../development/libraries/aws-c-event-stream { };
+
+  aws-checksums = callPackage ../development/libraries/aws-checksums { };
+
   aws-sdk-cpp = callPackage ../development/libraries/aws-sdk-cpp {
     inherit (darwin.apple_sdk.frameworks) CoreAudio AudioToolbox;
   };
@@ -10206,11 +10215,7 @@ in
 
   pixman = callPackage ../development/libraries/pixman { };
 
-  cairo = callPackage ../development/libraries/cairo {
-    glSupport = config.cairo.gl or (stdenv.isLinux &&
-      !stdenv.isAarch32 && !stdenv.isMips);
-  };
-
+  cairo = callPackage ../development/libraries/cairo { };
 
   cairomm = callPackage ../development/libraries/cairomm { };
 
@@ -10237,7 +10242,6 @@ in
   elementary-cmake-modules = callPackage ../development/libraries/elementary-cmake-modules { };
 
   gtk2 = callPackage ../development/libraries/gtk+/2.x.nix {
-    cupsSupport = config.gtk2.cups or stdenv.isLinux;
     inherit (darwin.apple_sdk.frameworks) AppKit Cocoa;
   };
 
@@ -11968,7 +11972,6 @@ in
   openssl-chacha = callPackage ../development/libraries/openssl/chacha.nix { };
 
   opensubdiv = callPackage ../development/libraries/opensubdiv {
-    cudaSupport = config.cudaSupport or false;
     cmake = cmake_2_8;
   };
 
@@ -12173,6 +12176,7 @@ in
       harfbuzz = harfbuzzFull;
       inherit libGL;
       inherit perl;
+      inherit (darwin) cf-private;
       inherit (gst_all_1) gstreamer gst-plugins-base;
     });
 
@@ -12863,6 +12867,8 @@ in
 
   totem-pl-parser = callPackage ../development/libraries/totem-pl-parser { };
 
+  tpm2-tss = callPackage ../development/libraries/tpm2-tss { };
+
   tremor = callPackage ../development/libraries/tremor { };
 
   twolame = callPackage ../development/libraries/twolame { };
@@ -13106,9 +13112,7 @@ in
 
   xalanc = callPackage ../development/libraries/xalanc {};
 
-  xgboost = callPackage ../development/libraries/xgboost {
-    cudaSupport = config.cudaSupport or false;
-  };
+  xgboost = callPackage ../development/libraries/xgboost { };
 
   xgeometry-select = callPackage ../tools/X11/xgeometry-select { };
 
@@ -15135,10 +15139,7 @@ in
 
   pax-utils = callPackage ../os-specific/linux/pax-utils { };
 
-  pcmciaUtils = callPackage ../os-specific/linux/pcmciautils {
-    firmware = config.pcmciaUtils.firmware or [];
-    config = config.pcmciaUtils.config or null;
-  };
+  pcmciaUtils = callPackage ../os-specific/linux/pcmciautils { };
 
   pcstat = callPackage ../tools/system/pcstat { };
 
@@ -16328,7 +16329,6 @@ in
   bleachbit = callPackage ../applications/misc/bleachbit { };
 
   blender = callPackage  ../applications/misc/blender {
-    cudaSupport = config.cudaSupport or false;
     pythonPackages = python35Packages;
     stdenv = overrideCC stdenv gcc6;
   };
@@ -17944,11 +17944,18 @@ in
 
   inherit (kdeFrameworks) kdesu;
 
-  kdevelop-pg-qt = libsForQt5.callPackage ../applications/editors/kdevelop5/kdevelop-pg-qt.nix {};
+  kdevelop-pg-qt = libsForQt5.callPackage ../applications/editors/kdevelop5/kdevelop-pg-qt.nix { };
 
-  kdevelop = libsForQt5.callPackage ../applications/editors/kdevelop5/kdevelop.nix {
+  kdevelop-unwrapped = libsForQt5.callPackage ../applications/editors/kdevelop5/kdevelop.nix {
     llvmPackages = llvmPackages_7;
   };
+
+  kdev-php = libsForQt5.callPackage ../applications/editors/kdevelop5/kdev-php.nix { };
+  kdev-python = libsForQt5.callPackage ../applications/editors/kdevelop5/kdev-python.nix {
+    python = python3;
+  };
+
+  kdevelop = libsForQt5.callPackage ../applications/editors/kdevelop5/wrapper.nix { };
 
   keepnote = callPackage ../applications/office/keepnote { };
 
@@ -20348,18 +20355,15 @@ in
   };
 
   xmonad_log_applet = callPackage ../applications/window-managers/xmonad/log-applet {
-    desktopSupport = "gnomeflashback";
     inherit (xfce) libxfce4util xfce4-panel;
   };
 
   xmonad_log_applet_mate = xmonad_log_applet.override {
     desktopSupport = "mate";
-    inherit (xfce) libxfce4util xfce4-panel;
   };
 
   xmonad_log_applet_xfce = xmonad_log_applet.override {
     desktopSupport = "xfce4";
-    inherit (xfce) libxfce4util xfce4-panel;
   };
 
   xmpp-client = callPackage ../applications/networking/instant-messengers/xmpp-client { };
@@ -22046,28 +22050,21 @@ in
 
   ### SCIENCE / MATH
 
-  caffe = callPackage ../applications/science/math/caffe rec {
-    cudaSupport = config.caffe.cudaSupport or config.cudaSupport or false;
-    cudnnSupport = cudaSupport;
-    # Used only for image loading.
-    opencv3 = opencv3WithoutCuda;
+  caffe = callPackage ../applications/science/math/caffe ({
+    opencv3 = opencv3WithoutCuda; # Used only for image loading.
     inherit (darwin.apple_sdk.frameworks) Accelerate CoreGraphics CoreVideo;
-  };
+  } // (config.caffe or {}));
 
   caffe2 = callPackage ../development/libraries/science/math/caffe2 (rec {
     inherit (python36Packages) python future six numpy pydot;
     protobuf = protobuf3_1;
     python-protobuf = python36Packages.protobuf.override { inherit protobuf; };
-    # Used only for image loading.
-    opencv3 = opencv3WithoutCuda;
+    opencv3 = opencv3WithoutCuda; # Used only for image loading.
   });
 
-  cntk = callPackage ../applications/science/math/cntk rec {
-    cudaSupport = pkgs.config.cudaSupport or false;
-    cudnnSupport = cudaSupport;
+  cntk = callPackage ../applications/science/math/cntk {
     inherit (linuxPackages) nvidia_x11;
-    # Used only for image loading.
-    opencv3 = opencv3WithoutCuda;
+    opencv3 = opencv3WithoutCuda; # Used only for image loading.
   };
 
   ecm = callPackage ../applications/science/math/ecm { };
@@ -22098,9 +22095,7 @@ in
     sbcl = null;
   };
 
-  mxnet = callPackage ../applications/science/math/mxnet rec {
-    cudaSupport = config.cudaSupport or false;
-    cudnnSupport = cudaSupport;
+  mxnet = callPackage ../applications/science/math/mxnet {
     inherit (linuxPackages) nvidia_x11;
   };
 
