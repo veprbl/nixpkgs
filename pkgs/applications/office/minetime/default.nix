@@ -13,8 +13,7 @@ appimageTools.wrapType2 rec {
 
   extraPkgs = p: p.atomEnv.packages;
 
-  # our glibc doesn't actually support this yet,
-  # but even so this fixes account creation.
+  # TODO: Don't replace if already set?
   profile = ''
     export LC_ALL=C.UTF8
   '';
