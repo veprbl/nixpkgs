@@ -2,7 +2,7 @@
 , IOCompress, zlib, libjpeg, expat, freetype, libwpd
 , libxml2, db, sablotron, curl, fontconfig, libsndfile, neon
 , bison, flex, zip, unzip, gtk3, gtk2, libmspack, getopt, file, cairo, which
-, icu, boost, jdk, ant, cups, xorg, libcmis
+, icu, boost, jdk, ant, cups, xorg, libcmis, mariadb
 , openssl, gperf, cppunit, GConf, ORBit2, poppler, utillinux
 , librsvg, gnome_vfs, libGLU_combined, bsh, CoinMP, libwps, libabw
 , autoconf, automake, openldap, bash, hunspell, librdf_redland, nss, nspr
@@ -277,6 +277,7 @@ in stdenv.mkDerivation rec {
       libxshmfence libatomic_ops graphite2 harfbuzz gpgme utillinux
       librevenge libe-book libmwaw glm glew ncurses epoxy
       libodfgen CoinMP librdf_rasqal defaultIconTheme gettext
+      mariadb.client
     ]
     ++ lib.optional kdeIntegration kdelibs4;
   nativeBuildInputs = [ wrapGAppsHook gdb ];
