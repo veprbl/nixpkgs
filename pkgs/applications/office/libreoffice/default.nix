@@ -70,7 +70,6 @@ in stdenv.mkDerivation rec {
 
   patches = [
     ./xdg-open-brief.patch
-    ./poppler.patch
   ];
 
   postUnpack = ''
