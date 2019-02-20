@@ -44,6 +44,13 @@ let
           md5 = "185d60944ea767075d27247c3162b3bc";
           md5name = "${md5}-${name}";
         })
+        (rec {
+          name = "opens___.ttf";
+          url = "https://dev-www.libreoffice.org/extern/${md5name}";
+          sha256 = "49a64f3bcf20a7909ba2751349231d6652ded9cd2840e961b5164d09de3ffa63";
+          # XXX: need to rework since md5 isn't used...
+          md5name = "${sha256}-${name}";
+        })
       ]);
 
     translations = fetchSrc {
