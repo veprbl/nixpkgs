@@ -2,9 +2,9 @@
 
 rec {
   major = "6";
-  minor = "1";
-  patch = "4";
-  tweak = "2";
+  minor = "2";
+  patch = "0";
+  tweak = "3";
 
   subdir = "${major}.${minor}.${patch}";
 
