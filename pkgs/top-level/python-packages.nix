@@ -3244,6 +3244,8 @@ in {
 
   mbed-ls = callPackage ../development/python-modules/mbed-ls {  };
 
+  mbed-os-tools = callPackage ../development/python-modules/mbed-os-tools { };
+
   mccabe = callPackage ../development/python-modules/mccabe { };
 
   mechanize = callPackage ../development/python-modules/mechanize { };
