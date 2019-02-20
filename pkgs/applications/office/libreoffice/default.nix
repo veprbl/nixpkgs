@@ -163,13 +163,11 @@ in stdenv.mkDerivation rec {
     find -name "*.cmd" -exec sed -i s,/lib:/usr/lib,, {} \;
     '';
 
-  makeFlags = "SHELL=${bash}/bin/bash";
+  makeFlags = [ "SHELL=${bash}/bin/bash" ];
 
   enableParallelBuilding = true;
 
-  buildPhase = ''
-    make build-nocheck
-  '';
+  buildTargets = [ "build-nocheck" ];
 
   doCheck = true;
 
