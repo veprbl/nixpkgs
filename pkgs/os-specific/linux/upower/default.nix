@@ -4,11 +4,11 @@
 }:
 
 stdenv.mkDerivation rec {
-  name = "upower-0.99.9";
+  name = "upower-0.99.10";
 
   src = fetchurl {
-    url = https://gitlab.freedesktop.org/upower/upower/uploads/2282c7c0e53fb31816b824c9d1f547e8/upower-0.99.9.tar.xz;
-    sha256 = "046ix7j7hmb7ycv8v54668kjsrgjhzwxn299c1d87vdnkd38kfh1";
+    url = https://gitlab.freedesktop.org/upower/upower/uploads/c438511024b9bc5a904f8775cfc8e4c4/upower-0.99.10.tar.xz;
+    sha256 = "17d2bclv5fgma2y3g8bsn9pdvspn1zrzismzdnzfivc0f2wm28k4";
   };
 
   buildInputs =
