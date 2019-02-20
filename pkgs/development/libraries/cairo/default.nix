@@ -1,4 +1,4 @@
-{ config, stdenv, fetchurl, pkgconfig, libiconv
+{ config, stdenv, fetchurl, fetchpatch, pkgconfig, libiconv
 , libintl, expat, zlib, libpng, pixman, fontconfig, freetype, xorg
 , gobjectSupport ? true, glib
 , xcbSupport ? true # no longer experimental since 1.12
