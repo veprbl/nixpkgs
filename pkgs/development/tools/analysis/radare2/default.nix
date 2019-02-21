@@ -124,8 +124,8 @@ in {
     rev = "bbe5c2a31e984a93e465afbc4892352857e8aae9";
     version = "2019-01-20";
     sha256 = "108cqpvq5pk348340jdpj74x1kxpakskhr4q9k2qn2vml8paywd2";
-    cs_tip = "0ff8220adef16a942697afd245afc5ab0f70cbf8";
-    cs_sha256 = "1ak8ysgivq28d23r77881p0z5v65jhpap5plm10p9j3y2x00n3zn";
+    cs_ver = "4.0.1";
+    cs_sha256 = "0ijwxxk71nr9z91yxw20zfj4bbsbrgvixps5c7cpj163xlzlwba6";
   };
   #</generated>
 }
