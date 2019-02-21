@@ -1,6 +1,5 @@
 { stdenv
 , fetchFromGitHub
-, gcc8
 , cmake
 }:
 
@@ -15,7 +14,7 @@ stdenv.mkDerivation rec {
     sha256 = "1qnlbw3r82hdppxprah933ycw6lddv54mb1jl6df0ikvxgqrjw3q";
   };
 
-  buildInputs = [ gcc8 cmake ];
+  nativeBuildInputs = [ cmake ];
 
   enableParallelBuilding = true;
 
