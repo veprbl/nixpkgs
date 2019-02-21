@@ -16217,7 +16217,7 @@ in
     cairo = cairo.override { xcbSupport = true; };
     # Doesn't work, not sure if luaPackages broken or what
     # pkg-config grabs lua 5.2, and even if fixed lua5.3-lgi seems borked?
-    # luaPackages = lua53Packages; # .override { lua = lua5_3; };
+    luaPackages = lua53Packages; # .override { lua = lua5_3; };
   };
   awesome = awesome-4-0;
 
