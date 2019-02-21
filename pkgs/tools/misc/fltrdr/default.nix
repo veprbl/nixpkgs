@@ -35,7 +35,7 @@ stdenv.mkDerivation rec {
 
     platforms   = platforms.linux; # can only test linux
     license     = licenses.mit;
-    maintainers = [ stdenv.maintainers.matthiasbeyer ];
+    maintainers = [ maintainers.matthiasbeyer ];
   };
 }
 
