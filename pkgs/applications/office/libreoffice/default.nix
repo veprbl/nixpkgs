@@ -174,7 +174,9 @@ in stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  buildTargets = [ "build-nocheck" ];
+  buildPhase = ''
+    make build-nocheck
+  '';
 
   doCheck = true;
 
