@@ -4,20 +4,20 @@ let
   ell = fetchgit {
      url = https://git.kernel.org/pub/scm/libs/ell/ell.git;
      #rev = "0.17";
-     rev = "cb0aee84545284034d2914430b33139f9ed6046a"; # 2019-02-15
-     sha256 = "093c6yl0hdm2j22nx476b8x2xnq4m7dnjrzd6ck10bi86sildb7x";
+     rev = "06dc541f8b04766f8a7fac36e075a9427269e28a"; # 2019-02-21
+     sha256 = "04jn31b4gqrvjkagyxna9innd0x7mwkz16q7warl1gdxl8wxhvji";
   };
 in stdenv.mkDerivation rec {
   name = "iwd-${version}";
 
   #version = "0.14";
-  version = "2019-02-18";
+  version = "2019-02-20";
 
   src = fetchgit {
     url = https://git.kernel.org/pub/scm/network/wireless/iwd.git;
-    rev = "261eeb511bc82c6b11f4efb26d43851c452976f1";
+    rev = "7b3831515a729698d2d423394527002c41023dba";
     #rev = version;
-    sha256 = "1xh5l9n8yy7whpm9mqkgxlhar7y0cf71w5djzq8m2ddzvdxcxc50";
+    sha256 = "078yfmp0d7aj1b9lq4q04801z805dp244l7x8d2idxv7h8kp52wz";
   };
 
   nativeBuildInputs = [
