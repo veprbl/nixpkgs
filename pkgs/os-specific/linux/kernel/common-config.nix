@@ -637,6 +637,8 @@ let
       # restore this?
       #MLX5_CORE_EN       = option yes;
 
+      PSI = whenAtLeast "4.20" yes;
+
       MODVERSIONS        = whenOlder "4.9" yes;
       MOUSE_PS2_ELANTECH = yes; # Elantech PS/2 protocol extension
       MTRR_SANITIZER     = yes;
