@@ -1,5 +1,5 @@
 { stdenv, fetchurl, substituteAll, openconnect, intltool, pkgconfig, networkmanager, gcr, libsecret
-, withGnome ? true, gnome3, kmod, autoreconfHook }:
+, gtk3, withGnome ? true, gnome3, kmod }:
 
 let
   pname   = "NetworkManager-openconnect";
@@ -23,7 +23,7 @@ in stdenv.mkDerivation rec {
   ];
 
   buildInputs = [ openconnect networkmanager ]
-    ++ stdenv.lib.optionals withGnome [ gnome3.gtk gcr libsecret ];
+    ++ stdenv.lib.optionals withGnome [ gtk3 gcr libsecret ];
 
   nativeBuildInputs = [ autoreconfHook /* autoreconf b/c patch configure.ac */ intltool pkgconfig ];
 

@@ -70,6 +70,7 @@ rec {
           else builtins.unsafeGetAttrPos "name" attrs)
     , separateDebugInfo ? false
     , outputs ? [ "out" ]
+    , __darwinAllowLocalNetworking ? false
     , __impureHostDeps ? []
     , __propagatedImpureHostDeps ? []
     , sandboxProfile ? ""
@@ -182,6 +183,7 @@ rec {
         (removeAttrs attrs
           ["meta" "passthru" "pos"
            "checkInputs" "installCheckInputs"
+           "__darwinAllowLocalNetworking"
            "__impureHostDeps" "__propagatedImpureHostDeps"
            "sandboxProfile" "propagatedSandboxProfile"])
         // (lib.optionalAttrs (!(attrs ? name) && attrs ? pname && attrs ? version)) {
@@ -252,6 +254,7 @@ rec {
         } // lib.optionalAttrs (hardeningDisable != [] || hardeningEnable != []) {
           NIX_HARDENING_ENABLE = enabledHardeningOptions;
         } // lib.optionalAttrs (stdenv.buildPlatform.isDarwin) {
+          inherit __darwinAllowLocalNetworking;
           # TODO: remove lib.unique once nix has a list canonicalization primitive
           __sandboxProfile =
           let profiles = [ stdenv.extraSandboxProfile ] ++ computedSandboxProfile ++ computedPropagatedSandboxProfile ++ [ propagatedSandboxProfile sandboxProfile ];

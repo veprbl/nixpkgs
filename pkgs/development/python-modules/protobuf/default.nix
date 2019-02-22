@@ -14,7 +14,9 @@ buildPythonPackage rec {
     ++ optional (versionOlder protobuf.version "2.7.0") "-std=c++98";
 
   propagatedBuildInputs = [ protobuf ]; # google_apputils maybe needed for older?
-  buildInputs = [ pyext six setuptools ];
+  # propagatedBuildInputs = [ google_apputils ];
+  nativeBuildInputs = [ google_apputils pyext protobuf ];
+  #buildInputs = [ protobuf ];
 
   patches = optional isPy37
     # Python 3.7 compatibility (remove when protobuf 3.7 is released)
