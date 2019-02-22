@@ -4522,6 +4522,8 @@ in
 
   notify-osd = callPackage ../applications/misc/notify-osd { };
 
+  notes-up = callPackage ../applications/office/notes-up { };
+
   notify-osd-customizable = callPackage ../applications/misc/notify-osd-customizable { };
 
   nox = callPackage ../tools/package-management/nox { };
@@ -17072,6 +17074,8 @@ in
   fmsynth = callPackage ../applications/audio/fmsynth { };
 
   focuswriter = libsForQt5.callPackage ../applications/editors/focuswriter { };
+
+  fondo = callPackage ../applications/graphics/fondo { };
 
   font-manager = callPackage ../applications/misc/font-manager { };
 
