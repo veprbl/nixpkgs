@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, substituteAll, openconnect, intltool, pkgconfig, networkmanager, gcr, libsecret
+{ stdenv, fetchurl, substituteAll, openconnect, intltool, pkgconfig, autoreconfHook, networkmanager, gcr, libsecret
 , gtk3, withGnome ? true, gnome3, kmod }:
 
 let
