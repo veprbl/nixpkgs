@@ -640,6 +640,8 @@ in
 
   autorevision = callPackage ../tools/misc/autorevision { };
 
+  automirror = callPackage ../tools/misc/automirror { };
+
   bcachefs-tools = callPackage ../tools/filesystems/bcachefs-tools { };
 
   bitwarden-cli = callPackage ../tools/security/bitwarden-cli { };
@@ -1627,6 +1629,8 @@ in
   scour = with python3Packages; toPythonApplication scour;
 
   s2png = callPackage ../tools/graphics/s2png { };
+
+  shab = callPackage ../tools/text/shab { };
 
   simg2img = callPackage ../tools/filesystems/simg2img { };
 
