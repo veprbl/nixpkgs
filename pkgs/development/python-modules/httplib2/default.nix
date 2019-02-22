@@ -1,6 +1,4 @@
-{ lib, buildPythonPackage, fetchFromGitHub,
-flake8, future, mock, pytest, pytestcov, pytest-forked, pytest-timeout, pytest_xdist, six
-}:
+{ lib, buildPythonPackage, fetchPypi }:
 
 buildPythonPackage rec {
   pname = "httplib2";
