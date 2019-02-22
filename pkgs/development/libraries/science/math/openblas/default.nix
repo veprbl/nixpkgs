@@ -128,7 +128,8 @@ stdenv.mkDerivation rec {
     NO_STATIC = true;
     CROSS = stdenv.hostPlatform != stdenv.buildPlatform;
     HOSTCC = "cc";
-    NO_BINARY_MODE = stdenv.hostPlatform != stdenv.buildPlatform;
+    # Makefile.system only checks defined status
+    NO_BINARY_MODE = toString (stdenv.hostPlatform != stdenv.buildPlatform);
   });
 
   doCheck = true;
