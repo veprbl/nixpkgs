@@ -1,9 +1,8 @@
-{ stdenv, fetchurl, intltool, pkgconfig, gtk3, vala_0_40, enchant
-, wrapGAppsHook, gdk_pixbuf, cmake, ninja, desktop-file-utils
-, libnotify, libcanberra-gtk3, libsecret, gmime, isocodes
-, gobject-introspection, libpthreadstubs, sqlite, gcr, libgee
-, gsettings-desktop-schemas, adwaita-icon-theme
-, gnome3, librsvg, gnome-doc-utils, webkitgtk, fetchpatch }:
+{ stdenv, fetchurl, pkgconfig, gtk3, vala, enchant, wrapGAppsHook, gdk_pixbuf, meson, ninja
+, desktop-file-utils, gnome-online-accounts, gsettings-desktop-schemas, adwaita-icon-theme
+, libnotify, libcanberra-gtk3, libsecret, gmime, isocodes, libxml2, gettext, gobject-introspection
+, libpthreadstubs, sqlite, gcr, json-glib, itstool, libgee, gnome3, librsvg, webkitgtk, python3
+, xvfb_run, dbus, shared-mime-info, libunwind }:
 
 stdenv.mkDerivation rec {
   pname = "geary";
@@ -20,9 +19,10 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
-    gtk3 enchant webkitgtk libnotify libcanberra-gtk3 libgee libsecret gmime sqlite
-    libpthreadstubs gsettings-desktop-schemas gcr isocodes
-    gdk_pixbuf librsvg adwaita-icon-theme
+    adwaita-icon-theme enchant gcr gdk_pixbuf gmime gnome-online-accounts
+    gsettings-desktop-schemas gtk3 isocodes json-glib libcanberra-gtk3
+    libgee libnotify libpthreadstubs librsvg libsecret sqlite webkitgtk
+    libunwind
   ];
 
   checkInputs = [ xvfb_run dbus ];
