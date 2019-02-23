@@ -8,7 +8,6 @@ with python3.pkgs; buildPythonApplication rec {
   #  inherit pname version;
   #  sha256 = "03h0j0d3xyqh98x5v2gv63wv3g91hip3vsaxvybsn5iz331d23h4";
   #};
-  buildInputs = [ git ];
   src = fetchgit {
     url = "https://github.com/pimutils/${pname}";
     rev = "1bc431f5390b280d1f162131f592cde03028fabb";
@@ -16,7 +15,7 @@ with python3.pkgs; buildPythonApplication rec {
     leaveDotGit = true;
   };
 
-  LC_ALL = "en_US.UTF-8";
+  LC_ALL = "C.UTF-8";
 
   propagatedBuildInputs = [
     atomicwrites
@@ -34,7 +33,7 @@ with python3.pkgs; buildPythonApplication rec {
     pkginfo
     freezegun
   ];
-  nativeBuildInputs = [ setuptools_scm pkgs.glibcLocales ];
+  nativeBuildInputs = [ setuptools_scm pkgs.glibcLocales git ];
   checkInputs = [ pytest ];
 
   postInstall = ''
