@@ -1,4 +1,5 @@
 { stdenv, fetchurl, qmake, pkgconfig
+, qtwebkit, qtx11extras
 , accounts-qt, libnotify, libproxy }: # , signond }:
 
 stdenv.mkDerivation rec {
@@ -11,5 +12,5 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ qmake pkgconfig ];
-  buildInputs = [ accounts-qt libnotify libproxy ];
+  buildInputs = [ qtwebkit qtx11extras accounts-qt libnotify libproxy ];
 }
