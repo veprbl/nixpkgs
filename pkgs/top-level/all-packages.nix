@@ -13210,6 +13210,8 @@ in
     mail = callPackages ../development/libraries/gsignond/plugins/mail.nix { };
   };
 
+  signon-ui = libsForQt5.callPackage ../development/libraries/signon-ui { };
+
   ### DEVELOPMENT / LIBRARIES / AGDA
 
   agda = callPackage ../build-support/agda {
