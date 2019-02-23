@@ -22,6 +22,6 @@ buildPythonPackage rec {
     license = lib.licenses.lgpl21;
     homepage = http://www.pyside.org;
     maintainers = [ lib.maintainers.chaoflow ];
-  #  broken = true;
+    broken = true;
   };
 }
