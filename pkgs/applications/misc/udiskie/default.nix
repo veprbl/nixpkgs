@@ -19,14 +19,18 @@ buildPythonApplication rec {
   };
 
   buildInputs = [
-    asciidoc-full        # For building man page.
     hicolor-icon-theme
     wrapGAppsHook
     librsvg              # required for loading svg icons (udiskie uses svg icons)
   ];
 
+  nativeBuildInputs = [
+    asciidoc-full        # For building man page.
+    gettext
+  ];
+
   propagatedBuildInputs = [
-    gettext gobject-introspection gtk3 libnotify docopt
+    gobject-introspection gtk3 libnotify docopt
     pygobject3 pyyaml udisks2 libappindicator-gtk3
   ];
 
