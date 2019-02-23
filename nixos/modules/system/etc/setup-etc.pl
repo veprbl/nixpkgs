@@ -44,10 +44,8 @@ sub isStatic {
     my $path = shift;
 
     if (-l $path) {
-        # incomplete!
-        my $target = File::Spec->rel2abs(readlink $path, dirname $path);
-        #my $targetdir = File::Spec->canonpath(dirname $target);
-        return substr($target, 0, length $static) eq $static;
+        my $target = File::Spec->canonpath(File::Spec->rel2abs(readlink $path, dirname $path));
+        return substr($target, 0, length "/etc/static/") eq "/etc/static/";
     }
 
     if (-d $path) {
