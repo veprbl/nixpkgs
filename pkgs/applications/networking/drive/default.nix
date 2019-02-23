@@ -2,7 +2,7 @@
 
 buildGoPackage rec {
   name = "drive-${version}";
-  version = "0.3.8.1";
+  version = "0.3.9.1";
 
   goPackagePath = "github.com/odeke-em/drive";
   subPackages = [ "cmd/drive" ];
@@ -11,7 +11,7 @@ buildGoPackage rec {
     owner = "odeke-em";
     repo = "drive";
     rev = "v${version}";
-    sha256 = "1b9cgc148rg5irg4jas10zv9i2km75x1zin25hld340dmpjcpi82";
+    sha256 = "0mpym9b9jyhp6spz5lz85sbailqvcar1g280h5an4bkiczm3bci5";
   };
 
   goDeps = ./deps.nix;
