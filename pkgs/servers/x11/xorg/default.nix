@@ -1,5 +1,5 @@
 # THIS IS A GENERATED FILE.  DO NOT EDIT!
-{ lib, newScope, pixman }:
+{ lib, newScope, pixman, fetchgit }:
 
 lib.makeScope newScope (self: with self; {
 
@@ -1144,7 +1144,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libxcb = callPackage ({ stdenv, pkgconfig, fetchurl, libxslt, libpthreadstubs, libXau, xcbproto, libXdmcp, python }: stdenv.mkDerivation {
+  libxcb = callPackage ({ stdenv, pkgconfig, fetchurl, libxslt, libpthreadstubs, libXau, xcbproto, xorgproto, libXdmcp, python }: stdenv.mkDerivation {
     name = "libxcb-1.13.1";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1153,7 +1153,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig python ];
-    buildInputs = [ libxslt libpthreadstubs libXau xcbproto libXdmcp ];
+    buildInputs = [ libxslt libpthreadstubs libXau xcbproto xorgproto libXdmcp ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -2652,15 +2652,23 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xorgserver = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, openssl, libX11, libXau, libXaw, libxcb, xcbutil, xcbutilwm, xcbutilimage, xcbutilkeysyms, xcbutilrenderutil, libXdmcp, libXfixes, libxkbfile, libXmu, libXpm, libXrender, libXres, libXt }: stdenv.mkDerivation {
-    name = "xorg-server-1.20.3";
+  xorgserver = callPackage ({ stdenv, pkgconfig, autoreconfHook, fetchurl, xorgproto, openssl, libX11, libXau, libXaw, libxcb, xcbutil, xcbutilwm, xcbutilimage, xcbutilkeysyms, xcbutilrenderutil, libXdmcp, libXfixes, libxkbfile, libXmu, libXpm, libXrender, libXres, libXt }: stdenv.mkDerivation {
+    name = "xorg-server-1.20.99.0.99"; # 2019-02-11
     builder = ./builder.sh;
-    src = fetchurl {
-      url = mirror://xorg/individual/xserver/xorg-server-1.20.3.tar.bz2;
-      sha256 = "1ph1j8gy5cazsq05krq9kppjx5v1sl75pbdka8ibxb1cq5kf8g0v";
+    src = fetchgit {
+      url = git://anongit.freedesktop.org/xorg/xserver;
+      rev = "f6753c117ef0f83499d5e2d6dda226fec9ddf803";
+      sha256 = "0z9qgvxppnw09yr8s4wac4w8578bdg6synlxvqd4hbf5pniakvg8";
     };
+    #patches = [ ./24.patch ];
+    #name = "xorg-server-1.20.3";
+    #builder = ./builder.sh;
+    #src = fetchurl {
+    #  url = mirror://xorg/individual/xserver/xorg-server-1.20.3.tar.bz2;
+    #  sha256 = "1ph1j8gy5cazsq05krq9kppjx5v1sl75pbdka8ibxb1cq5kf8g0v";
+    #};
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
+    nativeBuildInputs = [ pkgconfig /* autoreconf when building from git */ autoreconfHook ];
     buildInputs = [ xorgproto openssl libX11 libXau libXaw libxcb xcbutil xcbutilwm xcbutilimage xcbutilkeysyms xcbutilrenderutil libXdmcp libXfixes libxkbfile libXmu libXpm libXrender libXres libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
