@@ -49,6 +49,7 @@ rec {
   } // (builtins.removeAttrs args [ "name" "src" "extraPkgs" ]));
 
   wrapType1 = args@{ name, src, extraPkgs ? pkgs: [], ... }: wrapAppImage (args // {
+    inherit name extraPkgs;
     src = extractType1 { inherit name src; };
   });
 
