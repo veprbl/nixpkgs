@@ -1,7 +1,6 @@
 { stdenv, fetchFromGitHub, fontforge }:
 
 stdenv.mkDerivation rec {
-  name = "${pname}-${version}";
   pname = "creep";
   version = "0.31";
 
