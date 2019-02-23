@@ -1,8 +1,8 @@
-{ stdenv, fetchurl, pkgconfig, gtk3, vala, enchant, wrapGAppsHook, gdk_pixbuf, meson, ninja
+{ stdenv, fetchurl, fetchpatch, pkgconfig, gtk3, vala, enchant2, wrapGAppsHook, meson, ninja
 , desktop-file-utils, gnome-online-accounts, gsettings-desktop-schemas, adwaita-icon-theme
-, libnotify, libcanberra-gtk3, libsecret, gmime, isocodes, libxml2, gettext, gobject-introspection
-, libpthreadstubs, sqlite, gcr, json-glib, itstool, libgee, gnome3, librsvg, webkitgtk, python3
-, xvfb_run, dbus, shared-mime-info, libunwind }:
+, libnotify, libcanberra-gtk3, libsecret, gmime, isocodes, libxml2, gettext
+, sqlite, gcr, json-glib, itstool, libgee, gnome3, webkitgtk, python3
+, xvfb_run, dbus, shared-mime-info, libunwind, glib-networking }:
 
 stdenv.mkDerivation rec {
   pname = "geary";
@@ -13,15 +13,30 @@ stdenv.mkDerivation rec {
     sha256 = "0h9pf2mdskq7mylib1m9hw86nwfmdzyngjl7ywangqipm1k5svjx";
   };
 
+  patches = [
+    # gobject-introspection is not needed
+    # https://gitlab.gnome.org/GNOME/geary/merge_requests/138
+    (fetchpatch {
+      url = https://gitlab.gnome.org/GNOME/geary/commit/d2f1b1076aa942d140e83fdf03b66621c11229f5.patch;
+      sha256 = "1dsj4ybnibpi572w9hafm0w90jbjv7wzdl6j8d4c2qg5h7knlvfk";
+    })
+    # Fixes tests on Aarch64
+    # https://gitlab.gnome.org/GNOME/geary/issues/259
+    (fetchpatch {
+      url = https://gitlab.gnome.org/GNOME/geary/commit/9c3fdbfb5c792daeb9c3924f798fa83a15096d8a.patch;
+      sha256 = "1ihjxnaj0g6gx264kd8cbhs88yp37vwmmcd3lvmz44agf7qcv2ri";
+    })
+  ];
+
   nativeBuildInputs = [
-    desktop-file-utils gettext gobject-introspection itstool
-    libxml2 meson ninja pkgconfig vala wrapGAppsHook python3
+    desktop-file-utils gettext itstool libxml2 meson ninja
+    pkgconfig vala wrapGAppsHook python3
   ];
 
   buildInputs = [
-    adwaita-icon-theme enchant gcr gdk_pixbuf gmime gnome-online-accounts
+    adwaita-icon-theme enchant2 gcr gmime gnome-online-accounts
     gsettings-desktop-schemas gtk3 isocodes json-glib libcanberra-gtk3
-    libgee libnotify libpthreadstubs librsvg libsecret sqlite webkitgtk
+    libgee libnotify libsecret sqlite webkitgtk glib-networking
     libunwind
   ];
 

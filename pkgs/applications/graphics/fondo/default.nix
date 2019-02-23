@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, pantheon, pkgconfig, meson, ninja, python3, gtk3, libgee, json-glib, glib-networking, libsoup, libunity, wrapGAppsHook }:
+{ stdenv, fetchFromGitHub, pantheon, pkgconfig, meson, ninja, python3, glib, gsettings-desktop-schemas, gtk3, libgee, json-glib, glib-networking, libsoup, libunity, wrapGAppsHook }:
 
 stdenv.mkDerivation rec {
   pname = "fondo";
@@ -21,7 +21,9 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
+    glib
     glib-networking
+    gsettings-desktop-schemas
     gtk3
     json-glib
     libgee
