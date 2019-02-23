@@ -67,6 +67,7 @@ in stdenv.mkDerivation rec {
       url = https://github.com/NetworkManager/NetworkManager/compare/nm-1-14...dtzWill:experimental/iwd-misc.patch;
       sha256 = "1s8l76kc0k3kw7kza1bngh4ya3wn26q47ahxqppq6bq3xndvzik9";
     })
+    ./idle-helper.patch
   ];
 
   buildInputs = [
