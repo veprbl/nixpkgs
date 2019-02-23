@@ -17,6 +17,7 @@ buildPythonPackage rec {
   NIX_CFLAGS_COMPILE = "-isystem ${stdenv.lib.getDev pcsclite}/include/PCSC/";
 
   propagatedBuildInputs = [ pcsclite ];
+  nativeBuildInputs = [ swig ];
   buildInputs = [ swig ] ++ stdenv.lib.optional stdenv.isDarwin PCSC;
 
   meta = {
