@@ -6444,7 +6444,9 @@ in
     inherit (darwin.apple_sdk.frameworks) Security;
   };
 
-  xtreemfs = callPackage ../tools/filesystems/xtreemfs { };
+  xtreemfs = callPackage ../tools/filesystems/xtreemfs {
+    boost = boost165;
+  };
 
   xurls = callPackage ../tools/text/xurls {};
 
