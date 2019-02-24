@@ -2319,6 +2319,8 @@ in
 
   dirmngr = callPackage ../tools/security/dirmngr { };
 
+  dirvish  = callPackage ../tools/backup/dirvish { };
+
   disper = callPackage ../tools/misc/disper { };
 
   dleyna-connector-dbus = callPackage ../development/libraries/dleyna-connector-dbus { };
@@ -4753,10 +4755,6 @@ in
   pandoc = haskell.lib.overrideCabal (haskell.lib.justStaticExecutables haskellPackages.pandoc) (drv: {
     configureFlags = drv.configureFlags or [] ++ ["-fembed_data_files"];
     buildDepends = drv.buildDepends or [] ++ [haskellPackages.file-embed];
-    postInstall = ''
-      mkdir -p $out/share/man/man1
-      cp man/pandoc.1 $out/share/man/man1/
-    '';
   });
 
   pamtester = callPackage ../tools/security/pamtester { };
@@ -6031,6 +6029,8 @@ in
   vcftools = callPackage ../applications/science/biology/vcftools { };
 
   vcsh = callPackage ../applications/version-management/vcsh { };
+
+  vcs_query = callPackage ../tools/misc/vcs_query { };
 
   vcstool = callPackage ../development/tools/vcstool { };
 
@@ -16058,6 +16058,8 @@ in
 
   xorg-rgb = callPackage ../data/misc/xorg-rgb {};
 
+  yanone-kaffeesatz = callPackage ../data/fonts/yanone-kaffeesatz {};
+
   zafiro-icons = callPackage ../data/icons/zafiro-icons { };
 
   zeal = libsForQt5.callPackage ../data/documentation/zeal { };
@@ -19904,6 +19906,8 @@ in
 
   virtinst = callPackage ../applications/virtualization/virtinst {};
 
+  virtscreen = callPackage ../tools/admin/virtscreen {};
+
   virtualbox = callPackage ../applications/virtualization/virtualbox {
     stdenv = stdenv_32bit;
     inherit (gnome2) libIDL;
@@ -22240,6 +22244,8 @@ in
   apmplanner2 = libsForQt5.callPackage ../applications/science/robotics/apmplanner2 { };
 
   ### MISC
+
+  acpilight = callPackage ../misc/acpilight { };
 
   android-file-transfer = libsForQt5.callPackage ../tools/filesystems/android-file-transfer { };
 
