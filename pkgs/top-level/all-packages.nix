@@ -3806,6 +3806,8 @@ in
 
   mautrix-whatsapp = callPackage ../servers/mautrix-whatsapp { };
 
+  mcfly = callPackage ../tools/misc/mcfly { };
+
   mdbook = callPackage ../tools/text/mdbook {
     inherit (darwin.apple_sdk.frameworks) CoreServices;
   };
@@ -4431,6 +4433,10 @@ in
   netrw = callPackage ../tools/networking/netrw { };
 
   netselect = callPackage ../tools/networking/netselect { };
+
+  nettee = callPackage ../tools/networking/nettee {
+    inherit (skawarePackages) cleanPackaging;
+  };
 
   # stripped down, needed by steam
   networkmanager098 = callPackage ../tools/networking/network-manager/0.9.8 { };
@@ -12575,8 +12581,11 @@ in
 
   skalibs = skawarePackages.skalibs;
 
-  skawarePackages = recurseIntoAttrs {
-    buildPackage = callPackage ../build-support/skaware/build-skaware-package.nix { };
+  skawarePackages = recurseIntoAttrs rec {
+    cleanPackaging = callPackage ../build-support/skaware/clean-packaging.nix { };
+    buildPackage = callPackage ../build-support/skaware/build-skaware-package.nix {
+      inherit cleanPackaging;
+    };
 
     skalibs = callPackage ../development/libraries/skalibs { };
     execline = callPackage ../tools/misc/execline { };
