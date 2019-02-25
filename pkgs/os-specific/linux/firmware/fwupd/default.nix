@@ -18,11 +18,11 @@ let
   };
 in stdenv.mkDerivation rec {
   pname = "fwupd";
-  version = "1.2.3";
+  version = "1.2.5";
 
   src = fetchurl {
     url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
-    sha256 = "11qpgincndahq96rbm2kgcy9kw5n9cmbbilsrqcqcyk7mvv464sl";
+    sha256 = "087rz9kiqh76hgy169jwyl2s18z83qyylj63ynx7ylwm1iwiaq85";
   };
 
   outputs = [ "out" "lib" "dev" "devdoc" "man" "installedTests" ];
@@ -37,7 +37,7 @@ in stdenv.mkDerivation rec {
     bash-completion cairo freetype fontconfig pango
   ];
 
-  LC_ALL = "en_US.UTF-8"; # For po/make-images
+  LC_ALL = "C.UTF-8"; # For po/make-images
 
   patches = [
     ./fix-paths.patch
