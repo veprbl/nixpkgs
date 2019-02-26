@@ -2379,6 +2379,19 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
+  xfsinfo = callPackage ({ stdenv, pkgconfig, fetchurl, libFS, xorgproto }: stdenv.mkDerivation {
+    name = "xfsinfo-1.0.6";
+    builder = ./builder.sh;
+    src = fetchurl {
+      url = mirror://xorg/individual/app/xfsinfo-1.0.6.tar.bz2;
+      sha256 = "1mmir5i7gm71xc0ba8vnizi4744vsd31hknhi4cmgvg6kadqngla";
+    };
+    hardeningDisable = [ "bindnow" "relro" ];
+    nativeBuildInputs = [ pkgconfig ];
+    buildInputs = [ libFS xorgproto ];
+    meta.platforms = stdenv.lib.platforms.unix;
+  }) {};
+
   xgamma = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, xorgproto, libXxf86vm }: stdenv.mkDerivation {
     name = "xgamma-1.0.6";
     builder = ./builder.sh;
@@ -2787,6 +2800,19 @@ lib.makeScope newScope (self: with self; {
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
     buildInputs = [ libICE libSM libX11 libXaw libXt ];
+    meta.platforms = stdenv.lib.platforms.unix;
+  }) {};
+
+  xstdcmap = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXmu, xorgproto }: stdenv.mkDerivation {
+    name = "xstdcmap-1.0.4";
+    builder = ./builder.sh;
+    src = fetchurl {
+      url = mirror://xorg/individual/app/xstdcmap-1.0.4.tar.bz2;
+      sha256 = "12vgzsxv4rw25frkgjyli6w6hy10lgpvsx9wzw2v5l5a3qzqp286";
+    };
+    hardeningDisable = [ "bindnow" "relro" ];
+    nativeBuildInputs = [ pkgconfig ];
+    buildInputs = [ libX11 libXmu xorgproto ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 

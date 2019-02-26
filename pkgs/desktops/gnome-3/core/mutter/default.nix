@@ -27,7 +27,6 @@ stdenv.mkDerivation rec {
     })
   ];
 
-
   configureFlags = [
     "--with-x"
     "--disable-static"
