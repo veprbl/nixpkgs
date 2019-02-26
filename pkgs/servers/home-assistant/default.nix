@@ -53,12 +53,6 @@ let
       "bf4d9b61dce69c49e830950aa36fad194706463b0b6dfe81425b9e0bc6644d46")
     (mkOverride "python-slugify" "1.2.6"
       "7723daf30996db26573176bddcdf5fcb98f66dc70df05c9cb29f2c79b8193245")
-    (mkOverride "requests" "2.21.0"
-      "502a824f31acdacb3a35b6690b5fbf0bc41d63a24a45c4004352b0242707598e")
-    (mkOverride "ruamel_yaml" "0.15.85"
-      "34af6e2f9787acd3937b55c0279f46adff43124c5d72dced84aab6c89d1a960f")
-    (mkOverride "voluptuous" "0.11.5"
-      "567a56286ef82a9d7ae0628c5842f65f516abcb496e74f3f59f1d7b28df314ef")
     (mkOverride "voluptuous-serialize" "2.0.0"
       "44be04d87aec34bd7d31ab539341fadc505205f2299031ed9be985112c21aa41")
 
