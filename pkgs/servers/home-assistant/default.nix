@@ -38,6 +38,13 @@ let
         doCheck = false; # https://github.com/jpadilla/pyjwt/issues/382
       });
     })
+    # pinned deps that happen to be currently satisfied:
+    # * cryptography 2.5
+    # * requests
+    # * ruamel_yaml
+    # * voluptuous
+    # Needs cryptography 2.5, which is what we have currently
+    # but might not in the future
     (mkOverride "python-slugify" "1.2.6"
       "7723daf30996db26573176bddcdf5fcb98f66dc70df05c9cb29f2c79b8193245")
     (mkOverride "voluptuous-serialize" "2.0.0"
