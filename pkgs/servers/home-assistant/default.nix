@@ -127,8 +127,8 @@ in with py.pkgs; buildPythonApplication rec {
     py.test --ignore tests/components
     # Some basic components should be tested however
     py.test \
-      tests/components/{group,http,frontend,config,websocket_api} \
-      tests/components/test_{api,configurator,demo,discovery,init,introduction,logger,script,shell_command,system_log}.py
+      tests/components/{api,group,http,frontend,config,websocket_api} \
+      tests/components/{configurator,demo,discovery,init,introduction,logger,script,shell_command,system_log}
   '';
 
   makeWrapperArgs = lib.optional skipPip "--add-flags --skip-pip";
