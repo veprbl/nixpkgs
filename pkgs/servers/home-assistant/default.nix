@@ -20,8 +20,8 @@ let
     # Override the version of some packages pinned in Home Assistant's setup.py
     (mkOverride "aiohttp" "3.5.4"
       "9c4c83f4fa1938377da32bc2d59379025ceeee8e24b89f72fcbccd8ca22dc9bf")
-    (mkOverride "astral" "1.7.1"
-      "88086fd2006c946567285286464b2da3294a3b0cbba4410b7008ec2458f82a07")
+    (mkOverride "astral" "1.9.2"
+      "12z32k1x5lq02l4zgqn27yanc6c23swbl505ws3n9sffhsh757qp")
     (mkOverride "async-timeout" "3.0.1"
       "0c3c816a028d47f659d6ff5c745cb2acf1f966da1fe5c19c77a70282b25f4c5f")
     (mkOverride "attrs" "18.2.0"
@@ -38,19 +38,6 @@ let
         doCheck = false; # https://github.com/jpadilla/pyjwt/issues/382
       });
     })
-    (self: super: {
-      cryptography = super.cryptography.overridePythonAttrs (oldAttrs: rec {
-        version = "2.3.1";
-        src = oldAttrs.src.override {
-          inherit version;
-          sha256 = "8d10113ca826a4c29d5b85b2c4e045ffa8bad74fb525ee0eceb1d38d4c70dfd6";
-        };
-        propagatedBuildInputs = oldAttrs.propagatedBuildInputs ++ [ self.idna ];
-        checkInputs = with self; [ pytest_3 pretend iso8601 pytz hypothesis ];
-      });
-    })
-    (mkOverride "cryptography_vectors" "2.3.1" # required by cryptography==2.3.1
-      "bf4d9b61dce69c49e830950aa36fad194706463b0b6dfe81425b9e0bc6644d46")
     (mkOverride "python-slugify" "1.2.6"
       "7723daf30996db26573176bddcdf5fcb98f66dc70df05c9cb29f2c79b8193245")
     (mkOverride "voluptuous-serialize" "2.0.0"
