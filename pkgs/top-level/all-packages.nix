@@ -1183,6 +1183,8 @@ in
 
   clingo = callPackage ../applications/science/logic/potassco/clingo.nix { };
 
+  clprover = callPackage ../applications/science/logic/clprover/clprover.nix { };
+
   colord-kde = libsForQt5.callPackage ../tools/misc/colord-kde {};
 
   colpack = callPackage ../applications/science/math/colpack { };
@@ -22326,6 +22328,8 @@ in
   cups-bjnp = callPackage ../misc/cups/drivers/cups-bjnp { };
 
   cups-brother-hl1110 = pkgsi686Linux.callPackage ../misc/cups/drivers/hl1110 { };
+
+  cups-brother-hl3140cw = pkgsi686Linux.callPackage ../misc/cups/drivers/hl3140cw { };
 
   cups-googlecloudprint = callPackage ../misc/cups/drivers/googlecloudprint { };
 
