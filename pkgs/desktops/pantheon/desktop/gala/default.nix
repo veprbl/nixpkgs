@@ -5,7 +5,7 @@
 
 stdenv.mkDerivation rec {
   pname = "gala";
-  version = "unstable-2019-02-09";
+  version = "unstable-2019-02-09"; # Is tracking https://github.com/elementary/gala/commits/stable/juno
 
   src = fetchFromGitHub {
     owner = "elementary";
