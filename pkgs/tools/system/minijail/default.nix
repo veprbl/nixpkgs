@@ -3,7 +3,7 @@
 stdenv.mkDerivation rec {
   shortname = "minijail";
   name = "${shortname}-${version}";
-  version = "android-9.0.0_r3";
+  version = "android-9.0.0_r33";
 
   src = fetchgit {
     url = "https://android.googlesource.com/platform/external/minijail";
