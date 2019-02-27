@@ -3,17 +3,16 @@
 }:
 
 stdenv.mkDerivation rec {
-  name = "ddrescue-1.23";
+  name = "ddrescue-1.24";
 
   src = fetchurl {
     url = "mirror://gnu/ddrescue/${name}.tar.lz";
-    sha256 = "13cd6c0x91zq10vdlyl6r5rib47bmsn5sshmkin3igwj8pa2vbm9";
+    sha256 = "11qh0bbzf00mfb4yq35gnv5m260k4d7q9ixklry6bqvhvvp3ypab";
   };
 
   nativeBuildInputs = [ lzip ];
 
   doCheck = true; # not cross;
-  configureFlags = [ "CXX=${stdenv.cc.targetPrefix}c++" ];
 
   meta = with stdenv.lib; {
     description = "GNU ddrescue, a data recovery tool";
