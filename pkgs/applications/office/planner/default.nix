@@ -10,7 +10,7 @@
 , python2
 }:
 
-let version = "unstable-2019-02-13";
+let version = "unstable-2019-02-17";
 
 in stdenv.mkDerivation {
   pname = "planner";
@@ -20,8 +20,8 @@ in stdenv.mkDerivation {
     domain = "gitlab.gnome.org";
     owner = "GNOME";
     repo = "planner";
-    rev = "76d31defae4979aa51dd37e8888f61e9a6a51367";
-    sha256 = "0lbch4drg6005216hgcys93rq92p7zd20968x0gk254kckd9ag5w";
+    rev = "84f9d481aa83d531e31c435014aeaad75e9f9e65";
+    sha256 = "05mymy1yc0gi06ajqmm2l6n7n96s8r2gb4q6pvhb9jz51ywwdxir";
   };
 
   nativeBuildInputs = with gnome2; [
@@ -42,8 +42,8 @@ in stdenv.mkDerivation {
     libgnomeui
     libglade
     libxslt
-    python
-    python.pkgs.pygtk
+    python2
+    python2.pkgs.pygtk
     #evolution-data-server
     #libsoup
   ];
