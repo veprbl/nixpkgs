@@ -11,19 +11,19 @@ in
 
   rustPlatform.buildRustPackage rec {
     name = "crosvm-${version}";
-    version = "R72-11316";
+    version = "R73-11647.B";
 
     src = fetchgit {
       url = "https://chromium.googlesource.com/chromiumos/platform/crosvm.git";
-      rev = "510c1cfb46846a084a6316476602a658573ed93e";
-      sha256 = "0p827lj2kxcg2x5b5y1fvif9bqhzmwkww4647g40hc0bxxfrzrql";
+      rev = "1be25dc3d2ce8afe41d0fe7fe7b157c3f1787b50"; # "release-${version}" branch
+      sha256 = "0w214d49agw10hvrxapsp9rqrv737q644kdnidglwlqpc0879yx8";
     };
 
     patches = [
       ./seccomp-policy-dir_env-var.patch
     ];
 
-    cargoSha256 = "1k8wasgr537wwrcywql4ihrcff6s4w8py3x3bv2cipmxd4mdd57z";
+    cargoSha256 = "0480a0i7glawvdhkrpbymhh6l1ymhmhj500835234jycanjkank7";
 
     buildInputs = [ makeWrapper minijail binutils-unwrapped ];
 
