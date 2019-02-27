@@ -3243,6 +3243,8 @@ in
     hdf4 = null;
   };
 
+  hackertyper = callPackage ../tools/misc/hackertyper { };
+
   haproxy = callPackage ../tools/networking/haproxy { };
 
   haveged = callPackage ../tools/security/haveged { };
