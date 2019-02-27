@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, gettext, makeWrapper, tcl, which, writeScript
-, ncurses, perl , cyrus_sasl, gss, gpgme, kerberos, libidn, libxml2, notmuch, openssl
+, ncurses, perl , cyrus_sasl, gss, gpgme, libgpgerror, kerberos, libidn2, libxml2, notmuch, openssl
 , lmdb, libxslt, docbook_xsl, docbook_xml_dtd_42, mailcap, runtimeShell
 }:
 
