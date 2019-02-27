@@ -15,7 +15,7 @@ appimageTools.wrapType2 rec {
 
   # TODO: Don't replace if already set?
   profile = ''
-    export LC_ALL=C.UTF8
+    export LC_ALL=C.UTF-8
   '';
 
   meta = with lib; {
