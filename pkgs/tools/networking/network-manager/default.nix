@@ -9,11 +9,11 @@ let
   pname = "NetworkManager";
 in stdenv.mkDerivation rec {
   name = "network-manager-${version}";
-  version = "1.14.6";
+  version = "1.15.90"; # "1.16-rc1";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "0p9s6b1z9bdmzdjw2gnjsar1671vvcyy9inb0rxg1izf2nnwsfv9";
+    sha256 = "0d8i67ag15v0sgrkys0jwymz59xb6pixaj4x9xhc6ihgqln9ap3p";
   };
 
   outputs = [ "out" "dev" ];
@@ -63,11 +63,6 @@ in stdenv.mkDerivation rec {
       inherit inetutils kmod openconnect ethtool coreutils dbus;
       inherit (stdenv) shell;
     })
-    (fetchpatch {
-      url = https://github.com/NetworkManager/NetworkManager/compare/nm-1-14...dtzWill:experimental/iwd-misc.patch;
-      sha256 = "1s8l76kc0k3kw7kza1bngh4ya3wn26q47ahxqppq6bq3xndvzik9";
-    })
-    ./idle-helper.patch
   ];
 
   buildInputs = [
