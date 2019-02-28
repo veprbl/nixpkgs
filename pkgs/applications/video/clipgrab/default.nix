@@ -1,6 +1,6 @@
 { stdenv, fetchurl, makeDesktopItem, ffmpeg
 , qmake, qttools
-, qtbase, qtdeclarative, qtlocation, qtquickcontrols2, qtwebchannel
+, qtbase, qtdeclarative, qtlocation, qtquickcontrols2, qtwebchannel, qtwebengine
 }:
 
 stdenv.mkDerivation rec {
@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
     url = "https://download.clipgrab.org/${name}.tar.gz";
   };
 
-  buildInputs = [ ffmpeg qtbase qtdeclarative qtlocation qtquickcontrols2 qtwebchannel ];
+  buildInputs = [ ffmpeg qtbase qtdeclarative qtlocation qtquickcontrols2 qtwebchannel qtwebengine ];
   nativeBuildInputs = [ qmake qttools ];
 
   postPatch = stdenv.lib.optionalString (ffmpeg != null) ''
