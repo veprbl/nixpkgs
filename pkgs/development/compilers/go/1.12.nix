@@ -35,7 +35,7 @@ stdenv.mkDerivation rec {
     owner = "golang";
     repo = "go";
     rev = "go${version}";
-    sha256 = "0000000000000000000000000000000000000000000000000000";
+    sha256 = "08j7ghcy5cs5p4sw5rqi57lzg52lrix8xbxn87y7y9sv6s3wx44n";
   };
 
   # perl is used for testing go vet
