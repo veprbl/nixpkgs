@@ -218,13 +218,15 @@ rec {
   #
 
   wasm32 = {
-    config = "wasm32-unknown-unknown-wasm";
+    # should be wasm32-unknown-unknown-wasm
+    config = "wasm32";
     libc = "webmusl";
     useLLVM = true;
   };
 
   wasm64 = {
-    config = "wasm64-unknown-unknown-wasm";
+    # should be wasm64-unknown-unknown-wasm
+    config = "wasm64";
     libc = "webmusl";
     useLLVM = true;
   };

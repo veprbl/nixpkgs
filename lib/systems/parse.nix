@@ -338,6 +338,8 @@ rec {
   mkSkeletonFromList = l: {
     "1" = if elemAt l 0 == "avr"
       then { cpu = elemAt l 0; kernel = "none"; abi = "unknown"; }
+      else if elemAt l 0 == "wasm32" || elemAt l 0 == "wasm64"
+        then { cpu = elemAt l 0; vendor = "unknown"; kernel = "unknown"; abi = "wasm"; }
       else throw "Target specification with 1 components is ambiguous";
     "2" = # We only do 2-part hacks for things Nix already supports
       if elemAt l 1 == "cygwin"
