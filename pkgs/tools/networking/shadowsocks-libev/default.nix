@@ -5,14 +5,14 @@
 
 stdenv.mkDerivation rec {
   name = "shadowsocks-libev-${version}";
-  version = "3.2.3";
+  version = "3.2.4";
 
   # Git tag includes CMake build files which are much more convenient.
   src = fetchFromGitHub {
     owner = "shadowsocks";
     repo = "shadowsocks-libev";
     rev = "refs/tags/v${version}";
-    sha256 = "1nj2z3j41lqd6gvj6j7xc8g7jbn2f8b75phlkgwvw0j3zsqnbq30";
+    sha256 = "1wr5aknvh6x4qf60cljm8bzyw5sf50fqqdifp3jp8qi5w37qg2c3";
     fetchSubmodules = true;
   };
 
