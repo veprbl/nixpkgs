@@ -139,7 +139,10 @@ stdenv.mkDerivation rec {
     ./skip-test-extra-files-on-386.patch
   ];
 
-  postPatch = optionalString stdenv.isDarwin ''
+  postPatch = ''
+    # remove all original files as they end up in the final derivation
+    find . -name '*.orig' -exec rm {} ';'
+  '' + optionalString stdenv.isDarwin ''
     echo "substitute hardcoded dsymutil with ${llvm}/bin/llvm-dsymutil"
     substituteInPlace "src/cmd/link/internal/ld/lib.go" --replace dsymutil ${llvm}/bin/llvm-dsymutil
   '';
@@ -226,7 +229,6 @@ stdenv.mkDerivation rec {
     mkdir -p $GOROOT_FINAL
     cp -a bin pkg src lib misc api doc $GOROOT_FINAL
     ln -s $GOROOT_FINAL/bin $out/bin
-    find $out/share -name '*.orig' -exec rm {} ';'
     runHook postInstall
   '';
 
