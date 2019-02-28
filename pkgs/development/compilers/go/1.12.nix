@@ -90,8 +90,6 @@ stdenv.mkDerivation rec {
     sed -i '/TestWritevError/areturn' src/net/writev_test.go
     # TestVariousDeadlines fails sometimes
     sed -i '/TestVariousDeadlines/areturn' src/net/timeout_test.go
-    # TestUserHomeDir fails because the HomeDir does not exist
-    sed -i '/TestUserHomeDir/areturn' src/os/os_test.go
 
     sed -i 's,/etc/protocols,${iana-etc}/etc/protocols,' src/net/lookup_unix.go
     sed -i 's,/etc/services,${iana-etc}/etc/services,' src/net/port_unix.go
@@ -197,7 +195,7 @@ stdenv.mkDerivation rec {
 
   checkPhase = ''
     runHook preCheck
-    (cd src && ./run.bash --no-rebuild)
+    (cd src && HOME=$TMPDIR GOCACHE=$TMPDIR/go-cache ./run.bash --no-rebuild)
     runHook postCheck
   '';
 
