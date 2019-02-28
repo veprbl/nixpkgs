@@ -17670,7 +17670,10 @@ in
 
   slack-term = callPackage ../applications/networking/instant-messengers/slack-term { };
 
-  singularity = callPackage ../applications/virtualization/singularity { };
+  singularity = callPackage ../applications/virtualization/singularity {
+    # XXX: the build is finding references to Go when compiled with go v1.12
+    go = go_1_11;
+  };
 
   spectmorph = callPackage ../applications/audio/spectmorph { };
 
@@ -21299,7 +21302,7 @@ in
   clearlooks-phenix = callPackage ../misc/themes/clearlooks-phenix { };
 
   deepin = recurseIntoAttrs (import ../desktops/deepin {
-    inherit pkgs libsForQt5;
+    inherit pkgs libsForQt5 go_1_11;
     inherit (lib) makeScope;
   });
 
