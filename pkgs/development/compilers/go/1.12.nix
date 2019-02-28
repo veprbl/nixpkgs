@@ -122,6 +122,7 @@ stdenv.mkDerivation rec {
 
     # TestCurrent fails because Current is not implemented on Darwin
     sed -i 's/TestCurrent/testCurrent/g' src/os/user/user_test.go
+    sed -i 's/TestLookup/testLookup/g' src/os/user/user_test.go
 
     touch $TMPDIR/group $TMPDIR/hosts $TMPDIR/passwd
   '';
