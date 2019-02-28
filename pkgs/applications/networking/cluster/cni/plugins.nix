@@ -13,9 +13,10 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ removeReferencesTo go ];
 
+  GOCACHE="$TMPDIR/go-cache";
+
   buildPhase = ''
     patchShebangs build.sh
-    export "GOCACHE=$TMPDIR/go-cache"
     ./build.sh
   '';
 
