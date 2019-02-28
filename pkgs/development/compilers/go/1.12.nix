@@ -222,6 +222,7 @@ stdenv.mkDerivation rec {
     mkdir -p $GOROOT_FINAL
     cp -a bin pkg src lib misc api doc $GOROOT_FINAL
     ln -s $GOROOT_FINAL/bin $out/bin
+    find $out/share -name '*.orig' -exec rm {} ';'
     runHook postInstall
   '';
 
