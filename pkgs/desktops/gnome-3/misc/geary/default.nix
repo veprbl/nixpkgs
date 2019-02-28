@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchpatch, pkgconfig, gtk3, vala, enchant2, wrapGAppsHook, meson, ninja
+{ stdenv, fetchurl, fetchFromGitHub, fetchpatch, pkgconfig, gtk3, vala, enchant2, wrapGAppsHook, meson, ninja
 , desktop-file-utils, gnome-online-accounts, gsettings-desktop-schemas, adwaita-icon-theme
 , libnotify, libcanberra-gtk3, libsecret, gmime, isocodes, libxml2, gettext
 , sqlite, gcr, json-glib, itstool, libgee, gnome3, webkitgtk, python3
@@ -8,25 +8,16 @@ stdenv.mkDerivation rec {
   pname = "geary";
   version = "0.13.1";
 
-  src = fetchurl {
-    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "0h9pf2mdskq7mylib1m9hw86nwfmdzyngjl7ywangqipm1k5svjx";
+  #src = fetchurl {
+  #  url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+  #  sha256 = "0h9pf2mdskq7mylib1m9hw86nwfmdzyngjl7ywangqipm1k5svjx";
+  #};
+  src = fetchFromGitHub {
+    owner = "GNOME";
+    repo = "geary";
+    rev = "943cba30268a8933fdad97c74c158a6b328e5420";
+    sha256 = "0wqjrllnm8pgqrs6gz87nk6krax4fcw339d8q904lx7llirmfd6i";
   };
-
-  patches = [
-    # gobject-introspection is not needed
-    # https://gitlab.gnome.org/GNOME/geary/merge_requests/138
-    (fetchpatch {
-      url = https://gitlab.gnome.org/GNOME/geary/commit/d2f1b1076aa942d140e83fdf03b66621c11229f5.patch;
-      sha256 = "1dsj4ybnibpi572w9hafm0w90jbjv7wzdl6j8d4c2qg5h7knlvfk";
-    })
-    # Fixes tests on Aarch64
-    # https://gitlab.gnome.org/GNOME/geary/issues/259
-    (fetchpatch {
-      url = https://gitlab.gnome.org/GNOME/geary/commit/9c3fdbfb5c792daeb9c3924f798fa83a15096d8a.patch;
-      sha256 = "1ihjxnaj0g6gx264kd8cbhs88yp37vwmmcd3lvmz44agf7qcv2ri";
-    })
-  ];
 
   nativeBuildInputs = [
     desktop-file-utils gettext itstool libxml2 meson ninja
