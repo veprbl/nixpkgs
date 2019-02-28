@@ -315,9 +315,9 @@ stdenv.mkDerivation {
           "-xcb"
           "-qpa xcb"
 
-          "-system-xkbcommon"
           "-libinput"
-          "-xkbcommon-evdev"
+          "-evdev"
+          "-xkbcommon"
 
           "-no-eglfs"
           "-no-gbm"

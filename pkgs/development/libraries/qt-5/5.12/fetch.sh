@@ -1,2 +1,2 @@
-WGET_ARGS=( http://download.qt.io/official_releases/qt/5.12/5.12.0/submodules/ \
+WGET_ARGS=( http://download.qt.io/official_releases/qt/5.12/5.12.1/submodules/ \
             -A '*.tar.xz' )
