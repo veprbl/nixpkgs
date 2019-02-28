@@ -125,12 +125,10 @@ stdenv.mkDerivation rec {
 
   patches = [
     ./remove-tools-1.11.patch
-    ./ssl-cert-file-1.9.patch
     ./remove-test-pie.patch
     ./creds-test.patch
     ./go-1.9-skip-flaky-19608.patch
     ./go-1.9-skip-flaky-20072.patch
-    ./remove-fhs-test-references.patch
     ./skip-external-network-tests.patch
     ./skip-nohup-tests.patch
     # breaks under load: https://github.com/golang/go/issues/25628
