@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/share/davmail
     cp -vR ./* $out/share/davmail
-    makeWrapper $out/share/davmail/davmail.sh $out/bin/davmail \
+    makeWrapper $out/share/davmail/davmail $out/bin/davmail \
       --prefix PATH : ${jre}/bin \
       --prefix LD_LIBRARY_PATH : ${stdenv.lib.makeLibraryPath [ glib gtk2 libXtst ]}
   '';
