@@ -120,7 +120,8 @@ stdenv.mkDerivation rec {
 
     sed -i 's/unrecognized/unknown/' src/cmd/link/internal/ld/lib.go
 
-    sed -i '/TestCurrent/areturn' src/os/user/user_test.go
+    # TestCurrent fails because Current is not implemented on Darwin
+    sed -i 's/TestCurrent/testCurrent/g' src/os/user/user_test.go
 
     touch $TMPDIR/group $TMPDIR/hosts $TMPDIR/passwd
   '';
