@@ -72,7 +72,7 @@ let
   } // lib.optionalAttrs (attrs.headersOnly or false) {
     installPhase = "includesPhase";
     dontBuild = true;
-  } // attrs));
+  } // (removeAttrs attrs [ "pname" ])));
 
   ##
   ## START BOOTSTRAPPING
