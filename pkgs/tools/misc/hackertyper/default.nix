@@ -8,7 +8,7 @@ stdenv.mkDerivation rec {
     owner  = "Hurricane996";
     repo   = "Hackertyper";
     rev    = "dc017270777f12086271bb5a1162d0f3613903c4";
-    sha256 = "14f7pfjp28iqy0hby50sdx602zva4g3d0ndvwzs03qq262rgd6n4";
+    sha256 = "0szkkkxspmfq1z2n4nldj2c9jn6jgiqik085rx1wkks0zgcdcgy1";
   };
 
 
