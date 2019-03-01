@@ -1,15 +1,16 @@
-{ stdenv, fetchgit, pkgconfig
+{ stdenv, fetchFromGitHub, pkgconfig
 , dbus, pcre, epoxy, libXdmcp, at-spi2-core, libxklavier, libxkbcommon, libpthreadstubs
 , gtk3, vala, cmake, libgee, libX11, lightdm, gdk_pixbuf, clutter-gtk }:
 
 stdenv.mkDerivation rec {
-  version = "0.2.1";
-  name = "lightdm-enso-os-greeter-${version}";
+  pname = "lightdm-enso-os-greeter";
+  version = "2019-01-15";
 
-  src = fetchgit {
-    url = https://github.com/nick92/Enso-OS;
-    rev = "ed48330bfd986072bd82ac542ed8f8a7365c6427";
-    sha256 = "11jm181jq1vbn83h235avpdxz7pqq6prqyzki5yryy53mkj4kgxz";
+  src = fetchFromGitHub {
+    owner = "nick92";
+    repo = "Enso-OS";
+    rev = "14bf28e59ede7c57467e21a39c82792dbf531f9c";
+    sha256 = "1y4sbqhv2zhxfxbri1hal26ba7afj4i7ci0w18p5dk7k8xqq77kc";
   };
 
   buildInputs = [
@@ -17,7 +18,6 @@ stdenv.mkDerivation rec {
     gtk3
     pcre
     vala
-    cmake
     epoxy
     libgee
     libX11
@@ -33,28 +33,17 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [
     pkgconfig
+    cmake
   ];
+
+  sourceRoot = "source/greeter";
 
   postPatch = ''
-    sed -i "s@\''${CMAKE_INSTALL_PREFIX}/@@" greeter/CMakeLists.txt
+    sed -i "s@\''${CMAKE_INSTALL_PREFIX}/@@" CMakeLists.txt
+    substituteInPlace CMakeLists.txt --replace /usr /
   '';
 
-  preConfigure = ''
-    cd greeter
-  '';
-
-  installFlags = [
-    "DESTDIR=$(out)"
-  ];
-
-  preFixup = ''
-    mv $out/usr/* $out
-    rm -r $out/usr
-  '';
-
-  postFixup = ''
-    rm -r $out/sbin
-  '';
+  installFlags = [ "DESTDIR=${placeholder "out"}" ];
 
   meta = with stdenv.lib; {
     description = ''
