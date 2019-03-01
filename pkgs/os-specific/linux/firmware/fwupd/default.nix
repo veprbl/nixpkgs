@@ -5,6 +5,7 @@
 , ninja, gcab, gnutls, python3, wrapGAppsHook, json-glib, bash-completion
 , shared-mime-info, umockdev, vala, makeFontsConf, freefont_ttf
 , cairo, freetype, fontconfig, pango
+, bubblewrap, efibootmgr, flashrom, tpm2-tools
 }:
 
 # Updating? Keep $out/etc synchronized with passthru.filesInstalledToEtc
@@ -63,6 +64,22 @@ in stdenv.mkDerivation rec {
     substituteInPlace meson.build \
       --replace "plugin_dir = join_paths(libdir, 'fwupd-plugins-3')" \
                 "plugin_dir = join_paths('${placeholder "out"}', 'fwupd_plugins-3')"
+
+    substituteInPlace plugins/flashrom/fu-plugin-flashrom.c --replace \
+      'find_program_in_path ("flashrom"' \
+      'find_program_in_path ("${flashrom}/bin/flashrom"'
+
+    substituteInPlace plugins/uefi/fu-plugin-uefi.c --replace \
+      'fu_common_find_program_in_path ("efibootmgr"' \
+      'fu_common_find_program_in_path ("${efibootmgr}/bin/efibootmgr"'
+
+    substituteInPlace plugins/uefi/fu-uefi-pcrs.c --replace \
+      'fu_common_find_program_in_path ("tpm2_pcrlist"' \
+      'fu_common_find_program_in_path ("${tpm2-tools}/bin/tpm2_pcrlist"'
+
+    substituteInPlace src/fu-common.c --replace \
+      'fu_common_find_program_in_path ("bwrap"' \
+      'fu_common_find_program_in_path ("${bubblewrap}/bin/bwrap"'
   '';
 
   # /etc/os-release not available in sandbox
