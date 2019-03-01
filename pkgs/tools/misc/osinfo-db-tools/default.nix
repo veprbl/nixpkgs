@@ -1,5 +1,5 @@
 { stdenv, fetchurl, pkgconfig, intltool, glib, libxml2
-, libxslt, libarchive, bzip2, lzma
+, libxslt, libarchive, bzip2, lzma, json-glib
 }:
 
 stdenv.mkDerivation rec {
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ pkgconfig intltool ];
-  buildInputs = [ glib libxml2 libxslt libarchive bzip2 lzma ];
+  buildInputs = [ glib json-glib libxml2 libxslt libarchive bzip2 lzma ];
 
   meta = with stdenv.lib; {
     description = "Tools for managing the osinfo database";
