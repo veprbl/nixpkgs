@@ -19,13 +19,14 @@ let
       # This wrapper ensures that we actually get themes
       makeWrapper ${pkgs.lightdm-enso-os-greeter}/bin/pantheon-greeter \
         $out/greeter \
-        --prefix PATH : "${pkgs.glibc.bin}/bin" \
+        --prefix PATH : "${lib.getBin pkgs.stdenv.cc.libc}/bin" \
         --set GDK_PIXBUF_MODULE_FILE "${pkgs.librsvg.out}/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache" \
         --set GTK_PATH "${theme}:${pkgs.gtk3.out}" \
         --set GTK_EXE_PREFIX "${theme}" \
         --set GTK_DATA_PREFIX "${theme}" \
-        --set XDG_DATA_DIRS "${theme}/share:${icons}/share:${cursors}/share" \
-        --set XDG_CONFIG_HOME "${theme}/share"
+        --set XDG_DATA_DIRS "${theme}/share:${icons}/share" \
+        --set XDG_CONFIG_HOME "${theme}/share" \
+        --set XCURSOR_PATH "${cursors}/share/icons"
 
       cat - > $out/lightdm-enso-os-greeter.desktop << EOF
       [Desktop Entry]
