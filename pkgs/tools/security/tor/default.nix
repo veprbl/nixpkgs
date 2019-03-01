@@ -14,7 +14,8 @@
 }:
 
 stdenv.mkDerivation rec {
-  name = "tor-0.3.5.7";
+  pname = "tor";
+  version = "0.3.5.7";
 
   src = fetchurl {
     url = "https://dist.torproject.org/${name}.tar.gz";
