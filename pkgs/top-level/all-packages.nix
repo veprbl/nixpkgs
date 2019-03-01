@@ -6863,7 +6863,7 @@ in
 
   crossLibcStdenv = overrideCC stdenv
     (if stdenv.targetPlatform.useLLVM or false
-     then buildPackages.llvmPackages_7.lldClangNoLibc
+     then buildPackages.llvmPackages_8.lldClangNoLibc
      else buildPackages.gccCrossStageStatic);
 
   # The GCC used to build libc for the target platform. Normal gccs will be
@@ -7419,7 +7419,15 @@ in
     stdenv = overrideCC stdenv buildPackages.gcc6; # with gcc-7: undefined reference to `__divmoddi4'
   });
 
-  llvmPackages_latest = llvmPackages_7;
+  llvmPackages_8 = callPackage ../development/compilers/llvm/8 ({
+    inherit (stdenvAdapters) overrideCC;
+    buildLlvmTools = buildPackages.llvmPackages_8.tools;
+    targetLlvmLibraries = targetPackages.llvmPackages_8.libraries;
+  } // stdenv.lib.optionalAttrs (buildPackages.stdenv.cc.isGNU && stdenv.hostPlatform.isi686) {
+    stdenv = overrideCC stdenv buildPackages.gcc6; # with gcc-7: undefined reference to `__divmoddi4'
+  });
+
+  llvmPackages_latest = llvmPackages_8;
 
   manticore = callPackage ../development/compilers/manticore { };
 
@@ -10057,6 +10065,10 @@ in
     stdenv = crossLibcStdenv;
   };
 
+  webmusl = callPackage ../os-specific/linux/musl/web.nix {
+    stdenv = crossLibcStdenv;
+  };
+
   muslCross = musl.override {
     stdenv = crossLibcStdenv;
   };
@@ -10075,6 +10087,7 @@ in
     else if stdenv.targetPlatform.useiOSPrebuilt then targetPackages.darwin.iosSdkPkgs.libraries or darwin.iosSdkPkgs.libraries
     else if name == "libSystem" then targetPackages.darwin.xcode
     else if name == "nblibc" then targetPackages.netbsdCross.libc
+    else if name == "webmusl" then targetPackages.webmusl
     else throw "Unknown libc";
 
   libcCross = assert stdenv.targetPlatform != stdenv.buildPlatform; libcCrossChooser stdenv.targetPlatform.libc;
@@ -12981,17 +12994,21 @@ in
     stdenv = if stdenv.isDarwin then stdenv else overrideCC stdenv gcc5;
   };
 
-  v8_6_x = callPackage ../development/libraries/v8/6_x.nix {
-    inherit (python2Packages) python;
-  };
-
-  v8 = callPackage ../development/libraries/v8 ({
+  v8_5_x = callPackage ../development/libraries/v8/5_x.nix ({
     inherit (python2Packages) python gyp;
     icu = icu58; # v8-5.4.232 fails against icu4c-59.1
   } // lib.optionalAttrs stdenv.isLinux {
     # doesn't build with gcc7
     stdenv = overrideCC stdenv gcc6;
   });
+
+  v8_6_x = v8;
+  v8 = callPackage ../development/libraries/v8 {
+    inherit (python2Packages) python;
+  } // lib.optionalAttrs stdenv.isLinux {
+    # doesn't build with gcc7
+    stdenv = overrideCC stdenv gcc6;
+  };
 
   vaapiIntel = callPackage ../development/libraries/vaapi-intel { };
 

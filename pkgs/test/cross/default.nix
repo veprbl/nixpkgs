@@ -4,7 +4,7 @@ let
 
   testedSystems = lib.filterAttrs (name: value: let
     platform = lib.systems.elaborate value;
-  in platform.isLinux || platform.isWindows
+  in platform.isLinux || platform.isWindows || platform.isWasm
   ) lib.systems.examples;
 
   getExecutable = pkgs: pkgFun: exec:
@@ -93,8 +93,7 @@ let
 
   };
 
-in (lib.mapAttrs (_: mapMultiPlatformTest builtins.id) tests)
-// (lib.mapAttrs' (name: test: {
-    name = "${name}-llvm";
-    value = mapMultiPlatformTest (system: system // {useLLVM = true;}) test;
-  }) tests)
+in {
+  gcc = (lib.mapAttrs (_: mapMultiPlatformTest (system: system // {useLLVM = false;})) tests);
+  llvm = (lib.mapAttrs (_: mapMultiPlatformTest (system: system // {useLLVM = true;})) tests);
+}

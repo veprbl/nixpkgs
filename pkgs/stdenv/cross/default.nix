@@ -37,7 +37,8 @@ in lib.init bootStages ++ [
   # Run Packages
   (buildPackages: {
     inherit config;
-    overlays = overlays ++ crossOverlays;
+    overlays = overlays ++ crossOverlays
+      ++ (if crossSystem.isWasm then [(import ../../top-level/static.nix)] else []);
     selfBuild = false;
     stdenv = buildPackages.stdenv.override (old: rec {
       buildPlatform = localSystem;
@@ -55,7 +56,7 @@ in lib.init bootStages ++ [
            else if crossSystem.useAndroidPrebuilt or false
              then buildPackages."androidndkPkgs_${crossSystem.ndkVer}".gcc
            else if crossSystem.useLLVM or false
-             then buildPackages.llvmPackages_7.lldClang
+             then buildPackages.llvmPackages_8.lldClang
            else buildPackages.gcc;
 
       extraNativeBuildInputs = old.extraNativeBuildInputs

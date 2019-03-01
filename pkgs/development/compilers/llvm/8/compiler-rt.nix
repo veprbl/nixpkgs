@@ -2,7 +2,7 @@
 stdenv.mkDerivation rec {
   name = "compiler-rt-${version}";
   inherit version;
-  src = fetch "compiler-rt" "065ybd8fsc4h2hikbdyricj6pyv4r7r7kpcikhb2y5zf370xybkq";
+  src = fetch "compiler-rt" "1rxa1rcn7r3yfn9cj0sx5gd90kslbd13q080rdyqb6jr9a9i1avb";
 
   nativeBuildInputs = [ cmake python llvm ];
   buildInputs = stdenv.lib.optional stdenv.hostPlatform.isDarwin libcxxabi;
@@ -21,7 +21,6 @@ stdenv.mkDerivation rec {
     "-DCOMPILER_RT_BUILD_PROFILE=OFF"
     "-DCOMPILER_RT_BAREMETAL_BUILD=ON"
     "-DCMAKE_SIZEOF_VOID_P=${toString (stdenv.hostPlatform.parsed.cpu.bits / 8)}"
-    "-DCOMPILER_RT_BUILD_CRT=${if stdenv.hostPlatform.isWasm then "OFF" else "ON"}"
   ];
 
   outputs = [ "out" "dev" ];
@@ -62,6 +61,11 @@ stdenv.mkDerivation rec {
       touch $f.c
       $CC -c -o $out/lib/$f.o $f.c
     done
+
+    if [ -d $out/lib/wasm/ ]; then
+      mv $out/lib/wasm/* $out/lib
+      rmdir $out/lib/wasm/
+    fi
   '';
 
   enableParallelBuilding = true;

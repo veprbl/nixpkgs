@@ -219,4 +219,23 @@ rec {
     config = "x86_64-unknown-netbsd";
     libc = "nblibc";
   };
+
+  #
+  # WASM
+  #
+
+  wasm32 = {
+    # should be wasm32-unknown-unknown-wasm
+    config = "wasm32";
+    libc = "webmusl";
+    useLLVM = true;
+  };
+
+  wasm64 = {
+    # should be wasm64-unknown-unknown-wasm
+    config = "wasm64";
+    libc = "webmusl";
+    useLLVM = true;
+  };
+
 }
