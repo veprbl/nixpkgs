@@ -30,6 +30,8 @@ stdenv.mkDerivation rec {
     ./0005-hide-more-tags-that-would-be-painful-to-mass-change.patch
     ./0006-lists.patch
     #./0007-tweak-icons-fix-spacing.patch
+
+    ./0001-hack-replace-tabs-with-spaces-in-Subject-header.patch
   ];
 
   installPhase = ''
