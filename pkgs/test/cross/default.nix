@@ -4,7 +4,7 @@ let
 
   testedSystems = lib.filterAttrs (name: value: let
     platform = lib.systems.elaborate value;
-  in platform.isLinux || platform.isWindows
+  in platform.isLinux || platform.isWindows || platform.isWasm
   ) lib.systems.examples;
 
   getExecutable = pkgs: pkgFun: exec:
