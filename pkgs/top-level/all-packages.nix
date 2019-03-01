@@ -9054,7 +9054,7 @@ in
   pmccabe = callPackage ../development/tools/misc/pmccabe { };
 
   pkgconf = callPackage ../development/tools/misc/pkgconf {
-    fetchurl = fetchurlBoot;
+    fetchurl = stdenv.fetchurlBoot;
   };
 
   pkg-config = callPackage ../development/tools/misc/pkg-config { };
