@@ -25,14 +25,6 @@ pythonPackages.buildPythonPackage rec {
     scour
   ];
 
-  postPatch = ''
-    sed -ie "s^join(_DATA_DIR_PATH,^join(\"$out/third_party/ucd\",^" nototools/unicode_data.py
-  '';
-
-  postInstall = ''
-    cp -r third_party $out
-  '';
-
   disabled = pythonPackages.isPy3k;
 
   meta = {
