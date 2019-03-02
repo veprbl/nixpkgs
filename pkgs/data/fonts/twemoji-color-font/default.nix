@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ inkscape imagemagick potrace svgo scfbuild ];
   # silence inkscape errors about non-writable home
   preBuild = "export HOME=\"$NIX_BUILD_ROOT\"";
-  makeFlags = [ "SCFBUILD=${scfbuild}/bin/scfbuild" ];
+  makeFlags = [ "SCFBUILD=${scfbuild}/bin/scfbuild" "build/TwitterColorEmoji-SVGinOT.ttf" ];
   enableParallelBuilding = true;
 
   installPhase = ''
