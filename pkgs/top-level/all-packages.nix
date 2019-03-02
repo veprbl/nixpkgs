@@ -7531,7 +7531,7 @@ in
   };
 
   ponyc = callPackage ../development/compilers/ponyc {
-    llvm = llvm_39;
+    llvm = llvm_7;
   };
 
   pony-stable = callPackage ../development/compilers/ponyc/pony-stable.nix { };
