@@ -1,6 +1,6 @@
-{ fetchFromGitHub, pythonPackages, lib }:
+{ fetchFromGitHub, lib, buildPythonPackage, isPy3k, fonttools, numpy, pillow, scour }:
 
-pythonPackages.buildPythonPackage rec {
+buildPythonPackage rec {
   version = "2019-02-21";
   name = "nototools-${version}";
 
@@ -11,7 +11,7 @@ pythonPackages.buildPythonPackage rec {
     sha256 = "1gz9kmzrgayxvxn3vj8j6dqp66g1angmbq2yyh5r9x6g9p6k2dy8";
   };
 
-  propagatedBuildInputs = with pythonPackages; [
+  propagatedBuildInputs = [
     fonttools numpy
     # requirements.txt
     # booleanOperations==0.7.0
@@ -25,7 +25,7 @@ pythonPackages.buildPythonPackage rec {
     scour
   ];
 
-  disabled = pythonPackages.isPy3k;
+  disabled = isPy3k;
 
   meta = {
     description = "Noto fonts support tools and scripts plus web site generation";
