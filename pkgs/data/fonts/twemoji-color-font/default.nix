@@ -16,8 +16,8 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
 
   installPhase = ''
-    install -Dm755 build/TwitterColorEmoji-SVGinOT.ttf $out/share/fonts/truetype/TwitterColorEmoji-SVGinOT.ttf
-    install -Dm644 linux/fontconfig/56-twemoji-color.conf $out/etc/fonts/conf.d/56-twemoji-color.conf
+    install -Dm755 -t $out/share/fonts/truetype build/TwitterColorEmoji-SVGinOT.ttf
+    install -Dm644 -t $out/etc/fonts/conf.d linux/fontconfig/56-twemoji-color.conf
   '';
 
   meta = with stdenv.lib; {
