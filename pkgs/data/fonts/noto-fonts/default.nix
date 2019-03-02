@@ -112,12 +112,12 @@ rec {
 
     installPhase = ''
       mkdir -p $out/share/fonts/noto
-      cp NotoColorEmoji.ttf fonts/NotoEmoji-Regular.ttf $out/share/fonts/noto
+      cp NotoColorEmoji.ttf $out/share/fonts/noto
     '';
 
     meta = with stdenv.lib; {
       inherit version;
-      description = "Color and Black-and-White emoji fonts";
+      description = "Color emoji fonts";
       homepage = https://github.com/googlei18n/noto-emoji;
       license = with licenses; [ ofl asl20 ];
       platforms = platforms.all;
