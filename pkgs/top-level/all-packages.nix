@@ -17670,6 +17670,7 @@ in
   hipchat = callPackage ../applications/networking/instant-messengers/hipchat { };
 
   hledger = haskell.lib.justStaticExecutables haskellPackages.hledger;
+  hledger-interest = haskell.lib.justStaticExecutables haskellPackages.hledger-interest;
   hledger-ui = haskell.lib.justStaticExecutables haskellPackages.hledger-ui;
   hledger-web = haskell.lib.justStaticExecutables haskellPackages.hledger-web;
 
@@ -18579,6 +18580,8 @@ in
   pig = callPackage ../applications/networking/cluster/pig { };
 
   pijul = callPackage ../applications/version-management/pijul {};
+
+  ping = callPackage ../applications/networking/ping { };
 
   piper = callPackage ../os-specific/linux/piper { };
 
