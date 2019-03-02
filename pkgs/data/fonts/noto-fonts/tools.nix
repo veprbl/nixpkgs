@@ -1,14 +1,14 @@
 { fetchFromGitHub, pythonPackages, lib }:
 
 pythonPackages.buildPythonPackage rec {
-  version = "2017-09-25";
+  version = "2019-02-21";
   name = "nototools-${version}";
 
   src = fetchFromGitHub {
     owner = "googlei18n";
     repo = "nototools";
-    rev = "v2017-09-25-tooling-for-phase3-update";
-    sha256 = "03nzvcvwmrhfrcjhg218q2f3hfrm3vlivp4rk19sc397kh3hisiz";
+    rev = "bb309e87d273b3afd89b6c66c43b332899e74f5d";
+    sha256 = "1gz9kmzrgayxvxn3vj8j6dqp66g1angmbq2yyh5r9x6g9p6k2dy8";
   };
 
   propagatedBuildInputs = with pythonPackages; [ fonttools numpy ];
