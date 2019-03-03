@@ -21,21 +21,21 @@ stdenv.mkDerivation rec {
   outputs = [ "bin" "man" "dev" "out" ];
 
   nativeBuildInputs = [
-    meson ninja pkgconfig appstream-glib desktop-file-utils python3.pkgs.sphinx
+    meson ninja pkgconfig desktop-file-utils python3.pkgs.sphinx
     gettext makeWrapper libxml2
-  ];
+  ] ++ optional stdenv.isLinux appstream-glib;
 
   buildInputs = [
-    gtk girara libintl libseccomp
-    sqlite glib
+    gtk girara libintl sqlite glib
   ] ++ optional synctexSupport texlive.bin.core
-    ++ optional stdenv.isDarwin [ gtk-mac-integration ];
+    ++ optional stdenv.isLinux libseccomp
+    ++ optional stdenv.isDarwin gtk-mac-integration;
 
   meta = {
     homepage = https://pwmt.org/projects/zathura/;
     description = "A core component for zathura PDF viewer";
     license = licenses.zlib;
     platforms = platforms.unix;
-    maintainers = with maintainers; [ garbas ];
+    maintainers = with maintainers; [ garbas rvolosatovs ];
   };
 }
