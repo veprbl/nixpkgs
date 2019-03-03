@@ -1,13 +1,23 @@
 { stdenv, fetchgit
-, pkgconfig
-, qmake, qtbase, qtquickcontrols2, qtmultimedia
+, pkgconfig, makeWrapper
+, qmake, qttools, qtbase, qtquickcontrols2, qtmultimedia
 , libpulseaudio
 # Not mentioned but seems needed
 , qtgraphicaleffects
 , qtdeclarative
 }:
 
-stdenv.mkDerivation rec {
+let
+  # Following "borrowed" from yubikey-manager-qt
+  qmlPath = qmlLib: "${qmlLib}/${qtbase.qtQmlPrefix}";
+
+  inherit (stdenv) lib;
+
+  qml2ImportPath = lib.concatMapStringsSep ":" qmlPath [
+    qtbase.bin qtdeclarative.bin qtquickcontrols2.bin qtgraphicaleffects qtmultimedia
+  ];
+
+in stdenv.mkDerivation rec {
   pname = "spectral";
   version = "2019-03-02";
 
@@ -20,9 +30,14 @@ stdenv.mkDerivation rec {
 
   # Doesn't seem to work without this, used to be documented in the .pro file.  Dunno.
   # Update: upstream uses this in CI so it's not just us :)
-  qmakeFlags = [ "CONFIG+=qtquickcompiler" ];
+  #qmakeFlags = [ "CONFIG+=qtquickcompiler" "CONFIG+=qml_debug" "CONFIG+=debug" ];
 
-  nativeBuildInputs = [ pkgconfig qmake ];
+  postInstall = ''
+    wrapProgram $out/bin/spectral \
+      --set QML2_IMPORT_PATH "${qml2ImportPath}"
+  '';
+
+  nativeBuildInputs = [ pkgconfig qmake makeWrapper qttools ];
   buildInputs = [ qtbase qtquickcontrols2 qtmultimedia qtgraphicaleffects qtdeclarative ]
     ++ stdenv.lib.optional stdenv.hostPlatform.isLinux libpulseaudio;
 
