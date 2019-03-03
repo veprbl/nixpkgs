@@ -37,8 +37,7 @@
 , wrapGAppsHook
 }:
 
-let rpath = lib.makeLibraryPath [
-    alsaLib
+let rpath = lib.makeLibraryPath ([
     at-spi2-atk
     at-spi2-core
     atk
@@ -52,8 +51,15 @@ let rpath = lib.makeLibraryPath [
     glib
     gnome2.GConf
     gtk3
+    libuuid
+    nspr
+    nss
+    pango
+    xdg_utils
+    zlib
+  ] ++ lib.optionals stdenv.isLinux [
+    alsaLib
     libX11
-    libXScrnSaver
     libXcomposite
     libXcursor
     libXdamage
@@ -62,16 +68,11 @@ let rpath = lib.makeLibraryPath [
     libXi
     libXrandr
     libXrender
+    libXScrnSaver
     libXtst
-    libuuid
-    nspr
-    nss
-    pango
     udev
-    xdg_utils
     xorg.libxcb
-    zlib
-];
+  ]);
 
 
 in stdenv.mkDerivation rec {
@@ -144,7 +145,7 @@ in stdenv.mkDerivation rec {
           contribute to your favorite creators automatically.
         '';
         license = licenses.mpl20;
-        maintainers = [ maintainers.uskudnik ];
-        platforms = [ "x86_64-linux" ];
+        maintainers = with maintainers; [ uskudnik rvolosatovs ];
+        platforms = platforms.unix;
     };
 }
