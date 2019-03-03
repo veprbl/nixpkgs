@@ -20,8 +20,8 @@ let
     # Override the version of some packages pinned in Home Assistant's setup.py
     (mkOverride "aiohttp" "3.5.4"
       "9c4c83f4fa1938377da32bc2d59379025ceeee8e24b89f72fcbccd8ca22dc9bf")
-    (mkOverride "astral" "1.9.2"
-      "12z32k1x5lq02l4zgqn27yanc6c23swbl505ws3n9sffhsh757qp")
+    (mkOverride "astral" "1.8"
+      "7d624ccd09c591e56103f077733bc36194940076939875d84909d5086afd99c8")
     (mkOverride "async-timeout" "3.0.1"
       "0c3c816a028d47f659d6ff5c745cb2acf1f966da1fe5c19c77a70282b25f4c5f")
     (mkOverride "attrs" "18.2.0"
@@ -92,7 +92,7 @@ let
   extraBuildInputs = extraPackages py.pkgs;
 
   # Don't forget to run parse-requirements.py after updating
-  hassVersion = "0.88.1";
+  hassVersion = "0.87.1";
 
 in with py.pkgs; buildPythonApplication rec {
   pname = "homeassistant";
@@ -107,7 +107,7 @@ in with py.pkgs; buildPythonApplication rec {
     owner = "home-assistant";
     repo = "home-assistant";
     rev = version;
-    sha256 = "1dcdmcxq26pmxq4jki23i06i5l8h2kfh89fk3c4fwd1zndjsm3z3";
+    sha256 = "1f1l4a78dix1mwkpg84b3iw69nxx1dqbl3c698qg857kwac6w9d5";
   };
 
   propagatedBuildInputs = [
