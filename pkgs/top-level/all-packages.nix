@@ -2687,6 +2687,8 @@ in
 
   fileschanged = callPackage ../tools/misc/fileschanged { };
 
+  filet = callPackage ../applications/misc/filet { };
+
   findutils = callPackage ../tools/misc/findutils { };
 
   finger_bsd = callPackage ../tools/networking/bsd-finger { };
@@ -16452,6 +16454,8 @@ in
   carddav-util = callPackage ../tools/networking/carddav-util { };
 
   catfish = callPackage ../applications/search/catfish { };
+
+  catimg = callPackage ../tools/misc/catimg { };
 
   cava = callPackage ../applications/audio/cava { };
 
