@@ -6,8 +6,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-📫 unread
-🖌" replied
+✉ unread
+💬 replied
 ✗  deleted
 ⚐  flagged
 ---
@@ -24,20 +24,21 @@ index b176f25..bd20e61 100644
          Unread = unread,
          Base = bold,
 -        draw(Panel, "n", !IO)
-+        draw(Panel, "📫 ", !IO)
++        draw(Panel, "✉", !IO)
      ;
          Unread = read,
          Base = normal,
 -        draw(Panel, " ", !IO)
-+        draw(Panel, "  ", !IO)
++        draw(Panel, " ", !IO)
      ),
      (
          Replied = replied,
 -        draw(Panel, "r", !IO)
-+        draw(Panel, "🖌", !IO)
++        draw(Panel, "💬", !IO)
      ;
          Replied = not_replied,
-         draw(Panel, " ", !IO)
+-        draw(Panel, " ", !IO)
++        draw(Panel, "  ", !IO)
      ),
      (
          Deleted = deleted,
@@ -63,19 +64,20 @@ index 667e644..74900a7 100644
      (
          Unread = unread,
 -        draw(Panel, "n", !IO)
-+        draw(Panel, "📫 ", !IO)
++        draw(Panel, "✉", !IO)
      ;
          Unread = read,
 -        draw(Panel, " ", !IO)
-+        draw(Panel, "  ", !IO)
++        draw(Panel, " ", !IO)
      ),
      (
          Replied = replied,
 -        draw(Panel, "r", !IO)
-+        draw(Panel, "🖌", !IO)
++        draw(Panel, "💬", !IO)
      ;
          Replied = not_replied,
-         draw(Panel, " ", !IO)
+-        draw(Panel, " ", !IO)
++        draw(Panel, "  ", !IO)
      ),
      (
          Deleted = deleted,
