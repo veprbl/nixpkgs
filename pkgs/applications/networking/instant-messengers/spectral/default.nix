@@ -1,6 +1,6 @@
 { stdenv, fetchgit
 , pkgconfig, makeWrapper
-, qmake, qttools, qtbase, qtquickcontrols2, qtmultimedia
+, qmake, qtbase, qtquickcontrols2, qtmultimedia
 , libpulseaudio
 # Not mentioned but seems needed
 , qtgraphicaleffects
@@ -28,16 +28,15 @@ in stdenv.mkDerivation rec {
     fetchSubmodules = true;
   };
 
-  # Doesn't seem to work without this, used to be documented in the .pro file.  Dunno.
-  # Update: upstream uses this in CI so it's not just us :)
-  #qmakeFlags = [ "CONFIG+=qtquickcompiler" "CONFIG+=qml_debug" "CONFIG+=debug" ];
+  # XXX: This may not be needed anymore?
+  qmakeFlags = [ "CONFIG+=qtquickcompiler" ];
 
   postInstall = ''
     wrapProgram $out/bin/spectral \
       --set QML2_IMPORT_PATH "${qml2ImportPath}"
   '';
 
-  nativeBuildInputs = [ pkgconfig qmake makeWrapper qttools ];
+  nativeBuildInputs = [ pkgconfig qmake makeWrapper ];
   buildInputs = [ qtbase qtquickcontrols2 qtmultimedia qtgraphicaleffects qtdeclarative ]
     ++ stdenv.lib.optional stdenv.hostPlatform.isLinux libpulseaudio;
 
