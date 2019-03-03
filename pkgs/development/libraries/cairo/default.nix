@@ -27,15 +27,10 @@ in stdenv.mkDerivation rec {
       url = "https://gitlab.freedesktop.org/cairo/cairo/commit/2a21ed0293055540985e74375ff462502adc9754.patch";
       sha256 = "1c1a70gj88wz63v5vnb8aw73hisqaz9x8m0xidsqn0ncm2d35x8c";
     })
-    # Fixes CVE-2018-19876; see Nixpkgs issue #55384
-    # CVE information: https://nvd.nist.gov/vuln/detail/CVE-2018-19876
-    # Upstream PR: https://gitlab.freedesktop.org/cairo/cairo/merge_requests/5
-    #
-    # This patch is the merged commit from the above PR.
+    # Fix crashes
     (fetchpatch {
-      name   = "CVE-2018-19876.patch";
-      url    = "https://gitlab.freedesktop.org/cairo/cairo/commit/6edf572ebb27b00d3c371ba5ae267e39d27d5b6d.patch";
-      sha256 = "112hgrrsmcwxh1r52brhi5lksq4pvrz4xhkzcf2iqp55jl2pb7n1";
+      url = https://gitlab.freedesktop.org/cairo/cairo/commit/2d1a137f3d27b60538c58b25e867288c7b0b61bc.patch;
+      sha256 = "1c95s9y065rgpwqckkgmn06vvdkrh3q8rjcgr269f163cy4lhvnc";
     })
   ];
 
