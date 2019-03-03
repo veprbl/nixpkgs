@@ -43,6 +43,13 @@ in stdenv.mkDerivation rec {
     NOCONFIGURE=1 ./autogen.sh
   '';
 
+  patches = [
+    (fetchpatch {
+      url = "https://github.com/GNOME/gucharmap/commit/4622d36b104babf85df9755fd3404630806e1eb4.patch";
+      sha256 = "1yhmrddm9l318bb0fxf777siv5jxxbnnghl1sfm81pnb8q8a1x3y";
+    })
+  ];
+
   passthru = {
     updateScript = gnome3.updateScript {
       packageName = "gucharmap";
