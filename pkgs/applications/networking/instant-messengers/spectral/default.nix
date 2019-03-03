@@ -28,8 +28,7 @@ in stdenv.mkDerivation rec {
     fetchSubmodules = true;
   };
 
-  # XXX: This may not be needed anymore?
-  qmakeFlags = [ "CONFIG+=qtquickcompiler" ];
+  qmakeFlags = [ "CONFIG+=qtquickcompiler" "BUNDLE_FONT=true" ];
 
   postInstall = ''
     wrapProgram $out/bin/spectral \
