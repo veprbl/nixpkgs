@@ -31,7 +31,11 @@ in stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  patches = [ ./gobject-linking.patch ];
+  patches = [
+    ./gobject-linking.patch
+    ./0001-handle-VS15-emoji-sequences.patch
+    ./0002-Update-emoji-scanner-ragel-file-to-latest-from-Chrom.patch
+  ];
 
   # Fontconfig error: Cannot load default config file
   FONTCONFIG_FILE = makeFontsConf {
