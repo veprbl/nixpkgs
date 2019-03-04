@@ -16427,6 +16427,8 @@ in
     gpgme = pkgsMusl.gpgme.override { inherit gnupg; };
   };
 
+  brig = callPackages ../applications/networking/brig { };
+
   bristol = callPackage ../applications/audio/bristol { };
 
   bs1770gain = callPackage ../applications/audio/bs1770gain { };
