@@ -1,5 +1,6 @@
-{ stdenv, fetchurl, pkgconfig, libtool
+{ stdenv, fetchurl, pkgconfig, libtool, autoreconfHook
 , xlibsWrapper, xbitmaps, libXrender, libXmu, libXt
+, freetype, fontconfig, libXft
 , expat, libjpeg, libpng, libiconv
 , flex
 , libXp, libXau
@@ -19,10 +20,11 @@ stdenv.mkDerivation rec {
   buildInputs = [
     libtool
     xlibsWrapper xbitmaps libXrender libXmu libXt
+    freetype fontconfig libXft
     expat libjpeg libpng libiconv
   ];
 
-  nativeBuildInputs = [ pkgconfig flex ];
+  nativeBuildInputs = [ pkgconfig flex autoreconfHook ];
 
   propagatedBuildInputs = [ libXp libXau ];
 
@@ -36,6 +38,8 @@ stdenv.mkDerivation rec {
 
   patches = [ ./Remove-unsupported-weak-refs-on-darwin.patch
               ./Add-X.Org-to-bindings-file.patch
+              ./fix-autoconf.patch
+              ./fix_ac_find_xft.patch
             ];
 
   meta = with stdenv.lib; {
