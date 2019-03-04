@@ -1,6 +1,6 @@
 { stdenv, fetchFromGitHub, lib
 , autoconf, automake, gnum4, libtool, perl, gnulib, uthash, pkgconfig, gettext
-, python, freetype, zlib, glib, libungif, libpng, libjpeg, libtiff, libxml2, pango
+, python, freetype, zlib, glib, libungif, libpng, libjpeg, libtiff, libxml2, cairo, pango
 , withSpiro ? false, libspiro
 , withGTK ? false, gtk2
 , withPython ? true
@@ -34,13 +34,13 @@ stdenv.mkDerivation rec {
   # do not use x87's 80-bit arithmetic, rouding errors result in very different font binaries
 #  NIX_CFLAGS_COMPILE = lib.optionals stdenv.isi686 [ "-msse2" "-mfpmath=sse" ];
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig autoconf automake gnum4 libtool perl gettext ];
   buildInputs = [
-    autoconf automake gnum4 libtool perl gettext uthash
+    uthash
     python freetype zlib glib libungif libpng libjpeg libtiff libxml2
   ]
     ++ lib.optionals withSpiro [libspiro]
-    ++ lib.optionals withGTK [ gtk2 pango ]
+    ++ lib.optionals withGTK [ gtk2 cairo pango ]
     ++ lib.optionals stdenv.isDarwin [ Carbon Cocoa ];
 
   configureFlags =
