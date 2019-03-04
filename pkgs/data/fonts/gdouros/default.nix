@@ -2,7 +2,7 @@
 
 let
   fonts = {
-    symbola = { version = "9.17"; file = "Symbola.zip"; sha256 = "13z18lxx0py54nns61ihgxacpf1lg9s7g2sbpbnxpllqw7j73iq2";
+    symbola = { version = "11.00"; file = "Symbola.zip"; sha256 = "0sdp994wpd653p6shrmycskwsg09130hvgl2rdagicg0qgn3n8ja";
                 description = "Basic Latin, Greek, Cyrillic and many Symbol blocks of Unicode"; };
     aegyptus = { version = "6.17"; file = "Aegyptus.zip"; sha256 = "19rkf89msqb076qjdfa75pqrx35c3slj64vxw08zqdvyavq7jc79";
                  description = "Egyptian Hieroglyphs, Coptic, Meroitic"; };
