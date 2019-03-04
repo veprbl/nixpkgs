@@ -7,16 +7,16 @@
 
 buildPythonPackage rec {
   pname = "alot";
-  version = "0.8";
+  version = "0.8.1";
   outputs = [ "out" ] ++ lib.optional withManpage "man";
 
   disabled = !isPy3k;
 
   src = fetchFromGitHub {
-    owner = "dtzWill";
+    owner = "pazz";
     repo = "alot";
-    rev = "1ee0d21edd84844d710743e0ebd8232300f66592";
-    sha256 = "00j5jcn559xzszgpjpd6divsy2zbxdrsi6p3gyld882dibd3bv7b";
+    rev = "d0297605c0ec1c6b65f541d0fd5b69ac5a0f4ded";
+    sha256 = "0dnyza130kslx2aadbgr4vxd9dj8k56kkhzjmv17w6z3cvphnrga";
   };
 
   nativeBuildInputs = lib.optional withManpage sphinx;
@@ -37,8 +37,6 @@ buildPythonPackage rec {
   # If I knew how to specify skipping certain tests that'd be better!
   doCheck = false;
   postBuild = lib.optionalString withManpage "make -C docs man";
-
-  LC_ALL = "en_US.utf8";
 
   checkInputs =  [ awk future mock gnupg procps glibcLocales ];
 
