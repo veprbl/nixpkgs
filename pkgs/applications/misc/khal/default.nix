@@ -10,8 +10,8 @@ with python3.pkgs; buildPythonApplication rec {
   #};
   src = fetchgit {
     url = "https://github.com/pimutils/${pname}";
-    rev = "1bc431f5390b280d1f162131f592cde03028fabb";
-    sha256 = "01w7rjp3clvv1lv8vagw28k0kj2q9qaiyf7fjvllzsxy6dx6gcis";
+    rev = "46b4b3e2c382371a96414c8406f8b08a75e08c34";
+    sha256 = "09kgaxr3j5vj8k4cw97x3cjb6qgh3dvyix649wzh71cp41awh418";
     leaveDotGit = true;
   };
 
