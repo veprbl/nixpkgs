@@ -81,12 +81,12 @@ in rec {
   mercury-14-full = mercury-14.override { compilers = [ gcc erlang jdk ]; };
 
   mercury-rotd = mkMercury rec {
-    version = "rotd-2019-02-03";
+    version = "rotd-2019-02-23";
     src = fetchFromGitHub {
       owner = "Mercury-Language";
       repo = "mercury-srcdist";
       rev = version;
-      sha256 = "0ksgllarkabgy829wz5ix4khqn108rgfh41jdy6pvwgjmhkb0nfw";
+      sha256 = "1hwhx39v0z70x5xczs585mk1n1ixmhdyxy53n7qb9xm534bvxx7d";
     };
     bootstrapMercury = mercury-rotd-bootstrap;
   };
