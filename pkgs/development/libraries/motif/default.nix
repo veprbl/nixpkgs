@@ -2,7 +2,7 @@
 , xlibsWrapper, xbitmaps, libXrender, libXmu, libXt
 , freetype, fontconfig, libXft
 , expat, libjpeg, libpng, libiconv
-, flex
+, byacc, flex
 , libXp, libXau
 , demoSupport ? false
 }:
@@ -24,7 +24,7 @@ stdenv.mkDerivation rec {
     expat libjpeg libpng libiconv
   ];
 
-  nativeBuildInputs = [ pkgconfig flex autoreconfHook ];
+  nativeBuildInputs = [ pkgconfig byacc flex autoreconfHook ];
 
   propagatedBuildInputs = [ libXp libXau ];
 
@@ -41,6 +41,8 @@ stdenv.mkDerivation rec {
               ./fix-autoconf.patch
               ./fix_ac_find_xft.patch
             ];
+
+  enableParallelBuilding = true;
 
   meta = with stdenv.lib; {
     homepage = http://motif.ics.com;
