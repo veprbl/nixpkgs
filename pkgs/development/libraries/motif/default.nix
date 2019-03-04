@@ -1,6 +1,6 @@
 { stdenv, fetchurl, pkgconfig, libtool, autoreconfHook
 , xlibsWrapper, xbitmaps, libXrender, libXmu, libXt
-, freetype, fontconfig, libXft
+, freetype, fontconfig, libXft, libXext
 , expat, libjpeg, libpng, libiconv
 , byacc, flex
 , libXp, libXau
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
   buildInputs = [
     libtool
     xlibsWrapper xbitmaps libXrender libXmu libXt
-    freetype fontconfig libXft
+    freetype fontconfig libXft libXext
     expat libjpeg libpng libiconv
   ];
 
@@ -35,6 +35,12 @@ stdenv.mkDerivation rec {
   prePatch = stdenv.lib.optionalString (!demoSupport) ''
     sed '/^SUBDIRS =,^$/s/\<demos\>//' -i Makefile.{am,in}
   '';
+
+  configureFlags = [
+    "--enable-jpeg"
+    "--enable-png"
+    "--enable-xft"
+  ];
 
   patches = [ ./Remove-unsupported-weak-refs-on-darwin.patch
               ./Add-X.Org-to-bindings-file.patch
