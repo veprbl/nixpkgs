@@ -7086,7 +7086,7 @@ in
 
   haskell = callPackage ./haskell-packages.nix { };
 
-  haskellPackages = dontRecurseIntoAttrs (haskell.packages.ghc863.override {
+  haskellPackages = dontRecurseIntoAttrs (haskell.packages.ghc864.override {
     overrides = config.haskellPackageOverrides or haskell.packageOverrides;
   });
 
@@ -7286,13 +7286,6 @@ in
   javacard-devkit = pkgsi686Linux.callPackage ../development/compilers/javacard-devkit { };
 
   jikes = callPackage ../development/compilers/jikes { };
-
-  julia_06 = callPackage ../development/compilers/julia {
-    gmp = gmp6;
-    openblas = openblasCompat;
-    inherit (darwin.apple_sdk.frameworks) CoreServices ApplicationServices;
-    llvm = llvm_39;
-  };
 
   julia_07 = callPackage ../development/compilers/julia/0.7.nix {
     gmp = gmp6;
@@ -9268,6 +9261,8 @@ in
 
   trellis = callPackage ../development/tools/trellis { };
 
+  ttyd = callPackage ../servers/ttyd { };
+
   tweak = callPackage ../applications/editors/tweak { };
 
   tychus = callPackage ../development/tools/tychus {
@@ -9862,6 +9857,8 @@ in
   filter-audio = callPackage ../development/libraries/filter-audio {};
 
   flann = callPackage ../development/libraries/flann { };
+
+  flatcc = callPackage ../development/libraries/flatcc { };
 
   flint = callPackage ../development/libraries/flint { };
 
@@ -11029,9 +11026,7 @@ in
   libgudev = callPackage ../development/libraries/libgudev { };
 
   libguestfs-appliance = callPackage ../development/libraries/libguestfs/appliance.nix {};
-  libguestfs = callPackage ../development/libraries/libguestfs {
-    appliance = libguestfs-appliance;
-  };
+  libguestfs = callPackage ../development/libraries/libguestfs { };
 
   libhangul = callPackage ../development/libraries/libhangul { };
 
@@ -16655,7 +16650,6 @@ in
     pythonPackages = datadog-integrations-core {};
   };
   datadog-process-agent = callPackage ../tools/networking/dd-agent/datadog-process-agent.nix { };
-  datadog-trace-agent = callPackage ../tools/networking/dd-agent/datadog-trace-agent.nix { };
   datadog-integrations-core = extras: callPackage ../tools/networking/dd-agent/integrations-core.nix {
     python = python27;
     extraIntegrations = extras;
@@ -20391,6 +20385,8 @@ in
     inherit (gnome2) libgnomeprint libgnomeprintui libgnomecanvas;
   };
 
+  xournalpp = callPackage ../applications/graphics/xournalpp { };
+
   apvlv = callPackage ../applications/misc/apvlv { };
 
   xpdf = libsForQt5.callPackage ../applications/misc/xpdf { };
@@ -22980,6 +22976,8 @@ in
   streamripper = callPackage ../applications/audio/streamripper { };
 
   sqsh = callPackage ../development/tools/sqsh { };
+
+  jx = callPackage ../applications/networking/cluster/jx {};
 
   inherit (callPackage ../applications/networking/cluster/terraform {})
     terraform_0_11
