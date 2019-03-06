@@ -13,8 +13,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = pname;
     repo = pname;
-    rev = "4fe2d19ed2eb8e0917eaa683ba213727c85ae373";
-    sha256 = "13979vwsa1hqw8diiahm1pddv1046i6j51n8cdzk4snr7gaq61hy";
+    rev = "7a5c0246954566e4e7516b26beced10762290241";
+    sha256 = "09mdc6k0nnslr4vjpagarl2074qsi1a18i65vrf6xgdgilya0f04";
     fetchSubmodules = true;
   };
   #src = fetchurl {
