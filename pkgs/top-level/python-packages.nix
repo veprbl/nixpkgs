@@ -5398,6 +5398,9 @@ in {
 
   casttube = callPackage ../development/python-modules/casttube { };
 
+  lzstring = callPackage ../development/python-modules/lzstring { };
+
+  flickrapi = callPackage ../development/python-modules/flickrapi { };
 });
 
 in fix' (extends overrides packages)
