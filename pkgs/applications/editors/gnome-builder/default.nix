@@ -18,6 +18,7 @@
 , jsonrpc-glib
 , libdazzle
 , libxml2
+, libpeas
 , meson
 , ninja
 , ostree
@@ -31,15 +32,14 @@
 , webkitgtk
 , wrapGAppsHook
 }:
-let
-  version = "3.30.3";
+
+stdenv.mkDerivation rec {
   pname = "gnome-builder";
-in stdenv.mkDerivation {
-  name = "${pname}-${version}";
+  version = "3.32.0";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "11h6apjyah91djf77m8xkl5rvdz7mwpp3bjc4yzzs9lm3pag764r";
+    sha256 = "00l7sshpndk995aw98mjmsc3mxhxzynlp7il551iwwjjdbc70qp4";
   };
 
   nativeBuildInputs = [
@@ -64,7 +64,7 @@ in stdenv.mkDerivation {
     flatpak
     gnome3.devhelp
     libgit2-glib
-    gnome3.libpeas
+    libpeas
     vte
     gspell
     gtk3
@@ -90,11 +90,11 @@ in stdenv.mkDerivation {
 
   mesonFlags = [
     "-Dpython_libprefix=${python3.libPrefix}"
-    "-Dwith_docs=true"
+    "-Ddocs=true"
 
     # Making the build system correctly detect clang header and library paths
     # is difficult. Somebody should look into fixing this.
-    "-Dwith_clang=false"
+    "-Dplugin_clang=false"
   ];
 
   # Some tests fail due to being unable to find the Vte typelib, and I don't
