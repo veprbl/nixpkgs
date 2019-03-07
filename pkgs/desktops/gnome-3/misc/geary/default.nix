@@ -8,15 +8,9 @@ stdenv.mkDerivation rec {
   pname = "geary";
   version = "0.13.1";
 
-  #src = fetchurl {
-  #  url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-  #  sha256 = "0h9pf2mdskq7mylib1m9hw86nwfmdzyngjl7ywangqipm1k5svjx";
-  #};
-  src = fetchFromGitHub {
-    owner = "GNOME";
-    repo = "geary";
-    rev = "943cba30268a8933fdad97c74c158a6b328e5420";
-    sha256 = "0wqjrllnm8pgqrs6gz87nk6krax4fcw339d8q904lx7llirmfd6i";
+  src = fetchurl {
+    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+    sha256 = "0h9pf2mdskq7mylib1m9hw86nwfmdzyngjl7ywangqipm1k5svjx";
   };
 
   nativeBuildInputs = [
