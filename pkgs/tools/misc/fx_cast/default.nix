@@ -32,6 +32,9 @@ stdenv.mkDerivation rec {
   installPhase = ''
     install -DT {opt/fx_cast,$out/bin}/bridge
     install -DT {usr,$out}/lib/mozilla/native-messaging-hosts/fx_cast_bridge.json
+
+    substituteInPlace $out/lib/mozilla/native-messaging-hosts/fx_cast_bridge.json \
+      --replace /opt/fx_cast/bridge $out/bin/bridge
   '';
 
 
