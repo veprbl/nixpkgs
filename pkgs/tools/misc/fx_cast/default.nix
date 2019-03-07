@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, dpkg }:
+{ stdenv, fetchurl, dpkg, autoPatchelfHook }:
 
   #json = {
   #  name = "fx_cast_bridge";
@@ -17,7 +17,9 @@ stdenv.mkDerivation rec {
      sha256 = "0kcc7hn3qcnmlydrp85fqjil5bqj0g2bfzdxccqxzxz0xwnc0sj3";
   };
 
-  nativeBuildInputs = [ dpkg ];
+  nativeBuildInputs = [ dpkg autoPatchelfHook ];
+
+  buildInputs = [ stdenv.cc.cc.lib stdenv.cc.libc_lib ];
 
   unpackPhase = ''
     runHook preUnpack
