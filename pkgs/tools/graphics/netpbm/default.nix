@@ -5,12 +5,12 @@
 stdenv.mkDerivation rec {
   # Determine version and revision from:
   # https://sourceforge.net/p/netpbm/code/HEAD/log/?path=/advanced
-  name = "netpbm-10.85.03";
+  name = "netpbm-10.82.01";
 
   src = fetchsvn {
     url = "https://svn.code.sf.net/p/netpbm/code/advanced";
-    rev = "3553";
-    sha256 = "12hjfk9jglpkym4kgrfb8az3hvq4njvi7nw6a22jvv7xdqv3hgrf";
+    rev = "3264";
+    sha256 = "17fmyjbxp1l18rma7gb0m8wd9kx2iwhqs8dd6fpalsn2cr8mf8hf";
   };
 
   postPatch = /* CVE-2005-2471, from Arch */ ''
