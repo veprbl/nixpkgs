@@ -31,9 +31,6 @@ python3Packages.buildPythonApplication rec {
     pkgs.lame
     pkgs.ffmpeg
     pkgs.nodejs
-    # notify
-    pkgs.libnotify
-    pygobject3
   ] ++ stdenv.lib.optional alsaSupport [ pkgs.alsaLib pkgs.alsaUtils pkgs.ffmpeg ]
     ++ stdenv.lib.optional (!alsaSupport) pkgs.pulseaudio
     ++ stdenv.lib.optional systemTray python3Packages.pyqt5
