@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, lib }:
+{ stdenv, fetchurl, lib, ... /* sadface */ }:
 
 let
 
