@@ -40,7 +40,7 @@ python3Packages.buildPythonApplication rec {
     done
   '';
 
-  checkInputs = [ python3Packages.pytest ];
+  checkInputs = with python3Packages; [ pytest pyyaml ];
   doCheck = !stdenv.isDarwin; # On Hydra Darwin tests fail with "Too many open files".
 
   meta = with stdenv.lib; {
