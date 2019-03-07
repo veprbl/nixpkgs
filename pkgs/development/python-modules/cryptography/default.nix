@@ -20,9 +20,8 @@
 }:
 
 buildPythonPackage rec {
-  # also bump cryptography_vectors
   pname = "cryptography";
-  version = "2.6.1";
+  version = "2.6.1"; # Also update the hash in vectors.nix
 
   src = fetchPypi {
     inherit pname version;
