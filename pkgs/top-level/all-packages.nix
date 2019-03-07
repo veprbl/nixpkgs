@@ -2106,6 +2106,8 @@ in
 
   checkbashisms = callPackage ../development/tools/misc/checkbashisms { };
 
+  civetweb = callPackage ../development/libraries/civetweb { };
+
   ckb-next = libsForQt5.callPackage ../tools/misc/ckb-next { };
 
   clamav = callPackage ../tools/security/clamav { };
@@ -4007,6 +4009,8 @@ in
   liblouis = callPackage ../development/libraries/liblouis { };
 
   liboauth = callPackage ../development/libraries/liboauth { };
+
+  libr3 = callPackage ../development/libraries/libr3 { };
 
   libsidplayfp = callPackage ../development/libraries/libsidplayfp { };
 
@@ -7102,7 +7106,8 @@ in
 
   all-cabal-hashes = callPackage ../data/misc/hackage { };
 
-  purescript = haskell.lib.justStaticExecutables haskellPackages.purescript;
+  # Build with ghc 8.4 due to https://github.com/NixOS/nixpkgs/issues/53597
+  purescript = haskell.lib.justStaticExecutables haskell.packages.ghc844.purescript;
   psc-package = haskell.lib.justStaticExecutables
     (haskellPackages.callPackage ../development/compilers/purescript/psc-package { });
 
@@ -14060,6 +14065,8 @@ in
   prometheus-varnish-exporter = callPackage ../servers/monitoring/prometheus/varnish-exporter.nix { };
   prometheus-jmx-httpserver = callPackage ../servers/monitoring/prometheus/jmx-httpserver.nix {  };
 
+  prometheus-cpp = callPackage ../development/libraries/prometheus-cpp { };
+
   psqlodbc = callPackage ../development/libraries/psqlodbc { };
 
   pure-ftpd = callPackage ../servers/ftp/pure-ftpd { };
@@ -15067,6 +15074,8 @@ in
     callPackage ../os-specific/linux/kmod/aggregator.nix {
       inherit modules;
     };
+
+  multipart-parser-c = callPackage ../development/libraries/multipart-parser-c { };
 
   multipath-tools = callPackage ../os-specific/linux/multipath-tools { };
 
@@ -19737,6 +19746,8 @@ in
     gconf = pkgs.gnome2.GConf;
     inherit (pkgs.gnome2) libgnome libgnomeui;
   };
+
+  ticpp = callPackage ../development/libraries/ticpp { };
 
   tig = gitAndTools.tig;
 
