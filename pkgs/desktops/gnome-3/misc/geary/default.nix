@@ -13,6 +13,15 @@ stdenv.mkDerivation rec {
     sha256 = "1fp3zzgpkm1l4d0g5194wnriz2spxa9kgrgy98kvvffl7ac860kk";
   };
 
+  patches = [
+    # gobject-introspection is not needed
+    # https://gitlab.gnome.org/GNOME/geary/merge_requests/138
+    (fetchpatch {
+      url = https://gitlab.gnome.org/GNOME/geary/commit/d2f1b1076aa942d140e83fdf03b66621c11229f5.patch;
+      sha256 = "1dsj4ybnibpi572w9hafm0w90jbjv7wzdl6j8d4c2qg5h7knlvfk";
+    })
+  ];
+
   nativeBuildInputs = [
     desktop-file-utils gettext itstool libxml2 meson ninja
     pkgconfig vala wrapGAppsHook python3
