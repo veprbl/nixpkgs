@@ -96,12 +96,12 @@ let
     #  substituteInPlace meson.build --replace "version: '4'" "version: '${version}'"
     #'';
 
-    NIX_CFLAGS_COMPILE = [ "-fno-strict-aliasing" "-DDEBUG_RESTACK=1" "-DDEBUG_EVENTS=1" ];
+    NIX_CFLAGS_COMPILE = [ "-fno-strict-aliasing" /* "-DDEBUG_RESTACK=1" "-DDEBUG_EVENTS=1" */ ];
 
     mesonFlags = [
       "-Dvsync_drm=true"
       "-Dbuild_docs=true"
-      "-Dsanitize=true"
+      #"-Dsanitize=true"
     ];
 
     meta = {
