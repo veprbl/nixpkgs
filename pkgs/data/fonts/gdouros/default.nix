@@ -18,7 +18,7 @@ let
                description = "Musical Notation"; };
     analecta = { version = "5.17"; file = "Analecta.zip"; sha256 = "13npnfscd9mz6vf89qxxbj383njf53a1smqjh0c1w2lvijgak3aj";
                  description = "Coptic, Gothic, Deseret"; };
-    textfonts = { version = "7.17"; file = "TextfontsFonts.zip"; sha256 = "1ggflqnslp81v8pzmzx6iwi2sa38l9bpivjjci7nvx3y5xynm6wl";
+    textfonts = { version = "9.00"; file = "Textfonts.zip"; sha256 = "0wzxz4j4fgk81b88d58715n1wvq2mqmpjpk4g5hi3vk77y2zxc4d";
                  description = "Aroania, Anaktoria, Alexander, Avdira and Asea"; };
     aegan = { version = "9.17"; file = "AegeanFonts.zip"; sha256 = "0dm2ck3p11bc9izrh7xz3blqfqg1mgsvy4jsgmz9rcs4m74xrhsf";
               description = "Aegean"; };
