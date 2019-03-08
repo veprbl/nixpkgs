@@ -100,7 +100,6 @@ let
 
     mesonFlags = [
       "-Dvsync_drm=true"
-      "-Dnew_backends=true"
       "-Dbuild_docs=true"
     ];
 
