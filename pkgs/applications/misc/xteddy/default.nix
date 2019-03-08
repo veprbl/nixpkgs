@@ -8,8 +8,9 @@ stdenv.mkDerivation rec {
     sha256 = "1qli69im6pani8wzmryavndspbcwc4298yl5d6s7qy085qg5m26q";
   };
   postPatch = ''
-    sed -i -e 's,/usr/\(local\)\?share,${placeholder "out"}/share,g' \
-      configure xteddy.c Makefile.in images/Makefile.in xteddy_test xtoys
+    for x in configure xteddy.c Makefile.in images/Makefile.in xteddy_test xtoys; do
+      substituteInPlace $x --replace /usr/share $out/share --replace /usr/local/share $out/share
+    done
     substituteInPlace xtoys --replace /usr/games/xteddy $out/bin/xteddy
   '';
   nativeBuildInputs = [ pkg-config ];
