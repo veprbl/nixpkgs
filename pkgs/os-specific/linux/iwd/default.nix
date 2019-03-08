@@ -1,4 +1,4 @@
-{ stdenv, fetchgit, autoreconfHook, pkgconfig, coreutils, readline, python3Packages }:
+{ stdenv, fetchgit, autoreconfHook, pkgconfig, coreutils, readline80, python3Packages }:
 
 let
   ell = fetchgit {
@@ -27,7 +27,7 @@ in stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
-    readline
+    readline80
     python3Packages.python
   ];
 
