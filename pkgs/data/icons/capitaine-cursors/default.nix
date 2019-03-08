@@ -29,6 +29,7 @@ stdenv.mkDerivation rec {
   installPhase = ''
     install -dm 0755 $out/share/icons
     cp -pr dist $out/share/icons/capitaine-cursors
+    cp -pr dist-white $out/share/icons/capitaine-cursors-white
   '';
 
   meta = with stdenv.lib; {
