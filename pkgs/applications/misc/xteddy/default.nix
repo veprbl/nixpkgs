@@ -12,13 +12,18 @@ stdenv.mkDerivation rec {
       substituteInPlace $x --replace /usr/share $out/share --replace /usr/local/share $out/share
     done
     substituteInPlace xtoys --replace /usr/games/xteddy $out/bin/xteddy
+
+    sed -i 's/man 1 xteddy/man 6 xteddy/' xteddy.c
   '';
   nativeBuildInputs = [ pkg-config ];
   buildInputs = [ imlib2 xorg.libX11 xorg.libXext ];
+
   makeFlags = [ "LIBS=-lXext" ];
+
   postInstall = ''
     # Remove script that launches xteddy on every image, probably not desired :)
     rm $out/bin/xteddy_test
+  '';
 
     # Create aliases for various toys O:)
     for x in $out/share/xteddy/*.png; do
@@ -27,8 +32,8 @@ stdenv.mkDerivation rec {
   '';
 
   meta = with stdenv.lib; {
-    description = "cuddly teddy bear for your X desktop";
-    homepage = http://weber.itn.liu.se/~stegu/xteddy/;
+    description = "Cuddly teddy bear for your X desktop";
+    homepage = https://weber.itn.liu.se/~stegu/xteddy/;
     license = licenses.gpl2;
     maintainers = [ maintainers.xaverdh ];
     platforms = platforms.linux;
