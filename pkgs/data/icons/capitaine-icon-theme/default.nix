@@ -11,7 +11,9 @@ stdenv.mkDerivation rec {
     sha256 = "0n07vhqz5rfchp44l6nazl2x8a5abpg6v74in9wj63fsj20mxjhq";
   };
 
-  buildCommand = ''
+  configurePhase = ":";
+
+  installPhase = ''
     mkdir -p $out/share/icons/${pname}
     mv -v * $out/share/icons/${pname}
     rm -rf $out/share/icons/${pname}/{*.md,configure,.git*,.product}
