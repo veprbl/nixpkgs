@@ -10,8 +10,8 @@ rustPlatform.buildRustPackage rec {
     owner = "GNOME";
     repo = "fractal";
     #rev = version;
-    rev = "4205a6a980118e29bf060bac985127e87a72150f";
-    sha256 = "1avblcvn039vjyhrjrv98dpb1slag37bvpiim7rpm5clxnijsp25";
+    rev = "1327faef176d92691876d31d3d386f7adf4df969";
+    sha256 = "1a2hwskbk605nq0ik4cgv80r6fdq7imjml59czq651wahq7m5f8f";
   };
 
   nativeBuildInputs = [
@@ -32,7 +32,7 @@ rustPlatform.buildRustPackage rec {
   checkPhase = null;
   installPhase = null;
 
-  cargoSha256 = "0hlvdcdzkggc2adggmlxz0yxigwp3320wfav77gddlvfip1f90sw";
+  cargoSha256 = "0hlvdcdzkggc3adggmlxz0yxigwp3320wfav77gddlvfip1f90sw";
 
   meta = with stdenv.lib; {
     description = "Matrix group messaging app";
