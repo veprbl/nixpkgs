@@ -1,23 +1,24 @@
-{ stdenv, fetchzip, pkg-config, xorg, imlib2, makeWrapper }:
+{ stdenv, fetchurl, pkg-config, xorg, imlib2 }:
 
 stdenv.mkDerivation rec {
   name = "xteddy-${version}";
   version = "2.2";
-  src = fetchzip {
+  src = fetchurl {
     url = "http://deb.debian.org/debian/pool/main/x/xteddy/xteddy_${version}.orig.tar.gz";
-    sha256 = "0sap4fqvs0888ymf5ga10p3n7n5kr35j38kfsfd7nj0xm4hmcma3";
+    sha256 = "1qli69im6pani8wzmryavndspbcwc4298yl5d6s7qy085qg5m26q";
   };
-  nativeBuildInputs = [ pkg-config makeWrapper ];
+  postPatch = ''
+    sed -i -e 's,/usr/\(local\)\?share,${placeholder "out"}/share,' \
+      configure xteddy.c Makefile.in images/Makefile.in
+  '';
+  nativeBuildInputs = [ pkg-config ];
   buildInputs = [ imlib2 xorg.libX11 xorg.libXext ];
   makeFlags = [ "LIBS=-lXext" ];
   postInstall = ''
-    cp -R images $out/share/images
     # remove broken scripts
     rm $out/bin/{xtoys,xteddy_test}
   '';
-  postFixup = ''
-    wrapProgram $out/bin/xteddy --run "cd $out/share/images/"
-  '';
+
   meta = with stdenv.lib; {
     description = "cuddly teddy bear for your X desktop";
     homepage = http://weber.itn.liu.se/~stegu/xteddy/;
