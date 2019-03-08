@@ -18,9 +18,9 @@ rustPlatform.buildRustPackage rec {
     meson ninja pkgconfig gettext cargo rustc python3 wrapGAppsHook
   ];
   buildInputs = [
-    glib gtk3 libhandy dbus openssl sqlite gst_all_1.gstreamer gst_all_1.gst-plugins-base gst_all_1.gst-plugins-bad
+    glib gtk3 libhandy dbus openssl sqlite
     gtksourceview hicolor-icon-theme
-  ];
+  ] ++ builtins.attrValues { inherit (gst_all_1) gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav gst-editing-services; };
 
   postPatch = ''
     patchShebangs scripts/meson_post_install.py
