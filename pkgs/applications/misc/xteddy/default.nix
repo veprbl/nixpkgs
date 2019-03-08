@@ -16,6 +16,10 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ pkg-config ];
   buildInputs = [ imlib2 xorg.libX11 xorg.libXext ];
   makeFlags = [ "LIBS=-lXext" ];
+  postInstall = ''
+    # Remove script that launches xteddy on every image, probably not desired :)
+    rm $out/bin/xteddy_test
+  '';
 
   meta = with stdenv.lib; {
     description = "cuddly teddy bear for your X desktop";
