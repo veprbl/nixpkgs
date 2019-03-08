@@ -23,7 +23,6 @@ stdenv.mkDerivation rec {
   postInstall = ''
     # Remove script that launches xteddy on every image, probably not desired :)
     rm $out/bin/xteddy_test
-  '';
 
     # Create aliases for various toys O:)
     for x in $out/share/xteddy/*.png; do
