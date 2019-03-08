@@ -1,5 +1,5 @@
 { stdenv, fetchurl, fetchFromGitLab, meson, ninja, gettext, cargo, rustc, python3, rustPlatform, pkgconfig, gtksourceview
-, hicolor-icon-theme, glib, libhandy, gtk3, libsecret, dbus, openssl, sqlite, gst_all_1, wrapGAppsHook }:
+, hicolor-icon-theme, glib, libhandy, gtk3, libsecret, gspell, dbus, openssl, sqlite, gst_all_1, wrapGAppsHook }:
 
 rustPlatform.buildRustPackage rec {
   version = "4.0.0.0.1"; # not really
@@ -18,7 +18,7 @@ rustPlatform.buildRustPackage rec {
     meson ninja pkgconfig gettext cargo rustc python3 wrapGAppsHook
   ];
   buildInputs = [
-    glib gtk3 libhandy dbus openssl sqlite
+    glib gtk3 libhandy dbus gspell openssl sqlite
     gtksourceview hicolor-icon-theme
   ] ++ builtins.attrValues { inherit (gst_all_1) gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav gst-editing-services; };
 
@@ -32,7 +32,7 @@ rustPlatform.buildRustPackage rec {
   checkPhase = null;
   installPhase = null;
 
-  cargoSha256 = "0hlvdcdzkggc3adggmlxz0yxigwp3320wfav77gddlvfip1f90sw";
+  cargoSha256 = "15v4nynfjp6lpa9vhsrb55ywr6j5ibrambmqr5qlmwbmn4i3861p";
 
   meta = with stdenv.lib; {
     description = "Matrix group messaging app";
