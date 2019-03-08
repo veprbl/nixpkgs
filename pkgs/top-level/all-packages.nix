@@ -15567,6 +15567,7 @@ in
   cantarell-fonts = callPackage ../data/fonts/cantarell-fonts { };
 
   capitaine-cursors = callPackage ../data/icons/capitaine-cursors { };
+  la-capitaine-icon-theme = callPackage ../data/icons/capitaine-icon-theme { };
 
   carlito = callPackage ../data/fonts/carlito {};
 
