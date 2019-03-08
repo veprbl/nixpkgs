@@ -12,7 +12,7 @@ let
                   description = "Anatolian Hieroglyphs"; };
     maya = { version = "4.17"; file = "Maya.zip"; sha256 = "17s5c23wpqrcq5h6pgssbmzxiv4jvhdh2ssr99j9q6j32a51h9gh";
              description = "Maya Hieroglyphs"; };
-    unidings = { version = "9.17"; file = "Unidings.zip"; sha256 = "0nzw8mrhk0hbjnl2cgi31b00vmi785win86kiz9d2yzdfz1is6sk";
+    unidings = { version = "9.19"; file = "Unidings.zip"; sha256 = "1bybzgdqhmq75hb12n3pjrsdcpw1a6sgryx464s68jlq4zi44g78";
                  description = "Glyphs and Icons for blocks of The Unicode Standard"; };
     musica = { version = "3.17"; file = "Musica.zip"; sha256 = "0mnv61dxzs2npvxgs5l9q81q19xzzi1sn53x5qwpiirkmi6bg5y6";
                description = "Musical Notation"; };
