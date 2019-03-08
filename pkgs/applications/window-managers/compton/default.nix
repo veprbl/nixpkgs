@@ -110,15 +110,15 @@ let
 
   neocomp = stdenv.mkDerivation rec {
     pname = "neocomp";
-    version = "2019-01-06";
+    version = "2019-03-01";
 
     COMPTON_VERSION = version;
 
     src = fetchFromGitHub {
       owner = "delusionallogic";
       repo = pname;
-      rev = "740ba749f9a8227b2c9420b4ae3c948a505376f2";
-      sha256 = "0w4yvhz3p9z0h59j7v415d85j3ybd5j7szsjp7xzzdqp2lq9gxkz";
+      rev = "5758047795d9db41a9ea5299175c70ebda31dc55";
+      sha256 = "1j0w1pqhvj9vx1qlr339x1k6gcj3zkbx81rxazqg7hw5c2ynzh1n";
     };
 
     nativeBuildInputs = [
