@@ -2,7 +2,7 @@
 , hicolor-icon-theme, glib, libhandy, gtk3, libsecret, gspell, dbus, openssl, sqlite, gst_all_1, wrapGAppsHook }:
 
 rustPlatform.buildRustPackage rec {
-  version = "4.0.0.0.1"; # not really
+  version = "4.0.0"; # not really
   name = "fractal-${version}";
 
   src = fetchFromGitLab {
@@ -24,6 +24,10 @@ rustPlatform.buildRustPackage rec {
 
   postPatch = ''
     patchShebangs scripts/meson_post_install.py
+
+    substituteInPlace meson.build \
+      --replace "name_suffix = '" "name_suffix = ' (git)" \
+      --replace "version_suffix = '" "version_suffix = '-${builtins.substring 0 8 src.rev}"
   '';
 
   # Don't use buildRustPackage phases, only use it for rust deps setup
