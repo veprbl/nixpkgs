@@ -8,7 +8,7 @@ let
   unicode-data = callPackage ./unicode-data.nix {};
 in stdenv.mkDerivation rec {
   name = "gucharmap-${version}";
-  version = "11.0.3";
+  version = "12.0.0pregit";
 
   outputs = [ "out" "lib" "dev" "devdoc" ];
 
@@ -16,8 +16,9 @@ in stdenv.mkDerivation rec {
     domain = "gitlab.gnome.org";
     owner = "GNOME";
     repo = "gucharmap";
-    rev = version;
-    sha256 = "1a590nxy8jdf6zxh6jdsyvhxyaz94ixx3aa1pj7gicf1aqp26vnh";
+    #rev = version;
+    rev = "5f0f8d87157c7ca41ffbf6f8566bbdacbc95c44d";
+    sha256 = "0nqb0b95i9wy165b05xcikdwhrz309cihishkf1514536fx6hq1l";
   };
 
   nativeBuildInputs = [
@@ -42,13 +43,6 @@ in stdenv.mkDerivation rec {
   preConfigure = ''
     NOCONFIGURE=1 ./autogen.sh
   '';
-
-  patches = [
-    (fetchpatch {
-      url = "https://github.com/GNOME/gucharmap/commit/4622d36b104babf85df9755fd3404630806e1eb4.patch";
-      sha256 = "1yhmrddm9l318bb0fxf777siv5jxxbnnghl1sfm81pnb8q8a1x3y";
-    })
-  ];
 
   passthru = {
     updateScript = gnome3.updateScript {
