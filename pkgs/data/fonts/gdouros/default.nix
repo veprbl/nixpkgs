@@ -14,16 +14,23 @@ let
              description = "Maya Hieroglyphs"; };
     unidings = { version = "9.19"; file = "Unidings.zip"; sha256 = "1bybzgdqhmq75hb12n3pjrsdcpw1a6sgryx464s68jlq4zi44g78";
                  description = "Glyphs and Icons for blocks of The Unicode Standard"; };
-    musica = { version = "3.17"; file = "Musica.zip"; sha256 = "0mnv61dxzs2npvxgs5l9q81q19xzzi1sn53x5qwpiirkmi6bg5y6";
-               description = "Musical Notation"; };
     analecta = { version = "5.17"; file = "Analecta.zip"; sha256 = "13npnfscd9mz6vf89qxxbj383njf53a1smqjh0c1w2lvijgak3aj";
                  description = "Coptic, Gothic, Deseret"; };
     textfonts = { version = "9.00"; file = "Textfonts.zip"; sha256 = "0wzxz4j4fgk81b88d58715n1wvq2mqmpjpk4g5hi3vk77y2zxc4d";
                  description = "Aroania, Anaktoria, Alexander, Avdira and Asea"; };
-    aegan = { version = "9.17"; file = "AegeanFonts.zip"; sha256 = "0dm2ck3p11bc9izrh7xz3blqfqg1mgsvy4jsgmz9rcs4m74xrhsf";
+    aegean = { version = "10.00"; file = "Aegean.zip"; sha256 = "0k47nhzw4vx771ch3xx8mf6xx5vx0hg0cif5jdlmdaz4h2c3rawz";
               description = "Aegean"; };
     abydos = { version = "1.23"; file = "AbydosFont.zip"; sha256 = "04r7ysnjjq0nrr3m8lbz8ssyx6xaikqybjqxzl3ziywl9h6nxdj8";
                description = "AbydosFont"; };
+
+    eemusic = { version = "2.00"; file = "EEMusic.zip" ; sha256 = "1y9jf105a2b689m7hdjmhhr7z5j0qd2w6dmb3iic9bwaczlrjy7j";
+                description = "Byzantine Musical Notation in Unicode with OpenType"; };
+
+    # 2019
+    # Abydos, Nilus and Gardiner are withdrawn and henceforth incorporated in Aegyptus
+    # abydos = aegyptus;
+    #musica = { version = "3.17"; file = "Musica.zip"; sha256 = "0mnv61dxzs2npvxgs5l9q81q19xzzi1sn53x5qwpiirkmi6bg5y6";
+    #           description = "Musical Notation"; };
   };
 
   mkpkg = name_: {version, file, sha256, description}: fetchzip rec {

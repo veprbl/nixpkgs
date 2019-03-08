@@ -15974,7 +15974,7 @@ in
   stix-two = callPackage ../data/fonts/stix-two { };
 
   inherit (callPackages ../data/fonts/gdouros { })
-    symbola aegyptus akkadian anatolian maya unidings musica analecta textfonts aegan abydos;
+    symbola aegyptus akkadian anatolian maya unidings analecta textfonts aegean eemusic; #  musica abydos;
 
   iana-etc = callPackage ../data/misc/iana-etc { };
 
