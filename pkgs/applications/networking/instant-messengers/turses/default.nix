@@ -1,4 +1,4 @@
-{ stdenv, python36Packages }:
+{ stdenv, python36Packages, glibcLocales }:
 
 with stdenv.lib;
 
@@ -16,7 +16,7 @@ buildPythonPackage rec {
 
   disabled = ! python36Packages.pythonOlder "3.7";
 
-  checkInputs = [ mock pytest coverage tox ];
+  checkInputs = [ mock pytest coverage tox glibcLocales ];
   propagatedBuildInputs = [ urwid tweepy future ];
 
   checkPhase = ''
