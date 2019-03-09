@@ -1,12 +1,12 @@
 { stdenv, fetchurl, bison, flex, libffi }:
 
 stdenv.mkDerivation rec {
-  pname = "txr";
-  version = "213";
+  name = "txr-${version}";
+  version = "211";
 
   src = fetchurl {
-    url = "http://www.kylheku.com/cgit/${pname}/snapshot/${pname}-${version}.tar.bz2";
-    sha256 = "1ri2fjn1xwcksgj2cjr7yphyi8yz6bip1sy64w7yfn7681p4qbc7";
+    url = "http://www.kylheku.com/cgit/txr/snapshot/${name}.tar.bz2";
+    sha256 = "1g968ipmp6ndd6vjv41k0zzpw4vb178670rdbv6mzqr9lkzw38y5";
   };
 
   nativeBuildInputs = [ bison flex ];
