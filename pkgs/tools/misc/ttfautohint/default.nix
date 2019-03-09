@@ -1,16 +1,22 @@
 {
-  stdenv, lib, fetchurl, pkgconfig, autoreconfHook
+  stdenv, lib, fetchurl, fetchgit, pkgconfig, autoreconfHook
 , freetype, harfbuzz, libiconv, qtbase
 , enableGUI ? true
 }:
 
 stdenv.mkDerivation rec {
-  version = "1.8.2";
-  name = "ttfautohint-${version}";
+  version = "1.8.2.1";
+  pname = "ttfautohint";
 
-  src = fetchurl {
-    url = "mirror://savannah/freetype/${name}.tar.gz";
-    sha256 = "19w9g1ksr0vyblgcirppj0279gfj5s902jblzgav5a4n2mq42rrq";
+  #src = fetchurl {
+  #  url = "mirror://savannah/freetype/${name}.tar.gz";
+  #  sha256 = "19w9g1ksr0vyblgcirppj0279gfj5s902jblzgav5a4n2mq42rrq";
+  #};
+
+  src = fetchgit {
+    url = https://repo.or.cz/ttfautohint.git;
+    rev = "89598ef6e23276020d883352735fa65b6a6a981c";
+    sha256 = "1111111111111111111111111111111111111111111111111111";
   };
 
   postAutoreconf = ''
