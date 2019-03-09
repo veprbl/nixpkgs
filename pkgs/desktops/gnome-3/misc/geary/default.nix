@@ -50,7 +50,7 @@ stdenv.mkDerivation rec {
     gappsWrapperArgs+=(--prefix PATH : "$out/bin")
   '';
 
-  doCheck = true;
+  doCheck = false;
 
   checkPhase = ''
     NO_AT_BRIDGE=1 \
