@@ -27,7 +27,7 @@ buildPythonPackage rec {
   '';
 
   patchPhase = ''
-    sed -i -e 's|urwid==1.3.0|urwid==${getVersion urwid}|' setup.py
+    sed -i -e 's|urwid==1.3.0|urwid==${"2.0.1" /* getVersion urwid */}|' setup.py
     sed -i -e "s|future==0.14.3|future==${getVersion future}|" setup.py
     sed -i -e "s|tweepy==3.3.0|tweepy==${getVersion tweepy}|" setup.py
     sed -i -e "s|config.generate_config_file.assert_called_once()|assert config.generate_config_file.call_count == 1|" tests/test_config.py
