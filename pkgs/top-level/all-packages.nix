@@ -410,6 +410,8 @@ in
 
   ### TOOLS
 
+  _0x0 = callPackage ../tools/misc/0x0 { };
+
   _1password = callPackage ../applications/misc/1password { };
 
   _9pfs = callPackage ../tools/filesystems/9pfs { };
@@ -4004,7 +4006,6 @@ in
   libite = callPackage ../development/libraries/libite { };
 
   liblangtag = callPackage ../development/libraries/liblangtag {
-    inherit (gnome2) gtkdoc;
     inherit (gnome3) gnome-common;
   };
 
@@ -4596,7 +4597,7 @@ in
 
   nzbget = callPackage ../tools/networking/nzbget { };
 
-  oathToolkit = callPackage ../tools/security/oath-toolkit { inherit (gnome2) gtkdoc;  };
+  oathToolkit = callPackage ../tools/security/oath-toolkit { };
 
   obex_data_server = callPackage ../tools/bluetooth/obex-data-server { };
 
@@ -7099,7 +7100,7 @@ in
   haskell = callPackage ./haskell-packages.nix { };
 
   haskellPackages = dontRecurseIntoAttrs (haskell.packages.ghc864.override {
-    overrides = config.haskellPackageOverrides or haskell.packageOverrides;
+    overrides = haskell.packageOverrides;
   });
 
   inherit (haskellPackages) ghc;
@@ -9957,9 +9958,7 @@ in
 
   gdl = callPackage ../development/libraries/gdl { };
 
-  gdome2 = callPackage ../development/libraries/gdome2 {
-    inherit (gnome2) gtkdoc;
-  };
+  gdome2 = callPackage ../development/libraries/gdome2 { };
 
   gdbm = callPackage ../development/libraries/gdbm { };
 
@@ -11520,7 +11519,7 @@ in
   libunibreak = callPackage ../development/libraries/libunibreak { };
 
   libunique = callPackage ../development/libraries/libunique { };
-  libunique3 = callPackage ../development/libraries/libunique/3.x.nix { inherit (gnome2) gtkdoc; };
+  libunique3 = callPackage ../development/libraries/libunique/3.x.nix { };
 
   liburcu = callPackage ../development/libraries/liburcu { };
 
@@ -16600,10 +16599,8 @@ in
     pygments = python27Packages.pygments;
   };
 
-  csound-qt = callPackage ../applications/audio/csound/csound-qt {
+  csound-qt = libsForQt59.callPackage ../applications/audio/csound/csound-qt {
     python = python27;
-    qmake = qt59.qmake;
-    qtwebengine = qt59.qtwebengine;
   };
 
   cinepaint = callPackage ../applications/graphics/cinepaint {
@@ -22611,7 +22608,7 @@ in
 
   mynewt-newt = callPackage ../tools/package-management/mynewt-newt { };
 
-  inherit (callPackages ../tools/package-management/nix {
+  inherit (callPackage ../tools/package-management/nix {
       storeDir = config.nix.storeDir or "/nix/store";
       stateDir = config.nix.stateDir or "/nix/var";
       boehmgc = boehmgc.override { enableLargeConfig = true; };
