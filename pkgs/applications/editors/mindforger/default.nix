@@ -1,12 +1,12 @@
 { stdenv, fetchurl, qmake, qtbase, qtwebkit }:
 
 stdenv.mkDerivation rec {
-  name = "mindforger-${version}";
-  version = "1.48.2";
+  pname = "mindforger";
+  version = "1.49.0";
 
   src = fetchurl {
-    url = "https://github.com/dvorka/mindforger/releases/download/1.48.0/mindforger_${version}.tgz";
-    sha256 = "1wlrl8hpjcpnq098l3n2d1gbhbjylaj4z366zvssqvmafr72iyw4";
+    url = "https://github.com/dvorka/${pname}/releases/download/${version}/${pname}_${version}.tgz";
+    sha256 = "1s33d6b7hdhhy5ji133ipklw72i205k1m8bjm5b80mrmb0kpsnjd";
   };
 
   nativeBuildInputs = [ qmake ] ;
