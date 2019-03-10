@@ -11,11 +11,11 @@ let
   pythonEnv = python2.withPackages(ps: [ps.tkinter]);
 in stdenv.mkDerivation rec {
   pname = "scribus";
-  version = "1.4.7";
+  version = "1.4.8";
 
   src = fetchurl {
     url = "mirror://sourceforge/${pname}/${pname}/${pname}-${version}.tar.xz";
-    sha256 = "1v2ziq3k0yjz35nk5plcbc1jpi53p9v1cq1z3spch9lwlns3bls2";
+    sha256 = "0bq433myw6h1siqlsakxv6ghb002rp3mfz5k12bg68s0k6skn992";
   };
 
   enableParallelBuilding = true;
