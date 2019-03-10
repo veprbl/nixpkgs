@@ -10,10 +10,11 @@ let
 
   pythonEnv = python2.withPackages(ps: [ps.tkinter]);
 in stdenv.mkDerivation rec {
-  name = "scribus-1.4.7";
+  pname = "scribus";
+  version = "1.4.7";
 
   src = fetchurl {
-    url = "mirror://sourceforge/scribus/scribus/${name}.tar.xz";
+    url = "mirror://sourceforge/${pname}/${pname}/${pname}-${version}.tar.xz";
     sha256 = "1v2ziq3k0yjz35nk5plcbc1jpi53p9v1cq1z3spch9lwlns3bls2";
   };
 
