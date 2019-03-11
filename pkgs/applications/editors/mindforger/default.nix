@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, qmake, qtbase, qtwebkit }:
+{ stdenv, fetchurl, cmake, qmake, qtbase, qtwebengine }:
 
 stdenv.mkDerivation rec {
   pname = "mindforger";
@@ -9,8 +9,8 @@ stdenv.mkDerivation rec {
     sha256 = "1s33d6b7hdhhy5ji133ipklw72i205k1m8bjm5b80mrmb0kpsnjd";
   };
 
-  nativeBuildInputs = [ qmake ] ;
-  buildInputs = [ qtbase qtwebkit ] ;
+  nativeBuildInputs = [ cmake qmake ] ;
+  buildInputs = [ qtbase qtwebengine ] ;
 
   doCheck = true;
 
@@ -24,13 +24,20 @@ stdenv.mkDerivation rec {
   '';
 
   preConfigure = ''
+    pushd deps/cmark-gfm
+    mkdir build && cd build
+    cmake -DCMARK_TESTS=OFF -DCMARK_SHARED=OFF ..
+    cmake --build .
+    popd
+
     export AC_PATH="$PATH"
     pushd deps/discount
     ./configure.sh
     popd
   '';
 
-  qmakeFlags = [ "-r mindforger.pro" "CONFIG+=mfnoccache" ] ;
+  dontUseCmakeConfigure = true;
+  qmakeFlags = [ "-r mindforger.pro" "CONFIG+=mfnoccache" "CONFIG+=mfwebengine" ] ;
 
   meta = with stdenv.lib; {
     description = "Thinking Notebook & Markdown IDE";
