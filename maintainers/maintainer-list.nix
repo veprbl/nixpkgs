@@ -2974,6 +2974,11 @@
     email = "softs@metabarcoding.org";
     name = "Celine Mercier";
   };
+  mfossen = {
+    email = "msfossen@gmail.com";
+    github = "mfossen";
+    name = "Mitchell Fossen";
+  };
   mgdelacroix = {
     email = "mgdelacroix@gmail.com";
     github = "mgdelacroix";
