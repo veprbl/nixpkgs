@@ -1,6 +1,6 @@
 { stdenv, fetchurl, pkgconfig, freetype, lcms, libtiff, libxml2
 , libart_lgpl, qt4, python2, cups, fontconfig, libjpeg
-, zlib, libpng, xorg, cairo, podofo, aspell, boost, cmake, imagemagick }:
+, zlib, libpng, xorg, cairo, podofo, aspell, boost, cmake, imagemagick, ghostscript }:
 
 let
   icon = fetchurl {
@@ -8,7 +8,7 @@ let
     sha256 = "0hq3i7c2l50445an9glhhg47kj26y16svfajc6naqn307ph9vzc3";
   };
 
-  pythonEnv = python2.withPackages(ps: [ps.tkinter]);
+  pythonEnv = python2.withPackages(ps: [ps.tkinter ps.pillow]);
 in stdenv.mkDerivation rec {
   pname = "scribus";
   version = "1.4.8";
@@ -20,14 +20,16 @@ in stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
+  nativeBuildInputs = [ pkgconfig cmake ];
   buildInputs = with xorg;
-    [ pkgconfig cmake freetype lcms libtiff libxml2 libart_lgpl qt4
+    [ freetype lcms libtiff libxml2 libart_lgpl qt4
       pythonEnv cups fontconfig
       libjpeg zlib libpng podofo aspell cairo
       boost # for internal 2geom library
       libXaw libXext libX11 libXtst libXi libXinerama
       libpthreadstubs libXau libXdmcp
       imagemagick # To build the icon
+      ghostscript # EPS import
     ];
 
   postInstall = ''
