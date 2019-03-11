@@ -82,7 +82,7 @@ let
     buildInputs = [
       dbus libX11 libXext
       xorgproto
-      libXinerama libdrm pcre libxml2 libxslt libconfig libGL
+      libXinerama pcre libxml2 libxslt libconfig libGL
       # Removed:
       # libXcomposite libXdamage libXrender libXrandr
 
@@ -99,7 +99,6 @@ let
     NIX_CFLAGS_COMPILE = [ "-fno-strict-aliasing" /* "-DDEBUG_RESTACK=1" "-DDEBUG_EVENTS=1" */ ];
 
     mesonFlags = [
-      "-Dvsync_drm=true"
       "-Dbuild_docs=true"
       #"-Dsanitize=true"
     ];
