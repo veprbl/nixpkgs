@@ -4,17 +4,16 @@
 , gtk3, json-glib, glib, glib-networking, hicolor-icon-theme
 }:
 
-let
+stdenv.mkDerivation rec {
   pname = "tootle";
   version = "0.2.0";
-in stdenv.mkDerivation rec {
-  name = "${pname}-${version}";
 
   src = fetchFromGitHub {
     owner = "bleakgrey";
     repo = pname;
-    rev = version;
-    sha256 = "1z3wyx316nns6gi7vlvcfmalhvxncmvcmmlgclbv6b6hwl5x2ysi";
+    #rev = version;
+    rev = "4862438e15b074d8d2e3c23699ebeadac7ae36fe";
+    sha256 = "1q17r4cjfckr918fpgpa1rf0cfmcbwv42js3s41dqkly77lw7d4s";
   };
 
   nativeBuildInputs = [
@@ -30,8 +29,6 @@ in stdenv.mkDerivation rec {
     gtk3 pantheon.granite json-glib glib glib-networking hicolor-icon-theme
     libgee gnome3.libsoup gsettings-desktop-schemas
   ];
-
-  patches = [ ./fav-icon.patch ./fav-icon-2.patch ];
 
   postPatch = ''
     chmod +x ./meson/post_install.py
