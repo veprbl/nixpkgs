@@ -768,11 +768,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   libXcomposite = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXfixes }: stdenv.mkDerivation {
-    name = "libXcomposite-0.4.4";
+    name = "libXcomposite-0.4.5";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/libXcomposite-0.4.4.tar.bz2;
-      sha256 = "0y21nfpa5s8qmx0srdlilyndas3sgl0c6rc26d5fx2vx436m1qpd";
+      url = mirror://xorg/individual/lib/libXcomposite-0.4.5.tar.bz2;
+      sha256 = "13sfcglvz87vl58hd9rszwr73z0z4nwga3c12rfh7f5s2ln8l8dk";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
