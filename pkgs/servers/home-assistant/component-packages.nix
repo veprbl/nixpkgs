@@ -2,7 +2,7 @@
 # Do not edit!
 
 {
-  version = "0.88.1";
+  version = "0.89.1";
   components = {
     "abode" = ps: with ps; [  ];
     "abode.alarm_control_panel" = ps: with ps; [  ];
@@ -134,6 +134,7 @@
     "binary_sensor.tcp" = ps: with ps; [  ];
     "binary_sensor.template" = ps: with ps; [  ];
     "binary_sensor.threshold" = ps: with ps; [  ];
+    "binary_sensor.tod" = ps: with ps; [  ];
     "binary_sensor.trend" = ps: with ps; [ numpy ];
     "binary_sensor.uptimerobot" = ps: with ps; [  ];
     "binary_sensor.vultr" = ps: with ps; [ vultr ];
@@ -252,9 +253,11 @@
     "danfoss_air" = ps: with ps; [  ];
     "danfoss_air.binary_sensor" = ps: with ps; [  ];
     "danfoss_air.sensor" = ps: with ps; [  ];
+    "danfoss_air.switch" = ps: with ps; [  ];
     "datadog" = ps: with ps; [ datadog ];
     "deconz" = ps: with ps; [  ];
     "deconz.binary_sensor" = ps: with ps; [  ];
+    "deconz.climate" = ps: with ps; [  ];
     "deconz.config_flow" = ps: with ps; [  ];
     "deconz.const" = ps: with ps; [  ];
     "deconz.cover" = ps: with ps; [  ];
@@ -264,7 +267,7 @@
     "deconz.scene" = ps: with ps; [  ];
     "deconz.sensor" = ps: with ps; [  ];
     "deconz.switch" = ps: with ps; [  ];
-    "default_config" = ps: with ps; [ aiohttp-cors distro netdisco sqlalchemy warrant ];
+    "default_config" = ps: with ps; [ pynacl aiohttp-cors distro netdisco sqlalchemy warrant ];
     "demo" = ps: with ps; [ aiohttp-cors ];
     "demo.remote" = ps: with ps; [  ];
     "device_sun_light_trigger" = ps: with ps; [  ];
@@ -309,6 +312,7 @@
     "device_tracker.tplink" = ps: with ps; [  ];
     "device_tracker.traccar" = ps: with ps; [  ];
     "device_tracker.trackr" = ps: with ps; [  ];
+    "device_tracker.ubee" = ps: with ps; [  ];
     "device_tracker.ubus" = ps: with ps; [  ];
     "device_tracker.unifi" = ps: with ps; [ pyunifi ];
     "device_tracker.unifi_direct" = ps: with ps; [ pexpect ];
@@ -582,6 +586,8 @@
     "ios.sensor" = ps: with ps; [ aiohttp-cors zeroconf ];
     "iota" = ps: with ps; [  ];
     "iota.sensor" = ps: with ps; [  ];
+    "iperf3" = ps: with ps; [  ];
+    "iperf3.sensor" = ps: with ps; [  ];
     "ipma" = ps: with ps; [  ];
     "ipma.config_flow" = ps: with ps; [  ];
     "ipma.const" = ps: with ps; [  ];
@@ -620,6 +626,8 @@
     "lametric" = ps: with ps; [  ];
     "lametric.notify" = ps: with ps; [  ];
     "lcn" = ps: with ps; [  ];
+    "lcn.const" = ps: with ps; [  ];
+    "lcn.cover" = ps: with ps; [  ];
     "lcn.light" = ps: with ps; [  ];
     "lcn.switch" = ps: with ps; [  ];
     "lifx" = ps: with ps; [ aiolifx ];
@@ -654,7 +662,6 @@
     "light.switch" = ps: with ps; [  ];
     "light.template" = ps: with ps; [  ];
     "light.tikteck" = ps: with ps; [  ];
-    "light.tplink" = ps: with ps; [  ];
     "light.x10" = ps: with ps; [  ];
     "light.yeelight" = ps: with ps; [  ];
     "light.yeelightsunflower" = ps: with ps; [  ];
@@ -776,7 +783,11 @@
     "media_player.yamaha_musiccast" = ps: with ps; [  ];
     "media_player.ziggo_mediabox_xl" = ps: with ps; [  ];
     "melissa" = ps: with ps; [  ];
+    "meteo_france" = ps: with ps; [  ];
+    "meteo_france.sensor" = ps: with ps; [  ];
+    "meteo_france.weather" = ps: with ps; [  ];
     "microsoft_face" = ps: with ps; [ aiohttp-cors ];
+    "mobile_app" = ps: with ps; [ pynacl aiohttp-cors ];
     "mochad" = ps: with ps; [  ];
     "mochad.light" = ps: with ps; [  ];
     "mochad.switch" = ps: with ps; [  ];
@@ -838,14 +849,19 @@
     "nest.const" = ps: with ps; [  ];
     "nest.local_auth" = ps: with ps; [  ];
     "nest.sensor" = ps: with ps; [  ];
-    "netatmo" = ps: with ps; [  ];
-    "netatmo.binary_sensor" = ps: with ps; [  ];
-    "netatmo.camera" = ps: with ps; [  ];
-    "netatmo.climate" = ps: with ps; [  ];
-    "netatmo.sensor" = ps: with ps; [  ];
+    "netatmo" = ps: with ps; [ aiohttp-cors ];
+    "netatmo.binary_sensor" = ps: with ps; [ aiohttp-cors ];
+    "netatmo.camera" = ps: with ps; [ aiohttp-cors ];
+    "netatmo.climate" = ps: with ps; [ aiohttp-cors ];
+    "netatmo.sensor" = ps: with ps; [ aiohttp-cors ];
     "netgear_lte" = ps: with ps; [  ];
     "netgear_lte.notify" = ps: with ps; [  ];
     "netgear_lte.sensor" = ps: with ps; [  ];
+    "nissan_leaf" = ps: with ps; [  ];
+    "nissan_leaf.binary_sensor" = ps: with ps; [  ];
+    "nissan_leaf.device_tracker" = ps: with ps; [  ];
+    "nissan_leaf.sensor" = ps: with ps; [  ];
+    "nissan_leaf.switch" = ps: with ps; [  ];
     "no_ip" = ps: with ps; [  ];
     "notify" = ps: with ps; [  ];
     "notify.apns" = ps: with ps; [  ];
@@ -911,9 +927,13 @@
     "openuv.config_flow" = ps: with ps; [  ];
     "openuv.const" = ps: with ps; [  ];
     "openuv.sensor" = ps: with ps; [  ];
-    "owntracks" = ps: with ps; [ aiohttp-cors libnacl ];
+    "owlet" = ps: with ps; [  ];
+    "owlet.binary_sensor" = ps: with ps; [  ];
+    "owlet.const" = ps: with ps; [  ];
+    "owlet.sensor" = ps: with ps; [  ];
+    "owntracks" = ps: with ps; [ pynacl aiohttp-cors ];
     "owntracks.config_flow" = ps: with ps; [  ];
-    "owntracks.device_tracker" = ps: with ps; [ aiohttp-cors libnacl ];
+    "owntracks.device_tracker" = ps: with ps; [ pynacl aiohttp-cors ];
     "panel_custom" = ps: with ps; [ aiohttp-cors ];
     "panel_iframe" = ps: with ps; [ aiohttp-cors ];
     "persistent_notification" = ps: with ps; [  ];
@@ -926,12 +946,17 @@
     "plum_lightpad" = ps: with ps; [  ];
     "plum_lightpad.light" = ps: with ps; [  ];
     "point" = ps: with ps; [ aiohttp-cors ];
+    "point.alarm_control_panel" = ps: with ps; [  ];
     "point.binary_sensor" = ps: with ps; [  ];
     "point.config_flow" = ps: with ps; [  ];
     "point.const" = ps: with ps; [  ];
     "point.sensor" = ps: with ps; [  ];
     "prometheus" = ps: with ps; [ aiohttp-cors prometheus_client ];
     "proximity" = ps: with ps; [  ];
+    "ps4" = ps: with ps; [  ];
+    "ps4.config_flow" = ps: with ps; [  ];
+    "ps4.const" = ps: with ps; [  ];
+    "ps4.media_player" = ps: with ps; [  ];
     "python_script" = ps: with ps; [  ];
     "qwikswitch" = ps: with ps; [  ];
     "qwikswitch.binary_sensor" = ps: with ps; [  ];
@@ -960,6 +985,8 @@
     "recorder.migration" = ps: with ps; [  ];
     "recorder.purge" = ps: with ps; [  ];
     "recorder.util" = ps: with ps; [  ];
+    "reddit" = ps: with ps; [  ];
+    "reddit.sensor" = ps: with ps; [ praw ];
     "remember_the_milk" = ps: with ps; [ httplib2 ];
     "remote" = ps: with ps; [  ];
     "rest_command" = ps: with ps; [  ];
@@ -1092,7 +1119,6 @@
     "sensor.imap_email_content" = ps: with ps; [  ];
     "sensor.influxdb" = ps: with ps; [ influxdb ];
     "sensor.integration" = ps: with ps; [  ];
-    "sensor.iperf3" = ps: with ps; [  ];
     "sensor.irish_rail_transport" = ps: with ps; [  ];
     "sensor.islamic_prayer_times" = ps: with ps; [  ];
     "sensor.jewish_calendar" = ps: with ps; [  ];
@@ -1107,7 +1133,6 @@
     "sensor.loopenergy" = ps: with ps; [  ];
     "sensor.lyft" = ps: with ps; [  ];
     "sensor.magicseaweed" = ps: with ps; [  ];
-    "sensor.meteo_france" = ps: with ps; [  ];
     "sensor.metoffice" = ps: with ps; [  ];
     "sensor.mfi" = ps: with ps; [  ];
     "sensor.mhz19" = ps: with ps; [  ];
@@ -1121,7 +1146,7 @@
     "sensor.mqtt_room" = ps: with ps; [ paho-mqtt ];
     "sensor.mvglive" = ps: with ps; [ PyMVGLive ];
     "sensor.nederlandse_spoorwegen" = ps: with ps; [  ];
-    "sensor.netatmo_public" = ps: with ps; [  ];
+    "sensor.netatmo_public" = ps: with ps; [ aiohttp-cors ];
     "sensor.netdata" = ps: with ps; [  ];
     "sensor.neurio_energy" = ps: with ps; [  ];
     "sensor.nmbs" = ps: with ps; [  ];
@@ -1255,9 +1280,11 @@
     "smartthings.climate" = ps: with ps; [ aiohttp-cors ];
     "smartthings.config_flow" = ps: with ps; [  ];
     "smartthings.const" = ps: with ps; [  ];
+    "smartthings.cover" = ps: with ps; [ aiohttp-cors ];
     "smartthings.fan" = ps: with ps; [ aiohttp-cors ];
     "smartthings.light" = ps: with ps; [ aiohttp-cors ];
     "smartthings.lock" = ps: with ps; [ aiohttp-cors ];
+    "smartthings.scene" = ps: with ps; [ aiohttp-cors ];
     "smartthings.sensor" = ps: with ps; [ aiohttp-cors ];
     "smartthings.smartapp" = ps: with ps; [  ];
     "smartthings.switch" = ps: with ps; [ aiohttp-cors ];
@@ -1309,11 +1336,11 @@
     "switch.rflink" = ps: with ps; [  ];
     "switch.rpi_rf" = ps: with ps; [  ];
     "switch.snmp" = ps: with ps; [ pysnmp ];
+    "switch.sony_projector" = ps: with ps; [  ];
     "switch.switchbot" = ps: with ps; [  ];
     "switch.switchmate" = ps: with ps; [  ];
     "switch.telnet" = ps: with ps; [  ];
     "switch.template" = ps: with ps; [  ];
-    "switch.tplink" = ps: with ps; [  ];
     "switch.vesync" = ps: with ps; [  ];
     "switch.vultr" = ps: with ps; [ vultr ];
     "switch.wake_on_lan" = ps: with ps; [ wakeonlan ];
@@ -1365,9 +1392,14 @@
     "tibber.sensor" = ps: with ps; [  ];
     "timer" = ps: with ps; [  ];
     "toon" = ps: with ps; [  ];
+    "toon.binary_sensor" = ps: with ps; [  ];
     "toon.climate" = ps: with ps; [  ];
+    "toon.config_flow" = ps: with ps; [  ];
+    "toon.const" = ps: with ps; [  ];
     "toon.sensor" = ps: with ps; [  ];
-    "toon.switch" = ps: with ps; [  ];
+    "tplink" = ps: with ps; [  ];
+    "tplink.light" = ps: with ps; [  ];
+    "tplink.switch" = ps: with ps; [  ];
     "tplink_lte" = ps: with ps; [  ];
     "tplink_lte.notify" = ps: with ps; [  ];
     "tradfri" = ps: with ps; [  ];
@@ -1400,7 +1432,7 @@
     "unifi.const" = ps: with ps; [  ];
     "unifi.controller" = ps: with ps; [  ];
     "unifi.errors" = ps: with ps; [  ];
-    "unifi.switch" = ps: with ps; [  ];
+    "unifi.switch" = ps: with ps; [ aiounifi ];
     "upcloud" = ps: with ps; [  ];
     "upcloud.binary_sensor" = ps: with ps; [  ];
     "upcloud.switch" = ps: with ps; [  ];
