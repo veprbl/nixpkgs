@@ -651,11 +651,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   libFS = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, xtrans }: stdenv.mkDerivation {
-    name = "libFS-1.0.7";
+    name = "libFS-1.0.8";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/libFS-1.0.7.tar.bz2;
-      sha256 = "1wy4km3qwwajbyl8y9pka0zwizn7d9pfiyjgzba02x3a083lr79f";
+      url = mirror://xorg/individual/lib/libFS-1.0.8.tar.bz2;
+      sha256 = "1wy4km3qwwajbyl8y9pka0zwizn7d9pfiyjgzba03x3a083lr79f";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
