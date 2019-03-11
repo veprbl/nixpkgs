@@ -3983,7 +3983,7 @@ in
 
   libconfig = callPackage ../development/libraries/libconfig { };
 
-  libcmis = callPackage ../development/libraries/libcmis { };
+  libcmis = callPackage ../development/libraries/libcmis { boost = boost165; };
 
   libee = callPackage ../development/libraries/libee { };
 
