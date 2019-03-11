@@ -8,8 +8,8 @@ stdenv.mkDerivation rec {
     owner = "shimmerproject";
     repo = "elementary-xfce";
     #rev = "v${version}";
-    rev = "5a5d511bd5b19cc708f8b43cc2a2ff41bfc06c8f";
-    sha256 = "0cp1ijayd65p14nbid5ppz75cnxic66i59za4z2w79559j3z872j";
+    rev = "8f5908fcc5a2907b335edbb76751ba2b7aa6e6e8";
+    sha256 = "0p3x6pa42lylrazvb0k48aqv7ah8yc24bp3wqz2fkqfhfs524nnc";
   };
 
   nativeBuildInputs = [ pkgconfig gdk_pixbuf librsvg optipng gtk3 hicolor-icon-theme ];
