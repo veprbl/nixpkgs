@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, pkgconfig, gdk_pixbuf, optipng, librsvg, gtk3, hicolor-icon-theme }:
+{ stdenv, fetchFromGitHub, coreutils, pkgconfig, gdk_pixbuf, optipng, librsvg, gtk3, hicolor-icon-theme }:
 
 stdenv.mkDerivation rec {
   name = "elementary-xfce-icon-theme-${version}";
@@ -18,6 +18,7 @@ stdenv.mkDerivation rec {
 
   postPatch = ''
     substituteInPlace svgtopng/Makefile --replace "-O0" "-O"
+    substituteInPlace svgtopng/pngtheme.sh --replace bin/ls ${coreutils}/bin/ls
 
     for x in */index.theme; do
       echo "Fixing theme name for $x"
