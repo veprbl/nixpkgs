@@ -781,11 +781,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   libXcursor = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXfixes, libXrender }: stdenv.mkDerivation {
-    name = "libXcursor-1.1.15";
+    name = "libXcursor-1.2.0";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/libXcursor-1.1.15.tar.bz2;
-      sha256 = "0syzlfvh29037p0vnlc8f3jxz8nl55k65blswsakklkwsc6nfki9";
+      url = mirror://xorg/individual/lib/libXcursor-1.2.0.tar.bz2;
+      sha256 = "10l7c9fm0jmpkm9ab9dz8r6m1pr87vvgqjnbx1psz50h4pwfklrs";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
