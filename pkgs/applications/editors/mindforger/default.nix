@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, cmake, qmake, qtbase, qtwebengine }:
+{ stdenv, fetchurl, cmake, qmake, qtbase, qtwebkit }:
 
 stdenv.mkDerivation rec {
   pname = "mindforger";
@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ cmake qmake ] ;
-  buildInputs = [ qtbase qtwebengine ] ;
+  buildInputs = [ qtbase qtwebkit ] ;
 
   doCheck = true;
 
@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
   '';
 
   dontUseCmakeConfigure = true;
-  qmakeFlags = [ "-r mindforger.pro" "CONFIG+=mfnoccache" "CONFIG+=mfwebengine" ] ;
+  qmakeFlags = [ "-r mindforger.pro" "CONFIG+=mfnoccache" ] ;
 
   meta = with stdenv.lib; {
     description = "Thinking Notebook & Markdown IDE";
