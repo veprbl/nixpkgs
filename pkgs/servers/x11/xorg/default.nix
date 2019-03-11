@@ -794,11 +794,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   libXdamage = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXfixes }: stdenv.mkDerivation {
-    name = "libXdamage-1.1.4";
+    name = "libXdamage-1.1.5";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/libXdamage-1.1.4.tar.bz2;
-      sha256 = "1bamagq7g6s0d23l8rb3nppj8ifqj05f7z9bhbs4fdg8az3ffgvw";
+      url = mirror://xorg/individual/lib/libXdamage-1.1.5.tar.bz2;
+      sha256 = "0igaw2akjf712y3rv7lx473jigxmcv9rs9y8sbrvbhya8f30cd5p";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
