@@ -2,7 +2,7 @@
 , gnome3, systemd, libuuid, polkit, gnutls, ppp, dhcp, iptables
 , libgcrypt, dnsmasq, bluez5, readline
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
-, ethtool, gnused, coreutils, file, inetutils, kmod, jansson, libxslt
+, ethtool, gnused, coreutils, file, iputils, kmod, jansson, libxslt
 , python3Packages, docbook_xsl, openconnect, curl, autoreconfHook }:
 
 let
@@ -60,7 +60,7 @@ in stdenv.mkDerivation rec {
   patches = [
     (substituteAll {
       src = ./fix-paths.patch;
-      inherit inetutils kmod openconnect ethtool coreutils dbus;
+      inherit iputils kmod openconnect ethtool coreutils dbus;
       inherit (stdenv) shell;
     })
   ];
