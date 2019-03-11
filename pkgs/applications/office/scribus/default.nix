@@ -1,6 +1,6 @@
 { stdenv, fetchurl, pkgconfig, freetype, lcms, libtiff, libxml2
 , libart_lgpl, qt4, python2, cups, fontconfig, libjpeg
-, zlib, libpng, xorg, cairo, podofo, aspell, boost, cmake, imagemagick, ghostscript }:
+, zlib, libpng, xorg, cairo, podofo, hunspell, boost, cmake, imagemagick, ghostscript }:
 
 let
   icon = fetchurl {
@@ -24,13 +24,18 @@ in stdenv.mkDerivation rec {
   buildInputs = with xorg;
     [ freetype lcms libtiff libxml2 libart_lgpl qt4
       pythonEnv cups fontconfig
-      libjpeg zlib libpng podofo aspell cairo
+      libjpeg zlib libpng podofo hunspell cairo
       boost # for internal 2geom library
       libXaw libXext libX11 libXtst libXi libXinerama
       libpthreadstubs libXau libXdmcp
       imagemagick # To build the icon
-      ghostscript # EPS import
     ];
+
+  postPatch = ''
+    substituteInPlace scribus/util_ghostscript.cpp \
+      --replace 'QString gsName("gs");' \
+                'QString gsName("${ghostscript}/bin/gs");'
+  '';
 
   postInstall = ''
     for i in 16 24 48 64 96 128 256 512; do
