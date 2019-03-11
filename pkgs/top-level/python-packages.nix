@@ -498,6 +498,9 @@ in {
     mpi = pkgs.openmpi;
   };
 
+  msrestazure = callPackage ../development/python-modules/msrestazure { };
+  msrest = callPackage ../development/python-modules/msrest { };
+
   multiset = callPackage ../development/python-modules/multiset { };
 
   mwclient = callPackage ../development/python-modules/mwclient { };
@@ -3997,8 +4000,8 @@ in {
 
   qscintilla-qt4 = callPackage ../development/python-modules/qscintilla { };
 
-  qscintilla-qt5 = callPackage ../development/python-modules/qscintilla-qt5 {
-    qscintillaCpp = pkgs.libsForQt5.qscintilla;
+  qscintilla-qt5 = pkgs.libsForQt5.callPackage ../development/python-modules/qscintilla-qt5 {
+    pythonPackages = self;
     lndir = pkgs.xorg.lndir;
   };
 
