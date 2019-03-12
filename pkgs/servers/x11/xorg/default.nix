@@ -768,11 +768,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   libXcomposite = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXfixes }: stdenv.mkDerivation {
-    name = "libXcomposite-0.4.4";
+    name = "libXcomposite-0.4.5";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/libXcomposite-0.4.4.tar.bz2;
-      sha256 = "0y21nfpa5s8qmx0srdlilyndas3sgl0c6rc26d5fx2vx436m1qpd";
+      url = mirror://xorg/individual/lib/libXcomposite-0.4.5.tar.bz2;
+      sha256 = "13sfcglvz87vl58hd9rszwr73z0z4nwga3c12rfh7f5s2ln8l8dk";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
@@ -781,11 +781,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   libXcursor = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXfixes, libXrender }: stdenv.mkDerivation {
-    name = "libXcursor-1.1.15";
+    name = "libXcursor-1.2.0";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/libXcursor-1.1.15.tar.bz2;
-      sha256 = "0syzlfvh29037p0vnlc8f3jxz8nl55k65blswsakklkwsc6nfki9";
+      url = mirror://xorg/individual/lib/libXcursor-1.2.0.tar.bz2;
+      sha256 = "10l7c9fm0jmpkm9ab9dz8r6m1pr87vvgqjnbx1psz50h4pwfklrs";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
@@ -794,11 +794,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   libXdamage = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXfixes }: stdenv.mkDerivation {
-    name = "libXdamage-1.1.4";
+    name = "libXdamage-1.1.5";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/libXdamage-1.1.4.tar.bz2;
-      sha256 = "1bamagq7g6s0d23l8rb3nppj8ifqj05f7z9bhbs4fdg8az3ffgvw";
+      url = mirror://xorg/individual/lib/libXdamage-1.1.5.tar.bz2;
+      sha256 = "0igaw2akjf712y3rv7lx473jigxmcv9rs9y8sbrvbhya8f30cd5p";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
@@ -2705,11 +2705,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   xprop = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, xorgproto }: stdenv.mkDerivation {
-    name = "xprop-1.2.3";
+    name = "xprop-1.2.4";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/app/xprop-1.2.3.tar.bz2;
-      sha256 = "06sjgahjiz85v0k0pmv5x05chc591xynl5ah1bqzz1bdr0lgnanj";
+      url = mirror://xorg/individual/app/xprop-1.2.4.tar.bz2;
+      sha256 = "0lzp7kyhpwd5hm83j2zm6j3w3z1z5i4ykgg2nwr01ij6dq4znxwc";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
