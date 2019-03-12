@@ -32,6 +32,12 @@ in stdenv.mkDerivation rec {
       url = https://gitlab.freedesktop.org/cairo/cairo/commit/2d1a137f3d27b60538c58b25e867288c7b0b61bc.patch;
       sha256 = "1c95s9y065rgpwqckkgmn06vvdkrh3q8rjcgr269f163cy4lhvnc";
     })
+
+    # fix FT_PIXEL_MODE_BGRA:
+    (fetchpatch {
+      url = https://gitlab.freedesktop.org/cairo/cairo/merge_requests/18.patch;
+      sha256 = "0ghccls55474c7lrzi6bbw2pr2f3nmhdn2m277i4rwjf1jl5ls5y";
+    })
   ];
 
   outputs = [ "out" "dev" "devdoc" ];
