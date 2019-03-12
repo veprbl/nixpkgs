@@ -4915,6 +4915,7 @@ in
   };
 
   pinentry_gnome = res.pinentry.override {
+    gtk2 = null;
     inherit gcr;
   };
 
