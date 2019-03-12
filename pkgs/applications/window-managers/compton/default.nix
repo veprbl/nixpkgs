@@ -92,9 +92,9 @@ let
       libxdg_basedir
     ];
 
-    #postPatch = ''
-    #  substituteInPlace meson.build --replace "version: '4'" "version: '${version}'"
-    #'';
+    postPatch = ''
+      substituteInPlace meson.build --replace "version: '5'" "version: '5-git-${version}'"
+    '';
 
     NIX_CFLAGS_COMPILE = [ "-fno-strict-aliasing" /* "-DDEBUG_RESTACK=1" "-DDEBUG_EVENTS=1" */ ];
 
