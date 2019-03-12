@@ -3,8 +3,8 @@
 let
   mkNoto = { name, weights, sha256, }:
     let
-      version = "2018-11-30";
-      ref = "85e78f831469323c85847e23f95026c894159135";
+      version = "2019-03-05";
+      ref = "bb84a915d1a7abbea1c6b309b20ee14e5693e15c";
     in
     fetchzip {
       name = "${name}-${version}";
@@ -50,7 +50,7 @@ rec {
   noto-fonts = mkNoto {
     name = "noto-fonts";
     weights = "{Regular,Bold,Light,Italic,BoldItalic,LightItalic}";
-    sha256 = "0kvq5ldip2ra2njlxg9fxj46nfqzq5l3n359d3kwfbsld7hixm2d";
+    sha256 = "17yzzsbyqb5aj8dvbm28bphfg5422nch14p7gcq3470w2yjfzji9";
   };
   noto-fonts-extra = mkNoto {
     name = "noto-fonts-extra";
