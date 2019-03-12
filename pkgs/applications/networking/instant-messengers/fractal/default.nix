@@ -10,8 +10,8 @@ rustPlatform.buildRustPackage rec {
     owner = "GNOME";
     repo = "fractal";
     #rev = version;
-    rev = "f2908bd135fe66ff5b2e75614c1b934ad388997b";
-    sha256 = "169jlqhvbv4v6pwnw2p82vq8s6wcaj44qghla4ask191kah7mv45";
+    rev = "a3654a6ae1bc26838504baad652bf94dbfde48ec";
+    sha256 = "1k0hq2z1ldz0sc0iv8dbskdzrsb3nr4zkyv2rqr4gkixhh97i9fn";
   };
 
   nativeBuildInputs = [
