@@ -368,7 +368,6 @@ in stdenv.mkDerivation rec {
       libxshmfence libatomic_ops graphite2 harfbuzz gpgme utillinux
       librevenge libe-book libmwaw glm glew ncurses epoxy
       libodfgen CoinMP librdf_rasqal gnome3.adwaita-icon-theme gettext
-      mariadb.client
     ]
     ++ lib.optional kdeIntegration kdelibs4;
   nativeBuildInputs = [ wrapGAppsHook gdb fontforge ];
