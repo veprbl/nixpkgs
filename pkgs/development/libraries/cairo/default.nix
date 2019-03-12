@@ -34,10 +34,12 @@ in stdenv.mkDerivation rec {
     })
 
     # fix FT_PIXEL_MODE_BGRA:
-    (fetchpatch {
-      url = https://gitlab.freedesktop.org/cairo/cairo/merge_requests/18.patch;
-      sha256 = "0ghccls55474c7lrzi6bbw2pr2f3nmhdn2m277i4rwjf1jl5ls5y";
-    })
+    #(fetchpatch {
+    #  url = https://gitlab.freedesktop.org/cairo/cairo/merge_requests/18.patch;
+    #  sha256 = "0ghccls55474c7lrzi6bbw2pr2f3nmhdn2m277i4rwjf1jl5ls5y";
+    #})
+    # Local copy JIC the PR or patch changes
+    ./18.patch
   ];
 
   outputs = [ "out" "dev" "devdoc" ];

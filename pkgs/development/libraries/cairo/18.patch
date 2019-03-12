@@ -1,0 +1,47 @@
+From 811c14facc971c58aeb01e0a152f88a09d0df2e3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Florian=20M=C3=BCllner?= <fmuellner@gnome.org>
+Date: Mon, 11 Mar 2019 03:51:40 +0100
+Subject: [PATCH] ft-font: Fix color font support
+
+FT_PIXEL_MODE_BGRA is an enum member, not a define, so it always appears
+as 0 in the preprocessor conditions added in commit c0ed8ce1a11.
+
+There is an existing define for color font support, use that instead.
+---
+ src/cairo-ft-font.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/cairo-ft-font.c b/src/cairo-ft-font.c
+index fea489d01..61357c2af 100644
+--- a/src/cairo-ft-font.c
++++ b/src/cairo-ft-font.c
+@@ -976,7 +976,7 @@ _compute_xrender_bitmap_size(FT_Bitmap      *target,
+ 	pitch = width * 4;
+ 	break;
+ 
+-#ifdef FT_PIXEL_MODE_BGRA
++#ifdef FT_HAS_COLOR
+     case FT_PIXEL_MODE_BGRA:
+ 	/* each pixel is replicated into a 32-bit ARGB value */
+ 	pitch = width * 4;
+@@ -1179,7 +1179,7 @@ _fill_xrender_bitmap(FT_Bitmap      *target,
+ 	}
+ 	break;
+ 
+-#ifdef FT_PIXEL_MODE_BGRA
++#ifdef FT_HAS_COLOR
+     case FT_PIXEL_MODE_BGRA:
+ 	for (h = height; h > 0; h--, srcLine += src_pitch, dstLine += pitch)
+ 	    memcpy (dstLine, srcLine, width * 4);
+@@ -1293,7 +1293,7 @@ _get_bitmap_surface (FT_Bitmap		     *bitmap,
+ 	    component_alpha = TRUE;
+ 	}
+ 	break;
+-#ifdef FT_PIXEL_MODE_BGRA
++#ifdef FT_HAS_COLOR
+     case FT_PIXEL_MODE_BGRA:
+ 	stride = width * 4;
+ 	if (own_buffer) {
+-- 
+2.18.1
+
