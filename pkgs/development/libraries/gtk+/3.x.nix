@@ -13,14 +13,14 @@ assert cupsSupport -> cups != null;
 with stdenv.lib;
 
 let
-  version = "3.24.5";
+  version = "3.24.6";
 in
 stdenv.mkDerivation rec {
   name = "gtk+3-${version}";
 
   src = fetchurl {
     url = "mirror://gnome/sources/gtk+/${stdenv.lib.versions.majorMinor version}/gtk+-${version}.tar.xz";
-    sha256 = "0bxhvnixc1hjxbzx063lghmix0wmv282khsqmckdxhrb606zpr8b";
+    sha256 = "1q2jxj9yc9sq653xazznkzz527x1bh3vb565gkbfaq18w2fl75cl";
   };
 
   outputs = [ "out" "dev" ];
@@ -34,11 +34,6 @@ stdenv.mkDerivation rec {
       name = "Xft-setting-fallback-compute-DPI-properly.patch";
       url = "https://bug757142.bugzilla-attachments.gnome.org/attachment.cgi?id=344123";
       sha256 = "0g6fhqcv8spfy3mfmxpyji93k8d4p4q4fz1v9a1c1cgcwkz41d7p";
-    })
-    (fetchpatch {
-      name = "fix-fribidi-linking.patch";
-      url = https://github.com/gnome/gtk/compare/3.24.5..47e4a111c2666961ab47b6df48460d3c9075d92d.patch;
-      sha256 = "0ky4kmgcywg0qlwndn9aw083bkwnkr49bnlsz0ii93fxzvbiqglr";
     })
     (fetchpatch {
       # https://gitlab.gnome.org/GNOME/gtk/merge_requests/505 already merged
