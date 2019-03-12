@@ -926,7 +926,11 @@ in
 
   bchunk = callPackage ../tools/cd-dvd/bchunk { };
 
-  inherit (callPackages ../misc/logging/beats/6.x.nix { })
+  inherit (callPackages ../misc/logging/beats/6.x.nix {
+    # XXX: bettercap is failing with Go 1.12. Error is related to cgo, an
+    # update to this package might fix it.
+    buildGoPackage = buildGo111Package;
+  })
     filebeat6
     heartbeat6
     metricbeat6
@@ -938,7 +942,11 @@ in
   metricbeat = metricbeat6;
   packetbeat = packetbeat6;
 
-  inherit (callPackages ../misc/logging/beats/5.x.nix { })
+  inherit (callPackages ../misc/logging/beats/5.x.nix {
+    # XXX: bettercap is failing with Go 1.12. Error is related to cgo, an
+    # update to this package might fix it.
+    buildGoPackage = buildGo111Package;
+  })
     filebeat5
     heartbeat5
     metricbeat5
@@ -1732,7 +1740,11 @@ in
 
   mongodb-compass = callPackage ../tools/misc/mongodb-compass { };
 
-  mongodb-tools = callPackage ../tools/misc/mongodb-tools { };
+  mongodb-tools = callPackage ../tools/misc/mongodb-tools {
+    # XXX: bettercap is failing with Go 1.12. Error is related to cgo, an
+    # update to this package might fix it.
+    buildGoPackage = buildGo111Package;
+  };
 
   moosefs = callPackage ../tools/filesystems/moosefs { };
 
@@ -1815,7 +1827,11 @@ in
 
   bepasty = callPackage ../tools/misc/bepasty { };
 
-  bettercap = callPackage ../tools/security/bettercap { };
+  bettercap = callPackage ../tools/security/bettercap {
+    # XXX: bettercap is failing with Go 1.12. Error is related to cgo, an
+    # update to this package might fix it.
+    buildGoPackage = buildGo111Package;
+  };
 
   bfg-repo-cleaner = gitAndTools.bfg-repo-cleaner;
 
@@ -4289,7 +4305,11 @@ in
 
   miredo = callPackage ../tools/networking/miredo { };
 
-  mirrorbits = callPackage ../servers/mirrorbits { };
+  mirrorbits = callPackage ../servers/mirrorbits {
+    # XXX: bettercap is failing with Go 1.12. Error is related to cgo, an
+    # update to this package might fix it.
+    buildGoPackage = buildGo111Package;
+  };
 
   mitmproxy = callPackage ../tools/networking/mitmproxy { };
 
@@ -12655,7 +12675,11 @@ in
     sdnotify-wrapper = callPackage ../os-specific/linux/sdnotify-wrapper { };
   };
 
-  skydive = callPackage ../tools/networking/skydive { };
+  skydive = callPackage ../tools/networking/skydive {
+    # XXX: bettercap is failing with Go 1.12. Error is related to cgo, an
+    # update to this package might fix it.
+    buildGoPackage = buildGo111Package;
+  };
 
   slang = callPackage ../development/libraries/slang { };
 
@@ -13393,8 +13417,11 @@ in
   buildGo111Package = callPackage ../development/go-modules/generic {
     go = buildPackages.go_1_11;
   };
+  buildGo112Package = callPackage ../development/go-modules/generic {
+    go = buildPackages.go_1_12;
+  };
 
-  buildGoPackage = buildGo111Package;
+  buildGoPackage = buildGo112Package;
 
   go2nix = callPackage ../development/tools/go2nix { };
 
@@ -13972,7 +13999,10 @@ in
 
   mysql_jdbc = callPackage ../servers/sql/mysql/jdbc { };
 
-  miniflux = callPackage ../servers/miniflux { };
+  miniflux = callPackage ../servers/miniflux {
+    # XXX: bettercap is failing with Go 1.12.
+    buildGoPackage = buildGo111Package;
+  };
 
   nagios = callPackage ../servers/monitoring/nagios { };
 
@@ -14435,7 +14465,11 @@ in
 
   cifs-utils = callPackage ../os-specific/linux/cifs-utils { };
 
-  cockroachdb = callPackage ../servers/sql/cockroachdb { };
+  cockroachdb = callPackage ../servers/sql/cockroachdb {
+    # XXX: bettercap is failing with Go 1.12. Error is related to cgo, an
+    # update to this package might fix it.
+    buildGoPackage = buildGo111Package;
+  };
 
   conky = callPackage ../os-specific/linux/conky ({
     lua = lua5_3_compat;
@@ -17768,10 +17802,7 @@ in
 
   slack-term = callPackage ../applications/networking/instant-messengers/slack-term { };
 
-  singularity = callPackage ../applications/virtualization/singularity {
-    # XXX: the build is finding references to Go when compiled with go v1.12
-    go = go_1_11;
-  };
+  singularity = callPackage ../applications/virtualization/singularity { };
 
   spectmorph = callPackage ../applications/audio/spectmorph { };
 
@@ -21412,7 +21443,7 @@ in
   clearlooks-phenix = callPackage ../misc/themes/clearlooks-phenix { };
 
   deepin = recurseIntoAttrs (import ../desktops/deepin {
-    inherit pkgs libsForQt5 go_1_11;
+    inherit pkgs libsForQt5;
     inherit (lib) makeScope;
   });
 
