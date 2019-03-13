@@ -36,7 +36,7 @@ rustPlatform.buildRustPackage rec {
   checkPhase = null;
   installPhase = null;
 
-  cargoSha256 = "15v4nynfjp7lpa9vhsrb55ywr6j5ibrambmqr5qlmwbmn4i3861p";
+  cargoSha256 = "15v4nynfjp6lpa9vhsrb55ywr6j5ibrambmqr5qlmwbmn4i3861p";
 
   meta = with stdenv.lib; {
     description = "Matrix group messaging app";
