@@ -16,9 +16,9 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ ncurses gpgme ];
 
-  preBuild = ''
-    echo "MCFLAGS += --opt-space" > src/Mercury.params
-  '';
+  #preBuild = ''
+  #  echo "MCFLAGS += --opt-space" > src/Mercury.params
+  #'';
     #echo "MCFLAGS += --opt-space --parallel --stack-segments" > src/Mercury.params
   #  echo "MCFLAGS += --intermod-opt -O6 --verbose --no-libgrade --libgrade asm_fast.gc" > src/Mercury.params
 
