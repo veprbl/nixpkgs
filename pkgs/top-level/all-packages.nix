@@ -1748,6 +1748,8 @@ in
 
   moosefs = callPackage ../tools/filesystems/moosefs { };
 
+  moosefs = callPackage ../tools/filesystems/moosefs { };
+
   mozlz4a = callPackage ../tools/compression/mozlz4a { };
 
   msr-tools = callPackage ../os-specific/linux/msr-tools { };

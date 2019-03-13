@@ -33,6 +33,10 @@ stdenv.mkDerivation rec {
     configureFlagsArray+=( --enable-at-spi-command="${at-spi2-core}/libexec/at-spi-bus-launcher --launch-immediately" )
   '';
 
+  preConfigure = ''
+    configureFlagsArray+=( --enable-at-spi-command="${at-spi2-core}/libexec/at-spi-bus-launcher --launch-immediately" )
+  '';
+
   NIX_CFLAGS_COMPILE = [ "-Wno-error=deprecated-declarations" ];
 
   installFlags = [
