@@ -1,7 +1,7 @@
 { stdenv, fetchzip }:
 
 fetchzip {
-  name = "lato-2.0";
+  name = "lato-2.015";
 
   url = http://www.latofonts.com/download/Lato2OFL.zip;
 
