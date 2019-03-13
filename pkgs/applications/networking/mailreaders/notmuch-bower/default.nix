@@ -16,9 +16,10 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ ncurses gpgme ];
 
-  #preBuild = ''
+  preBuild = ''
+    echo "MCFLAGS += -opt-space --parallel --stack-segments" > src/Mercury.params
+  '';
   #  echo "MCFLAGS += --intermod-opt -O6 --verbose --no-libgrade --libgrade asm_fast.gc" > src/Mercury.params
-  #'';
 
   makeFlags = [ "PARALLEL=-j$(NIX_BUILD_CORES)" "bower" "man" ];
 
