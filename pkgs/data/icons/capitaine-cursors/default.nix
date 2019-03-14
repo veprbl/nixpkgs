@@ -30,6 +30,11 @@ stdenv.mkDerivation rec {
     install -dm 0755 $out/share/icons
     cp -pr dist $out/share/icons/capitaine-cursors
     cp -pr dist-white $out/share/icons/capitaine-cursors-white
+
+    # make Name specified in index.theme match directory name
+    substituteInPlace $out/share/icons/capitaine-cursors/index.theme \
+      --replace "Name=Captaine Cursors" "Name=capitaine-cursors" \
+      --replace "Name=Captaine Cursors - White" "Name=capitaine-cursors-white"
   '';
 
   meta = with stdenv.lib; {
