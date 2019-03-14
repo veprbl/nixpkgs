@@ -4,6 +4,7 @@
 , six
 , setuptools_scm
 , xorg
+, python
 , mock
 , nose
 , utillinux
@@ -20,15 +21,14 @@ buildPythonPackage rec {
     sha256 = "1nncx7v9chmgh56afg6dklz3479s5zg3kq91mzh4mj512y0skyki";
   };
 
-  doCheck = true;
-
   checkPhase = ''
-    python runtests.py
+    ${python.interpreter} runtests.py
   '';
 
   checkInputs = [ mock nose utillinux /* mcookie */ xorg.xauth xorg.xorgserver /* xvfb */ ];
-  buildInputs = [ setuptools_scm ];
-  propagatedBuildInputs = [ six xorg.libX11 ];
+  nativeBuildInputs = [ setuptools_scm ];
+  buildInputs = [ xorg.libX11 ];
+  propagatedBuildInputs = [ six ];
 
   meta = with stdenv.lib; {
     description = "Fully functional X client library for Python programs";
