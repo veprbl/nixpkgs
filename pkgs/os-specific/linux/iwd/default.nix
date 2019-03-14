@@ -8,7 +8,7 @@ let
      sha256 = "1vpf5r5w8k9i5qwsc4kzqlxsx2c1sjhrar2h4wks1axjxp3sx2jd";
   };
 in stdenv.mkDerivation rec {
-  name = "iwd-${version}";
+  pname = "iwd";
 
   #version = "0.14";
   version = "2019-03-11";
