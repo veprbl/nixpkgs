@@ -33,8 +33,9 @@ stdenv.mkDerivation rec {
 
     # make Name specified in index.theme match directory name
     substituteInPlace $out/share/icons/capitaine-cursors/index.theme \
-      --replace "Name=Captaine Cursors" "Name=capitaine-cursors" \
-      --replace "Name=Captaine Cursors - White" "Name=capitaine-cursors-white"
+      --replace "Name=Capitaine Cursors" "Name=capitaine-cursors"
+    substituteInPlace $out/share/icons/capitaine-cursors-white/index.theme \
+      --replace "Name=Capitaine Cursors - White" "Name=capitaine-cursors-white"
   '';
 
   meta = with stdenv.lib; {
