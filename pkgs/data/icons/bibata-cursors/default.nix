@@ -7,8 +7,9 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "KaizIqbal";
     repo = "Bibata_Cursor";
-    rev = "v${version}";
-    sha256 = "14gvpjp4gv0m59qr8wls7xs5yjx5llldyzack5kg5cg2mzk2nsml";
+    #rev = "v${version}";
+    rev = "f34b0218392afb407f24ae3394cfcbcb2eb8d361";
+    sha256 = "0r0n34p3gvfqld0pggrjiys0hnq78cvsfyp46pxkqdnij0smzqak";
   };
 
   postPatch = ''
