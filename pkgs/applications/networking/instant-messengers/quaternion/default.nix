@@ -1,5 +1,5 @@
 { stdenv, lib, fetchFromGitHub, qtbase, qtquickcontrols, cmake
-, qttools, libqmatrixclient }:
+, qttools, qtmultimedia, libqmatrixclient }:
 
 stdenv.mkDerivation rec {
   name = "quaternion-${version}";
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
     sha256 = "1qmsfhxfkf2mxhfxk6p54wlyds2sk35z3gn5f7pxilwbr3wwv7d3";
   };
 
-  buildInputs = [ qtbase qtquickcontrols qttools libqmatrixclient ];
+  buildInputs = [ qtbase qtquickcontrols qttools qtmultimedia libqmatrixclient ];
 
   nativeBuildInputs = [ cmake ];
 
