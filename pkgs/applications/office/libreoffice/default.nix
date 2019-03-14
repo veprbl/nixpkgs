@@ -237,11 +237,10 @@ in stdenv.mkDerivation rec {
       sed -e '/CPPUNIT_TEST(testTdf96479);/d' -i './sw/qa/extras/uiwriter/uiwriter.cxx'
       sed -e '/CPPUNIT_TEST(testInconsistentBookmark);/d' -i './sw/qa/extras/uiwriter/uiwriter.cxx'
       sed -e '/CPPUNIT_TEST(Import_Export_Import);/d' -i './sw/qa/extras/inc/swmodeltestbase.hxx'
-      sed -e "/DECLARE_SW_ROUNDTRIP_TEST/d" -i "sw/qa/extras/ooxmlexport/ooxmlexport9.cxx"
-      sed -e "/DECLARE_SW_ROUNDTRIP_TEST/d" -i "sw/qa/extras/ooxmlexport/ooxmlencryption.cxx"
-      sed -e "/DECLARE_SW_ROUNDTRIP_TEST/d" -i "sw/qa/extras/odfexport/odfexport.cxx"
-      sed -e "/DECLARE_SW_ROUNDTRIP_TEST/d" -i "sw/qa/extras/htmlexport/htmlexport.cxx"
-      sed -e "/DECLARE_SW_ROUNDTRIP_TEST/d" -i "sw/qa/extras/unowriter/unowriter.cxx"
+      sed -e "s/DECLARE_SW_ROUNDTRIP_TEST(\([_a-zA-Z0-9.]\+\)[, ].*, *\([_a-zA-Z0-9.]\+\))/class \\1: public \\2 { public: void verify() override; }; void \\1::verify() /" -i "sw/qa/extras/ooxmlexport/ooxmlexport9.cxx"
+      sed -e "s/DECLARE_SW_ROUNDTRIP_TEST(\([_a-zA-Z0-9.]\+\)[, ].*, *\([_a-zA-Z0-9.]\+\))/class \\1: public \\2 { public: void verify() override; }; void \\1::verify() /" -i "sw/qa/extras/ooxmlexport/ooxmlencryption.cxx"
+      sed -e "s/DECLARE_SW_ROUNDTRIP_TEST(\([_a-zA-Z0-9.]\+\)[, ].*, *\([_a-zA-Z0-9.]\+\))/class \\1: public \\2 { public: void verify() override; }; void \\1::verify() /" -i "sw/qa/extras/odfexport/odfexport.cxx"
+      sed -e "s/DECLARE_SW_ROUNDTRIP_TEST(\([_a-zA-Z0-9.]\+\)[, ].*, *\([_a-zA-Z0-9.]\+\))/class \\1: public \\2 { public: void verify() override; }; void \\1::verify() /" -i "sw/qa/extras/unowriter/unowriter.cxx"
     ''
     # This to avoid using /lib:/usr/lib at linking
     + ''
