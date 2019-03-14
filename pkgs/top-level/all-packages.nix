@@ -20478,7 +20478,7 @@ in
 
   xmonad-with-packages = callPackage ../applications/window-managers/xmonad/wrapper.nix {
     inherit (haskellPackages) ghcWithPackages;
-    packages = self: [];
+    packages = self: [ haskellPackages.xmonad-contrib ];
   };
 
   xmonad_log_applet = callPackage ../applications/window-managers/xmonad/log-applet {
@@ -21043,7 +21043,7 @@ in
 
   openjk = callPackage ../games/openjk { };
 
-  openmw = callPackage ../games/openmw { };
+  openmw = libsForQt5.callPackage ../games/openmw { };
 
   openmw-tes3mp = libsForQt5.callPackage ../games/openmw/tes3mp.nix { };
 
