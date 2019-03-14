@@ -1334,6 +1334,8 @@ in {
 
   cbor = callPackage ../development/python-modules/cbor {};
 
+  cbor2 = callPackage ../development/python-modules/cbor2 {};
+
   cassandra-driver = callPackage ../development/python-modules/cassandra-driver { };
 
   cccolutils = callPackage ../development/python-modules/cccolutils {};
@@ -3995,6 +3997,8 @@ in {
   requests_toolbelt = self.requests-toolbelt; # Old attr, 2017-09-26
 
   retry_decorator = callPackage ../development/python-modules/retry_decorator { };
+
+  qdarkstyle = callPackage ../development/python-modules/qdarkstyle { };
 
   quamash = callPackage ../development/python-modules/quamash { };
 
