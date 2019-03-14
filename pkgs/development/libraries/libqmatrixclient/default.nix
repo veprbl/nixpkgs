@@ -1,18 +1,18 @@
 { stdenv, fetchFromGitHub, cmake
-, qtbase }:
+, qtbase, qtmultimedia }:
 
 stdenv.mkDerivation rec {
-  name = "libqmatrixclient-${version}";
-  version = "0.4.2.1";
+  pname = "libqmatrixclient";
+  version = "0.5.0.2";
 
   src = fetchFromGitHub {
     owner  = "QMatrixClient";
-    repo   = "libqmatrixclient";
-    rev    = "v${version}";
-    sha256 = "056hvp2m74wx72yd8vai18siddj9l8bhrvrkc4ia4cwjsqw02kid";
+    repo   = pname;
+    rev    = version;
+    sha256 = "1p9yg7nbkiprrnng2rjclz6dxacma5spm9waj5fafl7ikh65xf17";
   };
 
-  buildInputs = [ qtbase ];
+  buildInputs = [ qtbase qtmultimedia ];
 
   nativeBuildInputs = [ cmake ];
 
