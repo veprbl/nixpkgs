@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgconfig, libnih, dbus, pam }:
+{ stdenv, fetchurl, pkgconfig, libnih, dbus, pam, popt }:
 
 stdenv.mkDerivation rec {
   pname = "cgmanager";
@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ pkgconfig ];
-  buildInputs = [ libnih dbus pam ];
+  buildInputs = [ libnih dbus pam popt ];
 
   configureFlags = [
     "--with-init-script=systemd"
