@@ -1170,9 +1170,6 @@ self: super: {
   # });
   libnix = dontCheck super.libnix;
 
-  # https://github.com/jmillikin/chell/issues/1
-  chell = super.chell.override { patience = self.patience_0_1_1; };
-
   # The test suite tries to mess with ALSA, which doesn't work in the build sandbox.
   xmobar = dontCheck super.xmobar;
 
@@ -1237,5 +1234,8 @@ self: super: {
         sha256 = "1wqhqajxni6h9rrj22xj6421d4m0gs8qk2glghpdp307ns5gr2j4";
       };
   }) (with self; [base-compat generic-lens microlens optparse-applicative ShellCheck]));
+
+  # Fix build with attr-2.4.48 (see #53716)
+  xattr = appendPatch super.xattr ./patches/xattr-fix-build.patch;
 
 } // import ./configuration-tensorflow.nix {inherit pkgs haskellLib;} self super
