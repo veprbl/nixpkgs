@@ -51,7 +51,7 @@ let
     # Instruct Go where to find the cacert.
     # SSL_CERT_FILE is used by Linux machines.
     # NIX_SSL_CERT_FILE is used by Darwin machines based on
-    # pkgs/development/compilers/go/ssl-cert-file-1.9.patch.
+    # pkgs/development/compilers/go/ssl-cert-file-1.12.1.patch.
     NIX_SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
     SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
 
