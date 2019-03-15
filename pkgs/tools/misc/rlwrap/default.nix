@@ -11,11 +11,6 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ readline ];
 
-  # Be high-bit-friendly
-  preBuild = ''
-    sed -i src/readline.c -e "s@[*]p [<] ' '@(*p >= 0) \\&\\& (*p < ' ')@"
-  '';
-
   meta = {
     description = "Readline wrapper for console programs";
     homepage = https://github.com/hanslub42/rlwrap;
