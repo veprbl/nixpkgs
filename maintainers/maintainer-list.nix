@@ -3996,6 +3996,11 @@
     github = "rittelle";
     name = "Lennart Rittel";
   };
+  rixed = {
+    email = "rixed-github@happyleptic.org";
+    github = "rixed";
+    name = "Cedric Cellier";
+  };
   rkoe = {
     email = "rk@simple-is-better.org";
     github = "rkoe";
