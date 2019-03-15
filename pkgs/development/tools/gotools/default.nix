@@ -11,7 +11,7 @@ buildGoModule rec {
     sha256 = "04rpdi52j26szx5kiyfmwad1sg7lfplxrkbwkr3b1kfafh1whgw5";
   };
 
-  modSha256 = "12klgqm2px878lzh05yzj6lr83v7vg0vv2k69pmg6nv1wlsxdlzf";
+  modSha256 = "00yjcs26cm5civ96sikbd3wjmhx153xbyd805s3shca1mg99y7mm";
 
   preConfigure = ''
     # Make the builtin tools available here
