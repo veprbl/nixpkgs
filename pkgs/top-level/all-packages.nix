@@ -5331,7 +5331,7 @@ in
 
   rsnapshot = callPackage ../tools/backup/rsnapshot { };
 
-  rlwrap = callPackage ../tools/misc/rlwrap { };
+  rlwrap = callPackage ../tools/misc/rlwrap { readline = readline80; };
 
   rockbox_utility = libsForQt5.callPackage ../tools/misc/rockbox-utility { };
 
