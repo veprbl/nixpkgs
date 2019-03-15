@@ -1554,6 +1554,8 @@ in
 
   interlock = callPackage ../servers/interlock {};
 
+  jellyfin = callPackage ../servers/jellyfin { };
+
   kapacitor = callPackage ../servers/monitoring/kapacitor { };
 
   kisslicer = callPackage ../tools/misc/kisslicer { };
@@ -3821,6 +3823,8 @@ in
   logstash-contrib = callPackage ../tools/misc/logstash/contrib.nix { };
 
   lolcat = callPackage ../tools/misc/lolcat { };
+
+  lsd = callPackage ../tools/misc/lsd { };
 
   lsdvd = callPackage ../tools/cd-dvd/lsdvd {};
 
@@ -23025,6 +23029,8 @@ in
   brlaser = callPackage ../misc/cups/drivers/brlaser { };
 
   brscan4 = callPackage ../applications/graphics/sane/backends/brscan4 { };
+
+  dsseries = callPackage ../applications/graphics/sane/backends/dsseries { };
 
   mkSaneConfig = callPackage ../applications/graphics/sane/config.nix { };
 
