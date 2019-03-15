@@ -15,11 +15,13 @@ buildGoModule rec {
 
   preConfigure = ''
     # Make the builtin tools available here
+
     mkdir -p $out/bin
-    eval $(go env | grep GOTOOLDIR)
-    find $GOTOOLDIR -type f | while read x; do
-      ln -sv "$x" "$out/bin"
-    done
+    export GTD="$(HOME=$TMPDIR go env GOTOOLDIR)"
+    echo "Linking tools from original GOTOOLDIR(=$GTD)..."
+
+    find "$GTD" -maxdepth 1 -type f -executable -print0 | xargs -tr -0 ln -sv -t $out/bin
+
     export GOTOOLDIR=$out/bin
   '';
 
