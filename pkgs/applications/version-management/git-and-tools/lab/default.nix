@@ -11,7 +11,9 @@ buildGoModule rec {
     sha256 = "1210cf6ss4ivm2jxq3k3c34vpra02pl91fpmvqbvw5sm53j7xfaf";
   };
 
-  modSha256 = "1g72fnkibmdd9i20wgp5fjf556xp2xwan06dmn3f5rkmnicy3ccl";
+  subPackages = [ "." ];
+
+  modSha256 = "0bw47dd1b46ywsian2b957a4ipm77ncidipzri9ra39paqlv7abb";
 
   meta = with stdenv.lib; {
     description = "Lab wraps Git or Hub, making it simple to clone, fork, and interact with repositories on GitLab";
