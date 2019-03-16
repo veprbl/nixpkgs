@@ -5485,6 +5485,10 @@ in
 
   shadowsocks-libev = callPackage ../tools/networking/shadowsocks-libev { };
 
+  shadowsocks-rust = callPackage ../tools/networking/shadowsocks-rust {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
+
   sharutils = callPackage ../tools/archivers/sharutils { };
 
   schema2ldif = callPackage ../tools/text/schema2ldif { };
@@ -6193,6 +6197,8 @@ in
   wast-refmt = nodePackages."@webassemblyjs/wast-refmt";
 
   welkin = callPackage ../tools/graphics/welkin {};
+
+  wf-recorder = callPackage ../applications/video/wf-recorder { };
 
   whipper = callPackage ../applications/audio/whipper { };
 
@@ -8374,14 +8380,6 @@ in
   abi-compliance-checker = callPackage ../development/tools/misc/abi-compliance-checker { };
 
   abi-dumper = callPackage ../development/tools/misc/abi-dumper { };
-
-  activator = throw ''
-    Typesafe Activator was removed in 2017-05-08 as the actual package reaches end of life.
-
-    See https://github.com/NixOS/nixpkgs/pull/25616
-    and http://www.lightbend.com/community/core-tools/activator-and-sbt
-    for more information.
-  '';
 
   adtool = callPackage ../tools/admin/adtool { };
 
