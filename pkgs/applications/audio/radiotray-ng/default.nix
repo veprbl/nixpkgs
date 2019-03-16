@@ -61,6 +61,8 @@ stdenv.mkDerivation rec {
   ] ++ gstInputs
     ++ pythonInputs;
 
+  patches = [ ./no-dl-googletest.patch ];
+
   postPatch = ''
     for x in debian/CMakeLists.txt include/radiotray-ng/common.hpp data/*.desktop; do
       substituteInPlace $x --replace /usr $out
@@ -80,8 +82,7 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
 
   checkInputs = [ gtest ];
-  # doCheck = stdenv.hostPlatform == stdenv.buildPlatform;
-  doCheck = false; # fails to pick up supplied gtest, tries to download it instead
+  doCheck = stdenv.hostPlatform == stdenv.buildPlatform;
 
   preFixup = ''
     gappsWrapperArgs+=(--suffix PATH : ${stdenv.lib.makeBinPath [ dbus ]})
