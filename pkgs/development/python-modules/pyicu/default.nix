@@ -4,7 +4,7 @@
 , pytest
 , six
 , fetchpatch
-, icu
+, icu60
 }:
 
 buildPythonPackage rec {
@@ -23,8 +23,8 @@ buildPythonPackage rec {
     })
   ];
 
-  nativeBuildInputs = [ icu ]; # for icu-config
-  buildInputs = [ icu ];
+  nativeBuildInputs = [ icu60 ]; # for icu-config
+  buildInputs = [ icu60 ];
   checkInputs = [ pytest ];
   propagatedBuildInputs = [ six ];
 
