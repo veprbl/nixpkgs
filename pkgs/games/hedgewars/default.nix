@@ -5,7 +5,7 @@
 
 let
   ghc = ghcWithPackages (pkgs: with pkgs; [
-          network vector utf8-string /* broken: bytestring-show */ random hslogger
+          network vector utf8-string bytestring random hslogger
           SHA entropy pkgs.zlib sandi regex-tdfa
         ]);
 in
@@ -75,6 +75,5 @@ stdenv.mkDerivation rec {
     maintainers = with maintainers; [ kragniz fpletz ];
     platforms = ghc.meta.platforms;
     hydraPlatforms = [];
-    broken = true;  # depends on broken Haskell package bytestring-show
   };
 }
