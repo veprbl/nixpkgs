@@ -469,7 +469,9 @@ self: super:
             do
               sed -i -e "s|#include <drm_fourcc.h>|#include <libdrm/drm_fourcc.h>|" $i
             done
-          '';}
+          '';
+           patches = [ ./131.patch ];
+        }
         else if (abiCompat == "1.17") then {
           name = "xorg-server-1.17.4";
           builder = ./builder.sh;
