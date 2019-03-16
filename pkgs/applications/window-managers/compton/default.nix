@@ -92,8 +92,6 @@ let
       libxdg_basedir
     ];
 
-    patches = [ ./test.patch ];
-
     postPatch = ''
       substituteInPlace meson.build --replace "version: '5'" "version: '5-git-${version}'"
     '';
