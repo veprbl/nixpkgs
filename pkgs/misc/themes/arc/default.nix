@@ -3,14 +3,14 @@
 
 stdenv.mkDerivation rec {
   pname = "arc-theme";
-  version = "20190227";
+  version = "20190316";
 
   src = fetchFromGitHub {
     owner  = "NicoHood";
     repo   = pname;
     #rev    = version;
-    rev = "4802bc1fb9270b4e830ccf8361703f4ff698cff4";
-    sha256 = "070xxfslw4dhvhn51x216mc7rd3fg6k2p8zvsjhnrappsc6vax6d";
+    rev = "6815e946dcbf5ad93bf98c9f49c2f30a38ebcb1f";
+    sha256 = "1m164lyksd0yqaijf2lpp9rg1wnb7vbnsp17p2r10kp67fiw3kn3";
   };
 
   nativeBuildInputs = [
