@@ -2663,6 +2663,11 @@
     github = "limeytexan";
     name = "Michael Brantley";
   };
+  linarcx = {
+    email = "linarcx@gmail.com";
+    github = "linarcx";
+    name = "Kaveh Ahangar";
+  };
   linc01n = {
     email = "git@lincoln.hk";
     github = "linc01n";

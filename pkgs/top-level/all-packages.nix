@@ -10588,6 +10588,8 @@ in
 
   jbig2dec = callPackage ../development/libraries/jbig2dec { };
 
+  jcal = callPackage ../development/libraries/jcal { };
+
   jbigkit = callPackage ../development/libraries/jbigkit { };
 
   jemalloc = callPackage ../development/libraries/jemalloc { };
