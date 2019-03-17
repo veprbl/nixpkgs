@@ -9,13 +9,13 @@
 
 stdenv.mkDerivation rec {
   name = "astroid-${version}";
-  version = "2018-11-30";
+  version = "2019-03-09";
 
   src = fetchFromGitHub {
     owner = "astroidmail";
     repo = "astroid";
-    rev = "d2659d4fd3e8052f861de2ff41725949189e7a92";
-    sha256 = "19a02gakghlvdj34ywz4fib85cykb2nca3sc4k1bb3bslzc2k7y8";
+    rev = "5475c29f39333a70cc2ce1f15d290c8b10b37198";
+    sha256 = "0y6wk83hglj4c8bd4nqijm0kq1jjbws1bmyx885vzbg1a7cqbhah";
   };
 
   nativeBuildInputs = [ cmake pkgconfig scdoc wrapGAppsHook ];
