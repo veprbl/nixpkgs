@@ -1,6 +1,7 @@
 { stdenv, substituteAll
 , fetchurl, perl, gcc, llvm_39
 , ncurses5, gmp, glibc, libiconv
+, patchelfUnstable
 }:
 
 # Prebuilt only does native
@@ -100,10 +101,10 @@ stdenv.mkDerivation rec {
     '' +
     # Rename needed libraries and binaries, fix interpreter
     stdenv.lib.optionalString stdenv.isLinux ''
-      find . -type f -perm -0100 -exec patchelf \
+      find . -type f -perm -0100 -exec ${patchelfUnstable}/bin/patchelf --debug \
           --replace-needed libncurses${stdenv.lib.optionalString stdenv.is64bit "w"}.so.5 libncurses.so \
           --replace-needed libtinfo.so libtinfo.so.5 \
-          --interpreter ${glibcDynLinker} {} \;
+          --set-interpreter ${glibcDynLinker} {} \;
 
       sed -i "s|/usr/bin/perl|perl\x00        |" ghc-${version}/ghc/stage2/build/tmp/ghc-stage2
       sed -i "s|/usr/bin/gcc|gcc\x00        |" ghc-${version}/ghc/stage2/build/tmp/ghc-stage2
@@ -130,13 +131,15 @@ stdenv.mkDerivation rec {
   # calls install-strip ...
   dontBuild = true;
 
+  #dontPatchELF = true;
+
   # On Linux, use patchelf to modify the executables so that they can
   # find editline/gmp.
   preFixup = stdenv.lib.optionalString stdenv.isLinux ''
     for p in $(find "$out" -type f -executable); do
       if isELF "$p"; then
         echo "Patchelfing $p"
-        patchelf --set-rpath "${libPath}:$(patchelf --print-rpath $p)" $p
+        ${patchelfUnstable}/bin/patchelf --debug --set-rpath "${libPath}:$(patchelf --print-rpath $p)" $p
       fi
     done
   '' + stdenv.lib.optionalString stdenv.isDarwin ''
@@ -163,7 +166,7 @@ stdenv.mkDerivation rec {
       module Main where
       main = putStrLn \$([|"yes"|])
     EOF
-    $out/bin/ghc --make main.hs || exit 1
+    $out/bin/ghc --make main.hs -v || exit 1
     echo compilation ok
     [ $(./main) == "yes" ]
   '';
