@@ -19281,7 +19281,7 @@ in
   renoise = callPackage ../applications/audio/renoise {};
 
   radiotray-ng = callPackage ../applications/audio/radiotray-ng {
-    wxGTK = wxGTK30;
+    wxGTK = wxGTK31;
   };
 
   railcar = callPackage ../applications/virtualization/railcar {};
