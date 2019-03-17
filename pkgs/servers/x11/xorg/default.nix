@@ -625,11 +625,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   imake = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto }: stdenv.mkDerivation {
-    name = "imake-1.0.7";
+    name = "imake-1.0.8";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/util/imake-1.0.7.tar.bz2;
-      sha256 = "0zpk8p044jh14bis838shbf4100bjg7mccd7bq54glpsq552q339";
+      url = mirror://xorg/individual/util/imake-1.0.8.tar.bz2;
+      sha256 = "00m7l90ws72k1qm101sd2rx92ckd50cszyng5d4dd77jncbf9lmq";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
@@ -655,7 +655,7 @@ lib.makeScope newScope (self: with self; {
     builder = ./builder.sh;
     src = fetchurl {
       url = mirror://xorg/individual/lib/libFS-1.0.8.tar.bz2;
-      sha256 = "1wy4km3qwwajbyl8y9pka0zwizn7d9pfiyjgzba03x3a083lr79f";
+      sha256 = "03xxyvpfa3rhqcld4p2chkil482jn9cp80hj17jdybcv2hkkgqf8";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
@@ -807,11 +807,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   libXdmcp = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto }: stdenv.mkDerivation {
-    name = "libXdmcp-1.1.2";
+    name = "libXdmcp-1.1.3";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/libXdmcp-1.1.2.tar.bz2;
-      sha256 = "1qp4yhxbfnpj34swa0fj635kkihdkwaiw7kf55cg5zqqg630kzl1";
+      url = mirror://xorg/individual/lib/libXdmcp-1.1.3.tar.bz2;
+      sha256 = "0ab53h0rkq721ihk5hi469x500f3pgbkm1wy01yf24x5m923nli0";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
@@ -820,11 +820,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   libXext = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, xorgproto }: stdenv.mkDerivation {
-    name = "libXext-1.3.3";
+    name = "libXext-1.3.4";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/libXext-1.3.3.tar.bz2;
-      sha256 = "0dbfn5bznnrhqzvkrcmw4c44yvvpwdcsrvzxf4rk27r36b9x865m";
+      url = mirror://xorg/individual/lib/libXext-1.3.4.tar.bz2;
+      sha256 = "0azqxllcsfxc3ilhz6kwc6x7m8wc477p59ir9p0yrsldx766zbar";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
@@ -911,11 +911,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   libXmu = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXext, xorgproto, libXt }: stdenv.mkDerivation {
-    name = "libXmu-1.1.2";
+    name = "libXmu-1.1.3";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/libXmu-1.1.2.tar.bz2;
-      sha256 = "02wx6jw7i0q5qwx87yf94fsn3h0xpz1k7dz1nkwfwm1j71ydqvkm";
+      url = mirror://xorg/individual/lib/libXmu-1.1.3.tar.bz2;
+      sha256 = "0cdpqnx6258i4l6qhphvkdiyspysg0i5caqjy820kp63wwjk4d4w";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
@@ -963,11 +963,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   libXrandr = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXext, libXrender }: stdenv.mkDerivation {
-    name = "libXrandr-1.5.1";
+    name = "libXrandr-1.5.2";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/libXrandr-1.5.1.tar.bz2;
-      sha256 = "06pmphx8lp3iywqnh88fvbfb0d8xgkx0qpvan49akpja1vxfgy8z";
+      url = mirror://xorg/individual/lib/libXrandr-1.5.2.tar.bz2;
+      sha256 = "08z0mqywrm7ij8bxlfrx0d2wy6kladdmkva1nw5k6qix82z0xsla";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
@@ -1041,11 +1041,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   libXvMC = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXext, libXv }: stdenv.mkDerivation {
-    name = "libXvMC-1.0.10";
+    name = "libXvMC-1.0.11";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/libXvMC-1.0.10.tar.bz2;
-      sha256 = "0bpffxr5dal90a8miv2w0rif61byqxq2f5angj4z1bnznmws00g5";
+      url = mirror://xorg/individual/lib/libXvMC-1.0.11.tar.bz2;
+      sha256 = "0bb2c996p0smp2lwckffcfh4701bzv7266xh230ag0x68ka38bja";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
@@ -1054,11 +1054,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   libXxf86dga = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXext, xorgproto }: stdenv.mkDerivation {
-    name = "libXxf86dga-1.1.4";
+    name = "libXxf86dga-1.1.5";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/libXxf86dga-1.1.4.tar.bz2;
-      sha256 = "0zn7aqj8x0951d8zb2h2andldvwkzbsc4cs7q023g6nzq6vd9v4f";
+      url = mirror://xorg/individual/lib/libXxf86dga-1.1.5.tar.bz2;
+      sha256 = "00vjvcdlc1sga251jkxn6gkxmx9h5n290ffxxpa40qbca1gvr61b";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
@@ -1144,7 +1144,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libxcb = callPackage ({ stdenv, pkgconfig, fetchurl, libxslt, libpthreadstubs, libXau, xcbproto, xorgproto, libXdmcp, python }: stdenv.mkDerivation {
+  libxcb = callPackage ({ stdenv, pkgconfig, fetchurl, libxslt, libpthreadstubs, libXau, xcbproto, libXdmcp, python }: stdenv.mkDerivation {
     name = "libxcb-1.13.1";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1153,16 +1153,16 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig python ];
-    buildInputs = [ libxslt libpthreadstubs libXau xcbproto xorgproto libXdmcp ];
+    buildInputs = [ libxslt libpthreadstubs libXau xcbproto libXdmcp ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
   libxkbfile = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11 }: stdenv.mkDerivation {
-    name = "libxkbfile-1.0.9";
+    name = "libxkbfile-1.1.0";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/libxkbfile-1.0.9.tar.bz2;
-      sha256 = "0smimr14zvail7ar68n7spvpblpdnih3jxrva7cpa6cn602px0ai";
+      url = mirror://xorg/individual/lib/libxkbfile-1.1.0.tar.bz2;
+      sha256 = "1irq9crvscd3yb8sr802dhvvfr35jdy1n2yz094xplmd42mbv3bm";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
@@ -1210,11 +1210,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   luit = callPackage ({ stdenv, pkgconfig, fetchurl }: stdenv.mkDerivation {
-    name = "luit-20181211";
+    name = "luit-20190106";
     builder = ./builder.sh;
     src = fetchurl {
-      url = ftp://ftp.invisible-island.net/luit/luit-20181211.tgz;
-      sha256 = "18mf3savxjs29hf4xhhc5h278qy0bbj9ddssx44w0bnlg107jhp1";
+      url = https://invisible-mirror.net/archives/luit/luit-20190106.tgz;
+      sha256 = "081rrajj5hpgx3pvm43grqzscnq5kl320q0wq6zzhf6wrijhz41b";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
@@ -1223,11 +1223,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   makedepend = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto }: stdenv.mkDerivation {
-    name = "makedepend-1.0.5";
+    name = "makedepend-1.0.6";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/util/makedepend-1.0.5.tar.bz2;
-      sha256 = "09alw99r6y2bbd1dc786n3jfgv4j520apblyn7cw6jkjydshba7p";
+      url = mirror://xorg/individual/util/makedepend-1.0.6.tar.bz2;
+      sha256 = "072h9nzh8s5vqfz35dli4fba36fnr219asjrb7p89n8ph0paan6m";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
@@ -1366,11 +1366,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   x11perf = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXext, libXft, libXmu, xorgproto, libXrender }: stdenv.mkDerivation {
-    name = "x11perf-1.6.0";
+    name = "x11perf-1.6.1";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/app/x11perf-1.6.0.tar.bz2;
-      sha256 = "0lb716yfdb8f11h4cz93d1bapqdxf1xplsb21kbp4xclq7g9hw78";
+      url = mirror://xorg/individual/app/x11perf-1.6.1.tar.bz2;
+      sha256 = "0d3wh6z6znwhfdiv0zaggfj0xgish98xa10yy76b9517zj7hnzhw";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
@@ -1782,11 +1782,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   xf86videoamdgpu = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, mesa_noglu, libGL, libdrm, udev, xorgserver }: stdenv.mkDerivation {
-    name = "xf86-video-amdgpu-18.1.0";
+    name = "xf86-video-amdgpu-19.0.0";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/driver/xf86-video-amdgpu-18.1.0.tar.bz2;
-      sha256 = "0wlnb929l3yqj4hdkzyxyhbaph13ac4villajgmbh66pa6xja7z1";
+      url = mirror://xorg/individual/driver/xf86-video-amdgpu-19.0.0.tar.bz2;
+      sha256 = "0lag9jxd752ja7m7ngz3dmqffb5wbx4crdwjw74qx42m8xyi8dl8";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
@@ -1833,16 +1833,16 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videoati = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libdrm, udev, libpciaccess, xorgserver }: stdenv.mkDerivation {
-    name = "xf86-video-ati-18.0.1";
+  xf86videoati = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, mesa_noglu, libGL, libdrm, udev, libpciaccess, xorgserver }: stdenv.mkDerivation {
+    name = "xf86-video-ati-19.0.0";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/driver/xf86-video-ati-18.0.1.tar.bz2;
-      sha256 = "180l2yw8c63cbcs3zk729vx439aig1d7yicpyxj0nmfl4y0kpskj";
+      url = mirror://xorg/individual/driver/xf86-video-ati-19.0.0.tar.bz2;
+      sha256 = "0mzl7yp3qkvankh22758sgpaw9mg6jxsfbg6wy0nxfw4i0qpv46x";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgproto libdrm udev libpciaccess xorgserver ];
+    buildInputs = [ xorgproto mesa_noglu libGL libdrm udev libpciaccess xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -2809,11 +2809,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   xtrans = callPackage ({ stdenv, pkgconfig, fetchurl }: stdenv.mkDerivation {
-    name = "xtrans-1.3.5";
+    name = "xtrans-1.4.0";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/xtrans-1.3.5.tar.bz2;
-      sha256 = "00c3ph17acnsch3gbdmx33b9ifjnl5w7vx8hrmic1r1cjcv3pgdd";
+      url = mirror://xorg/individual/lib/xtrans-1.4.0.tar.bz2;
+      sha256 = "0wyp0yc6gi72hwc3kjmvm3vkj9p6s407cb6dxx37jh9wb68l8z1p";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
