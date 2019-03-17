@@ -1,5 +1,5 @@
 # THIS IS A GENERATED FILE.  DO NOT EDIT!
-{ lib, newScope, pixman, fetchgit }:
+{ lib, newScope, pixman }:
 
 lib.makeScope newScope (self: with self; {
 
