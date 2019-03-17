@@ -49,11 +49,9 @@ let
     GIT_SSL_CAINFO = "${cacert}/etc/ssl/certs/ca-bundle.crt";
 
     # Instruct Go where to find the cacert.
-    # SSL_CERT_FILE is used by Linux machines.
-    # NIX_SSL_CERT_FILE is used by Darwin machines based on
-    # pkgs/development/compilers/go/ssl-cert-file-1.9.patch.
+    # NIX_SSL_CERT_FILE is added to the Go compiler through the patch
+    # pkgs/development/compilers/go/ssl-cert-file-1.12.1.patch.
     NIX_SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
-    SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
 
     impureEnvVars = lib.fetchers.proxyImpureEnvVars ++ [
       "GIT_PROXY_COMMAND" "SOCKS_SERVER"
