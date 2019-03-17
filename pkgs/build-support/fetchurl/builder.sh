@@ -16,6 +16,7 @@ curl=(
     --disable-epsv
     --cookie-jar cookies
     --insecure
+    --ftp-method nocwd
     --user-agent "curl/$curlVersion Nixpkgs/$nixpkgsVersion"
     $curlOpts
     $NIX_CURL_FLAGS
