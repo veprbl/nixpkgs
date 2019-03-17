@@ -5,7 +5,7 @@
 
 let
   ghc = ghcWithPackages (pkgs: with pkgs; [
-          network vector utf8-string bytestring random hslogger
+          network vector utf8-string bytestring-show random hslogger
           SHA entropy pkgs.zlib sandi regex-tdfa
         ]);
 in

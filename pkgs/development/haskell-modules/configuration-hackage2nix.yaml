@@ -3252,7 +3252,6 @@ broken-packages:
   - bytestring-plain
   - bytestring-read
   - bytestring-rematch
-  - bytestring-show
   - bytestring-time
   - bytestring-typenats
   - bytestringparser

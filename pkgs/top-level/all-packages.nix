@@ -20940,7 +20940,7 @@ in
   hawkthorne = callPackage ../games/hawkthorne { love = love_0_9; };
 
   hedgewars = callPackage ../games/hedgewars {
-    inherit (haskellPackages) ghcWithPackages;
+    inherit (haskell.packages.ghc844) ghcWithPackages;
     ffmpeg = ffmpeg_2;
   };
 

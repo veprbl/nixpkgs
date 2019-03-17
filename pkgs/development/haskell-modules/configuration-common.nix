@@ -1241,4 +1241,6 @@ self: super: {
   # Fix build with attr-2.4.48 (see #53716)
   xattr = appendPatch super.xattr ./patches/xattr-fix-build.patch;
 
+  bytestring-show = doJailbreak super.bytestring-show;
+
 } // import ./configuration-tensorflow.nix {inherit pkgs haskellLib;} self super
