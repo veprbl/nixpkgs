@@ -872,11 +872,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   libXft = callPackage ({ stdenv, pkgconfig, fetchurl, fontconfig, freetype, libX11, xorgproto, libXrender }: stdenv.mkDerivation {
-    name = "libXft-2.3.2";
+    name = "libXft-2.3.3";
     builder = ./builder.sh;
     src = fetchurl {
-      url = mirror://xorg/individual/lib/libXft-2.3.2.tar.bz2;
-      sha256 = "0k6wzi5rzs0d0n338ms8n8lfyhq914hw4yl2j7553wqxfqjci8zm";
+      url = mirror://xorg/individual/lib/libXft-2.3.3.tar.bz2;
+      sha256 = "05lja9s54090xwh31r0bqms4v3pimng5xr09g2rdnafx2vk6hp12";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
