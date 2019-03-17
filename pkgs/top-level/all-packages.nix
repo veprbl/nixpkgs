@@ -4663,6 +4663,8 @@ in
 
   odt2txt = callPackage ../tools/text/odt2txt { };
 
+  odyssey = callPackage ../tools/misc/odyssey { };
+
   offlineimap = callPackage ../tools/networking/offlineimap { };
 
   oh-my-zsh = callPackage ../shells/zsh/oh-my-zsh { };
