@@ -2082,6 +2082,7 @@ in
 
   ibus = callPackage ../tools/inputmethods/ibus {
     gconf = gnome2.GConf;
+    vala = vala_0_42; # XXX: revisit
     inherit (gnome3) dconf;
   };
 
@@ -17252,7 +17253,9 @@ in
 
   fondo = callPackage ../applications/graphics/fondo { };
 
-  font-manager = callPackage ../applications/misc/font-manager { };
+  font-manager = callPackage ../applications/misc/font-manager {
+    vala = vala_0_42; # XXX: breaks with 44, might be fixed w/glib bump
+  };
 
   foo-yc20 = callPackage ../applications/audio/foo-yc20 { };
 
