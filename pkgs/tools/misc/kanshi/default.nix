@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, rustPlatform, pkgconfig, udev }:
-rustPlatform.buildRustPackage 
+rustPlatform.buildRustPackage
 {
   pname = "kanshi-unstable";
   version = "2019-02-02";
@@ -13,16 +13,16 @@ rustPlatform.buildRustPackage
 
   buildInputs = [ pkgconfig udev ];
 
-  cargoSha256 = "sha256:0lf1zfmq9ypxk86ma0n4nczbklmjs631wdzfx4wd3cvhghyr8nkq";
+  cargoSha256 = "0pvkrdjrg9y38vsrqkrvsknzp78sknpmq14rskvij450a9mpihii";
 
   meta = {
     description = "Dynamic display configuration tool";
-    longDescription = 
+    longDescription =
     ''
-    Kanshi uses a configuration file and a list of available displays to choose 
-    the right settings for each display. It's useful if your window manager 
-    doesn't support multiple display configurations (e.g. i3/Sway).
-    
+    Kanshi uses a configuration file and a list of available displays to choose
+    the right settings for each display. It's useful if your window manager
+    doesn't support multiple display configurations (e.g. i3/Sway)
+
     For now, it only supports:
     - sysfs as backend
     - udev as notifier (optional)
@@ -34,7 +34,7 @@ rustPlatform.buildRustPackage
     homepage = "https://github.com/emersion/kanshi";
     downloadPage = "https://github.com/emersion/kanshi";
     license = stdenv.lib.licenses.mit;
-    maintainers = stdenv.lib.maintainers.balsoft;
+    maintainers = [ stdenv.lib.maintainers.balsoft ];
     platforms = stdenv.lib.platforms.linux;
   };
 }
