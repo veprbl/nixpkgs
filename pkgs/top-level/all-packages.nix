@@ -13102,11 +13102,11 @@ in
 
   vsqlite = callPackage ../development/libraries/vsqlite { };
 
-  vte = callPackage ../development/libraries/vte { };
+  vte = callPackage ../development/libraries/vte { vala = vala_0_42; /* XXX: revisit */ };
 
-  vte_290 = callPackage ../development/libraries/vte/2.90.nix { };
+  vte_290 = callPackage ../development/libraries/vte/2.90.nix { vala = vala_0_42; /* XXX: revisit */ };
 
-  vte-ng = callPackage ../development/libraries/vte/ng.nix { };
+  vte-ng = callPackage ../development/libraries/vte/ng.nix { vala = vala_0_42; /* XXX: revisit */ };
 
   vtk = callPackage ../development/libraries/vtk {
     inherit (darwin) cf-private libobjc;
