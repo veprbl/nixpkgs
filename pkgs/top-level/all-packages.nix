@@ -13462,7 +13462,7 @@ in
   buildGo112Module = callPackage ../development/go-modules/generic {
     go = buildPackages.go_1_12;
   };
-  buildGoModule = buildGo112Module;
+  buildGoModule = buildGo111Module;
 
   go2nix = callPackage ../development/tools/go2nix { };
 
