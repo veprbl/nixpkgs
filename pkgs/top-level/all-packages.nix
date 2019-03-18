@@ -7750,6 +7750,7 @@ in
     vala_0_38
     vala_0_40
     vala_0_42
+    vala_0_44
     vala;
 
   valadoc = callPackage ../development/tools/valadoc { };
