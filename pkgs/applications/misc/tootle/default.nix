@@ -12,8 +12,8 @@ stdenv.mkDerivation rec {
     owner = "bleakgrey";
     repo = pname;
     #rev = version;
-    rev = "48a855481eafa14ccf20fb76bf914829344aa898";
-    sha256 = "0cxiclpy5klawxq67bqvgcxkywj56ybkdxav9lzr2l4592c6a2yg";
+    rev = "1e42721faa04d3be2dc9ac09f1421ae7f3e72278";
+    sha256 = "16l1xhxqm9wm9mjjlqs88135hxskz0d320jdlsfn968nsplj01nw";
   };
 
   nativeBuildInputs = [
