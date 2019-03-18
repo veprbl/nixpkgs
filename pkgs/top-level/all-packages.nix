@@ -5227,6 +5227,11 @@ in
 
   rescuetime = callPackage ../applications/misc/rescuetime { };
 
+  reuse = callPackage ../tools/package-management/reuse {
+    inherit (python3Packages) 
+      buildPythonApplication debian pygit2 pytest jinja2;
+  };
+
   rewritefs = callPackage ../os-specific/linux/rewritefs { };
 
   rdiff-backup = callPackage ../tools/backup/rdiff-backup { };
