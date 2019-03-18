@@ -20560,6 +20560,8 @@ in
 
   xtrace = callPackage ../tools/X11/xtrace { };
 
+  xtruss = callPackage ../tools/X11/xtruss { };
+
   xmacro = callPackage ../tools/X11/xmacro { };
 
   xmlcopyeditor = callPackage ../applications/editors/xmlcopyeditor { };
