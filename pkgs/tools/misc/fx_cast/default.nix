@@ -28,6 +28,7 @@ stdenv.mkDerivation rec {
   '';
 
   dontBuild = true;
+  dontStrip = true;
 
   installPhase = ''
     install -DT {opt/fx_cast,$out/bin}/bridge
