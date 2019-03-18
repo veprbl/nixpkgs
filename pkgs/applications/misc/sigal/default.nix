@@ -9,7 +9,7 @@ python3Packages.buildPythonApplication rec {
     sha256 = "0ff8hpihbd30xjy155ksfpypjskilqg4zmyavgvpri8jaf1qpv89";
   };
 
-  checkInputs = with python3Packages; [ pytest ];
+  checkInputs = with python3Packages; [ pytest boto brotli feedgenerator /* zopfli */ ];
   propagatedBuildInputs = with python3Packages; [
     jinja2
     markdown
@@ -19,11 +19,12 @@ python3Packages.buildPythonApplication rec {
     click
     blinker
   ];
-
   makeWrapperArgs = [ "--prefix PATH : ${ffmpeg}/bin" ];
 
-  # No tests included
-  doCheck = false;
+  checkPhase = ''
+    PATH=${ffmpeg}/bin:$PATH \
+    py.test tests
+  '';
 
   meta = with lib; {
     description = "Yet another simple static gallery generator";
