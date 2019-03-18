@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, dpkg, makeWrapper, patchelfUnstable }:
+{ stdenv, fetchurl, dpkg }:
 
   #json = {
   #  name = "fx_cast_bridge";
@@ -17,9 +17,7 @@ stdenv.mkDerivation rec {
      sha256 = "0wqm0spmffn31yd23ych6fjxhzfxhj92379h0qdjh2xr3as4yh4n";
   };
 
-  nativeBuildInputs = [ dpkg makeWrapper ];
-
-  buildInputs = [ stdenv.cc.cc.lib stdenv.cc.libc_lib ];
+  nativeBuildInputs = [ dpkg ];
 
   unpackPhase = ''
     runHook preUnpack
@@ -28,7 +26,6 @@ stdenv.mkDerivation rec {
   '';
 
   dontBuild = true;
-  dontStrip = true;
   dontPatchELF = true;
 
   installPhase = ''
@@ -37,11 +34,54 @@ stdenv.mkDerivation rec {
 
     substituteInPlace $out/lib/mozilla/native-messaging-hosts/fx_cast_bridge.json \
       --replace /opt/fx_cast/bridge $out/bin/bridge
-
-    ${patchelfUnstable}/bin/patchelf $out/bin/bridge --set-interpreter ${stdenv.cc.bintools.dynamicLinker}
-    wrapProgram $out/bin/bridge \
-      --prefix LD_LIBRARY_PATH : ${stdenv.lib.makeLibraryPath buildInputs}
   '';
 
+  # See now-cli/default.nix
+  preFixup = let
+    libPath = stdenv.lib.makeLibraryPath [stdenv.cc.cc];
+    bin = "$out/bin/bridge";
+  in ''
+
+    orig_size=$(stat --printf=%s ${bin})
+
+    patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" ${bin}
+    patchelf --set-rpath ${libPath} ${bin}
+    chmod +x ${bin}
+
+    new_size=$(stat --printf=%s ${bin})
+
+    ###### zeit-pkg fixing starts here.
+    # we're replacing plaintext js code that looks like
+    # PAYLOAD_POSITION = '1234                  ' | 0
+    # [...]
+    # PRELUDE_POSITION = '1234                  ' | 0
+    # ^-----20-chars-----^^------22-chars------^
+    # ^-- grep points here
+    #
+    # var_* are as described above
+    # shift_by seems to be safe so long as all patchelf adjustments occur
+    # before any locations pointed to by hardcoded offsets
+
+    var_skip=20
+    var_select=22
+    shift_by=$(expr $new_size - $orig_size)
+
+    function fix_offset {
+      # $1 = name of variable to adjust
+      location=$(grep -obUam1 "$1" ${bin} | cut -d: -f1)
+      location=$(expr $location + $var_skip)
+
+      value=$(dd if=${bin} iflag=count_bytes,skip_bytes skip=$location \
+                 bs=1 count=$var_select status=none)
+      value=$(expr $shift_by + $value)
+
+      echo -n $value | dd of=${bin} bs=1 seek=$location conv=notrunc
+    }
+
+    fix_offset PAYLOAD_POSITION
+    fix_offset PRELUDE_POSITION
+
+  '';
+  dontStrip = true;
 
 }
