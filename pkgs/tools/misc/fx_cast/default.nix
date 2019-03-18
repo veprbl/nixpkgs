@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, dpkg, makeWrapper }:
+{ stdenv, fetchurl, dpkg, makeWrapper, patchelfUnstable }:
 
   #json = {
   #  name = "fx_cast_bridge";
@@ -38,11 +38,9 @@ stdenv.mkDerivation rec {
     substituteInPlace $out/lib/mozilla/native-messaging-hosts/fx_cast_bridge.json \
       --replace /opt/fx_cast/bridge $out/bin/bridge
 
-    mv $out/bin/bridge{,-orig}
-    makeWrapper ${stdenv.cc.bintools.dynamicLinker} $out/bin/bridge \
-      --add-flags $out/bin/bridge-orig \
-      --argv0 $out/bin/bridge-orig \
-      --prefix LD_LIBRARY_PATH : ${stdenv.lib.makeLibraryPath buildInputs} \
+    ${patchelfUnstable}/bin/patchelf $out/bin/bridge --set-interpreter ${stdenv.cc.bintools.dynamicLinker}
+    wrapProgram $out/bin/bridge \
+      --prefix LD_LIBRARY_PATH : ${stdenv.lib.makeLibraryPath buildInputs}
   '';
 
 
