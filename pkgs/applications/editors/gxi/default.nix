@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
 
   preConfigure = ''
-    export DESTDIR=$out
+    export DESTDIR=/
   '';
 
   meta = with stdenv.lib; {
