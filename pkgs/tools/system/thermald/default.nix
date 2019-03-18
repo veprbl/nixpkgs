@@ -3,13 +3,14 @@
 
 stdenv.mkDerivation rec {
   name = "thermald-${version}";
-  version = "1.8";
+  version = "1.8.0.1"; # not really, git
 
   src = fetchFromGitHub {
     owner = "intel";
     repo = "thermal_daemon";
-    rev = "v${version}";
-    sha256 = "1g1l7k8yxj8bl1ysdx8v6anv1s7xk9j072y44gwki70dy48n7j92";
+    #rev = "v${version}";
+    rev = "5c4aa87260803b5844212322f3459400eb8843d3";
+    sha256 = "0mabg591d7cl5daw0csfbp80dnr99mi7s6phmvdc0nws0xcl4dhk";
   };
 
   nativeBuildInputs = [ pkgconfig autoreconfHook makeWrapper ];
