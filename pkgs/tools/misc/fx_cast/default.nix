@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, dpkg, autoPatchelfHook }:
+{ stdenv, fetchurl, dpkg, makeWrapper }:
 
   #json = {
   #  name = "fx_cast_bridge";
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
      sha256 = "0wqm0spmffn31yd23ych6fjxhzfxhj92379h0qdjh2xr3as4yh4n";
   };
 
-  nativeBuildInputs = [ dpkg autoPatchelfHook ];
+  nativeBuildInputs = [ dpkg makeWrapper ];
 
   buildInputs = [ stdenv.cc.cc.lib stdenv.cc.libc_lib ];
 
@@ -29,6 +29,7 @@ stdenv.mkDerivation rec {
 
   dontBuild = true;
   dontStrip = true;
+  dontPatchELF = true;
 
   installPhase = ''
     install -DT {opt/fx_cast,$out/bin}/bridge
@@ -36,6 +37,12 @@ stdenv.mkDerivation rec {
 
     substituteInPlace $out/lib/mozilla/native-messaging-hosts/fx_cast_bridge.json \
       --replace /opt/fx_cast/bridge $out/bin/bridge
+
+    mv $out/bin/bridge{,-orig}
+    makeWrapper ${stdenv.cc.bintools.dynamicLinker} $out/bin/bridge \
+      --add-flags $out/bin/bridge-orig \
+      --argv0 $out/bin/bridge-orig \
+      --prefix LD_LIBRARY_PATH : ${stdenv.lib.makeLibraryPath buildInputs} \
   '';
 
 
