@@ -237,6 +237,8 @@ in
 
   mod = callPackage ../development/tools/mod { };
 
+  broadlink-cli = callPackage ../tools/misc/broadlink-cli {};
+
   mht2htm = callPackage ../tools/misc/mht2htm { };
 
   fetchpatch = callPackage ../build-support/fetchpatch { };
@@ -869,6 +871,10 @@ in
   autorandr = callPackage ../tools/misc/autorandr {};
 
   avahi = callPackage ../development/libraries/avahi (config.avahi or {});
+
+  avahi-compat = callPackage ../development/libraries/avahi ((config.avahi or {}) // {
+    withLibdnssdCompat = true;
+  });
 
   avro-c = callPackage ../development/libraries/avro-c { };
 
@@ -14235,7 +14241,7 @@ in
 
   sambaFull = samba4Full;
 
-  shairplay = callPackage ../servers/shairplay { };
+  shairplay = callPackage ../servers/shairplay { avahi = avahi-compat; };
 
   shairport-sync = callPackage ../servers/shairport-sync { };
 
@@ -18606,9 +18612,7 @@ in
   multimon-ng = callPackage ../applications/radio/multimon-ng { };
 
   inherit (callPackages ../applications/networking/mumble {
-      avahi = avahi.override {
-        withLibdnssdCompat = true;
-      };
+      avahi = avahi-compat;
       jackSupport = config.mumble.jackSupport or false;
       speechdSupport = config.mumble.speechdSupport or false;
       pulseSupport = config.pulseaudio or false;
@@ -18616,9 +18620,7 @@ in
     }) mumble mumble_git murmur;
 
   inherit (callPackages ../applications/networking/mumble {
-      avahi = avahi.override {
-        withLibdnssdCompat = true;
-      };
+      avahi = avahi-compat;
       jackSupport = config.mumble.jackSupport or false;
       speechdSupport = config.mumble.speechdSupport or false;
       pulseSupport = config.pulseaudio or false;
