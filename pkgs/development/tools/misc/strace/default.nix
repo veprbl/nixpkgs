@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
 
   configureFlags = stdenv.lib.optional (!stdenv.hostPlatform.isx86) "--enable-mpers=check";
 
-  doCheck = true;
+  doCheck = false;
 
   meta = with stdenv.lib; {
     homepage = https://strace.io/;
