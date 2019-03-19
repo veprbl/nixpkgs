@@ -6,13 +6,13 @@ with rustPlatform;
 
 buildRustPackage rec {
   pname = "ffsend";
-  version = "0.2.37";
+  version = "0.2.38";
 
   src = fetchFromGitLab {
     owner = "timvisee";
     repo = pname;
     rev = "v${version}";
-    sha256 = "1c2iihd9abri6019qyl78n7l86pbh7ahy7hp2ijdzhrlsjdanzcr";
+    sha256 = "1kxxcqyilbhzcsnddlf7ha3dd57qj82yvbb9jsssimnlcskx84hx";
   };
 
   cargoSha256 = "04gcsjjn3fnc5q0z6jbyd439x4hylyfl912245wmpjchm0k2k22b";
