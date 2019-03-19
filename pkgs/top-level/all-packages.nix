@@ -5809,6 +5809,8 @@ in
 
   tarsnapper = callPackage ../tools/backup/tarsnapper { };
 
+  tayga = callPackage ../tools/networking/tayga { };
+
   tcpcrypt = callPackage ../tools/security/tcpcrypt { };
 
   tcptraceroute = callPackage ../tools/networking/tcptraceroute { };
@@ -18219,8 +18221,6 @@ in
   ladspa-sdk = callPackage ../applications/audio/ladspa-sdk { };
 
   caps = callPackage ../applications/audio/caps { };
-
-  lastwatch = callPackage ../applications/audio/lastwatch { };
 
   lastfmsubmitd = callPackage ../applications/audio/lastfmsubmitd { };
 
