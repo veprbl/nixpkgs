@@ -65,7 +65,7 @@ let
   gitSource = rec {
     pname = "compton-git";
 #    version = "5.1";
-    version = "2019-03-17";
+    version = "2019-03-18";
 
     COMPTON_VERSION = "v${version}";
 
@@ -75,8 +75,8 @@ let
       owner  = "yshui";
       repo   = "compton";
       #rev    = COMPTON_VERSION;
-      rev    = "cd456c1f66574a1166f6dab8ffdd8360bb0a9308"; # dev
-      sha256 = "13bvygg4f7al41kphpjm0qgalgm8wswa1c11dw1hs4gd1fii6c1m";
+      rev    = "c6a809768671d852126a438354081253e9e9d56c"; # dev
+      sha256 = "0y1vpvhyi9pk5hgrixbfnac1qs3l9ancqy8qp33mh6cc7aiivif3";
     };
 
     buildInputs = [
@@ -98,8 +98,11 @@ let
 
     NIX_CFLAGS_COMPILE = [ "-fno-strict-aliasing" /* "-DDEBUG_RESTACK=1" "-DDEBUG_EVENTS=1" */ ];
 
+    doCheck = true;
+
     mesonFlags = [
       "-Dbuild_docs=true"
+      "-Dunittest=true"
       #"-Dsanitize=true"
     ];
 
