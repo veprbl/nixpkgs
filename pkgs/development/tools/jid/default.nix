@@ -1,19 +1,17 @@
-{ stdenv, buildGoPackage, fetchFromGitHub }:
+{ stdenv, buildGoModule, fetchFromGitHub }:
 
-buildGoPackage rec {
-  name = "jid-${version}";
-  version = "0.7.2";
-
-  goPackagePath = "github.com/simeji/jid";
+buildGoModule rec {
+  pname = "jid";
+  version = "0.7.5";
 
   src = fetchFromGitHub {
     owner = "simeji";
     repo = "jid";
-    rev = "${version}";
-    sha256 = "0p4srp85ilcafrn9d36rzpzg5k5jd7is93p68hamgxqyiiw6a8fi";
+    rev = "v${version}";
+    sha256 = "15gji50mgjg1s00xvh2jv9j50x3431k4mv3d3i153py2vyyi0h08";
   };
 
-  goDeps = ./deps.nix;
+  modSha256 = "10n452hk5kg449vm0iv264gj47zsyikwiiirkzfj05dla69l76xd";
 
   meta = {
     description = "A command-line tool to incrementally drill down JSON";
