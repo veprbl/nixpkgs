@@ -16,9 +16,7 @@ stdenv.mkDerivation rec {
 
   configureFlags = stdenv.lib.optional (!stdenv.hostPlatform.isx86) "--enable-mpers=check";
 
-  # fails 1 out of 523 tests with
-  # "strace-k.test: failed test: ../../strace -e getpid -k ../stack-fcall output mismatch"
-  doCheck = false;
+  doCheck = true;
 
   meta = with stdenv.lib; {
     homepage = https://strace.io/;
