@@ -70,7 +70,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontadobe100dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontadobe100dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontscale }: stdenv.mkDerivation {
     name = "font-adobe-100dpi-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -78,13 +78,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "0m60f5bd0caambrk8ksknb5dks7wzsg7g7xaf0j21jxmx8rq9h5j";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf fontutil mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig bdftopcf fontutil mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontadobe75dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontadobe75dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontscale }: stdenv.mkDerivation {
     name = "font-adobe-75dpi-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -92,13 +92,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "02advcv9lyxpvrjv8bjh1b797lzg6jvhipclz49z8r8y98g4l0n6";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf fontutil mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig bdftopcf fontutil mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontadobeutopia100dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontadobeutopia100dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontscale }: stdenv.mkDerivation {
     name = "font-adobe-utopia-100dpi-1.0.4";
     builder = ./builder.sh;
     src = fetchurl {
@@ -106,13 +106,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "19dd9znam1ah72jmdh7i6ny2ss2r6m21z9v0l43xvikw48zmwvyi";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf fontutil mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig bdftopcf fontutil mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontadobeutopia75dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontadobeutopia75dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontscale }: stdenv.mkDerivation {
     name = "font-adobe-utopia-75dpi-1.0.4";
     builder = ./builder.sh;
     src = fetchurl {
@@ -120,13 +120,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "152wigpph5wvl4k9m3l4mchxxisgsnzlx033mn5iqrpkc6f72cl7";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf fontutil mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig bdftopcf fontutil mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontadobeutopiatype1 = callPackage ({ stdenv, pkgconfig, fetchurl, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontadobeutopiatype1 = callPackage ({ stdenv, pkgconfig, fetchurl, mkfontscale }: stdenv.mkDerivation {
     name = "font-adobe-utopia-type1-1.0.4";
     builder = ./builder.sh;
     src = fetchurl {
@@ -134,8 +134,8 @@ lib.makeScope newScope (self: with self; {
       sha256 = "0xw0pdnzj5jljsbbhakc6q9ha2qnca1jr81zk7w70yl9bw83b54p";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
@@ -153,7 +153,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontarabicmisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontdir }: stdenv.mkDerivation {
+  fontarabicmisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontscale }: stdenv.mkDerivation {
     name = "font-arabic-misc-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -161,13 +161,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "1x246dfnxnmflzf0qzy62k8jdpkb6jkgspcjgbk8jcq9lw99npah";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ];
+    nativeBuildInputs = [ pkgconfig bdftopcf mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontbh100dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontbh100dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontscale }: stdenv.mkDerivation {
     name = "font-bh-100dpi-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -175,13 +175,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "10cl4gm38dw68jzln99ijix730y7cbx8np096gmpjjwff1i73h13";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf fontutil mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig bdftopcf fontutil mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontbh75dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontbh75dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontscale }: stdenv.mkDerivation {
     name = "font-bh-75dpi-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -189,13 +189,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "073jmhf0sr2j1l8da97pzsqj805f7mf9r2gy92j4diljmi8sm1il";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf fontutil mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig bdftopcf fontutil mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontbhlucidatypewriter100dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontbhlucidatypewriter100dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontscale }: stdenv.mkDerivation {
     name = "font-bh-lucidatypewriter-100dpi-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -203,13 +203,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "1fqzckxdzjv4802iad2fdrkpaxl4w0hhs9lxlkyraq2kq9ik7a32";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf fontutil mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig bdftopcf fontutil mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontbhlucidatypewriter75dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontbhlucidatypewriter75dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontscale }: stdenv.mkDerivation {
     name = "font-bh-lucidatypewriter-75dpi-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -217,13 +217,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "0cfbxdp5m12cm7jsh3my0lym9328cgm7fa9faz2hqj05wbxnmhaa";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf fontutil mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig bdftopcf fontutil mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontbhttf = callPackage ({ stdenv, pkgconfig, fetchurl, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontbhttf = callPackage ({ stdenv, pkgconfig, fetchurl, mkfontscale }: stdenv.mkDerivation {
     name = "font-bh-ttf-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -231,13 +231,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "0pyjmc0ha288d4i4j0si4dh3ncf3jiwwjljvddrb0k8v4xiyljqv";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontbhtype1 = callPackage ({ stdenv, pkgconfig, fetchurl, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontbhtype1 = callPackage ({ stdenv, pkgconfig, fetchurl, mkfontscale }: stdenv.mkDerivation {
     name = "font-bh-type1-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -245,13 +245,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "1hb3iav089albp4sdgnlh50k47cdjif9p4axm0kkjvs8jyi5a53n";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontbitstream100dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontdir }: stdenv.mkDerivation {
+  fontbitstream100dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontscale }: stdenv.mkDerivation {
     name = "font-bitstream-100dpi-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -259,13 +259,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "1kmn9jbck3vghz6rj3bhc3h0w6gh0qiaqm90cjkqsz1x9r2dgq7b";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ];
+    nativeBuildInputs = [ pkgconfig bdftopcf mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontbitstream75dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontdir }: stdenv.mkDerivation {
+  fontbitstream75dpi = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontscale }: stdenv.mkDerivation {
     name = "font-bitstream-75dpi-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -273,13 +273,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "13plbifkvfvdfym6gjbgy9wx2xbdxi9hfrl1k22xayy02135wgxs";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ];
+    nativeBuildInputs = [ pkgconfig bdftopcf mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontbitstreamtype1 = callPackage ({ stdenv, pkgconfig, fetchurl, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontbitstreamtype1 = callPackage ({ stdenv, pkgconfig, fetchurl, mkfontscale }: stdenv.mkDerivation {
     name = "font-bitstream-type1-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -287,13 +287,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "1256z0jhcf5gbh1d03593qdwnag708rxqa032izmfb5dmmlhbsn6";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontcronyxcyrillic = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontdir }: stdenv.mkDerivation {
+  fontcronyxcyrillic = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontscale }: stdenv.mkDerivation {
     name = "font-cronyx-cyrillic-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -301,13 +301,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "0ai1v4n61k8j9x2a1knvfbl2xjxk3xxmqaq3p9vpqrspc69k31kf";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ];
+    nativeBuildInputs = [ pkgconfig bdftopcf mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontcursormisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontdir }: stdenv.mkDerivation {
+  fontcursormisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontscale }: stdenv.mkDerivation {
     name = "font-cursor-misc-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -315,13 +315,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "0dd6vfiagjc4zmvlskrbjz85jfqhf060cpys8j0y1qpcbsrkwdhp";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ];
+    nativeBuildInputs = [ pkgconfig bdftopcf mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontdaewoomisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontdir }: stdenv.mkDerivation {
+  fontdaewoomisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontscale }: stdenv.mkDerivation {
     name = "font-daewoo-misc-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -329,13 +329,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "1s2bbhizzgbbbn5wqs3vw53n619cclxksljvm759h9p1prqdwrdw";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ];
+    nativeBuildInputs = [ pkgconfig bdftopcf mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontdecmisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontdir }: stdenv.mkDerivation {
+  fontdecmisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontscale }: stdenv.mkDerivation {
     name = "font-dec-misc-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -343,13 +343,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "0yzza0l4zwyy7accr1s8ab7fjqkpwggqydbm2vc19scdby5xz7g1";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ];
+    nativeBuildInputs = [ pkgconfig bdftopcf mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontibmtype1 = callPackage ({ stdenv, pkgconfig, fetchurl, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontibmtype1 = callPackage ({ stdenv, pkgconfig, fetchurl, mkfontscale }: stdenv.mkDerivation {
     name = "font-ibm-type1-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -357,13 +357,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "1pyjll4adch3z5cg663s6vhi02k8m6488f0mrasg81ssvg9jinzx";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontisasmisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontdir }: stdenv.mkDerivation {
+  fontisasmisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontscale }: stdenv.mkDerivation {
     name = "font-isas-misc-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -371,13 +371,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "0rx8q02rkx673a7skkpnvfkg28i8gmqzgf25s9yi0lar915sn92q";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ];
+    nativeBuildInputs = [ pkgconfig bdftopcf mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontjismisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontdir }: stdenv.mkDerivation {
+  fontjismisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontscale }: stdenv.mkDerivation {
     name = "font-jis-misc-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -385,13 +385,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "0rdc3xdz12pnv951538q6wilx8mrdndpkphpbblszsv7nc8cw61b";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ];
+    nativeBuildInputs = [ pkgconfig bdftopcf mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontmicromisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontdir }: stdenv.mkDerivation {
+  fontmicromisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontscale }: stdenv.mkDerivation {
     name = "font-micro-misc-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -399,13 +399,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "1dldxlh54zq1yzfnrh83j5vm0k4ijprrs5yl18gm3n9j1z0q2cws";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ];
+    nativeBuildInputs = [ pkgconfig bdftopcf mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontmisccyrillic = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontdir }: stdenv.mkDerivation {
+  fontmisccyrillic = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontscale }: stdenv.mkDerivation {
     name = "font-misc-cyrillic-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -413,13 +413,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "0q2ybxs8wvylvw95j6x9i800rismsmx4b587alwbfqiw6biy63z4";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ];
+    nativeBuildInputs = [ pkgconfig bdftopcf mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontmiscethiopic = callPackage ({ stdenv, pkgconfig, fetchurl, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontmiscethiopic = callPackage ({ stdenv, pkgconfig, fetchurl, mkfontscale }: stdenv.mkDerivation {
     name = "font-misc-ethiopic-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -427,13 +427,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "19cq7iq0pfad0nc2v28n681fdq3fcw1l1hzaq0wpkgpx7bc1zjsk";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontmiscmeltho = callPackage ({ stdenv, pkgconfig, fetchurl, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontmiscmeltho = callPackage ({ stdenv, pkgconfig, fetchurl, mkfontscale }: stdenv.mkDerivation {
     name = "font-misc-meltho-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -441,13 +441,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "148793fqwzrc3bmh2vlw5fdiwjc2n7vs25cic35gfp452czk489p";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontmiscmisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontmiscmisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontscale }: stdenv.mkDerivation {
     name = "font-misc-misc-1.1.2";
     builder = ./builder.sh;
     src = fetchurl {
@@ -455,13 +455,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "150pq6n8n984fah34n3k133kggn9v0c5k07igv29sxp1wi07krxq";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf fontutil mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig bdftopcf fontutil mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontmuttmisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontdir }: stdenv.mkDerivation {
+  fontmuttmisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontscale }: stdenv.mkDerivation {
     name = "font-mutt-misc-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -469,13 +469,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "13qghgr1zzpv64m0p42195k1kc77pksiv059fdvijz1n6kdplpxx";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ];
+    nativeBuildInputs = [ pkgconfig bdftopcf mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontschumachermisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontschumachermisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, fontutil, mkfontscale }: stdenv.mkDerivation {
     name = "font-schumacher-misc-1.1.2";
     builder = ./builder.sh;
     src = fetchurl {
@@ -483,13 +483,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "0nkym3n48b4v36y4s927bbkjnsmicajarnf6vlp7wxp0as304i74";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf fontutil mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig bdftopcf fontutil mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontscreencyrillic = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontdir }: stdenv.mkDerivation {
+  fontscreencyrillic = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontscale }: stdenv.mkDerivation {
     name = "font-screen-cyrillic-1.0.4";
     builder = ./builder.sh;
     src = fetchurl {
@@ -497,13 +497,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "0yayf1qlv7irf58nngddz2f1q04qkpr5jwp4aja2j5gyvzl32hl2";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ];
+    nativeBuildInputs = [ pkgconfig bdftopcf mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontsonymisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontdir }: stdenv.mkDerivation {
+  fontsonymisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontscale }: stdenv.mkDerivation {
     name = "font-sony-misc-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -511,13 +511,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "1xfgcx4gsgik5mkgkca31fj3w72jw9iw76qyrajrsz1lp8ka6hr0";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ];
+    nativeBuildInputs = [ pkgconfig bdftopcf mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontsunmisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontdir }: stdenv.mkDerivation {
+  fontsunmisc = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontscale }: stdenv.mkDerivation {
     name = "font-sun-misc-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -525,8 +525,8 @@ lib.makeScope newScope (self: with self; {
       sha256 = "1q6jcqrffg9q5f5raivzwx9ffvf7r11g6g0b125na1bhpz5ly7s8";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ];
+    nativeBuildInputs = [ pkgconfig bdftopcf mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
@@ -557,7 +557,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontwinitzkicyrillic = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontdir }: stdenv.mkDerivation {
+  fontwinitzkicyrillic = callPackage ({ stdenv, pkgconfig, fetchurl, bdftopcf, mkfontscale }: stdenv.mkDerivation {
     name = "font-winitzki-cyrillic-1.0.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -565,13 +565,13 @@ lib.makeScope newScope (self: with self; {
       sha256 = "181n1bgq8vxfxqicmy1jpm1hnr6gwn1kdhl6hr4frjigs1ikpldb";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ bdftopcf mkfontdir ];
+    nativeBuildInputs = [ pkgconfig bdftopcf mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  fontxfree86type1 = callPackage ({ stdenv, pkgconfig, fetchurl, mkfontdir, mkfontscale }: stdenv.mkDerivation {
+  fontxfree86type1 = callPackage ({ stdenv, pkgconfig, fetchurl, mkfontscale }: stdenv.mkDerivation {
     name = "font-xfree86-type1-1.0.4";
     builder = ./builder.sh;
     src = fetchurl {
@@ -579,8 +579,8 @@ lib.makeScope newScope (self: with self; {
       sha256 = "0jp3zc0qfdaqfkgzrb44vi9vi0a8ygb35wp082yz7rvvxhmg9sya";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ mkfontdir mkfontscale ];
+    nativeBuildInputs = [ pkgconfig mkfontscale ];
+    buildInputs = [ ];
     configureFlags = [ "--with-fontrootdir=$(out)/lib/X11/fonts" ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
@@ -936,7 +936,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  libXpm = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXext, xorgproto, libXt }: stdenv.mkDerivation {
+  libXpm = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXext, xorgproto, libXt, gettext }: stdenv.mkDerivation {
     name = "libXpm-3.5.12";
     builder = ./builder.sh;
     src = fetchurl {
@@ -944,7 +944,7 @@ lib.makeScope newScope (self: with self; {
       sha256 = "1v5xaiw4zlhxspvx76y3hq4wpxv7mpj6parqnwdqvpj8vbinsspx";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
+    nativeBuildInputs = [ pkgconfig gettext ];
     buildInputs = [ libX11 libXext xorgproto libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
@@ -1235,19 +1235,6 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  mkfontdir = callPackage ({ stdenv, pkgconfig, fetchurl }: stdenv.mkDerivation {
-    name = "mkfontdir-1.0.7";
-    builder = ./builder.sh;
-    src = fetchurl {
-      url = mirror://xorg/individual/app/mkfontdir-1.0.7.tar.bz2;
-      sha256 = "0c3563kw9fg15dpgx4dwvl12qz6sdqdns1pxa574hc7i5m42mman";
-    };
-    hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ ];
-    meta.platforms = stdenv.lib.platforms.unix;
-  }) {};
-
   mkfontscale = callPackage ({ stdenv, pkgconfig, fetchurl, libfontenc, freetype, xorgproto, zlib }: stdenv.mkDerivation {
     name = "mkfontscale-1.2.0";
     builder = ./builder.sh;
@@ -1261,7 +1248,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  oclock = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXext, libXmu, libXt }: stdenv.mkDerivation {
+  oclock = callPackage ({ stdenv, pkgconfig, fetchurl, libxkbfile, libX11, libXext, libXmu, libXt }: stdenv.mkDerivation {
     name = "oclock-1.0.4";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1270,7 +1257,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 libXext libXmu libXt ];
+    buildInputs = [ libxkbfile libX11 libXext libXmu libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -1443,7 +1430,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xcbutil = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb }: stdenv.mkDerivation {
+  xcbutil = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb, xorgproto }: stdenv.mkDerivation {
     name = "xcb-util-0.4.0";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1452,11 +1439,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ gperf m4 libxcb ];
+    buildInputs = [ gperf m4 libxcb xorgproto ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xcbutilcursor = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb, xcbutilimage, xcbutilrenderutil }: stdenv.mkDerivation {
+  xcbutilcursor = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb, xcbutilimage, xcbutilrenderutil, xorgproto }: stdenv.mkDerivation {
     name = "xcb-util-cursor-0.1.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1465,11 +1452,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ gperf m4 libxcb xcbutilimage xcbutilrenderutil ];
+    buildInputs = [ gperf m4 libxcb xcbutilimage xcbutilrenderutil xorgproto ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xcbutilerrors = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb, xcbproto }: stdenv.mkDerivation {
+  xcbutilerrors = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb, xcbproto, xorgproto }: stdenv.mkDerivation {
     name = "xcb-util-errors-1.0";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1478,7 +1465,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ gperf m4 libxcb xcbproto ];
+    buildInputs = [ gperf m4 libxcb xcbproto xorgproto ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -1508,7 +1495,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xcbutilrenderutil = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb }: stdenv.mkDerivation {
+  xcbutilrenderutil = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb, xorgproto }: stdenv.mkDerivation {
     name = "xcb-util-renderutil-0.3.9";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1517,11 +1504,11 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ gperf m4 libxcb ];
+    buildInputs = [ gperf m4 libxcb xorgproto ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xcbutilwm = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb }: stdenv.mkDerivation {
+  xcbutilwm = callPackage ({ stdenv, pkgconfig, fetchurl, gperf, m4, libxcb, xorgproto }: stdenv.mkDerivation {
     name = "xcb-util-wm-0.4.1";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1530,7 +1517,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ gperf m4 libxcb ];
+    buildInputs = [ gperf m4 libxcb xorgproto ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -1612,6 +1599,19 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
+  xditview = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXaw, libXmu, libXt }: stdenv.mkDerivation {
+    name = "xditview-1.0.5";
+    builder = ./builder.sh;
+    src = fetchurl {
+      url = mirror://xorg/individual/app/xditview-1.0.5.tar.bz2;
+      sha256 = "0jy0661nbd786kc3v6v7qlbrlydprx414va7akscgvdl3baixjzf";
+    };
+    hardeningDisable = [ "bindnow" "relro" ];
+    nativeBuildInputs = [ pkgconfig ];
+    buildInputs = [ libX11 libXaw libXmu libXt ];
+    meta.platforms = stdenv.lib.platforms.unix;
+  }) {};
+
   xdm = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXau, libXaw, libXdmcp, libXext, libXft, libXinerama, libXmu, libXpm, xorgproto, libXrender, libXt }: stdenv.mkDerivation {
     name = "xdm-1.1.12";
     builder = ./builder.sh;
@@ -1677,7 +1677,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86inputevdev = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, udev, xorgserver }: stdenv.mkDerivation {
+  xf86inputevdev = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libevdev, udev, mtdev, xorgserver }: stdenv.mkDerivation {
     name = "xf86-input-evdev-2.10.6";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1686,7 +1686,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgproto udev xorgserver ];
+    buildInputs = [ xorgproto libevdev udev mtdev xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -1716,7 +1716,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86inputlibinput = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, xorgserver }: stdenv.mkDerivation {
+  xf86inputlibinput = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libinput, xorgserver }: stdenv.mkDerivation {
     name = "xf86-input-libinput-0.28.2";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1725,7 +1725,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgproto xorgserver ];
+    buildInputs = [ xorgproto libinput xorgserver ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -1742,7 +1742,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86inputsynaptics = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libX11, libXi, xorgserver, libXtst }: stdenv.mkDerivation {
+  xf86inputsynaptics = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libevdev, libX11, libXi, xorgserver, libXtst }: stdenv.mkDerivation {
     name = "xf86-input-synaptics-1.9.1";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1751,7 +1751,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgproto libX11 libXi xorgserver libXtst ];
+    buildInputs = [ xorgproto libevdev libX11 libXi xorgserver libXtst ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -1963,7 +1963,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xf86videointel = callPackage ({ stdenv, pkgconfig, fetchurl, xorgproto, libdrm, libpng, udev, libpciaccess, libX11, xcbutil, libxcb, libXcursor, libXdamage, libXext, libXfixes, xorgserver, libXrandr, libXrender, libxshmfence, libXtst, libXvMC }: stdenv.mkDerivation {
+  xf86videointel = callPackage ({ stdenv, pkgconfig, fetchurl, cairo, xorgproto, libdrm, libpng, udev, libpciaccess, libX11, xcbutil, libxcb, libXcursor, libXdamage, libXext, libXfixes, xorgserver, libXrandr, libXrender, libxshmfence, libXtst, libXvMC }: stdenv.mkDerivation {
     name = "xf86-video-intel-2.99.917";
     builder = ./builder.sh;
     src = fetchurl {
@@ -1972,7 +1972,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ xorgproto libdrm libpng udev libpciaccess libX11 xcbutil libxcb libXcursor libXdamage libXext libXfixes xorgserver libXrandr libXrender libxshmfence libXtst libXvMC ];
+    buildInputs = [ cairo xorgproto libdrm libpng udev libpciaccess libX11 xcbutil libxcb libXcursor libXdamage libXext libXfixes xorgserver libXrandr libXrender libxshmfence libXtst libXvMC ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -2353,6 +2353,19 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
+  xfd = callPackage ({ stdenv, pkgconfig, fetchurl, libxkbfile, fontconfig, libXaw, libXft, libXmu, xorgproto, libXrender, libXt, gettext }: stdenv.mkDerivation {
+    name = "xfd-1.1.3";
+    builder = ./builder.sh;
+    src = fetchurl {
+      url = mirror://xorg/individual/app/xfd-1.1.3.tar.bz2;
+      sha256 = "0n6r1v8sm0z0ycqch035xpm46nv5v4mav3kxh36883l3ln5r6bqr";
+    };
+    hardeningDisable = [ "bindnow" "relro" ];
+    nativeBuildInputs = [ pkgconfig gettext ];
+    buildInputs = [ libxkbfile fontconfig libXaw libXft libXmu xorgproto libXrender libXt ];
+    meta.platforms = stdenv.lib.platforms.unix;
+  }) {};
+
   xfontsel = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXaw, libXmu, libXt }: stdenv.mkDerivation {
     name = "xfontsel-1.0.6";
     builder = ./builder.sh;
@@ -2535,7 +2548,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xload = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXaw, libXmu, xorgproto, libXt }: stdenv.mkDerivation {
+  xload = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, libXaw, libXmu, xorgproto, libXt, gettext }: stdenv.mkDerivation {
     name = "xload-1.1.3";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2543,8 +2556,21 @@ lib.makeScope newScope (self: with self; {
       sha256 = "01sr6yd6yhyyfgn88l867w6h9dn5ikcynaz5rwji6xqxhw1lhkpk";
     };
     hardeningDisable = [ "bindnow" "relro" ];
-    nativeBuildInputs = [ pkgconfig ];
+    nativeBuildInputs = [ pkgconfig gettext ];
     buildInputs = [ libX11 libXaw libXmu xorgproto libXt ];
+    meta.platforms = stdenv.lib.platforms.unix;
+  }) {};
+
+  xlogo = callPackage ({ stdenv, pkgconfig, fetchurl, libXt }: stdenv.mkDerivation {
+    name = "xlogo-1.0.5";
+    builder = ./builder.sh;
+    src = fetchurl {
+      url = mirror://xorg/individual/app/xlogo-1.0.5.tar.bz2;
+      sha256 = "13ip1z1mvlgwahz5jh5sl2qilx34jrwyah5p8gkf8qfzllx7lgb3";
+    };
+    hardeningDisable = [ "bindnow" "relro" ];
+    nativeBuildInputs = [ pkgconfig ];
+    buildInputs = [ libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -2623,6 +2649,19 @@ lib.makeScope newScope (self: with self; {
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
     buildInputs = [ libX11 xorgproto ];
+    meta.platforms = stdenv.lib.platforms.unix;
+  }) {};
+
+  xmore = callPackage ({ stdenv, pkgconfig, fetchurl, libXaw, libXt }: stdenv.mkDerivation {
+    name = "xmore-1.0.3";
+    builder = ./builder.sh;
+    src = fetchurl {
+      url = mirror://xorg/individual/app/xmore-1.0.3.tar.bz2;
+      sha256 = "06r514p30v87vx00ddlck9mwazaqk9bx08ip866p1mw2a46iwjk4";
+    };
+    hardeningDisable = [ "bindnow" "relro" ];
+    nativeBuildInputs = [ pkgconfig ];
+    buildInputs = [ libXaw libXt ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
@@ -2847,7 +2886,7 @@ lib.makeScope newScope (self: with self; {
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
-  xwd = callPackage ({ stdenv, pkgconfig, fetchurl, libX11, xorgproto }: stdenv.mkDerivation {
+  xwd = callPackage ({ stdenv, pkgconfig, fetchurl, libxkbfile, libX11, xorgproto }: stdenv.mkDerivation {
     name = "xwd-1.0.7";
     builder = ./builder.sh;
     src = fetchurl {
@@ -2856,7 +2895,7 @@ lib.makeScope newScope (self: with self; {
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkgconfig ];
-    buildInputs = [ libX11 xorgproto ];
+    buildInputs = [ libxkbfile libX11 xorgproto ];
     meta.platforms = stdenv.lib.platforms.unix;
   }) {};
 
