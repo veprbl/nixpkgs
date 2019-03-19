@@ -2890,6 +2890,11 @@
     github = "mathnerd314";
     name = "Mathnerd314";
   };
+  matklad = {
+    email = "aleksey.kladov@gmail.com";
+    github = "matklad";
+    name = "matklad";
+  };
   matthewbauer = {
     email = "mjbauer95@gmail.com";
     github = "matthewbauer";

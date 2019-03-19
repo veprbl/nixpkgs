@@ -3687,6 +3687,8 @@ in
 
   jsduck = callPackage ../development/tools/jsduck { };
 
+  jumpapp = callPackage ../tools/X11/jumpapp {};
+
   jucipp = callPackage ../applications/editors/jucipp { };
 
   jupp = callPackage ../applications/editors/jupp { };

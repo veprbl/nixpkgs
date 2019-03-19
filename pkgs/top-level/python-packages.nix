@@ -997,8 +997,6 @@ in {
 
   astor = callPackage ../development/python-modules/astor {};
 
-  asyncio = callPackage ../development/python-modules/asyncio {};
-
   asyncssh = callPackage ../development/python-modules/asyncssh { };
 
   python-fontconfig = callPackage ../development/python-modules/python-fontconfig { };
@@ -1323,9 +1321,10 @@ in {
   canmatrix = callPackage ../development/python-modules/canmatrix {};
 
 
-  cairocffi = let
-    inherit (callPackage ../development/python-modules/cairocffi {}) cairocffi_1_0 cairocffi_0_9;
-  in if isPy3k then cairocffi_1_0 else cairocffi_0_9;
+  cairocffi = if isPy3k then
+    callPackage ../development/python-modules/cairocffi {}
+  else
+    callPackage ../development/python-modules/cairocffi/0_9.nix {};
 
   cairosvg = if isPy3k then
     callPackage ../development/python-modules/cairosvg {}
