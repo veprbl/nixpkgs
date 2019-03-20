@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub
-, cmake
+, cmake, ninja
 , python3, which, swig
 , libxml2, libffi, libbfd
 , libedit
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
     sha256 = "052h16wjcnqginzp7ki4il2xmm25v9nyk0wcz7cg03gbryhl7aqa";
   };
 
-  nativeBuildInputs = [ cmake python3 which swig ];
+  nativeBuildInputs = [ cmake ninja python3 which swig ];
 
   buildInputs = [ libxml2 libffi libbfd libedit ];
   propagatedBuildInputs = [ ncurses zlib ];
