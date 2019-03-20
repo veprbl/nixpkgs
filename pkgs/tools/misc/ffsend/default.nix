@@ -15,7 +15,7 @@ buildRustPackage rec {
     sha256 = "1kxxcqyilbhzcsnddlf7ha3dd57qj82yvbb9jsssimnlcskx84hx";
   };
 
-  cargoSha256 = "04gcsjjn4fnc5q0z6jbyd439x4hylyfl912245wmpjchm0k2k22b";
+  cargoSha256 = "1qxvm2pz01na6nijdn0hlv5hxshiz3pfy6km7n9hjyakwi684a0l";
 
   # Note: On Linux, the clipboard feature requires `xclip` to be in the `PATH`. Ideally we'd
   # depend on `xclip` and patch the source to run `xclip` from the Nix store instead of from `PATH`.
