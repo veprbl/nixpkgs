@@ -6,11 +6,12 @@
 assert enablePython -> python != null;
 
 stdenv.mkDerivation rec {
-  name = "audit-2.8.4";
+  pname = "audit";
+  version = "2.8.5";
 
   src = fetchurl {
-    url = "https://people.redhat.com/sgrubb/audit/${name}.tar.gz";
-    sha256 = "0f4ci6ffznnmgblwgv7ich9mjfk3p6y5l6m6h3chhmzw156nj454";
+    url = "https://people.redhat.com/sgrubb/${pname}/${pname}-${version}.tar.gz";
+    sha256 = "1dzcwb2q78q7x41shcachn7f4aksxbxd470yk38zh03fch1l2p8f";
   };
 
   outputs = [ "bin" "dev" "out" "man" ];
@@ -27,22 +28,13 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  patches = stdenv.lib.optional stdenv.hostPlatform.isMusl [
+  patches = [
     (fetchpatch {
-      url = "https://git.alpinelinux.org/cgit/aports/plain/main/audit/0002-auparse-remove-use-of-rawmemchr.patch?id=3e57180fdf3f90c30a25aea44f57846efc93a696";
-      name = "0002-auparse-remove-use-of-rawmemchr.patch";
-      sha256 = "1caaqbfgb2rq3ria5bz4n8x30ihgihln6w9w9a46k62ba0wh9rkz";
-    })
-    (fetchpatch {
-      url = "https://git.alpinelinux.org/cgit/aports/plain/main/audit/0003-all-get-rid-of-strndupa.patch?id=3e57180fdf3f90c30a25aea44f57846efc93a696";
-      name = "0003-all-get-rid-of-strndupa.patch";
-      sha256 = "1ddrm6a0ijrf7caw1wpw2kkbjp2lkxkmc16v51j5j7dvdalc6591";
+      url = "https://github.com/linux-audit/audit-userspace/commit/d579a08bb1cde71f939c13ac6b2261052ae9f77e.patch";
+      sha256 = "015bvzflg1s1k5viap30nznlpjj44a66khyc8yq0waa68qwvdlsd";
     })
   ];
 
-  prePatch = ''
-    sed -i 's,#include <sys/poll.h>,#include <poll.h>\n#include <limits.h>,' audisp/audispd.c
-  '';
   meta = {
     description = "Audit Library";
     homepage = https://people.redhat.com/sgrubb/audit/;
