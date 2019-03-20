@@ -36050,15 +36050,6 @@ let
         sha1 = "82ac2bff63d950ea9e3189a58a65625fedf19045";
       };
     };
-    "w3c-hr-time-1.0.1" = {
-      name = "w3c-hr-time";
-      packageName = "w3c-hr-time";
-      version = "1.0.1";
-      src = fetchurl {
-        url = "https://registry.npmjs.org/w3c-hr-time/-/w3c-hr-time-1.0.1.tgz";
-        sha1 = "82ac2bff63d950ea9e3189a58a65625fedf19045";
-      };
-    };
     "walk-2.3.14" = {
       name = "walk";
       packageName = "walk";
