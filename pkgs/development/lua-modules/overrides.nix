@@ -10,9 +10,12 @@ with super;
     buildInputs = with pkgs; oa.buildInputs ++ [ glib gobjectIntrospection];
     patches = [
         (pkgs.fetchpatch {
-            name = "lgi-find-cairo-through-typelib.patch";
-            url = "https://github.com/psychon/lgi/commit/46a163d9925e7877faf8a4f73996a20d7cf9202a.patch";
-            sha256 = "0gfvvbri9kyzhvq3bvdbj2l6mwvlz040dk4mrd5m9gz79f7w109c";
+            name = "0.9.2-to-latest.patch";
+            url = "https://github.com/pavouk/lgi/compare/0.9.2..759134a2ce6fbb2a0d8913ae09fb66ffc3818f0a.diff";
+            sha256 = "1r37a3psj6qw0pxv6zrmniiy5rpkdgd6ifp5jwmm8nwf9x9qg677";
+#            name = "lgi-find-cairo-through-typelib.patch";
+#            url = "https://github.com/psychon/lgi/commit/46a163d9925e7877faf8a4f73996a20d7cf9202a.patch";
+#            sha256 = "0gfvvbri9kyzhvq3bvdbj2l6mwvlz040dk4mrd5m9gz79f7w109c";
         })
     ];
   });
