@@ -2,7 +2,7 @@
 , hicolor-icon-theme, glib, libhandy, gtk3, libsecret, gspell, dbus, openssl, sqlite, gst_all_1, wrapGAppsHook }:
 
 rustPlatform.buildRustPackage rec {
-  version = "4.0.0"; # not really
+  version = "4.0.0.0.1"; # not really
   name = "fractal-${version}";
 
   src = fetchFromGitLab {
@@ -10,8 +10,11 @@ rustPlatform.buildRustPackage rec {
     owner = "GNOME";
     repo = "fractal";
     #rev = version;
-    rev = "79f02009d5063ee28408c365dba58ca35f0143b6";
-    sha256 = "0sfhj5j8pa47d0qchb04dks41q53r4l1pxlvqb7c1a66lzcy78wy";
+    # newer needs rust 2018 support, cargo-vendor 1.23, etc.
+    #rev = "79f02009d5063ee28408c365dba58ca35f0143b6";
+    #sha256 = "0sfhj5j8pa47d0qchb04dks41q53r4l1pxlvqb7c1a66lzcy78wy";
+    rev = "4205a6a980118e29bf060bac985127e87a72150f";
+    sha256 = "1avblcvn039vjyhrjrv98dpb1slag37bvpiim7rpm5clxnijsp25";
   };
 
   nativeBuildInputs = [
@@ -36,7 +39,7 @@ rustPlatform.buildRustPackage rec {
   checkPhase = null;
   installPhase = null;
 
-  cargoSha256 = "15v4nynfjp6lpa9vhsrb55ywr6j5ibrambmqr5qlmwbmn4i3861p";
+  cargoSha256 = "0hlvdcdzkggc2adggmlxz0yxigwp3320wfav77gddlvfip1f90sw";
 
   meta = with stdenv.lib; {
     description = "Matrix group messaging app";
