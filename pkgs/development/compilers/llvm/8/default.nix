@@ -28,6 +28,7 @@ let
     '';
   in {
 
+    all = callPackage ./all.nix { };
     llvm = callPackage ./llvm.nix { };
     llvm-polly = callPackage ./llvm.nix { enablePolly = true; };
 
