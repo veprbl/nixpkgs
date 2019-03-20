@@ -1,7 +1,8 @@
 { stdenv, fetchFromGitHub
 , cmake
-, python3
+, python3, which, swig
 , libxml2, libffi, libbfd
+, libedit
 , ncurses, zlib
  }:
 
@@ -16,9 +17,9 @@ stdenv.mkDerivation rec {
     sha256 = "052h16wjcnqginzp7ki4il2xmm25v9nyk0wcz7cg03gbryhl7aqa";
   };
 
-  nativeBuildInputs = [ cmake python3 ];
+  nativeBuildInputs = [ cmake python3 which swig ];
 
-  buildInputs = [ libxml2 libffi libbfd ];
+  buildInputs = [ libxml2 libffi libbfd libedit ];
   propagatedBuildInputs = [ ncurses zlib ];
 
   preConfigure = "cd llvm";
