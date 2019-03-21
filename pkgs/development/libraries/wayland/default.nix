@@ -7,12 +7,12 @@
 assert expat != null;
 
 stdenv.mkDerivation rec {
-  pname = "wayland";
-  version = "1.17.0";
+  name = "wayland-${version}";
+  version = "1.16.0";
 
   src = fetchurl {
-    url = "https://wayland.freedesktop.org/releases/${pname}-${version}.tar.xz";
-    sha256 = "194ibzwpdcn6fvk4xngr4bf5axpciwg2bj82fdvz88kfmjw13akj";
+    url = "https://wayland.freedesktop.org/releases/${name}.tar.xz";
+    sha256 = "1xajhxad43izq9f7sbww1hlg42nayijy8xnp21kgpk09c6sw4wjf";
   };
 
   separateDebugInfo = true;
