@@ -1,13 +1,6 @@
-{ stdenv, fetchgit, autoreconfHook, pkgconfig, coreutils, readline80, python3Packages }:
+{ stdenv, fetchgit, autoreconfHook, pkgconfig, ell, coreutils, readline80, python3Packages }:
 
-let
-  ell = fetchgit {
-     url = https://git.kernel.org/pub/scm/libs/ell/ell.git;
-     #rev = "0.17";
-     rev = "cc3f62b13d03e9256197cb418401a4552f023c96"; # 2019-03-21
-     sha256 = "0wnwqr2r10dzd31xbyi8xnpmxdc8x36vg4pc6xjnh6imz1gmg0vc";
-  };
-in stdenv.mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "iwd";
 
   #version = "0.14";
@@ -27,6 +20,7 @@ in stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
+    ell
     readline80
     python3Packages.python
   ];
@@ -43,10 +37,10 @@ in stdenv.mkDerivation rec {
     "--with-systemd-modloaddir=${placeholder "out"}/etc/modules-load.d/" # maybe
     "--localstatedir=/var/"
     "--enable-wired"
+    "--enable-external-ell"
   ];
 
   postUnpack = ''
-    ln -s ${ell} ell
     patchShebangs .
   '';
 
