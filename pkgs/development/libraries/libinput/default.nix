@@ -2,12 +2,12 @@
 , libevdev, mtdev, udev, libwacom
 , documentationSupport ? false, doxygen ? null, graphviz ? null # Documentation
 , eventGUISupport ? false, cairo ? null, glib ? null, gtk3 ? null # GUI event viewer support
-, testsSupport ? false, check ? null, valgrind ? null, python3 ? null
+, testsSupport ? true, check ? null, python3 ? null
 }:
 
 assert documentationSupport -> doxygen != null && graphviz != null && python3 != null;
 assert eventGUISupport -> cairo != null && glib != null && gtk3 != null;
-assert testsSupport -> check != null && valgrind != null && python3 != null;
+assert testsSupport -> check != null && python3 != null;
 
 let
   mkFlag = optSet: flag: "-D${flag}=${stdenv.lib.boolToString optSet}";
@@ -27,11 +27,11 @@ in
 with stdenv.lib;
 stdenv.mkDerivation rec {
   name = "libinput-${version}";
-  version = "1.12.6";
+  version = "1.12.902"; # 13rc2
 
   src = fetchurl {
     url = "https://www.freedesktop.org/software/libinput/${name}.tar.xz";
-    sha256 = "0pgla0mc6mvyr1ljy10mcqvfz8i5z6yp7dbx2bcd70y67wx05d0j";
+    sha256 = "1mvbwr15xzl7am7h5ckmqsbl470f5x5fl15ypjyblcs40cl0008d";
   };
 
   outputs = [ "bin" "out" "dev" ];
@@ -44,8 +44,7 @@ stdenv.mkDerivation rec {
   ];
 
   nativeBuildInputs = [ pkgconfig meson ninja ]
-    ++ optionals documentationSupport [ doxygen graphviz sphinx-build ]
-    ++ optionals testsSupport [ valgrind ];
+    ++ optionals documentationSupport [ doxygen graphviz sphinx-build ];
 
   buildInputs = [ libevdev mtdev libwacom (python3.withPackages (pkgs: with pkgs; [ evdev ])) ]
     ++ optionals eventGUISupport [ cairo glib gtk3 ]
@@ -56,7 +55,7 @@ stdenv.mkDerivation rec {
   patches = [ ./udev-absolute-path.patch ];
 
   postPatch = ''
-    patchShebangs tools/helper-copy-and-exec-from-tmp.sh
+    patchShebangs test/helper-copy-and-exec-from-tmp.sh
     patchShebangs test/symbols-leak-test
     patchShebangs test/check-leftover-udev-rules.sh
   '';
