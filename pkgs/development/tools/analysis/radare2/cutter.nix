@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
     owner = "radareorg";
     repo = "cutter";
     rev = "v${version}";
-    sha256 = "015cjyq27p1j8vmdmm2micwp5pwvzsbr5dyjc6m2z87fzxrnx164";
+    sha256 = "1z3lpzl7k3qn5xabi0qxl83rdbwi00h45blnljx8yfw0am5vfphc";
   };
 
   postUnpack = "export sourceRoot=$sourceRoot/src";
