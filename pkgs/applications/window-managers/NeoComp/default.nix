@@ -50,8 +50,18 @@ stdenv.mkDerivation rec {
   makeFlags = [
     "PREFIX=${placeholder "out"}"
     "CFGDIR=${placeholder "out"}/etc/xdg/neocomp"
+    "ASTDIR=${placeholder "out"}/share/neocomp/assets"
     "COMPTON_VERSION=${version}"
   ];
+
+  postPatch = ''
+    substituteInPlace src/compton.c --replace \
+      'assets_add_path("./assets/");' \
+      'assets_add_path("${placeholder "out"}/share/neocomp/assets/");'
+    substituteInPlace src/assets/assets.c --replace \
+      '#define MAX_PATH_LENGTH 64' \
+      '#define MAX_PATH_LENGTH 128'
+  '';
 
   meta = with stdenv.lib; {
     homepage        = https://github.com/DelusionalLogic/NeoComp;
