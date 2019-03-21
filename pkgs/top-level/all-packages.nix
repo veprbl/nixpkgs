@@ -18568,6 +18568,8 @@ in
 
   natron = callPackage ../applications/video/natron { };
 
+  NeoComp = callPackage ../applications/window-managers/NeoComp { };
+
   nicotine-plus = callPackage ../applications/networking/soulseek/nicotine-plus {
     geoip = geoipWithDatabase;
   };
