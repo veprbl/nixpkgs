@@ -10,8 +10,9 @@ python3.pkgs.buildPythonApplication rec {
   src = fetchFromGitHub {
     owner = "papis";
     repo = pname;
-    rev = "v${version}";
-    sha256 = "0sa4hpgjvqkjcmp9bjr27b5m5jg4pfspdc8nf1ny80sr0kzn72hb";
+    #rev = "v${version}";
+    rev = "88bc570d34e9763e2582a3b6759676e1e6792ebf";
+    sha256 = "0mmi2kv961r60cr1nvymcnnlnlxz8fnssr1909pjyv6r4lrqvgql";
   };
 
   propagatedBuildInputs = with python3.pkgs; [
