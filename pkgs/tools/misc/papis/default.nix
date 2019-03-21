@@ -29,10 +29,21 @@ python3.pkgs.buildPythonApplication rec {
     xdg_utils
   ];
 
+  patches = [
+    (fetchpatch {
+      url = "https://github.com/papis/papis/pull/145.patch";
+      sha256 = "13y0rr31zww7zcvx33wm4js45jlq5rcmrpcnhd0gzv847f7w1ax8";
+    })
+  ];
+
   # most of the downloader tests and 4 other tests require a network connection
   checkPhase = ''
     HOME=$(mktemp -d) pytest papis tests --ignore tests/downloaders \
       -k "not test_get_data and not test_doi_to_data and not test_general and not get_document_url"
+  '';
+
+  postInstall = ''
+    install -D "scripts/shell_completion/click/papis.zsh" $out/share/zsh/site-functions/_papis
   '';
 
   meta = {
