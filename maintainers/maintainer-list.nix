@@ -1304,7 +1304,7 @@
     name = "Tim Dysinger";
   };
   dywedir = {
-    email = "dywedir@protonmail.ch";
+    email = "dywedir@gra.red";
     github = "dywedir";
     name = "Vladyslav M.";
   };
