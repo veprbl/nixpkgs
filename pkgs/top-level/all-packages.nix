@@ -2270,6 +2270,8 @@ in
 
   darkstat = callPackage ../tools/networking/darkstat { };
 
+  dav1d = callPackage ../development/libraries/dav1d { };
+
   davfs2 = callPackage ../tools/filesystems/davfs2 { };
 
   dbeaver = callPackage ../applications/misc/dbeaver { };
