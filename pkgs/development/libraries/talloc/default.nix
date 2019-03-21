@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
     #"--enable-talloc-compat1"
     "--bundled-libraries=NONE"
     "--builtin-libraries=replace"
-    "--disable-python"
+    #"--disable-python"
   ] ++ stdenv.lib.optionals (stdenv.hostPlatform != stdenv.buildPlatform) [
     "--cross-compile"
     "--cross-execute=${stdenv.hostPlatform.emulator buildPackages}"
