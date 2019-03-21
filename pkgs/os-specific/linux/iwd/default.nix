@@ -4,8 +4,8 @@ let
   ell = fetchgit {
      url = https://git.kernel.org/pub/scm/libs/ell/ell.git;
      #rev = "0.17";
-     rev = "a3f0cb55a4d1c1025a33f15e5fe23bafcc9ebf85"; # 2019-03-19
-     sha256 = "0dfhgp65n2g8nkyrr246rsrq134s39scnkyp31l751zb9sazbxji";
+     rev = "696c8eac917efcb3211c751a2c25d6e93e5294f4"; # 2019-03-20
+     sha256 = "0pdh0pzqr074clii83ayvy4d3l4ykjn11gvwz8ny8abn96dl62l1";
   };
 in stdenv.mkDerivation rec {
   pname = "iwd";
