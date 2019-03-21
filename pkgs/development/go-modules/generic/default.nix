@@ -36,7 +36,7 @@ let
   go-modules = go.stdenv.mkDerivation {
     name = "${name}-go-modules";
 
-    nativeBuildInputs = [ go git ];
+    nativeBuildInputs = [ go git cacert ];
 
     inherit (args) src;
     inherit (go) GOOS GOARCH;
@@ -44,14 +44,6 @@ let
     patches = args.patches or [];
 
     GO111MODULE = "on";
-
-    # XXX: Add support for other fetchers, such as hg, bzr and alike.
-    GIT_SSL_CAINFO = "${cacert}/etc/ssl/certs/ca-bundle.crt";
-
-    # Instruct Go where to find the cacert.
-    # NIX_SSL_CERT_FILE is added to the Go compiler through the patch
-    # pkgs/development/compilers/go/ssl-cert-file-1.12.1.patch.
-    NIX_SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
 
     impureEnvVars = lib.fetchers.proxyImpureEnvVars ++ [
       "GIT_PROXY_COMMAND" "SOCKS_SERVER"

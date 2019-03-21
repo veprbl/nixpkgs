@@ -1,11 +1,16 @@
 { stdenv, fetchFromGitLab, rustPlatform, cmake, pkgconfig, openssl
 , darwin
+
+, x11Support ? stdenv.isLinux
+, xclip ? null
 }:
+
+assert x11Support -> xclip != null;
 
 with rustPlatform;
 
 buildRustPackage rec {
-  pname = "ffsend";
+  name = "ffsend-${version}";
   version = "0.2.38";
 
   src = fetchFromGitLab {
@@ -17,23 +22,21 @@ buildRustPackage rec {
 
   cargoSha256 = "1qxvm2pz01na6nijdn0hlv5hxshiz3pfy6km7n9hjyakwi684a0l";
 
-  # Note: On Linux, the clipboard feature requires `xclip` to be in the `PATH`. Ideally we'd
-  # depend on `xclip` and patch the source to run `xclip` from the Nix store instead of from `PATH`.
-  # However, as I use macOS and not Linux, I'm not inclined to maintain a patch like that, nor do I
-  # have a means to test it. To that end, we'll just leave the clipboard feature enabled and
-  # trust that users that want to copy links to their clipboard will install `xclip` into their
-  # profile.
-
   nativeBuildInputs = [ cmake pkgconfig ];
   buildInputs = [ openssl ]
   ++ stdenv.lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ CoreFoundation CoreServices Security AppKit ])
   ;
 
+  preBuild = if x11Support then ''
+    export XCLIP_PATH="${xclip}/bin/xclip"
+  '' else null;
+
   postInstall = ''
-    install -DTm755 {contrib/completions,$out/share/zsh/site-functions}/_ffsend
-    install -DTm755 {contrib/completions,$out/share/bash-completion/completions}/ffsend.bash
-    install -DTm755 {contrib/completions,$out/etc/fish/completions}/ffsend.fish
+    install -Dm644 contrib/completions/_ffsend "$out/share/zsh/site-functions/_ffsend"
+    install -Dm644 contrib/completions/ffsend.bash "$out/share/bash-completion/completions/ffsend.bash"
+    install -Dm644 contrib/completions/ffsend.fish "$out/share/fish/vendor_completions.d/ffsend.fish"
   '';
+  # There's also .elv and .ps1 completion files but I don't know where to install those
 
   meta = with stdenv.lib; {
     description = "Easily and securely share files from the command line. A fully featured Firefox Send client";
