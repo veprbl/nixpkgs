@@ -20446,7 +20446,7 @@ in
 
   inherit (xorg) xcompmgr;
 
-  inherit (callPackage ../applications/window-managers/compton { stdenv = gcc8Stdenv; }) compton-old compton-git neocomp;
+  inherit (callPackage ../applications/window-managers/compton { stdenv = gcc8Stdenv; }) compton-old compton-git;
   compton = compton-git;
 
   xdaliclock = callPackage ../tools/misc/xdaliclock {};

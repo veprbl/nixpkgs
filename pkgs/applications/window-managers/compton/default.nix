@@ -110,41 +110,7 @@ let
       homepage = https://github.com/yshui/compton/;
     };
   };
-
-  neocomp = stdenv.mkDerivation rec {
-    pname = "neocomp";
-    version = "2019-03-09";
-
-    COMPTON_VERSION = version;
-
-    src = fetchFromGitHub {
-      owner = "delusionallogic";
-      repo = pname;
-      rev = "e1c1a5d2d43668e6937421ecacb50a1d4585ce15";
-      sha256 = "1b3nrl3i76gd3zbkggis31zihpk509afmdx8q6byyvnl1wq5v4dx";
-    };
-
-    nativeBuildInputs = [
-      pkgconfig
-      asciidoc
-      docbook_xml_dtd_45
-      docbook_xsl
-      makeWrapper
-    ];
-    buildInputs = stableSource.buildInputs ++ gitSource.buildInputs # lol
-    ++ [ freetype judy ];
-
-    makeFlags = [
-      "DESTDIR=${placeholder "out"}"
-      "PREFIX="
-    ];
-    meta = with stdenv.lib; {
-      description = "neocomp";
-      # TODO
-    };
-  };
 in {
   compton-old = common stableSource;
   compton-git = common gitSource;
-  inherit neocomp;
 }
