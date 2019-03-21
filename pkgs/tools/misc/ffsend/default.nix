@@ -15,7 +15,7 @@ buildRustPackage rec {
 
   src = fetchFromGitLab {
     owner = "timvisee";
-    repo = pname;
+    repo = "ffsend";
     rev = "v${version}";
     sha256 = "1kxxcqyilbhzcsnddlf7ha3dd57qj82yvbb9jsssimnlcskx84hx";
   };
