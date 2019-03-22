@@ -14061,7 +14061,7 @@ in
 
   miniflux = callPackage ../servers/miniflux {
     # XXX: bettercap is failing with Go 1.12.
-    buildGoPackage = buildGo111Package;
+    buildGoModule = buildGo111Module;
   };
 
   nagios = callPackage ../servers/monitoring/nagios { };
