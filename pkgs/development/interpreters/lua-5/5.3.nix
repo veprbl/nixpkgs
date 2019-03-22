@@ -22,7 +22,8 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ readline ];
 
-  patches = if stdenv.isDarwin then [ ./5.2.darwin.patch ] else [];
+  patches = stdenv.lib.optional stdenv.isDarwin ./5.2.darwin.patch
+    ++ stdenv.lib.optional stdenv.hostPlatform.isMusl ./smaller-maxstack.patch;
 
   configurePhase =
     if stdenv.isDarwin
