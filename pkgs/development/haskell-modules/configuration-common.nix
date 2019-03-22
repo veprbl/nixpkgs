@@ -1244,9 +1244,9 @@ self: super: {
 
   bytestring-show = doJailbreak super.bytestring-show;
 
-  #hslua =
-  #  if pkgs.stdenv.hostPlatform.isMusl
-  #  then appendConfigureFlag super.hslua "--ghc-option=-optl=-Wl,-z,stack-size=1048576"
-  #  else super.hslua;
+  hslua =
+    if pkgs.stdenv.hostPlatform.isMusl
+    then appendConfigureFlag super.hslua "--ghc-option=-optl=-Wl,-z,stack-size=1048576"
+    else super.hslua;
 
 } // import ./configuration-tensorflow.nix {inherit pkgs haskellLib;} self super
