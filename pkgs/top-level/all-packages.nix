@@ -2450,6 +2450,8 @@ in
 
   duo-unix = callPackage ../tools/security/duo-unix { };
 
+  duplicacy = callPackage ../tools/backup/duplicacy { };
+  
   duplicati = callPackage ../tools/backup/duplicati { };
 
   duplicity = callPackage ../tools/backup/duplicity {
@@ -17925,6 +17927,8 @@ in
   i3-wk-switch = callPackage ../applications/window-managers/i3/wk-switch.nix { };
 
   wmfocus = callPackage ../applications/window-managers/i3/wmfocus.nix { };
+
+  wmfs = callPackage ../applications/window-managers/wmfs/default.nix { };
 
   i810switch = callPackage ../os-specific/linux/i810switch { };
 

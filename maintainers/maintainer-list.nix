@@ -1593,6 +1593,11 @@
     github = "fdns";
     name = "Felipe Espinoza";
   };
+  ffinkdevs = {
+    email = "fink@h0st.space";
+    github = "ffinkdevs";
+    name = "Fabian Fink";
+  };
   fgaz = {
     email = "fgaz@fgaz.me";
     github = "fgaz";
