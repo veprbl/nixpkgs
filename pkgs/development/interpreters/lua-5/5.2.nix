@@ -30,7 +30,8 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ readline ];
 
-  patches = if stdenv.isDarwin then [ ./5.2.darwin.patch ] else [ dsoPatch ];
+  patches = if stdenv.isDarwin then [ ./5.2.darwin.patch ] else [ dsoPatch ]
+    ++ stdenv.lib.optional stdenv.hostPlatform.isMusl ./smaller-maxstack.patch;
 
 
   passthru = rec {
