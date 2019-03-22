@@ -1,7 +1,7 @@
 From 9241a33e3fe9c05448a6e55ef7602148d6cdbb57 Mon Sep 17 00:00:00 2001
 From: Will Dietz <w@wdtz.org>
 Date: Fri, 22 Mar 2019 05:02:03 -0500
-Subject: [PATCH] use smaller max stack size w/musl (1M -> 100K)
+Subject: [PATCH] use smaller max stack size w/musl (1M -> 10K)
 
 ---
  luaconf.h | 2 +-
@@ -16,7 +16,7 @@ index 118f997a..943d6c54 100644
  */
  #if LUAI_BITSINT >= 32
 -#define LUAI_MAXSTACK		1000000
-+#define LUAI_MAXSTACK		100000
++#define LUAI_MAXSTACK		10000
  #else
  #define LUAI_MAXSTACK		15000
  #endif
