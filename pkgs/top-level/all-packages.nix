@@ -14059,10 +14059,7 @@ in
 
   mysql_jdbc = callPackage ../servers/sql/mysql/jdbc { };
 
-  miniflux = callPackage ../servers/miniflux {
-    # XXX: bettercap is failing with Go 1.12.
-    buildGoPackage = buildGo111Package;
-  };
+  miniflux = callPackage ../servers/miniflux { };
 
   nagios = callPackage ../servers/monitoring/nagios { };
 
