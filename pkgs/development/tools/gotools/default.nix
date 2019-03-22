@@ -13,7 +13,7 @@ buildGoModule rec {
 
   modSha256 = "00yjcs26cm5civ96sikbd3wjmhx153xbyd805s3shca1mg99y7mm";
 
-  preConfigure = ''
+  postConfigure = ''
     # Make the builtin tools available here
 
     mkdir -p $out/bin
