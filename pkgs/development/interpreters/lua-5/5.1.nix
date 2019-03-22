@@ -29,8 +29,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ readline ];
 
   patches = (if stdenv.isDarwin then [ ./5.1.darwin.patch ] else [ dsoPatch ])
-    ++ [ ./5.1.0004-Fix-stack-overflow-in-vararg-functions.patch ]
-    ++ stdenv.lib.optional stdenv.hostPlatform.isMusl ./smaller-maxstack.patch;
+    ++ [ ./5.1.0004-Fix-stack-overflow-in-vararg-functions.patch ];
 
   configurePhase =
     if stdenv.isDarwin
