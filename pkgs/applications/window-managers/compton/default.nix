@@ -75,8 +75,8 @@ let
       owner  = "yshui";
       repo   = "compton";
       #rev    = COMPTON_VERSION;
-      rev    = "e6df5ded7ea6d9251277c9b535687aa3deb3791e"; # dev
-      sha256 = "1a54gyfb5d9yc7frvihk9v4cy8zvv881rxa03pbmcypqmzwqv07a";
+      rev    = "dd52c26f37bda83e27663c0bc29de82969fb882c"; # dev
+      sha256 = "014piz917b0cgy048wb0bvqh27v9qz0r5qzfikm0mcp1qg2hj973";
     };
 
     buildInputs = [
