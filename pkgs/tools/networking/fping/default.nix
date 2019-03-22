@@ -1,11 +1,10 @@
 { stdenv, fetchurl }:
 
 stdenv.mkDerivation rec {
-  pname = "fping";
-  version = "4.2";
+  name = "fping-4.2";
 
   src = fetchurl {
-    url = "https://fping.org/dist/${pname}-${version}.tar.gz";
+    url = "https://www.fping.org/dist/${name}.tar.gz";
     sha256 = "0jmnf4vmr43aiwk3h2b5qdsb95gxar8gz1yli8fswnm9nrs9ccvx";
   };
 
