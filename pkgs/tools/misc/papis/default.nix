@@ -11,8 +11,8 @@ python3.pkgs.buildPythonApplication rec {
     owner = "papis";
     repo = pname;
     #rev = "v${version}";
-    rev = "3ffc41a12f2175abbecab64d051e971146ac7bc8";
-    sha256 = "1y78j3b4fpicg6wvyqxg7ihf9hpz5y2n0v8bdwmby5i5z500mbdy";
+    rev = "88bc570d34e9763e2582a3b6759676e1e6792ebf";
+    sha256 = "0mmi2kv961r60cr1nvymcnnlnlxz8fnssr1909pjyv6r4lrqvgql";
   };
 
   propagatedBuildInputs = with python3.pkgs; [
