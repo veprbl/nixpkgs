@@ -5267,6 +5267,8 @@ in
 
   redsocks = callPackage ../tools/networking/redsocks { };
 
+  retext = callPackage ../applications/editors/retext { };
+
   richgo = callPackage ../development/tools/richgo {  };
 
   rst2html5 = callPackage ../tools/text/rst2html5 { };
@@ -6286,6 +6288,8 @@ in
   };
 
   rcm = callPackage ../tools/misc/rcm {};
+
+  td = callPackage ../tools/misc/td { };
 
   tegola = callPackage ../servers/tegola {};
 
@@ -14243,6 +14247,12 @@ in
   };
 
   rippled = callPackage ../servers/rippled { };
+
+  rippled-validator-keys-tool = callPackage ../servers/rippled/validator-keys-tool.nix {
+    boost = boost167.override {
+      enableStatic = true;
+    };
+  };
 
   s6 = skawarePackages.s6;
 
