@@ -225,7 +225,7 @@
   alexarice = {
     email = "alexrice999@hotmail.co.uk";
     github = "alexarice";
-    name = "Alex Rice"
+    name = "Alex Rice";
   };
   alexchapman = {
     email = "alex@farfromthere.net";
