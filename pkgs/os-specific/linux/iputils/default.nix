@@ -1,4 +1,5 @@
-{ stdenv, fetchFromGitHub, fetchpatch
+{ stdenv, fetchFromGitHub
+, meson, ninja, pkgconfig, gettext
 , libxslt, docbook_xsl, docbook_xml_dtd_44
 , libcap, nettle, libidn2, openssl
 }:
@@ -6,7 +7,7 @@
 with stdenv.lib;
 
 let
-  time = "20180629";
+  time = "20190324";
   # ninfod probably could build on cross, but the Makefile doesn't pass --host
   # etc to the sub configure...
   withNinfod = stdenv.hostPlatform == stdenv.buildPlatform;
@@ -21,46 +22,31 @@ in stdenv.mkDerivation {
     owner = "iputils";
     repo = "iputils";
     rev = "s${time}";
-    sha256 = "19rpl48pjgmyqlm4h7sml5gy7yg4cxciadxcs24q1zj40c05jls0";
+    sha256 = "0b755gv3370c0rrphx14mrsqjb396zqnsm9lsws842a4k4zrqmvi";
   };
 
-  patches = [
-    (fetchpatch {
-      name = "dont-hardcode-the-location-of-xsltproc.patch";
-      url = "https://github.com/iputils/iputils/commit/d0ff83e87ea9064d9215a18e93076b85f0f9e828.patch";
-      sha256 = "05wrwf0bfmax69bsgzh3b40n7rvyzw097j8z5ix0xsg0kciygjvx";
-    })
-    (fetchpatch {
-      name = "add-missing-idn-declarations.patch";
-      url = "https://github.com/iputils/iputils/commit/5007d7067918fb3d950d34c01d059e5222db679a.patch";
-      sha256 = "0dhgxdhjcbb2q6snm3mjp38l066knykmrx4k8rn167cizn7akpdx";
-    })
-    (fetchpatch {
-      name = "fix-ping-idn.patch";
-      url = "https://github.com/iputils/iputils/commit/25899e849aa3abc1ad29ebf0b830262a859eaed5.patch";
-      sha256 = "1bqjcdjjnc2j6indcli7s7gbbhkcaligvh94asixfrmjzkbn533n";
-    })
-  ];
-
   prePatch = ''
-    substituteInPlace doc/custom-man.xsl \
-      --replace "http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl" "${docbook_xsl}/xml/xsl/docbook/manpages/docbook.xsl"
-    for xmlFile in doc/*.xml; do
-      substituteInPlace $xmlFile \
-        --replace "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd" "${docbook_xml_dtd_44}/xml/dtd/docbook/docbookx.dtd"
+    for file in doc/custom-man.xsl doc/meson.build; do
+      substituteInPlace $file \
+        --replace "http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl" "${docbook_xsl}/xml/xsl/docbook/manpages/docbook.xsl"
     done
   '';
 
-  # Disable idn usage w/musl: https://github.com/iputils/iputils/pull/111
-  makeFlags = optional stdenv.hostPlatform.isMusl "USE_IDN=no";
+  # ninfod cannot be build with nettle yet:
+  patches = [ ./build-ninfod-with-openssl.patch ];
 
-  nativeBuildInputs = [ libxslt.bin ];
+  mesonFlags = [
+    "-DUSE_CRYPTO=nettle" "-DBUILD_RARPD=true" "-DBUILD_TRACEROUTE6=true"
+  ] ++ optional (!withNinfod) "-DBUILD_NINFOD=false"
+    ++ optional stdenv.hostPlatform.isMusl "-DUSE_IDN=false";
+  # Disable idn usage w/musl: https://github.com/iputils/iputils/pull/111
+
+  nativeBuildInputs = [ meson ninja pkgconfig gettext libxslt.bin ];
   buildInputs = [ libcap nettle ]
     ++ optional (!stdenv.hostPlatform.isMusl) libidn2
     ++ optional withNinfod openssl; # TODO: Build with nettle
 
-  buildFlags = "man all" + optionalString withNinfod " ninfod";
-
+  # TODO: Use meson (and add systemd)
   installPhase = ''
     mkdir -p $out/bin
     mkdir -p $out/share/man/man8
@@ -69,10 +55,6 @@ in stdenv.mkDerivation {
       cp $tool $out/bin/
       cp doc/$tool.8 $out/share/man/man8/
     done
-
-    # TODO: Requires kernel module pg3
-    cp ipg $out/bin/
-    cp doc/pg3.8 $out/share/man/man8/
   '' + optionalString withNinfod ''
     cp ninfod/ninfod $out/bin/
     cp doc/ninfod.8 $out/share/man/man8/
