@@ -46,20 +46,6 @@ in stdenv.mkDerivation {
     ++ optional (!stdenv.hostPlatform.isMusl) libidn2
     ++ optional withNinfod openssl; # TODO: Build with nettle
 
-  # TODO: Use meson (and add systemd)
-  installPhase = ''
-    mkdir -p $out/bin
-    mkdir -p $out/share/man/man8
-
-    for tool in arping clockdiff ping rarpd rdisc tftpd tracepath traceroute6; do
-      cp $tool $out/bin/
-      cp doc/$tool.8 $out/share/man/man8/
-    done
-  '' + optionalString withNinfod ''
-    cp ninfod/ninfod $out/bin/
-    cp doc/ninfod.8 $out/share/man/man8/
-  '';
-
   meta = {
     homepage = https://github.com/iputils/iputils;
     description = "A set of small useful utilities for Linux networking";
