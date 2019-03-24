@@ -33,14 +33,11 @@ in stdenv.mkDerivation {
       substituteInPlace $f  \
         --replace "http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl" "${docbook5_xsl}/share/xml/docbook-xsl-ns/manpages/docbook.xsl"
     done
-  '' +
-    # I don't know what's going on but docbook5 examples don't have `xmlns:db`
-    # and I found that dropping the `:db` part fixes manpage generation,
-    # especially by removing space/indent issues that were ugly but also
-    # managed to adds spaces before the command char ('.') resulting
-    # in raw groff commands in the output :/.
-  ''
-    sed -i 's,xmlns:db,xmlns,' doc/*xml
+
+    # remove spaces before xml nodes that end up in output, causing broken manpages
+    # (raw groff commands are shown since spaces can't be before command character)
+    # Don't have an explanation for why we see this behavior if others don't, not sure.
+    sed -i 's,^[ ]*<,<,' doc/*xml
   '';
 
   nativeBuildInputs = [ meson ninja libxslt.bin pkgconfig gettext libcap docbook5 docbook5_xsl ];
