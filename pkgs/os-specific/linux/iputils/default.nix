@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, fetchpatch
-, libxslt, docbook_xsl, docbook_xml_dtd_44
+, libxslt, docbook5, docbook5_xsl
 , libcap, nettle, libidn2, openssl, libgcrypt
 , meson, ninja, pkgconfig, gettext
 }:
@@ -28,8 +28,19 @@ in stdenv.mkDerivation {
   ];
 
   patches = [ ./timespec.patch ];
+  prePatch = ''
+    for f in doc/{custom-man.xsl,meson.build}; do
+      substituteInPlace $f  \
+        --replace "http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl" "${docbook5_xsl}/share/xml/docbook-xsl-ns/manpages/docbook.xsl"
+    done
 
-  nativeBuildInputs = [ meson ninja libxslt.bin pkgconfig gettext libcap ];
+    # remove spaces before xml nodes that end up in output, causing broken manpages
+    # (raw groff commands are shown since spaces can't be before command character)
+    # Don't have an explanation for why we see this behavior if others don't, not sure.
+    sed -i 's,^[ ]*<,<,' doc/*xml
+  '';
+
+  nativeBuildInputs = [ meson ninja libxslt.bin pkgconfig gettext libcap docbook5 docbook5_xsl ];
   buildInputs = [ libcap nettle openssl libgcrypt ]
     ++ optional (!stdenv.hostPlatform.isMusl) libidn2;
 
