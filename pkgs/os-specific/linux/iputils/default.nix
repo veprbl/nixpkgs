@@ -33,7 +33,7 @@ in stdenv.mkDerivation {
   '';
 
   # ninfod cannot be build with nettle yet:
-  patches = [ ./build-ninfod-with-openssl.patch ];
+  patches = [ ./build-ninfod-with-openssl.patch ./timespec.patch ];
 
   mesonFlags = [
     "-DUSE_CRYPTO=nettle" "-DBUILD_RARPD=true" "-DBUILD_TRACEROUTE6=true"
