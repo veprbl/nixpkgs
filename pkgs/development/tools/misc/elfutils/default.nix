@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchurl, fetchpatch, m4, zlib, bzip2, bison, flex, gettext, xz, setupDebugInfoDirs }:
+{ lib, stdenv, fetchurl, fetchpatch, m4, zlib, bzip2, bison, flex, gettext, xz, setupDebugInfoDirs, argp-standalone }:
 
 # TODO: Look at the hardcoded paths to kernel, modules etc.
 stdenv.mkDerivation rec {
@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
   '';
 
   nativeBuildInputs = [ m4 bison flex gettext ];
-  buildInputs = [ zlib bzip2 xz ];
+  buildInputs = [ zlib bzip2 xz ] ++ stdenv.lib.optional stdenv.hostPlatform.isMusl argp-standalone;
 
   propagatedNativeBuildInputs = [ setupDebugInfoDirs ];
 
