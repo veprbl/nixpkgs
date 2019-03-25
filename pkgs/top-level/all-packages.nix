@@ -8596,6 +8596,8 @@ in
 
   byacc = callPackage ../development/tools/parsing/byacc { };
 
+  cadre = callPackage ../development/tools/cadre { };
+
   casperjs = callPackage ../development/tools/casperjs {
     inherit (texFunctions) fontsConf;
   };
