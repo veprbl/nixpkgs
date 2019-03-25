@@ -15,8 +15,8 @@ ansicolors = buildLuarocksPackage {
   version = "1.0.2-3";
 
   src = fetchurl {
-      url    = https://luarocks.org/ansicolors-1.0.2-3.src.rock;
-      sha256 = "1mhmr090y5394x1j8p44ws17sdwixn5a0r4i052bkfgk3982cqfz";
+    url    = https://luarocks.org/ansicolors-1.0.2-3.src.rock;
+    sha256 = "1mhmr090y5394x1j8p44ws17sdwixn5a0r4i052bkfgk3982cqfz";
   };
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
@@ -35,8 +35,8 @@ argparse = buildLuarocksPackage {
   version = "0.6.0-1";
 
   src = fetchurl {
-      url    = https://luarocks.org/argparse-0.6.0-1.src.rock;
-      sha256 = "10ic5wppyghd1lmgwgl0lb40pv8z9fi9i87080axxg8wsr19y0p4";
+    url    = https://luarocks.org/argparse-0.6.0-1.src.rock;
+    sha256 = "10ic5wppyghd1lmgwgl0lb40pv8z9fi9i87080axxg8wsr19y0p4";
   };
   disabled = ( luaOlder "5.1") || ( luaAtLeast "5.4");
   propagatedBuildInputs = [ lua ];  
@@ -55,8 +55,8 @@ basexx = buildLuarocksPackage {
   version = "0.4.0-1";
 
   src = fetchurl {
-      url    = https://luarocks.org/basexx-0.4.0-1.src.rock;
-      sha256 = "1px8yrxg1qkk3kzdqj3siry742jdv4ysp2dmicxi15mkynqpjlzz";
+    url    = https://luarocks.org/basexx-0.4.0-1.src.rock;
+    sha256 = "1px8yrxg1qkk3kzdqj3siry742jdv4ysp2dmicxi15mkynqpjlzz";
   };
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
@@ -75,8 +75,8 @@ dkjson = buildLuarocksPackage {
   version = "2.5-2";
 
   src = fetchurl {
-      url    = https://luarocks.org/dkjson-2.5-2.src.rock;
-      sha256 = "1qy9bzqnb9pf9d48hik4iq8h68aw3270kmax7mmpvvpw7kkyp483";
+    url    = https://luarocks.org/dkjson-2.5-2.src.rock;
+    sha256 = "1qy9bzqnb9pf9d48hik4iq8h68aw3270kmax7mmpvvpw7kkyp483";
   };
   disabled = ( luaOlder "5.1") || ( luaAtLeast "5.4");
   propagatedBuildInputs = [ lua ];  
@@ -95,8 +95,8 @@ fifo = buildLuarocksPackage {
   version = "0.2-0";
 
   src = fetchurl {
-      url    = https://luarocks.org/fifo-0.2-0.src.rock;
-      sha256 = "082c5g1m8brnsqj5gnjs65bm7z50l6b05cfwah14lqaqsr5a5pjk";
+    url    = https://luarocks.org/fifo-0.2-0.src.rock;
+    sha256 = "082c5g1m8brnsqj5gnjs65bm7z50l6b05cfwah14lqaqsr5a5pjk";
   };
   
   propagatedBuildInputs = [ lua ];  
@@ -115,8 +115,8 @@ inspect = buildLuarocksPackage {
   version = "3.1.1-0";
 
   src = fetchurl {
-      url    = https://luarocks.org/inspect-3.1.1-0.src.rock;
-      sha256 = "0k4g9ahql83l4r2bykfs6sacf9l1wdpisav2i0z55fyfcdv387za";
+    url    = https://luarocks.org/inspect-3.1.1-0.src.rock;
+    sha256 = "0k4g9ahql83l4r2bykfs6sacf9l1wdpisav2i0z55fyfcdv387za";
   };
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
@@ -130,13 +130,39 @@ inspect = buildLuarocksPackage {
     };
   };
 };
+ldoc = buildLuarocksPackage {
+  pname = "ldoc";
+  version = "1.4.6-2";
+
+    knownRockspec = (fetchurl {
+    url    = https://luarocks.org/ldoc-1.4.6-2.rockspec;
+    sha256 = "14yb0qihizby8ja0fa82vx72vk903mv6m7izn39mzfrgb8mha0pm";
+  }).outPath;
+
+  src = fetchurl {
+    url    = http://stevedonovan.github.io/files/ldoc-1.4.6.zip;
+    sha256 = "1fvsmmjwk996ypzizcy565hj82bhj17vdb83ln6ff63mxr3zs1la";
+  };
+
+  
+  propagatedBuildInputs = [ penlight markdown ];  
+  buildType = "builtin";
+
+  meta = {
+    homepage = "http://stevedonovan.github.com/ldoc";
+    description="A Lua Documentation Tool";
+    license = {
+      fullName = "MIT/X11";
+    };
+  };
+};
 lgi = buildLuarocksPackage {
   pname = "lgi";
   version = "0.9.2-1";
 
   src = fetchurl {
-      url    = https://luarocks.org/lgi-0.9.2-1.src.rock;
-      sha256 = "07ajc5pdavp785mdyy82n0w6d592n96g95cvq025d6i0bcm2cypa";
+    url    = https://luarocks.org/lgi-0.9.2-1.src.rock;
+    sha256 = "07ajc5pdavp785mdyy82n0w6d592n96g95cvq025d6i0bcm2cypa";
   };
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
@@ -155,8 +181,8 @@ lpeg_patterns = buildLuarocksPackage {
   version = "0.5-0";
 
   src = fetchurl {
-      url    = https://luarocks.org/lpeg_patterns-0.5-0.src.rock;
-      sha256 = "0mlw4nayrsdxrh98i26avz5i4170a9brciybw88kks496ra36v8f";
+    url    = https://luarocks.org/lpeg_patterns-0.5-0.src.rock;
+    sha256 = "0mlw4nayrsdxrh98i26avz5i4170a9brciybw88kks496ra36v8f";
   };
   
   propagatedBuildInputs = [ lua lpeg ];  
@@ -175,8 +201,8 @@ lpty = buildLuarocksPackage {
   version = "1.2.2-1";
 
   src = fetchurl {
-      url    = https://luarocks.org/lpty-1.2.2-1.src.rock;
-      sha256 = "1vxvsjgjfirl6ranz6k4q4y2dnxqh72bndbk400if22x8lqbkxzm";
+    url    = https://luarocks.org/lpty-1.2.2-1.src.rock;
+    sha256 = "1vxvsjgjfirl6ranz6k4q4y2dnxqh72bndbk400if22x8lqbkxzm";
   };
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
@@ -195,8 +221,8 @@ lrexlib-gnu = buildLuarocksPackage {
   version = "2.9.0-1";
 
   src = fetchurl {
-      url    = https://luarocks.org/lrexlib-gnu-2.9.0-1.src.rock;
-      sha256 = "036rda4rji1pbnbxk1nzjy5zmigdsiacqbzrbvciwq3lrxa2j5s2";
+    url    = https://luarocks.org/lrexlib-gnu-2.9.0-1.src.rock;
+    sha256 = "036rda4rji1pbnbxk1nzjy5zmigdsiacqbzrbvciwq3lrxa2j5s2";
   };
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
@@ -215,8 +241,8 @@ lrexlib-posix = buildLuarocksPackage {
   version = "2.9.0-1";
 
   src = fetchurl {
-      url    = https://luarocks.org/lrexlib-posix-2.9.0-1.src.rock;
-      sha256 = "0ifpybf4m94g1nk70l0f5m45gph0rbp5wrxrl1hnw8ibv3mc1b1r";
+    url    = https://luarocks.org/lrexlib-posix-2.9.0-1.src.rock;
+    sha256 = "0ifpybf4m94g1nk70l0f5m45gph0rbp5wrxrl1hnw8ibv3mc1b1r";
   };
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
@@ -235,8 +261,8 @@ ltermbox = buildLuarocksPackage {
   version = "0.2-1";
 
   src = fetchurl {
-      url    = https://luarocks.org/ltermbox-0.2-1.src.rock;
-      sha256 = "08jqlmmskbi1ml1i34dlmg6hxcs60nlm32dahpxhcrgjnfihmyn8";
+    url    = https://luarocks.org/ltermbox-0.2-1.src.rock;
+    sha256 = "08jqlmmskbi1ml1i34dlmg6hxcs60nlm32dahpxhcrgjnfihmyn8";
   };
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
@@ -254,12 +280,12 @@ lua-cmsgpack = buildLuarocksPackage {
   pname = "lua-cmsgpack";
   version = "0.4.0-0";
 
-         knownRockspec = (fetchurl {
-      url    = https://luarocks.org/lua-cmsgpack-0.4.0-0.rockspec;
-      sha256 = "10cvr6knx3qvjcw1q9v05f2qy607mai7lbq321nx682aa0n1fzin";
+    knownRockspec = (fetchurl {
+    url    = https://luarocks.org/lua-cmsgpack-0.4.0-0.rockspec;
+    sha256 = "10cvr6knx3qvjcw1q9v05f2qy607mai7lbq321nx682aa0n1fzin";
   }).outPath;
 
-       src = fetchgit ( removeAttrs (builtins.fromJSON ''{
+  src = fetchgit ( removeAttrs (builtins.fromJSON ''{
   "url": "git://github.com/antirez/lua-cmsgpack.git",
   "rev": "57b1f90cf6cec46450e87289ed5a676165d31071",
   "date": "2018-06-14T11:56:56+02:00",
@@ -267,7 +293,7 @@ lua-cmsgpack = buildLuarocksPackage {
   "fetchSubmodules": true
 }
  '') ["date"]) ;
-       
+
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
   buildType = "builtin";
@@ -285,8 +311,8 @@ lua_cliargs = buildLuarocksPackage {
   version = "3.0-2";
 
   src = fetchurl {
-      url    = https://luarocks.org/lua_cliargs-3.0-2.src.rock;
-      sha256 = "0qqdnw00r16xbyqn4w1xwwpg9i9ppc3c1dcypazjvdxaj899hy9w";
+    url    = https://luarocks.org/lua_cliargs-3.0-2.src.rock;
+    sha256 = "0qqdnw00r16xbyqn4w1xwwpg9i9ppc3c1dcypazjvdxaj899hy9w";
   };
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
@@ -305,8 +331,8 @@ lua-iconv = buildLuarocksPackage {
   version = "7-3";
 
   src = fetchurl {
-      url    = https://luarocks.org/lua-iconv-7-3.src.rock;
-      sha256 = "03xibhcqwihyjhxnzv367q4bfmzmffxl49lmjsq77g0prw8v0q83";
+    url    = https://luarocks.org/lua-iconv-7-3.src.rock;
+    sha256 = "03xibhcqwihyjhxnzv367q4bfmzmffxl49lmjsq77g0prw8v0q83";
   };
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
@@ -324,16 +350,16 @@ lua-term = buildLuarocksPackage {
   pname = "lua-term";
   version = "0.7-1";
 
-         knownRockspec = (fetchurl {
-      url    = https://luarocks.org/lua-term-0.7-1.rockspec;
-      sha256 = "0r9g5jw7pqr1dyj6w58dqlr7y7l0jp077n8nnji4phf10biyrvg2";
+    knownRockspec = (fetchurl {
+    url    = https://luarocks.org/lua-term-0.7-1.rockspec;
+    sha256 = "0r9g5jw7pqr1dyj6w58dqlr7y7l0jp077n8nnji4phf10biyrvg2";
   }).outPath;
 
-       src = fetchurl {
-      url    = https://github.com/hoelzro/lua-term/archive/0.07.tar.gz;
-      sha256 = "0c3zc0cl3a5pbdn056vnlan16g0wimv0p9bq52h7w507f72x18f1";
+  src = fetchurl {
+    url    = https://github.com/hoelzro/lua-term/archive/0.07.tar.gz;
+    sha256 = "0c3zc0cl3a5pbdn056vnlan16g0wimv0p9bq52h7w507f72x18f1";
   };
-       
+
   
     
   buildType = "builtin";
@@ -350,12 +376,12 @@ luabitop = buildLuarocksPackage {
   pname = "luabitop";
   version = "1.0.2-3";
 
-         knownRockspec = (fetchurl {
-      url    = https://luarocks.org/luabitop-1.0.2-3.rockspec;
-      sha256 = "07y2h11hbxmby7kyhy3mda64w83p4a6p7y7rzrjqgc0r56yjxhcc";
+    knownRockspec = (fetchurl {
+    url    = https://luarocks.org/luabitop-1.0.2-3.rockspec;
+    sha256 = "07y2h11hbxmby7kyhy3mda64w83p4a6p7y7rzrjqgc0r56yjxhcc";
   }).outPath;
 
-       src = fetchgit ( removeAttrs (builtins.fromJSON ''{
+  src = fetchgit ( removeAttrs (builtins.fromJSON ''{
   "url": "git://github.com/LuaDist/luabitop.git",
   "rev": "81bb23b0e737805442033535de8e6d204d0e5381",
   "date": "2013-02-18T16:36:42+01:00",
@@ -363,7 +389,7 @@ luabitop = buildLuarocksPackage {
   "fetchSubmodules": true
 }
  '') ["date"]) ;
-       
+
   disabled = ( luaOlder "5.1") || ( luaAtLeast "5.3");
   propagatedBuildInputs = [ lua ];  
   buildType = "builtin";
@@ -381,8 +407,8 @@ luaevent = buildLuarocksPackage {
   version = "0.4.6-1";
 
   src = fetchurl {
-      url    = https://luarocks.org/luaevent-0.4.6-1.src.rock;
-      sha256 = "0chq09nawiz00lxd6pkdqcb8v426gdifjw6js3ql0lx5vqdkb6dz";
+    url    = https://luarocks.org/luaevent-0.4.6-1.src.rock;
+    sha256 = "0chq09nawiz00lxd6pkdqcb8v426gdifjw6js3ql0lx5vqdkb6dz";
   };
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
@@ -401,8 +427,8 @@ luacheck = buildLuarocksPackage {
   version = "0.23.0-1";
 
   src = fetchurl {
-      url    = https://luarocks.org/luacheck-0.23.0-1.src.rock;
-      sha256 = "0akj61c7k1na2mggsckvfn9a3ljfp4agnmr9gp3mac4vin99a1cl";
+    url    = https://luarocks.org/luacheck-0.23.0-1.src.rock;
+    sha256 = "0akj61c7k1na2mggsckvfn9a3ljfp4agnmr9gp3mac4vin99a1cl";
   };
   disabled = ( luaOlder "5.1") || ( luaAtLeast "5.4");
   propagatedBuildInputs = [ lua argparse luafilesystem ];  
@@ -421,8 +447,8 @@ luaffi = buildLuarocksPackage {
   version = "scm-1";
 
   src = fetchurl {
-      url    = http://luarocks.org/dev/luaffi-scm-1.src.rock;
-      sha256 = "0dia66w8sgzw26bwy36gzyb2hyv7kh9n95lh5dl0158rqa6fsf26";
+    url    = http://luarocks.org/dev/luaffi-scm-1.src.rock;
+    sha256 = "0dia66w8sgzw26bwy36gzyb2hyv7kh9n95lh5dl0158rqa6fsf26";
   };
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
@@ -441,8 +467,8 @@ luuid = buildLuarocksPackage {
   version = "20120509-2";
 
   src = fetchurl {
-      url    = https://luarocks.org/luuid-20120509-2.src.rock;
-      sha256 = "08q54x0m51w89np3n117h2a153wsgv3qayabd8cz6i55qm544hkg";
+    url    = https://luarocks.org/luuid-20120509-2.src.rock;
+    sha256 = "08q54x0m51w89np3n117h2a153wsgv3qayabd8cz6i55qm544hkg";
   };
   disabled = ( luaOlder "5.2") || ( luaAtLeast "5.4");
   propagatedBuildInputs = [ lua ];  
@@ -460,16 +486,16 @@ penlight = buildLuarocksPackage {
   pname = "penlight";
   version = "1.5.4-1";
 
-         knownRockspec = (fetchurl {
-      url    = https://luarocks.org/penlight-1.5.4-1.rockspec;
-      sha256 = "07mhsk9kmdxg4i2w4mrnnd2zs34bgggi9gigfplakxin96sa6c0p";
+    knownRockspec = (fetchurl {
+    url    = https://luarocks.org/penlight-1.5.4-1.rockspec;
+    sha256 = "07mhsk9kmdxg4i2w4mrnnd2zs34bgggi9gigfplakxin96sa6c0p";
   }).outPath;
 
-       src = fetchurl {
-      url    = http://stevedonovan.github.io/files/penlight-1.5.4.zip;
-      sha256 = "138f921p6kdqkmf4pz115phhj0jsqf28g33avws80d2vq2ixqm8q";
+  src = fetchurl {
+    url    = http://stevedonovan.github.io/files/penlight-1.5.4.zip;
+    sha256 = "138f921p6kdqkmf4pz115phhj0jsqf28g33avws80d2vq2ixqm8q";
   };
-       
+
   
   propagatedBuildInputs = [ luafilesystem ];  
   buildType = "builtin";
@@ -486,16 +512,16 @@ say = buildLuarocksPackage {
   pname = "say";
   version = "1.3-1";
 
-         knownRockspec = (fetchurl {
-      url    = https://luarocks.org/say-1.3-1.rockspec;
-      sha256 = "0bknglb0qwd6r703wp3hcb6z2xxd14kq4md3sg9al3b28fzxbhdv";
+    knownRockspec = (fetchurl {
+    url    = https://luarocks.org/say-1.3-1.rockspec;
+    sha256 = "0bknglb0qwd6r703wp3hcb6z2xxd14kq4md3sg9al3b28fzxbhdv";
   }).outPath;
 
-       src = fetchurl {
-      url    = https://github.com/Olivine-Labs/say/archive/v1.3-1.tar.gz;
-      sha256 = "1jh76mxq9dcmv7kps2spwcc6895jmj2sf04i4y9idaxlicvwvs13";
+  src = fetchurl {
+    url    = https://github.com/Olivine-Labs/say/archive/v1.3-1.tar.gz;
+    sha256 = "1jh76mxq9dcmv7kps2spwcc6895jmj2sf04i4y9idaxlicvwvs13";
   };
-       
+
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
   buildType = "builtin";
@@ -513,8 +539,8 @@ luv = buildLuarocksPackage {
   version = "1.27.0-0";
 
   src = fetchurl {
-      url    = https://luarocks.org/luv-1.27.0-0.src.rock;
-      sha256 = "16csnnypi2m71ncr8qwc9drqbrb40l5li1nk7zpsxnslg5fiax6x";
+    url    = https://luarocks.org/luv-1.27.0-0.src.rock;
+    sha256 = "16csnnypi2m71ncr8qwc9drqbrb40l5li1nk7zpsxnslg5fiax6x";
   };
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
@@ -533,8 +559,8 @@ luasystem = buildLuarocksPackage {
   version = "0.2.1-0";
 
   src = fetchurl {
-      url    = https://luarocks.org/luasystem-0.2.1-0.src.rock;
-      sha256 = "091xmp8cijgj0yzfsjrn7vljwznjnjn278ay7z9pjwpwiva0diyi";
+    url    = https://luarocks.org/luasystem-0.2.1-0.src.rock;
+    sha256 = "091xmp8cijgj0yzfsjrn7vljwznjnjn278ay7z9pjwpwiva0diyi";
   };
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
@@ -553,8 +579,8 @@ mediator_lua = buildLuarocksPackage {
   version = "1.1.2-0";
 
   src = fetchurl {
-      url    = http://luarocks.org/manifests/teto/mediator_lua-1.1.2-0.src.rock;
-      sha256 = "18j49vvs94yfk4fw0xsq4v3j4difr6c99gfba0kxairmcqamd1if";
+    url    = http://luarocks.org/manifests/teto/mediator_lua-1.1.2-0.src.rock;
+    sha256 = "18j49vvs94yfk4fw0xsq4v3j4difr6c99gfba0kxairmcqamd1if";
   };
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua ];  
@@ -573,8 +599,8 @@ mpack = buildLuarocksPackage {
   version = "1.0.7-0";
 
   src = fetchurl {
-      url    = http://luarocks.org/manifests/teto/mpack-1.0.7-0.src.rock;
-      sha256 = "0nq4ixaminkc7fwfpivysyv0al3j5dffsvgdrnwnqdg3w7jgfbw7";
+    url    = http://luarocks.org/manifests/teto/mpack-1.0.7-0.src.rock;
+    sha256 = "0nq4ixaminkc7fwfpivysyv0al3j5dffsvgdrnwnqdg3w7jgfbw7";
   };
   
     
@@ -593,8 +619,8 @@ nvim-client = buildLuarocksPackage {
   version = "0.1.0-1";
 
   src = fetchurl {
-      url    = https://luarocks.org/nvim-client-0.1.0-1.src.rock;
-      sha256 = "1p57mrvm0ny3yi5cydr3z9qwzyg124rjp5w7vdflf2i23z39mkma";
+    url    = https://luarocks.org/nvim-client-0.1.0-1.src.rock;
+    sha256 = "1p57mrvm0ny3yi5cydr3z9qwzyg124rjp5w7vdflf2i23z39mkma";
   };
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua mpack luv coxpcall ];  
@@ -612,16 +638,16 @@ busted = buildLuarocksPackage {
   pname = "busted";
   version = "2.0.rc13-0";
 
-         knownRockspec = (fetchurl {
-      url    = https://luarocks.org/busted-2.0.rc13-0.rockspec;
-      sha256 = "0hrvhg1324q5ra6cpjh1y3by6lrzs0ljah4jl48l8xlgw1z9z1q5";
+    knownRockspec = (fetchurl {
+    url    = https://luarocks.org/busted-2.0.rc13-0.rockspec;
+    sha256 = "0hrvhg1324q5ra6cpjh1y3by6lrzs0ljah4jl48l8xlgw1z9z1q5";
   }).outPath;
 
-       src = fetchurl {
-      url    = https://github.com/Olivine-Labs/busted/archive/v2.0.rc13-0.tar.gz;
-      sha256 = "0m72bldn1r6j94ahcfmpaq1mmysrshf9qi9fjas7hpal0jp8ivvl";
+  src = fetchurl {
+    url    = https://github.com/Olivine-Labs/busted/archive/v2.0.rc13-0.tar.gz;
+    sha256 = "0m72bldn1r6j94ahcfmpaq1mmysrshf9qi9fjas7hpal0jp8ivvl";
   };
-       
+
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua lua_cliargs luafilesystem luasystem dkjson say luassert lua-term penlight mediator_lua ];  
   buildType = "builtin";
@@ -638,16 +664,16 @@ luassert = buildLuarocksPackage {
   pname = "luassert";
   version = "1.7.11-0";
 
-         knownRockspec = (fetchurl {
-      url    = https://luarocks.org/luassert-1.7.11-0.rockspec;
-      sha256 = "12zgybcv8acjzvjdbxd1764s1vxbksxdv9fkvsymcsdmppxkbd0s";
+    knownRockspec = (fetchurl {
+    url    = https://luarocks.org/luassert-1.7.11-0.rockspec;
+    sha256 = "12zgybcv8acjzvjdbxd1764s1vxbksxdv9fkvsymcsdmppxkbd0s";
   }).outPath;
 
-       src = fetchurl {
-      url    = https://github.com/Olivine-Labs/luassert/archive/v1.7.11.tar.gz;
-      sha256 = "1vwq3wqj9cjyz9lnf1n38yhpcglr2h40v3n9096i8vcpmyvdb3ka";
+  src = fetchurl {
+    url    = https://github.com/Olivine-Labs/luassert/archive/v1.7.11.tar.gz;
+    sha256 = "1vwq3wqj9cjyz9lnf1n38yhpcglr2h40v3n9096i8vcpmyvdb3ka";
   };
-       
+
   disabled = ( luaOlder "5.1");
   propagatedBuildInputs = [ lua say ];  
   buildType = "builtin";
@@ -665,8 +691,8 @@ coxpcall = buildLuarocksPackage {
   version = "1.17.0-1";
 
   src = fetchurl {
-      url    = https://luarocks.org/manifests/hisham/coxpcall-1.17.0-1.src.rock;
-      sha256 = "0n1jmda4g7x06458596bamhzhcsly6x0p31yp6q3jz4j11zv1zhi";
+    url    = https://luarocks.org/manifests/hisham/coxpcall-1.17.0-1.src.rock;
+    sha256 = "0n1jmda4g7x06458596bamhzhcsly6x0p31yp6q3jz4j11zv1zhi";
   };
   
     
@@ -675,32 +701,6 @@ coxpcall = buildLuarocksPackage {
   meta = {
     homepage = "http://keplerproject.github.io/coxpcall";
     description="Coroutine safe xpcall and pcall";
-    license = {
-      fullName = "MIT/X11";
-    };
-  };
-};
-ldoc = buildLuarocksPackage {
-  pname = "ldoc";
-  version = "1.4.6-2";
-
-         knownRockspec = (fetchurl {
-      url    = https://luarocks.org/ldoc-1.4.6-2.rockspec;
-      sha256 = "14yb0qihizby8ja0fa82vx72vk903mv6m7izn39mzfrgb8mha0pm";
-  }).outPath;
-
-       src = fetchurl {
-      url    = http://stevedonovan.github.io/files/ldoc-1.4.6.zip;
-      sha256 = "1fvsmmjwk996ypzizcy565hj82bhj17vdb83ln6ff63mxr3zs1la";
-  };
-       
-  
-  propagatedBuildInputs = [ penlight markdown ];  
-  buildType = "builtin";
-
-  meta = {
-    homepage = "http://stevedonovan.github.com/ldoc";
-    description="A Lua Documentation Tool";
     license = {
       fullName = "MIT/X11";
     };
