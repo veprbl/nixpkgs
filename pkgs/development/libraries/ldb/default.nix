@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, python, pkgconfig, which, readline, tdb, talloc, tevent
+{ stdenv, fetchurl, python, pkgconfig, which, readline, tdb, talloc, tevent, lmdb
 , popt, libxslt, docbook_xsl, docbook_xml_dtd_42, cmocka
 }:
 
@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkgconfig which python docbook_xsl docbook_xml_dtd_42 ];
   buildInputs = [
-    readline tdb talloc tevent popt
+    readline tdb talloc tevent popt lmdb
     libxslt python
     cmocka
   ];
