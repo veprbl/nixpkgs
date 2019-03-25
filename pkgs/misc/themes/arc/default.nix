@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, sassc, autoreconfHook, pkgconfig, gtk3, gnome3
+{ stdenv, fetchFromGitHub, fetchpatch, sassc, autoreconfHook, pkgconfig, gtk3, gnome3
 , gtk-engine-murrine, optipng, inkscape }:
 
 stdenv.mkDerivation rec {
@@ -28,6 +28,13 @@ stdenv.mkDerivation rec {
   ];
 
   enableParallelBuilding = true;
+
+  patches = [
+    (fetchpatch {
+      url = https://github.com/NicoHood/arc-theme/commit/6815e946dcbf5ad93bf98c9f49c2f30a38ebcb1f.patch;
+      sha256 = "1d5ln7qicybn8gw0hnjijwpprf222ngs5bsakqsx2sp66sq34i2h";
+    })
+  ];
 
   postPatch = ''
     patchShebangs .
