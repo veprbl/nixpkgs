@@ -16446,7 +16446,8 @@ in
 
   awesome-4-0 = callPackage ../applications/window-managers/awesome {
     cairo = cairo.override { xcbSupport = true; };
-    luaPackages = lua53Packages; # .override { lua = lua5_3; };
+    luaPackages = lua53Packages;
+    inherit (texFunctions) fontsConf;
   };
   awesome = awesome-4-0;
 

@@ -5,6 +5,7 @@
 , xmlto, docbook_xml_dtd_45, docbook_xsl, findXMLCatalogs
 , libxkbcommon, xcbutilxrm, hicolor-icon-theme
 , asciidoctor
+, fontsConf
 }:
 
 with luaPackages; stdenv.mkDerivation rec {
@@ -29,6 +30,10 @@ with luaPackages; stdenv.mkDerivation rec {
     asciidoctor
     ldoc
   ];
+
+  outputs = [ "out" "doc" ];
+
+  FONTCONFIG_FILE = toString fontsConf;
 
   propagatedUserEnvPkgs = [ hicolor-icon-theme ];
   buildInputs = [ cairo librsvg dbus gdk_pixbuf gobject-introspection
