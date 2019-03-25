@@ -31,8 +31,6 @@ stdenv.mkDerivation rec {
   ];
   configurePlatforms = [];
 
-  doCheck = true;
-
   postInstall = ''
     ${stdenv.cc.targetPrefix}ar q $out/lib/libtalloc.a bin/default/talloc_[0-9]*.o
   '';
