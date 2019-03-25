@@ -9,7 +9,7 @@ stdenv.mkDerivation rec {
     rev= "v${version}";
     sha256 = "1syv3iav7bwr84x9frz1qd6qmgp8ldbjs4gl3r94nhllkai9spaq";
   };
-  makeFlags = [ "PREFIX=" "DESTDIR=$(out)"];
+  makeFlags = [ "PREFIX=$(out)" "AADIR=$(out)/etc/apparmor.d"];
   nativeBuildInputs = [go-md2man which];
   buildFlags = [ "dist" ];
   installTargets = "install-dist";
