@@ -8550,6 +8550,8 @@ in
 
   bazel-watcher = callPackage ../development/tools/bazel-watcher { };
 
+  bazelisk = callPackage ../development/tools/bazelisk { };
+
   buildBazelPackage = callPackage ../build-support/build-bazel-package { };
 
   bear = callPackage ../development/tools/build-managers/bear { };
