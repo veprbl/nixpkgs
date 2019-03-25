@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, python3, pkgconfig, which, readline, tdb, talloc, tevent
+{ stdenv, fetchurl, python, pkgconfig, which, readline, tdb, talloc, tevent
 , popt, libxslt, docbook_xsl, docbook_xml_dtd_42, cmocka
 }:
 
@@ -13,10 +13,10 @@ stdenv.mkDerivation rec {
 
   outputs = [ "out" "dev" ];
 
-  nativeBuildInputs = [ pkgconfig which python3 docbook_xsl docbook_xml_dtd_42 ];
+  nativeBuildInputs = [ pkgconfig which python docbook_xsl docbook_xml_dtd_42 ];
   buildInputs = [
     readline tdb talloc tevent popt
-    libxslt
+    libxslt python
     cmocka
   ];
 
@@ -27,7 +27,6 @@ stdenv.mkDerivation rec {
   configureFlags = [
     "--bundled-libraries=NONE"
     "--builtin-libraries=replace"
-    "--disable-python"
   ];
 
   stripDebugList = "bin lib modules";
