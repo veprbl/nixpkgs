@@ -26,7 +26,7 @@ stdenv.mkDerivation rec {
 
     # Create aliases for various toys O:)
     for x in $out/share/xteddy/*.png; do
-      ln -rsvf $out/bin/{xteddy,$(basename $x .png)} || :
+      ln -rsv $out/bin/{xteddy,$(basename $x .png)} || :
     done
   '';
 
