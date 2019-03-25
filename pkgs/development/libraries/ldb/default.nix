@@ -13,22 +13,11 @@ stdenv.mkDerivation rec {
 
   outputs = [ "out" "dev" ];
 
-  nativeBuildInputs = [ pkgconfig python3 docbook_xsl docbook_xml_dtd_42 ];
+  nativeBuildInputs = [ pkgconfig which python3 docbook_xsl docbook_xml_dtd_42 ];
   buildInputs = [
     readline tdb talloc tevent popt
     libxslt
     cmocka
-  ];
-
-  patches = [
-    # CVE-2019-3824
-    # downloading the patch from debian as they have ported the patch from samba to ldb but otherwise is identical to
-    # https://bugzilla.samba.org/attachment.cgi?id=14857
-    (fetchurl {
-      name = "CVE-2019-3824.patch";
-      url = "https://sources.debian.org/data/main/l/ldb/2:1.1.27-1+deb9u1/debian/patches/CVE-2019-3824-master-v4-5-02.patch";
-      sha256 = "1idnqckvjh18rh9sbq90rr4sxfviha9nd1ca9pd6lai0y6r6q4yd";
-    })
   ];
 
   preConfigure = ''
