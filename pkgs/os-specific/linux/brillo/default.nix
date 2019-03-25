@@ -13,9 +13,9 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [go-md2man which];
   buildFlags = [ "dist" ];
   installTargets = "install-dist";
-
-  postPatch = ''
-    substituteInPlace contrib/90-brillo.rules --replace /bin/ ${coreutils}/bin/
+  patches = [ ./udev-rule.patch ];
+  postBuild = ''
+    coreutils=${coreutils} substituteAllInPlace contrib/90-brillo.rules
   '';
 
   meta = with stdenv.lib; {
