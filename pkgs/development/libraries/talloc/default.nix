@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, python3, pkgconfig, which, readline, libxslt
+{ stdenv, fetchurl, python, pkgconfig, which, readline, libxslt
 , docbook_xsl, docbook_xml_dtd_42, fixDarwinDylibNames
 , buildPackages
 }:
@@ -12,9 +12,9 @@ stdenv.mkDerivation rec {
     sha256 = "1g1fqa37xkjp9lp6lrwxrbfgashcink769ll505zvcwnxx2nlvsw";
   };
 
-  nativeBuildInputs = [ pkgconfig which fixDarwinDylibNames python3
+  nativeBuildInputs = [ pkgconfig which fixDarwinDylibNames python
                         docbook_xsl docbook_xml_dtd_42 ];
-  buildInputs = [ readline libxslt ];
+  buildInputs = [ readline libxslt python ];
 
   prePatch = ''
     patchShebangs buildtools/bin/waf
@@ -24,7 +24,6 @@ stdenv.mkDerivation rec {
     #"--enable-talloc-compat1"
     "--bundled-libraries=NONE"
     "--builtin-libraries=replace"
-    "--disable-python"
   ] ++ stdenv.lib.optionals (stdenv.hostPlatform != stdenv.buildPlatform) [
     "--cross-compile"
     "--cross-execute=${stdenv.hostPlatform.emulator buildPackages}"
