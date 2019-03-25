@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, python3, pkgconfig, readline, talloc
+{ stdenv, fetchurl, python3, pkgconfig, which, readline, talloc
 , libxslt, docbook_xsl, docbook_xml_dtd_42
 }:
 
@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
     sha256 = "1rm4d9245ya15wyrh9vqn1dnz14l2ic88mr46ykyc6kdrl99dwrk";
   };
 
-  nativeBuildInputs = [ pkgconfig python3 docbook_xsl docbook_xml_dtd_42 ];
+  nativeBuildInputs = [ pkgconfig python3 docbook_xsl docbook_xml_dtd_42 which ];
   buildInputs = [
     readline talloc libxslt
   ];
