@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, python3, pkgconfig, which, readline, libxslt
+{ stdenv, fetchurl, python, pkgconfig, which, readline, libxslt
 , docbook_xsl, docbook_xml_dtd_42, buildPackages
 }:
 
@@ -11,8 +11,8 @@ stdenv.mkDerivation rec {
     sha256 = "0d9d2f1c83gmmq30bkfs50yb8399mr9xjjzscma4kyq0ajf75861";
   };
 
-  nativeBuildInputs = [ pkgconfig python3 which docbook_xsl docbook_xml_dtd_42 ];
-  buildInputs = [ readline libxslt ];
+  nativeBuildInputs = [ pkgconfig python which docbook_xsl docbook_xml_dtd_42 ];
+  buildInputs = [ readline libxslt python ];
 
   preConfigure = ''
     patchShebangs buildtools/bin/waf
@@ -21,7 +21,6 @@ stdenv.mkDerivation rec {
   configureFlags = [
     "--bundled-libraries=NONE"
     "--builtin-libraries=replace"
-    "--disable-python"
   ] ++ stdenv.lib.optionals (stdenv.hostPlatform != stdenv.buildPlatform) [
     "--cross-compile"
     "--cross-execute=${stdenv.hostPlatform.emulator buildPackages}"
