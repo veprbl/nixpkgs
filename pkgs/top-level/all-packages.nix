@@ -15940,6 +15940,8 @@ in
 
   man-pages = callPackage ../data/documentation/man-pages { };
 
+  manrope = callPackage ../data/fonts/manrope { };
+
   matcha = callPackage ../data/themes/matcha { };
 
   materia-theme = callPackage ../data/themes/materia-theme { };
