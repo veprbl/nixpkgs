@@ -12970,7 +12970,7 @@ in
   taglib-sharp = callPackage ../development/libraries/taglib-sharp { };
 
   talloc = callPackage ../development/libraries/talloc {
-    inherit (buildPackages) python3;
+    python = python3;
   };
 
   tclap = callPackage ../development/libraries/tclap {};
