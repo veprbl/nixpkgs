@@ -1,18 +1,18 @@
 { stdenv, fetchurl, pkgconfig, gnome3, gtk3, wrapGAppsHook, gobject-introspection
 , itstool, libxml2, python3Packages, at-spi2-core
-, dbus, intltool, libwnck3 }:
+, dbus, gettext, libwnck3 }:
 
 stdenv.mkDerivation rec {
   name = "accerciser-${version}";
-  version = "3.31.4";
+  version = "3.32.0";
 
   src = fetchurl {
     url = "mirror://gnome/sources/accerciser/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "17x0c08k483vnpixkg547xildlpv649bv4z2qc3m97xhikbbb2a8";
+    sha256 = "1j7wlks6j77kfjrw6lx1g0apsy2wwca63jsm5994av5l6xs8xd5m";
   };
 
   nativeBuildInputs = [
-    pkgconfig wrapGAppsHook itstool intltool
+    pkgconfig wrapGAppsHook itstool gettext
     gobject-introspection # For setup hook
   ];
   buildInputs = [
