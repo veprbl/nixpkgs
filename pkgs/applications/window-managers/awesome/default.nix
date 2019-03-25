@@ -27,6 +27,7 @@ with luaPackages; stdenv.mkDerivation rec {
     xmlto docbook_xml_dtd_45
     docbook_xsl findXMLCatalogs
     asciidoctor
+    ldoc
   ];
 
   propagatedUserEnvPkgs = [ hicolor-icon-theme ];
