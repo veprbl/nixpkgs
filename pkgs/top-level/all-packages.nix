@@ -13004,7 +13004,7 @@ in
   termbox = callPackage ../development/libraries/termbox { };
 
   tevent = callPackage ../development/libraries/tevent {
-    python = python2;
+    inherit (buildPackages) python3;
   };
 
   tet = callPackage ../development/tools/misc/tet { };
