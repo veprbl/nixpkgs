@@ -1,17 +1,18 @@
-{ stdenv, fetchurl, python, pkgconfig, readline, libxslt
+{ stdenv, fetchurl, python3, pkgconfig, which, readline, libxslt
 , docbook_xsl, docbook_xml_dtd_42, fixDarwinDylibNames
 , buildPackages
 }:
 
 stdenv.mkDerivation rec {
-  name = "talloc-2.1.14";
+  pname = "talloc";
+  version = "2.2.0";
 
   src = fetchurl {
-    url = "mirror://samba/talloc/${name}.tar.gz";
-    sha256 = "1kk76dyav41ip7ddbbf04yfydb4jvywzi2ps0z2vla56aqkn11di";
+    url = "mirror://samba/${pname}/${pname}-${version}.tar.gz";
+    sha256 = "1g1fqa37xkjp9lp6lrwxrbfgashcink769ll505zvcwnxx2nlvsw";
   };
 
-  nativeBuildInputs = [ pkgconfig fixDarwinDylibNames python
+  nativeBuildInputs = [ pkgconfig which fixDarwinDylibNames python3
                         docbook_xsl docbook_xml_dtd_42 ];
   buildInputs = [ readline libxslt ];
 
@@ -29,6 +30,8 @@ stdenv.mkDerivation rec {
     "--cross-execute=${stdenv.hostPlatform.emulator buildPackages}"
   ];
   configurePlatforms = [];
+
+  doCheck = true;
 
   postInstall = ''
     ${stdenv.cc.targetPrefix}ar q $out/lib/libtalloc.a bin/default/talloc_[0-9]*.o
