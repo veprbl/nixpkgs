@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   version = "1.4.3";
-  name = "brillo-${version}";
+  pname = "brillo";
   src = fetchFromGitLab {
     owner= "cameronnemo";
     repo= "brillo";
