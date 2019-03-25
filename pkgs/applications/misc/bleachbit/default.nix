@@ -3,13 +3,14 @@ pythonPackages.buildPythonApplication rec {
   pname = "bleachbit";
   version = "2.2";
 
+  format = "other";
+
   src = fetchurl {
     url = "mirror://sourceforge/${pname}/${pname}-${version}.tar.bz2";
     sha256 = "1yj9bc3k6s1aib7znb79h5rybfv691zz4szxkwf9fm9nr0dws603";
   };
 
   nativeBuildInputs = [ gettext ];
-  buildInputs = [  pythonPackages.wrapPython ];
 
   # Patch the many hardcoded uses of /usr/share/ and /usr/bin
   postPatch = ''
@@ -17,11 +18,13 @@ pythonPackages.buildPythonApplication rec {
     find -type f -exec sed -i -e 's@/usr/bin@${placeholder "out"}/bin@g' {} \;
   '';
 
-  doCheck = false;
+  dontBuild = true;
 
-  postInstall = ''
-    make install SHELL=${stdenv.shell} prefix=${placeholder "out"}
-  '';
+  installFlags = [ "prefix=${placeholder "out"}" ];
+
+  doCheck = true;
+
+  checkTarget = "tests";
 
   propagatedBuildInputs = with pythonPackages; [ pygtk ];
 
