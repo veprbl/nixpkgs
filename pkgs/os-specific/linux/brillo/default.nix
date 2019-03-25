@@ -1,4 +1,4 @@
-{stdenv, fetchFromGitLab , which, go-md2man, coreutils}:
+{stdenv, fetchFromGitLab , which, go-md2man, coreutils, substituteAll }:
 
 stdenv.mkDerivation rec {
   version = "1.4.3";
@@ -13,10 +13,11 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [go-md2man which];
   buildFlags = [ "dist" ];
   installTargets = "install-dist";
-  patches = [ ./udev-rule.patch ];
-  postBuild = ''
-    coreutils=${coreutils} substituteAllInPlace contrib/90-brillo.rules
-  '';
+  patches = [
+  (substituteAll {
+    src = ./udev-rule.patch;
+    inherit coreutils;
+  }) ];
 
   meta = with stdenv.lib; {
     description = "Backlight and Keyboard LED control tool";
