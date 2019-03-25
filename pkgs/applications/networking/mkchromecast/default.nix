@@ -1,21 +1,37 @@
-{ pkgs, stdenv, fetchurl, python3Packages, python3, makeWrapper
+{ lib, fetchFromGitHub, python3Packages, makeWrapper, sox, flac, faac, lame
+, ffmpeg, vorbis-tools, nodejs, pulseaudio, alsaLib, alsaUtils, youtube-dl
+, opusTools, gstreamer
 , alsaSupport ? false
 , systemTray ? true
 , ffmpegSupport ? true
 , youtubeSupport ? true
 }:
 
-python3Packages.buildPythonApplication rec {
+# We define non-python packages here so we can reuse the binding in
+# makeSearchPathOutput below.
+let packages = [
+  vorbis-tools
+  sox
+  flac
+  faac
+  lame
+  opusTools
+  gstreamer
+] ++ lib.optional alsaSupport [ alsaLib ffmpeg ]
+  ++ lib.optional (!alsaSupport) pulseaudio
+  ++ lib.optional ffmpegSupport ffmpeg
+  ++ lib.optional youtubeSupport youtube-dl;
+
+in python3Packages.buildPythonApplication rec {
   pname = "mkchromecast";
   version = "0.3.8.1";
-  name = "${pname}-${version}";
 
-  src = fetchurl {
-    url = "https://github.com/muammar/${pname}/archive/${version}.tar.gz";
-    sha256 = "1clr02zphpkjnnw5l1mgbjsk5ycqryajnlpb8wfdb5ax72ca7066";
+  src = fetchFromGitHub rec {
+    owner = "muammar";
+    repo = pname;
+    rev = version;
+    sha256 = "0baxilfalndip3fx8cj03pjkdywv1v65k41srarcdrzvm8dqca9s";
   };
-
-  buildInputs = [ makeWrapper ];
 
   propagatedBuildInputs = with python3Packages; [
     PyChromecast
@@ -24,18 +40,7 @@ python3Packages.buildPythonApplication rec {
     flask
     netifaces
     requests
-    pkgs.vorbis-tools
-    pkgs.sox
-    pkgs.flac
-    pkgs.faac
-    pkgs.lame
-    pkgs.ffmpeg
-    pkgs.nodejs
-  ] ++ stdenv.lib.optional alsaSupport [ pkgs.alsaLib pkgs.alsaUtils pkgs.ffmpeg ]
-    ++ stdenv.lib.optional (!alsaSupport) pkgs.pulseaudio
-    ++ stdenv.lib.optional systemTray python3Packages.pyqt5
-    ++ stdenv.lib.optional ffmpegSupport pkgs.ffmpeg
-    ++ stdenv.lib.optional youtubeSupport pkgs.youtube-dl;
+  ] ++ lib.optional systemTray pyqt5;
 
   # Build instructions are macOS specific in 0.3.8.1;
   # master has Linux build instructions but awaiting new release.
@@ -51,6 +56,11 @@ python3Packages.buildPythonApplication rec {
     sed -i "s_\['\./nodejs_['$out/lib/nodejs_" mkchromecast/video.py
   '';
 
+  makeWrapperArgs = [
+      ''--prefix PYTHONPATH : "$out/lib:$PYTHONPATH"''
+      ''--prefix PATH : "${lib.makeSearchPathOutput "" "bin" packages}"''
+  ];
+
   installPhase = ''
     env
     install -Dm 644 man/mkchromecast.1 $out/share/man/man1/mkchromecast.1
@@ -61,11 +71,11 @@ python3Packages.buildPythonApplication rec {
     install -Dm 644 -t $out/share/images/ images/google*.png
     install -Dm 644 images/mkchromecast.xpm $out/share/pixmaps/mkchromecast.xpm
     install -Dm 755 mkchromecast.py $out/bin/mkchromecast
-    wrapProgram "$out/bin/mkchromecast" --prefix PYTHONPATH : "$out/lib:$out/lib/mkchromecast/getch:$PYTHONPATH" \
+    wrapProgram "$out/bin/mkchromecast"
   '';
 
-  meta = with stdenv.lib; {
-    homepage = "https://github.com/muammar/mkchromecast";
+  meta = with lib; {
+    homepage = https://github.com/muammar/mkchromecast;
     description = "Cast macOS and Linux Audio/Video to your Google Cast and Sonos Devices";
     license = licenses.mit;
     maintainers = with maintainers; [ shou ];

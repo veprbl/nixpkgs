@@ -13885,12 +13885,7 @@ in
 
   minio = callPackage ../servers/minio { };
 
-  mkchromecast = callPackage ../applications/networking/mkchromecast {
-    alsaSupport    = config.mkchromecast.alsaSupport or false;
-    systemTray     = config.mkchromecast.systemTray or true;
-    ffmpegSupport  = config.mkchromecast.ffmpegSupport or true;
-    youtubeSupport = config.mkchromecast.youtubeSupport or true;
-  };
+  mkchromecast = callPackage ../applications/networking/mkchromecast {};
 
   # Backwards compatibility.
   mod_dnssd = pkgs.apacheHttpdPackages.mod_dnssd;
