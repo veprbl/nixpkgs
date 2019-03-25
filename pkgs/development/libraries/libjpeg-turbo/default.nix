@@ -11,20 +11,7 @@ stdenv.mkDerivation rec {
 
   patches =
     stdenv.lib.optional (stdenv.hostPlatform.libc or null == "msvcrt")
-      ./mingw-boolean.patch
-  ++ [
-    ./djpeg-rgb-islow-icc-cmp.patch # https://github.com/libjpeg-turbo/libjpeg-turbo/pull/321
-    (fetchpatch {
-      name = "cve-2018-19664.diff";
-      url = "https://github.com/libjpeg-turbo/libjpeg-turbo/commit/f8cca819a4fb.diff";
-      sha256 = "1kgfag62qmphlrq0mz15g17zw7zrg9nzaz7d2vg50m6m7m5aw4y5";
-    })
-    (fetchpatch {
-      name = "CVE-2018-20330.patch";
-      url = "https://github.com/libjpeg-turbo/libjpeg-turbo/commit/3d9c64e9f8aa1ee954d1d0bb3390fc894bb84da3.diff";
-      sha256 = "1jai8izw6xl05ihx24rpc96d1jcr9rp421cb02pbz3v53cxdasji";
-    })
-  ];
+      ./mingw-boolean.patch;
 
   outputs = [ "bin" "dev" "out" "man" "doc" ];
 
@@ -32,8 +19,8 @@ stdenv.mkDerivation rec {
 
   cmakeFlags = [ "-DCMAKE_INSTALL_BINDIR=${placeholder "bin"}/bin" "-DENABLE_STATIC=0" ];
 
-  doCheck = true; # not cross;
-  checkTarget = "test";
+  doInstallCheck = true;
+  installCheckTarget = "test";
 
   meta = with stdenv.lib; {
     homepage = http://libjpeg-turbo.virtualgl.org/;
