@@ -2,7 +2,7 @@
 , autoconf, automake, gnum4, libtool, perl, gnulib, uthash, pkgconfig, gettext
 , python, freetype, zlib, glib, libungif, libpng, libjpeg, libtiff, libxml2, cairo, pango
 , withSpiro ? false, libspiro
-, withGTK ? false, gtk2
+, withGTK ? false, gtk3
 , withPython ? true
 , withExtras ? true
 , Carbon ? null, Cocoa ? null
@@ -30,12 +30,12 @@ stdenv.mkDerivation rec {
     python freetype zlib glib libungif libpng libjpeg libtiff libxml2
   ]
     ++ lib.optionals withSpiro [libspiro]
-    ++ lib.optionals withGTK [ gtk2 cairo pango ]
+    ++ lib.optionals withGTK [ gtk3 cairo pango ]
     ++ lib.optionals stdenv.isDarwin [ Carbon Cocoa ];
 
   configureFlags =
     lib.optionals (!withPython) [ "--disable-python-scripting" "--disable-python-extension" ]
-    ++ lib.optional withGTK "--enable-gtk2-use"
+    ++ lib.optionals withGTK [ "--enable-gdk=gdk3" ]
     ++ lib.optional (!withGTK) "--without-x"
     ++ lib.optional withExtras "--enable-fontforge-extras";
 
