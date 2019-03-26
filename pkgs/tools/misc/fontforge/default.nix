@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, lib
+{ stdenv, fetchurl, fetchFromGitHub, lib
 , autoconf, automake, gnum4, libtool, perl, gnulib, uthash, pkgconfig, gettext
 , python, freetype, zlib, glib, libungif, libpng, libjpeg, libtiff, libxml2, cairo, pango
 , withSpiro ? false, libspiro
@@ -10,11 +10,13 @@
 
 stdenv.mkDerivation rec {
   pname = "fontforge";
-  version = "20190317";
+  version = "20190326";
 
-  src = fetchurl {
-    url = "https://github.com/${pname}/${pname}/releases/download/${version}/${pname}-${version}.tar.gz";
-    sha256 = "1ddqbpc32cgbccdnv0lfw0qhj59hcqzb7616ph5lkvm91pnas4dp";
+  src = fetchFromGitHub {
+    owner = pname;
+    repo = pname;
+    rev = "e284c7ec69e4f9d2c8e6db32d964b49359d1d423";
+    sha256 = "1kv43130b9xyfdvv84cm8k75v9kql9h0nmirzjkaa8zg9jwsf1sr";
   };
 
   patches = [ ./fontforge-20140813-use-system-uthash.patch ];
