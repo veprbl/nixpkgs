@@ -22,15 +22,16 @@
  const ExtensionUtils = imports.misc.extensionUtils;
 --- a/src/libgpaste/settings/gpaste-settings.c
 +++ b/src/libgpaste/settings/gpaste-settings.c
-@@ -1013,7 +1013,10 @@
+@@ -1013,7 +1013,11 @@
      }
      else
      {
 -        return g_settings_new (G_PASTE_SETTINGS_NAME);
 +        // library used by introspection requires schemas but we cannot set XDG_DATA_DIRS for the library
-+        g_autoptr (GSettingsSchemaSource) schema_source = g_settings_schema_source_new_from_directory ("@gschemasCompiled@", NULL, FALSE, NULL);
++        GSettingsSchemaSource *schema_source = g_settings_schema_source_new_from_directory ("@gschemasCompiled@", NULL, FALSE, NULL);
 +        g_autoptr (GSettingsSchema) schema = g_settings_schema_source_lookup (schema_source, G_PASTE_SETTINGS_NAME, FALSE);
-+        return g_settings_new_full (priv->schema, NULL, NULL);
++        g_settings_schema_source_unref (schema_source);
++        return g_settings_new_full (schema, NULL, NULL);
      }
  }
  
