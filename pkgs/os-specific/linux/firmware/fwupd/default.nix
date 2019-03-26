@@ -19,11 +19,11 @@ let
   };
 in stdenv.mkDerivation rec {
   pname = "fwupd";
-  version = "1.2.5";
+  version = "1.2.6";
 
   src = fetchurl {
     url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
-    sha256 = "087rz9kiqh76hgy169jwyl2s18z83qyylj63ynx7ylwm1iwiaq85";
+    sha256 = "0rwljyv4ch83sgxmfqn5g75vdw7zins0l79iaf60iy8d59jkpx9n";
   };
 
   outputs = [ "out" "lib" "dev" "devdoc" "man" "installedTests" ];
