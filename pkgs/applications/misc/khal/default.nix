@@ -14,6 +14,7 @@ with python3.pkgs; buildPythonApplication rec {
   propagatedBuildInputs = [
     atomicwrites
     click
+    click-log
     configobj
     dateutil
     icalendar
@@ -27,15 +28,14 @@ with python3.pkgs; buildPythonApplication rec {
     pkginfo
     freezegun
   ];
-  nativeBuildInputs = [ setuptools_scm pkgs.glibcLocales git ];
+  nativeBuildInputs = [ setuptools_scm ];
   checkInputs = [ pytest ];
 
   postInstall = ''
     install -D misc/__khal $out/share/zsh/site-functions/__khal
   '';
 
-  # One test fails as of 0.9.10 due to the upgrade to icalendar 4.0.3
-  doCheck = false;
+  doCheck = true;
 
   checkPhase = ''
     py.test
