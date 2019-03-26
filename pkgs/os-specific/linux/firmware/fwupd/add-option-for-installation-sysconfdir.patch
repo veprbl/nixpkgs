@@ -110,13 +110,13 @@ index d7c21faf..c92529ac 100644
  if gio.version().version_compare ('>= 2.55.0')
    conf.set('HAVE_GIO_2_55_0', '1')
 diff --git a/meson_options.txt b/meson_options.txt
-index c9b7ba67..126c784f 100644
+index 889a888e..d95324a0 100644
 --- a/meson_options.txt
 +++ b/meson_options.txt
-@@ -18,6 +18,7 @@ option('plugin_uefi', type : 'boolean', value : true, description : 'enable UEFI
- option('plugin_nvme', type : 'boolean', value : true, description : 'enable NVMe support')
+@@ -21,6 +21,7 @@ option('plugin_modem_manager', type : 'boolean', value : false, description : 'e
  option('systemd', type : 'boolean', value : true, description : 'enable systemd support')
  option('systemdunitdir', type: 'string', value: '', description: 'Directory for systemd units')
+ option('elogind', type : 'boolean', value : false, description : 'enable elogind support')
 +option('sysconfdir_install', type: 'string', value: '', description: 'sysconfdir to use during installation')
  option('tests', type : 'boolean', value : true, description : 'enable tests')
  option('udevdir', type: 'string', value: '', description: 'Directory for udev rules')

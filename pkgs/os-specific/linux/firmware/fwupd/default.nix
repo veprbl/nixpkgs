@@ -19,11 +19,11 @@ let
   };
 in stdenv.mkDerivation rec {
   pname = "fwupd";
-  version = "1.2.5";
+  version = "1.2.6";
 
   src = fetchurl {
     url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
-    sha256 = "087rz9kiqh76hgy169jwyl2s18z83qyylj63ynx7ylwm1iwiaq85";
+    sha256 = "0rwljyv4ch83sgxmfqn5g75vdw7zins0l79iaf60iy8d59jkpx9n";
   };
 
   outputs = [ "out" "lib" "dev" "devdoc" "man" "installedTests" ];
@@ -78,6 +78,10 @@ in stdenv.mkDerivation rec {
     substituteInPlace src/fu-common.c --replace \
       'fu_common_find_program_in_path ("bwrap"' \
       'fu_common_find_program_in_path ("${bubblewrap}/bin/bwrap"'
+
+    substituteInPlace data/meson.build --replace \
+      "install_dir: systemd.get_pkgconfig_variable('systemdshutdowndir')" \
+      "install_dir: '${placeholder "out"}/lib/systemd/system-shutdown'"
   '';
 
   # /etc/os-release not available in sandbox
