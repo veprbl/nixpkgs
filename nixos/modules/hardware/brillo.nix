@@ -22,5 +22,6 @@ in
 
   config = mkIf cfg.enable {
     services.udev.packages = [ pkgs.brillo ];
+    environment.systemPackages = [ pkgs.brillo ];
   };
 }
