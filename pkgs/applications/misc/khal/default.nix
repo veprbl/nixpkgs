@@ -27,7 +27,7 @@ with python3.pkgs; buildPythonApplication rec {
     freezegun
   ];
   nativeBuildInputs = [ setuptools_scm ];
-  checkInputs = [ pytest ];
+  checkInputs = [ pytest pkgs.glibcLocales  /* :( */ ];
 
   postInstall = ''
     install -D misc/__khal $out/share/zsh/site-functions/__khal
