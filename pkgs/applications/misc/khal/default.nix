@@ -9,8 +9,6 @@ with python3.pkgs; buildPythonApplication rec {
     sha256 = "1p49f3g25x900vk32spjbr2aipj12kcbhayny2vwhdpkjlv6k396";
   };
 
-  LC_ALL = "en_US.UTF-8";
-
   propagatedBuildInputs = [
     atomicwrites
     click
@@ -29,7 +27,7 @@ with python3.pkgs; buildPythonApplication rec {
     freezegun
   ];
   nativeBuildInputs = [ setuptools_scm ];
-  checkInputs = [ pytest pkgs.glibcLocales ];
+  checkInputs = [ pytest ];
 
   postInstall = ''
     install -D misc/__khal $out/share/zsh/site-functions/__khal
