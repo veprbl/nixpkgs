@@ -35,6 +35,13 @@ stdenv.mkDerivation rec {
     ++ lib.optional withGTK "--enable-gtk2-use"
     ++ lib.optional (!withGTK) "--without-x";
 
+  preConfigure = ''
+    export GIT="$(type -P true)"
+    cp -r "${gnulib}" ./gnulib
+    chmod +w -R ./gnulib
+    ./bootstrap --skip-git --gnulib-srcdir=./gnulib
+  '';
+
   doCheck = false; # tries to wget some fonts
   doInstallCheck = doCheck;
 
