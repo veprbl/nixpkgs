@@ -36,6 +36,7 @@ stdenv.mkDerivation rec {
     ++ lib.optional (!withGTK) "--without-x";
 
   preConfigure = ''
+    export SOURCE_DATE_EPOCH=$(date -d ${version} +%s)
     export GIT="$(type -P true)"
     cp -r "${gnulib}" ./gnulib
     chmod +w -R ./gnulib
