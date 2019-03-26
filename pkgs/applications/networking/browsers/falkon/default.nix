@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
     owner  = "KDE";
     repo   = pname;
     rev    = "v${version}";
-    sha256 = "1ay1ljrdjcfqwjv4rhf4psh3dfihnvhpmpqcayd3p9lh57x7fh41";
+    sha256 = "1w64slh9wpcfi4v7ds9wci1zvwh0dh787ndpi6hd4kmdgnswvsw7";
   };
 
   preConfigure = ''
