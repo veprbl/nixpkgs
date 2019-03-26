@@ -31,6 +31,9 @@ with python3.pkgs; buildPythonApplication rec {
 
   postInstall = ''
     install -D misc/__khal $out/share/zsh/site-functions/__khal
+
+    # bah, fixes tests
+    export LC_ALL=en_US.UTF-8
   '';
 
   doCheck = true;
