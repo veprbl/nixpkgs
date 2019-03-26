@@ -80,6 +80,10 @@ in stdenv.mkDerivation rec {
     substituteInPlace src/fu-common.c --replace \
       'fu_common_find_program_in_path ("bwrap"' \
       'fu_common_find_program_in_path ("${bubblewrap}/bin/bwrap"'
+
+    substituteInPlace data/meson.build --replace \
+      "install_dir: systemd.get_pkgconfig_variable('systemdshutdowndir')" \
+      "install_dir: '${placeholder "out"}/lib/systemd/system-shutdown'"
   '';
 
   # /etc/os-release not available in sandbox
