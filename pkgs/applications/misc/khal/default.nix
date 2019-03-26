@@ -1,4 +1,4 @@
-{ stdenv, pkgs, python3, fetchgit, git }:
+{ stdenv, pkgs, python3, glibcLocales }:
 
 with python3.pkgs; buildPythonApplication rec {
   pname = "khal";
@@ -29,7 +29,7 @@ with python3.pkgs; buildPythonApplication rec {
     freezegun
   ];
   nativeBuildInputs = [ setuptools_scm ];
-  checkInputs = [ pytest ];
+  checkInputs = [ pytest glibcLocales ];
 
   postInstall = ''
     install -D misc/__khal $out/share/zsh/site-functions/__khal
