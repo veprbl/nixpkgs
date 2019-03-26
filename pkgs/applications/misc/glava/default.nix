@@ -5,20 +5,20 @@
 let
   inherit (stdenv.lib) optional makeLibraryPath;
 
-  wrapperScript = writeScript "glava" ''
-    #!${runtimeShell}
-    case "$1" in
-      --copy-config)
-        # The binary would symlink it, which won't work in Nix because the
-        # garbage collector will eventually remove the original files after
-        # updates
-        echo "Nix wrapper: Copying glava config to ~/.config/glava"
-        cp -r --no-preserve=all @out@/etc/xdg/glava ~/.config/glava
-        ;;
-      *)
-        exec @out@/bin/.glava-unwrapped "$@"
-    esac
-  '';
+  #wrapperScript = writeScript "glava" ''
+  #  #!${runtimeShell}
+  #  case "$1" in
+  #    --copy-config)
+  #      # The binary would symlink it, which won't work in Nix because the
+  #      # garbage collector will eventually remove the original files after
+  #      # updates
+  #      echo "Nix wrapper: Copying glava config to ~/.config/glava"
+  #      cp -r --no-preserve=all @out@/etc/xdg/glava ~/.config/glava
+  #      ;;
+  #    *)
+  #      exec @out@/bin/.glava-unwrapped "$@"
+  #  esac
+  #'';
 in
   stdenv.mkDerivation rec {
     name = "glava-${version}";
@@ -47,27 +47,20 @@ in
     preConfigure = ''
       substituteInPlace Makefile \
         --replace 'unknown' 'v${version}'
-
-      export CFLAGS="-march=native"
     '';
 
-    makeFlags = optional (!enableGlfw) "DISABLE_GLFW=1";
-
-    installFlags = [
-      "DESTDIR=$(out)"
+    makeFlags = optional (!enableGlfw) "DISABLE_GLFW=1"
+    ++ [
+      "DESTDIR=/"
+      "SHADERDIR=${placeholder "out"}/etc/xdg/glava"
+      "EXECDIR=${placeholder "out"}/bin"
+      "CFLAGS=-march=native" # XXX ?!
     ];
 
     fixupPhase = ''
-      mkdir -p $out/bin
-      mv $out/usr/bin/glava $out/bin/.glava-unwrapped
-      rm -rf $out/usr
-
       patchelf \
-        --set-rpath "$(patchelf --print-rpath $out/bin/.glava-unwrapped):${makeLibraryPath [ libGL ]}" \
-        $out/bin/.glava-unwrapped
-
-      substitute ${wrapperScript} $out/bin/glava --subst-var out
-      chmod +x $out/bin/glava
+        --set-rpath "$(patchelf --print-rpath $out/bin/glava):${makeLibraryPath [ libGL ]}" \
+        $out/bin/glava
     '';
 
     meta = with stdenv.lib; {
