@@ -96,16 +96,16 @@ let self = stdenv.mkDerivation rec {
     ./disk_cache-include-dri-driver-path-in-cache-key.patch
   ] ++ lib.optional stdenv.isDarwin ./darwin-clock-gettime.patch
     # do not prefix user provided dri-drivers-path
-    ++ lib.optional (lib.versionOlder version "19.0.0") (fetchpatch {
+    ++ lib.optional (lib.versionOlder version "18.3.5") (fetchpatch {
       url = "https://gitlab.freedesktop.org/mesa/mesa/commit/f6556ec7d126b31da37c08d7cb657250505e01a0.patch";
       sha256 = "0z6phi8hbrbb32kkp1js7ggzviq7faz1ria36wi4jbc4in2392d9";
     })
     ++ lib.optionals (lib.versionOlder version "19.1.0") [
       # do not prefix user provided d3d-drivers-path
-      (fetchpatch {
-        url = "https://gitlab.freedesktop.org/mesa/mesa/commit/dcc48664197c7e44684ccfb970a4ae083974d145.patch";
-        sha256 = "1nhs0xpx3hiy8zfb5gx1zd7j7xha6h0hr7yingm93130a5902lkb";
-      })
+      #(fetchpatch {
+      #  url = "https://gitlab.freedesktop.org/mesa/mesa/commit/dcc48664197c7e44684ccfb970a4ae083974d145.patch";
+      #  sha256 = "1nhs0xpx3hiy8zfb5gx1zd7j7xha6h0hr7yingm93130a5902lkb";
+      #})
 
       # don't build libGLES*.so with GLVND
       (fetchpatch {
