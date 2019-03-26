@@ -2,17 +2,11 @@
 
 with python3.pkgs; buildPythonApplication rec {
   pname = "khal";
-  version = "0.9.9999"; # not really
+  version = "0.10.0";
 
-  #src = fetchPypi {
-  #  inherit pname version;
-  #  sha256 = "03h0j0d3xyqh98x5v2gv63wv3g91hip3vsaxvybsn5iz331d23h4";
-  #};
-  src = fetchgit {
-    url = "https://github.com/pimutils/${pname}";
-    rev = "46b4b3e2c382371a96414c8406f8b08a75e08c34";
-    sha256 = "09kgaxr3j5vj8k4cw97x3cjb6qgh3dvyix649wzh71cp41awh418";
-    leaveDotGit = true;
+  src = fetchPypi {
+    inherit pname version;
+    sha256 = "1p49f3g25x900vk32spjbr2aipj12kcbhayny2vwhdpkjlv6k396";
   };
 
   LC_ALL = "C.UTF-8";
