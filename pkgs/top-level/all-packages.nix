@@ -477,6 +477,8 @@ in
     stdenv = clangStdenv;
   };
 
+  libdislocator = callPackage ../tools/security/afl/libdislocator.nix { };
+
   afpfs-ng = callPackage ../tools/filesystems/afpfs-ng { };
 
   agrep = callPackage ../tools/text/agrep { };
@@ -3695,6 +3697,8 @@ in
   jp = callPackage ../development/tools/jp { };
 
   jp2a = callPackage ../applications/misc/jp2a { };
+
+  jpeg-archive = callPackage ../applications/graphics/jpeg-archive { };
 
   jpeginfo = callPackage ../applications/graphics/jpeginfo { };
 
@@ -13684,10 +13688,9 @@ in
 
   apcupsd = callPackage ../servers/apcupsd { };
 
-  asterisk = asterisk-stable;
-
   inherit (callPackages ../servers/asterisk { })
-    asterisk-stable asterisk-lts;
+    asterisk asterisk-stable asterisk-lts
+    asterisk_13 asterisk_15 asterisk_16;
 
   sabnzbd = callPackage ../servers/sabnzbd { };
 
@@ -21783,6 +21786,8 @@ in
 
   mrbayes = callPackage ../applications/science/biology/mrbayes { };
 
+  messer-slim = callPackage ../applications/science/biology/messer-slim { };
+
   minc_tools = callPackage ../applications/science/biology/minc-tools { };
 
   minc_widgets = callPackage ../applications/science/biology/minc-widgets { };
@@ -22699,6 +22704,8 @@ in
   igraph = callPackage ../development/libraries/igraph { };
 
   illum = callPackage ../tools/system/illum { };
+
+  image_optim = callPackage ../applications/graphics/image_optim { inherit (nodePackages) svgo; };
 
   # using the new configuration style proposal which is unstable
   jack1 = callPackage ../misc/jackaudio/jack1.nix { };
