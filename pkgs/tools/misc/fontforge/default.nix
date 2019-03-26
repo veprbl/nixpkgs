@@ -39,7 +39,7 @@ stdenv.mkDerivation rec {
     export GIT="$(type -P true)"
     cp -r "${gnulib}" ./gnulib
     chmod +w -R ./gnulib
-    ./bootstrap --skip-git --gnulib-srcdir=./gnulib
+    ./bootstrap --skip-git --gnulib-srcdir=./gnulib --force
   '';
 
   doCheck = false; # tries to wget some fonts
