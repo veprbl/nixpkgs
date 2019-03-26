@@ -25,9 +25,6 @@ let
 in
 {
 
-  # Allow callPackage to fill in the pkgs argument
-  inherit pkgs;
-
   # A stdenv capable of building 32-bit binaries.  On x86_64-linux,
   # it uses GCC compiled with multilib support; on i686-linux, it's
   # just the plain stdenv.
@@ -3582,6 +3579,8 @@ in
   intecture-auth = callPackage ../tools/admin/intecture/auth.nix { };
 
   intecture-cli = callPackage ../tools/admin/intecture/cli.nix { };
+
+  intel-media-sdk = callPackage ../development/libraries/intel-media-sdk { };
 
   invoice2data  = callPackage ../tools/text/invoice2data  { };
 
@@ -9966,6 +9965,7 @@ in
     libjack2 = if stdenv.isDarwin then null else libjack2;
     libmodplug = if stdenv.isDarwin then null else libmodplug;
     openal = if stdenv.isDarwin then null else openal;
+    libmfx = if stdenv.isDarwin then null else intel-media-sdk;
     libpulseaudio = if stdenv.isDarwin then null else libpulseaudio;
     samba = if stdenv.isDarwin then null else samba;
     vid-stab = if stdenv.isDarwin then null else vid-stab;
@@ -23245,6 +23245,8 @@ in
   vault = callPackage ../tools/security/vault { };
 
   vaultenv = haskellPackages.vaultenv;
+
+  vazir-fonts = callPackage ../data/fonts/vazir-fonts { };
 
   vbam = callPackage ../misc/emulators/vbam {
     ffmpeg = ffmpeg_2;
