@@ -4,6 +4,7 @@
 , withSpiro ? false, libspiro
 , withGTK ? false, gtk2
 , withPython ? true
+, withExtras ? true
 , Carbon ? null, Cocoa ? null
 }:
 
@@ -33,7 +34,8 @@ stdenv.mkDerivation rec {
   configureFlags =
     lib.optionals (!withPython) [ "--disable-python-scripting" "--disable-python-extension" ]
     ++ lib.optional withGTK "--enable-gtk2-use"
-    ++ lib.optional (!withGTK) "--without-x";
+    ++ lib.optional (!withGTK) "--without-x"
+    ++ lib.optional withExtras "--enable-fontforge-extras";
 
   # work-around: git isn't really used, but configuration fails without it
   preConfigure = ''
