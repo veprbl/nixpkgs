@@ -1,7 +1,5 @@
 { stdenv, fetchurl, libgpgerror, gnupg, pkgconfig, glib, pth, libassuan
 , file, which, ncurses
-, autoreconfHook, fetchpatch
-, git
 , texinfo
 , buildPackages
 , qtbase ? null
@@ -29,7 +27,7 @@ stdenv.mkDerivation rec {
     [ libgpgerror glib libassuan pth ]
     ++ lib.optional (qtbase != null) qtbase;
 
-  nativeBuildInputs = [ file pkgconfig gnupg autoreconfHook git texinfo ]
+  nativeBuildInputs = [ file pkgconfig gnupg texinfo ]
   ++ lib.optionals pythonSupport [ python swig2 which ncurses ];
 
   depsBuildBuild = [ buildPackages.stdenv.cc ];
