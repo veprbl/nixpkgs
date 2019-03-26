@@ -1,4 +1,4 @@
-{ stdenv, pkgs, python3, glibcLocales }:
+{ stdenv, pkgs, python3 }:
 
 with python3.pkgs; buildPythonApplication rec {
   pname = "khal";
@@ -9,7 +9,7 @@ with python3.pkgs; buildPythonApplication rec {
     sha256 = "1p49f3g25x900vk32spjbr2aipj12kcbhayny2vwhdpkjlv6k396";
   };
 
-  LC_ALL = "C.UTF-8";
+  LC_ALL = "en_US.UTF-8";
 
   propagatedBuildInputs = [
     atomicwrites
@@ -29,7 +29,7 @@ with python3.pkgs; buildPythonApplication rec {
     freezegun
   ];
   nativeBuildInputs = [ setuptools_scm ];
-  checkInputs = [ pytest glibcLocales ];
+  checkInputs = [ pytest pkgs.glibcLocales ];
 
   postInstall = ''
     install -D misc/__khal $out/share/zsh/site-functions/__khal
