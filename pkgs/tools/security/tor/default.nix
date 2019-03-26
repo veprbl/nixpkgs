@@ -39,7 +39,7 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
   enableParallelChecking = false; # 4 tests fail randomly
 
-  doCheck = false; # connect() failures, "Network is unreachable"
+  doCheck = true;
 
   postInstall = ''
     mkdir -p $geoip/share/tor
