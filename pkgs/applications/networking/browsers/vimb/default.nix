@@ -3,14 +3,14 @@
 }:
 
 stdenv.mkDerivation rec {
-  name = "vimb-${version}";
-  version = "3.3.0";
+  pname = "vimb";
+  version = "3.4.0";
 
   src = fetchFromGitHub {
     owner = "fanglingsu";
     repo = "vimb";
     rev = version;
-    sha256 = "1qg18z2gnsli9qgrqfhqfrsi6g9mcgr90w8yab28nxrq4aha6brf";
+    sha256 = "1p9y0xb2swly8g235yf9kpi34q4f2sdb1dyfjml10vfvf11xlvb7";
   };
 
   nativeBuildInputs = [ wrapGAppsHook pkgconfig ];
