@@ -57,6 +57,13 @@
   <itemizedlist>
    <listitem>
     <para>
+      The NetworkManager systemd unit was renamed back from network-manager.service to
+      NetworkManager.service for better compatibility with other applications expecting this name.
+      The same applies to ModemManager where modem-manager.service is now called ModemManager.service again.
+    </para>
+   </listitem>
+   <listitem>
+    <para>
      Buildbot no longer supports Python 2, as support was dropped upstream in
      version 2.0.0. Configurations may need to be modified to make them
      compatible with Python 3.

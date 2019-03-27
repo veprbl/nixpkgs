@@ -944,7 +944,7 @@ in
   bchunk = callPackage ../tools/cd-dvd/bchunk { };
 
   inherit (callPackages ../misc/logging/beats/6.x.nix {
-    # XXX: bettercap is failing with Go 1.12. Error is related to cgo, an
+    # XXX: this is failing with Go 1.12. Error is related to cgo, an
     # update to this package might fix it.
     buildGoPackage = buildGo111Package;
   })
@@ -960,7 +960,7 @@ in
   packetbeat = packetbeat6;
 
   inherit (callPackages ../misc/logging/beats/5.x.nix {
-    # XXX: bettercap is failing with Go 1.12. Error is related to cgo, an
+    # XXX: this is failing with Go 1.12. Error is related to cgo, an
     # update to this package might fix it.
     buildGoPackage = buildGo111Package;
   })
@@ -1768,7 +1768,7 @@ in
   mongodb-compass = callPackage ../tools/misc/mongodb-compass { };
 
   mongodb-tools = callPackage ../tools/misc/mongodb-tools {
-    # XXX: bettercap is failing with Go 1.12. Error is related to cgo, an
+    # XXX: this is failing with Go 1.12. Error is related to cgo, an
     # update to this package might fix it.
     buildGoPackage = buildGo111Package;
   };
@@ -1855,7 +1855,7 @@ in
   bepasty = callPackage ../tools/misc/bepasty { };
 
   bettercap = callPackage ../tools/security/bettercap {
-    # XXX: bettercap is failing with Go 1.12. Error is related to cgo, an
+    # XXX: this is failing with Go 1.12. Error is related to cgo, an
     # update to this package might fix it.
     buildGoPackage = buildGo111Package;
   };
@@ -4364,7 +4364,7 @@ in
   miredo = callPackage ../tools/networking/miredo { };
 
   mirrorbits = callPackage ../servers/mirrorbits {
-    # XXX: bettercap is failing with Go 1.12. Error is related to cgo, an
+    # XXX: this is failing with Go 1.12. Error is related to cgo, an
     # update to this package might fix it.
     buildGoPackage = buildGo111Package;
   };
@@ -12765,7 +12765,7 @@ in
   };
 
   skydive = callPackage ../tools/networking/skydive {
-    # XXX: bettercap is failing with Go 1.12. Error is related to cgo, an
+    # XXX: this is failing with Go 1.12. Error is related to cgo, an
     # update to this package might fix it.
     buildGoPackage = buildGo111Package;
   };
@@ -14088,10 +14088,7 @@ in
 
   mysql_jdbc = callPackage ../servers/sql/mysql/jdbc { };
 
-  miniflux = callPackage ../servers/miniflux {
-    # XXX: bettercap is failing with Go 1.12.
-    buildGoModule = buildGo111Module;
-  };
+  miniflux = callPackage ../servers/miniflux { };
 
   nagios = callPackage ../servers/monitoring/nagios { };
 
@@ -14560,7 +14557,11 @@ in
 
   cifs-utils = callPackage ../os-specific/linux/cifs-utils { };
 
-  cockroachdb = callPackage ../servers/sql/cockroachdb { };
+  cockroachdb = callPackage ../servers/sql/cockroachdb {
+    # XXX: this is failing with Go 1.12. Error is related to cgo, an
+    # update to this package might fix it.
+    buildGoPackage = buildGo111Package;
+  };
 
   conky = callPackage ../os-specific/linux/conky ({
     lua = lua5_3_compat;
