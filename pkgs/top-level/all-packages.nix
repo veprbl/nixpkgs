@@ -21170,7 +21170,9 @@ in
 
   pacvim = callPackage ../games/pacvim { };
 
-  performous = callPackage ../games/performous { };
+  performous = callPackage ../games/performous {
+    boost = boost166;
+  };
 
   pingus = callPackage ../games/pingus {};
 
@@ -21763,6 +21765,8 @@ in
   igv = callPackage ../applications/science/biology/igv { };
 
   inormalize = callPackage ../applications/science/biology/inormalize { };
+  
+  itsx = callPackage ../applications/science/biology/itsx { };
 
   iv = callPackage ../applications/science/biology/iv {
     neuron-version = neuron.version;
