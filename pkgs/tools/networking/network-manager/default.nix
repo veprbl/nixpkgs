@@ -26,6 +26,7 @@ in stdenv.mkDerivation rec {
 
   postPatch = ''
     patchShebangs ./tools
+    patchShebangs libnm/*.{py,pl}
   '';
 
   preConfigure = ''
@@ -91,6 +92,8 @@ in stdenv.mkDerivation rec {
     "localstatedir=${placeholder "out"}/var"
     "runstatedir=${placeholder "out"}/var/run"
   ];
+
+  enableParallelBuilding = true;
 
   postInstall = ''
     mkdir -p $out/lib/NetworkManager
