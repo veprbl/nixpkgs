@@ -66,7 +66,7 @@ let
     pname = "compton-git";
 #    version = "5.1";
     #version = "2019-03-25";
-    version = "6.1-rc1";
+    version = "6.1";
 
     COMPTON_VERSION = "v${version}";
 
@@ -76,7 +76,7 @@ let
       owner  = "yshui";
       repo   = "compton";
       rev    = COMPTON_VERSION;
-      sha256 = "1praa14rblgrwrf3lvf4wxnl7bws6x4jlgihcsrh5hlzrwf6bmxh";
+      sha256 = "0bvvgcsiq3gzsm0ajag0ys2fl2giyvf5asa0z0pkrs8j9k7f3bj0";
     };
 
     buildInputs = [
