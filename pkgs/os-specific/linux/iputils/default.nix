@@ -1,7 +1,6 @@
-{ stdenv, fetchFromGitHub
-, meson, ninja, pkgconfig, gettext
-, libxslt, docbook_xsl, docbook_xml_dtd_44
-, libcap, nettle, libidn2, openssl
+{ stdenv, fetchFromGitHub, fetchpatch
+, meson, ninja, pkgconfig, gettext, libxslt, docbook_xsl_ns
+, libcap, nettle, libidn2, openssl, systemd
 }:
 
 with stdenv.lib;
@@ -25,24 +24,31 @@ in stdenv.mkDerivation {
     sha256 = "0b755gv3370c0rrphx14mrsqjb396zqnsm9lsws842a4k4zrqmvi";
   };
 
-  prePatch = ''
-    for file in doc/custom-man.xsl doc/meson.build; do
-      substituteInPlace $file \
-        --replace "http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl" "${docbook_xsl}/xml/xsl/docbook/manpages/docbook.xsl"
-    done
-  '';
-
   # ninfod cannot be build with nettle yet:
-  patches = [ ./build-ninfod-with-openssl.patch ./timespec.patch ];
+  patches =
+    [ ./build-ninfod-with-openssl.patch
+      (fetchpatch { # tracepath: fix musl build, again
+        url = "https://github.com/iputils/iputils/commit/c9aca1b53324bcd1b5a2de5c645813f80eccd016.patch";
+        sha256 = "0faqgkqbi57cyx1zgzzy6xgd24xr0iawix7mjs47j92ra9gw90cz";
+      })
+      (fetchpatch { # doc: Use namespace correctly
+        url = "https://github.com/iputils/iputils/commit/c503834519d21973323980850431101f90e663ef.patch";
+        sha256 = "1yp6b6403ddccbhfzsb36cscxd36d4xb8syc1g02a18xkswiwf09";
+      })
+    ];
 
-  mesonFlags = [
-    "-DUSE_CRYPTO=nettle" "-DBUILD_RARPD=true" "-DBUILD_TRACEROUTE6=true"
-  ] ++ optional (!withNinfod) "-DBUILD_NINFOD=false"
+  mesonFlags =
+    [ "-DUSE_CRYPTO=nettle"
+      "-DBUILD_RARPD=true"
+      "-DBUILD_TRACEROUTE6=true"
+      "-Dsystemdunitdir=etc/systemd/system"
+    ]
+    ++ optional (!withNinfod) "-DBUILD_NINFOD=false"
+    # Disable idn usage w/musl (https://github.com/iputils/iputils/pull/111):
     ++ optional stdenv.hostPlatform.isMusl "-DUSE_IDN=false";
-  # Disable idn usage w/musl: https://github.com/iputils/iputils/pull/111
 
-  nativeBuildInputs = [ meson ninja pkgconfig gettext libxslt.bin ];
-  buildInputs = [ libcap nettle ]
+  nativeBuildInputs = [ meson ninja pkgconfig gettext libxslt.bin docbook_xsl_ns libcap ];
+  buildInputs = [ libcap nettle systemd ]
     ++ optional (!stdenv.hostPlatform.isMusl) libidn2
     ++ optional withNinfod openssl; # TODO: Build with nettle
 
