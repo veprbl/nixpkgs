@@ -26,6 +26,10 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ python pkgconfig ];
   buildInputs = [ pciutils ];
 
+  postBuild = ''
+    make -C lsmsr
+  '';
+
   installPhase = ''
     install -Dm755 -t $out/bin x86info lsmsr/lsmsr
     install -Dm655 -T lsmsr/lsmsr.8 $out/share/man/man8/lsmsr.8
