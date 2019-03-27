@@ -1,0 +1,39 @@
+From 8e2f5410cec5b052fb4da9d1b774a5858903dc35 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Michel=20D=C3=A4nzer?= <michel.daenzer@amd.com>
+Date: Mon, 25 Mar 2019 12:29:23 +0100
+Subject: [PATCH 2/4] Revert "gitlab-ci: Only run docker-image stage if
+ relevant source files change"
+
+This reverts commit 8694395fcfd407190db74f31064960e484747377.
+
+Some scenarios have come to light where this failed to ensure the docker
+image exists:
+
+* If the master branch of a forked repository is used for an MR which
+  doesn't modify .gitlab-ci.yml, the docker-image job may not run.
+* If the docker-image job of the first pipeline in a forked repository
+  is cancelled or fails for any reason, and .gitlab-ci.yml isn't
+  modified for the next pipeline run.
+(Cherry picked from commit 0ec9a13c2a207e98e2dd6b352552c0e069af0727)
+---
+ .gitlab-ci.yml | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+index 4cb5e7d33..117744496 100644
+--- a/.gitlab-ci.yml
++++ b/.gitlab-ci.yml
+@@ -23,10 +23,6 @@ stages:
+ 
+ debian-testing:
+     stage: docker-image
+-    only:
+-        changes:
+-            - .gitlab-ci.yml
+-            - .gitlab-ci/Dockerfile
+     image:
+         name: gcr.io/kaniko-project/executor:debug
+         entrypoint: [""]
+-- 
+2.21.GIT
+
