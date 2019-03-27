@@ -9,7 +9,7 @@
 , gtk3, glib, glib-networking, gsettings-desktop-schemas
 , gnome-desktop, gnome-settings-daemon, gnome-online-accounts
 , vino, gnome-bluetooth, tracker, adwaita-icon-theme
-, udisks2, gsound, libhandy }:
+, udisks2, gsound, libhandy, cups }:
 
 let
   pname = "gnome-control-center";
@@ -43,6 +43,7 @@ in stdenv.mkDerivation rec {
       src = ./paths.patch;
       gcm = gnome-color-manager;
       inherit glibc libgnomekbd tzdata;
+      inherit cups networkmanagerapplet;
     })
   ];
 
