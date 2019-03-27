@@ -16584,7 +16584,7 @@ in
     gpgme = pkgsMusl.gpgme.override { inherit gnupg; };
   };
 
-  brig = callPackages ../applications/networking/brig { };
+  brig = callPackage ../applications/networking/brig { };
 
   bristol = callPackage ../applications/audio/bristol { };
 
@@ -22702,7 +22702,9 @@ in
     inherit (darwin.apple_sdk.frameworks) Security;
   };
 
-  websocat = callPackage ../tools/misc/websocat { };
+  websocat = callPackage ../tools/misc/websocat {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
 
   epkowa = callPackage ../misc/drivers/epkowa { };
 
