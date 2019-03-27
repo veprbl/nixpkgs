@@ -88,6 +88,12 @@ in stdenv.mkDerivation rec {
     NOCONFIGURE=1 ./autogen.sh
   '';
 
+  preBuild = ''
+    export GI_TYPELIB_PATH="$PWD/libnm/''${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}"
+    echo make install-libLTLIBRARIES $installFlags
+    make install-libLTLIBRARIES $installFlags -j$NIX_BUILD_CORES
+  '';
+
   doCheck = false; # requires /sys, the net
 
   installFlags = [
