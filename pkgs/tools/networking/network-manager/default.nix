@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchFromGitHub, fetchpatch, substituteAll, intltool, pkgconfig, dbus, dbus-glib, gtk-doc
+{ stdenv, fetchurl, fetchFromGitHub, fetchpatch, substituteAll, intltool, pkgconfig, dbus, dbus-glib, gtk-doc, perl
 , gnome3, systemd, libuuid, polkit, gnutls, ppp, dhcp, iptables
 , libgcrypt, dnsmasq, bluez5, readline
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
@@ -79,7 +79,7 @@ in stdenv.mkDerivation rec {
 
   propagatedBuildInputs = [ dbus-glib gnutls libgcrypt python3Packages.pygobject3 ];
 
-  nativeBuildInputs = [ autoreconfHook intltool pkgconfig libxslt docbook_xsl gtk-doc ];
+  nativeBuildInputs = [ autoreconfHook intltool pkgconfig libxslt docbook_xsl gtk-doc perl ];
 
   autoreconfPhase = ''
     NOCONFIGURE=1 ./autogen.sh
