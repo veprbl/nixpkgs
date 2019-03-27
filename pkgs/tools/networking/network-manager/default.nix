@@ -18,8 +18,8 @@ in stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = pname;
     repo = pname;
-    rev = "579373a5dfc98b0d39deaf1c12a1b492ac6c4e40";
-    sha256 = "05ny9jm2dghs9zgim04sqiqcwyqidxb2hasz5r49lr5y7gq8xld7";
+    rev = "02ae0fd00a635a4aaf3ea9c98e7a2c308e971913";
+    sha256 = "1dnpk7filq8mgjss9d2ly6l1sxm4bcp29zwplhqjlpw0klxkyn9w";
   };
 
   outputs = [ "out" "dev" ];
