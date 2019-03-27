@@ -26,7 +26,10 @@ in stdenv.mkDerivation rec {
 
   postPatch = ''
     patchShebangs ./tools
-    patchShebangs libnm/*.{py,pl}
+    chmod +x libnm/*.py
+    chmod +x libnm/*.pl
+    patchShebangs libnm/*.py
+    patchShebangs libnm/*.pl
   '';
 
   preConfigure = ''
