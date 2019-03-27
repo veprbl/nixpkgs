@@ -1,7 +1,6 @@
 { stdenv, fetchFromGitHub, libarchive, iucode-tool }:
 
 stdenv.mkDerivation rec {
-  name = "microcode-intel-${version}";
   pname = "microcode-intel";
   version = "20190312";
 
