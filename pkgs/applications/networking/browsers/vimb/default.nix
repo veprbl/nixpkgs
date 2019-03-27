@@ -13,6 +13,10 @@ stdenv.mkDerivation rec {
     sha256 = "1p9y0xb2swly8g235yf9kpi34q4f2sdb1dyfjml10vfvf11xlvb7";
   };
 
+  postPatch = ''
+    mkdir -p .git && touch .git/index
+  '';
+
   nativeBuildInputs = [ wrapGAppsHook pkgconfig ];
   buildInputs = [ gtk3 libsoup webkitgtk glib-networking gsettings-desktop-schemas ];
 
