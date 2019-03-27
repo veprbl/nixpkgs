@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchFromGitHub, fetchpatch, substituteAll, intltool, pkgconfig, dbus, dbus-glib
+{ stdenv, fetchurl, fetchFromGitHub, fetchpatch, substituteAll, intltool, pkgconfig, dbus, dbus-glib, gtk-doc
 , gnome3, systemd, libuuid, polkit, gnutls, ppp, dhcp, iptables
 , libgcrypt, dnsmasq, bluez5, readline
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
@@ -58,8 +58,8 @@ in stdenv.mkDerivation rec {
     "--with-modem-manager-1"
     "--with-nmtui"
     "--with-iwd"
-    "--disable-gtk-doc"
-    "--with-libnm-glib" # legacy library, TODO: remove
+    #"--disable-gtk-doc"
+    #"--with-libnm-glib" # legacy library, TODO: remove
     "--disable-tests"
   ];
 
@@ -78,7 +78,11 @@ in stdenv.mkDerivation rec {
 
   propagatedBuildInputs = [ dbus-glib gnutls libgcrypt python3Packages.pygobject3 ];
 
-  nativeBuildInputs = [ autoreconfHook intltool pkgconfig libxslt docbook_xsl ];
+  nativeBuildInputs = [ autoreconfHook intltool pkgconfig libxslt docbook_xsl gtk-doc ];
+
+  autoreconfPhase = ''
+    NOCONFIGURE=1 ./autogen.sh
+  '';
 
   doCheck = false; # requires /sys, the net
 
