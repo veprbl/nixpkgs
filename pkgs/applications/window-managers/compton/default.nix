@@ -65,8 +65,8 @@ let
   gitSource = rec {
     pname = "compton-git";
 #    version = "5.1";
-    #version = "2019-03-25";
-    version = "6.2";
+    version = "2019-03-27";
+    #version = "6.2";
 
     COMPTON_VERSION = "v${version}";
 
@@ -75,8 +75,9 @@ let
     src = fetchFromGitHub {
       owner  = "yshui";
       repo   = "compton";
-      rev    = COMPTON_VERSION;
-      sha256 = "03fi9q8zw2qrwpkmy1bnavgfh91ci9in5fdi17g4s5s0n2l7yil7";
+      #rev    = COMPTON_VERSION;
+      rev    = "f47ea7383199b486ad4187b37f82e2cb631e20a7";
+      sha256 = "0d8miq2hk5vr6jbc80n4y0glzfcaxpszm7w2h6cjvi7j94z8dbsg";
     };
 
     buildInputs = [
@@ -92,9 +93,9 @@ let
       libxdg_basedir
     ];
 
-    #postPatch = ''
-    #  substituteInPlace meson.build --replace "version: '6'" "version: '6-git-${version}'"
-    #'';
+    postPatch = ''
+      substituteInPlace meson.build --replace "version: '6'" "version: '6-git-${version}'"
+    '';
 
     #patches = [ ./above_sibling.patch ];
 
