@@ -100,7 +100,7 @@ let self = stdenv.mkDerivation rec {
       url = "https://gitlab.freedesktop.org/mesa/mesa/commit/f6556ec7d126b31da37c08d7cb657250505e01a0.patch";
       sha256 = "0z6phi8hbrbb32kkp1js7ggzviq7faz1ria36wi4jbc4in2392d9";
     })
-    ++ lib.optionals (lib.versionOlder version "19.1.0") [
+    ++ lib.optionals (lib.versionOlder version "19.0.1") [
       # do not prefix user provided d3d-drivers-path
       (fetchpatch {
         url = "https://gitlab.freedesktop.org/mesa/mesa/commit/dcc48664197c7e44684ccfb970a4ae083974d145.patch";
