@@ -274,6 +274,8 @@ in {
     bap = pkgs.ocamlPackages.bap;
   };
 
+  baselines = callPackage ../development/python-modules/baselines { };
+
   bash_kernel = callPackage ../development/python-modules/bash_kernel { };
 
   bayespy = callPackage ../development/python-modules/bayespy { };
@@ -614,6 +616,8 @@ in {
   pyaxmlparser = callPackage ../development/python-modules/pyaxmlparser { };
 
   pybind11 = callPackage ../development/python-modules/pybind11 { };
+
+  pybullet = callPackage ../development/python-modules/pybullet { };
 
   pycairo = callPackage ../development/python-modules/pycairo {
     inherit (pkgs) pkgconfig;
@@ -4031,6 +4035,10 @@ in {
   requests_toolbelt = self.requests-toolbelt; # Old attr, 2017-09-26
 
   retry_decorator = callPackage ../development/python-modules/retry_decorator { };
+
+  roboschool = callPackage ../development/python-modules/roboschool {
+    inherit (pkgs) pkgconfig; # use normal pkgconfig, not the python package
+  };
 
   qdarkstyle = callPackage ../development/python-modules/qdarkstyle { };
 
