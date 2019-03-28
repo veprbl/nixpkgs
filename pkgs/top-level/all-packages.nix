@@ -8720,8 +8720,8 @@ in
   };
 
   ccls = callPackage ../development/tools/misc/ccls {
-    llvmPackages = llvmPackages_7;
-    stdenv = llvmPackages_7.stdenv;
+    llvmPackages = llvmPackages_latest;
+    stdenv = llvmPackages_latest.stdenv;
   };
 
   credstash = with python3Packages; toPythonApplication credstash;
