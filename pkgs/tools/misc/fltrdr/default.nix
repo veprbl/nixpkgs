@@ -5,13 +5,13 @@
 
 stdenv.mkDerivation rec {
   name = "fltrdr-${version}";
-  version = "0.2.0";
+  version = "0.2.1";
 
   src = fetchFromGitHub {
     repo   = "fltrdr";
     owner  = "octobanana";
     rev    = "${version}";
-    sha256 = "1j71z351zdlq817anzs3b8c3yb6m3s1iifa3dr67jbjqizni4y5l";
+    sha256 = "0hj7pwb93l4ahykmmr0665nq50jvwdq0aiaciz82225aw1cq939w";
   };
 
   nativeBuildInputs = [ cmake ];
