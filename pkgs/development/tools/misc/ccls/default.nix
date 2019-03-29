@@ -3,21 +3,22 @@
 
 stdenv.mkDerivation rec {
   name    = "ccls-${version}";
-  version = "0.20190314";
+  version = "0.20190329";
 
   src = fetchFromGitHub {
     owner = "MaskRay";
     repo = "ccls";
-    rev = version;
-    sha256 = "0siaczvv3fiw9amjk9fg4wpz4c7p27il9m7d7h11a1yjb8w3mi1k";
+    #rev = version;
+    rev = "556ad0aeb50203817d0f08f9ffa52389f75435a5";
+    sha256 = "0y1ff547d5nxx5y754xqkkbffzwsdgh5mb08rzn37b47vlgfazka";
   };
 
   nativeBuildInputs = [ cmake makeWrapper ];
   buildInputs = with llvmPackages; [ all /* clang-unwrapped llvm */ rapidjson ];
 
   cmakeFlags = [
-    "-DLLVM_ENABLE_RTTI=ON"
-    "-DLLVM_LINK_LLVM_DYLIB=ON"
+    #"-DLLVM_ENABLE_RTTI=ON"
+    #"-DLLVM_LINK_LLVM_DYLIB=ON"
     "-DCMAKE_OSX_DEPLOYMENT_TARGET=10.12"
   ];
 
@@ -36,6 +37,8 @@ stdenv.mkDerivation rec {
     substituteAll ${./wrapper} $out/bin/ccls
     chmod --reference=$out/bin/$wrapped $out/bin/ccls
   '';
+
+  doCheck = true;
 
   meta = with stdenv.lib; {
     description = "A c/c++ language server powered by clang";
