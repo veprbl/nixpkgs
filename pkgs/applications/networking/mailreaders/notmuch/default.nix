@@ -17,10 +17,12 @@ stdenv.mkDerivation rec {
 
   passthru = {
     pythonSourceRoot = "${name}/bindings/python";
+    #pythonSourceRoot = "${src}/bindings/python"; # lol
     inherit version;
   };
 
   src = fetchgit {
+    inherit name;
     url = git://git.notmuchmail.org/git/notmuch;
     rev = "639d21d5b9b67883e027183614bedbeb805b3ba6";
     sha256 = "1kdpax3dfs8wd7xxc268v5fxvbxzbs105pkxd4k6s0p2r8257vz9";
