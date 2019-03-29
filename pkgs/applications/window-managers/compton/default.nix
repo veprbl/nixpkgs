@@ -97,16 +97,16 @@ let
       substituteInPlace meson.build --replace "version: '6'" "version: '6-git-${version}'"
     '';
 
-    #patches = [ ./above_sibling.patch ];
+    patches = [ ./logging.patch ]; # ./above_sibling.patch ];
 
-    NIX_CFLAGS_COMPILE = [ "-fno-strict-aliasing" /* "-DDEBUG_RESTACK=1" "-DDEBUG_EVENTS=1" */ ];
+    NIX_CFLAGS_COMPILE = [ "-fno-strict-aliasing" "-DDEBUG_RESTACK=1" "-DDEBUG_EVENTS=1" ];
 
     doCheck = true;
 
     mesonFlags = [
       "-Dbuild_docs=true"
       "-Dunittest=true"
-      #"-Dsanitize=true"
+      "-Dsanitize=true"
     ];
 
     meta = {
