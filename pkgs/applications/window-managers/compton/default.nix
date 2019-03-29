@@ -97,7 +97,7 @@ let
       substituteInPlace meson.build --replace "version: '6'" "version: '6-git-${version}'"
     '';
 
-    patches = [ ./logging.patch ]; # ./above_sibling.patch ];
+    patches = [ ./logging.patch ./above_sibling.patch ];
 
     NIX_CFLAGS_COMPILE = [
       "-fno-strict-aliasing"
