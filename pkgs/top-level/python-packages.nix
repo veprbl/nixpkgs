@@ -3194,6 +3194,8 @@ in {
 
   minimock = callPackage ../development/python-modules/minimock { };
 
+  minio = callPackage ../development/python-modules/minio { };
+
   moviepy = callPackage ../development/python-modules/moviepy { };
 
   mozterm = callPackage ../development/python-modules/mozterm { };
