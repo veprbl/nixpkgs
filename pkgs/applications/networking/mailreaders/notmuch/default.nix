@@ -1,4 +1,4 @@
-{ fetchurl, stdenv
+{ fetchurl, stdenv, fetchgit
 , pkgconfig, gnupg
 , xapian, gmime, talloc, zlib
 , doxygen, perl
@@ -12,7 +12,7 @@
 with stdenv.lib;
 
 stdenv.mkDerivation rec {
-  version = "0.28.3";
+  version = "0.28.3"; # not really, git
   name = "notmuch-${version}";
 
   passthru = {
@@ -20,10 +20,15 @@ stdenv.mkDerivation rec {
     inherit version;
   };
 
-  src = fetchurl {
-    url = "https://notmuchmail.org/releases/${name}.tar.gz";
-    sha256 = "1v0ff6qqwj42p3n6qw30czzqi52nvgf3dn05vd7a03g39a5js8af";
+  src = fetchgit {
+    url = git://git.notmuchmail.org/git/notmuch;
+    rev = "639d21d5b9b67883e027183614bedbeb805b3ba6";
+    sha256 = "1kdpax3dfs8wd7xxc268v5fxvbxzbs105pkxd4k6s0p2r8257vz9";
   };
+  #src = fetchurl {
+  #  url = "https://notmuchmail.org/releases/${name}.tar.gz";
+  #  sha256 = "1v0ff6qqwj42p3n6qw30czzqi52nvgf3dn05vd7a03g39a5js8af";
+  #};
 
   nativeBuildInputs = [ pkgconfig ];
   buildInputs = [
@@ -52,7 +57,12 @@ stdenv.mkDerivation rec {
       --replace '-install_name $(libdir)' "-install_name $out/lib"
   '';
 
-  configureFlags = [ "--zshcompletiondir=$(out)/share/zsh/site-functions" ];
+  configureFlags = [
+    "--without-emacs"
+    "--without-docs"
+    "--without-api-docs"
+    "--zshcompletiondir=${placeholder "out"}/share/zsh/site-functions"
+  ];
 
   # Notmuch doesn't use autoconf and consequently doesn't tag --bindir and
   # friends
