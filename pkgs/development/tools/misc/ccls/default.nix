@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ cmake makeWrapper ];
-  buildInputs = with llvmPackages; [ clang-unwrapped llvm rapidjson ];
+  buildInputs = with llvmPackages; [ all /* clang-unwrapped llvm */ rapidjson ];
 
   cmakeFlags = [
     "-DLLVM_ENABLE_RTTI=ON"
