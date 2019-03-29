@@ -2,19 +2,19 @@
 , gnome3, libnotify, itstool, glib, gtk3, libxml2
 , coreutils, libpeas, libsecret, pcre, libxkbcommon, wrapGAppsHook
 , libpthreadstubs, libXdmcp, epoxy, at-spi2-core, dbus, libgpgerror
-, appstream-glib, desktop-file-utils, duplicity
+, appstream-glib, desktop-file-utils, duplicity, json-glib, libsoup
 }:
 
 stdenv.mkDerivation rec {
   pname = "deja-dup";
-  version = "38.3";
+  version = "39.0";
 
   src = fetchFromGitLab {
     domain = "gitlab.gnome.org";
     owner = "World";
     repo = pname;
     rev = version;
-    sha256 = "1bnvmdlm67k1b6115x75j3nl92x5yl4psq5pna2w6cg9npxdd3fa";
+    sha256 = "18p2mia2765khyv0p7iczv9pkdybv2rf14ibi7sxnylyjxxhywsz";
   };
 
   patches = [
@@ -38,6 +38,7 @@ stdenv.mkDerivation rec {
    libnotify libpeas glib gtk3 libsecret
    pcre libxkbcommon libpthreadstubs libXdmcp epoxy gnome3.nautilus
    at-spi2-core dbus gnome3.gnome-online-accounts libgpgerror
+   json-glib libsoup
   ];
 
   propagatedUserEnvPkgs = [ duplicity ];
