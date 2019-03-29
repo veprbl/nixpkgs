@@ -3,22 +3,22 @@
 
 stdenv.mkDerivation rec {
   name    = "ccls-${version}";
-  version = "0.20190301";
+  version = "0.20190314";
 
   src = fetchFromGitHub {
     owner = "MaskRay";
     repo = "ccls";
     rev = version;
-    sha256 = "1n60mly993czq3mnb82k8yqjrbfnsnx5v5dmr8ylqif3awcsk04i";
+    sha256 = "0siaczvv3fiw9amjk9fg4wpz4c7p27il9m7d7h11a1yjb8w3mi1k";
   };
 
   nativeBuildInputs = [ cmake makeWrapper ];
   buildInputs = with llvmPackages; [ clang-unwrapped llvm rapidjson ];
 
   cmakeFlags = [
-    "-DSYSTEM_CLANG=ON"
+    "-DLLVM_ENABLE_RTTI=ON"
+    "-DLLVM_LINK_LLVM_DYLIB=ON"
     "-DCMAKE_OSX_DEPLOYMENT_TARGET=10.12"
-    "-DCMAKE_CXX_FLAGS=-fvisibility=hidden"
   ];
 
   shell = runtimeShell;
