@@ -72,13 +72,14 @@ let
 
     nativeBuildInputs = [ meson ninja ];
 
-    src = fetchFromGitHub {
-      owner  = "yshui";
-      repo   = "compton";
-      #rev    = COMPTON_VERSION;
-      rev    = "b2704144f67b879155ef0a81f4eef737f50b49f4";
-      sha256 = "0l3brk279bfksm8ngj233w3x6yhfcfjpmkcfqslfc41zqzvmcnsa";
-    };
+    src = fetchGit /home/will/src/all/compton-yshui;
+    #src = fetchFromGitHub {
+    #  owner  = "yshui";
+    #  repo   = "compton";
+    #  #rev    = COMPTON_VERSION;
+    #  rev    = "b2704144f67b879155ef0a81f4eef737f50b49f4";
+    #  sha256 = "0l3brk279bfksm8ngj233w3x6yhfcfjpmkcfqslfc41zqzvmcnsa";
+    #};
 
     buildInputs = [
       dbus libX11 libXext
@@ -97,7 +98,7 @@ let
       substituteInPlace meson.build --replace "version: '6'" "version: '6-git-${version}'"
     '';
 
-    patches = [ ./logging.patch ./above_sibling.patch ];
+    #patches = [ ./logging.patch ./above_sibling.patch ];
 
     NIX_CFLAGS_COMPILE = [
       "-fno-strict-aliasing"
