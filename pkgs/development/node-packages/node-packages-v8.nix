@@ -4,13 +4,13 @@
 
 let
   sources = {
-    "@types/node-8.10.44" = {
+    "@types/node-8.10.45" = {
       name = "_at_types_slash_node";
       packageName = "@types/node";
-      version = "8.10.44";
+      version = "8.10.45";
       src = fetchurl {
-        url = "https://registry.npmjs.org/@types/node/-/node-8.10.44.tgz";
-        sha512 = "HY3SK7egERHGUfY8p6ztXIEQWcIPHouYhCGcLAPQin7gE2G/fALFz+epnMwcxKUS6aKqTVoAFdi+t1llQd3xcw==";
+        url = "https://registry.npmjs.org/@types/node/-/node-8.10.45.tgz";
+        sha512 = "tGVTbA+i3qfXsLbq9rEq/hezaHY55QxQLeXQL2ejNgFAxxrgu8eMmYIOsRcl7hN1uTLVsKOOYacV/rcJM3sfgQ==";
       };
     };
     "JSV-4.0.2" = {
@@ -3613,6 +3613,15 @@ let
         sha512 = "RS9R6R35NYgQn++fkDWaOmqGoj4Ek9gGs+DPxNUZKuwE183xjJroKvyo1IzVFeXvUrvmALy6FWD5xrdJT25gMg==";
       };
     };
+    "semver-5.7.0" = {
+      name = "semver";
+      packageName = "semver";
+      version = "5.7.0";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/semver/-/semver-5.7.0.tgz";
+        sha512 = "Ya52jSX2u7QKghxeoFGpLwCtGlt7j0oY9DYb5apt9nPlJ42ID+ulTXESnt/qAQcoSERyZ5sl3LDIOw0nAn/5DA==";
+      };
+    };
     "set-blocking-2.0.0" = {
       name = "set-blocking";
       packageName = "set-blocking";
@@ -4623,7 +4632,7 @@ in
       sha512 = "MMiK5sFfIocNMWCc5PshUCAe6aY4P13/GCmSwudOziA/pFdQMHU8jhu+jU2SSWFug4K1ugeuCwtMXe43oL0PhQ==";
     };
     dependencies = [
-      sources."@types/node-8.10.44"
+      sources."@types/node-8.10.45"
       sources."JSV-4.0.2"
       sources."adal-node-0.1.28"
       sources."ajv-6.10.0"
@@ -5521,7 +5530,7 @@ in
       sources."safe-buffer-5.1.2"
       sources."safer-buffer-2.1.2"
       sources."sax-1.2.4"
-      sources."semver-5.6.0"
+      sources."semver-5.7.0"
       sources."set-blocking-2.0.0"
       sources."signal-exit-3.0.2"
       sources."string-width-1.0.2"
