@@ -1,7 +1,7 @@
 { lib, fetchzip }:
 
 let
-  version = "1.3.0";
+  version = "1.3.1";
 in fetchzip rec {
   name = "ibm-plex-${version}";
   url = "https://github.com/IBM/plex/releases/download/v${version}/OpenType.zip";
