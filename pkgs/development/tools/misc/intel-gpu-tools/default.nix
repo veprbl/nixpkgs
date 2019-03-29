@@ -8,8 +8,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = https://gitlab.freedesktop.org/drm/igt-gpu-tools;
-    rev = "7df3eeb4f3360cd2b511c31acc1c52bd7ce6587f";
-    sha256 = "0avsl5bhp13ksgdikvwdvszzhbkavwqrb84f965j8z069kwlzjbw";
+    rev = "66deae8b6fa69540f069d6551cd22013f5343948";
+    sha256 = "1j8dxa1dw625sxil8whd18hyqjw0akragawc7kdpsx9b04iyszqa";
   };
   #src = fetchurl {
   #  url = "https://xorg.freedesktop.org/archive/individual/app/igt-gpu-tools-${version}.tar.xz";
