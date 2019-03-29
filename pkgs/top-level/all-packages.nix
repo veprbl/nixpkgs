@@ -1618,6 +1618,7 @@ in
   opendune = callPackage ../games/opendune { };
 
   meson = callPackage ../development/tools/build-managers/meson { };
+  mesonClang = callPackage meson.override { inherit (llvmPackages_latest) stdenv; };
 
   metabase = callPackage ../servers/metabase { };
 
