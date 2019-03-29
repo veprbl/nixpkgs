@@ -18890,7 +18890,7 @@ in
     # Doesn't really matter what python but I'd like to match anyway
     pythonPackages = python3Packages;
     # Don't pull in rust (librsvg) and other graphical things
-    emacs = null; # emacs26-nox;
+    emacs = emacs26-nox;
   };
 
   notejot = callPackage ../applications/misc/notejot { };
