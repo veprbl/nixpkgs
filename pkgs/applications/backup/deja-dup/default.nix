@@ -1,8 +1,8 @@
 { stdenv, fetchFromGitLab, substituteAll, meson, ninja, pkgconfig, vala_0_40, gettext
-, gnome3, libnotify, itstool, glib, gtk3, libxml2
+, gnome3, libnotify, itstool, glib, glib-networking, gtk3, libxml2
 , coreutils, libsecret, pcre, libxkbcommon, wrapGAppsHook
 , libpthreadstubs, libXdmcp, epoxy, at-spi2-core, dbus, libgpgerror
-, appstream-glib, desktop-file-utils, duplicity, json-glib, libsoup
+, appstream-glib, desktop-file-utils, duplicity, json-glib, libsoup, packagekit
 }:
 
 stdenv.mkDerivation rec {
@@ -38,7 +38,7 @@ stdenv.mkDerivation rec {
    libnotify glib gtk3 libsecret
    pcre libxkbcommon libpthreadstubs libXdmcp epoxy gnome3.nautilus
    at-spi2-core dbus gnome3.gnome-online-accounts libgpgerror
-   json-glib libsoup
+   json-glib glib-networking libsoup packagekit
   ];
 
   propagatedUserEnvPkgs = [ duplicity ];
