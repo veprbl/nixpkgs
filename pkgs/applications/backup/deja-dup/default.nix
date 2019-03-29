@@ -1,6 +1,6 @@
 { stdenv, fetchFromGitLab, substituteAll, meson, ninja, pkgconfig, vala_0_40, gettext
 , gnome3, libnotify, itstool, glib, gtk3, libxml2
-, coreutils, libpeas, libsecret, pcre, libxkbcommon, wrapGAppsHook
+, coreutils, libsecret, pcre, libxkbcommon, wrapGAppsHook
 , libpthreadstubs, libXdmcp, epoxy, at-spi2-core, dbus, libgpgerror
 , appstream-glib, desktop-file-utils, duplicity, json-glib, libsoup
 }:
@@ -35,7 +35,7 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
-   libnotify libpeas glib gtk3 libsecret
+   libnotify glib gtk3 libsecret
    pcre libxkbcommon libpthreadstubs libXdmcp epoxy gnome3.nautilus
    at-spi2-core dbus gnome3.gnome-online-accounts libgpgerror
    json-glib libsoup
@@ -47,11 +47,6 @@ stdenv.mkDerivation rec {
 
   postInstall = ''
     glib-compile-schemas $out/share/glib-2.0/schemas
-  '';
-
-  postFixup = ''
-    # Unwrap accidentally wrapped library
-    mv $out/libexec/deja-dup/tools/.libduplicity.so-wrapped $out/libexec/deja-dup/tools/libduplicity.so
   '';
 
   meta = with stdenv.lib; {
