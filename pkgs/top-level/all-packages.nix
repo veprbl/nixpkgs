@@ -20486,7 +20486,10 @@ in
 
   inherit (xorg) xcompmgr;
 
-  inherit (callPackage ../applications/window-managers/compton { inherit (llvmPackages_8) stdenv; }) compton-old compton-git;
+  inherit (callPackage ../applications/window-managers/compton {
+    inherit (llvmPackages_latest) stdenv;
+    meson = mesonClang;
+  }) compton-old compton-git;
   compton = compton-git;
 
   xdaliclock = callPackage ../tools/misc/xdaliclock {};
