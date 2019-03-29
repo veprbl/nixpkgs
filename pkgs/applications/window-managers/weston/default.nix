@@ -39,9 +39,9 @@ stdenv.mkDerivation rec {
     #"--disable-setuid-install" # prevent install target to chown root weston-launch, which fails
   ] ++ stdenv.lib.optional (vaapi != null) "-Dbackend-drm-screencast-vaapi=true"
     ++ stdenv.lib.optionals (xwayland != null) [
-        "-Dxwayland=true"
-        "-Dxwayland-path=${xwayland.out}/bin/Xwayland"
-      ];
+    "-Dxwayland=true"
+    "-Dxwayland-path=${xwayland.out}/bin/Xwayland"
+  ];
 
   meta = with stdenv.lib; {
     description = "Reference implementation of a Wayland compositor";
