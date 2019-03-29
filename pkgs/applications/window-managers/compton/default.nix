@@ -99,7 +99,11 @@ let
 
     patches = [ ./logging.patch ]; # ./above_sibling.patch ];
 
-    NIX_CFLAGS_COMPILE = [ "-fno-strict-aliasing" "-DDEBUG_RESTACK=1" "-DDEBUG_EVENTS=1" ];
+    NIX_CFLAGS_COMPILE = [
+      "-fno-strict-aliasing"
+      #"-DDEBUG_RESTACK=1"
+      #"-DDEBUG_EVENTS=1"
+    ];
 
     doCheck = true;
 
