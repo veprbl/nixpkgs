@@ -1,6 +1,7 @@
 { stdenv
 , fetchFromGitHub
 , cmake
+, icu
 }:
 
 stdenv.mkDerivation rec {
@@ -15,6 +16,9 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ cmake ];
+
+  # not mentioned, but includes <unicode/regex.h> and others
+  buildInputs = [ icu ]; 
 
   enableParallelBuilding = true;
 
