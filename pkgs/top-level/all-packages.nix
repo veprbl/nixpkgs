@@ -2159,6 +2159,8 @@ in
 
   cfssl = callPackage ../tools/security/cfssl { };
 
+  chafa = callPackage ../tools/misc/chafa { };
+
   checkbashisms = callPackage ../development/tools/misc/checkbashisms { };
 
   civetweb = callPackage ../development/libraries/civetweb { };
@@ -12003,6 +12005,8 @@ in
   nix-plugins = callPackage ../development/libraries/nix-plugins {
     nix = nixUnstable;
   };
+
+  nika-fonts = callPackage ../data/fonts/nika-fonts { };
 
   nlohmann_json = callPackage ../development/libraries/nlohmann_json { };
 
