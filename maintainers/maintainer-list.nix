@@ -345,6 +345,11 @@
     github = "andrew-d";
     name = "Andrew Dunham";
   };
+  andrewchambers = {
+    email = "ac@acha.ninja";
+    github = "andrewchambers";
+    name = "Andrew Chambers";
+  };
   andrewrk = {
     email = "superjoe30@gmail.com";
     github = "andrewrk";

@@ -7951,6 +7951,8 @@ in
 
   j = callPackage ../development/interpreters/j {};
 
+  janet = callPackage ../development/interpreters/janet {};
+
   jimtcl = callPackage ../development/interpreters/jimtcl {};
 
   jmeter = callPackage ../applications/networking/jmeter {};
@@ -16054,6 +16056,8 @@ in
   papirus-icon-theme = callPackage ../data/icons/papirus-icon-theme { };
 
   papis = callPackage ../tools/misc/papis { };
+
+  paps = callPackage ../tools/misc/paps { };
 
   pecita = callPackage ../data/fonts/pecita {};
 
