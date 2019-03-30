@@ -65,7 +65,7 @@ let
   gitSource = rec {
     pname = "compton-git";
 #    version = "5.1";
-    version = "2019-03-28";
+    version = "2019-03-29";
     #version = "6.2";
 
     COMPTON_VERSION = "v${version}";
@@ -74,11 +74,12 @@ let
 
     #src = fetchGit /home/will/src/all/compton-yshui;
     src = fetchFromGitHub {
-      owner  = "yshui";
+      #owner  = "yshui";
+      owner  = "dtzWill";
       repo   = "compton";
       #rev    = COMPTON_VERSION;
-      rev    = "b2704144f67b879155ef0a81f4eef737f50b49f4";
-      sha256 = "0l3brk279bfksm8ngj233w3x6yhfcfjpmkcfqslfc41zqzvmcnsa";
+      rev    = "157cfd94dbdaf26019b677f5765a4823cf8891d6";
+      sha256 = "1mdwv24xpy4rajn5k2l6iq34fs79jp6mvf4pdwhfvbqiwgwf4nc0";
     };
 
     buildInputs = [
@@ -98,7 +99,7 @@ let
       substituteInPlace meson.build --replace "version: '6'" "version: '6-git-${version}'"
     '';
 
-    patches = [ ./logging.patch ./above_sibling.patch ./minor-int-cast-fix.patch ];
+    #patches = [ ./logging.patch ./above_sibling.patch ./minor-int-cast-fix.patch ];
 
     NIX_CFLAGS_COMPILE = [
       "-fno-strict-aliasing"
