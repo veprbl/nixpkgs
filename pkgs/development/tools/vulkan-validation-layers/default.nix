@@ -1,16 +1,15 @@
-{ stdenv, fetchFromGitHub, cmake, writeText, python3
+{ stdenv, callPackage, fetchFromGitHub, cmake, writeText, python3
 , vulkan-headers, vulkan-loader, glslang
 , pkgconfig, xlibsWrapper, libxcb, libXrandr, wayland }:
-
 stdenv.mkDerivation rec {
   name = "vulkan-validation-layers-${version}";
-  version = "1.1.92.0";
+  version = "1.1.101.0"; # WARNING: glslang overrides in all-packages.nix must be updated to match known-good.json!
 
   src = fetchFromGitHub {
     owner = "KhronosGroup";
     repo = "Vulkan-ValidationLayers";
     rev = "sdk-${version}";
-    sha256 = "02rl00z790kxdqqnyrgdymb888wr9y6ki8azn7arfbvp75v1yn8d";
+    sha256 = "00gz72m393i3m3rh5hv9d0znzlz39cpw35ifchzb4cr11bi4mzyz";
   };
 
   nativeBuildInputs = [ pkgconfig ];

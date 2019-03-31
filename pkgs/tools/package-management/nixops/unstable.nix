@@ -5,10 +5,10 @@
 # Then copy the URL to the tarball.
 
 callPackage ./generic.nix (rec {
-  version = "1.6.1pre2728_8ed39f9";
+  version = "1.6.1pre2749_1147632";
   src = fetchurl {
-    url = "https://hydra.nixos.org/build/88329589/download/2/nixops-${version}.tar.bz2";
-    sha256 = "1ppnhqmsbiijm6r77h86abv3fjny5iq35yvj207s520kjwzaj7kc";
+    url = "https://hydra.nixos.org/build/91487861/download/2/nixops-${version}tar.bz2";
+    sha256 = "1ppnhqmsbiijm7r77h86abv3fjny5iq35yvj207s520kjwzaj7kc";
   };
   # # Marking unstable as broken, instead of using the pinned version,
   # # like stable does You might be able to use the following code (as

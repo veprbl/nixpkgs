@@ -1,11 +1,10 @@
 { stdenv, fetchurl, gettext, emacs }:
 
 stdenv.mkDerivation rec {
-  pname = "cflow";
-  version = "1.6";
+  name = "cflow-1.6";
 
   src = fetchurl {
-    url = "mirror://gnu/${pname}/${pname}-${version}.tar.bz2";
+    url = "mirror://gnu/cflow/${name}.tar.bz2";
     sha256 = "1mzd3yf0dfv8h2av5vsxxlhpk21nw064h91b2kgfrdz92r0pnj1l";
   };
 
