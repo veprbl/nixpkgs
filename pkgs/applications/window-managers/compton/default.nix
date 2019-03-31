@@ -78,8 +78,8 @@ let
       owner  = "dtzWill";
       repo   = "compton";
       #rev    = COMPTON_VERSION;
-      rev    = "605594447fd07764f9c3f2c5bba2dbf73dc6a1f8"; # core-profile
-      sha256 = "0zs5qych2598m3a1hy0d2yxz6f0066gm67k7fhwq446v5w72zmnl";
+      rev    = "efd717fb862e3530de73281aa0a043c544f44b68"; # core-profile
+      sha256 = "0bda6q6qkcqr7pjh2jl1qb8amafn18fx1f4yzvxpajvlkn90kd8g";
     };
 
     buildInputs = [
