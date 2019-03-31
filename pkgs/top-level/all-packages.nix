@@ -1005,6 +1005,8 @@ in
     cudnn = cudnn_cudatoolkit_9_0;
   };
 
+  behdad-fonts = callPackage ../data/fonts/behdad-fonts { };
+
   blink1-tool = callPackage ../tools/misc/blink1-tool { };
 
   bliss = callPackage ../applications/science/math/bliss { };
@@ -4877,6 +4879,8 @@ in
 
   parallel = callPackage ../tools/misc/parallel { };
 
+  parastoo-fonts = callPackage ../data/fonts/parastoo-fonts { };
+
   parcellite = callPackage ../tools/misc/parcellite { };
 
   patchutils = callPackage ../tools/text/patchutils { };
@@ -5471,9 +5475,13 @@ in
 
   safeeyes = callPackage ../applications/misc/safeeyes { };
 
+  sahel-fonts = callPackage ../data/fonts/sahel-fonts { };
+
   salt = callPackage ../tools/admin/salt {};
 
   salut_a_toi = callPackage ../applications/networking/instant-messengers/salut-a-toi {};
+
+  samim-fonts = callPackage ../data/fonts/samim-fonts {};
 
   saml2aws = callPackage ../tools/security/saml2aws {};
 
@@ -18289,7 +18297,13 @@ in
 
   kipi-plugins = libsForQt5.callPackage ../applications/graphics/kipi-plugins { };
 
-  kitty = callPackage ../applications/misc/kitty { };
+  kitty = callPackage ../applications/misc/kitty {
+    harfbuzz = if stdenv.isDarwin then harfbuzz.override {
+      withCoreText = true;
+    } else harfbuzz;
+    inherit (darwin) cf-private;
+    inherit (darwin.apple_sdk.frameworks) Cocoa CoreGraphics Foundation IOKit Kernel OpenGL;
+  };
 
   kiwix = callPackage ../applications/misc/kiwix { };
 

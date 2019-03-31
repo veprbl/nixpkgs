@@ -36,7 +36,7 @@ with python3.pkgs; buildPythonApplication rec {
     export LC_ALL=en_US.UTF-8
   '';
 
-  doCheck = true;
+  doCheck = !stdenv.isAarch64;
 
   checkPhase = ''
     py.test
