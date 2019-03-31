@@ -4,7 +4,7 @@
 
 stdenv.mkDerivation rec {
   pname = "yubico-pam";
-  version = "2019-03-19";
+  version = "unstable-2019-03-19";
   src = fetchFromGitHub {
     owner = "Yubico";
     repo = pname;

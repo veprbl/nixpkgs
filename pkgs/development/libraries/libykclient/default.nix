@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   pname = "libykclient";
-  version = "2019-03-18";
+  version = "unstable-2019-03-18";
   src = fetchFromGitHub {
     owner = "Yubico";
     repo = "yubico-c-client";
