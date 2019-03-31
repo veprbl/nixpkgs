@@ -9,8 +9,8 @@ stdenv.mkDerivation rec {
     owner = "MaskRay";
     repo = "ccls";
     #rev = version;
-    rev = "556ad0aeb50203817d0f08f9ffa52389f75435a5";
-    sha256 = "0y1ff547d5nxx5y754xqkkbffzwsdgh5mb08rzn37b47vlgfazka";
+    rev = "64f9dbdc7a3e52ee2116f1f65afb818f20b8fadc";
+    sha256 = "10pw33v172ji8s1xzdq0vkxxq6f0b0xbkz9i9qfhqwvdps3l80v5";
   };
 
   nativeBuildInputs = [ cmake makeWrapper ];
