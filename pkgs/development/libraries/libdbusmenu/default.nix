@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
     sha256 = "12l7z8dhl917iy9h02sxmpclnhkdjryn08r8i4sr8l3lrlm4mk5r";
   };
 
-  nativeBuildInputs = [ vala pkgconfig intltool ];
+  nativeBuildInputs = [ pkgconfig intltool ];
 
   buildInputs = [
     glib dbus-glib json-glib
