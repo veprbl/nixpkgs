@@ -34,11 +34,8 @@ stdenv.mkDerivation rec {
   postPatch = ''
     chmod +x build-aux/post_install.py
     patchShebangs build-aux/post_install.py
-  '';
 
-  preFixup = ''
-    # Add geary to path for geary-attach
-    gappsWrapperArgs+=(--prefix PATH : "$out/bin")
+    chmod +x desktop/geary-attach
   '';
 
   doCheck = true;
@@ -49,6 +46,11 @@ stdenv.mkDerivation rec {
     xvfb-run -s '-screen 0 800x600x24' dbus-run-session \
       --config-file=${dbus.daemon}/share/dbus-1/session.conf \
       meson test -v --no-stdsplit
+  '';
+
+  preFixup = ''
+    # Add geary to path for geary-attach
+    gappsWrapperArgs+=(--prefix PATH : "$out/bin")
   '';
 
   passthru = {
