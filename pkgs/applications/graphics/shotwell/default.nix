@@ -37,20 +37,12 @@
 
 stdenv.mkDerivation rec {
   pname = "shotwell";
-  version = "0.30.2";
+  version = "0.31.0";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "0pam0si110vkc65kh59lrmgkv91f9zxmf1gpfm99ixjgw25rfi8r";
+    sha256 = "1pwq953wl7h9cvw7rvlr6pcbq9w28kkr7ddb8x2si81ngp0imwyx";
   };
-
-  patches = [
-    # fix building against gexiv2 0.12
-    (fetchpatch {
-      url = https://gitlab.gnome.org/GNOME/shotwell/commit/318c30394f4661e8d96e4fd906356a0736a30504.patch;
-      sha256 = "0wnvdia25dw7wzr0ix5y26mrfpli8jxc8w9rywrd988q3zr1y54g";
-    })
-  ];
 
   nativeBuildInputs = [
     meson
