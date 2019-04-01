@@ -5805,6 +5805,8 @@ in
   strongswanTNC = strongswan.override { enableTNC = true; };
   strongswanNM  = strongswan.override { enableNetworkManager = true; };
 
+  stylish-haskell = haskell.lib.justStaticExecutables haskellPackages.stylish-haskell;
+
   su = shadow.su;
 
   subsonic = callPackage ../servers/misc/subsonic { };
@@ -6537,6 +6539,8 @@ in
   clipnotify = callPackage ../tools/misc/clipnotify { };
 
   xclip = callPackage ../tools/misc/xclip { };
+
+  xcur2png = callPackage ../tools/graphics/xcur2png { };
 
   xcwd = callPackage ../tools/X11/xcwd { };
 
