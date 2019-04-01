@@ -442,6 +442,9 @@ in {
       { source = "${networkmanager-iodine}/lib/NetworkManager/VPN/nm-iodine-service.name";
         target = "NetworkManager/VPN/nm-iodine-service.name";
       }
+      { source = "${networkmanager-sstp}/lib/NetworkManager/VPN/nm-sstp-service.name";
+        target = "NetworkManager/VPN/nm-sstp-service.name";
+      }
     ] ++ optional (cfg.appendNameservers == [] || cfg.insertNameservers == [])
            { source = overrideNameserversScript;
              target = "NetworkManager/dispatcher.d/02overridedns";

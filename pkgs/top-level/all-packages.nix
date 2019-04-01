@@ -4567,6 +4567,8 @@ in
 
   networkmanager-fortisslvpn = callPackage ../tools/networking/network-manager/fortisslvpn { };
 
+  networkmanager-sstp = callPackage ../tools/networking/network-manager/sstp { };
+
   networkmanager_strongswan = callPackage ../tools/networking/network-manager/strongswan.nix { };
 
   networkmanagerapplet = callPackage ../tools/networking/network-manager/applet.nix { };
