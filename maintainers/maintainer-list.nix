@@ -5416,4 +5416,9 @@
     github = "minijackson";
     name = "Rémi Nicole";
   };
+  shazow = {
+    email = "andrey.petrov@shazow.net";
+    github = "shazow";
+    name = "Andrey Petrov";
+  };
 }
