@@ -1,7 +1,7 @@
 { stdenv, fetchurl, lib, file
 , pkgconfig, intltool
 , glib, dbus-glib, json-glib
-, gobject-introspection, vala, gnome-doc-utils
+, gobject-introspection, vala_0_42, gnome-doc-utils
 , gtkVersion ? null, gtk2 ? null, gtk3 ? null }:
 
 with lib;
@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     glib dbus-glib json-glib
-    gobject-introspection gnome-doc-utils
+    gobject-introspection vala_0_42 gnome-doc-utils
   ] ++ optional (gtkVersion != null) (if gtkVersion == "2" then gtk2 else gtk3);
 
   postPatch = ''
@@ -49,9 +49,9 @@ stdenv.mkDerivation rec {
   doCheck = false; # generates shebangs in check phase, too lazy to fix
 
   installFlags = [
-    "sysconfdir=${placeholder ''out''}/etc"
+    "sysconfdir=${placeholder "out"}/etc"
     "localstatedir=\${TMPDIR}"
-    "typelibdir=${placeholder ''out''}/lib/girepository-1.0"
+    "typelibdir=${placeholder "out"}/lib/girepository-1.0"
   ];
 
   meta = {

@@ -26,15 +26,6 @@ in stdenv.mkDerivation rec {
     sha256 = "1yx3n7p9vmv23jsv98fxwq95n78awdxqm8idhyhxx2d6vk4w1hgx";
   };
 
-  patches = [
-    # build with GStreamer 1.14 https://bugzilla.gnome.org/show_bug.cgi?id=788706
-    (fetchurl {
-      name = "fmradio-Fix-build-with-GStreamer-master.patch";
-      url = https://bugzilla.gnome.org/attachment.cgi?id=361178;
-      sha256 = "1h09mimlglj9hcmc3pfp0d6c277mqh2khwv9fryk43pkv3904d2w";
-    })
-  ];
-
   nativeBuildInputs = [
     pkgconfig
     intltool perl perlPackages.XMLParser
