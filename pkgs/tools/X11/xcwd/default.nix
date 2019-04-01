@@ -1,20 +1,21 @@
 { stdenv, fetchFromGitHub, libX11 }:
 
 stdenv.mkDerivation rec {
-  version = "2016-09-30";
-  name = "xcwd-${version}";
+  version = "2019-03-09";
+  pname = "xcwd";
 
   src = fetchFromGitHub {
     owner   = "schischi";
-    repo    = "xcwd";
-    rev     = "3f0728b932904985b703b33bd5c936ea96cf15a0";
-    sha256  = "0lwfz6qg7fkiq86skp51vpav33yik22ps4dvr48asv3570skhlf9";
+    repo    = pname;
+    rev     = "99738e1176acf3f39c2e709236c3fd87b806f2ed";
+    sha256  = "1wvhj5x8ysi1q73f9cw1f6znvp2zivd8pp6z1p3znw732h4zlv6v";
   };
 
   buildInputs = [ libX11 ];
 
-  makeFlags = "prefix=$(out)";
+  makeFlags = [ "prefix=${placeholder "out"}" ];
 
+  # default install rule installs as "$prefix/bin", not _into_ $prefix/bin
   installPhase = ''
     install -D xcwd "$out/bin/xcwd"
   '';
