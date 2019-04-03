@@ -4866,9 +4866,7 @@ in
 
   pagmo2 = callPackage ../development/libraries/pagmo2 { };
 
-  pakcs = callPackage ../development/compilers/pakcs {
-    haskellPackages = haskell.packages.ghc844;
-  };
+  pakcs = callPackage ../development/compilers/pakcs { };
 
   pal = callPackage ../tools/misc/pal { };
 
@@ -8345,6 +8343,8 @@ in
   bundler = callPackage ../development/ruby-modules/bundler { };
   bundlerEnv = callPackage ../development/ruby-modules/bundler-env { };
   bundlerApp = callPackage ../development/ruby-modules/bundler-app { };
+
+  bundler-audit = callPackage ../tools/security/bundler-audit { };
 
   solargraph = callPackage ../development/ruby-modules/solargraph { };
 

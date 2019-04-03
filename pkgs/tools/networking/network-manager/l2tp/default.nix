@@ -6,6 +6,7 @@
 let pname = "NetworkManager-l2tp"; in
 stdenv.mkDerivation rec {
   name = "${pname}${if withGnome then "-gnome" else ""}-${version}";
+  #pname = "NetworkManager-l2tp";
   version = "1.2.12";
 
   src = fetchFromGitHub {
