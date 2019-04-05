@@ -16876,6 +16876,8 @@ in
 
   cuneiform = callPackage ../tools/graphics/cuneiform {};
 
+  curseradio = callPackage ../applications/audio/curseradio { };
+
   cutecom = libsForQt5.callPackage ../tools/misc/cutecom { };
 
   cutegram =
