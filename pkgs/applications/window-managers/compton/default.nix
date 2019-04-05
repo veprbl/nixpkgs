@@ -1,6 +1,5 @@
 { stdenv, lib, fetchFromGitHub, pkgconfig, asciidoc, docbook_xml_dtd_45
-, docbook_xsl, libxslt, libxml2, makeWrapper, meson, ninja
-/* neocomp deps */ , judy, freetype
+, docbook_xsl, libxslt, libxml2, makeWrapper, meson, ninja, uthash
 , xorgproto, libxcb ,xcbutilrenderutil, xcbutilimage, pixman, libev
 , dbus, libconfig, libdrm, libGL, pcre, libX11, libXcomposite, libXdamage
 , libXinerama, libXrandr, libXrender, libXext, xwininfo, libxdg_basedir }:
@@ -65,7 +64,7 @@ let
   gitSource = rec {
     pname = "compton-git";
 #    version = "5.1";
-    version = "2019-04-01";
+    version = "2019-04-04";
     #version = "6.2";
 
     COMPTON_VERSION = "v${version}";
@@ -78,8 +77,8 @@ let
       #owner  = "dtzWill";
       repo   = "compton";
       #rev    = COMPTON_VERSION;
-      rev    = "f370ef85dc64cd3ab6947ea5afcde74447e2c848"; # core-profile
-      sha256 = "1zqfw17krbh0xz07bbdrp9cy6lfx91lvjml44nw2pwblg5slwclv";
+      rev    = "83941c561216ad84751814f1bd55cad561fadc11"; # next
+      sha256 = "0mcf4vzwksw6zp2amhsckfzi6jnsj1xa52qmplv6qyy5p09262v1";
     };
 
     buildInputs = [
@@ -93,6 +92,8 @@ let
       libxcb xcbutilrenderutil xcbutilimage
       pixman libev
       libxdg_basedir
+
+      uthash
     ];
 
     postPatch = ''
