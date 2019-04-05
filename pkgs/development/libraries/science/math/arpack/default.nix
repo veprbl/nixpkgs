@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, autoconf, automake, gettext, libtool, pkgconfig
+{ stdenv, fetchFromGitHub, cmake
 , gfortran, openblas, eigen }:
 
 with stdenv.lib;
@@ -9,23 +9,39 @@ in
 stdenv.mkDerivation {
   name = "arpack-${version}";
 
-  src = fetchurl {
-    url = "https://github.com/opencollab/arpack-ng/archive/${version}.tar.gz";
-    sha256 = "1mn27kx683lp0vxlz79i95jhsp2i0zyzd6vwfdd6p78brp1kyblp";
+  src = fetchFromGitHub {
+    owner = "opencollab";
+    repo = "arpack-ng";
+    rev = version;
+    sha256 = "1x7a1dj3dg43nlpvjlh8jzzbadjyr3mbias6f0256qkmgdyk4izr";
   };
 
-  nativeBuildInputs = [ autoconf automake gettext libtool pkgconfig ];
+  nativeBuildInputs = [ cmake ];
   buildInputs = [ gfortran openblas eigen ];
 
   doCheck = true;
 
   BLAS_LIBS = "-L${openblas}/lib -lopenblas";
 
-  INTERFACE64 = optional openblas.blas64 "1";
+  cmakeFlags = [
+    "-DBUILD_SHARED_LIBS=ON"
+    "-DINTERFACE64=${optionalString openblas.blas64 "1"}"
+  ];
 
-  preConfigure = ''
-    ./bootstrap
+  preCheck = if stdenv.isDarwin then ''
+    export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:`pwd`/lib
+  '' else ''
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`/lib
+  '' + ''
+    # Prevent tests from using all cores
+    export OMP_NUM_THREADS=2
   '';
+
+  postInstall = ''
+    mkdir -p $out/lib/pkgconfig
+    cp arpack.pc $out/lib/pkgconfig/
+  '';
+
 
   meta = {
     homepage = https://github.com/opencollab/arpack-ng;

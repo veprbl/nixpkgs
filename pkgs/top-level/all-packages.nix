@@ -1190,6 +1190,8 @@ in
 
   cfdyndns = callPackage ../applications/networking/dyndns/cfdyndns { };
 
+  charliecloud = callPackage ../applications/virtualization/charliecloud { };
+
   chelf = callPackage ../tools/misc/chelf { };
 
   cht-sh = callPackage ../tools/misc/cht.sh { };
@@ -16026,6 +16028,8 @@ in
 
   lobster-two = callPackage ../data/fonts/lobster-two {};
 
+  logitech-udev-rules = callPackage ../os-specific/linux/logitech-udev-rules {};
+
   # lohit-fonts.assamese lohit-fonts.bengali lohit-fonts.devanagari lohit-fonts.gujarati lohit-fonts.gurmukhi
   # lohit-fonts.kannada lohit-fonts.malayalam lohit-fonts.marathi lohit-fonts.nepali lohit-fonts.odia
   # lohit-fonts.tamil-classical lohit-fonts.tamil lohit-fonts.telugu
@@ -16713,6 +16717,7 @@ in
   calligra = libsForQt5.callPackage ../applications/office/calligra {
     inherit (kdeApplications) akonadi-calendar akonadi-contacts;
     openjpeg = openjpeg_1;
+    poppler = poppler_0_61;
   };
 
   perkeep = callPackage ../applications/misc/perkeep { };
@@ -17835,7 +17840,7 @@ in
 
   graphicsmagick-imagemagick-compat = callPackage ../applications/graphics/graphicsmagick/compat.nix { };
 
-  grisbi = callPackage ../applications/office/grisbi { gtk = gtk2; };
+  grisbi = callPackage ../applications/office/grisbi { gtk = gtk3; };
 
   gtkpod = callPackage ../applications/audio/gtkpod { };
 
@@ -19299,6 +19304,8 @@ in
   protonmail-bridge = libsForQt511.callPackage ../applications/networking/protonmail-bridge { };
 
   protonvpn-cli = callPackage ../applications/networking/protonvpn-cli { };
+
+  ps2client = callPackage ../applications/networking/ps2client { };
 
   psi = callPackage ../applications/networking/instant-messengers/psi { };
 
@@ -21953,6 +21960,8 @@ in
   snpeff = callPackage ../applications/science/biology/snpeff { };
 
   somatic-sniper = callPackage ../applications/science/biology/somatic-sniper { };
+
+  stacks = callPackage ../applications/science/biology/stacks { };
 
   star = callPackage ../applications/science/biology/star { };
 

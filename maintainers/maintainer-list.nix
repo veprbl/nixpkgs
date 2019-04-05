@@ -3534,6 +3534,11 @@
     github = "olynch";
     name = "Owen Lynch";
   };
+  omnipotententity = {
+    email = "omnipotententity@gmail.com";
+    github = "omnipotententity";
+    name = "Michael Reilly";
+  };
   OPNA2608 = {
     email = "christoph.neidahl@gmail.com";
     github = "OPNA2608";

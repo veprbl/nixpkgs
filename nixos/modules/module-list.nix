@@ -47,6 +47,7 @@
   ./hardware/sensor/iio.nix
   ./hardware/ksm.nix
   ./hardware/ledger.nix
+  ./hardware/logitech.nix
   ./hardware/mcelog.nix
   ./hardware/network/b43.nix
   ./hardware/nitrokey.nix
