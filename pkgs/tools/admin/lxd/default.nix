@@ -8,13 +8,13 @@
 
 buildGoPackage rec {
   pname = "lxd";
-  version = "3.11";
+  version = "3.12";
 
   goPackagePath = "github.com/lxc/lxd";
 
   src = fetchurl {
     url = "https://github.com/lxc/lxd/releases/download/${pname}-${version}/${pname}-${version}.tar.gz";
-    sha256 = "0xxzrwhyzzp23arj57vjs1yh91gy3r4wpd5qy9ksifzd390clf2x";
+    sha256 = "0m2cq41mz5209csr07gsnmslqvqdxk2p1l2saa23ddnaybqnjy16";
   };
 
   patches = [
