@@ -1,13 +1,13 @@
 { stdenv, fetchgit, autoreconfHook, pkgconfig }:
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "ell";
-  version = "2019-03-28";
+  version = "0.18";
 
   src = fetchgit {
      url = https://git.kernel.org/pub/scm/libs/ell/ell.git;
-     rev = "ad8437eee5d9f0826724aebbd084407f4d4c9a3e";
-     sha256 = "1vv60df82f6v9qd8ai8bqhfd6s6b8948lr8nrs9qg9p3nhcxkd37";
+     rev = "refs/tags/${version}";
+     sha256 = "0pjppwxjwbp71c3wmmg65yr9167q05pd697ai88g701bi2slfyiy";
   };
 
   nativeBuildInputs = [ autoreconfHook pkgconfig ];
