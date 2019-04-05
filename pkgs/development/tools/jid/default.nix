@@ -2,16 +2,16 @@
 
 buildGoModule rec {
   pname = "jid";
-  version = "0.7.5";
+  version = "0.7.6";
 
   src = fetchFromGitHub {
     owner = "simeji";
     repo = "jid";
     rev = "v${version}";
-    sha256 = "15gji50mgjg1s00xvh2jv9j50x3431k4mv3d3i153py2vyyi0h08";
+    sha256 = "15fgi7cpq5bg2lnpr7rip359xwj2kvlj6j2qzi837c26adnw973x";
   };
 
-  modSha256 = "10n452hk5kg449vm0iv264gj47zsyikwiiirkzfj05dla69l76xd";
+  modSha256 = "0hsfqy098sj7y9lhsnn3w1mxl4h81977ks5njmk6dkdki6vcngjj";
 
   meta = {
     description = "A command-line tool to incrementally drill down JSON";
