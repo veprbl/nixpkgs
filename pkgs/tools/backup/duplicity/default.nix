@@ -12,7 +12,7 @@ python2Packages.buildPythonApplication rec {
   buildInputs = [ librsync makeWrapper python2Packages.wrapPython ];
   propagatedBuildInputs = with python2Packages; [
     boto cffi cryptography ecdsa enum idna pygobject3 fasteners
-    ipaddress lockfile paramiko pyasn1 pycrypto six
+    ipaddress lockfile paramiko pyasn1 pycrypto pydrive six
   ];
   checkInputs = with python2Packages; [ lockfile mock pexpect ];
 
