@@ -5466,6 +5466,8 @@ in {
   flickrapi = callPackage ../development/python-modules/flickrapi { };
 
   aioesphomeapi = callPackage ../development/python-modules/aioesphomeapi { };
+
+  pydrive = callPackage ../development/python-modules/pydrive { };
 });
 
 in fix' (extends overrides packages)
