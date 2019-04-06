@@ -1,30 +1,24 @@
-{ stdenv, appimage-run, fetchurl }:
+{ appimageTools, fetchurl, lib, pkgs }:
 
 let
   version = "1.0.142";
   sha256 = "0k7lnv3qqz17a2a2d431sic3ggi3373r5k0kwxm4017ama7d72m1";
-in
-  stdenv.mkDerivation rec {
-  name = "joplin-${version}";
-
+  pname = "joplin";
+in appimageTools.wrapType2 rec {
+  name = "${pname}-${version}";
   src = fetchurl {
     url = "https://github.com/laurent22/joplin/releases/download/v${version}/Joplin-${version}-x86_64.AppImage";
     inherit sha256;
   };
 
-  buildInputs = [ appimage-run ];
+  extraPkgs = p: with p; [ gnome3.dconf gtk3 librsvg gsettings-desktop-schemas ];
 
-  unpackPhase = ":";
-
-  installPhase = ''
-    mkdir -p $out/{bin,share}
-    cp $src $out/share/joplin.AppImage
-    echo "#!/bin/sh" > $out/bin/joplin-desktop
-    echo "${appimage-run}/bin/appimage-run $out/share/joplin.AppImage" >> $out/bin/joplin-desktop
-    chmod +x $out/bin/joplin-desktop $out/share/joplin.AppImage
+  profile = ''
+   export XDG_DATA_DIRS="${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}:$XDG_DATA_DIRS"
+   env
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "An open source note taking and to-do application with synchronisation capabilities";
     longDescription = ''
       Joplin is a free, open source note taking and to-do application, which can
