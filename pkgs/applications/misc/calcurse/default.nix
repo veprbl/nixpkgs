@@ -16,6 +16,8 @@ stdenv.mkDerivation rec {
   #  sha256 = "0vw2xi6a2lrhrb8n55zq9lv4mzxhby4xdf3hmi1vlfpyrpdwkjzd";
   #};
 
+  patches = [ ./vdirsyncer-quoting.patch ];
+
   buildInputs = [ ncurses gettext pythonEnv ];
   nativeBuildInputs = [ makeWrapper autoreconfHook asciidoc-full libxml2.bin ];
 
