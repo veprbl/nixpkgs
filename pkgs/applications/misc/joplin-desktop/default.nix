@@ -1,4 +1,4 @@
-{ stdenv, appimage-run, fetchurl, wrapGAppsHook }:
+{ stdenv, appimage-run, fetchurl, gsettings-desktop-schemas, gtk3, gobject-introspection, wrapGAppsHook }:
 
 let
   version = "1.0.142";
@@ -13,7 +13,7 @@ in
   };
 
   nativeBuildInputs = [ wrapGAppsHook ];
-  buildInputs = [ appimage-run ];
+  buildInputs = [ appimage-run gtk3 gsettings-desktop-schemas gobject-introspection ];
 
   unpackPhase = ":";
 
