@@ -1,26 +1,27 @@
-{ stdenv, fetchurl, ncurses, gettext, python3, python3Packages, makeWrapper }:
+{ stdenv, fetchurl, fetchFromGitHub, ncurses, gettext, python3, python3Packages, makeWrapper, autoreconfHook, asciidoc-full, libxml2 }:
 
 stdenv.mkDerivation rec {
-  name = "calcurse-${version}";
-  version = "4.4.0";
+  pname = "calcurse";
+  #version = "4.4.0";
+  version = "2019-03-17";
 
-  src = fetchurl {
-    url = "https://calcurse.org/files/${name}.tar.gz";
-    sha256 = "0vw2xi6a2lrhrb8n55zq9lv4mzxhby4xdf3hmi1vlfpyrpdwkjzd";
+  src = fetchFromGitHub {
+    owner = "lfos";
+    repo = pname;
+    rev = "78a46ac7cbae997979d7c1394328d3d44f9f1df4";
+    sha256 = "10k0q2n7mpxvxyb4fzn3n3mzc1byapx8l058jrwmry692wbn6h6h";
   };
+  #src = fetchurl {
+  #  #url = "https://calcurse.org/files/${pname}-${version}.tar.gz";
+  #  sha256 = "0vw2xi6a2lrhrb8n55zq9lv4mzxhby4xdf3hmi1vlfpyrpdwkjzd";
+  #};
 
   buildInputs = [ ncurses gettext python3 ];
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ makeWrapper autoreconfHook asciidoc-full libxml2.bin ];
 
   # Build Python environment with httplib2 for calcurse-caldav
-  pythonEnv = python3Packages.python.buildEnv.override {
-    extraLibs = [ python3Packages.httplib2 ];
-  };
+  pythonEnv = python3.withPackages (ps: with ps; [ httplib2 libxml2 oauth2client ]);
   propagatedBuildInputs = [ pythonEnv ];
-
-  postInstall = ''
-    substituteInPlace $out/bin/calcurse-caldav --replace /usr/bin/python3 ${pythonEnv}/bin/python3
-  '';
 
   meta = with stdenv.lib; {
     description = "A calendar and scheduling application for the command line";
