@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchFromGitHub, ncurses, gettext, python3, python3Packages, makeWrapper, autoreconfHook, asciidoc-full, libxml2 }:
+{ stdenv, fetchurl, fetchFromGitHub, ncurses, gettext, python3, makeWrapper, autoreconfHook, asciidoc-full, libxml2 }:
 
 stdenv.mkDerivation rec {
   pname = "calcurse";
@@ -16,12 +16,13 @@ stdenv.mkDerivation rec {
   #  sha256 = "0vw2xi6a2lrhrb8n55zq9lv4mzxhby4xdf3hmi1vlfpyrpdwkjzd";
   #};
 
-  buildInputs = [ ncurses gettext python3 ];
+  buildInputs = [ ncurses gettext pythonEnv ];
   nativeBuildInputs = [ makeWrapper autoreconfHook asciidoc-full libxml2.bin ];
 
   # Build Python environment with httplib2 for calcurse-caldav
   pythonEnv = python3.withPackages (ps: with ps; [ httplib2 libxml2 oauth2client ]);
-  propagatedBuildInputs = [ pythonEnv ];
+
+
 
   meta = with stdenv.lib; {
     description = "A calendar and scheduling application for the command line";
