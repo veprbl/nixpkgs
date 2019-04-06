@@ -24,11 +24,11 @@
 
 stdenv.mkDerivation rec {
   pname = "gnome-todo";
-  version = "3.28.1";
+  version = "3.91.1";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "08ygqbib72jlf9y0a16k54zz51sncpq2wa18wp81v46q8301ymy7";
+    sha256 = "02h6a3h3aavbh88if02m1d3n0cx841ag75wzvryjh4jvq8vgcwyy";
   };
 
   patches = [
@@ -64,17 +64,18 @@ stdenv.mkDerivation rec {
     json-glib
   ];
 
-  postPatch = ''
-    chmod +x meson_post_install.py
-    patchShebangs meson_post_install.py
-  '';
-
   passthru = {
     updateScript = gnome3.updateScript {
       packageName = pname;
       attrPath = "gnome3.${pname}";
     };
   };
+
+  postPatch = ''
+    chmod +x build-aux/meson/meson_post_install.py
+    patchShebangs build-aux/meson/meson_post_install.py
+  '';
+
 
   meta = with stdenv.lib; {
     description = "Personal task manager for GNOME";
