@@ -19,6 +19,15 @@
     };
   }
   {
+    goPackagePath  = "github.com/PagerDuty/go-pagerduty";
+    fetch = {
+      type = "git";
+      url = "https://github.com/PagerDuty/go-pagerduty";
+      rev =  "b4a4067bdbde86de1d3fdf15c3c01e76bee9127c";
+      sha256 = "1r6s4krw6b4s41ah1ncn5k8q79y6spq34p8nl06nzy3sggisiqjk";
+    };
+  }
+  {
     goPackagePath  = "github.com/StackExchange/wmi";
     fetch = {
       type = "git";

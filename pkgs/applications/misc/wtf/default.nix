@@ -3,22 +3,25 @@
 , lib
 }:
 
-let
-  release-datetime="2019-01-30" + "T00:00:00+0000";
-in buildGoPackage rec {
+buildGoPackage rec {
   pname = "wtf";
-  version = "0.5.0";
+  #version = "0.5.0";
+  version = "2019-03-07";
 
   goPackagePath = "github.com/wtfutil/wtf";
 
   src = fetchFromGitHub {
     owner = "wtfutil";
     repo = "wtf";
-    rev = "${version}";
-    sha256 = "1f59ck6rqicswjp6l5x35n0aqdicjc7jkwlpsyy477gisdlbw058";
+    #rev = "${version}";
+    rev = "66e5e9a3d002875103843372e020937491d97287";
+    sha256 = "1f59ck6rqicswjp6l5x35n0aqdicjc7jkwlpsyy478gisdlbw058";
   };
 
-  buildFlagsArray = ''
+  buildFlagsArray = let
+    # this is easy when version is a date already :)
+    release-datetime = version + "T00:00:00+0000";
+  in ''
     -ldflags=
     -X main.version=${version}
     -X main.date=${release-datetime}
