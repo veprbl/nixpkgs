@@ -15,7 +15,7 @@ buildGoPackage rec {
     repo = "wtf";
     #rev = "${version}";
     rev = "66e5e9a3d002875103843372e020937491d97287";
-    sha256 = "1f59ck6rqicswjp6l5x35n0aqdicjc7jkwlpsyy478gisdlbw058";
+    sha256 = "1iqminmr86aifcpbk1ll1q0vg15mqiyp8b35p6iqf3mn68l1h59w";
   };
 
   buildFlagsArray = let
