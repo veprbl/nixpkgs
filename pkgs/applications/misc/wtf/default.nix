@@ -4,19 +4,21 @@
 }:
 
 buildGoPackage rec {
-  name = "wtf-${version}";
-  version = "0.4.0";
+  pname = "wtf";
+  version = "0.5.0";
 
-  goPackagePath = "github.com/senorprogrammer/wtf";
+  goPackagePath = "github.com/wtfutil/wtf";
 
   src = fetchFromGitHub {
-    owner = "senorprogrammer";
+    owner = "wtfutil";
     repo = "wtf";
     rev = "${version}";
-    sha256 = "1vgjqmw27baiq9brmnafic3w3hw11p5qc6ahbdxi5n5n4bx7j6vn";
+    sha256 = "1f59ck6rqicswjp6l5x35n0aqdicjc7jkwlpsyy477gisdlbw058";
   };
 
   buildFlagsArray = [ "-ldflags=" "-X main.version=${version}" ];
+
+  goDeps = ./deps.nix;
 
   meta = with lib; {
     description = "The personal information dashboard for your terminal";
