@@ -1,4 +1,4 @@
-{ stdenv, appimage-run, fetchurl }:
+{ stdenv, appimage-run, fetchurl, wrapGAppsHook }:
 
 let
   version = "1.0.142";
@@ -12,6 +12,7 @@ in
     inherit sha256;
   };
 
+  nativeBuildInputs = [ wrapGAppsHook ];
   buildInputs = [ appimage-run ];
 
   unpackPhase = ":";
