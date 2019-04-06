@@ -16,10 +16,10 @@ let
     ${optionalString cfg.caching.apcu "extension=${phpPackages.apcu}/lib/php/extensions/apcu.so"}
     ${optionalString cfg.caching.redis "extension=${phpPackages.redis}/lib/php/extensions/redis.so"}
     ${optionalString cfg.caching.memcached "extension=${phpPackages.memcached}/lib/php/extensions/memcached.so"}
+    extension=${phpPackages.imagick}/lib/php/extensions/imagick.so
     zend_extension = opcache.so
     opcache.enable = 1
   '';
-    #extension=${phpPackages.imagick}/lib/php/extensions/imagick.so
   phpOptions = {
     upload_max_filesize = cfg.maxUploadSize;
     post_max_size = cfg.maxUploadSize;
