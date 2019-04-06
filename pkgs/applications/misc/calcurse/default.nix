@@ -23,6 +23,9 @@ stdenv.mkDerivation rec {
   pythonEnv = python3.withPackages (ps: with ps; [ httplib2 libxml2 oauth2client ]);
 
 
+  postInstall = ''
+    install -Dm755 contrib/vdir/calcurse-vdirsyncer $out/bin
+  '';
 
   meta = with stdenv.lib; {
     description = "A calendar and scheduling application for the command line";
