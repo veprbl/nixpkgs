@@ -1,0 +1,21 @@
+From 19079c65c1a771129c1c878f79d77cf4b86ffe78 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Corentin=20No=C3=ABl?= <corentin.noel@collabora.com>
+Date: Thu, 4 Apr 2019 17:50:30 +0200
+Subject: [PATCH] libcloudproviders: Add missing check for Qt5DBus
+
+---
+ shell_integration/libcloudproviders/CMakeLists.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/shell_integration/libcloudproviders/CMakeLists.txt b/shell_integration/libcloudproviders/CMakeLists.txt
+index 4c7af0042..1f353352c 100644
+--- a/shell_integration/libcloudproviders/CMakeLists.txt
++++ b/shell_integration/libcloudproviders/CMakeLists.txt
+@@ -41,6 +41,7 @@ macro(libcloudproviders_add_config _sources)
+ endmacro(libcloudproviders_add_config _sources)
+ 
+ 
++find_package(Qt5 5.6 COMPONENTS DBus)
+ IF (UNIX AND Qt5DBus_FOUND AND LIBCLOUDPROVIDERS_FOUND)
+     STRING(TOLOWER "${APPLICATION_VENDOR}" DBUS_VENDOR)
+     STRING(REGEX REPLACE "[^A-z0-9]" "" DBUS_VENDOR "${DBUS_VENDOR}")
