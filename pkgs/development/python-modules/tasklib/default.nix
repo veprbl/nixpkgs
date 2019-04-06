@@ -11,7 +11,7 @@ buildPythonPackage rec {
     sha256 = "1m47isnnfa0wwfbkkdbvpbb8sdv4c57rlhc89lfxcp590x39yj7w";
   };
 
-  buildInputs = [ six pytz tzlocal ];
+  propagatedBuildInputs = [ six pytz tzlocal ];
   checkInputs = [ taskwarrior ];
 
   doCheck = false; # almost, some tz mixup
