@@ -2,11 +2,11 @@
 
 buildPythonPackage rec {
   pname = "configparser";
-  version = "3.7.3";
+  version = "3.7.4";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "27594cf4fc279f321974061ac69164aaebd2749af962ac8686b20503ac0bcf2d";
+    sha256 = "0xac32886ihs2xg7w1gppcq2sgin5qsm8lqwijs5xifq9w0x0q6s";
   };
 
   # No tests available
