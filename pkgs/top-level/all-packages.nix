@@ -167,6 +167,8 @@ in
 
   dockerTools = callPackage ../build-support/docker { };
 
+  nix-prefetch-docker = callPackage ../build-support/docker/nix-prefetch-docker.nix { };
+
   docker-compose = python3Packages.callPackage ../applications/virtualization/docker-compose {};
 
   docker-ls = callPackage ../tools/misc/docker-ls { };
@@ -5144,6 +5146,8 @@ in
   proot = callPackage ../tools/system/proot { };
 
   prototypejs = callPackage ../development/libraries/prototypejs { };
+
+  proxmark3 = callPackage ../tools/security/proxmark3 { };
 
   proxychains = callPackage ../tools/networking/proxychains { };
 
@@ -21903,6 +21907,8 @@ in
   };
 
   kallisto = callPackage ../applications/science/biology/kallisto { };
+
+  migrate = callPackage ../applications/science/biology/migrate { };
 
   mirtk = callPackage ../development/libraries/science/biology/mirtk { };
 
