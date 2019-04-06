@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkgconfig cmake makeWrapper ] ++ (with kdeFrameworks; [ extra-cmake-modules ]);
 
-  buildInputs = [ qtbase qtwebkit qtkeychain qttools qtwebengine sqlite openssl_1_1.out pcre inotify-tools libcloudproviders ]
+  buildInputs = [ qtbase qtwebkit qtkeychain qttools qtwebengine sqlite openssl_1_1.out pcre inotify-tools /*libcloudproviders*/ ]
   ++ (with kdeFrameworks; [ kio kcoreaddons ]);
 
   enableParallelBuilding = true;
