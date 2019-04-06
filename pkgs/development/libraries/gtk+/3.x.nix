@@ -72,6 +72,14 @@ stdenv.mkDerivation rec {
     "--enable-installed-tests"
   ];
 
+  preBuild = ''
+    find ..
+    echo "make clean XXX"
+    make clean
+    echo "make clean YYY"
+    find ..
+  '';
+
   doCheck = false; # needs X11
 
   postInstall = optionalString (!stdenv.isDarwin) ''
