@@ -4,6 +4,10 @@
 , libxml2, libffi, libbfd
 , libedit
 , ncurses, zlib
+, enableProjects ? [
+  "clang" "libcxx" "libcxxabi" "libunwind" "lldb"
+  "compiler-rt" "lld" "polly" "debuginfo-tests"
+ ] ++ [ "pstore" /* rld */ ]
 }:
 
 let
@@ -41,6 +45,6 @@ stdenv.mkDerivation rec {
 
   cmakeFlags = [
     #"-DLLVM_ENABLE_PROJECTS=clang;libcxx;libcxxabi;libunwind;lldb;compiler-rt;lld;polly;pstore;rld;debuginfo-tests"
-    "-DLLVM_ENABLE_PROJECTS=clang;libcxx;libcxxabi;libunwind;lldb;compiler-rt;lld;polly;pstore;debuginfo-tests"
+    "-DLLVM_ENABLE_PROJECTS=${builtins.concatStringsSep ";" enableProjects}"
   ];
 }
