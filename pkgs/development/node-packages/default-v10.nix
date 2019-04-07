@@ -104,5 +104,7 @@ nodePackages // {
       libjpeg_turbo libpng librsvg libtiff vips
       libwebp libxml2 pango pixman zlib
     ];
+    NIX_CFLAGS_COMPILE = [ "-I${pkgs.glib.dev}/include/glib-2.0" "-I${pkgs.glib.out}/lib/glib-2.0/include" /* :( */ ];
+    dontNpmInstall = true;
   };
 }
