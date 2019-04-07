@@ -94,4 +94,6 @@ nodePackages // {
   webtorrent-cli = nodePackages.webtorrent-cli.override {
     buildInputs = [ nodePackages.node-gyp-build ];
   };
+
+  sharp = nodePackages.sharp.override { buildInputs = [ pkgs.vips ]; };
 }
