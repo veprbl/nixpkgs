@@ -4,7 +4,8 @@
   src = fetchFromGitHub {
     owner = "alexcrichton";
     repo = "cargo-vendor";
-    rev = "0.1.23";
-    sha256 = "1bwxz7jv92c9ygp3a1j822z2cciml4mf244viax1vv3j5np8k80v";
+    #rev = "0.1.23";
+    rev = "2501d4868a40fb63c21ef18d7935767d5e6fac50";
+    sha256 = "124ydq9bvc9ar8h8lvcz0drrpa79542ihpn3lgrhy9lz9pn8f7rf";
   };
 })
