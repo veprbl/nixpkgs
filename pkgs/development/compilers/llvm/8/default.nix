@@ -29,6 +29,7 @@ let
   in {
 
     all = callPackage ./all.nix { };
+    prepo = callPackage ./prepo.nix { };
     llvm = callPackage ./llvm.nix { };
     llvm-polly = callPackage ./llvm.nix { enablePolly = true; };
 
