@@ -1,5 +1,5 @@
 { stdenv, fetchurl, pkgconfig, vala, glib, libxslt, gtk3, wrapGAppsHook
-, webkitgtk, json-glib, librest, libsecret, gtk-doc, gobject-introspection
+, webkitgtk, json-glib, librest, libsecret, gtk-doc, gobject-introspection, dbus
 , gettext, icu, glib-networking, hicolor-icon-theme
 , libsoup, docbook_xsl, docbook_xml_dtd_412, gnome3, gcr, kerberos
 }:
@@ -17,11 +17,34 @@ in stdenv.mkDerivation rec {
 
   outputs = [ "out" "man" "dev" "devdoc" ];
 
+  #mesonFlags = [
+  #  "-Dgoabackend=true"
+
+  #  "-Dexchange=true"
+  #  "-Dkerberos=true"
+  #  "-Dlastfm=true"
+  #  "-Dmedia_server=true"
+  #  "-Downcloud=true"
+  #  "-Dpocket=true"
+  #  "-Dgoogle=true"
+  #  "-Dflickr=true"
+  #  "-Dfacebook=true"
+  #  "-Dwindows_live=true"
+  #  #"-Dtodoist=true"
+  #  "-Dgtk_doc=true"
+  #  "-Dman=true"
+  #];
   configureFlags = [
     "--enable-media-server"
     "--enable-kerberos"
     "--enable-lastfm"
-    "--enable-todoist"
+    #"--enable-todoist"
+    "--enable-google"
+    "--enable-pocket"
+    "--enable-flickr"
+    "--enable-facebook"
+    "--enable-windows-live"
+    "--enable-owncloud"
     "--enable-gtk-doc"
     "--enable-documentation"
   ];
@@ -29,13 +52,14 @@ in stdenv.mkDerivation rec {
   enableParallelBuilding = true;
 
   nativeBuildInputs = [
+#    meson ninja
     pkgconfig gobject-introspection vala gettext wrapGAppsHook
     libxslt docbook_xsl docbook_xml_dtd_412 gtk-doc
     hicolor-icon-theme # for setup-hook
   ];
   buildInputs = [
     glib gtk3 webkitgtk json-glib librest libsecret glib-networking icu libsoup
-    gcr kerberos
+    gcr kerberos dbus
   ];
 
   passthru = {

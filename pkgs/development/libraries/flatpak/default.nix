@@ -8,7 +8,7 @@ stdenv.mkDerivation rec {
   version = "1.3.1";
 
   # TODO: split out lib once we figure out what to do with triggerdir
-  outputs = [ "out" "man" "doc" "installedTests" ];
+  outputs = [ "out" /* "man" "doc" */ "installedTests" ];
 
   #src = fetchFromGitHub {
   #  owner = pname;
@@ -41,6 +41,8 @@ stdenv.mkDerivation rec {
     ./use-flatpak-from-path.patch
   ];
 
+  autoreconfPhase = '':'';
+
   nativeBuildInputs = [
     autoreconfHook libxml2 docbook_xml_dtd_412 docbook_xml_dtd_42 docbook_xml_dtd_43 docbook_xsl which gobject-introspection
     gtk-doc intltool libxslt pkgconfig xmlto appstream-glib yacc wrapGAppsHook
@@ -62,17 +64,16 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  autoreconfPhase = "./autogen.sh";
-
   configureFlags = [
     "--with-system-bubblewrap=${bubblewrap}/bin/bwrap"
     "--with-system-dbus-proxy=${xdg-dbus-proxy}/bin/xdg-dbus-proxy"
     "--localstatedir=/var"
     "--enable-installed-tests"
+    "--disable-documentation"
   ];
 
   # Uses pthread_sigmask but doesn't link to pthread
-  NIX_CFLAGS_LINK = [ "-lpthread" ];
+  # NIX_CFLAGS_LINK = [ "-lpthread" ];
 
   makeFlags = [
     "installed_testdir=$(installedTests)/libexec/installed-tests/flatpak"
