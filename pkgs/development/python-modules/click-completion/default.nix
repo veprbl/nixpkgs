@@ -4,12 +4,12 @@
 
 buildPythonPackage rec {
   pname = "click-completion";
-  version = "0.5.0";
+  version = "0.5.1";
   disabled = (!isPy3k);
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "7600261cda0954b9794bd7afdaab35201be50a8c5404eaa4c0deb20086866c4c";
+    sha256 = "1ysn6kzv3fgakn0y06i3cxynd8iaybarrygabk9a0pp2spn2w1vq";
   };
 
   propagatedBuildInputs = [ click jinja2 shellingham six ];
