@@ -95,5 +95,5 @@ nodePackages // {
     buildInputs = [ nodePackages.node-gyp-build ];
   };
 
-  sharp = nodePackages.sharp.override { buildInputs = [ pkgs.vips ]; };
+  joplin = nodePackages.joplin.override { buildInputs = [ pkgs.vips /* via sharp */ ]; };
 }
