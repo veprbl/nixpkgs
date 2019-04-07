@@ -95,5 +95,14 @@ nodePackages // {
     buildInputs = [ nodePackages.node-gyp-build ];
   };
 
-  joplin = nodePackages.joplin.override { buildInputs = [ pkgs.vips /* via sharp */ ]; };
+  joplin = nodePackages.joplin.override {
+    buildInputs = with pkgs; [
+      # sharp
+      # http://sharp.pixelplumbing.com/en/stable/install/
+      cairo expat fontconfig freetype fribidi gettext giflib
+      glib harfbuzz lcms libcroco libexif libffi libgsf
+      libjpeg_turbo libpng librsvg libtiff vips
+      libwebp libxml2 pango pixman zlib
+    ];
+  };
 }
