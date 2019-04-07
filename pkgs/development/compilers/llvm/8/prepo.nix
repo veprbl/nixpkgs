@@ -40,6 +40,7 @@ stdenv.mkDerivation rec {
   preConfigure = "ln -rs ../pstore; cd llvm";
 
   cmakeFlags = [
-    "-DLLVM_ENABLE_PROJECTS=all"
+    #"-DLLVM_ENABLE_PROJECTS=clang;libcxx;libcxxabi;libunwind;lldb;compiler-rt;lld;polly;pstore;rld;debuginfo-tests"
+    "-DLLVM_ENABLE_PROJECTS=clang;libcxx;libcxxabi;libunwind;lldb;compiler-rt;lld;polly;pstore;debuginfo-tests"
   ];
 }
