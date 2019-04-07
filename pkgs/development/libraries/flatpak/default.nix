@@ -8,7 +8,7 @@ stdenv.mkDerivation rec {
   version = "1.3.1";
 
   # TODO: split out lib once we figure out what to do with triggerdir
-  outputs = [ "out" "man" "doc" "installedTests" ];
+  outputs = [ "out" /* "man" "doc" */ "installedTests" ];
 
   #src = fetchFromGitHub {
   #  owner = pname;
@@ -69,7 +69,7 @@ stdenv.mkDerivation rec {
     "--with-system-dbus-proxy=${xdg-dbus-proxy}/bin/xdg-dbus-proxy"
     "--localstatedir=/var"
     "--enable-installed-tests"
-    "--disable-documentation" # revisit!
+    "--disable-documentation"
   ];
 
   # Uses pthread_sigmask but doesn't link to pthread
