@@ -1,25 +1,32 @@
 { stdenv, fetchFromGitHub, python3Packages, sqlite, which }:
 
 python3Packages.buildPythonApplication rec {
-  name = "${pname}-${version}";
   pname = "s3ql";
-  version = "2.33";
+  version = "3.1";
 
   src = fetchFromGitHub {
     owner = pname;
     repo = pname;
     rev = "release-${version}";
-    sha256 = "1xrm4pliajdppvi6a4km79qpqwxh2jk786c43aqb1c518gxaib90";
+    sha256 = "0w24pvhfqbdkkx2mr3b7ilb7ni7naafz7zhlw99c56pv6nb54swl";
   };
 
-  buildInputs = [ which ]; # tests will fail without which
+  nativeBuildInputs = [ python3Packages.cython which ]; # tests will fail without which
   propagatedBuildInputs = with python3Packages; [
-    sqlite apsw pycrypto requests defusedxml dugong llfuse
+    sqlite apsw cryptography requests defusedxml dugong llfuse
+    google_auth google-auth-oauthlib
     cython pytest pytest-catchlog
   ];
 
-  checkPhase = ''
-    pytest tests
+  preBuild = ''
+    # https://bitbucket.org/nikratio/s3ql/issues/118/no-module-named-s3qldeltadump-running#comment-16951851
+    ${python3Packages.python.interpreter} ./setup.py build_cython build_ext --inplace
+  '';
+
+  preCheck = ''
+    # fix s3qladm test failing when trying to access ~/.s3ql
+    export HOME=$PWD/test-home
+    mkdir -p $HOME
   '';
 
   meta = with stdenv.lib; {
