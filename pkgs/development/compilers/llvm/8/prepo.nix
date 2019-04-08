@@ -43,6 +43,14 @@ stdenv.mkDerivation rec {
 
   preConfigure = "ln -rs ../pstore; cd llvm";
 
+  postPatch = ''
+    patch -p1 -d clang -i ${clang/purity.patch}
+    sed -i -e 's/DriverArgs.hasArg(options::OPT_nostdlibinc)/true/' \
+           -e 's/Args.hasArg(options::OPT_nostdlibinc)/true/' \
+           clang/lib/Driver/ToolChains/*.cpp
+
+  '';
+
   cmakeFlags = [
     #"-DLLVM_ENABLE_PROJECTS=clang;libcxx;libcxxabi;libunwind;lldb;compiler-rt;lld;polly;pstore;rld;debuginfo-tests"
     "-DLLVM_ENABLE_PROJECTS=${builtins.concatStringsSep ";" enableProjects}"
