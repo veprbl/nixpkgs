@@ -3706,6 +3706,8 @@ in
 
   john = callPackage ../tools/security/john { };
 
+  joplin = nodePackages.joplin;
+
   joplin-desktop = callPackage ../applications/misc/joplin-desktop { };
 
   journalbeat = callPackage ../tools/system/journalbeat { };

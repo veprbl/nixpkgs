@@ -4,15 +4,6 @@
 
 let
   sources = {
-    "@cronvel/get-pixels-3.3.1" = {
-      name = "_at_cronvel_slash_get-pixels";
-      packageName = "@cronvel/get-pixels";
-      version = "3.3.1";
-      src = fetchurl {
-        url = "https://registry.npmjs.org/@cronvel/get-pixels/-/get-pixels-3.3.1.tgz";
-        sha512 = "jgDb8vGPkpjRDbiYyHTI2Bna4HJysjPNSiERzBnRJjCR/YqC3u0idTae0tmNECsaZLOpAWmlK9wiIwnLGIT9Bg==";
-      };
-    };
     "@types/node-8.10.45" = {
       name = "_at_types_slash_node";
       packageName = "@types/node";
@@ -1388,15 +1379,6 @@ let
       src = fetchurl {
         url = "https://registry.npmjs.org/commander/-/commander-2.20.0.tgz";
         sha512 = "7j2y+40w61zy6YC2iRNpUe/NwhNyoXrYpHMrSunaMG64nRnaf96zO/KMQR4OyN/UnE5KLyEBnKHd4aG3rskjpQ==";
-      };
-    };
-    "compare-version-0.1.2" = {
-      name = "compare-version";
-      packageName = "compare-version";
-      version = "0.1.2";
-      src = fetchurl {
-        url = "https://registry.npmjs.org/compare-version/-/compare-version-0.1.2.tgz";
-        sha1 = "0162ec2d9351f5ddd59a9202cba935366a725080";
       };
     };
     "component-emitter-1.2.1" = {
@@ -5115,15 +5097,6 @@ let
       src = fetchurl {
         url = "https://registry.npmjs.org/semver/-/semver-5.7.0.tgz";
         sha512 = "Ya52jSX2u7QKghxeoFGpLwCtGlt7j0oY9DYb5apt9nPlJ42ID+ulTXESnt/qAQcoSERyZ5sl3LDIOw0nAn/5DA==";
-      };
-    };
-    "server-destroy-1.0.1" = {
-      name = "server-destroy";
-      packageName = "server-destroy";
-      version = "1.0.1";
-      src = fetchurl {
-        url = "https://registry.npmjs.org/server-destroy/-/server-destroy-1.0.1.tgz";
-        sha1 = "f13bf928e42b9c3e79383e61cc3998b5d14e6cdd";
       };
     };
     "set-blocking-2.0.0" = {

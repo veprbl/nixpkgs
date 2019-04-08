@@ -98,7 +98,7 @@ nodePackages // {
   joplin = nodePackages.joplin.override {
     nativeBuildInputs = [ pkgs.pkg-config ];
     buildInputs = with pkgs; [
-      # sharp
+      # sharp, dep list:
       # http://sharp.pixelplumbing.com/en/stable/install/
       cairo expat fontconfig freetype fribidi gettext giflib
       glib harfbuzz lcms libcroco libexif libffi libgsf
@@ -107,7 +107,5 @@ nodePackages // {
 
       nodePackages.node-pre-gyp
     ];
-    #NIX_CFLAGS_COMPILE = [ "-I${pkgs.glib.dev}/include/glib-2.0" "-I${pkgs.glib.out}/lib/glib-2.0/include" /* :( */ ];
-    #dontNpmInstall = true;
   };
 }
