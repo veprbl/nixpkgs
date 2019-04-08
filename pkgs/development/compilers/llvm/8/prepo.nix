@@ -59,7 +59,9 @@ self = stdenv.mkDerivation rec {
     "-DLLVM_HOST_TRIPLE=${stdenv.hostPlatform.config}"
     "-DLLVM_DEFAULT_TARGET_TRIPLE=${stdenv.hostPlatform.config}"
 
-    "-DLLVM_LINK_LLVM_DYLIB=ON"
+    # Can't set this, pstore wants to be statically linked
+    # XXX: investigate!
+    #"-DLLVM_LINK_LLVM_DYLIB=ON"
 
     "-DLLVM_BINUTILS_INCDIR=${libbfd.dev}/include"
   ];
