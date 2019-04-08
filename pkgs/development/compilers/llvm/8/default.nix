@@ -76,6 +76,17 @@ let
       ];
       extraBuildCommands = mkExtraBuildCommands cc;
     };
+    #libcxxClangprepo = tools.libcxxClang.override { cc = tools.prepo; };
+    libcxxClang-prepo = wrapCCWith rec {
+      cc = tools.prepo;
+      libcxx = targetLlvmLibraries.libcxx;
+      extraPackages = [
+        targetLlvmLibraries.libcxx
+        targetLlvmLibraries.libcxxabi
+        targetLlvmLibraries.compiler-rt
+      ];
+      extraBuildCommands = mkExtraBuildCommands cc;
+    };
 
     lld = callPackage ./lld.nix {};
 
@@ -141,6 +152,7 @@ let
     stdenv = overrideCC stdenv buildLlvmTools.clang;
 
     libcxxStdenv = overrideCC stdenv buildLlvmTools.libcxxClang;
+    libcxxStdenv-prepo = overrideCC stdenv buildLlvmTools.libcxxClang-prepo;
 
     libcxx = callPackage ./libc++ {};
 
