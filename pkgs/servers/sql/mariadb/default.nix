@@ -74,7 +74,7 @@ common = rec { # attributes common to both builds
     "-DJEMALLOC=NO"
   ]
     ++ optional stdenv.isDarwin "-DCURSES_LIBRARY=${ncurses.out}/lib/libncurses.dylib"
-    ++ optional stdenv.hostPlatform.isMusl "-DWITHOUT_TOKUDB=1" # mariadb docs say disable this for musl
+    ++ optional (stdenv.hostPlatform.isMusl or true) "-DWITHOUT_TOKUDB=1" # mariadb docs say disable this for musl
     ;
 
   preConfigure = ''
