@@ -2026,6 +2026,8 @@ in
 
   citra = libsForQt5.callPackage ../misc/emulators/citra { };
 
+  cmix = callPackage ../tools/compression/cmix { stdenv = gcc8Stdenv; /* see upstream's README */ };
+
   cmst = libsForQt5.callPackage ../tools/networking/cmst { };
 
   codimd = callPackage ../servers/web-apps/codimd { };
