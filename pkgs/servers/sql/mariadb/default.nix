@@ -70,6 +70,8 @@ common = rec { # attributes common to both builds
     # library through Nix, and then breaks later on. This should have no effect on Linux.
     "-DPLUGIN_AUTH_GSSAPI=NO"
     "-DPLUGIN_AUTH_GSSAPI_CLIENT=NO"
+
+    "-DJEMALLOC=NO"
   ]
     ++ optional stdenv.isDarwin "-DCURSES_LIBRARY=${ncurses.out}/lib/libncurses.dylib"
     ++ optional stdenv.hostPlatform.isMusl "-DWITHOUT_TOKUDB=1" # mariadb docs say disable this for musl
