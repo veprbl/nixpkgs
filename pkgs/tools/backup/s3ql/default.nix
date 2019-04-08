@@ -1,13 +1,15 @@
-{ stdenv, fetchurl, python3Packages, sqlite, which }:
+{ stdenv, fetchFromGitHub, python3Packages, sqlite, which }:
 
 python3Packages.buildPythonApplication rec {
   name = "${pname}-${version}";
   pname = "s3ql";
-  version = "2.26";
+  version = "2.33";
 
-  src = fetchurl {
-    url = "https://bitbucket.org/nikratio/${pname}/downloads/${name}.tar.bz2";
-    sha256 = "0xs1jbak51zwjrd6jmd96xl3a3jpw0p1s05f7sw5wipvvg0xnmfn";
+  src = fetchFromGitHub {
+    owner = pname;
+    repo = pname;
+    rev = "release-${version}";
+    sha256 = "1xrm4pliajdppvi6a4km79qpqwxh2jk786c43aqb1c518gxaib90";
   };
 
   buildInputs = [ which ]; # tests will fail without which
@@ -16,18 +18,13 @@ python3Packages.buildPythonApplication rec {
     cython pytest pytest-catchlog
   ];
 
-  preBuild = ''
-    # https://bitbucket.org/nikratio/s3ql/issues/118/no-module-named-s3qldeltadump-running#comment-16951851
-    ${python3Packages.python.interpreter} ./setup.py build_cython build_ext --inplace
-  '';
-
   checkPhase = ''
     pytest tests
   '';
 
   meta = with stdenv.lib; {
     description = "A full-featured file system for online data storage";
-    homepage = https://bitbucket.org/nikratio/s3ql;
+    homepage = https://github.com/s3ql/s3ql;
     license = licenses.gpl3;
     maintainers = with maintainers; [ rushmorem ];
     platforms = platforms.linux;
