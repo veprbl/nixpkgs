@@ -15,6 +15,8 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     install -Dm755 -t $out/bin/ cmix
+
+    install -Dm644 -t $out/share/cmix/dictionary dictionary/*
   '';
 
   meta = with stdenv.lib; {
