@@ -71,7 +71,7 @@ common = rec { # attributes common to both builds
     "-DPLUGIN_AUTH_GSSAPI=NO"
     "-DPLUGIN_AUTH_GSSAPI_CLIENT=NO"
 
-    "-DJEMALLOC=NO"
+    "-DWITH_JEMALLOC=NO"
   ]
     ++ optional stdenv.isDarwin "-DCURSES_LIBRARY=${ncurses.out}/lib/libncurses.dylib"
     ++ optional (stdenv.hostPlatform.isMusl or true) "-DWITHOUT_TOKUDB=1" # mariadb docs say disable this for musl
