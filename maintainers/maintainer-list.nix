@@ -1229,6 +1229,11 @@
     github = "dgonyeo";
     name = "Derek Gonyeo";
   };
+  dhkl = {
+    email = "david@davidslab.com";
+    github = "dhl";
+    name = "David Leung";
+  };
   dipinhora = {
     email = "dipinhora+github@gmail.com";
     github = "dipinhora";
@@ -2742,6 +2747,11 @@
     email = "schreck.mathias@gmail.com";
     github = "lo1tuma";
     name = "Mathias Schreck";
+  };
+  loewenheim = {
+    email = "loewenheim@mailbox.org";
+    github = "loewenheim";
+    name = "Sebastian Zivota";
   };
   lopsided98 = {
     email = "benwolsieffer@gmail.com";

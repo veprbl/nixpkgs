@@ -1611,6 +1611,8 @@ in
 
   ipvsadm = callPackage ../os-specific/linux/ipvsadm { };
 
+  ir-standard-fonts = callPackage ../data/fonts/ir-standard-fonts { };
+
   lynis = callPackage ../tools/security/lynis { };
 
   mathics = pythonPackages.mathics;
@@ -5566,6 +5568,8 @@ in
 
   shadowsocks-libev = callPackage ../tools/networking/shadowsocks-libev { };
 
+  shabnam-fonts = callPackage ../data/fonts/shabnam-fonts { };
+
   shadowsocks-rust = callPackage ../tools/networking/shadowsocks-rust {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
@@ -8935,6 +8939,8 @@ in
   gdbgui = python3Packages.callPackage ../development/tools/misc/gdbgui { };
 
   pmd = callPackage ../development/tools/analysis/pmd { };
+
+  pmdk = callPackage ../development/libraries/pmdk { };
 
   jdepend = callPackage ../development/tools/analysis/jdepend { };
 
@@ -20169,6 +20175,8 @@ in
   vdirsyncer = callPackage ../tools/misc/vdirsyncer {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
+
+  vdirsyncerStable = callPackage ../tools/misc/vdirsyncer/stable.nix { };
 
   vdpauinfo = callPackage ../tools/X11/vdpauinfo { };
 
