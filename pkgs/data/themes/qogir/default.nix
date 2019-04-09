@@ -7,8 +7,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "vinceliuice";
     repo = pname;
-    rev = version;
-    sha256 = "0knv35xb4rg4pddxc78hd8frnlm8n0za1yj51ydwskn9b0qqcyhs";
+    rev = "f4c405f32e1d999bd0f43c2a1c19c75ee915788a";
+    sha256 = "03jdnfim2i4i8x7wi3w6psq55db08zsrgl5h7smdmkyff7in63wv";
   };
 
   buildInputs = [ gdk_pixbuf librsvg ];
