@@ -72,6 +72,7 @@ let
           ++ lib.optional (cfg.enableUgetIntegrator or false) uget-integrator
           ++ lib.optional (cfg.enablePlasmaBrowserIntegration or false) plasma-browser-integration
           ++ lib.optional (cfg.enableFXCastBridge or false) fx_cast_bridge
+          ++ lib.optional (cfg.enableFF2MPV or false) ff2mpv
           ++ extraNativeMessagingHosts
         );
       libs =   lib.optional stdenv.isLinux udev
