@@ -3,7 +3,7 @@
 , callPackage
 , pkgconfig
 , libusb, readline, libewf, perl, zlib, openssl
-, libuv, libzip, xxHash
+, libuv, file, libzip, xxHash
 , gtk2 ? null, vte ? null, gtkdialog ? null
 , python3 ? null
 , ruby ? null
@@ -12,8 +12,6 @@
 , rubyBindings ? false
 , pythonBindings ? false
 , luaBindings ? false
-, file ? null
-, useSysMagic ? false
 }:
 
 assert useX11 -> (gtk2 != null && vte != null && gtkdialog != null);
@@ -75,8 +73,8 @@ let
         "GITTIP=${gittip}"
         "RANLIB=${stdenv.cc.bintools.bintools}/bin/${stdenv.cc.bintools.targetPrefix}ranlib"
       ];
-      configureFlags = optional useSysMagic "--with-sysmagic"
-      ++ [
+      configureFlags = [
+        "--with-sysmagic"
         "--with-syszip"
         "--with-sysxxhash"
         "--with-openssl"
@@ -86,14 +84,18 @@ let
       depsBuildBuild = [ buildPackages.stdenv.cc ];
 
       nativeBuildInputs = [ pkgconfig ];
-      buildInputs = [ readline libusb libewf perl libuv ]
+      buildInputs = [ file readline libusb libewf perl zlib openssl libuv ]
         ++ optional useX11 [ gtkdialog vte gtk2 ]
         ++ optional rubyBindings [ ruby ]
         ++ optional pythonBindings [ python3 ]
         ++ optional luaBindings [ lua ];
 
-      propagatedBuildInputs = [ zlib libzip xxHash openssl ]
-        ++ optional useSysMagic [ file ];
+      propagatedBuildInputs = [
+        # radare2 exposes r_lib which depends on these libraries
+        file # for its list of magic numbers (`libmagic`)
+        libzip
+        xxHash
+      ];
 
       meta = {
         description = "unix-like reverse engineering framework and commandline tools";
