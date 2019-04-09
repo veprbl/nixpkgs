@@ -8,7 +8,7 @@
 , google_talk_plugin, fribid, gnome3/*.gnome-shell*/
 , esteidfirefoxplugin
 , browserpass, chrome-gnome-shell, uget-integrator, plasma-browser-integration, bukubrow
-, fx_cast_bridge
+, fx_cast_bridge, ff2mpv
 , udev
 , kerberos
 }:
