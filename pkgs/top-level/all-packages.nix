@@ -1611,6 +1611,8 @@ in
 
   ipvsadm = callPackage ../os-specific/linux/ipvsadm { };
 
+  ir-standard-fonts = callPackage ../data/fonts/ir-standard-fonts { };
+
   lynis = callPackage ../tools/security/lynis { };
 
   mathics = pythonPackages.mathics;
@@ -2023,6 +2025,8 @@ in
   };
 
   citra = libsForQt5.callPackage ../misc/emulators/citra { };
+
+  cmix = callPackage ../tools/compression/cmix { stdenv = gcc8Stdenv; /* see upstream's README */ };
 
   cmst = libsForQt5.callPackage ../tools/networking/cmst { };
 
@@ -3704,6 +3708,8 @@ in
 
   john = callPackage ../tools/security/john { };
 
+  joplin = nodePackages.joplin;
+
   joplin-desktop = callPackage ../applications/misc/joplin-desktop { };
 
   journalbeat = callPackage ../tools/system/journalbeat { };
@@ -4011,10 +4017,7 @@ in
 
   nodejs = hiPrio nodejs-8_x;
 
-  nodejs-slim = nodejs-slim-6_x;
-
-  nodejs-6_x = callPackage ../development/web/nodejs/v6.nix {};
-  nodejs-slim-6_x = callPackage ../development/web/nodejs/v6.nix { enableNpm = false; };
+  nodejs-slim = nodejs-slim-8_x;
 
   nodejs-8_x = callPackage ../development/web/nodejs/v8.nix {};
   nodejs-slim-8_x = callPackage ../development/web/nodejs/v8.nix { enableNpm = false; };
@@ -4040,10 +4043,6 @@ in
 
   nodePackages_8_x = dontRecurseIntoAttrs (callPackage ../development/node-packages/default-v8.nix {
     nodejs = pkgs.nodejs-8_x;
-  });
-
-  nodePackages_6_x = dontRecurseIntoAttrs (callPackage ../development/node-packages/default-v6.nix {
-    nodejs = pkgs.nodejs-6_x;
   });
 
   nodePackages = nodePackages_10_x;
@@ -5572,6 +5571,8 @@ in
   sha1collisiondetection = callPackage ../tools/security/sha1collisiondetection { };
 
   shadowsocks-libev = callPackage ../tools/networking/shadowsocks-libev { };
+
+  shabnam-fonts = callPackage ../data/fonts/shabnam-fonts { };
 
   shadowsocks-rust = callPackage ../tools/networking/shadowsocks-rust {
     inherit (darwin.apple_sdk.frameworks) Security;
@@ -8943,6 +8944,8 @@ in
 
   pmd = callPackage ../development/tools/analysis/pmd { };
 
+  pmdk = callPackage ../development/libraries/pmdk { };
+
   jdepend = callPackage ../development/tools/analysis/jdepend { };
 
   fedpkg = pythonPackages.callPackage ../development/tools/fedpkg { };
@@ -10816,6 +10819,8 @@ in
   leptonica = callPackage ../development/libraries/leptonica { };
 
   lib3ds = callPackage ../development/libraries/lib3ds { };
+
+  lib3mf = callPackage ../development/libraries/lib3mf { };
 
   libaacs = callPackage ../development/libraries/libaacs { };
 
@@ -13467,7 +13472,7 @@ in
   zmqpp = callPackage ../development/libraries/zmqpp { };
 
   zig = callPackage ../development/compilers/zig {
-    llvmPackages = llvmPackages_7;
+    llvmPackages = llvmPackages_8;
   };
 
   zimlib = callPackage ../development/libraries/zimlib { };
@@ -14138,7 +14143,7 @@ in
 
   mariadb = callPackage ../servers/sql/mariadb {
     asio = asio_1_10;
-    jemalloc = jemalloc.override ({ disableInitExecTls = true; });
+    #jemalloc = jemalloc.override ({ disableInitExecTls = true; });
     inherit (darwin) cctools;
     inherit (pkgs.darwin.apple_sdk.frameworks) CoreServices;
   };
@@ -20175,6 +20180,8 @@ in
     inherit (darwin.apple_sdk.frameworks) Security;
   };
 
+  vdirsyncerStable = callPackage ../tools/misc/vdirsyncer/stable.nix { };
+
   vdpauinfo = callPackage ../tools/X11/vdpauinfo { };
 
   verbiste = callPackage ../applications/misc/verbiste {
@@ -23663,7 +23670,7 @@ in
   ghc-standalone-archive = callPackage ../os-specific/darwin/ghc-standalone-archive { inherit (darwin) cctools; };
 
   vdr = callPackage ../applications/video/vdr { };
-  vdrPlugins = vdr.plugins // (recurseIntoAttrs (callPackages ../applications/video/vdr/plugins.nix { }));
+  vdrPlugins = recurseIntoAttrs (callPackages ../applications/video/vdr/plugins.nix { });
   wrapVdr = callPackage ../applications/video/vdr/wrapper.nix {};
 
   chrome-gnome-shell = callPackage  ../desktops/gnome-3/extensions/chrome-gnome-shell {};

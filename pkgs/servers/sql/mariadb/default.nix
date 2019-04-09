@@ -1,6 +1,6 @@
 { stdenv, fetchurl, fetchFromGitHub, cmake, pkgconfig, ncurses, zlib, xz, lzo, lz4, bzip2, snappy
 , libiconv, openssl, pcre, boost, judy, bison, libxml2
-, libaio, libevent, jemalloc, cracklib, systemd, numactl, perl
+, libaio, libevent, cracklib, systemd, numactl, perl
 , fixDarwinDylibNames, cctools, CoreServices
 , asio, buildEnv, check, scons
 }:
@@ -36,7 +36,7 @@ common = rec { # attributes common to both builds
   nativeBuildInputs = [ cmake pkgconfig ];
 
   buildInputs = [
-    ncurses openssl zlib pcre jemalloc libiconv
+    ncurses openssl zlib pcre libiconv
   ] ++ stdenv.lib.optionals stdenv.isLinux [ libaio systemd ]
     ++ stdenv.lib.optionals stdenv.isDarwin [ perl fixDarwinDylibNames cctools CoreServices ];
 
@@ -70,9 +70,11 @@ common = rec { # attributes common to both builds
     # library through Nix, and then breaks later on. This should have no effect on Linux.
     "-DPLUGIN_AUTH_GSSAPI=NO"
     "-DPLUGIN_AUTH_GSSAPI_CLIENT=NO"
+
+    "-DWITH_JEMALLOC=NO"
   ]
     ++ optional stdenv.isDarwin "-DCURSES_LIBRARY=${ncurses.out}/lib/libncurses.dylib"
-    ++ optional stdenv.hostPlatform.isMusl "-DWITHOUT_TOKUDB=1" # mariadb docs say disable this for musl
+    ++ optional (stdenv.hostPlatform.isMusl or true) "-DWITHOUT_TOKUDB=1" # mariadb docs say disable this for musl
     ;
 
   preConfigure = ''

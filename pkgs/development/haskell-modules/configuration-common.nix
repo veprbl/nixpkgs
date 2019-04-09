@@ -1280,6 +1280,10 @@ self: super: {
   # Fix build with attr-2.4.48 (see #53716)
   xattr = appendPatch super.xattr ./patches/xattr-fix-build.patch;
 
+  # Break out of pandoc >=2.0 && <2.7 (https://github.com/pbrisbin/yesod-markdown/pull/65)
+  yesod-markdown = doJailbreak super.yesod-markdown;
+
+  # -------
   bytestring-show = doJailbreak super.bytestring-show;
 
   hslua =

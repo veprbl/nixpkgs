@@ -29,6 +29,8 @@ let
   in {
 
     all = callPackage ./all.nix { };
+    prepo-all = callPackage ./prepo.nix { };
+    prepo = callPackage ./prepo.nix { enableProjects = [ "clang" "pstore" ]; };
     llvm = callPackage ./llvm.nix { };
     llvm-polly = callPackage ./llvm.nix { enablePolly = true; };
 
@@ -66,6 +68,17 @@ let
 
     libcxxClang = wrapCCWith rec {
       cc = tools.clang-unwrapped;
+      libcxx = targetLlvmLibraries.libcxx;
+      extraPackages = [
+        targetLlvmLibraries.libcxx
+        targetLlvmLibraries.libcxxabi
+        targetLlvmLibraries.compiler-rt
+      ];
+      extraBuildCommands = mkExtraBuildCommands cc;
+    };
+    #libcxxClangprepo = tools.libcxxClang.override { cc = tools.prepo; };
+    libcxxClang-prepo = wrapCCWith rec {
+      cc = tools.prepo;
       libcxx = targetLlvmLibraries.libcxx;
       extraPackages = [
         targetLlvmLibraries.libcxx
@@ -139,6 +152,7 @@ let
     stdenv = overrideCC stdenv buildLlvmTools.clang;
 
     libcxxStdenv = overrideCC stdenv buildLlvmTools.libcxxClang;
+    libcxxStdenv-prepo = overrideCC stdenv buildLlvmTools.libcxxClang-prepo;
 
     libcxx = callPackage ./libc++ {};
 

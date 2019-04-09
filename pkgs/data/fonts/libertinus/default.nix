@@ -2,14 +2,16 @@
 
 stdenv.mkDerivation rec {
   name = "libertinus-${version}";
-  version = "6.6";
+  version = "6.8";
 
   src = fetchFromGitHub {
     rev    = "v${version}";
-    owner  = "khaledhosny";
+    owner  = "libertinus-fonts";
     repo   = "libertinus";
-    sha256 = "0syagjmwy6q1ysncchl9bgyfrm7f6fghj1aipbr6md7l6gafz7ji";
+    sha256 = "1sz0mfi0s8wxbaxlqrlv6szj07mdgizsb6qi4l4xjvxxahs7dc4v";
   };
+
+  dontBuild = true;
 
   installPhase = ''
     mkdir -p $out/share/fonts/opentype/
@@ -20,7 +22,7 @@ stdenv.mkDerivation rec {
 
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
-  outputHash = "11pxb2zwvjlk06zbqrfv2pgwsl4awf68fak1ks4881i8xbl1910m";
+  outputHash = "0iwbw3sw8rcsifpzw72g3cz0a960scv7cib8mwrw53282waqq2gc";
 
   meta = with stdenv.lib; {
     description = "A fork of the Linux Libertine and Linux Biolinum fonts";
@@ -29,7 +31,7 @@ stdenv.mkDerivation rec {
       that started as an OpenType math companion of the Libertine font family,
       but grown as a full fork to address some of the bugs in the fonts.
     '';
-    homepage = https://github.com/khaledhosny/libertinus;
+    homepage = https://github.com/libertinus-fonts/libertinus;
     license = licenses.ofl;
     maintainers = with maintainers; [ siddharthist ];
     platforms = platforms.all;
