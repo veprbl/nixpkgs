@@ -13,6 +13,8 @@ stdenv.mkDerivation rec {
 
   dontBuild = true;
 
+  buildInputs = [ python3 /* so patchShebangs sees it, I guess */ ];
+
   installPhase = ''
     substituteInPlace ff2mpv.json \
       --replace '/home/william/scripts/ff2mpv' \
