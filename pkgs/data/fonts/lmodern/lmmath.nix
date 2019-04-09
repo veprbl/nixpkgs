@@ -1,9 +1,9 @@
 { stdenv, fetchzip }:
 
 fetchzip {
-  name = "lmmath-0.903";
+  name = "lmmath-1.959";
 
-  url = "http://www.gust.org.pl/projects/e-foundry/lm-math/download/lmmath0903otf";
+  url = http://www.gust.org.pl/projects/e-foundry/lm-math/download/latinmodern-math-1959.zip;
 
   postFetch = ''
     unzip $downloadedFile
@@ -11,16 +11,16 @@ fetchzip {
     mkdir -p $out/texmf-dist/fonts/opentype
     mkdir -p $out/share/fonts/opentype
 
-    cp *.{OTF,otf} $out/texmf-dist/fonts/opentype/lmmath-regular.otf
-    cp *.{OTF,otf} $out/share/fonts/opentype/lmmath-regular.otf
+    cp */otf/*.otf $out/texmf-dist/fonts/opentype/lmmath-regular.otf
+    cp */otf/*.otf $out/share/fonts/opentype/lmmath-regular.otf
 
     ln -s -r $out/texmf* $out/share/
   '';
 
-  sha256 = "19821d4vbd6z20jzsw24zh0hhwayglhrfw8larg2w6alhdqi7rln";
+  sha256 = "1aw4fk9xqblc2zjrc52nwmsmbs8328a8c77vvnxi32r5953b3ihb";
 
   meta = {
-    description = "Latin Modern font";
+    description = "Latin Modern math font";
     platforms = stdenv.lib.platforms.unix;
   };
 }
