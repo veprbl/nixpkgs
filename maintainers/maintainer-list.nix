@@ -3317,6 +3317,11 @@
     github = "mvnetbiz";
     name = "Matt Votava";
   };
+  mwilsoninsight = {
+    email = "max.wilson@insight.com";
+    github = "mwilsoninsight";
+    name = "Max Wilson";
+  };
   myrl = {
     email = "myrl.0xf@gmail.com";
     github = "myrl";
@@ -3455,6 +3460,11 @@
     email = "nocoolnametom@gmail.com";
     github = "nocoolnametom";
     name = "Tom Doggett";
+  };
+  nomeata = {
+    email = "mail@joachim-breitner.de";
+    github = "nomeata";
+    name = "Joachim Breitner";
   };
   noneucat = {
     email = "andy@lolc.at";
@@ -4608,6 +4618,11 @@
     email = "samoss@gmail.com";
     github = "stumoss";
     name = "Stuart Moss";
+  };
+  suhr = {
+    email = "suhr@i2pmail.org";
+    github = "suhr";
+    name = "Сухарик";
   };
   SuprDewd = {
     email = "suprdewd@gmail.com";

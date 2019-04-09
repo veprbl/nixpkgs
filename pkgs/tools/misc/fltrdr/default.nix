@@ -16,6 +16,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ cmake ];
+  buildInputs       = [ icu ];
 
   # not mentioned, but includes <unicode/regex.h> and others
   buildInputs = [ icu ]; 
