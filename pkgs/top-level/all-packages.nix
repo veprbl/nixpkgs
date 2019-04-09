@@ -1477,6 +1477,7 @@ in
 
   fwup = callPackage ../tools/misc/fwup { };
 
+  ff2mpv = callPackage ../tools/misc/ff2mpv { };
   fx_cast_bridge = callPackage ../tools/misc/fx_cast { };
 
   fzf = callPackage ../tools/misc/fzf { };
