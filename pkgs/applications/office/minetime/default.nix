@@ -2,13 +2,13 @@
 
 let
   pname = "MineTime";
-  version = "1.4.12";
+  version = "1.5.0";
 in
 appimageTools.wrapType2 rec {
   name = "${pname}-${version}";
   src = fetchurl {
     url = "https://github.com/marcoancona/MineTime/releases/download/v${version}/${name}-x86_64.AppImage";
-    sha256 = "1gpscil003ja35c9dax33prf5wabcwsbvrbzclpwsw5b9i2sgbpw";
+    sha256 = "0zw3hiql3qs3srjj3pa8nx1b8b33lw4ah4j6faps3xzbp6rdwk0d";
   };
 
   extraPkgs = p: p.atomEnv.packages;
