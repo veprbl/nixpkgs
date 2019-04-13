@@ -5063,6 +5063,7 @@ in
   pk2cmd = callPackage ../tools/misc/pk2cmd { };
 
   plantuml = callPackage ../tools/misc/plantuml {
+    jre = openjdk11;
     # Graphviz 2.39 and 2.40 are discouraged by the PlantUML project, see
     # http://plantuml.com/faq (heading: "Which version of Graphviz should I use ?")
     graphviz = graphviz_2_32;
