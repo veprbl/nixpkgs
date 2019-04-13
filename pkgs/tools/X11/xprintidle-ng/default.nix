@@ -22,6 +22,7 @@ stdenv.mkDerivation rec {
   configurePhase = ''
     cp -r "${gnulib}" gnulib
     chmod a+rX,u+w -R gnulib
+    substituteInPlace configure.ac --replace '2.62' '2.63'
     ./bootstrap --gnulib-srcdir=gnulib
     ./configure --prefix="$out"
   '';
