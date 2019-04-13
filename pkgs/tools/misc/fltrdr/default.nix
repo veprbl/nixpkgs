@@ -1,7 +1,7 @@
 { stdenv
 , fetchFromGitHub
 , cmake
-, icu
+, icu, openssl
 }:
 
 stdenv.mkDerivation rec {
@@ -17,8 +17,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ cmake ];
 
-  # not mentioned, but includes <unicode/regex.h> and others
-  buildInputs = [ icu ]; 
+  buildInputs = [ icu openssl ];
 
   enableParallelBuilding = true;
 
