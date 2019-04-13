@@ -1244,6 +1244,11 @@
     github = "disassembler";
     name = "Samuel Leathers";
   };
+  disserman = {
+    email = "disserman@gmail.com";
+    github = "divi255";
+    name = "Sergei S.";
+  };
   dizfer = {
     email = "david@izquierdofernandez.com";
     github = "dizfer";
@@ -2914,6 +2919,11 @@
   markWot = {
     email = "markus@wotringer.de";
     name = "Markus Wotringer";
+  };
+  marius851000 = {
+    email = "mariusdavid@laposte.net";
+    name = "Marius David";
+    github = "marius851000";
   };
   marsam = {
     email = "marsam@users.noreply.github.com";
@@ -5282,6 +5292,11 @@
     github = "xnwdd";
     name = "Guillermo NWDD";
   };
+  xrelkd = {
+    email = "46590321+xrelkd@users.noreply.github.com";
+    github = "xrelkd";
+    name = "xrelkd";
+  };
   xurei = {
     email = "olivier.bourdoux@gmail.com";
     github = "xurei";
@@ -5461,4 +5476,14 @@
     github = "shazow";
     name = "Andrey Petrov";
   };
+  freezeboy = {
+    email = "freezeboy@users.noreply.github.com";
+    github = "freezeboy";
+    name = "freezeboy";
+  };
+  tesq0 = {
+  	email = "mikolaj.galkowski@gmail.com";
+    github = "tesq0";
+    name = "Mikolaj Galkowski";
+	};
 }

@@ -1,11 +1,11 @@
-{ stdenv
+{ gcc8Stdenv
 , ctags
+, appstream-glib
 , desktop-file-utils
 , docbook_xsl
 , docbook_xml_dtd_43
 , fetchurl
 , flatpak
-, glibcLocales
 , gnome3
 , libgit2-glib
 , gobject-introspection
@@ -32,8 +32,15 @@
 , vte
 , webkitgtk
 , wrapGAppsHook
+, dbus
+, xvfb_run
 }:
 
+let
+  # Does not build with GCC 7
+  # https://gitlab.gnome.org/GNOME/gnome-builder/issues/868
+  stdenv = gcc8Stdenv;
+in
 stdenv.mkDerivation rec {
   pname = "gnome-builder";
   version = "3.32.0";
@@ -44,15 +51,14 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [
-    #appstream-glib # tests fail if these tools are available
+    appstream-glib
     desktop-file-utils
     docbook_xsl
     docbook_xml_dtd_43
-    glibcLocales # for Meson's gtkdochelper
     gobject-introspection
     gtk-doc
     hicolor-icon-theme
-    meson
+    (meson.override ({ inherit stdenv; }))
     ninja
     pkgconfig
     python3
@@ -64,6 +70,7 @@ stdenv.mkDerivation rec {
     ctags
     flatpak
     gnome3.devhelp
+    gnome3.glade
     libgit2-glib
     libpeas
     vte
@@ -83,6 +90,11 @@ stdenv.mkDerivation rec {
     webkitgtk
   ];
 
+  checkInputs = [
+    dbus
+    xvfb_run
+  ];
+
   outputs = [ "out" "devdoc" ];
 
   prePatch = ''
@@ -96,14 +108,20 @@ stdenv.mkDerivation rec {
     # Making the build system correctly detect clang header and library paths
     # is difficult. Somebody should look into fixing this.
     "-Dplugin_clang=false"
+
+    # Do not try to check if appstream images exist
+    "-Dnetwork_tests=false"
   ];
 
   # Some tests fail due to being unable to find the Vte typelib, and I don't
   # understand why. Somebody should look into fixing this.
-  doCheck = false;
+  doCheck = true;
 
-  preInstall = ''
-    export LC_ALL="en_US.utf-8"
+  checkPhase = ''
+    export NO_AT_BRIDGE=1
+    xvfb-run -s '-screen 0 800x600x24' dbus-run-session \
+      --config-file=${dbus.daemon}/share/dbus-1/session.conf \
+      meson test --print-errorlogs
   '';
 
   pythonPath = with python3.pkgs; requiredPythonModules [ pygobject3 ];

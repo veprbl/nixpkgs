@@ -9,17 +9,11 @@ let
   pname = "NetworkManager";
 in stdenv.mkDerivation rec {
   name = "network-manager-${version}";
-  version = "1.17.2.0.99"; # not really, git
+  version = "1.16.0";
 
-  #src = fetchurl {
-  #  url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-  #  sha256 = "0b2x9hrg41cd17psqi0vacwj733v99hxczn53gdfs0yanqrji5lf";
-  #};
-  src = fetchFromGitHub {
-    owner = pname;
-    repo = pname;
-    rev = "3f62c49295d9ced878e49bbd89e5bed7b740d568";
-    sha256 = "0z3bb26vrlhk6yzkgxcmc9cr5sl5p2blzg4yxp47mnis9fcia96s";
+  src = fetchurl {
+    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+    sha256 = "0b2x9hrg41cd17psqi0vacwj733v99hxczn53gdfs0yanqrji5lf";
   };
 
   outputs = [ "out" "dev" ];

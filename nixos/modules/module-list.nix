@@ -266,6 +266,7 @@
   ./services/desktops/pipewire.nix
   ./services/desktops/gnome3/at-spi2-core.nix
   ./services/desktops/gnome3/chrome-gnome-shell.nix
+  ./services/desktops/gnome3/evince.nix
   ./services/desktops/gnome3/evolution-data-server.nix
   ./services/desktops/gnome3/file-roller.nix
   ./services/desktops/gnome3/gnome-disks.nix
@@ -750,6 +751,7 @@
   ./services/web-apps/icingaweb2/icingaweb2.nix
   ./services/web-apps/icingaweb2/module-monitoring.nix
   ./services/web-apps/mattermost.nix
+  ./services/web-apps/miniflux.nix
   ./services/web-apps/nextcloud.nix
   ./services/web-apps/nexus.nix
   ./services/web-apps/pgpkeyserver-lite.nix

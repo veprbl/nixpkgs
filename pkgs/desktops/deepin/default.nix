@@ -9,10 +9,7 @@ let
     dbus-factory = callPackage ./dbus-factory { };
     dde-api = callPackage ./dde-api { };
     dde-calendar = callPackage ./dde-calendar { };
-    dde-daemon = callPackage ./dde-daemon {
-      # XXX: the build is finding references to Go when compiled with go v1.12
-      go = go_1_11;
-    };
+    dde-daemon = callPackage ./dde-daemon { };
     dde-polkit-agent = callPackage ./dde-polkit-agent { };
     dde-network-utils = callPackage ./dde-network-utils { };
     dde-qt-dbus-factory = callPackage ./dde-qt-dbus-factory { };

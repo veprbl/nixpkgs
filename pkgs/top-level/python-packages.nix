@@ -940,6 +940,8 @@ in {
 
   aioprocessing = callPackage ../development/python-modules/aioprocessing { };
 
+  aioresponses = callPackage ../development/python-modules/aioresponses { };
+
   aiorpcx = callPackage ../development/python-modules/aiorpcx { };
 
   aiounifi = callPackage ../development/python-modules/aiounifi { };
@@ -2125,6 +2127,8 @@ in {
   paperspace = callPackage ../development/python-modules/paperspace { };
 
   paperwork-backend = callPackage ../applications/office/paperwork/backend.nix { };
+
+  papis = callPackage ../development/python-modules/papis { };
 
   papis-python-rofi = callPackage ../development/python-modules/papis-python-rofi { };
 
@@ -3371,6 +3375,8 @@ in {
   };
 
   nixpkgs = callPackage ../development/python-modules/nixpkgs { };
+
+  nixpkgs-pytools = callPackage ../development/python-modules/nixpkgs-pytools { };
 
   nodeenv = callPackage ../development/python-modules/nodeenv { };
 

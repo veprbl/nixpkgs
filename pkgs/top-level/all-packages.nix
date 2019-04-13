@@ -157,6 +157,8 @@ in
 
   deadcode = callPackage ../development/tools/deadcode { };
 
+  demoit = callPackage ../servers/demoit { };
+
   diffPlugins = (callPackage ../build-support/plugins.nix {}).diffPlugins;
 
   dieHook = makeSetupHook {} ../build-support/setup-hooks/die.sh;
@@ -860,6 +862,7 @@ in
 
   aria2 = callPackage ../tools/networking/aria2 {
     inherit (darwin.apple_sdk.frameworks) Security;
+    inherit (pythonPackages) sphinx;
   };
   aria = aria2;
 
@@ -1039,6 +1042,8 @@ in
 
   borgbackup = callPackage ../tools/backup/borg { };
 
+  boringtun = callPackage ../tools/networking/boringtun { };
+
   boomerang = libsForQt5.callPackage ../development/tools/boomerang { };
 
   boost-build = callPackage ../development/tools/boost-build { };
@@ -1060,6 +1065,8 @@ in
   brltty = callPackage ../tools/misc/brltty { };
 
   bro = callPackage ../applications/networking/ids/bro { };
+
+  brook = callPackage ../tools/networking/brook { };
 
   broot = callPackage ../tools/misc/broot { };
 
@@ -1655,6 +1662,8 @@ in
 
   nfdump = callPackage ../tools/networking/nfdump { };
 
+  nixpkgs-pytools = with python3.pkgs; toPythonApplication nixpkgs-pytools;
+
   noteshrink = callPackage ../tools/misc/noteshrink { };
 
   noti = callPackage ../tools/misc/noti {
@@ -1681,6 +1690,8 @@ in
   pbpst = callPackage ../applications/misc/pbpst { };
 
   pbzx = callPackage ../tools/compression/pbzx { };
+
+  persepolis = python3Packages.callPackage ../tools/networking/persepolis { };
 
   pev = callPackage ../development/tools/analysis/pev { };
 
@@ -2108,8 +2119,6 @@ in
   libkkc = callPackage ../tools/inputmethods/libkkc { };
 
   ibus = callPackage ../tools/inputmethods/ibus {
-    gconf = gnome2.GConf;
-    vala = vala_0_42; # XXX: revisit
     inherit (gnome3) dconf;
   };
 
@@ -3704,6 +3713,8 @@ in
   jnettop = callPackage ../tools/networking/jnettop { };
 
   junkie = callPackage ../tools/networking/junkie { };
+
+  just = callPackage ../development/tools/just { };
 
   go-jira = callPackage ../applications/misc/go-jira { };
 
@@ -6639,9 +6650,6 @@ in
 
   yarn = callPackage ../development/tools/yarn  { };
 
-  yarn2nix = throw "Use upstream https://github.com/moretea/yarn2nix";
-  mkYarnPackage = yarn2nix;
-
   yasr = callPackage ../applications/audio/yasr { };
 
   yank = callPackage ../tools/misc/yank { };
@@ -7718,14 +7726,12 @@ in
     inherit (darwin) apple_sdk;
   };
 
-  # For beta and nightly releases use the nixpkgs-mozilla overlay
-  rust = callPackage ../development/compilers/rust ({
+  rust = callPackage ../development/compilers/rust {
     inherit (darwin.apple_sdk.frameworks) CoreFoundation Security;
-    llvm = llvm_7;
-  } // stdenv.lib.optionalAttrs (stdenv.cc.isGNU && stdenv.hostPlatform.isi686) {
-    stdenv = overrideCC stdenv gcc6; # with gcc-7: undefined reference to `__divmoddi4'
-  });
-  inherit (rust) cargo rustc;
+  };
+  rustPackages = rust.packages.stable;
+  inherit (rustPackages) cargo rustc rustPlatform;
+  inherit (rust) makeRustPlatform;
 
   buildRustCrate = callPackage ../build-support/rust/build-rust-crate { };
   buildRustCrateHelpers = callPackage ../build-support/rust/build-rust-crate/helpers.nix { };
@@ -7741,9 +7747,6 @@ in
 
   defaultCrateOverrides = callPackage ../build-support/rust/default-crate-overrides.nix { };
 
-  makeRustPlatform = callPackage ../build-support/rust/make-rust-platform.nix {};
-  rustPlatform = recurseIntoAttrs (makeRustPlatform rust);
-
   cargo-download = callPackage ../tools/package-management/cargo-download { };
   cargo-edit = callPackage ../tools/package-management/cargo-edit { };
   cargo-release = callPackage ../tools/package-management/cargo-release {
@@ -7755,6 +7758,7 @@ in
   cargo-asm = callPackage ../development/tools/rust/cargo-asm {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
+  cargo-expand = callPackage ../development/tools/rust/cargo-expand { };
   cargo-fuzz = callPackage ../development/tools/rust/cargo-fuzz { };
   cargo-xbuild = callPackage ../development/tools/rust/cargo-xbuild { };
 
@@ -8146,8 +8150,6 @@ in
   }));
 
   ocropus = callPackage ../applications/misc/ocropus { };
-
-  inherit (callPackages ../development/interpreters/perl {}) perl528 perldevel;
 
   pachyderm = callPackage ../applications/networking/cluster/pachyderm { };
 
@@ -8583,6 +8585,8 @@ in
 
   automake111x = callPackage ../development/tools/misc/automake/automake-1.11.x.nix { };
 
+  automake115x = callPackage ../development/tools/misc/automake/automake-1.15.x.nix { };
+
   automake116x = callPackage ../development/tools/misc/automake/automake-1.16.x.nix { };
 
   automoc4 = callPackage ../development/tools/misc/automoc4 { };
@@ -8934,6 +8938,7 @@ in
   };
 
   foreman = callPackage ../tools/system/foreman { };
+  goreman = callPackage ../tools/system/goreman { };
 
   framac = callPackage ../development/tools/analysis/frama-c { };
 
@@ -10017,7 +10022,7 @@ in
     inherit (darwin.apple_sdk.frameworks) Cocoa CoreMedia;
   };
   ffmpeg_4 = callPackage ../development/libraries/ffmpeg/4.nix {
-    inherit (darwin.apple_sdk.frameworks) Cocoa CoreMedia;
+    inherit (darwin.apple_sdk.frameworks) Cocoa CoreMedia VideoToolbox;
   };
 
   # Aliases
@@ -10603,6 +10608,8 @@ in
   };
 
   hiredis = callPackage ../development/libraries/hiredis { };
+
+  hiredis-vip = callPackage ../development/libraries/hiredis-vip { };
 
   hivex = callPackage ../development/libraries/hivex { };
 
@@ -11557,6 +11564,8 @@ in
   libosmpbf = callPackage ../development/libraries/libosmpbf {};
 
   libotr = callPackage ../development/libraries/libotr { };
+
+  libow = callPackage ../development/libraries/libow { };
 
   libp11 = callPackage ../development/libraries/libp11 { };
 
@@ -13673,19 +13682,14 @@ in
 
   ### DEVELOPMENT / PERL MODULES
 
-  # the latest Maint version
-  perl528Packages = recurseIntoAttrs (callPackage ./perl-packages.nix {
-    perl = perl528;
-    overrides = (config.perlPackageOverrides or (p: {})) pkgs;
-  });
-  # the latest Devel version
-  perldevelPackages = recurseIntoAttrs (callPackage ./perl-packages.nix {
-    perl = perldevel;
-    overrides = (config.perlPackageOverrides or (p: {})) pkgs;
-  });
+  perlInterpreters = callPackages ../development/interpreters/perl {};
+  inherit (perlInterpreters) perl528 perldevel;
 
+  perl528Packages = recurseIntoAttrs perl528.pkgs;
+  perldevelPackages = perldevel.pkgs;
+
+  perl = perl528;
   perlPackages = perl528Packages;
-  inherit (perlPackages) perl;
 
   ack = perlPackages.ack;
 
@@ -16149,7 +16153,7 @@ in
 
   papirus-icon-theme = callPackage ../data/icons/papirus-icon-theme { };
 
-  papis = callPackage ../tools/misc/papis { };
+  papis = with python3Packages; toPythonApplication papis;
 
   paps = callPackage ../tools/misc/paps { };
 
@@ -17972,6 +17976,8 @@ in
   hovercraft = python3Packages.callPackage ../applications/misc/hovercraft { };
 
   howl = callPackage ../applications/editors/howl { };
+
+  hpl = callPackage ../tools/misc/hpl { mpi = openmpi; };
 
   ht = callPackage ../applications/editors/ht { };
 
@@ -21056,6 +21062,8 @@ in
 
   exult = callPackage ../games/exult { };
 
+  fltrator = callPackage ../games/fltrator { };
+
   factorio = callPackage ../games/factorio { releaseType = "alpha"; };
 
   factorio-experimental = factorio.override { releaseType = "alpha"; experimental = true; };
@@ -22696,6 +22704,7 @@ in
   epson-alc1100 = callPackage ../misc/drivers/epson-alc1100 { };
 
   epson-escpr = callPackage ../misc/drivers/epson-escpr { };
+  epson-escpr2 = callPackage ../misc/drivers/epson-escpr2 { };
 
   epson_201207w = callPackage ../misc/drivers/epson_201207w { };
 
