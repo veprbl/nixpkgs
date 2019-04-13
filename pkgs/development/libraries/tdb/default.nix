@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, wafHook, pkgconfig, readline, libxslt
+{ stdenv, fetchurl, python, wafHook, which, pkgconfig, readline, libxslt
 , docbook_xsl, docbook_xml_dtd_42
 }:
 
