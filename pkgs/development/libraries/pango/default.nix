@@ -34,19 +34,9 @@ in stdenv.mkDerivation rec {
   ]);
   propagatedBuildInputs = [ cairo glib libXft libintl ];
 
-  patches = [
-    (fetchurl {
-      # Add gobject-2 to .pc file
-      url = "https://gitlab.gnome.org/GNOME/pango/commit/546f4c242d6f4fe312de3b7c918a848e5172e18d.patch";
-      sha256 = "034na38cq98vk8gggn3yfr65jmv3jgig8d25zg89wydrandp14yr";
-    })
-  ];
-
   mesonFlags = [
     "-Denable_docs=${if stdenv.isDarwin then "false" else "true"}"
   ];
-
-  mesonFlags = [ "-Denable_docs=true" ];
 
   enableParallelBuilding = true;
 
