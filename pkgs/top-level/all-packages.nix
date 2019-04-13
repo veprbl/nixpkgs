@@ -2778,7 +2778,7 @@ in
 
   flatpak-builder = callPackage ../development/tools/flatpak-builder { };
 
-  fltrdr = callPackage ../tools/misc/fltrdr { stdenv = gcc8Stdenv; };
+  fltrdr = callPackage ../tools/misc/fltrdr { stdenv = gcc8Stdenv; icu = icu63; /* 59 too old */ };
 
   figlet = callPackage ../tools/misc/figlet { };
 
