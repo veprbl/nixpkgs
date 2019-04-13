@@ -2881,11 +2881,6 @@
     github = "2chilled";
     name = "Matthias Herrmann";
   };
-  marius851000 = {
-    email = "mariusdavid@laposte.net";
-    github = "marius851000";
-    name = "Marius David";
-  };
   makefu = {
     email = "makefu@syntax-fehler.de";
     github = "makefu";
