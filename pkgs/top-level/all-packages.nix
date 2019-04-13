@@ -6496,7 +6496,11 @@ in
   waf = callPackage ../development/tools/build-managers/waf { python = python3; };
   wafHook = makeSetupHook {
     deps = [ python ];
-    substitutions = { inherit waf; };
+    substitutions = {
+      inherit waf;
+      crossFlags = lib.optionalString (stdenv.hostPlatform != stdenv.targetPlatform)
+        ''--cross-compile "--cross-execute=${stdenv.targetPlatform.emulator pkgs}"'';
+    };
   } ../development/tools/build-managers/waf/setup-hook.sh;
 
   wakelan = callPackage ../tools/networking/wakelan { };
@@ -16946,7 +16950,6 @@ in
     headerbar-gtk3 = callPackage ../applications/audio/deadbeef/plugins/headerbar-gtk3.nix { };
     infobar = callPackage ../applications/audio/deadbeef/plugins/infobar.nix { };
     mpris2 = callPackage ../applications/audio/deadbeef/plugins/mpris2.nix { };
-    opus = callPackage ../applications/audio/deadbeef/plugins/opus.nix { };
   };
 
   deadbeef-with-plugins = callPackage ../applications/audio/deadbeef/wrapper.nix {

@@ -1,5 +1,5 @@
-{ stdenv, fetchurl, python, pkgconfig, which, readline, libxslt
-, docbook_xsl, docbook_xml_dtd_42, buildPackages
+{ stdenv, fetchurl, wafHook, pkgconfig, readline, libxslt
+, docbook_xsl, docbook_xml_dtd_42
 }:
 
 stdenv.mkDerivation rec {
@@ -11,21 +11,17 @@ stdenv.mkDerivation rec {
     sha256 = "0d9d2f1c83gmmq30bkfs50yb8399mr9xjjzscma4kyq0ajf75861";
   };
 
-  nativeBuildInputs = [ pkgconfig python which docbook_xsl docbook_xml_dtd_42 ];
-  buildInputs = [ readline libxslt python ];
+  nativeBuildInputs = [ pkgconfig wafHook python which docbook_xsl docbook_xml_dtd_42 ];
+  buildInputs = [
+    readline libxslt python
+  ];
 
-  preConfigure = ''
-    patchShebangs buildtools/bin/waf
-  '';
+  wafPath = "buildtools/bin/waf";
 
-  configureFlags = [
+  wafConfigureFlags = [
     "--bundled-libraries=NONE"
     "--builtin-libraries=replace"
-  ] ++ stdenv.lib.optionals (stdenv.hostPlatform != stdenv.buildPlatform) [
-    "--cross-compile"
-    "--cross-execute=${stdenv.hostPlatform.emulator buildPackages}"
   ];
-  configurePlatforms = [ ];
 
   meta = with stdenv.lib; {
     description = "The trivial database";
