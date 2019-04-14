@@ -1,6 +1,6 @@
 { stdenv, fetchurl, fetchFromGitHub, fetchpatch, substituteAll, intltool, pkgconfig, dbus, dbus-glib, gtk-doc, perl
 , gnome3, systemd, libuuid, polkit, gnutls, ppp, dhcp, iptables
-, libgcrypt, dnsmasq, bluez5, readline
+, libgcrypt, dnsmasq, bluez5, readline, libpsl
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
 , ethtool, gnused, coreutils, file, iputils, kmod, jansson, libxslt
 , python3Packages, docbook_xsl, openconnect, curl, autoreconfHook }:
@@ -76,7 +76,7 @@ in stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
-    systemd libuuid polkit ppp libndp curl
+    systemd libuuid polkit ppp libndp curl libpsl
     bluez5 dnsmasq gobject-introspection modemmanager readline newt libsoup jansson
   ];
 
