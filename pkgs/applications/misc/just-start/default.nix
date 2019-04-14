@@ -1,4 +1,4 @@
-{ stdenv, lib, buildPythonApplication, fetchFromGitHub, isPy3k, pexpect, urwid, toml, pydantic
+{ stdenv, lib, buildPythonApplication, fetchFromGitHub, isPy3k, pexpect, urwid, toml, pydantic, poetry
 , pytest, pytest-mock, coverage
  }:
 
@@ -13,8 +13,15 @@ buildPythonApplication rec {
     sha256 = "0wg0nc7xglj1dw6c95nw08hvnxgqzdr4rc8cgv94yyx3ibfnscz6";
   };
 
+  postPatch = ''
+    substituteInPlace pyproject.toml \
+      --replace 'pydantic = "^0.21.0"' \
+                'pydantic = ">=0.21.0"'
+  '';
+
   format = "pyproject";
 
+  buildInputs = [ poetry ];
   propagatedBuildInputs = [ pexpect urwid toml pydantic ];
 
   LC_ALL = "C.UTF-8";
@@ -24,6 +31,7 @@ buildPythonApplication rec {
   '';
 
   checkInputs = [ pytest pytest-mock coverage ];
+  doCheck = false; # check phase?
 
   disabled = !isPy3k;
 
