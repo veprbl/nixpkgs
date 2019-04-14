@@ -20791,6 +20791,8 @@ in
 
   xmacro = callPackage ../tools/X11/xmacro { };
 
+  xed = callPackage ../applications/editors/xed { };
+
   xmlcopyeditor = callPackage ../applications/editors/xmlcopyeditor { };
 
   xmp = callPackage ../applications/audio/xmp { };
