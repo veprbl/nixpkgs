@@ -21,6 +21,7 @@
 let
   cleo6 = cleo.overrideAttrs (oldAttrs: rec {
     version = "0.6.8";
+    name = oldAttrs.pname + "-" + version;
     src = fetchPypi {
       inherit (oldAttrs) pname;
       inherit version;
