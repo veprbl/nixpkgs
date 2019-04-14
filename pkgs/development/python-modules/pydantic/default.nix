@@ -2,17 +2,12 @@
 
 buildPythonPackage rec {
   pname = "pydantic";
-  version = "0.19";
+  version = "0.23";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "7bcc991083c1c0113fd207a4c38f6432d1a640864ac19371e6a18551398f1ae8";
+    sha256 = "13k8mysyrqp2jsd23sjv9r4lpkzrq2lbrnxkz36f3d56x421idsq";
   };
-
-  # https://github.com/samuelcolvin/pydantic/issues/376
-  postPatch = ''
-    substituteInPlace setup.cfg --replace 'py36+' 'py36.py37'
-  '';
 
   buildInputs = [ ujson email_validator ];
 
