@@ -1,4 +1,5 @@
 { lib, stdenv, fetchFromGitHub, cmake, ragel, python27
+, coreutils, gnused, utillinux
 , boost
 }:
 
@@ -21,7 +22,12 @@ stdenv.mkDerivation rec {
   outputs = [ "out" "dev" ];
 
   buildInputs = [ boost ];
-  nativeBuildInputs = [ cmake ragel python27 ];
+  nativeBuildInputs = [
+    cmake ragel python27
+    # Consider simply using busybox for these
+    # Need at least: rev, sed, cut
+    coreutils gnused utillinux
+  ];
 
   cmakeFlags = [
     "-DFAT_RUNTIME=ON"
