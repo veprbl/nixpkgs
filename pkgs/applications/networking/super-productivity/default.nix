@@ -1,6 +1,6 @@
 { stdenv, fetchurl, dpkg, makeWrapper
 , alsaLib, atk, cairo, cups, curl, dbus, expat, fontconfig, freetype, glib
-, gnome2, gtk3, gdk_pixbuf, libnotify, libxcb, nspr, nss, pango
+, gnome2, gtk3, gdk_pixbuf, libnotify, libxcb, nspr, nss, pango, at-spi2-atk
 , utillinux, systemd, xorg, xprintidle-ng }:
 
 let
@@ -22,6 +22,7 @@ let
     gdk_pixbuf
     gtk3
     pango
+    at-spi2-atk
     libnotify
     libxcb
     nspr
