@@ -71,6 +71,7 @@ stdenv.mkDerivation rec {
     "--localstatedir=/var"
     "--enable-installed-tests"
     "--disable-documentation"
+    "--with-system-helper-user=flatpak"
   ];
 
   # Uses pthread_sigmask but doesn't link to pthread

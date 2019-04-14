@@ -48,5 +48,12 @@ in {
     environment.variables = {
       XDG_DESKTOP_PORTAL_PATH = map (p: "${p}/share/xdg-desktop-portal/portals") cfg.extraPortals;
     };
+
+    users.users.flatpak = {
+      group = "flatpak";
+      uid = config.ids.uids.flatpak;
+    };
+
+    users.groups.flatpak.gid = config.ids.gids.flatpak;
   };
 }
