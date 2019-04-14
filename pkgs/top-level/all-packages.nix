@@ -330,10 +330,7 @@ in
 
   makeAutostartItem = callPackage ../build-support/make-startupitem { };
 
-  makeInitrd = { contents, compressor ? "gzip -9n", prepend ? [ ] }:
-    callPackage ../build-support/kernel/make-initrd.nix {
-      inherit contents compressor prepend;
-    };
+  makeInitrd = callPackage ../build-support/kernel/make-initrd.nix; # Args intentionally left out
 
   makeWrapper = makeSetupHook { deps = [ dieHook ]; substitutions = { shell = pkgs.runtimeShell; }; }
                               ../build-support/setup-hooks/make-wrapper.sh;
@@ -5711,7 +5708,9 @@ in
     inherit (darwin.apple_sdk.frameworks) Security;
   };
 
-  solr = callPackage ../servers/search/solr { };
+  solr = solr_8;
+  solr_7 = callPackage ../servers/search/solr { };
+  solr_8 = callPackage ../servers/search/solr/8.x.nix { };
 
   solvespace = callPackage ../applications/graphics/solvespace { };
 

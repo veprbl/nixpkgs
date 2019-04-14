@@ -22,6 +22,7 @@ bhurlow/vim-parinfer
 bitc/vim-hdevtools
 bling/vim-bufferline
 bronson/vim-trailing-whitespace
+brooth/far.vim
 carlitux/deoplete-ternjs
 ccarpita/rtorrent-syntax-file
 cespare/vim-toml
@@ -34,6 +35,7 @@ chrisbra/CheckAttach
 chrisbra/csv.vim
 chrisbra/Recover.vim
 chrisgeo/sparkup
+chrisbra/unicode.vim
 chriskempson/base16-vim
 christoomey/vim-sort-motion
 christoomey/vim-tmux-navigator
@@ -129,6 +131,8 @@ junegunn/vim-peekaboo
 junegunn/vim-plug
 justincampbell/vim-eighties
 justinmk/vim-dirvish
+justinmk/vim-sneak
+KabbAmine/vCoolor.vim
 KabbAmine/zeavim.vim
 kalbasit/vim-colemak
 kana/vim-niceblock
@@ -317,6 +321,7 @@ tpope/vim-pathogen
 tpope/vim-projectionist
 tpope/vim-repeat
 tpope/vim-rhubarb
+tpope/vim-rsi
 tpope/vim-scriptease
 tpope/vim-sensible
 tpope/vim-sleuth
