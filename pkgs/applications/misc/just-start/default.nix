@@ -1,4 +1,6 @@
-{ stdenv, lib, buildPythonApplication, fetchFromGitHub, isPy3k, pexpect, urwid, toml, pydantic }:
+{ stdenv, lib, buildPythonApplication, fetchFromGitHub, isPy3k, pexpect, urwid, toml, pydantic
+, pytest, pytest-mock, coverage
+ }:
 
 buildPythonApplication rec {
   pname = "just-start";
@@ -11,6 +13,8 @@ buildPythonApplication rec {
     sha256 = "0wg0nc7xglj1dw6c95nw08hvnxgqzdr4rc8cgv94yyx3ibfnscz6";
   };
 
+  format = "pyproject";
+
   propagatedBuildInputs = [ pexpect urwid toml pydantic ];
 
   LC_ALL = "C.UTF-8";
@@ -18,6 +22,8 @@ buildPythonApplication rec {
   preCheck = ''
     export HOME=$(mktemp -d)
   '';
+
+  checkInputs = [ pytest pytest-mock coverage ];
 
   disabled = !isPy3k;
 
