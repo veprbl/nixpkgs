@@ -65,6 +65,7 @@ in stdenv.mkDerivation rec {
     #"--disable-gtk-doc"
     #"--with-libnm-glib" # legacy library, TODO: remove
     "--disable-tests"
+    "--with-ebpf=yes"
   ];
 
   patches = [
