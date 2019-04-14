@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
     owner = "linuxmint";
     repo = pname;
     #rev = "refs/tags/${version}";
-    rev = "master.mint19";
+    rev = "refs/tags/master.mint19";
     sha256 = "0c0scd6fc1l1q90lcvs7hjw8m9xpa30yz8wg9a4kwd0yl9wqhjj9";
   };
 
