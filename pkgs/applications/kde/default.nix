@@ -89,7 +89,7 @@ let
       kalarm = callPackage ./kalarm.nix {};
       kalarmcal = callPackage ./kalarmcal.nix {};
       kate = callPackage ./kate.nix {};
-      kbackup = callPackage ./kbackup.nix {};
+      #kbackup = callPackage ./kbackup.nix {};
       kcachegrind = callPackage ./kcachegrind.nix {};
       kcalc = callPackage ./kcalc.nix {};
       kcalcore = callPackage ./kcalcore.nix {};
