@@ -4572,7 +4572,10 @@ in
   # stripped down, needed by steam
   networkmanager098 = callPackage ../tools/networking/network-manager/0.9.8 { };
 
-  networkmanager = callPackage ../tools/networking/network-manager { stdenv = gcc8Stdenv; };
+  networkmanager = callPackage ../tools/networking/network-manager {
+    stdenv = gcc8Stdenv;
+    readline = readline80;
+  };
 
   networkmanager-iodine = callPackage ../tools/networking/network-manager/iodine { };
 
