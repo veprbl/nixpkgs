@@ -1,7 +1,7 @@
 {
   mkDerivation, lib, kdepimTeam,
   extra-cmake-modules, kdoctools,
-  akonadi, akonadi-contacts, kcalcore, kcalutils, kcontacts,
+  akonadi, akonadi-contacts, akonadi-calendar, libkdepim, calendarsupport, kcalcore, kcalutils, kcontacts,
   kidentitymanagement, kio, kmailtransport,
 }:
 
@@ -13,8 +13,8 @@ mkDerivation {
   };
   nativeBuildInputs = [ extra-cmake-modules kdoctools ];
   propagatedBuildInputs = [
-    akonadi akonadi-contacts kcalcore kcalutils kcontacts kidentitymanagement
-    kio kmailtransport
+    akonadi akonadi-contacts akonadi-calendar libkdepim kcalcore kcalutils kcontacts kidentitymanagement
+    kio kmailtransport calendarsupport
   ];
   outputs = [ "out" "dev" ];
 }
