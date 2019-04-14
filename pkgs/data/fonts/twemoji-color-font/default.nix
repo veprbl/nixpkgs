@@ -5,8 +5,9 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "eosrei";
     repo = "twemoji-color-font";
-    rev = "v${meta.version}";
-    sha256 = "07yawvbdkk15d7ac9dj7drs1rqln9sba1fd6jx885ms7ww2sfm7r";
+    #rev = "v${meta.version}";
+    rev = "835eee0871c56a7610d311e5eea3a020dd336dfb";
+    sha256 = "1hqg4f8mcss19y1hx2pzz81x7ms1jrwa91wsz7ybagzp1hg77cl4";
   };
 
   nativeBuildInputs = [ inkscape imagemagick potrace svgo scfbuild ];
