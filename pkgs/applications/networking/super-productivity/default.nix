@@ -1,7 +1,7 @@
 { stdenv, fetchurl, dpkg, makeWrapper
 , alsaLib, atk, cairo, cups, curl, dbus, expat, fontconfig, freetype, glib
 , gnome2, gtk3, gdk_pixbuf, libnotify, libxcb, nspr, nss, pango
-, systemd, xorg, xprintidle-ng }:
+, utillinux, systemd, xorg, xprintidle-ng }:
 
 let
 
@@ -28,6 +28,7 @@ let
     nss
     stdenv.cc.cc
     systemd
+    utillinux
 
     xorg.libxkbfile
     xorg.libX11
