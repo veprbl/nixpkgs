@@ -1,24 +1,25 @@
-{ stdenv, lib, buildPythonApplication, fetchFromGitHub, pexpect, urwid, toml, pydantic, glibcLocales }:
+{ stdenv, lib, buildPythonApplication, fetchFromGitHub, isPy3k, pexpect, urwid, toml, pydantic }:
 
 buildPythonApplication rec {
   pname = "just-start";
-  version = "2018-10-25";
+  version = "2019-03-30";
 
   src = fetchFromGitHub {
     owner = "AliGhahraei";
     repo = pname;
-    rev = "e24310a8fb4e2962702a0fbb9509615efad15c66";
-    sha256 = "0vm3jp3a8nibmbgik2daq4wb437qrc2ri2zwb3c49rnl6y7dw258";
+    rev = "3c4a6102f304d1e58b8f0e116b607a1355c6544a";
+    sha256 = "0wg0nc7xglj1dw6c95nw08hvnxgqzdr4rc8cgv94yyx3ibfnscz6";
   };
 
   propagatedBuildInputs = [ pexpect urwid toml pydantic ];
 
-  checkInputs = [ glibcLocales ];
-
   LC_ALL = "C.UTF-8";
 
-  # Fails with message complaining about our fake $HOME
-  doCheck = false;
+  preCheck = ''
+    export HOME=$(mktemp -d)
+  '';
+
+  disabled = !isPy3k;
 
   meta = with lib; {
     description = "An app to defeat procrastination (terminal pomodoro w/taskwarrior)";
