@@ -3,10 +3,10 @@
 
 let
 
-  listVersion = "2018-11-08";
+  listVersion = "2019-03-29";
   listSources = fetchFromGitHub {
-    sha256 = "1zmfprd2f7z2gvndzvjhdb7b77hr1cjlsaqf8ivxx97mfbff0y4n";
-    rev = "5af964eadf5b6baaf5f612746837cb154e1f73b1";
+    sha256 = "14rv41qcxg8v1pjhmis59pahflp2ligk0s880add6hg5fdj4d8sm";
+    rev = "826d762a078ae21cd8bb95fa8f38ae84bb3948e7";
     repo = "list";
     owner = "publicsuffix";
   };
