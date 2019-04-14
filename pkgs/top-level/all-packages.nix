@@ -13396,6 +13396,8 @@ in
     libmagic = file;
   };
 
+  xapps = callPackage ../development/libraries/xapps { };
+
   xavs = callPackage ../development/libraries/xavs { };
 
   Xaw3d = callPackage ../development/libraries/Xaw3d { };
