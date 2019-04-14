@@ -19,16 +19,25 @@
 }:
 
 let
+  cleo6 = cleo.overrideAttrs (oldAttrs: rec {
+    version = "0.6.8";
+    name = oldAttrs.pname + "-" + version;
+    src = fetchPypi {
+      inherit (oldAttrs) pname;
+      inherit version;
+      sha256 = "06zp695hq835rkaq6irr1ds1dp2qfzyf32v60vxpd8rcnxv319l5";
+    };
+  });
+
   jsonschema3 = callPackage ./jsonschema.nix { };
 
-  poetryBootstrap = callPackage ./bootstrap.nix { };
 in buildPythonPackage rec {
   pname = "poetry";
-  version = "0.12.12";
+  version = "0.12.10";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "0baah5y2qxv1j8d93ii0ljngjzkv6qf3zb7b8n99s1lya7kj0r3j";
+    sha256 = "00npb0jlimnk4r01zkhfmns4843j1hfhd388s326da5pd8n0dq7l";
   };
 
   postPatch = ''
@@ -37,10 +46,8 @@ in buildPythonPackage rec {
       "requests-toolbelt>=0.8.0,<0.10.0"
   '';
 
-  buildInputs = [ poetryBootstrap ];
-
   propagatedBuildInputs = [
-    cleo
+    cleo6
     requests
     cachy
     requests-toolbelt
