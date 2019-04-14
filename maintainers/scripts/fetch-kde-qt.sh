@@ -13,11 +13,13 @@ else
 fi
 
 tmp=$(mktemp -d)
+echo tmp=$tmp
 pushd $tmp >/dev/null
 wget -nH -r -c --no-parent "${WGET_ARGS[@]}" -A '*.tar.xz.sha256' -A '*.mirrorlist' >/dev/null
 find -type f -name '*.mirrorlist' -delete
 
 csv=$(mktemp)
+echo csv=$csv
 find . -type f | while read src; do
     # Sanitize file name
     filename=$(gawk '{ print $2 }' "$src" | tr '@' '_')
@@ -56,6 +58,6 @@ done
 echo "}" >>"$SRCS"
 
 popd >/dev/null
-rm -fr $tmp >/dev/null
-
-rm -f $csv >/dev/null
+#rm -fr $tmp >/dev/null
+#
+#rm -f $csv >/dev/null
