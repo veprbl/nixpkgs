@@ -12,12 +12,10 @@ let
   };
 
   lmdbxx = fetchFromGitHub {
-    #owner = "bendiken";
-    owner = "hoytech"; # c++17
+    owner = "bendiken";
     repo = "lmdbxx";
-    #rev = "0b43ca87d8cfabba392dfe884eb1edb83874de02";
-    rev = "6ac8a60275429636007fc4fb6272cbc45be304b1";
-    sha256 = "13khjj0903n7bfrlla48j3j5lrdb6xziin1f4dmixdvxfbfzghcw";
+    rev = "0b43ca87d8cfabba392dfe884eb1edb83874de02";
+    sha256 = "1whsc5cybf9rmgyaj6qjji03fv5jbgcgygp956s3835b9f9cjg1n";
   };
 in
 stdenv.mkDerivation rec {
@@ -69,8 +67,6 @@ stdenv.mkDerivation rec {
     mtxclient olm boost lmdb spdlog cmark nlohmann_json
     qt5.qtbase qt5.qtmultimedia qt5.qttools
   ] ++ lib.optional stdenv.isDarwin qtmacextras;
-
-  NIX_CXXSTDLIB_COMPILE = [ "-std=c++17" ];
 
   enableParallelBuilding = true;
 
