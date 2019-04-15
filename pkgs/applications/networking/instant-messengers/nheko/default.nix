@@ -58,7 +58,16 @@ stdenv.mkDerivation rec {
 
     "-DUSE_BUNDLED=OFF"
 
-    "-DBUILD_SHARED_LIBS=ON" # use shared, match boost. dunno.
+    # mtxclient
+    "-DBoost_USE_STATIC_LIBS=OFF"
+    "-DBoost_USE_STATIC_RUNTIME=OFF"
+    "-DBoost_USE_MULTITHREADED=ON"
+    "-DCMAKE_CXX_STANDARD=14"
+    "-DCMAKE_CXX_STANDARD_REQUIRED=ON"
+    "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
+
+    "-DUSE_BUNDLED_BOOST=OFF"
+    "-DBUILD_SHARED_LIBS=ON"
   ];
 
   nativeBuildInputs = [ cmake pkgconfig ];
