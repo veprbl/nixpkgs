@@ -70,6 +70,8 @@ stdenv.mkDerivation rec {
     qt5.qtbase qt5.qtmultimedia qt5.qttools
   ] ++ lib.optional stdenv.isDarwin qtmacextras;
 
+  NIX_CXXSTDLIB_COMPILE = [ "-std=c++17" ];
+
   enableParallelBuilding = true;
 
   meta = with stdenv.lib; {
