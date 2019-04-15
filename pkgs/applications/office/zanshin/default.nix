@@ -1,6 +1,6 @@
 {
   mkDerivation, lib,
-  fetchFromGitHub,
+  fetchurl, fetchFromGitHub,
   extra-cmake-modules,
   qtbase, boost,
   akonadi-calendar, akonadi-notes, akonadi-search, kidentitymanagement, kontactinterface, kldap,
@@ -9,15 +9,20 @@
 
 mkDerivation rec {
   pname = "zanshin";
-  version = "2017-11-25";
-  name = "${pname}-${version}";
+  version = "0.5.0";
 
+  #src = fetchurl {
+  #  url = "https://download.kde.org/stable/${pname}/${pname}-${version}.tar.xz";
+  #  sha256 = "0kyv7bmj9zv69jybdbp3n1ckmlq326bdq9rhzzcz71hifj4c1087";
+  #};
   src = fetchFromGitHub {
     owner = "KDE";
-    repo = "zanshin";
-    rev = "3df91dd81682d2ccfe542c4582dc1d5f98537c89";
-    sha256 = "18wx7bdqzp81xmwi266gphh2lfbcp5s0fzyp654gki40yhkqph6m";
+    repo = pname;
+    rev = "43302c2eea1cc234596ac6d52c452cbba2eee377";
+    sha256 = "09ibbx747mfnk5pgzjl6i8yi2li0xppd9vfqzkrml8vpr6jqwbvy";
   };
+
+  patches = [ ./banner-bottom.patch ];
 
   nativeBuildInputs = [
     extra-cmake-modules

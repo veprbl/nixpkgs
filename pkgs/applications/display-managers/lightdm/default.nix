@@ -16,8 +16,9 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "CanonicalLtd";
     repo = pname;
-    rev = version;
-    sha256 = "1mmqy1jdvgc0h0h9gli7n4vdv5p8m5019qjr5ni4h73iz6mjdj2b";
+    #rev = version;
+    rev = "66ceb790d8855dc2df754343d5eb8bbb780a3cd5";
+    sha256 = "07xdd60w3y50m2fb3zaxi7glynppga4sggmj305jaa8z9ym8ylla";
   };
 
   nativeBuildInputs = [

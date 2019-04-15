@@ -6,6 +6,7 @@
 , gtk3
 , libexif
 , libgphoto2
+, libwebp
 , libsoup
 , libxml2
 , vala
@@ -30,6 +31,7 @@
 , gobject-introspection
 , itstool
 , libgdata
+, libchamplain
 , python3
 }:
 
@@ -61,6 +63,7 @@ stdenv.mkDerivation rec {
     gtk3
     libexif
     libgphoto2
+    libwebp
     libsoup
     libxml2
     sqlite
@@ -80,6 +83,7 @@ stdenv.mkDerivation rec {
     gcr
     gnome3.adwaita-icon-theme
     libgdata
+    libchamplain
   ];
 
   postPatch = ''

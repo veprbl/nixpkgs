@@ -593,7 +593,7 @@ index 1fe41c5..11757df 100644
  
 -wait_drkonqi=`kreadconfig5 --file startkderc --group WaitForDrKonqi --key Enabled --default true`
 +wait_drkonqi=$(@NIXPKGS_KREADCONFIG5@ --file startkderc --group WaitForDrKonqi --key Enabled --default true)
- 
+
 -if test x"$wait_drkonqi"x = x"true"x ; then
 +if [ x"$wait_drkonqi"x = x"true"x ]; then
      # wait for remaining drkonqi instances with timeout (in seconds)
@@ -849,7 +849,7 @@ index dcb473a..0988740 100644
  #Manually disable auto scaling because we are scaling above
  #otherwise apps that manually opt in for high DPI get auto scaled by the developer AND scaled by the wl_output
  export QT_AUTO_SCREEN_SCALE_FACTOR=0
- 
+
 -# XCursor mouse theme needs to be applied here to work even for kded or ksmserver
 -if test -n "$kcminputrc_mouse_cursortheme" -o -n "$kcminputrc_mouse_cursorsize" ; then
 -    @EXPORT_XCURSOR_PATH@
@@ -859,7 +859,7 @@ index dcb473a..0988740 100644
 +    XCURSOR_PATH="$XCURSOR_PATH:$xdgDir/icons"
 +done
 +export XCURSOR_PATH
- 
+
 -    # TODO: is kapplymousetheme a core app?
 +# XCursor mouse theme needs to be applied here to work even for kded or ksmserver
 +if [ -n "$kcminputrc_mouse_cursortheme" -o -n "$kcminputrc_mouse_cursorsize" ]; then
@@ -889,7 +889,7 @@ index dcb473a..0988740 100644
  else
      export QT_WAYLAND_FORCE_DPI=96
 @@ -120,12 +176,12 @@ fi
- 
+
  # Get a property value from org.freedesktop.locale1
  queryLocale1() {
 -    qdbus --system org.freedesktop.locale1 /org/freedesktop/locale1 "$1"
@@ -1006,7 +1006,6 @@ index dcb473a..0988740 100644
 +@KWIN_WAYLAND_BIN_PATH@ --xwayland --libinput --exit-with-session=@NIXPKGS_STARTPLASMA@
  
  echo 'startplasmacompositor: Shutting down...'  1>&2
- 
--- 
-2.19.2
 
+--
+2.19.2

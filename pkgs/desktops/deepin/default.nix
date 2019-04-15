@@ -9,10 +9,7 @@ let
     dbus-factory = callPackage ./dbus-factory { };
     dde-api = callPackage ./dde-api { };
     dde-calendar = callPackage ./dde-calendar { };
-    dde-daemon = callPackage ./dde-daemon {
-      # XXX: the build is finding references to Go when compiled with go v1.12
-      go = go_1_11;
-    };
+    dde-daemon = callPackage ./dde-daemon { };
     dde-polkit-agent = callPackage ./dde-polkit-agent { };
     dde-network-utils = callPackage ./dde-network-utils { };
     dde-qt-dbus-factory = callPackage ./dde-qt-dbus-factory { };
@@ -27,6 +24,7 @@ let
     deepin-metacity = callPackage ./deepin-metacity { };
     deepin-movie-reborn = callPackage ./deepin-movie-reborn { };
     deepin-mutter = callPackage ./deepin-mutter { };
+    deepin-screenshot = callPackage ./deepin-screenshot { };
     deepin-shortcut-viewer = callPackage ./deepin-shortcut-viewer { };
     deepin-sound-theme = callPackage ./deepin-sound-theme { };
     deepin-terminal = callPackage ./deepin-terminal {
@@ -46,6 +44,7 @@ let
     qcef = callPackage ./qcef { };
     qt5dxcb-plugin = callPackage ./qt5dxcb-plugin { };
     qt5integration = callPackage ./qt5integration { };
+    udisks2-qt5 = callPackage ./udisks2-qt5 { };
 
   };
 

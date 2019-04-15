@@ -2,18 +2,18 @@
 
 let
   baseName = "gyre-fonts";
-  version = "2.005";
+  version = "2.5001";
 in fetchzip {
   name="${baseName}-${version}";
 
-  url = "http://www.gust.org.pl/projects/e-foundry/tex-gyre/whole/tg-${version}otf.zip";
+  url = "http://www.gust.org.pl/projects/e-foundry/tex-gyre/whole/tg2_501otf.zip";
 
   postFetch = ''
     mkdir -p $out/share/fonts
-    unzip -j $downloadedFile \*.otf -d $out/share/fonts/truetype
+    unzip -j $downloadedFile \*.otf -d $out/share/fonts/opentype
   '';
 
-  sha256 = "17amdpahs6kn7hk3dqxpff1s095cg1caxzij3mxjbbxp8zy0l111";
+  sha256 = "19hw2s30fdw4mxni3m7kiaav0dld20blys1jickd6gbqm7lxhnf6";
 
   meta = {
     description = "OpenType fonts from the Gyre project, suitable for use with (La)TeX";

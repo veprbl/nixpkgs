@@ -67,6 +67,7 @@ let
       akonadi-calendar = callPackage ./akonadi-calendar.nix {};
       akonadi-contacts = callPackage ./akonadi-contacts.nix {};
       akonadi-import-wizard = callPackage ./akonadi-import-wizard.nix {};
+      akonadi-calendar-tools = callPackage ./akonadi-calendar-tools.nix {};
       akonadi-mime = callPackage ./akonadi-mime.nix {};
       akonadi-notes = callPackage ./akonadi-notes.nix {};
       akonadi-search = callPackage ./akonadi-search.nix {};
@@ -89,6 +90,7 @@ let
       kalarm = callPackage ./kalarm.nix {};
       kalarmcal = callPackage ./kalarmcal.nix {};
       kate = callPackage ./kate.nix {};
+      #kbackup = callPackage ./kbackup.nix {};
       kcachegrind = callPackage ./kcachegrind.nix {};
       kcalc = callPackage ./kcalc.nix {};
       kcalcore = callPackage ./kcalcore.nix {};
@@ -126,6 +128,7 @@ let
       kmime = callPackage ./kmime.nix {};
       kmix = callPackage ./kmix.nix {};
       kmplot = callPackage ./kmplot.nix {};
+      knotes = callPackage ./knotes.nix {};
       kolourpaint = callPackage ./kolourpaint.nix {};
       kompare = callPackage ./kompare.nix {};
       konsole = callPackage ./konsole.nix {};

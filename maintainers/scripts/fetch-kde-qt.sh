@@ -14,7 +14,7 @@ fi
 
 tmp=$(mktemp -d)
 pushd $tmp >/dev/null
-wget -nH -r -c --no-parent "${WGET_ARGS[@]}" -A '*.tar.xz.sha256' -A '*.mirrorlist' >/dev/null
+wget -nH -r -c --no-parent "${WGET_ARGS[@]}" -A '.tar.xz.sha256,.tar.xz.mirrorlist' >/dev/null
 find -type f -name '*.mirrorlist' -delete
 
 csv=$(mktemp)

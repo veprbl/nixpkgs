@@ -11,8 +11,8 @@ stdenv.mkDerivation rec {
     owner  = "intel";
     repo   = "media-driver";
     #rev    = "intel-media-${version}";
-    rev    = "5366de39a3f3b7f256b540bfa0ba088133315610";
-    sha256 = "1kwsiinpyhcdvs0jvdayvhnv440ps0fyv0xykaq88yydf9frzw0v";
+    rev    = "42f6f2310b4b8c47580717b22f13d94b211e0598";
+    sha256 = "15padfa2y0ssbhlzqj2vy7fzcvmbpcv7s7r969rs3ms4bnhvbhmp";
   };
 
   cmakeFlags = [

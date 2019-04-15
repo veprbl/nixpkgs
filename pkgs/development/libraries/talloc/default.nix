@@ -1,6 +1,6 @@
 { stdenv, fetchurl, python, pkgconfig, which, readline, libxslt
 , docbook_xsl, docbook_xml_dtd_42, fixDarwinDylibNames
-, buildPackages
+, wafHook
 }:
 
 stdenv.mkDerivation rec {
@@ -12,23 +12,22 @@ stdenv.mkDerivation rec {
     sha256 = "1g1fqa37xkjp9lp6lrwxrbfgashcink769ll505zvcwnxx2nlvsw";
   };
 
-  nativeBuildInputs = [ pkgconfig which fixDarwinDylibNames python
+  nativeBuildInputs = [ pkgconfig fixDarwinDylibNames which python wafHook
                         docbook_xsl docbook_xml_dtd_42 ];
   buildInputs = [ readline libxslt python ];
 
-  prePatch = ''
-    patchShebangs buildtools/bin/waf
-  '';
+  wafPath = "buildtools/bin/waf";
 
-  configureFlags = [
+  wafConfigureFlags = [
     #"--enable-talloc-compat1"
     "--bundled-libraries=NONE"
     "--builtin-libraries=replace"
-  ] ++ stdenv.lib.optionals (stdenv.hostPlatform != stdenv.buildPlatform) [
-    "--cross-compile"
-    "--cross-execute=${stdenv.hostPlatform.emulator buildPackages}"
   ];
-  configurePlatforms = [];
+
+  # this must not be exported before the ConfigurePhase otherwise waf whines
+  preBuild = stdenv.lib.optionalString stdenv.hostPlatform.isMusl ''
+    export NIX_CFLAGS_LINK="-no-pie -shared";
+  '';
 
   postInstall = ''
     ${stdenv.cc.targetPrefix}ar q $out/lib/libtalloc.a bin/default/talloc_[0-9]*.o

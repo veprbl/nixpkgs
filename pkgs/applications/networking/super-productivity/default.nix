@@ -1,11 +1,11 @@
 { stdenv, fetchurl, dpkg, makeWrapper
 , alsaLib, atk, cairo, cups, curl, dbus, expat, fontconfig, freetype, glib
-, gnome2, gtk3, gdk_pixbuf, libnotify, libxcb, nspr, nss, pango
-, systemd, xorg, xprintidle-ng }:
+, gnome2, gtk3, gdk_pixbuf, libnotify, libxcb, nspr, nss, pango, at-spi2-atk
+, utillinux, systemd, xorg, xprintidle-ng }:
 
 let
 
-  version = "1.10.45";
+  version = "2.5.8";
 
   rpath = stdenv.lib.makeLibraryPath [
     alsaLib
@@ -22,12 +22,14 @@ let
     gdk_pixbuf
     gtk3
     pango
+    at-spi2-atk
     libnotify
     libxcb
     nspr
     nss
     stdenv.cc.cc
     systemd
+    utillinux
 
     xorg.libxkbfile
     xorg.libX11
@@ -47,7 +49,7 @@ let
     if stdenv.hostPlatform.system == "x86_64-linux" then
       fetchurl {
         url = "https://github.com/johannesjo/super-productivity/releases/download/v${version}/superProductivity_${version}_amd64.deb";
-        sha256 = "0jfi0lfijnhij9jvkhxgyvq8m1jzaym8n1c7707fv3hjh1h0vxn1";
+        sha256 = "0nf8hlz2blyc35r11yd8qhy6xyyw6913zjrsb6y96izhcn6rdihl";
       }
     else
       throw "super-productivity is not supported on ${stdenv.hostPlatform.system}";

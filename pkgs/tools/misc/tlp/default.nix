@@ -1,7 +1,7 @@
 { stdenv, lib, fetchFromGitHub, perl, makeWrapper, file, systemd, iw, rfkill
 , hdparm, ethtool, inetutils , kmod, pciutils, smartmontools
 , x86_energy_perf_policy, gawk, gnugrep, coreutils, utillinux
-, checkbashisms, shellcheck
+, debian-devscripts /*checkbashisms*/ , shellcheck
 , enableRDW ? false, networkmanager
 }:
 
@@ -48,7 +48,8 @@ in stdenv.mkDerivation rec {
   installTargets = [ "install-tlp" "install-man" ] ++ stdenv.lib.optional enableRDW "install-rdw";
 
   checkInputs = [
-    checkbashisms
+    #checkbashisms
+    debian-devscripts
     shellcheck
   ];
 

@@ -1,11 +1,11 @@
 { stdenv, fetchurl, fetchFromGitHub, autoreconfHook, docbook_xml_dtd_412, docbook_xml_dtd_42, docbook_xml_dtd_43, docbook_xsl, which, libxml2
 , gobject-introspection, gtk-doc, intltool, libxslt, pkgconfig, xmlto, appstream-glib, substituteAll, glibcLocales, yacc, xdg-dbus-proxy, p11-kit
 , bubblewrap, bzip2, dbus, glib, gpgme, json-glib, libarchive, libcap, libseccomp, coreutils, gettext, python2, hicolor-icon-theme
-, libsoup, lzma, ostree, polkit, python3, systemd, xorg, valgrind, glib-networking, wrapGAppsHook, gnome3 }:
+, libsoup, lzma, ostree, polkit, python3, systemd, xorg, valgrind, glib-networking, wrapGAppsHook, gnome3, fuse }:
 
 stdenv.mkDerivation rec {
   pname = "flatpak";
-  version = "1.3.1";
+  version = "1.3.2";
 
   # TODO: split out lib once we figure out what to do with triggerdir
   outputs = [ "out" /* "man" "doc" */ "installedTests" ];
@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
   #};
   src = fetchurl {
     url = "https://github.com/flatpak/flatpak/releases/download/${version}/${pname}-${version}.tar.xz";
-    sha256 = "00c8ingdh7xiqnpp17zbqznlpnqmcx1ak54djj94yyiqasjlpzbl";
+    sha256 = "1riyxb8nrgsd65l029paa590xawbqs0swbygn1i2cj9bv2cqnwyi";
   };
 
   patches = [
@@ -52,6 +52,7 @@ stdenv.mkDerivation rec {
     bubblewrap bzip2 dbus gnome3.dconf glib gpgme json-glib libarchive libcap libseccomp
     libsoup lzma ostree polkit python3 systemd xorg.libXau
     gnome3.gsettings-desktop-schemas glib-networking
+    fuse
   ];
 
   checkInputs = [ valgrind ];
@@ -70,6 +71,7 @@ stdenv.mkDerivation rec {
     "--localstatedir=/var"
     "--enable-installed-tests"
     "--disable-documentation"
+    "--with-system-helper-user=flatpak"
   ];
 
   # Uses pthread_sigmask but doesn't link to pthread

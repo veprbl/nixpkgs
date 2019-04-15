@@ -1,6 +1,6 @@
 { stdenv, fetchurl, fetchFromGitHub, fetchpatch, substituteAll, intltool, pkgconfig, dbus, dbus-glib, gtk-doc, perl
 , gnome3, systemd, libuuid, polkit, gnutls, ppp, dhcp, iptables
-, libgcrypt, dnsmasq, bluez5, readline
+, libgcrypt, dnsmasq, bluez5, readline, libpsl
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
 , ethtool, gnused, coreutils, file, iputils, kmod, jansson, libxslt
 , python3Packages, docbook_xsl, openconnect, curl, autoreconfHook }:
@@ -9,18 +9,18 @@ let
   pname = "NetworkManager";
 in stdenv.mkDerivation rec {
   name = "network-manager-${version}";
-  version = "1.16.0.99"; # not really, git
+  version = "1.17.90"; # 1.18-rc1
 
-  #src = fetchurl {
-  #  url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-  #  sha256 = "0b2x9hrg41cd17psqi0vacwj733v99hxczn53gdfs0yanqrji5lf";
-  #};
-  src = fetchFromGitHub {
-    owner = pname;
-    repo = pname;
-    rev = "a4a6a6b6ee907ad0ca4304f5f332354278bdcdc3";
-    sha256 = "15qjpc9smkzha067d6nmdqj37rl027g4yajiz616ayfgpl4l1apa";
+  src = fetchurl {
+    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+    sha256 = "149gchck86ypp2pr836mgcm18ginrbinfgdw4h7n9zi9rab6r32c";
   };
+  #src = fetchFromGitHub {
+  #  owner = pname;
+  #  repo = pname;
+  #  rev = "549112c1ba5306dff281ef0788961ac855342d02";
+  #  sha256 = "1lj15v3aamx9f1bqh03rn45jsyii45i204k7am8nb4z9z3abhqfa";
+  #};
 
   outputs = [ "out" "dev" ];
 
@@ -65,6 +65,7 @@ in stdenv.mkDerivation rec {
     #"--disable-gtk-doc"
     #"--with-libnm-glib" # legacy library, TODO: remove
     "--disable-tests"
+    #"--with-ebpf=yes"
   ];
 
   patches = [
@@ -76,7 +77,7 @@ in stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
-    systemd libuuid polkit ppp libndp curl
+    systemd libuuid polkit ppp libndp curl libpsl
     bluez5 dnsmasq gobject-introspection modemmanager readline newt libsoup jansson
   ];
 

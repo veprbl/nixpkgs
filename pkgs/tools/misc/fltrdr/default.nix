@@ -1,24 +1,23 @@
 { stdenv
 , fetchFromGitHub
 , cmake
-, icu
+, icu, openssl
 }:
 
 stdenv.mkDerivation rec {
   name = "fltrdr-${version}";
-  version = "0.2.1";
+  version = "0.3.0";
 
   src = fetchFromGitHub {
     repo   = "fltrdr";
     owner  = "octobanana";
     rev    = "${version}";
-    sha256 = "0hj7pwb93l4ahykmmr0665nq50jvwdq0aiaciz82225aw1cq939w";
+    sha256 = "01ljbdrbvp81idbqwzy45h225s8kjyi3i4zwaq33rfkk3bcwls34";
   };
 
   nativeBuildInputs = [ cmake ];
 
-  # not mentioned, but includes <unicode/regex.h> and others
-  buildInputs = [ icu ]; 
+  buildInputs = [ icu openssl ];
 
   enableParallelBuilding = true;
 

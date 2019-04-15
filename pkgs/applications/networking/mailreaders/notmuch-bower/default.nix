@@ -8,8 +8,8 @@ stdenv.mkDerivation rec {
     owner = "wangp";
     repo = "bower";
     #rev = version;
-    rev = "c2146f2831e3b0eabcf88a4fd5d7bc5ea208c3dd";
-    sha256 = "11y0m25p7xws68i5sp3f22rhnbyx8smb5wlf6qwc81yn1lmz2r1n";
+    rev = "c4107ef8b302883d450c407872f3306a77431246";
+    sha256 = "196pr7831s2khji9cvj04w7f9gn446ayhfnbi823ap95z6nhxg67";
   };
 
   nativeBuildInputs = [ gawk mercury pandoc ];
@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
     ./total-color.patch
     ./cal.patch
 
-    ./author-toggle.patch
+    #./author-toggle.patch
   ];
 
   installPhase = ''

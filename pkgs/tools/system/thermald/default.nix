@@ -9,8 +9,8 @@ stdenv.mkDerivation rec {
     owner = "intel";
     repo = "thermal_daemon";
     #rev = "v${version}";
-    rev = "5c4aa87260803b5844212322f3459400eb8843d3";
-    sha256 = "0mabg591d7cl5daw0csfbp80dnr99mi7s6phmvdc0nws0xcl4dhk";
+    rev = "39c51b19cf7c163fa5ae37b6e723d4756a25f18d";
+    sha256 = "0877m4v326i2l6xwkq5jbcgl9zy9fi7nvvmncbc1c5kdgps6aq7r";
   };
 
   nativeBuildInputs = [ pkgconfig autoreconfHook makeWrapper ];

@@ -4,21 +4,19 @@
 }:
 
 stdenv.mkDerivation rec {
-  name = "nextcloud-client-${version}";
-  version = "2.5.2";
+  pname = "nextcloud-client";
+  version = "2.5.3-rc1"; # 2";
 
   src = fetchgit {
     url = "git://github.com/nextcloud/desktop.git";
     rev = "refs/tags/v${version}";
-    sha256 = "1brpxdgyy742dqw6cyyv2257d6ihwiqhbzfk2hb8zjgbi6p9lhsr";
+    sha256 = "1n36hxnw62pr1gnpc6r1x60pisjf5i921rr68r4433w80911kmr5";
     fetchSubmodules = true;
   };
 
-  patches = [ ./1185.patch ];
-
   nativeBuildInputs = [ pkgconfig cmake makeWrapper ] ++ (with kdeFrameworks; [ extra-cmake-modules ]);
 
-  buildInputs = [ qtbase qtwebkit qtkeychain qttools qtwebengine sqlite openssl_1_1.out pcre inotify-tools /*libcloudproviders*/ ]
+  buildInputs = [ qtbase qtwebkit qtkeychain qttools qtwebengine sqlite openssl_1_1.out pcre inotify-tools /* libcloudproviders */ ]
   ++ (with kdeFrameworks; [ kio kcoreaddons ]);
 
   enableParallelBuilding = true;
