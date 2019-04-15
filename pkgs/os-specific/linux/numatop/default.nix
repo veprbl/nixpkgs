@@ -8,6 +8,11 @@ stdenv.mkDerivation rec {
     sha256 = "1s7psq1xyswj0lpx10zg5lnppav2xy9safkfx3rssrs9c2fp5d76";
   };
 
+  postPatch = ''
+    # rm common/include/os/linux/perf_event.h
+    substituteInPlace common/include/os/pfwrapper.h --replace '"linux/perf_event.h"' '<linux/perf_event.h>'
+  '';
+
   nativeBuildInputs = [ pkgconfig ];
   buildInputs = [ numactl ncurses linuxHeaders ];
   checkInputs = [ check ];
