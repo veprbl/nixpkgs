@@ -10833,6 +10833,8 @@ in
 
   lcms2 = callPackage ../development/libraries/lcms2 { };
 
+  ldacbt = callPackage ../development/libraries/ldacbt { };
+
   ldb = callPackage ../development/libraries/ldb {
     python = python3;
   };
@@ -13331,6 +13333,8 @@ in
   wayland_1_9 = callPackage ../development/libraries/wayland/1.9.nix { };
 
   wayland-protocols = callPackage ../development/libraries/wayland/protocols.nix { };
+
+  waylandpp = callPackage ../development/libraries/waylandpp { };
 
   wcslib = callPackage ../development/libraries/wcslib { };
 
@@ -20622,10 +20626,16 @@ in
 
   kodiPlain = callPackage ../applications/video/kodi { };
 
+  kodiPlainWayland = callPackage ../applications/video/kodi { useWayland = true; };
+
   kodiPlugins = recurseIntoAttrs (callPackage ../applications/video/kodi/plugins.nix {});
 
   kodi = wrapKodi {
     kodi = kodiPlain;
+  };
+
+  kodi-wayland = wrapKodi {
+    kodi = kodiPlainWayland;
   };
 
   kodi-cli = callPackage ../tools/misc/kodi-cli { };
@@ -21931,6 +21941,8 @@ in
   diamond = callPackage ../applications/science/biology/diamond { };
 
   ecopcr = callPackage ../applications/science/biology/ecopcr { };
+
+  eggnog-mapper = callPackage ../applications/science/biology/eggnog-mapper { };
 
   emboss = callPackage ../applications/science/biology/emboss { };
 
