@@ -11,6 +11,8 @@ stdenv.mkDerivation rec {
   postPatch = ''
     # rm common/include/os/linux/perf_event.h
     substituteInPlace common/include/os/pfwrapper.h --replace '"linux/perf_event.h"' '<linux/perf_event.h>'
+
+    sed -i -e '1i#include<unistd.h>\n#include <sys/syscall.h>' common/include/os/pfwrapper.h
   '';
 
   nativeBuildInputs = [ pkgconfig ];
