@@ -1,21 +1,23 @@
 { lib, stdenv, fetchFromGitHub, fetchurl
-, cmake, cmark, lmdb, qt5, qtmacextras, mtxclient
-, boost, spdlog, olm, pkgconfig
+, cmake, cmark, pkgconfig, lmdb, qt5, qtmacextras, mtxclient
+, boost, spdlog, olm, nlohmann_json
 }:
 
 let
   tweeny = fetchFromGitHub {
     owner = "mobius3";
     repo = "tweeny";
-    rev = "5e683d735be18427f7b5736f590cd12e71911f97";
+    rev = "b94ce07cfb02a0eb8ac8aaf66137dabdaea857cf";
     sha256 = "1w381zf0k4cn8jxm492ib7mgr06ybjg2gbfak5map8ixixnsyjmp";
   };
 
   lmdbxx = fetchFromGitHub {
-    owner = "bendiken";
+    #owner = "bendiken";
+    owner = "hoytech"; # c++17
     repo = "lmdbxx";
-    rev = "0b43ca87d8cfabba392dfe884eb1edb83874de02";
-    sha256 = "1whsc5cybf9rmgyaj6qjji03fv5jbgcgygp956s3835b9f9cjg1n";
+    #rev = "0b43ca87d8cfabba392dfe884eb1edb83874de02";
+    rev = "6ac8a60275429636007fc4fb6272cbc45be304b1";
+    sha256 = "13khjj0903n7bfrlla48j3j5lrdb6xziin1f4dmixdvxfbfzghcw";
   };
 in
 stdenv.mkDerivation rec {
@@ -25,8 +27,9 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "Nheko-Reborn";
     repo = "nheko";
-    rev = "v${version}";
-    sha256 = "1h95lixciiq904dnfpwxhyf545yfsrphhwqyvs4yrzdfr9k0cf98";
+    #rev = "v${version}";
+    rev = "6f13b0df0d7243ed503e31da0e293238570b7c72";
+    sha256 = "1n59lvrrrcadil782a696s62aza186kq04i2kb7ww3bwsw68234z";
   };
 
   # If, on Darwin, you encounter the error
@@ -54,12 +57,16 @@ stdenv.mkDerivation rec {
   cmakeFlags = [
     "-DTWEENY_INCLUDE_DIR=.deps/include"
     "-DLMDBXX_INCLUDE_DIR=${lmdbxx}"
+
+    "-DUSE_BUNDLED=OFF"
+
+    "-DBUILD_SHARED_LIBS=ON" # use shared, match boost. dunno.
   ];
 
   nativeBuildInputs = [ cmake pkgconfig ];
 
   buildInputs = [
-    mtxclient olm boost lmdb spdlog cmark
+    mtxclient olm boost lmdb spdlog cmark nlohmann_json
     qt5.qtbase qt5.qtmultimedia qt5.qttools
   ] ++ lib.optional stdenv.isDarwin qtmacextras;
 
