@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgconfig, numactl, ncurses, check }:
+{ stdenv, fetchurl, pkgconfig, numactl, ncurses, check, linuxHeaders }:
 
 stdenv.mkDerivation rec {
   pname = "numatop";
@@ -9,7 +9,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ pkgconfig ];
-  buildInputs = [ numactl ncurses ];
+  buildInputs = [ numactl ncurses linuxHeaders ];
   checkInputs = [ check ];
 
   doCheck  = true;
