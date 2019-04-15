@@ -90,6 +90,7 @@ let
     ++ optional (toolset != null) "toolset=${toolset}"
     ++ optional (!enablePython) "--without-python"
     ++ optional (mpi != null || stdenv.hostPlatform != stdenv.buildPlatform) "--user-config=user-config.jam"
+    ++ optional (versionOlder "1.70" version) "--without-cmake-config" # breaks all the things, let it bake another release or 5
     ++ optionals (stdenv.hostPlatform.libc == "msvcrt") [
     "threadapi=win32"
   ]);
