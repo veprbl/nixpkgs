@@ -5,7 +5,7 @@
   akonadi, akonadi-calendar, akonadi-contacts, akonadi-mime, akonadi-notes,
   kalarmcal, kcalutils, kcontacts, kdav, kdelibs4support, kidentitymanagement,
   kimap, kmailtransport, kmbox, kmime, knotifications, knotifyconfig,
-  pimcommon, qtwebengine, libkgapi, qtspeech, qtxmlpatterns
+  pimcommon, qtwebengine, libkgapi, qtspeech, qtxmlpatterns,
   qca-qt5, qtnetworkauth
 }:
 
