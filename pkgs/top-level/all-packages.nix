@@ -12065,7 +12065,7 @@ in
 
   mtpfs = callPackage ../tools/filesystems/mtpfs { };
 
-  mtxclient = callPackage ../development/libraries/mtxclient { };
+  mtxclient = callPackage ../development/libraries/mtxclient { boost = boost16x; };
 
   mu = callPackage ../tools/networking/mu {
     texinfo = texinfo4;
@@ -19063,7 +19063,7 @@ in
 
   nedit = callPackage ../applications/editors/nedit { };
 
-  nheko = libsForQt5.callPackage ../applications/networking/instant-messengers/nheko { };
+  nheko = libsForQt5.callPackage ../applications/networking/instant-messengers/nheko { boost = boost16x; };
 
   nomacs = libsForQt5.callPackage ../applications/graphics/nomacs { };
 
