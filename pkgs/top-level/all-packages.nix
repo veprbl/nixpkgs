@@ -19548,6 +19548,7 @@ in
 
   radiotray-ng = callPackage ../applications/audio/radiotray-ng {
     wxGTK = wxGTK31;
+    boost = boost16x;
   };
 
   railcar = callPackage ../applications/virtualization/railcar {};
