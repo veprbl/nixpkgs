@@ -22,6 +22,8 @@ mkDerivation rec {
     sha256 = "09ibbx747mfnk5pgzjl6i8yi2li0xppd9vfqzkrml8vpr6jqwbvy";
   };
 
+  patches = [ ./banner-bottom.patch ];
+
   nativeBuildInputs = [
     extra-cmake-modules
   ];

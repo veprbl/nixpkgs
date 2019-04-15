@@ -1,0 +1,25 @@
+From ee1a154a53477840eed40e1b6cc72f1843380566 Mon Sep 17 00:00:00 2001
+From: Will Dietz <w@wdtz.org>
+Date: Sun, 14 Apr 2019 21:03:42 -0500
+Subject: [PATCH] put running task banner on bottom of screen
+
+---
+ src/widgets/runningtaskwidget.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/widgets/runningtaskwidget.cpp b/src/widgets/runningtaskwidget.cpp
+index 0b9551fb..9d198f7b 100644
+--- a/src/widgets/runningtaskwidget.cpp
++++ b/src/widgets/runningtaskwidget.cpp
+@@ -139,7 +139,7 @@ void RunningTaskWidget::resize()
+     const auto screenGeometry = qApp->desktop()->availableGeometry(this);
+     const int screenWidth = screenGeometry.width();
+     const int height = m_collapsed ? 5 : sizeHint().height();
+-    setGeometry(QRect(screenGeometry.left(), screenGeometry.top(), screenWidth, height));
++    setGeometry(QRect(screenGeometry.left(), screenGeometry.bottom()-height, screenWidth, height+1));
+ }
+ 
+ Presentation::RunningTaskModelInterface *RunningTaskWidget::model() const
+-- 
+2.21.GIT
+
