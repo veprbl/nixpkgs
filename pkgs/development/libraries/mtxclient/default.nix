@@ -15,7 +15,6 @@ stdenv.mkDerivation rec {
 
   cmakeFlags = [
     "-DBUILD_LIB_TESTS=OFF" "-DBUILD_LIB_EXAMPLES=OFF"
-    "-DBUILD_SHARED_LIBS=ON"
   ];
 
   nativeBuildInputs = [ cmake pkgconfig ];

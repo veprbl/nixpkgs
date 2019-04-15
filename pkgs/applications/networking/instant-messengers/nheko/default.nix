@@ -56,18 +56,18 @@ stdenv.mkDerivation rec {
     "-DTWEENY_INCLUDE_DIR=.deps/include"
     "-DLMDBXX_INCLUDE_DIR=${lmdbxx}"
 
-    "-DUSE_BUNDLED=OFF"
+    #"-DUSE_BUNDLED=OFF"
 
-    # mtxclient
-    "-DBoost_USE_STATIC_LIBS=OFF"
-    "-DBoost_USE_STATIC_RUNTIME=OFF"
-    "-DBoost_USE_MULTITHREADED=ON"
-    "-DCMAKE_CXX_STANDARD=14"
-    "-DCMAKE_CXX_STANDARD_REQUIRED=ON"
-    "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
+    ## mtxclient
+    #"-DBoost_USE_STATIC_LIBS=OFF"
+    #"-DBoost_USE_STATIC_RUNTIME=OFF"
+    #"-DBoost_USE_MULTITHREADED=ON"
+    #"-DCMAKE_CXX_STANDARD=14"
+    #"-DCMAKE_CXX_STANDARD_REQUIRED=ON"
+    #"-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
 
     "-DUSE_BUNDLED_BOOST=OFF"
-    "-DBUILD_SHARED_LIBS=ON"
+    #"-DBUILD_SHARED_LIBS=ON"
   ];
 
   nativeBuildInputs = [ cmake pkgconfig ];
