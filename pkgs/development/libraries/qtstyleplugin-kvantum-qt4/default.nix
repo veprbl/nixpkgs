@@ -7,8 +7,9 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "tsujan";
     repo = "Kvantum";
-    rev = "V${version}";
-    sha256 = "0aqlv7mj7r9vjm6pvb8pv3cyx35lgz8rjjas3k8wfdr3sqyyy25g";
+    #rev = "V${version}";
+    rev = "3d452d5ca671ee64a9a054397966ac4fa5daea7b";
+    sha256 = "1pycbk5dmj6vhnwvm87csmir4crqk4g4z05402xw5ia9k1clpksk";
   };
 
   nativeBuildInputs = [ qmake4Hook ];
