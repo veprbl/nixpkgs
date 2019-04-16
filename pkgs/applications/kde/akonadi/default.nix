@@ -15,7 +15,7 @@ mkDerivation {
     owner = "KDE";
     repo = "akonadi";
     rev = "08438b04e96f9a1310134af08a9e6323b702ab38";
-    sha256 = "1111111111111111111111111111111111111111111111111111";
+    sha256 = "0b4klzsdbf6h6qp64psp3dr90dp8ll4xcxzw0v1j75zc0ms5avyw";
   };
   patches = copyPathsToStore (lib.readPathsFromFile ./. ./series);
   nativeBuildInputs = [ extra-cmake-modules shared-mime-info ];
