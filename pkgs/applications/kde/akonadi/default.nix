@@ -1,5 +1,5 @@
 {
-  mkDerivation, copyPathsToStore, lib, kdepimTeam, fetchFromGitHub,
+  mkDerivation, copyPathsToStore, lib, kdepimTeam,
   extra-cmake-modules, shared-mime-info,
   boost, kcompletion, kconfigwidgets, kcrash, kdbusaddons, kdesignerplugin,
   ki18n, kiconthemes, kio, kitemmodels, kwindowsystem, mysql, qttools,
@@ -10,12 +10,6 @@ mkDerivation {
   meta = {
     license = [ lib.licenses.lgpl21 ];
     maintainers = kdepimTeam;
-  };
-  src = fetchFromGitHub {
-    owner = "KDE";
-    repo = "akonadi";
-    rev = "08438b04e96f9a1310134af08a9e6323b702ab38";
-    sha256 = "1111111111111111111111111111111111111111111111111111";
   };
   patches = copyPathsToStore (lib.readPathsFromFile ./. ./series);
   nativeBuildInputs = [ extra-cmake-modules shared-mime-info ];
