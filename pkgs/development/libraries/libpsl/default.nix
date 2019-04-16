@@ -28,7 +28,6 @@ in stdenv.mkDerivation rec {
   nativeBuildInputs = [ autoreconfHook docbook_xsl docbook_xml_dtd_43 gtk-doc pkgconfig python3 ];
 
   postPatch = ''
-    substituteInPlace src/psl.c --replace bits/stat.h sys/stat.h
     patchShebangs src/psl-make-dafsa
   '';
 
