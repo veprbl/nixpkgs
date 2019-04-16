@@ -3,22 +3,22 @@
 
 let
 
-  listVersion = "2019-03-29";
+  listVersion = "2019-04-15";
   listSources = fetchFromGitHub {
-    sha256 = "14rv41qcxg8v1pjhmis59pahflp2ligk0s880add6hg5fdj4d8sm";
-    rev = "826d762a078ae21cd8bb95fa8f38ae84bb3948e7";
+    sha256 = "1p8afrxgi9sz1mvbl5fz6hgib1a94288pdz9ar36q9d357qaq5nr";
+    rev = "033221af7f600bcfce38dcbfafe03b9a2269c4cc";
     repo = "list";
     owner = "publicsuffix";
   };
 
-  libVersion = "0.20.2";
+  libVersion = "0.21.0";
 
 in stdenv.mkDerivation rec {
   name = "libpsl-${version}";
   version = "${libVersion}-list-${listVersion}";
 
   src = fetchFromGitHub {
-    sha256 = "0ijingxpnvl5xnna32j93ijagvjsvw2lhj71q39hz9xhzjzrda9b";
+    sha256 = "0ancgnydimw9w4cmfk6ykjddw51h0ja4g1x0yk80s8ybw2w5nr3b";
     rev = "libpsl-${libVersion}";
     repo = "libpsl";
     owner = "rockdaboot";
