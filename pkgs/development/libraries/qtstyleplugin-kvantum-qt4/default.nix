@@ -7,7 +7,6 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "tsujan";
     repo = "Kvantum";
-    #rev = "V${version}";
     rev = "f1674c455fa718dc8a9cf00fffb3269aa3f20d7a";
     sha256 = "0gz72qr92dsg6rc0hjsrx83nbf0gcngcn3x9wrwmi0pzqs68vjkr";
   };
