@@ -11,16 +11,17 @@ in stdenv.mkDerivation rec {
   name = "network-manager-${version}";
   version = "1.17.90"; # 1.18-rc1
 
-  src = fetchurl {
-    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "149gchck86ypp2pr836mgcm18ginrbinfgdw4h7n9zi9rab6r32c";
-  };
-  #src = fetchFromGitHub {
-  #  owner = pname;
-  #  repo = pname;
-  #  rev = "549112c1ba5306dff281ef0788961ac855342d02";
-  #  sha256 = "1lj15v3aamx9f1bqh03rn45jsyii45i204k7am8nb4z9z3abhqfa";
+  #src = fetchurl {
+  #  url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+  #  sha256 = "149gchck86ypp2pr836mgcm18ginrbinfgdw4h7n9zi9rab6r32c";
   #};
+  src = fetchFromGitHub {
+    owner = pname;
+    repo = pname;
+    #rev = "549112c1ba5306dff281ef0788961ac855342d02";
+    rev = "5fbd3d4e452409b8c98bf71de521cdedc7cce2d9";
+    sha256 = "04cfnjwsp0p5yxdvyij3aqrirk9a47fs3yzbd92hn0c6bjb74nm5";
+  };
 
   outputs = [ "out" "dev" ];
 
