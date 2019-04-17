@@ -1,7 +1,7 @@
 { stdenv, fetchFromGitHub, libpcap, ppp }:
 
 stdenv.mkDerivation rec {
-  name = "xl2tpd-${version}";
+  pname = "xl2tpd";
   version = "1.3.13";
 
   src = fetchFromGitHub {
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
     substituteInPlace l2tp.h --replace /usr/sbin/pppd ${ppp}/sbin/pppd
   '';
 
-  makeFlags = [ "PREFIX=$(out)" ];
+  makeFlags = [ "PREFIX=${placeholder "out"}" ];
 
   meta = with stdenv.lib; {
     homepage = http://www.xelerance.com/software/xl2tpd/;
