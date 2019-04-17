@@ -1,5 +1,5 @@
 {
-  mkDerivation, lib, kdepimTeam,
+  mkDerivation, lib, kdepimTeam, fetchFromGitHub,
   extra-cmake-modules, kdoctools,
   qtbase, qttools,
   phonon,
@@ -26,4 +26,10 @@ mkDerivation {
     kholidays kidentitymanagement kldap kmailtransport kontactinterface
     kparts kpimtextedit pimcommon
   ];
+  #src = fetchFromGitHub {
+  #  owner = "KDE";
+  #  repo = "korganizer";
+  #  rev = "08438b04e96f9a1310134af08a9e6323b702ab38";
+  #  sha256 = "0b4klzsdbf6h6qp64psp3dr90dp8ll4xcxzw0v1j75zc0ms5avyw";
+  #};
 }

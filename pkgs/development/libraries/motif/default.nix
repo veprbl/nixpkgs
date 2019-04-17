@@ -51,7 +51,7 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
 
   meta = with stdenv.lib; {
-    homepage = http://motif.ics.com;
+    homepage = https://motif.ics.com;
     description = "Unix standard widget-toolkit and window-manager";
     platforms = with platforms; linux ++ darwin;
     license = with licenses; [ lgpl21 ];

@@ -2154,7 +2154,7 @@ in
     mozc = callPackage ../tools/inputmethods/ibus-engines/ibus-mozc rec {
       python = python2;
       inherit (python2Packages) gyp;
-      protobuf = pkgs.protobuf.overrideDerivation (oldAttrs: { stdenv = clangStdenv; });
+      protobuf = pkgs.protobuf3_6.overrideDerivation (oldAttrs: { stdenv = clangStdenv; });
     };
 
     table = callPackage ../tools/inputmethods/ibus-engines/ibus-table {
@@ -16512,7 +16512,6 @@ in
   androidStudioPackages = recurseIntoAttrs
     (callPackage ../applications/editors/android-studio { });
   android-studio = androidStudioPackages.stable;
-  android-studio-preview = androidStudioPackages.preview;
 
   animbar = callPackage ../applications/graphics/animbar { };
 
@@ -17075,6 +17074,10 @@ in
   dragonfly-reverb = callPackage ../applications/audio/dragonfly-reverb { };
 
   drawpile = libsForQt5.callPackage ../applications/graphics/drawpile { };
+  drawpile-server-headless = libsForQt5.callPackage ../applications/graphics/drawpile {
+    buildClient = false;
+    buildServerGui = false;
+  };
 
   droopy = callPackage ../applications/networking/droopy {
     inherit (python3Packages) wrapPython;
@@ -19848,6 +19851,8 @@ in
   curaByDagoma = callPackage ../applications/misc/curabydagoma { };
 
   peru = callPackage ../applications/version-management/peru {};
+
+  petrinizer = haskellPackages.callPackage ../applications/science/logic/petrinizer {};
 
   pmidi = callPackage ../applications/audio/pmidi { };
 

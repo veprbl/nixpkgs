@@ -44,7 +44,7 @@ let
     in
       mkDerivation (args // {
         name = "${name}-${version}";
-        inherit src;
+        src = args.src or src;
 
         outputs = args.outputs or [ "out" ];
 
