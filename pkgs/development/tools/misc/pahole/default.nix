@@ -2,13 +2,11 @@
 
 stdenv.mkDerivation rec {
   pname = "pahole";
-  version = "2019-03-12";
-  #version = "1.12";
+  version = "1.13";
   src = fetchgit {
     url = https://git.kernel.org/pub/scm/devel/pahole/pahole.git;
-    sha256 = "03ywx2ls3jxdw8wgpf9imp7zx46y4mxy1d808bz5vrymmb8hp8g0";
-    #rev = "v${version}";
-    rev = "fa963e1a8698e1f1c842a707971939cbc8ce3ff2";
+    rev = "v${version}";
+    sha256 = "19zg7c7w7z73x5j3k8v57c61fdx2kirf8kh2kk1dh5lskgl9jcq9";
   };
 
   nativeBuildInputs = [ cmake ];
