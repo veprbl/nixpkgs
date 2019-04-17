@@ -2227,6 +2227,8 @@ in
 
   cocoapods = callPackage ../development/mobile/cocoapods { };
 
+  cocoapods-beta = lowPrio (callPackage ../development/mobile/cocoapods { beta = true; });
+
   compass = callPackage ../development/tools/compass { };
 
   conda = callPackage ../tools/package-management/conda { };
@@ -6327,7 +6329,7 @@ in
   wal_e = callPackage ../tools/backup/wal-e { };
 
   watchexec = callPackage ../tools/misc/watchexec {
-    inherit (darwin.apple_sdk.frameworks) CoreServices CoreFoundation;
+    inherit (darwin.apple_sdk.frameworks) CoreServices;
   };
 
   watchman = callPackage ../development/tools/watchman {
