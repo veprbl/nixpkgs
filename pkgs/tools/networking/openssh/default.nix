@@ -42,6 +42,7 @@ stdenv.mkDerivation rec {
       # See discussion in https://github.com/NixOS/nixpkgs/pull/16966
       ./dont_create_privsep_path.patch
 
+    ] ++ optional hpnSupport
       # CVE-2018-20685, can probably be dropped with next version bump
       # See https://sintonen.fi/advisories/scp-client-multiple-vulnerabilities.txt
       # for details
@@ -50,7 +51,6 @@ stdenv.mkDerivation rec {
         url = https://github.com/openssh/openssh-portable/commit/6010c0303a422a9c5fa8860c061bf7105eb7f8b2.patch;
         sha256 = "0q27i9ymr97yb628y44qi4m11hk5qikb1ji1vhvax8hp18lwskds";
       })
-    ]
     ++ optional withGssapiPatches (assert withKerberos; gssapiPatch);
 
   postPatch =
