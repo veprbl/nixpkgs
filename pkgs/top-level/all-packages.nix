@@ -2594,7 +2594,7 @@ in
 
   cholmod-extra = callPackage ../development/libraries/science/math/cholmod-extra { };
 
-  emscriptenVersion = "1.37.36";
+  emscriptenVersion = "1.38.28";
 
   emscripten = callPackage ../development/compilers/emscripten { };
 
@@ -5060,6 +5060,7 @@ in
 
   pinentry = callPackage ../tools/security/pinentry {
     libcap = if stdenv.isDarwin then null else libcap;
+    gcr = null;
   };
 
   pinentry_ncurses = res.pinentry.override {
@@ -7803,6 +7804,7 @@ in
   cargo-asm = callPackage ../development/tools/rust/cargo-asm {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
+  cargo-bloat = callPackage ../development/tools/rust/cargo-bloat { };
   cargo-expand = callPackage ../development/tools/rust/cargo-expand { };
   cargo-fuzz = callPackage ../development/tools/rust/cargo-fuzz { };
   cargo-xbuild = callPackage ../development/tools/rust/cargo-xbuild { };
@@ -9058,6 +9060,8 @@ in
   gperf_3_0 = callPackage ../development/tools/misc/gperf/3.0.x.nix { };
 
   grail = callPackage ../development/libraries/grail { };
+
+  graphene-hardened-malloc = callPackage ../development/libraries/graphene-hardened-malloc { };
 
   gtk-doc = callPackage ../development/tools/documentation/gtk-doc { };
 
