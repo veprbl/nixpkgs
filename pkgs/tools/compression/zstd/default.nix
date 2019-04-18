@@ -33,8 +33,8 @@ stdenv.mkDerivation rec {
 
   preInstall = ''
     substituteInPlace programs/zstdgrep \
-      --replace "=grep" "=${gnugrep}/bin/grep" \
-      --replace "=zstdcat" "=$out/bin/zstdcat"
+      --replace ":-grep" ":-${gnugrep}/bin/grep" \
+      --replace ":-zstdcat" ":-$out/bin/zstdcat"
 
     substituteInPlace programs/zstdless \
       --replace "zstdcat" "$out/bin/zstdcat"
