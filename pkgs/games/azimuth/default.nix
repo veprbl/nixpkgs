@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, SDL }:
+{ stdenv, fetchFromGitHub, SDL, which }:
 
 stdenv.mkDerivation rec {
   pname = "azimuth";
@@ -19,7 +19,10 @@ stdenv.mkDerivation rec {
 
   makeFlags = [
     "BUILDTYPE=release"
+    "CC:=$(CC)"
   ];
+
+  nativeBuildInputs = [ which ];
 
   buildInputs = [ SDL ];
 
