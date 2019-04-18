@@ -2,7 +2,7 @@
 , buildPackages
 , callPackage
 , pkgconfig
-, libusb, readline, libewf, perl, zlib, openssl
+, libusb, readline, libewf, perl, zlib, openssl, capstone
 , libuv, file, libzip, xxHash
 , gtk2 ? null, vte ? null, gtkdialog ? null
 , python3 ? null
@@ -41,28 +41,6 @@ let
         inherit rev sha256;
       };
 
-      postPatch = let
-        capstone = fetchFromGitHub {
-          owner = "aquynh";
-          repo = "capstone";
-          # version from $sourceRoot/shlr/Makefile
-          rev = cs_ver;
-          sha256 = cs_sha256;
-        };
-      in ''
-        mkdir -p build/shlr
-        cp -r ${capstone} capstone-${cs_ver}
-        chmod -R +w capstone-${cs_ver}
-        # radare 3.3 compat for radare2-cutter
-        (cd shlr && ln -s ../capstone-${cs_ver} capstone)
-        tar -czvf shlr/capstone-${cs_ver}.tar.gz capstone-${cs_ver}
-        # necessary because they broke the offline-build:
-        # https://github.com/radare/radare2/commit/6290e4ff4cc167e1f2c28ab924e9b99783fb1b38#diff-a44d840c10f1f1feaf401917ae4ccd54R258
-        # https://github.com/radare/radare2/issues/13087#issuecomment-465159716
-        curl() { true; }
-        export -f curl
-      '';
-
       postInstall = ''
         install -D -m755 $src/binr/r2pm/r2pm $out/bin/r2pm
       '';
@@ -77,6 +55,7 @@ let
         "--with-sysmagic"
         "--with-syszip"
         "--with-sysxxhash"
+        "--with-syscapstone"
         "--with-openssl"
       ];
 
@@ -95,6 +74,7 @@ let
         file # for its list of magic numbers (`libmagic`)
         libzip
         xxHash
+        capstone
       ];
 
       meta = {
