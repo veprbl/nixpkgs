@@ -1,6 +1,6 @@
 { stdenv, fetchFromGitHub, pkgconfig, autoreconfHook, wrapGAppsHook
 , gnome3, avahi, gtk3, libappindicator-gtk3, libnotify, libpulseaudio
-, xlibsWrapper
+, xlibsWrapper, gsettings-desktop-schemas
 }:
 
 stdenv.mkDerivation rec {
