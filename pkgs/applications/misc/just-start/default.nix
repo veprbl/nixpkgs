@@ -4,13 +4,13 @@
 
 buildPythonApplication rec {
   pname = "just-start";
-  version = "2019-03-30";
+  version = "2019-04-18";
 
   src = fetchFromGitHub {
     owner = "AliGhahraei";
     repo = pname;
-    rev = "3c4a6102f304d1e58b8f0e116b607a1355c6544a";
-    sha256 = "0wg0nc7xglj1dw6c95nw08hvnxgqzdr4rc8cgv94yyx3ibfnscz6";
+    rev = "f7319b34df7bdda2a8517feebfb79ecaa30821af";
+    sha256 = "0ba9llimmnhjlsnmb2zz8w4kqc0gwkshyivnjwf5lb380n5wdmsl";
   };
 
   postPatch = ''
