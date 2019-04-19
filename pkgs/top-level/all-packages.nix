@@ -697,6 +697,8 @@ in
 
   cozy = callPackage ../applications/audio/cozy-audiobooks { };
 
+  crumbs = callPackage ../applications/misc/crumbs { };
+
   deskew = callPackage ../applications/graphics/deskew { };
 
   detect-secrets = python3Packages.callPackage ../development/tools/detect-secrets { };
@@ -914,6 +916,8 @@ in
   backblaze-b2 = python.pkgs.callPackage ../development/tools/backblaze-b2 { };
 
   bar = callPackage ../tools/system/bar {};
+
+  base16-shell-preview = callPackage ../misc/base16-shell-preview { };
 
   base16-builder = callPackage ../misc/base16-builder { };
 
