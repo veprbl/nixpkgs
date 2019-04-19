@@ -2584,6 +2584,8 @@ in
     inherit (pythonPackages) sphinx;
   };
 
+  wallutils = callPackage ../tools/graphics/wallutils { };
+
   wl-clipboard = callPackage ../tools/misc/wl-clipboard { };
 
   zabbix-cli = callPackage ../tools/misc/zabbix-cli { };
@@ -21990,6 +21992,8 @@ in
   emboss = callPackage ../applications/science/biology/emboss { };
 
   ezminc = callPackage ../applications/science/biology/EZminc { };
+
+  exonerate = callPackage ../applications/science/biology/exonerate { };
 
   hisat2 = callPackage ../applications/science/biology/hisat2 { };
 
