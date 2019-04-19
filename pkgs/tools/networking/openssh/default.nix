@@ -22,7 +22,7 @@ in
 with stdenv.lib;
 stdenv.mkDerivation rec {
   name = "openssh-${version}";
-  version = if hpnSupport then "7.8p1" else "7.9p1";
+  version = if hpnSupport then "7.8p1" else "8.0p1";
 
   src = if hpnSupport then
       fetchurl {
@@ -32,7 +32,7 @@ stdenv.mkDerivation rec {
     else
       fetchurl {
         url = "mirror://openbsd/OpenSSH/portable/${name}.tar.gz";
-        sha256 = "1b8sy6v0b8v4ggmknwcqx3y1rjcpsll0f1f8f4vyv11x4ni3njvb";
+        sha256 = "0s7xh4s0qcipnjh9ls5blxcpvhyd116z9dxn3q1yi64lwrwki55x";
       };
 
   patches =
@@ -42,6 +42,7 @@ stdenv.mkDerivation rec {
       # See discussion in https://github.com/NixOS/nixpkgs/pull/16966
       ./dont_create_privsep_path.patch
 
+    ] ++ optional hpnSupport
       # CVE-2018-20685, can probably be dropped with next version bump
       # See https://sintonen.fi/advisories/scp-client-multiple-vulnerabilities.txt
       # for details
@@ -50,7 +51,6 @@ stdenv.mkDerivation rec {
         url = https://github.com/openssh/openssh-portable/commit/6010c0303a422a9c5fa8860c061bf7105eb7f8b2.patch;
         sha256 = "0q27i9ymr97yb628y44qi4m11hk5qikb1ji1vhvax8hp18lwskds";
       })
-    ]
     ++ optional withGssapiPatches (assert withKerberos; gssapiPatch);
 
   postPatch =

@@ -11,16 +11,17 @@ in stdenv.mkDerivation rec {
   name = "network-manager-${version}";
   version = "1.17.90"; # 1.18-rc1
 
-  src = fetchurl {
-    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "149gchck86ypp2pr836mgcm18ginrbinfgdw4h7n9zi9rab6r32c";
-  };
-  #src = fetchFromGitHub {
-  #  owner = pname;
-  #  repo = pname;
-  #  rev = "549112c1ba5306dff281ef0788961ac855342d02";
-  #  sha256 = "1lj15v3aamx9f1bqh03rn45jsyii45i204k7am8nb4z9z3abhqfa";
+  #src = fetchurl {
+  #  url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+  #  sha256 = "149gchck86ypp2pr836mgcm18ginrbinfgdw4h7n9zi9rab6r32c";
   #};
+  src = fetchFromGitHub {
+    owner = pname;
+    repo = pname;
+    #rev = "549112c1ba5306dff281ef0788961ac855342d02";
+    rev = "30bb93cd9364cfb647274aa6f023dd5b741fe891";
+    sha256 = "1z7hfc0005hnqll3lzxc86sindz35b6nz66hdnbrprvynnzghc3g";
+  };
 
   outputs = [ "out" "dev" ];
 
@@ -101,7 +102,7 @@ in stdenv.mkDerivation rec {
   installFlags = [
     "sysconfdir=${placeholder "out"}/etc"
     "localstatedir=${placeholder "out"}/var"
-    "runstatedir=${placeholder "out"}/var/run"
+    "runstatedir=${placeholder "out"}/run"
   ];
 
   enableParallelBuilding = true;

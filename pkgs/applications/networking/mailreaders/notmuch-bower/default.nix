@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
     ./total-color.patch
     ./cal.patch
 
-    #./author-toggle.patch
+    ./author-toggle.patch
   ];
 
   installPhase = ''

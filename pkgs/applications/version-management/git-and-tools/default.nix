@@ -80,6 +80,8 @@ let
 
   git-extras = callPackage ./git-extras { };
 
+  git-extra-commands = callPackage ./git-extra-commands { };
+
   git-hub = callPackage ./git-hub { };
 
   git-ignore = callPackage ./git-ignore { };

@@ -697,6 +697,8 @@ in
 
   cozy = callPackage ../applications/audio/cozy-audiobooks { };
 
+  crumbs = callPackage ../applications/misc/crumbs { };
+
   deskew = callPackage ../applications/graphics/deskew { };
 
   detect-secrets = python3Packages.callPackage ../development/tools/detect-secrets { };
@@ -914,6 +916,8 @@ in
   backblaze-b2 = python.pkgs.callPackage ../development/tools/backblaze-b2 { };
 
   bar = callPackage ../tools/system/bar {};
+
+  base16-shell-preview = callPackage ../misc/base16-shell-preview { };
 
   base16-builder = callPackage ../misc/base16-builder { };
 
@@ -2227,6 +2231,8 @@ in
 
   cocoapods = callPackage ../development/mobile/cocoapods { };
 
+  cocoapods-beta = lowPrio (callPackage ../development/mobile/cocoapods { beta = true; });
+
   compass = callPackage ../development/tools/compass { };
 
   conda = callPackage ../tools/package-management/conda { };
@@ -2592,7 +2598,7 @@ in
 
   cholmod-extra = callPackage ../development/libraries/science/math/cholmod-extra { };
 
-  emscriptenVersion = "1.37.36";
+  emscriptenVersion = "1.38.28";
 
   emscripten = callPackage ../development/compilers/emscripten { };
 
@@ -5058,6 +5064,7 @@ in
 
   pinentry = callPackage ../tools/security/pinentry {
     libcap = if stdenv.isDarwin then null else libcap;
+    gcr = null;
   };
 
   pinentry_ncurses = res.pinentry.override {
@@ -5397,9 +5404,7 @@ in
 
   remind = callPackage ../tools/misc/remind { };
 
-  remmina = callPackage ../applications/networking/remote/remmina {
-    gsettings-desktop-schemas = gnome3.gsettings-desktop-schemas;
-  };
+  remmina = callPackage ../applications/networking/remote/remmina { };
 
   rename = callPackage ../tools/misc/rename { };
 
@@ -6327,7 +6332,7 @@ in
   wal_e = callPackage ../tools/backup/wal-e { };
 
   watchexec = callPackage ../tools/misc/watchexec {
-    inherit (darwin.apple_sdk.frameworks) CoreServices CoreFoundation;
+    inherit (darwin.apple_sdk.frameworks) CoreServices;
   };
 
   watchman = callPackage ../development/tools/watchman {
@@ -7801,6 +7806,7 @@ in
   cargo-asm = callPackage ../development/tools/rust/cargo-asm {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
+  cargo-bloat = callPackage ../development/tools/rust/cargo-bloat { };
   cargo-expand = callPackage ../development/tools/rust/cargo-expand { };
   cargo-fuzz = callPackage ../development/tools/rust/cargo-fuzz { };
   cargo-xbuild = callPackage ../development/tools/rust/cargo-xbuild { };
@@ -9057,9 +9063,13 @@ in
 
   grail = callPackage ../development/libraries/grail { };
 
+  graphene-hardened-malloc = callPackage ../development/libraries/graphene-hardened-malloc { };
+
   gtk-doc = callPackage ../development/tools/documentation/gtk-doc { };
 
   gtkdialog = callPackage ../development/tools/misc/gtkdialog { };
+
+  gtranslator = callPackage ../tools/text/gtranslator { };
 
   guff = callPackage ../tools/graphics/guff { };
 
@@ -10510,6 +10520,8 @@ in
   glibmm = callPackage ../development/libraries/glibmm { };
 
   glib-networking = callPackage ../development/libraries/glib-networking {};
+
+  gom = callPackage ../development/libraries/gom { };
 
   ace = callPackage ../development/libraries/ace { };
 
@@ -16005,7 +16017,7 @@ in
 
   gnome_user_docs = callPackage ../data/documentation/gnome-user-docs { };
 
-  inherit (gnome3) gsettings-desktop-schemas;
+  gsettings-desktop-schemas = callPackage ../development/libraries/gsettings-desktop-schemas { };
 
   go-font = callPackage ../data/fonts/go-font { };
 
@@ -16831,8 +16843,6 @@ in
     amdappsdk = amdappsdk28;
   };
 
-  chatzilla = callPackage ../applications/networking/irc/chatzilla { };
-
   chirp = callPackage ../applications/radio/chirp {
     inherit (pythonPackages) pyserial pygtk;
   };
@@ -16856,7 +16866,6 @@ in
   cinelerra = callPackage ../applications/video/cinelerra { };
 
   claws-mail = callPackage ../applications/networking/mailreaders/claws-mail {
-    inherit (gnome3) gsettings-desktop-schemas;
     inherit (xorg) libSM;
   };
 
@@ -18517,7 +18526,7 @@ in
   libvmi = callPackage ../development/libraries/libvmi { };
 
   liferea = callPackage ../applications/networking/newsreaders/liferea {
-    inherit (gnome3) gsettings-desktop-schemas dconf;
+    inherit (gnome3) dconf;
   };
 
   lightworks = callPackage ../applications/video/lightworks {
@@ -19934,6 +19943,10 @@ in
     bison = bison2;
   };
 
+  stretchly = callPackage ../applications/misc/stretchly {
+    inherit (gnome2) GConf;
+  };
+
   stumpish = callPackage ../applications/window-managers/stumpish {};
 
   stumpwm = callPackage ../applications/window-managers/stumpwm {
@@ -20833,9 +20846,7 @@ in
     openssl = null;
   };
 
-  roxterm = callPackage ../applications/misc/roxterm {
-    inherit (gnome3) gsettings-desktop-schemas;
-  };
+  roxterm = callPackage ../applications/misc/roxterm { };
 
   termonad-with-packages = callPackage ../applications/misc/termonad {
     inherit (haskellPackages) ghcWithPackages;
@@ -20979,6 +20990,8 @@ in
   astromenace = callPackage ../games/astromenace { };
 
   atanks = callPackage ../games/atanks {};
+
+  azimuth = callPackage ../games/azimuth {};
 
   ballAndPaddle = callPackage ../games/ball-and-paddle {
     guile = guile_1_8;
@@ -21881,8 +21894,8 @@ in
       mkPlasma5 = import ../desktops/plasma-5;
       attrs = {
         inherit libsForQt5 lib fetchurl;
-        inherit (gnome3) gsettings-desktop-schemas;
         gconf = gnome2.GConf;
+        inherit gsettings-desktop-schemas;
       };
     in
       recurseIntoAttrs (makeOverridable mkPlasma5 attrs);
@@ -22043,6 +22056,8 @@ in
   plink = callPackage ../applications/science/biology/plink { };
 
   plink-ng = callPackage ../applications/science/biology/plink-ng { };
+
+  prodigal = callPackage ../applications/science/biology/prodigal { };
 
   raxml = callPackage ../applications/science/biology/raxml { };
 
@@ -23009,6 +23024,8 @@ in
     nixUnstable;
 
   nixops = callPackage ../tools/package-management/nixops { };
+
+  nixops_1_6_1 = callPackage ../tools/package-management/nixops/nixops-v1_6_1.nix {};
 
   nixopsUnstable = lowPrio (callPackage ../tools/package-management/nixops/unstable.nix { });
 

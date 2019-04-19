@@ -11,6 +11,12 @@
 
 stdenv.mkDerivation rec {
   pname = "fontforge";
+  ## version = "20190317";
+
+  ## src = fetchurl {
+  ##   url = "https://github.com/${pname}/${pname}/releases/download/${version}/${pname}-${version}.tar.gz";
+  ##   sha256 = "1ddqbpc32cgbccdnv0lfw0qhj59hcqzb7616ph5lkvm91pnas4dp";
+  ## };
   version = "20190413";
 
   src = fetchFromGitHub {

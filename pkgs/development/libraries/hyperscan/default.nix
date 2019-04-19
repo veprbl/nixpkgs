@@ -39,17 +39,17 @@ stdenv.mkDerivation rec {
     sed -i '/examples/d' CMakeLists.txt
   '';
 
-  postInstall = ''
-    mkdir -p $dev/lib
-    mv $out/lib/*.a $dev/lib/
-    ln -sf $out/lib/libhs.so $dev/lib/
-    ln -sf $out/lib/libhs_runtime.so $dev/lib/
-  '';
+  #postInstall = ''
+  #  mkdir -p $dev/lib
+  #  mv $out/lib/*.a $dev/lib/
+  #  ln -sf $out/lib/libhs.so $dev/lib/
+  #  ln -sf $out/lib/libhs_runtime.so $dev/lib/
+  #'';
 
-  postFixup = ''
-    sed -i "s,$out/include,$dev/include," $dev/lib/pkgconfig/libhs.pc
-    sed -i "s,$out/lib,$dev/lib," $dev/lib/pkgconfig/libhs.pc
-  '';
+  #postFixup = ''
+  #  sed -i "s,$out/include,$dev/include," $dev/lib/pkgconfig/libhs.pc
+  #  sed -i "s,$out/lib,$dev/lib," $dev/lib/pkgconfig/libhs.pc
+  #'';
 
   meta = {
     description = "High-performance multiple regex matching library";
