@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
     sha256 = "196pr7831s2khji9cvj04w7f9gn446ayhfnbi823ap95z6nhxg67";
   };
 
-  nativeBuildInputs = [ gawk mercury pandoc ];
+  nativeBuildInputs = [ gawk mercury ]; # pandoc ];
 
   buildInputs = [ ncurses gpgme ];
 
@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
     #echo "MCFLAGS += --opt-space --parallel --stack-segments" > src/Mercury.params
   #  echo "MCFLAGS += --intermod-opt -O6 --verbose --no-libgrade --libgrade asm_fast.gc" > src/Mercury.params
 
-  makeFlags = [ "PARALLEL=-j$(NIX_BUILD_CORES)" "bower" "man" ];
+  makeFlags = [ "PARALLEL=-j$(NIX_BUILD_CORES)" "bower" ]; # "man" ];
 
   patches = [
     ./0001-Use-some-emoticons-for-status.patch
@@ -43,9 +43,9 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/bin
     mv bower $out/bin/
-    mkdir -p $out/share/man/man1
-    mv bower.1 $out/share/man/man1/
   '';
+    #mkdir -p $out/share/man/man1
+    #mv bower.1 $out/share/man/man1/
 
   enableParallelBuilding = true;
 
