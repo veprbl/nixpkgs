@@ -19,12 +19,12 @@ stdenv.mkDerivation {
   };
 
   patches = [
-    ./c.f.-44062-Back-off-clearflag-change-to-ZLE-line-ini.patch
-    ./44067-Make-history-read-safer-on-interrupt.patch
-    ./44214-.-substitutions-shouldn-t-grab-the-terminal.patch
-    ./44215-Maintain-LASTWIDGET-across-reset-prompt.patch
-    ./44168-tweaked-to-remove-change-to-errflag-Fix-interr.patch
-    ./43288-fix-line-broken-prompts.patch
+    ./patches/c.f.-44062-Back-off-clearflag-change-to-ZLE-line-ini.patch
+    ./patches/44067-Make-history-read-safer-on-interrupt.patch
+    ./patches/44214-.-substitutions-shouldn-t-grab-the-terminal.patch
+    ./patches/44215-Maintain-LASTWIDGET-across-reset-prompt.patch
+    ./patches/44168-tweaked-to-remove-change-to-errflag-Fix-interr.patch
+    ./patches/43288-fix-line-broken-prompts.patch
   ];
 
   buildInputs = [ ncurses pcre ];
