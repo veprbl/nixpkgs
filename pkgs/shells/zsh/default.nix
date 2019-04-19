@@ -18,15 +18,31 @@ stdenv.mkDerivation {
     sha256 = "1s3yww0mzgvpc48kp0x868mm3gbna42sbgzya0nknj0x5hn2jq3j";
   };
 
+  patches = [
+    ./c.f.-44062-Back-off-clearflag-change-to-ZLE-line-ini.patch
+    ./44067-Make-history-read-safer-on-interrupt.patch
+    ./44214-.-substitutions-shouldn-t-grab-the-terminal.patch
+    ./44215-Maintain-LASTWIDGET-across-reset-prompt.patch
+    ./44168-tweaked-to-remove-change-to-errflag-Fix-interr.patch
+    ./43288-fix-line-broken-prompts.patch
+  ];
+
   buildInputs = [ ncurses pcre ];
 
   configureFlags = [
     "--enable-maildir-support"
     "--enable-multibyte"
+    "--enable-zsh-secure-free"
     "--with-tcsetpgrp"
     "--enable-pcre"
     "--enable-zprofile=${placeholder "out"}/etc/zprofile"
-  ];
+  ] ++ stdenv.lib.optional stdenv.hostPlatform.isMusl "--enable-libc-musl";
+  preConfigure = ''
+    # prefer package-provided versions for these
+    rm -f Completion/Unix/Command/_{notmuch,osc,systemd}
+    # interferes with todoman
+    rm -f Completion/Unix/Command/_devtodo
+  '';
 
   # the zsh/zpty module is not available on hydra
   # so skip groups Y Z
