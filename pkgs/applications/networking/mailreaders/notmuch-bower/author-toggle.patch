@@ -1,14 +1,14 @@
-From d4ad0eedb8e1713f24f995a6065ad71303010e71 Mon Sep 17 00:00:00 2001
+From 973daca0f41f158acaecd5b7dab8b78852d34698 Mon Sep 17 00:00:00 2001
 From: Will Dietz <w@wdtz.org>
-Date: Sat, 30 Mar 2019 22:39:44 -0500
+Date: Thu, 18 Apr 2019 22:24:57 -0500
 Subject: [PATCH] toggle author visibility with 'z'
 
 ---
- src/index_view.m | 40 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 33 insertions(+), 7 deletions(-)
+ src/index_view.m | 39 ++++++++++++++++++++++++++++++---------
+ 1 file changed, 30 insertions(+), 9 deletions(-)
 
 diff --git a/src/index_view.m b/src/index_view.m
-index f51afd9..ae598ef 100644
+index 4826404..d6a0bcb 100644
 --- a/src/index_view.m
 +++ b/src/index_view.m
 @@ -72,6 +72,7 @@
@@ -75,40 +75,40 @@ index f51afd9..ae598ef 100644
  
  :- pred move_cursor(screen::in, int::in, message_update::out,
      index_info::in, index_info::out) is det.
-@@ -1826,12 +1846,14 @@ draw_index_view(Screen, Info, !IO) :-
+@@ -1825,24 +1845,25 @@ draw_index_view(Screen, Info, !IO) :-
+     Config = Info ^ i_config,
      Attrs = index_attrs(Config),
-     Scrollable = Info ^ i_scrollable,
+     get_cols(Screen, Cols),
+-    get_author_width(Cols, AuthorWidth),
++    ShowAuthor = Info ^ i_showing_author,
++    get_author_width(Cols, ShowAuthor, AuthorWidth),
      get_main_panels(Screen, MainPanels),
--    scrollable.draw(draw_index_line(Attrs), MainPanels, Scrollable, !IO).
-+    ShowAuthors = Info ^ i_showing_author,
-+    scrollable.draw(draw_index_line(Attrs, ShowAuthors), MainPanels, Scrollable,
-+        !IO).
+     Scrollable = Info ^ i_scrollable,
+     scrollable.draw(draw_index_line(Attrs, AuthorWidth), MainPanels,
+         Scrollable, !IO).
  
--:- pred draw_index_line(index_attrs::in, panel::in, index_line::in, int::in,
--    bool::in, io::di, io::uo) is det.
-+:- pred draw_index_line(index_attrs::in, authorvisible::in, panel::in,
+-:- pred get_author_width(int::in, int::out) is det.
++:- pred get_author_width(int::in, authorvisible::in, int::out) is det.
+ 
+-get_author_width(Cols, AuthorWidth) :-
++get_author_width(Cols, AuthorVisible, AuthorWidth) :-
+     Rem = Cols - 16 - 40,
+-    ( Rem < 4 ->
+-        AuthorWidth = 0
+-    ;
++    ( AuthorVisible = showing_author, Rem >= 4 ->
+         AuthorWidth = min(Rem, 20)
++    ;
++        AuthorWidth = 0
+     ).
+ 
+-:- pred draw_index_line(index_attrs::in, int::in, panel::in, index_line::in,
+-    int::in, bool::in, io::di, io::uo) is det.
++:- pred draw_index_line(index_attrs::in, int::in, panel::in,
 +    index_line::in, int::in, bool::in, io::di, io::uo) is det.
  
--draw_index_line(IAttrs, Panel, Line, _LineNr, IsCursor, !IO) :-
-+draw_index_line(IAttrs, ShowAuthors, Panel, Line, _LineNr, IsCursor, !IO) :-
+ draw_index_line(IAttrs, AuthorWidth, Panel, Line, _LineNr, IsCursor, !IO) :-
      Line = index_line(_Id, Selected, Date, Authors, Subject, Tags, StdTags,
-         NonstdTagsWidth, Matched, Total),
-     Attrs = IAttrs ^ i_generic,
-@@ -1892,8 +1914,12 @@ draw_index_line(IAttrs, Panel, Line, _LineNr, IsCursor, !IO) :-
-         draw(Panel, "  ", !IO)
-     ),
- 
--    mattr_draw_fixed(Panel, unless(IsCursor, Attrs ^ author + Base),
--        25, Authors, ' ', !IO),
-+    (   ShowAuthors = showing_author,
-+        mattr_draw_fixed(Panel, unless(IsCursor, Attrs ^ author + Base),
-+            25, Authors, ' ', !IO)
-+    ;
-+        ShowAuthors = not_showing_author
-+    ),
- 
-     ( Matched = Total ->
-         CountStr = format(" %3d", [i(Total)]),
 -- 
 2.21.GIT
 
