@@ -9622,6 +9622,8 @@ in
 
   aalib = callPackage ../development/libraries/aalib { };
 
+  abseil-cpp = callPackage ../development/libraries/abseil-cpp { };
+
   accountsservice = callPackage ../development/libraries/accountsservice { };
 
   acl = callPackage ../development/libraries/acl { };
@@ -22181,7 +22183,9 @@ in
 
   nauty = callPackage ../applications/science/math/nauty {};
 
-  or-tools = callPackage ../development/libraries/science/math/or-tools {};
+  or-tools = callPackage ../development/libraries/science/math/or-tools {
+    pythonProtobuf = pythonPackages.protobuf;
+  };
 
   rubiks = callPackage ../development/libraries/science/math/rubiks { };
 
@@ -22272,6 +22276,8 @@ in
   ### SCIENCE/PROGRAMMING
 
   dafny = dotnetPackages.Dafny;
+
+  groove = callPackage ../applications/science/programming/groove { };
 
   plm = callPackage ../applications/science/programming/plm { };
 
@@ -23449,6 +23455,8 @@ in
   terraform-landscape = callPackage ../applications/networking/cluster/terraform-landscape {};
 
   terragrunt = callPackage ../applications/networking/cluster/terragrunt {};
+
+  tilt = callPackage ../applications/networking/cluster/tilt {};
 
   tetex = callPackage ../tools/typesetting/tex/tetex { libpng = libpng12; };
 
