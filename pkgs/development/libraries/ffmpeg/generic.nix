@@ -69,7 +69,7 @@ stdenv.mkDerivation rec {
   inherit version;
 
   src = fetchurl {
-    url = "https://www.ffmpeg.org/releases/${name}.tar.bz2";
+    url = "https://www.ffmpeg.org/releases/${name}.tar.xz";
     inherit sha256;
   };
 
