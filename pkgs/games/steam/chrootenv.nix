@@ -222,7 +222,7 @@ in buildFHSUserEnv rec {
   '';
 
   meta = steam.meta // {
-    broken = nativeOnly;
+    #broken = nativeOnly;
   };
 
   passthru.run = buildFHSUserEnv {
