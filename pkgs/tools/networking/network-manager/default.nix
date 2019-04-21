@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchFromGitHub, fetchpatch, substituteAll, intltool, pkgconfig, dbus, dbus-glib, gtk-doc, perl
+{ stdenv, fetchurl, fetchpatch, substituteAll, intltool, pkgconfig, dbus, dbus-glib, gtk-doc, perl
 , gnome3, systemd, libuuid, polkit, gnutls, ppp, dhcp, iptables
 , libgcrypt, dnsmasq, bluez5, readline, libpsl
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
@@ -15,22 +15,11 @@ in stdenv.mkDerivation rec {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
     sha256 = "19lb5afx4iq8dgfsy26x9j4194v8f64vwr3nq6dk1ix3wljxzs66";
   };
-  #src = fetchFromGitHub {
-  #  owner = pname;
-  #  repo = pname;
-  #  #rev = "549112c1ba5306dff281ef0788961ac855342d02";
-  #  rev = "f43fb59b6dbbf74e8c5fd5bcd7b5f33d13fcef9b";
-  #  sha256 = "1v75749lb8023rmzdkz9swc0i12aamm92dzlilfam77iqi7kcncl";
-  #};
 
   outputs = [ "out" "dev" ];
 
   postPatch = ''
     patchShebangs ./tools
-    chmod +x libnm/*.py
-    chmod +x libnm/*.pl
-    patchShebangs libnm/*.py
-    patchShebangs libnm/*.pl
   '';
 
   preConfigure = ''
@@ -63,10 +52,7 @@ in stdenv.mkDerivation rec {
     "--with-modem-manager-1"
     "--with-nmtui"
     "--with-iwd"
-    #"--disable-gtk-doc"
-    #"--with-libnm-glib" # legacy library, TODO: remove
     "--disable-tests"
-    #"--with-ebpf=yes"
   ];
 
   patches = [
@@ -85,17 +71,6 @@ in stdenv.mkDerivation rec {
   propagatedBuildInputs = [ dbus-glib gnutls libgcrypt python3Packages.pygobject3 ];
 
   nativeBuildInputs = [ autoreconfHook intltool pkgconfig libxslt docbook_xsl gtk-doc perl ];
-
-  autoreconfPhase = ''
-    NOCONFIGURE=1 ./autogen.sh
-  '';
-
-  preBuild= ''
-    echo "Generating config-extra.h.."
-    make config-extra.h
-    echo "Running: make install-libLTLIBRARIES $installFlags"
-    make install-libLTLIBRARIES $installFlags -j$NIX_BUILD_CORES
-  '';
 
   doCheck = false; # requires /sys, the net
 
