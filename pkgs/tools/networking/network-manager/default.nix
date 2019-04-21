@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchFromGitHub, fetchpatch, substituteAll, intltool, pkgconfig, dbus, dbus-glib, gtk-doc, perl
+{ stdenv, fetchurl, fetchpatch, substituteAll, intltool, pkgconfig, dbus, dbus-glib, gtk-doc, perl
 , gnome3, systemd, libuuid, polkit, gnutls, ppp, dhcp, iptables
 , libgcrypt, dnsmasq, bluez5, readline, libpsl
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
@@ -9,28 +9,17 @@ let
   pname = "NetworkManager";
 in stdenv.mkDerivation rec {
   name = "network-manager-${version}";
-  version = "1.17.90"; # 1.18-rc1
+  version = "1.18.0";
 
-  #src = fetchurl {
-  #  url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-  #  sha256 = "149gchck86ypp2pr836mgcm18ginrbinfgdw4h7n9zi9rab6r32c";
-  #};
-  src = fetchFromGitHub {
-    owner = pname;
-    repo = pname;
-    #rev = "549112c1ba5306dff281ef0788961ac855342d02";
-    rev = "30bb93cd9364cfb647274aa6f023dd5b741fe891";
-    sha256 = "1z7hfc0005hnqll3lzxc86sindz35b6nz66hdnbrprvynnzghc3g";
+  src = fetchurl {
+    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+    sha256 = "19lb5afx4iq8dgfsy26x9j4194v8f64vwr3nq6dk1ix3wljxzs66";
   };
 
   outputs = [ "out" "dev" ];
 
   postPatch = ''
     patchShebangs ./tools
-    chmod +x libnm/*.py
-    chmod +x libnm/*.pl
-    patchShebangs libnm/*.py
-    patchShebangs libnm/*.pl
   '';
 
   preConfigure = ''
@@ -63,10 +52,7 @@ in stdenv.mkDerivation rec {
     "--with-modem-manager-1"
     "--with-nmtui"
     "--with-iwd"
-    #"--disable-gtk-doc"
-    #"--with-libnm-glib" # legacy library, TODO: remove
     "--disable-tests"
-    #"--with-ebpf=yes"
   ];
 
   patches = [
@@ -85,17 +71,6 @@ in stdenv.mkDerivation rec {
   propagatedBuildInputs = [ dbus-glib gnutls libgcrypt python3Packages.pygobject3 ];
 
   nativeBuildInputs = [ autoreconfHook intltool pkgconfig libxslt docbook_xsl gtk-doc perl ];
-
-  autoreconfPhase = ''
-    NOCONFIGURE=1 ./autogen.sh
-  '';
-
-  preBuild= ''
-    echo "Generating config-extra.h.."
-    make config-extra.h
-    echo "Running: make install-libLTLIBRARIES $installFlags"
-    make install-libLTLIBRARIES $installFlags -j$NIX_BUILD_CORES
-  '';
 
   doCheck = false; # requires /sys, the net
 

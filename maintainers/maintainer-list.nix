@@ -375,6 +375,11 @@
     github = "ankhers";
     name = "Justin Wood";
   };
+  anton-dessiatov = {
+    email = "anton.dessiatov@gmail.com";
+    github = "anton-dessiatov";
+    name = "Anton Desyatov";
+  };
   Anton-Latukha = {
     email = "anton.latuka+nixpkgs@gmail.com";
     github = "Anton-Latukha";
@@ -2181,6 +2186,11 @@
     email = "jb@giraudeau.info";
     github = "jbgi";
     name = "Jean-Baptiste Giraudeau";
+  };
+  jchw = {
+    email = "johnwchadwick@gmail.com";
+    github = "jchv";
+    name = "John Chadwick";
   };
   jcumming = {
     email = "jack@mudshark.org";

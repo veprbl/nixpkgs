@@ -1336,6 +1336,8 @@ in
 
   deja-dup = callPackage ../applications/backup/deja-dup { };
 
+  dejsonlz4 = callPackage ../tools/compression/dejsonlz4 { };
+
   desync = callPackage ../applications/networking/sync/desync { };
 
   devmem2 = callPackage ../os-specific/linux/devmem2 { };
@@ -2583,6 +2585,8 @@ in
   uutils-coreutils = callPackage ../tools/misc/uutils-coreutils {
     inherit (pythonPackages) sphinx;
   };
+
+  wallutils = callPackage ../tools/graphics/wallutils { };
 
   wl-clipboard = callPackage ../tools/misc/wl-clipboard { };
 
@@ -9620,6 +9624,8 @@ in
 
   aalib = callPackage ../development/libraries/aalib { };
 
+  abseil-cpp = callPackage ../development/libraries/abseil-cpp { };
+
   accountsservice = callPackage ../development/libraries/accountsservice { };
 
   acl = callPackage ../development/libraries/acl { };
@@ -9915,6 +9921,8 @@ in
   cryptominisat = callPackage ../applications/science/logic/cryptominisat { };
 
   curlcpp = callPackage ../development/libraries/curlcpp { };
+
+  curlpp = callPackage ../development/libraries/curlpp { };
 
   cutee = callPackage ../development/libraries/cutee { };
 
@@ -14949,6 +14957,8 @@ in
 
   openisns = callPackage ../os-specific/linux/open-isns { };
 
+  osxfuse = callPackage ../os-specific/darwin/osxfuse { };
+
   powerstat = callPackage ../os-specific/linux/powerstat { };
 
   smemstat = callPackage ../os-specific/linux/smemstat { };
@@ -18979,6 +18989,8 @@ in
 
   shogun = callPackage ../applications/science/machine-learning/shogun { };
 
+  sky = callPackage ../applications/networking/instant-messengers/sky {};
+
   smplayer = libsForQt5.callPackage ../applications/video/smplayer { };
 
   smtube = libsForQt5.callPackage ../applications/video/smtube {};
@@ -21462,6 +21474,8 @@ in
     };
   };
 
+  riko4 = callPackage ../games/riko4 { };
+
   rili = callPackage ../games/rili { };
 
   rimshot = callPackage ../games/rimshot { love = love_0_7; };
@@ -21991,6 +22005,8 @@ in
 
   ezminc = callPackage ../applications/science/biology/EZminc { };
 
+  exonerate = callPackage ../applications/science/biology/exonerate { };
+
   hisat2 = callPackage ../applications/science/biology/hisat2 { };
 
   htslib = callPackage ../development/libraries/science/biology/htslib { };
@@ -22177,7 +22193,9 @@ in
 
   nauty = callPackage ../applications/science/math/nauty {};
 
-  or-tools = callPackage ../development/libraries/science/math/or-tools {};
+  or-tools = callPackage ../development/libraries/science/math/or-tools {
+    pythonProtobuf = pythonPackages.protobuf;
+  };
 
   rubiks = callPackage ../development/libraries/science/math/rubiks { };
 
@@ -22268,6 +22286,8 @@ in
   ### SCIENCE/PROGRAMMING
 
   dafny = dotnetPackages.Dafny;
+
+  groove = callPackage ../applications/science/programming/groove { };
 
   plm = callPackage ../applications/science/programming/plm { };
 
@@ -23445,6 +23465,8 @@ in
   terraform-landscape = callPackage ../applications/networking/cluster/terraform-landscape {};
 
   terragrunt = callPackage ../applications/networking/cluster/terragrunt {};
+
+  tilt = callPackage ../applications/networking/cluster/tilt {};
 
   tetex = callPackage ../tools/typesetting/tex/tetex { libpng = libpng12; };
 

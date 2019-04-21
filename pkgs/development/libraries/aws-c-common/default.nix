@@ -13,9 +13,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ cmake ];
 
-  # TODO: to fix w/musl, use libexecinfo
-  # and add 'execinfo' to system libs needed (see CMakeLists.txt, as done w/FreeBSD)
-  #buildInputs = [ libexecinfo ];
+  buildInputs = lib.optional stdenv.hostPlatform.isMusl libexecinfo;
 
   NIX_CFLAGS_COMPILE = lib.optionals stdenv.isDarwin [
     "-Wno-nullability-extension"
