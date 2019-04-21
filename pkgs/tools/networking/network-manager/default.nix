@@ -19,8 +19,8 @@ in stdenv.mkDerivation rec {
     owner = pname;
     repo = pname;
     #rev = "549112c1ba5306dff281ef0788961ac855342d02";
-    rev = "30bb93cd9364cfb647274aa6f023dd5b741fe891";
-    sha256 = "1z7hfc0005hnqll3lzxc86sindz35b6nz66hdnbrprvynnzghc3g";
+    rev = "f43fb59b6dbbf74e8c5fd5bcd7b5f33d13fcef9b";
+    sha256 = "1v75749lb8023rmzdkz9swc0i12aamm92dzlilfam77iqi7kcncl";
   };
 
   outputs = [ "out" "dev" ];
