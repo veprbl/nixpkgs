@@ -683,6 +683,11 @@ in
 
   chezmoi = callPackage ../tools/misc/chezmoi { };
 
+  chipsec = callPackage ../tools/security/chipsec {
+    kernel = null;
+    withDriver = false;
+  };
+
   clair = callPackage ../tools/admin/clair { };
 
   cloud-sql-proxy = callPackage ../tools/misc/cloud-sql-proxy { };
@@ -878,6 +883,8 @@ in
   };
 
   autojump = callPackage ../tools/misc/autojump { };
+
+  automysqlbackup = callPackage ../tools/backup/automysqlbackup { };
 
   autorandr = callPackage ../tools/misc/autorandr {};
 
@@ -2767,7 +2774,7 @@ in
     mozc = callPackage ../tools/inputmethods/fcitx-engines/fcitx-mozc rec {
       python = python2;
       inherit (python2Packages) gyp;
-      protobuf = pkgs.protobuf.overrideDerivation (oldAttrs: { stdenv = clangStdenv; });
+      protobuf = pkgs.protobuf3_6.overrideDerivation (oldAttrs: { stdenv = clangStdenv; });
     };
 
     table-extra = callPackage ../tools/inputmethods/fcitx-engines/fcitx-table-extra { };
@@ -11215,6 +11222,8 @@ in
 
   libiio = callPackage ../development/libraries/libiio { };
 
+  liburing = callPackage ../development/libraries/liburing { };
+
   libseccomp = callPackage ../development/libraries/libseccomp { };
 
   libsecret = callPackage ../development/libraries/libsecret { };
@@ -15109,6 +15118,11 @@ in
     ati_drivers_x11 = callPackage ../os-specific/linux/ati-drivers { };
 
     blcr = callPackage ../os-specific/linux/blcr { };
+
+    chipsec = callPackage ../tools/security/chipsec {
+      inherit kernel;
+      withDriver = true;
+    };
 
     cryptodev = callPackage ../os-specific/linux/cryptodev { };
 

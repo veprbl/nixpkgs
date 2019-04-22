@@ -11,17 +11,17 @@ assert (x11Support && stdenv.isLinux) -> xclip != null || xsel != null;
 with rustPlatform;
 
 buildRustPackage rec {
-  name = "ffsend-${version}";
-  version = "0.2.44";
+  pname = "ffsend";
+  version = "0.2.45";
 
   src = fetchFromGitLab {
     owner = "timvisee";
     repo = "ffsend";
     rev = "v${version}";
-    sha256 = "02fyxqpvk4yplw3l7yb1s8qhplxvc1x61gxymg9na6v3d8na3xl4";
+    sha256 = "1rhbpkalbbklbg0bq3xzbqw918ymqjnwhib3agzqd7477hrh1bkr";
   };
 
-  cargoSha256 = "04ykh9z262sigprswdlccmvnsy0i2659y5pqc33jvz2ag5rp9xav";
+  cargoSha256 = "1218v6rm1j545764g8rkpanwafjzk1c7f5x22v9ivzm0b6lmnm56";
 
   nativeBuildInputs = [ cmake pkgconfig ];
   buildInputs = [ openssl ]
