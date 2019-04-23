@@ -55,14 +55,6 @@ diff --git a/auparse/interpret.c b/auparse/interpret.c
 index 88523c6..f19ee85 100644
 --- a/auparse/interpret.c
 +++ b/auparse/interpret.c
-@@ -1,6 +1,6 @@
- /*
- * interpret.c - Lookup values to something more readable
--* Copyright (c) 2007-09,2011-16,2018 Red Hat Inc., Durham, North Carolina.
-+* Copyright (c) 2007-09,2011-16,2018-19 Red Hat Inc., Durham, North Carolina.
- * All Rights Reserved. 
- *
- * This library is free software; you can redistribute it and/or
 @@ -855,6 +855,13 @@ static const char *print_escaped_ext(const idata *id)
  		return print_escaped(id->val);
  }
