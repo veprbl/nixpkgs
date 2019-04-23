@@ -11,8 +11,6 @@ appimageTools.wrapType2 rec {
     sha256 = "0ldmxnhqcphr92rb7imgb1dfx7bb3p515nrdds8jn4b8x6jgmnjr";
   };
 
-  extraPkgs = p: p.atomEnv.packages;
-
   profile = ''
     export LC_ALL=C.UTF-8
     export XDG_DATA_DIRS=${gsettings-desktop-schemas}/share/gsettings-schemas/${gsettings-desktop-schemas.name}:${gtk3}/share/gsettings-schemas/${gtk3.name}:$XDG_DATA_DIRS
