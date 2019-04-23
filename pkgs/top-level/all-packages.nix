@@ -4673,6 +4673,8 @@ in
     buildGoPackage = buildGo110Package;
   };
 
+  notable = callPackage ../applications/misc/notable { };
+
   miller = callPackage ../tools/text/miller { };
 
   milu = callPackage ../applications/misc/milu { };
