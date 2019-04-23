@@ -14925,7 +14925,7 @@ in
 
   iw = callPackage ../os-specific/linux/iw { };
 
-  iwd = callPackage ../os-specific/linux/iwd { };
+  iwd = callPackage ../os-specific/linux/iwd { readline = readline80; };
 
   jfbview = callPackage ../os-specific/linux/jfbview { };
   jfbpdf = jfbview.override {
