@@ -1,7 +1,7 @@
 { appimageTools, fetchurl, lib, gsettings-desktop-schemas, gtk3 }:
 
 let
-  pname = "MineTime";
+  pname = "minetime";
   version = "1.5.1";
 in
 appimageTools.wrapType2 rec {
