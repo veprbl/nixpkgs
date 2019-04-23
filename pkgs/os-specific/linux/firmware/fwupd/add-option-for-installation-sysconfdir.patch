@@ -1,5 +1,5 @@
 diff --git a/data/meson.build b/data/meson.build
-index 2d7fb632..5b77abf7 100644
+index 61664cd6..f10abbba 100644
 --- a/data/meson.build
 +++ b/data/meson.build
 @@ -11,7 +11,7 @@ if get_option('daemon')
@@ -19,7 +19,7 @@ index 2d7fb632..5b77abf7 100644
 +  install_dir : join_paths(sysconfdir_install, 'dbus-1', 'system.d')
  )
  
- install_data(['metadata.xml'],
+ if get_option('daemon')
 diff --git a/data/pki/meson.build b/data/pki/meson.build
 index eefcc914..dc801fa1 100644
 --- a/data/pki/meson.build
@@ -57,7 +57,7 @@ index eefcc914..dc801fa1 100644
  endif
  
 diff --git a/data/remotes.d/meson.build b/data/remotes.d/meson.build
-index 2e6b499d..b7d9ecf1 100644
+index a27c31ef..374e09b6 100644
 --- a/data/remotes.d/meson.build
 +++ b/data/remotes.d/meson.build
 @@ -3,7 +3,7 @@ if get_option('daemon') and get_option('lvfs')
@@ -69,15 +69,7 @@ index 2e6b499d..b7d9ecf1 100644
    )
    i18n.merge_file(
      input: 'lvfs.metainfo.xml',
-@@ -37,19 +37,19 @@ configure_file(
-   output : 'fwupd.conf',
-   configuration : con2,
-   install: true,
--  install_dir: join_paths(sysconfdir, 'fwupd', 'remotes.d'),
-+  install_dir: join_paths(sysconfdir_install, 'fwupd', 'remotes.d'),
- )
- configure_file(
-   input : 'vendor.conf',
+@@ -37,12 +37,12 @@ configure_file(
    output : 'vendor.conf',
    configuration : con2,
    install: true,
@@ -93,7 +85,7 @@ index 2e6b499d..b7d9ecf1 100644
 +  install_dir: join_paths(sysconfdir_install, 'fwupd', 'remotes.d'),
  )
 diff --git a/meson.build b/meson.build
-index d7c21faf..c92529ac 100644
+index a89f9b3f..736896eb 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -145,6 +145,12 @@ localstatedir = join_paths(prefix, get_option('localstatedir'))
@@ -110,7 +102,7 @@ index d7c21faf..c92529ac 100644
  if gio.version().version_compare ('>= 2.55.0')
    conf.set('HAVE_GIO_2_55_0', '1')
 diff --git a/meson_options.txt b/meson_options.txt
-index 889a888e..d95324a0 100644
+index 5d4163e8..db81fd1f 100644
 --- a/meson_options.txt
 +++ b/meson_options.txt
 @@ -21,6 +21,7 @@ option('plugin_modem_manager', type : 'boolean', value : false, description : 'e
@@ -121,6 +113,17 @@ index 889a888e..d95324a0 100644
  option('tests', type : 'boolean', value : true, description : 'enable tests')
  option('udevdir', type: 'string', value: '', description: 'Directory for udev rules')
  option('efi-cc', type : 'string', value : 'gcc', description : 'the compiler to use for EFI modules')
+diff --git a/plugins/dell-esrt/meson.build b/plugins/dell-esrt/meson.build
+index cb9f4555..b972d7fb 100644
+--- a/plugins/dell-esrt/meson.build
++++ b/plugins/dell-esrt/meson.build
+@@ -36,5 +36,5 @@ configure_file(
+   output : 'dell-esrt.conf',
+   configuration : con2,
+   install: true,
+-  install_dir: join_paths(sysconfdir, 'fwupd', 'remotes.d'),
++  install_dir: join_paths(sysconfdir_install, 'fwupd', 'remotes.d'),
+ )
 diff --git a/plugins/redfish/meson.build b/plugins/redfish/meson.build
 index 5c88504e..7706da71 100644
 --- a/plugins/redfish/meson.build
@@ -135,10 +138,10 @@ index 5c88504e..7706da71 100644
  
  if get_option('tests')
 diff --git a/plugins/uefi/meson.build b/plugins/uefi/meson.build
-index fd1b3976..741f0f8c 100644
+index ac9f5dd8..1ab51b5e 100644
 --- a/plugins/uefi/meson.build
 +++ b/plugins/uefi/meson.build
-@@ -75,7 +75,7 @@ executable(
+@@ -79,7 +79,7 @@ executable(
  )
  
  install_data(['uefi.conf'],
