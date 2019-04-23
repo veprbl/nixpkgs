@@ -6,11 +6,10 @@
 assert enablePython -> python != null;
 
 stdenv.mkDerivation (rec {
-  pname = "audit";
-  version = "2.8.5";
+  name = "audit-2.8.5";
 
   src = fetchurl {
-    url = "https://people.redhat.com/sgrubb/${pname}/${pname}-${version}.tar.gz";
+    url = "https://people.redhat.com/sgrubb/audit/${name}.tar.gz";
     sha256 = "1dzcwb2q78q7x41shcachn7f4aksxbxd470yk38zh03fch1l2p8f";
   };
 
@@ -40,4 +39,4 @@ stdenv.mkDerivation (rec {
 } // stdenv.lib.optionalAttrs stdenv.hostPlatform.isMusl {
   nativeBuildInputs = [ autoreconfHook ];
   patches = [ ./d579a08.patch ];
-});
+})
