@@ -49,7 +49,6 @@ stdenv.mkDerivation rec{
       python2 gettext flex perl bison fontconfig freetype pango
       fontforge help2man groff t1utils
     ];
-  nativeBuildInputs = [ makeWrapper pkgconfig autoreconfHook ];
 
   enableParallelBuilding = true;
 
