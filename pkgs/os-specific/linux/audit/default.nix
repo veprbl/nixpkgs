@@ -1,5 +1,5 @@
 {
-  stdenv, buildPackages, fetchurl, fetchpatch,
+  stdenv, buildPackages, fetchurl, fetchpatch, autoreconfHook,
   enablePython ? false, python ? null,
 }:
 
@@ -17,6 +17,7 @@ stdenv.mkDerivation rec {
   outputs = [ "bin" "dev" "out" "man" ];
 
   depsBuildBuild = [ buildPackages.stdenv.cc ];
+  nativeBuildInputs = [ autoreconfHook ];
   buildInputs = stdenv.lib.optional enablePython python;
 
   configureFlags = [
