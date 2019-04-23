@@ -1696,13 +1696,13 @@ let
         sha512 = "shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==";
       };
     };
-    "@octokit/endpoint-4.0.0" = {
+    "@octokit/endpoint-4.1.1" = {
       name = "_at_octokit_slash_endpoint";
       packageName = "@octokit/endpoint";
-      version = "4.0.0";
+      version = "4.1.1";
       src = fetchurl {
-        url = "https://registry.npmjs.org/@octokit/endpoint/-/endpoint-4.0.0.tgz";
-        sha512 = "b8sptNUekjREtCTJFpOfSIL4SKh65WaakcyxWzRcSPOk5RxkZJ/S8884NGZFxZ+jCB2rDURU66pSHn14cVgWVg==";
+        url = "https://registry.npmjs.org/@octokit/endpoint/-/endpoint-4.1.1.tgz";
+        sha512 = "lfphGC9hglBDiIOU84f1xDUzjWE5j3jGkO3Ng/IpDDVARw760A+/x408JOEpdV20ZUj2GRWdDBC0+HPu5qA5gQ==";
       };
     };
     "@octokit/plugin-enterprise-rest-2.2.2" = {
@@ -23609,13 +23609,13 @@ let
         sha512 = "U8HkIv90/lrdNlHVp63PoF3FeuQUvJ6toMX6InqRqpBmQq9iukZRAnq/yCE4Ii6WHZRYa6DEiTH/EGFTZ0rIGg==";
       };
     };
-    "needle-2.3.0" = {
+    "needle-2.3.1" = {
       name = "needle";
       packageName = "needle";
-      version = "2.3.0";
+      version = "2.3.1";
       src = fetchurl {
-        url = "https://registry.npmjs.org/needle/-/needle-2.3.0.tgz";
-        sha512 = "QBZu7aAFR0522EyaXZM0FZ9GLpq6lvQ3uq8gteiDUp7wKdy0lSd2hPlgFwVuW1CBkfEs9PfDQsQzZghLs/psdg==";
+        url = "https://registry.npmjs.org/needle/-/needle-2.3.1.tgz";
+        sha512 = "CaLXV3W8Vnbps8ZANqDGz7j4x7Yj1LW4TWF/TQuDfj7Cfx4nAPTvw98qgTevtto1oHDrh3pQkaODbqupXlsWTg==";
       };
     };
     "negotiator-0.3.0" = {
@@ -24096,13 +24096,13 @@ let
         sha512 = "mkw8HOosXHMBRdyJkio77vPx4Ls5IY26P5ZyoMWmKMkimXKTnX00DdpmNlkW+dHwMDYq1H66WzFtQhNOdEAbgA==";
       };
     };
-    "node-releases-1.1.16" = {
+    "node-releases-1.1.17" = {
       name = "node-releases";
       packageName = "node-releases";
-      version = "1.1.16";
+      version = "1.1.17";
       src = fetchurl {
-        url = "https://registry.npmjs.org/node-releases/-/node-releases-1.1.16.tgz";
-        sha512 = "BOMWCW9CaT4sffMa5S9Mj4vYObvVShyo6JoM9WzzQOKVyNUn1+OVMUaQT3fo2tJKCMwHjqaDW/Pf3/JsYmPD2g==";
+        url = "https://registry.npmjs.org/node-releases/-/node-releases-1.1.17.tgz";
+        sha512 = "/SCjetyta1m7YXLgtACZGDYJdCSIBAWorDWkGCGZlydP2Ll7J48l7j/JxNYZ+xsgSPbWfdulVS/aY+GdjUsQ7Q==";
       };
     };
     "node-request-by-swagger-1.1.4" = {
@@ -47572,7 +47572,7 @@ in
       sources."nan-2.13.2"
       sources."ndarray-1.0.18"
       sources."ndarray-pack-1.2.1"
-      (sources."needle-2.3.0" // {
+      (sources."needle-2.3.1" // {
         dependencies = [
           sources."debug-4.1.1"
         ];
@@ -49130,7 +49130,7 @@ in
       sources."@lerna/write-log-file-3.13.0"
       sources."@mrmlnc/readdir-enhanced-2.2.1"
       sources."@nodelib/fs.stat-1.1.3"
-      sources."@octokit/endpoint-4.0.0"
+      sources."@octokit/endpoint-4.1.1"
       sources."@octokit/plugin-enterprise-rest-2.2.2"
       sources."@octokit/request-3.0.0"
       sources."@octokit/rest-16.25.0"
@@ -51691,7 +51691,7 @@ in
           sources."punycode-1.4.1"
         ];
       })
-      sources."node-releases-1.1.16"
+      sources."node-releases-1.1.17"
       sources."normalize-package-data-2.5.0"
       sources."normalize-path-2.1.1"
       (sources."normalize-url-2.0.1" // {
@@ -53965,7 +53965,7 @@ in
     buildInputs = globalBuildInputs;
     meta = {
       description = "Web Inspector based nodeJS debugger";
-      homepage = https://github.com/node-inspector/node-inspector;
+      homepage = http://github.com/node-inspector/node-inspector;
     };
     production = true;
     bypassCache = true;
@@ -53973,10 +53973,10 @@ in
   node-pre-gyp = nodeEnv.buildNodePackage {
     name = "node-pre-gyp";
     packageName = "node-pre-gyp";
-    version = "0.12.0";
+    version = "0.13.0";
     src = fetchurl {
-      url = "https://registry.npmjs.org/node-pre-gyp/-/node-pre-gyp-0.12.0.tgz";
-      sha512 = "4KghwV8vH5k+g2ylT+sLTjy5wmUOb9vPhnM8NHvRf9dHmnW/CndrFXy2aRPaPST6dugXSdHXfeaHQm77PIz/1A==";
+      url = "https://registry.npmjs.org/node-pre-gyp/-/node-pre-gyp-0.13.0.tgz";
+      sha512 = "Md1D3xnEne8b/HGVQkZZwV27WUi1ZRuZBij24TNaZwUPU3ZAFtvT6xxJGaUVillfmMKnn5oD1HoGsp2Ftik7SQ==";
     };
     dependencies = [
       sources."abbrev-1.1.1"
@@ -54012,7 +54012,7 @@ in
       sources."minizlib-1.2.1"
       sources."mkdirp-0.5.1"
       sources."ms-2.1.1"
-      sources."needle-2.3.0"
+      sources."needle-2.3.1"
       sources."nopt-4.0.1"
       sources."npm-bundled-1.0.6"
       sources."npm-packlist-1.4.1"
@@ -54706,7 +54706,7 @@ in
       sources."multer-1.4.1"
       sources."mustache-3.0.1"
       sources."nan-2.13.1"
-      (sources."needle-2.3.0" // {
+      (sources."needle-2.3.1" // {
         dependencies = [
           sources."debug-4.1.1"
           sources."ms-2.1.1"
@@ -56660,7 +56660,7 @@ in
           sources."punycode-1.4.1"
         ];
       })
-      sources."node-releases-1.1.16"
+      sources."node-releases-1.1.17"
       sources."nopt-4.0.1"
       sources."normalize-html-whitespace-0.2.0"
       sources."normalize-path-3.0.0"
@@ -59273,7 +59273,7 @@ in
       sources."ms-2.1.1"
       sources."mute-stream-0.0.7"
       sources."nconf-0.10.0"
-      (sources."needle-2.3.0" // {
+      (sources."needle-2.3.1" // {
         dependencies = [
           sources."debug-4.1.1"
         ];
