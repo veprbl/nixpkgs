@@ -18,10 +18,7 @@ in appimageTools.wrapType2 rec {
 
   multiPkgs = null; # no 32bit needed
   extraPkgs = appimageTools.defaultFhsEnvArgs.multiPkgs;
-
-  extraInstallCommands = ''
-    mv $out/bin/${name} $out/bin/${pname}
-  '';
+  extraInstallCommands = "mv $out/bin/{${name},${pname}}";
 
   meta = with lib; {
     description = "An open source note taking and to-do application with synchronisation capabilities";
