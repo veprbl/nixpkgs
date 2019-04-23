@@ -675,6 +675,7 @@
   ./services/networking/syncthing-relay.nix
   ./services/networking/tcpcrypt.nix
   ./services/networking/teamspeak3.nix
+  ./services/networking/tedicross.nix
   ./services/networking/tinc.nix
   ./services/networking/tinydns.nix
   ./services/networking/tftpd.nix
@@ -708,6 +709,7 @@
   ./services/search/hound.nix
   ./services/search/kibana.nix
   ./services/search/solr.nix
+  ./services/security/bitwarden_rs/default.nix
   ./services/security/certmgr.nix
   ./services/security/cfssl.nix
   ./services/security/clamav.nix

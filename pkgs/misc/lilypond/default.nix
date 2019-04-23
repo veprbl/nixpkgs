@@ -23,12 +23,6 @@ stdenv.mkDerivation rec{
     sha256 = "01xs9x2wjj7w9appaaqdhk15r1xvvdbz9qwahzhppfmhclvp779j";
   };
 
-  preConfigure=''
-    sed -e "s@mem=mf2pt1@mem=$PWD/mf/mf2pt1@" -i scripts/build/mf2pt1.pl
-
-    export HOME=$TMPDIR/home
-  '';
-
   postInstall = ''
     for f in "$out/bin/"*; do
         # Override default argv[0] setting so LilyPond can find
@@ -41,6 +35,15 @@ stdenv.mkDerivation rec{
 
   configureFlags = [ "--disable-documentation" "--with-ncsb-dir=${urwfonts}"];
 
+  preConfigure = ''
+    sed -e "s@mem=mf2pt1@mem=$PWD/mf/mf2pt1@" -i scripts/build/mf2pt1.pl
+    export HOME=$TMPDIR/home
+  '';
+
+  nativeBuildInputs = [ makeWrapper pkgconfig autoreconfHook ];
+
+  autoreconfPhase = "NOCONFIGURE=1 sh autogen.sh";
+
   buildInputs =
     [ ghostscript texinfo imagemagick texi2html guile dblatex tex zip netpbm
       python2 gettext flex perl bison fontconfig freetype pango
@@ -48,8 +51,7 @@ stdenv.mkDerivation rec{
     ];
   nativeBuildInputs = [ makeWrapper pkgconfig autoreconfHook ];
 
-  autoreconfPhase = "NOCONFIGURE=1 ./autogen.sh";
-  #enableParallelBuilding = true; # fatal error: parser.hh: No such file or directory
+  enableParallelBuilding = true;
 
   meta = with stdenv.lib; {
     description = "Music typesetting system";
