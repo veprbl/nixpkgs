@@ -5,7 +5,7 @@
 
 assert enablePython -> python != null;
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (rec {
   pname = "audit";
   version = "2.8.5";
 
@@ -17,7 +17,6 @@ stdenv.mkDerivation rec {
   outputs = [ "bin" "dev" "out" "man" ];
 
   depsBuildBuild = [ buildPackages.stdenv.cc ];
-  nativeBuildInputs = [ autoreconfHook ];
   buildInputs = stdenv.lib.optional enablePython python;
 
   configureFlags = [
@@ -31,8 +30,6 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  patches = [ ./d579a08.patch ];
-
   meta = {
     description = "Audit Library";
     homepage = https://people.redhat.com/sgrubb/audit/;
@@ -40,4 +37,7 @@ stdenv.mkDerivation rec {
     platforms = stdenv.lib.platforms.linux;
     maintainers = with stdenv.lib.maintainers; [ fuuzetsu ];
   };
-}
+} // stdenv.lib.optionalAttrs stdenv.hostPlatform.isMusl {
+  nativeBuildInputs = [ autoreconfHook ];
+  patches = [ ./d579a08.patch ];
+});
