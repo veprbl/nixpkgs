@@ -1,4 +1,4 @@
-{ appimageTools, fetchurl, lib }:
+{ appimageTools, fetchurl, lib, gsettings-desktop-schemas, gtk3 }:
 
 let
   pname = "notable";
@@ -13,9 +13,9 @@ appimageTools.wrapType2 rec {
 
   extraPkgs = p: p.atomEnv.packages;
 
-  # TODO: Don't replace if already set?
   profile = ''
     export LC_ALL=C.UTF-8
+    export XDG_DATA_DIRS=${gsettings-desktop-schemas}/share/gsettings-schemas/${gsettings-desktop-schemas.name}:${gtk3}/share/gsettings-schemas/${gtk3.name}:$XDG_DATA_DIRS
   '';
 
   meta = with lib; {
