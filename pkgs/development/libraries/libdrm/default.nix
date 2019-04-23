@@ -1,11 +1,12 @@
 { stdenv, fetchurl, pkgconfig, meson, ninja, libpthreadstubs, libpciaccess, valgrind-light }:
 
 stdenv.mkDerivation rec {
-  name = "libdrm-2.4.97";
+  pname = "libdrm";
+  version = "2.4.98";
 
   src = fetchurl {
-    url = "https://dri.freedesktop.org/libdrm/${name}.tar.bz2";
-    sha256 = "08yimlp6jir1rs5ajgdx74xa5qdzcqahpdzdk0rmkmhh7vdcrl3p";
+    url = "https://dri.freedesktop.org/${pname}/${pname}-${version}.tar.bz2";
+    sha256 = "150qdzsm2nx6dfacc75rx53anzsc6m31nhxidf5xxax3mk6fvq4b";
   };
 
   outputs = [ "out" "dev" "bin" ];
@@ -25,13 +26,9 @@ stdenv.mkDerivation rec {
       --replace "subdir('nouveau')" ""
   '';
 
-#  preConfigure = stdenv.lib.optionalString stdenv.isDarwin
-#    "echo : \\\${ac_cv_func_clock_gettime=\'yes\'} > config.cache";
-#
   mesonFlags = [ "-Dinstall-test-programs=true" ]
     ++ stdenv.lib.optionals (stdenv.isAarch32 || stdenv.isAarch64)
       [ "-Dtegra=true" "-Detnaviv=true" ]
-    #++ stdenv.lib.optional stdenv.isDarwin "-C"
     ++ stdenv.lib.optional (stdenv.hostPlatform != stdenv.buildPlatform) "-Dintel=false"
     ;
 
