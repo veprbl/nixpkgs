@@ -9,7 +9,7 @@ with lib;
 
 mkDerivation rec {
   name = "libqtav-${version}";
-  version = "1.12.0";
+  version = "1.12.0-git";
 
   nativeBuildInputs = [ extra-cmake-modules qttools ];
   buildInputs = [
@@ -20,8 +20,9 @@ mkDerivation rec {
   ];
 
   src = fetchFromGitHub {
-    sha256 = "03ii9l38l3fsr27g42fx4151ipzkip2kr4akdr8x28sx5r9rr5m2";
-    rev = "v${version}";
+    sha256 = "1y24snzm6n8qynmyv111zc9jz8x2yrallcgpf2ri0b9k6f6bb9q3";
+    #rev = "v${version}";
+    rev = "6b8a65dc711013ff00543222ddf3ed99d9734ab8";
     repo = "QtAV";
     owner = "wang-bin";
     fetchSubmodules = true;
