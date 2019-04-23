@@ -18,6 +18,8 @@ appimageTools.wrapType2 rec {
     export XDG_DATA_DIRS=${gsettings-desktop-schemas}/share/gsettings-schemas/${gsettings-desktop-schemas.name}:${gtk3}/share/gsettings-schemas/${gtk3.name}:$XDG_DATA_DIRS
   '';
 
+  extraInstallCommands = "mv $out/bin/{${name},${pname}}";
+
   meta = with lib; {
     description = "The markdown-based note-taking app that doesn't suck";
     homepage = https://github.com/notable/notable;
