@@ -126,7 +126,7 @@ int main(gint argc, gchar **argv) {
     int status;
 
     fail_if(waitpid(cpid, &status, 0) != cpid);
-    fail_if(nftw(prefix, nftw_remove, getdtablesize(),
+    fail_if(nftw(prefix, nftw_remove, 100 /* getdtablesize() */,
                  FTW_DEPTH | FTW_MOUNT | FTW_PHYS));
 
     if (WIFEXITED(status))
