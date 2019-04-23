@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, makeWrapper, python, qmake, ctags, gdb }:
+{ stdenv, fetchurl, makeWrapper, python, qmake, universal-ctags, gdb }:
 
 stdenv.mkDerivation rec {
   name = "gede-${version}";
@@ -11,16 +11,17 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ qmake makeWrapper python ];
 
-  buildInputs = [ ctags ];
+  buildInputs = [ universal-ctags ];
 
   dontUseQmakeConfigure = true;
 
   buildPhase = ":";
 
   installPhase = ''
-    python build.py install --verbose --prefix="$out"
+    python build.py --verbose --prefix="$out"
+    python build.py --verbose --prefix="$out" install
     wrapProgram $out/bin/gede \
-      --prefix PATH : ${stdenv.lib.makeBinPath [ ctags gdb ]}
+      --prefix PATH : ${stdenv.lib.makeBinPath [ universal-ctags gdb ]}
   '';
 
   meta = with stdenv.lib; {
