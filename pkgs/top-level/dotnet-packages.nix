@@ -342,7 +342,7 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
         echo 'au BufRead,BufNewFile *.bpl set filetype=boogie' > $vimdir/ftdetect/bpl.vim
     '';
 
-    installCheckInputs = [ pkgs.lit pkgs.outputcheck ];
+    installCheckInputs = with pkgs; [ lit outputcheck diffutils ];
     installCheckPhase = ''
       ln -sv "${pkgs.z3}/bin/z3" Binaries/z3.exe
       lit Test
