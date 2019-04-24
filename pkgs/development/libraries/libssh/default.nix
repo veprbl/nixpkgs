@@ -13,8 +13,8 @@ stdenv.mkDerivation rec {
     sed -i 's,nacl/,sodium/,g' ./include/libssh/curve25519.h src/curve25519.c
   '';
 
-  # single output, otherwise cmake files point to wrong directory for libs :(
-  #outputs = [ "out" "dev" ];
+  # single output, otherwise cmake and .pc files point to the wrong directory
+  # outputs = [ "out" "dev" ];
 
   buildInputs = [ zlib openssl libsodium ];
 
