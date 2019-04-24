@@ -344,7 +344,9 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
 
     installCheckInputs = with pkgs; [ lit outputcheck diffutils ];
     installCheckPhase = ''
+      # Test expects z3 to be in "Binaries", so place a link there
       ln -sv "${pkgs.z3}/bin/z3" Binaries/z3.exe
+
       lit -sv Test
     '';
     doInstallCheck = true;
