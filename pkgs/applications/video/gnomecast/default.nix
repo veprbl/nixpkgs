@@ -3,11 +3,11 @@
 with python3Packages;
 buildPythonApplication rec {
   pname = "gnomecast";
-  version = "1.5.0";
+  version = "1.7.1";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "04wa6mphz4ap2iahgh747ml2lxfax35l5byla5i86d04f2f1aiwr";
+    sha256 = "0hss7m9chqjhdzbvxs8kr312izb5diz85nfv7c050gpslk5mkr0v";
   };
 
   nativeBuildInputs = [ wrapGAppsHook ];
