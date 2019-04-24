@@ -39,9 +39,9 @@ stdenv.mkDerivation rec {
   '';
 
   configureFlags = [
-    #"--x-includes=${libX11.dev}/include"
-    #"--x-libraries=${libX11.out}/lib"
-    #"--with-libgdiplus=${libgdiplus}/lib/libgdiplus.so"
+    "--x-includes=${libX11.dev}/include"
+    "--x-libraries=${libX11.out}/lib"
+    "--with-libgdiplus=${libgdiplus}/lib/libgdiplus.so"
     "--with-large-heap=yes" # for heaps larger than 3GB
   ]
   ++ stdenv.lib.optionals withLLVM [
@@ -49,10 +49,6 @@ stdenv.mkDerivation rec {
     "--with-llvm=${llvm}"
   ];
 
-  #configurePhase = ''
-  #  patchShebangs ./
-  #  ./autogen.sh --prefix $out $configureFlags
-  #'';
 
   # Attempt to fix this error when running "mcs --version":
   # The file /nix/store/xxx-mono-2.4.2.1/lib/mscorlib.dll is an invalid CIL image
