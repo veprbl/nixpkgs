@@ -63,10 +63,11 @@ stdenv.mkDerivation rec {
   # upstream frequently pushes tarballs with compiled files,
   # which we don't want and in some cases (cross) are just wrong.
   # Remove them now.  Upstream issue 14179.
-  postPatch = let
-    dotExts = [ "libs" "deps" "so" "lo" "Plo" "dirstamp" ];
-    matchargs = stdenv.lib.concatMapStringsSep " -o " (ext: ''-path '*\.${ext}' '') dotExts;
-  in "find external ${matchargs} -delete";
+  # XXX: Shouldn't be needed, keeping for a bit JIC
+  #postPatch = let
+  #  dotExts = [ "libs" "deps" "so" "lo" "Plo" "dirstamp" ];
+  #  matchargs = stdenv.lib.concatMapStringsSep " -o " (ext: ''-path '*\.${ext}' '') dotExts;
+  #in "find external ${matchargs} -delete";
 
   # Patch all the necessary scripts. Also, if we're using LLVM, we fix the default
   # LLVM path to point into the Mono LLVM build, since it's private anyway.
