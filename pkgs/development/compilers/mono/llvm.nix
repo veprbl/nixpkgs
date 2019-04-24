@@ -15,13 +15,13 @@
 
 stdenv.mkDerivation rec {
   name    = "llvm-${version}";
-  version = "3.6-mono-2017-02-15";
+  version = "6.0-mono-2019-03-08";
 
   src = fetchFromGitHub {
     owner = "mono";
     repo = "llvm";
-    rev = "dbb6fdffdeb780d11851a6be77c209bd7ada4bd3";
-    sha256 = "07wd1cs3fdvzb1lv41b655z5zk34f47j8fgd9ljjimi5j9pj71f7";
+    rev = "286f43185878a77fdc78c3303db68e514969bc30";
+    sha256 = "06z1pgvn5g7qywfgagy6fnza3qbfivn91y8jvfmwpzk8mb5h17mz";
   };
 
   buildInputs = [ perl groff cmake libxml2 python2 libffi ] ++ lib.optional stdenv.isLinux valgrind;
