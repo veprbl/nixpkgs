@@ -67,7 +67,16 @@ stdenv.mkDerivation rec {
     substituteInPlace mcs/class/corlib/System/Environment.cs --replace /usr/share "$out/share"
   '' + stdenv.lib.optionalString withLLVM ''
     substituteInPlace mono/mini/aot-compiler.c --replace "llvm_path = g_strdup (\"\")" "llvm_path = g_strdup (\"${llvm}/bin/\")"
-  '';
+  '' +
+  # upstream frequently pushes tarballs with compiled files,
+  # which we don't want and in some cases (cross) are just wrong.
+  # Remove them now.  Upstream issue 14179.
+  (let
+    dotExts = [ "libs" "deps" "so" "lo" "Plo" "dirstamp" ];
+    matchargs = stdenv.lib.concatMapStringsSep " -o " (ext: ''-path '*\.${ext}' '') dotExts;
+  in ''
+    find external ${matchargs} -delete
+  '');
 
   # Fix mono DLLMap so it can find libX11 to run winforms apps
   # libgdiplus is correctly handled by the --with-libgdiplus configure flag
