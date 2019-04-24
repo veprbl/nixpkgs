@@ -9209,7 +9209,7 @@ in
 
   linuxkit = callPackage ../development/tools/misc/linuxkit { };
 
-  lit = callPackage ../development/tools/misc/lit { };
+  lit = callPackage ../development/tools/misc/lit { python = python3; };
 
   litecli = callPackage ../development/tools/database/litecli {};
 
@@ -9313,7 +9313,9 @@ in
     libiberty_static = libiberty.override { staticBuild = true; };
   };
 
-  outputcheck = callPackage ../development/tools/misc/outputcheck { };
+  outputcheck = callPackage ../development/tools/misc/outputcheck {
+    pythonPackages = python3Packages;
+  };
 
   pahole = callPackage ../development/tools/misc/pahole {};
 
