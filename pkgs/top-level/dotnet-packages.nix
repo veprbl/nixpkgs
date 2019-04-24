@@ -855,20 +855,14 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
     outputFiles = [ "*" ];
   };
 
-  Nuget = buildDotnetPackage rec {
-    baseName = "Nuget";
+  Nuget = fetchNuGet {
+    baseName = "Nuget.CommandLine";
     version = "4.9.4";
+    sha256 = "05lvqip3235s42236k8lc9fxsqnp1xz21hwdv0r19a1md8il05bz";
+    dontPlacateNuget = true;
 
-    src = fetchurl {
-      url = "https://dist.nuget.org/win-x86-commandline/v${version}/nuget.exe";
-      sha256 = "1xpqx9csgl2ydx85q5w1ndfadjkdw67mbs4jm1ypxl06bn2rs4yb";
-    };
-
-    phases = [ "unpackPhase" "installPhase" ];
-
+    exeFiles = [ "tools/NuGet.exe" ];
     outputFiles = [ "*" ];
-    #dllFiles = [ "NuGet*.dll" ];
-    exeFiles = [ "nuget.exe" ];
   };
 
   Paket = fetchNuGet {
