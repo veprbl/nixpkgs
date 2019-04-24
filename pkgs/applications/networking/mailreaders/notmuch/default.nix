@@ -43,8 +43,6 @@ stdenv.mkDerivation rec {
     ruby  # (optional) ruby bindings
   ];
 
-  patches = [ ./reindex-mem-leak.patch ];
-
   postPatch = ''
     patchShebangs configure
     patchShebangs test/
