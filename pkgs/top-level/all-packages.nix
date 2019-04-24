@@ -17717,6 +17717,7 @@ in
                                             Kerberos AVFoundation MediaToolbox
                                             CoreLocation Foundation AddressBook;
       inherit (darwin) libobjc;
+      stdenv = clangStdenv;
     };
   });
 
