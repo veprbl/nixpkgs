@@ -22,6 +22,8 @@ in
       sha512 = "8DA955FA0AEEBB6513A6E8C4C23472286ED78BD5533AF37D79A4F2C42060E736FDA5FD48B61BF5AEC10BBA96EB2610FACC0F8A458823D374E1D437B26BA61A5C";
     };
 
+    sourceRoot = ".";
+
     buildPhase = ''
       runHook preBuild
       patchelf --set-interpreter "${stdenv.cc.bintools.dynamicLinker}" ./dotnet
