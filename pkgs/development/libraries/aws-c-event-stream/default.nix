@@ -19,6 +19,9 @@ stdenv.mkDerivation rec {
     "-DCMAKE_MODULE_PATH=${aws-c-common}/lib/cmake"
   ];
 
+  # TODO: setup-hook?
+  NIX_LDFLAGS = lib.optional stdenv.hostPlatform.isMusl "-lexecinfo";
+
   meta = with lib; {
     description = "C99 implementation of the vnd.amazon.eventstream content-type";
     homepage = https://github.com/awslabs/aws-c-event-stream;

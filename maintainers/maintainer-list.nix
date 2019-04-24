@@ -1328,6 +1328,11 @@
     github = "dtzWill";
     name = "Will Dietz";
   };
+  dxf = {
+    email = "dingxiangfei2009@gmail.com";
+    github = "dingxiangfei2009";
+    name = "Ding Xiang Fei";
+  };
   dysinger = {
     email = "tim@dysinger.net";
     github = "dysinger";
@@ -1696,6 +1701,11 @@
     email = "mista.tapas@gmx.net";
     github = "fps";
     name = "Florian Paul Schmidt";
+  };
+  fredeb = {
+    email = "im@fredeb.dev";
+    github = "fredeeb";
+    name = "Frede Emil";
   };
   freepotion = {
     email = "freepotion@protonmail.com";
@@ -5454,6 +5464,11 @@
     email = "zohl@fmap.me";
     github = "zohl";
     name = "Al Zohali";
+  };
+  zookatron = {
+    email = "tim@zookatron.com";
+    github = "zookatron";
+    name = "Tim Zook";
   };
   zoomulator = {
     email = "zoomulator@gmail.com";

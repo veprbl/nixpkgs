@@ -1,7 +1,12 @@
-{ stdenv, fetchurl, bison, pkgconfig, glib, gettext, perl, libgdiplus, libX11, callPackage, ncurses, zlib, withLLVM ? false, cacert, Foundation, libobjc, python, version, sha256, autoconf, libtool, automake, cmake, which, enableParallelBuilding ? true }:
+{ stdenv, fetchurl, bison, glib, gettext, perl, libgdiplus, libX11, ncurses, zlib
+, cacert, Foundation, libobjc, python, version, sha256
+, cmake, which, pkgconfig, autoreconfHook
+, withLLVM ? stdenv.hostPlatform.is64bit, callPackage
+, withNinja ? true, ninja
+, enableParallelBuilding ? true }:
 
 let
-  llvm     = callPackage ./llvm.nix { };
+  llvm = callPackage ./llvm.nix {};
 in
 stdenv.mkDerivation rec {
   name = "mono-${version}";
@@ -11,8 +16,13 @@ stdenv.mkDerivation rec {
     url = "https://download.mono-project.com/sources/mono/${name}.tar.bz2";
   };
 
+  nativeBuildInputs = [ cmake pkgconfig which perl python autoreconfHook  ninja ];
+
+  dontUseNinjaBuild = true;
+  dontUseNinjaInstall = true;
+
   buildInputs =
-    [ bison pkgconfig glib gettext perl libgdiplus libX11 ncurses zlib python autoconf libtool automake cmake which
+    [ bison glib gettext libgdiplus libX11 ncurses zlib 
     ]
     ++ (stdenv.lib.optionals stdenv.isDarwin [ Foundation libobjc ]);
 
@@ -23,28 +33,40 @@ stdenv.mkDerivation rec {
   # To overcome the bug https://bugzilla.novell.com/show_bug.cgi?id=644723
   dontDisableStatic = true;
 
+  autoreconfPhase = ''
+    patchShebangs ./
+    NOCONFIGURE=1 ./autogen.sh
+  '';
+
   configureFlags = [
     "--x-includes=${libX11.dev}/include"
     "--x-libraries=${libX11.out}/lib"
     "--with-libgdiplus=${libgdiplus}/lib/libgdiplus.so"
+    "--with-large-heap=yes" # for heaps larger than 3GB
   ]
   ++ stdenv.lib.optionals withLLVM [
     "--enable-llvm"
     "--with-llvm=${llvm}"
   ];
 
-  configurePhase = ''
-    patchShebangs ./
-    ./autogen.sh --prefix $out $configureFlags
-  '';
 
   # Attempt to fix this error when running "mcs --version":
   # The file /nix/store/xxx-mono-2.4.2.1/lib/mscorlib.dll is an invalid CIL image
   dontStrip = true;
 
+  dontUseCmakeConfigure = true;
+
   # We want pkg-config to take priority over the dlls in the Mono framework and the GAC
   # because we control pkg-config
   patches = [ ./pkgconfig-before-gac.patch ];
+
+  # upstream frequently pushes tarballs with compiled files,
+  # which we don't want and in some cases (cross) are just wrong.
+  # Remove them now.  Upstream issue 14179.
+  postPatch = let
+    dotExts = [ "libs" "deps" "so" "lo" "Plo" "dirstamp" ];
+    matchargs = stdenv.lib.concatMapStringsSep " -o " (ext: ''-path '*\.${ext}' '') dotExts;
+  in "find external ${matchargs} -delete";
 
   # Patch all the necessary scripts. Also, if we're using LLVM, we fix the default
   # LLVM path to point into the Mono LLVM build, since it's private anyway.
@@ -58,7 +80,7 @@ stdenv.mkDerivation rec {
   # Fix mono DLLMap so it can find libX11 to run winforms apps
   # libgdiplus is correctly handled by the --with-libgdiplus configure flag
   # Other items in the DLLMap may need to be pointed to their store locations, I don't think this is exhaustive
-  # http://www.mono-project.com/Config_DllMap
+  # https://www.mono-project.com/Config_DllMap
   postBuild = ''
     find . -name 'config' -type f | xargs \
     sed -i -e "s@libX11.so.6@${libX11.out}/lib/libX11.so.6@g"

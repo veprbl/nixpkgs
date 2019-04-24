@@ -73,6 +73,8 @@ in stdenv.mkDerivation rec {
 
     substituteInPlace src/gnome-shell-extension-tool.in --replace "@PYTHON@" "${pythonEnv}/bin/python"
     substituteInPlace src/gnome-shell-perf-tool.in --replace "@PYTHON@" "${pythonEnv}/bin/python"
+
+    substituteInPlace meson.build --replace python3 "${pythonEnv}/bin/python"
   '';
 
   postInstall = ''

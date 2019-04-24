@@ -1,16 +1,16 @@
-{ stdenv, fetchgit, autoreconfHook, pkgconfig, ell, coreutils, readline80, python3Packages }:
+{ stdenv, fetchgit, autoreconfHook, pkgconfig, ell, coreutils, readline, python3Packages }:
 
 stdenv.mkDerivation rec {
   pname = "iwd";
 
   #version = "0.17";
-  version = "2019-04-19";
+  version = "2019-04-23";
 
   src = fetchgit {
     url = https://git.kernel.org/pub/scm/network/wireless/iwd.git;
     #rev = version;
-    rev = "bc7b12d1a4a71b6ac2e12ce07c2afd59440c3dfc";
-    sha256 = "0mxpni3a6qzlzalhkbiskk8ywxkdzpswl8ir1qckyx95l20g601r";
+    rev = "78b5f56516d9b620fb491d532abb45efecebceb3";
+    sha256 = "0fh96hqg6yc0s09r99510g1zab5pgmy8mgzqwjj612sdb3v32klg";
   };
 
   nativeBuildInputs = [
@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     ell
-    readline80
+    readline
     python3Packages.python
   ];
 

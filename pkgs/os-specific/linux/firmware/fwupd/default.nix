@@ -19,11 +19,11 @@ let
   };
 in stdenv.mkDerivation rec {
   pname = "fwupd";
-  version = "1.2.6";
+  version = "1.2.8";
 
   src = fetchurl {
     url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
-    sha256 = "0rwljyv4ch83sgxmfqn5g75vdw7zins0l79iaf60iy8d59jkpx9n";
+    sha256 = "0qbvq52c0scn1h99i1rf2la6rrhckin6gb02k7l0v3g07mxs20wc";
   };
 
   outputs = [ "out" "lib" "dev" "devdoc" "man" "installedTests" ];
@@ -135,10 +135,11 @@ in stdenv.mkDerivation rec {
   # /etc/fwupd/uefi.conf is created by the services.hardware.fwupd NixOS module
   passthru = {
     filesInstalledToEtc = [
-      "fwupd/remotes.d/fwupd.conf"
+      "fwupd/remotes.d/dell-esrt.conf"
       "fwupd/remotes.d/lvfs-testing.conf"
       "fwupd/remotes.d/lvfs.conf"
       "fwupd/remotes.d/vendor.conf"
+      "fwupd/remotes.d/vendor-directory.conf"
       "pki/fwupd/GPG-KEY-Hughski-Limited"
       "pki/fwupd/GPG-KEY-Linux-Foundation-Firmware"
       "pki/fwupd/GPG-KEY-Linux-Vendor-Firmware-Service"

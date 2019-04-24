@@ -1,8 +1,8 @@
 { stdenv, fetchurl, unzip, sqlite, makeWrapper, dotnet-sdk, ffmpeg }:
 
 stdenv.mkDerivation rec {
-  name = "emby-${version}";
-  version = "3.5.3.0";
+  pname = "emby";
+  version = "4.1.0.26";
 
   # We are fetching a binary here, however, a source build is possible.
   # See -> https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=emby-server-git#n43
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
   # See -> https://github.com/NixOS/nixpkgs/issues/29817
   src = fetchurl {
     url = "https://github.com/MediaBrowser/Emby.Releases/releases/download/${version}/embyserver-netcore_${version}.zip";
-    sha256 = "0311af3q813cx0ykbdk9vkmnyqi2l8rx66jnvdkw927q6invnnpj";
+    sha256 = "03ryw34rx87gdrwk8cibb71wsxli254bpk1iyy2f1xbg7r3bpffc";
   };
 
   buildInputs = [

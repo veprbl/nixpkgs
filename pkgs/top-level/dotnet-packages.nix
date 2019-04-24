@@ -305,14 +305,14 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
 
   Boogie = buildDotnetPackage rec {
     baseName = "Boogie";
-    version = "2018-05-28";
+    version = "2019-04-04";
     name = "${baseName}-unstable-${version}";
 
     src = fetchFromGitHub {
       owner = "boogie-org";
       repo = "boogie";
-      rev = "fc97aac639505f46cda7904dae95c9557716d037";
-      sha256 = "1hjksc5sapw1shxjwg0swja5afman8i15wnv5b6rzkqd4mg8y6nz";
+      rev = "32cb0b9398bd5fac91717ea820d56bd391322434";
+      sha256 = "02fqsz0r1g66m0vw0h0hwiq07p4h8z0pn1bmqi0pji0wzsr21vak";
     };
 
     # emulate `nuget restore Source/Boogie.sln`
@@ -341,6 +341,15 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
         mkdir $vimdir/ftdetect
         echo 'au BufRead,BufNewFile *.bpl set filetype=boogie' > $vimdir/ftdetect/bpl.vim
     '';
+
+    installCheckInputs = with pkgs; [ lit outputcheck diffutils ];
+    installCheckPhase = ''
+      # Test expects z3 to be in "Binaries", so place a link there
+      ln -sv "${pkgs.z3}/bin/z3" Binaries/z3.exe
+
+      lit -sv Test
+    '';
+    doInstallCheck = true;
 
     meta = with stdenv.lib; {
       description = "An intermediate verification language";
@@ -402,7 +411,7 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
 
     meta = with stdenv.lib; {
       description = "A programming language with built-in specification constructs";
-      homepage = "http://research.microsoft.com/dafny";
+      homepage = "https://research.microsoft.com/dafny";
       maintainers = with maintainers; [ layus ];
       license = licenses.mit;
       platforms = with platforms; (linux ++ darwin);
@@ -563,7 +572,7 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
 
     meta = {
       description = "The F# compiler services package is a component derived from the F# compiler source code that exposes additional functionality for implementing F# language bindings";
-      homepage = "http://fsharp.github.io/FSharp.Compiler.Service/";
+      homepage = "https://fsharp.github.io/FSharp.Compiler.Service/";
       license = stdenv.lib.licenses.asl20;
       maintainers = with stdenv.lib.maintainers; [ obadz ];
       platforms = with stdenv.lib.platforms; linux;
@@ -607,7 +616,7 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
 
     meta = {
       description = "F# Data: Library for Data Access";
-      homepage = "http://fsharp.github.io/FSharp.Data/";
+      homepage = "https://fsharp.github.io/FSharp.Data/";
       license = stdenv.lib.licenses.asl20;
       maintainers = with stdenv.lib.maintainers; [ obadz ];
       platforms = with stdenv.lib.platforms; linux;
@@ -639,7 +648,7 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
   #
   #   meta = {
   #     description = "FSharpx.Extras is a collection of libraries and tools for use with F#";
-  #     homepage = "http://fsprojects.github.io/FSharpx.Extras/";
+  #     homepage = "https://fsprojects.github.io/FSharpx.Extras/";
   #     license = stdenv.lib.licenses.asl20;
   #     maintainers = with stdenv.lib.maintainers; [ obadz ];
   #     platforms = with stdenv.lib.platforms; linux;
@@ -741,7 +750,7 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
 
     meta = {
       description = "A generic framework for creating extensible applications";
-      homepage = http://www.mono-project.com/Mono.Addins;
+      homepage = https://www.mono-project.com/Mono.Addins;
       longDescription = ''
         A generic framework for creating extensible applications,
         and for creating libraries which extend those applications.
@@ -846,24 +855,14 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
     outputFiles = [ "*" ];
   };
 
-  Nuget = buildDotnetPackage {
-    baseName = "Nuget";
-    version = "3.4.3";
+  Nuget = fetchNuGet {
+    baseName = "Nuget.CommandLine";
+    version = "4.9.4";
+    sha256 = "05lvqip3235s42236k8lc9fxsqnp1xz21hwdv0r19a1md8il05bz";
+    dontPlacateNuget = true;
 
-    src = fetchFromGitHub {
-      owner = "mono";
-      repo = "nuget-binary";
-      rev = "1f3025c2eb13bfcb56b47ddd77329ac3d9911d1c";
-      sha256 = "01snk05hcrp5i2ys3p1y34r05q1b460q6wb8p3vwpba2q2czdax5";
-    };
-
-    buildInputs = [ unzip ];
-
-    phases = [ "unpackPhase" "installPhase" ];
-
+    exeFiles = [ "tools/NuGet.exe" ];
     outputFiles = [ "*" ];
-    dllFiles = [ "NuGet*.dll" ];
-    exeFiles = [ "nuget.exe" ];
   };
 
   Paket = fetchNuGet {
@@ -927,7 +926,7 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
 
     meta = {
       description = "A declarative CLI argument/XML configuration parser for F# applications";
-      homepage = http://nessos.github.io/UnionArgParser/;
+      homepage = https://nessos.github.io/UnionArgParser/;
       license = stdenv.lib.licenses.mit;
       maintainers = with stdenv.lib.maintainers; [ obadz ];
       platforms = with stdenv.lib.platforms; linux;

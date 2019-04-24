@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   pname = "qjournalctl";
-  version = "2018-11-25";
+  version = "unstable-2018-11-25";
 
   src = fetchFromGitHub {
     owner = "pentix";

@@ -3,14 +3,15 @@
 
 stdenv.mkDerivation rec {
   name    = "ccls-${version}";
-  version = "0.20190329";
+  #version = "0.20190329";
+  version = "0.20190418";
 
   src = fetchFromGitHub {
     owner = "MaskRay";
     repo = "ccls";
     #rev = version;
-    rev = "64f9dbdc7a3e52ee2116f1f65afb818f20b8fadc";
-    sha256 = "10pw33v172ji8s1xzdq0vkxxq6f0b0xbkz9i9qfhqwvdps3l80v5";
+    rev = "e496d4e5db47b602b14fe53bd556f11d0b025f52";
+    sha256 = "0s45lildmb81i6yza8wfvb5i7dq0mn55sa9cjpp263wcx6rvmb1v";
   };
 
   nativeBuildInputs = [ cmake makeWrapper ];

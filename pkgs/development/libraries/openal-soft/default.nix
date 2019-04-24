@@ -31,7 +31,7 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "OpenAL alternative";
-    homepage = http://openal-soft.org;
+    homepage = https://kcat.strangesoft.net/openal.html;
     license = licenses.lgpl2;
     maintainers = with maintainers; [ftrvxmtrx];
     platforms = platforms.unix;

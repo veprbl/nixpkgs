@@ -1,16 +1,16 @@
 { stdenv, appimageTools, fetchurl }:
 
 let
-  version = "3.0.6";
+  version = "3.0.8";
 
   plat = {
-    "i386-linux" = "i386";
+    "i686-linux" = "i386";
     "x86_64-linux" = "x86_64";
   }.${stdenv.hostPlatform.system};
 
   sha256 = {
-    "i386-linux" = "0czhlbacjks9x8y2w46nzlvk595psqhqw0vl0bvsq7sz768dk0ni";
-    "x86_64-linux" = "0haji9h8rrm9yvqdv6i2y6xdd0yhsssjjj83hmf6cb868lwyigsf";
+    "i686-linux" = "0v2nsis6vb1lnhmjd28vrfxqwwpycv02j0nvjlfzcgj4b3400j9a";
+    "x86_64-linux" = "02rd7chpsfz3f19iv7dh9q3gpacjnm0mkfhrc8a0gjmz24jmyx2n";
   }.${stdenv.hostPlatform.system};
 in
 
@@ -31,6 +31,6 @@ in
     homepage = https://standardnotes.org;
     license = licenses.agpl3;
     maintainers = with maintainers; [ mgregoire ];
-    platforms = [ "i386-linux" "x86_64-linux" ];
+    platforms = [ "i686-linux" "x86_64-linux" ];
   };
 })

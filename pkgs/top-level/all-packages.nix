@@ -666,6 +666,10 @@ in
 
   bcachefs-tools = callPackage ../tools/filesystems/bcachefs-tools { };
 
+  bitwarden_rs = callPackage ../tools/security/bitwarden_rs { };
+
+  bitwarden_rs-vault = callPackage ../tools/security/bitwarden_rs/vault.nix { };
+
   bitwarden-cli = callPackage ../tools/security/bitwarden-cli { };
 
   bmap-tools = callPackage ../tools/misc/bmap-tools { };
@@ -2167,7 +2171,7 @@ in
     mozc = callPackage ../tools/inputmethods/ibus-engines/ibus-mozc rec {
       python = python2;
       inherit (python2Packages) gyp;
-      protobuf = pkgs.protobuf3_6.overrideDerivation (oldAttrs: { stdenv = clangStdenv; });
+      protobuf = pkgs.protobuf.overrideDerivation (oldAttrs: { stdenv = clangStdenv; });
     };
 
     table = callPackage ../tools/inputmethods/ibus-engines/ibus-table {
@@ -3898,6 +3902,8 @@ in
 
   k6 = callPackage ../development/tools/k6 { };
 
+  lalezar-fonts = callPackage ../data/fonts/lalezar-fonts { };
+
   ldc = callPackage ../development/compilers/ldc { };
 
   lbreakout2 = callPackage ../games/lbreakout2 { };
@@ -4673,6 +4679,8 @@ in
     buildGoPackage = buildGo110Package;
   };
 
+  notable = callPackage ../applications/misc/notable { };
+
   miller = callPackage ../tools/text/miller { };
 
   milu = callPackage ../applications/misc/milu { };
@@ -5133,6 +5141,7 @@ in
   playbar2 = libsForQt5.callPackage ../applications/audio/playbar2 { };
 
   plex = callPackage ../servers/plex { };
+  plexRaw = callPackage ../servers/plex/raw.nix { };
 
   tautulli = callPackage ../servers/tautulli { python = python2; };
 
@@ -6695,6 +6704,8 @@ in
 
   xurls = callPackage ../tools/text/xurls {};
 
+  xv = callPackage ../tools/misc/xv {};
+
   xvfb_run = callPackage ../tools/misc/xvfb-run { inherit (texFunctions) fontsConf; };
 
   xvkbd = callPackage ../tools/X11/xvkbd {};
@@ -7808,6 +7819,7 @@ in
 
   cargo-download = callPackage ../tools/package-management/cargo-download { };
   cargo-edit = callPackage ../tools/package-management/cargo-edit { };
+  cargo-outdated = callPackage ../tools/package-management/cargo-outdated {};
   cargo-release = callPackage ../tools/package-management/cargo-release {
     inherit (darwin.apple_sdk.frameworks) Security;
   };
@@ -9010,7 +9022,7 @@ in
 
   funnelweb = callPackage ../development/tools/literate-programming/funnelweb { };
 
-  gede = libsForQt59.callPackage ../development/tools/misc/gede { };
+  gede = libsForQt5.callPackage ../development/tools/misc/gede { };
 
   gdbgui = python3Packages.callPackage ../development/tools/misc/gdbgui { };
 
@@ -9198,7 +9210,7 @@ in
 
   linuxkit = callPackage ../development/tools/misc/linuxkit { };
 
-  lit = callPackage ../development/tools/misc/lit { };
+  lit = callPackage ../development/tools/misc/lit { python = python3; };
 
   litecli = callPackage ../development/tools/database/litecli {};
 
@@ -9237,6 +9249,8 @@ in
   mkdocs = callPackage ../development/tools/documentation/mkdocs { };
 
   moby = callPackage ../development/tools/misc/moby { };
+
+  modd = callPackage ../development/tools/modd { };
 
   msgpack-tools = callPackage ../development/tools/msgpack-tools { };
 
@@ -9298,6 +9312,10 @@ in
 
   oprofile = callPackage ../development/tools/profiling/oprofile {
     libiberty_static = libiberty.override { staticBuild = true; };
+  };
+
+  outputcheck = callPackage ../development/tools/misc/outputcheck {
+    pythonPackages = python3Packages;
   };
 
   pahole = callPackage ../development/tools/misc/pahole {};
@@ -10099,7 +10117,7 @@ in
   # Aliases
   ffmpeg_2 = ffmpeg_2_8;
   ffmpeg_3 = ffmpeg_3_4;
-  ffmpeg = ffmpeg_3;
+  ffmpeg = ffmpeg_4;
 
   ffmpeg-full = callPackage ../development/libraries/ffmpeg-full {
     # The following need to be fixed on Darwin
@@ -10437,7 +10455,7 @@ in
   gsettings-qt = libsForQt5.callPackage ../development/libraries/gsettings-qt { };
 
   gst_all_1 = recurseIntoAttrs(callPackage ../development/libraries/gstreamer {
-    callPackage = pkgs.newScope (pkgs // { libav = pkgs.ffmpeg; });
+    callPackage = pkgs.newScope (pkgs // { libav = pkgs.ffmpeg_3; });
   });
 
   gstreamer = callPackage ../development/libraries/gstreamer/legacy/gstreamer {
@@ -11317,6 +11335,8 @@ in
 
   libguestfs-appliance = callPackage ../development/libraries/libguestfs/appliance.nix {};
   libguestfs = callPackage ../development/libraries/libguestfs { };
+  libguestfs-with-appliance = libguestfs.override { appliance = libguestfs-appliance; };
+
 
   libhangul = callPackage ../development/libraries/libhangul { };
 
@@ -12869,6 +12889,8 @@ in
 
   selinux-sandbox = callPackage ../os-specific/linux/selinux-sandbox { };
 
+  seasocks = callPackage ../development/libraries/seasocks { };
+
   serd = callPackage ../development/libraries/serd {};
 
   serf = callPackage ../development/libraries/serf {};
@@ -14390,7 +14412,7 @@ in
     buildGoPackage = buildGo110Package;
   };
   prometheus-tor-exporter = callPackage ../servers/monitoring/prometheus/tor-exporter.nix { };
-  prometheus-statsd-exporter = callPackage ../servers/monitoring/prometheus/statsd-bridge.nix { };
+  prometheus-statsd-exporter = callPackage ../servers/monitoring/prometheus/statsd-exporter.nix { };
   prometheus-surfboard-exporter = callPackage ../servers/monitoring/prometheus/surfboard-exporter.nix { };
   prometheus-unifi-exporter = callPackage ../servers/monitoring/prometheus/unifi-exporter { };
   prometheus-varnish-exporter = callPackage ../servers/monitoring/prometheus/varnish-exporter.nix { };
@@ -14919,7 +14941,7 @@ in
 
   iw = callPackage ../os-specific/linux/iw { };
 
-  iwd = callPackage ../os-specific/linux/iwd { };
+  iwd = callPackage ../os-specific/linux/iwd { readline = readline80; };
 
   jfbview = callPackage ../os-specific/linux/jfbview { };
   jfbpdf = jfbview.override {
@@ -19992,6 +20014,10 @@ in
 
   sublime3-dev = sublime3Packages.sublime3-dev;
 
+  inherit (callPackage ../applications/version-management/sublime-merge {})
+    sublime-merge
+    sublime-merge-dev;
+
   inherit (callPackages ../applications/version-management/subversion { sasl = cyrus_sasl; })
     subversion18 subversion19 subversion_1_10 subversion_1_11;
 
@@ -22517,6 +22543,8 @@ in
   gerbv = callPackage ../applications/science/electronics/gerbv { };
 
   gtkwave = callPackage ../applications/science/electronics/gtkwave { };
+
+  fped = callPackage ../applications/science/electronics/fped { };
 
   kicad = callPackage ../applications/science/electronics/kicad {
     wxGTK = wxGTK30;

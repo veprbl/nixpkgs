@@ -2,7 +2,7 @@
 stdenv.mkDerivation rec {
   name = "compiler-rt-${version}";
   inherit version;
-  src = fetch "compiler-rt" "065ybd8fsc4h2hikbdyricj6pyv4r7r7kpcikhb2y5zf370xybkq";
+  src = fetch "compiler-rt" "1n48p8gjarihkws0i2bay5w9bdwyxyxxbpwyng7ba58jb30dlyq5";
 
   nativeBuildInputs = [ cmake python llvm ];
   buildInputs = stdenv.lib.optional stdenv.hostPlatform.isDarwin libcxxabi;
@@ -52,7 +52,7 @@ stdenv.mkDerivation rec {
     ln -s "$out/lib"/*/* "$out/lib"
   '' + stdenv.lib.optionalString (stdenv.hostPlatform != stdenv.buildPlatform) ''
     ln -s $out/lib/*/clang_rt.crtbegin-*.o $out/lib/linux/crtbegin.o
-    ln -s $out/lib/*/cclang_rt.crtend-*.o $out/lib/linux/crtend.o
+    ln -s $out/lib/*/clang_rt.crtend-*.o $out/lib/linux/crtend.o
     ln -s $out/lib/*/clang_rt.crtbegin_shared-*.o $out/lib/linux/crtbeginS.o
     ln -s $out/lib/*/clang_rt.crtend_shared-*.o $out/lib/linux/crtendS.o
   '';

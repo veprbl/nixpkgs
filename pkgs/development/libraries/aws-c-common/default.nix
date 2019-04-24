@@ -20,6 +20,9 @@ stdenv.mkDerivation rec {
     "-Wno-typedef-redefinition"
   ];
 
+  # TODO: setup-hook?
+  NIX_LDFLAGS = lib.optional stdenv.hostPlatform.isMusl "-lexecinfo";
+
   meta = with lib; {
     description = "AWS SDK for C common core";
     homepage = https://github.com/awslabs/aws-c-common;

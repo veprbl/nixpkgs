@@ -675,6 +675,7 @@
   ./services/networking/syncthing-relay.nix
   ./services/networking/tcpcrypt.nix
   ./services/networking/teamspeak3.nix
+  ./services/networking/tedicross.nix
   ./services/networking/tinc.nix
   ./services/networking/tinydns.nix
   ./services/networking/tftpd.nix
@@ -687,6 +688,7 @@
   ./services/networking/vsftpd.nix
   ./services/networking/wakeonlan.nix
   ./services/networking/websockify.nix
+  ./services/networking/wg-quick.nix
   ./services/networking/wicd.nix
   ./services/networking/wireguard.nix
   ./services/networking/wpa_supplicant.nix
@@ -708,6 +710,7 @@
   ./services/search/hound.nix
   ./services/search/kibana.nix
   ./services/search/solr.nix
+  ./services/security/bitwarden_rs/default.nix
   ./services/security/certmgr.nix
   ./services/security/cfssl.nix
   ./services/security/clamav.nix
