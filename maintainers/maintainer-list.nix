@@ -5465,6 +5465,11 @@
     github = "zohl";
     name = "Al Zohali";
   };
+  zookatron = {
+    email = "tim@zookatron.com";
+    github = "zookatron";
+    name = "Tim Zook";
+  };
   zoomulator = {
     email = "zoomulator@gmail.com";
     github = "zoomulator";
