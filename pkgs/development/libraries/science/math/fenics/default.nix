@@ -35,10 +35,15 @@ let
       url = "https://bitbucket.org/fenics-project/dijitso/downloads/dijitso-${version}.tar.gz";
       sha256 = "1ncgbr0bn5cvv16f13g722a0ipw6p9y6p4iasxjziwsp8kn5x97a";
     };
-    buildInputs = [ numpy pytest six ];
-    checkPhase = ''
+    buildInputs = [ numpy six ];
+    nativeBuildInputs = [ pytest ];
+    preCheck = ''
       export HOME=$PWD
+    '';
+    checkPhase = ''
+      runHook preCheck
       py.test test/
+      runHook postCheck
     '';
     meta = {
       description = "Distributed just-in-time shared library building";
