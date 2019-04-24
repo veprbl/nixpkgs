@@ -342,7 +342,10 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
         echo 'au BufRead,BufNewFile *.bpl set filetype=boogie' > $vimdir/ftdetect/bpl.vim
     '';
 
-    installCheckPhase = "cd Test && ${pkgs.lit}/bin/lit .";
+    installCheckPhase = ''
+      ln -sv "${pkgs.z3}/bin/z3" Binaries/z3.exe
+      ${pkgs.lit}/bin/lit Test
+    '';
     doInstallCheck = true;
 
     meta = with stdenv.lib; {
