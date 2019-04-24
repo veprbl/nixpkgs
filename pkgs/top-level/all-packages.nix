@@ -9313,6 +9313,8 @@ in
     libiberty_static = libiberty.override { staticBuild = true; };
   };
 
+  outputcheck = callPackage ../development/tools/misc/outputcheck { };
+
   pahole = callPackage ../development/tools/misc/pahole {};
 
   panopticon = callPackage ../development/tools/analysis/panopticon {};
