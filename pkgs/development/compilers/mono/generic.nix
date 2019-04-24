@@ -1,8 +1,9 @@
-{ stdenv, fetchurl, bison, pkgconfig, glib, gettext, perl, libgdiplus, libX11, callPackage, ncurses, zlib, withLLVM ? false, cacert, Foundation, libobjc, python, version, sha256, autoconf, libtool, automake, cmake, which, enableParallelBuilding ? true }:
+{ stdenv, fetchurl, bison, glib, gettext, perl, libgdiplus, libX11, ncurses, zlib
+, cacert, Foundation, libobjc, python, version, sha256, cmake, which, pkgconfig, autoreconfHook
+, withLLVM ? false, llvm ? null
+, withNinja ? true, ninja
+, enableParallelBuilding ? true }:
 
-let
-  llvm     = callPackage ./llvm.nix { };
-in
 stdenv.mkDerivation rec {
   name = "mono-${version}";
 
@@ -11,8 +12,11 @@ stdenv.mkDerivation rec {
     url = "https://download.mono-project.com/sources/mono/${name}.tar.bz2";
   };
 
+  nativeBuildInputs = [ cmake pkgconfig which autoreconfHook ];
+
+  # Some of these may belong above, as nativeBuildInputs...
   buildInputs =
-    [ bison pkgconfig glib gettext perl libgdiplus libX11 ncurses zlib python autoconf libtool automake cmake which
+    [ bison pkgconfig glib gettext perl libgdiplus libX11 ncurses zlib python
     ]
     ++ (stdenv.lib.optionals stdenv.isDarwin [ Foundation libobjc ]);
 
@@ -23,20 +27,26 @@ stdenv.mkDerivation rec {
   # To overcome the bug https://bugzilla.novell.com/show_bug.cgi?id=644723
   dontDisableStatic = true;
 
+  autoreconfPhase = ''
+    patchShebangs ./
+    NOCONFIGURE=1 ./autogen.sh
+  '';
+
   configureFlags = [
-    "--x-includes=${libX11.dev}/include"
-    "--x-libraries=${libX11.out}/lib"
-    "--with-libgdiplus=${libgdiplus}/lib/libgdiplus.so"
+    #"--x-includes=${libX11.dev}/include"
+    #"--x-libraries=${libX11.out}/lib"
+    #"--with-libgdiplus=${libgdiplus}/lib/libgdiplus.so"
+    "--with-large-heap=yes" # for heaps larger than 3GB
   ]
   ++ stdenv.lib.optionals withLLVM [
     "--enable-llvm"
     "--with-llvm=${llvm}"
   ];
 
-  configurePhase = ''
-    patchShebangs ./
-    ./autogen.sh --prefix $out $configureFlags
-  '';
+  #configurePhase = ''
+  #  patchShebangs ./
+  #  ./autogen.sh --prefix $out $configureFlags
+  #'';
 
   # Attempt to fix this error when running "mcs --version":
   # The file /nix/store/xxx-mono-2.4.2.1/lib/mscorlib.dll is an invalid CIL image
