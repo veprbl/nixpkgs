@@ -855,23 +855,19 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
     outputFiles = [ "*" ];
   };
 
-  Nuget = buildDotnetPackage {
+  Nuget = buildDotnetPackage rec {
     baseName = "Nuget";
-    version = "3.4.3";
+    version = "4.9.4";
 
-    src = fetchFromGitHub {
-      owner = "mono";
-      repo = "nuget-binary";
-      rev = "1f3025c2eb13bfcb56b47ddd77329ac3d9911d1c";
-      sha256 = "01snk05hcrp5i2ys3p1y34r05q1b460q6wb8p3vwpba2q2czdax5";
+    src = fetchurl {
+      url = "https://dist.nuget.org/win-x86-commandline/v${version}/nuget.exe";
+      sha256 = "1xpqx9csgl2ydx85q5w1ndfadjkdw67mbs4jm1ypxl06bn2rs4yb";
     };
-
-    buildInputs = [ unzip ];
 
     phases = [ "unpackPhase" "installPhase" ];
 
     outputFiles = [ "*" ];
-    dllFiles = [ "NuGet*.dll" ];
+    #dllFiles = [ "NuGet*.dll" ];
     exeFiles = [ "nuget.exe" ];
   };
 
