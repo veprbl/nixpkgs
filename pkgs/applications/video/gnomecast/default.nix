@@ -1,4 +1,4 @@
-{ lib, python3Packages, gtk3, gobject-introspection, ffmpeg, wrapGAppsHook }:
+{ lib, python3Packages, gtk3, gobject-introspection, ffmpeg, which, wrapGAppsHook }:
 
 with python3Packages;
 buildPythonApplication rec {
@@ -17,7 +17,7 @@ buildPythonApplication rec {
   ];
 
   preFixup = ''
-    gappsWrapperArgs+=(--prefix PATH : ${lib.makeBinPath [ ffmpeg ]})
+    gappsWrapperArgs+=(--prefix PATH : ${lib.makeBinPath [ ffmpeg which ]})
   '';
 
   meta = with lib; {
