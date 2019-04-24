@@ -1,7 +1,7 @@
 { stdenv, fetchurl, bison, glib, gettext, perl, libgdiplus, libX11, ncurses, zlib
 , cacert, Foundation, libobjc, python, version, sha256
 , cmake, which, pkgconfig, autoreconfHook
-, withLLVM ? true, callPackage
+, withLLVM ? stdenv.hostPlatform.is64bit, callPackage
 , withNinja ? true, ninja
 , enableParallelBuilding ? true }:
 
