@@ -305,14 +305,14 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
 
   Boogie = buildDotnetPackage rec {
     baseName = "Boogie";
-    version = "2018-05-28";
+    version = "2019-04-04";
     name = "${baseName}-unstable-${version}";
 
     src = fetchFromGitHub {
       owner = "boogie-org";
       repo = "boogie";
-      rev = "fc97aac639505f46cda7904dae95c9557716d037";
-      sha256 = "1hjksc5sapw1shxjwg0swja5afman8i15wnv5b6rzkqd4mg8y6nz";
+      rev = "32cb0b9398bd5fac91717ea820d56bd391322434";
+      sha256 = "02fqsz0r1g66m0vw0h0hwiq07p4h8z0pn1bmqi0pji0wzsr21vak";
     };
 
     # emulate `nuget restore Source/Boogie.sln`
@@ -341,6 +341,9 @@ let self = dotnetPackages // overrides; dotnetPackages = with self; {
         mkdir $vimdir/ftdetect
         echo 'au BufRead,BufNewFile *.bpl set filetype=boogie' > $vimdir/ftdetect/bpl.vim
     '';
+
+    installCheckPhase = "cd Test && ${pkgs.lit}/bin/lit .";
+    doInstallCheck = true;
 
     meta = with stdenv.lib; {
       description = "An intermediate verification language";
