@@ -23,8 +23,8 @@ pstore_src = fetchFromGitHub {
   name = "pstore";
   repo = "pstore";
   #rev = "llvmorg-8.0.0";
-  rev = "f1b40b21974d37f4e3831ac0ccaeb462c0b5a97b";
-  sha256 = "1r37q5xnvsylcq2ybxpgw74g35hj22fw9wga65syyds3sb74mx35";
+  rev = "dfde10770050191202706640f67a92b5bb2a5ee4"; # 2019-04-24
+  sha256 = "1ivc3jvayjpi8sbsgmhxx4sg9a6xnqxajf55zs5xmixaj4m4vffv";
 };
 self = stdenv.mkDerivation rec {
   pname = "llvm-project-prepo";
