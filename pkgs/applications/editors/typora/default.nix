@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, makeWrapper, electron, dpkg, gtk3, glib, gsettings-desktop-schemas, wrapGAppsHook }:
+{ stdenv, fetchurl, makeWrapper, electron_3, dpkg, gtk3, glib, gsettings-desktop-schemas, wrapGAppsHook }:
 
 stdenv.mkDerivation rec {
   pname = "typora";
@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
   '';
 
   postFixup = ''
-    makeWrapper ${electron}/bin/electron $out/bin/typora \
+    makeWrapper ${electron_3}/bin/electron $out/bin/typora \
       --add-flags $out/share/typora \
       "''${gappsWrapperArgs[@]}" \
       --prefix LD_LIBRARY_PATH : "${stdenv.lib.makeLibraryPath [ stdenv.cc.cc ]}"
@@ -48,6 +48,6 @@ stdenv.mkDerivation rec {
     homepage = https://typora.io;
     license = licenses.unfree;
     maintainers = with maintainers; [ jensbin worldofpeace ];
-    inherit (electron.meta) platforms;
+    inherit (electron_3.meta) platforms;
   };
 }
