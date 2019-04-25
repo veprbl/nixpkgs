@@ -17708,7 +17708,6 @@ in
   filezilla = callPackage ../applications/networking/ftp/filezilla { };
 
   firefoxPackages = recurseIntoAttrs (callPackage ../applications/networking/browsers/firefox/packages.nix {
-    stdenv = libcxxStdenv; #  clangStdenv;
     callPackage = pkgs.newScope {
       inherit (gnome2) libIDL;
       libpng = libpng_apng;
@@ -17719,7 +17718,6 @@ in
                                             Kerberos AVFoundation MediaToolbox
                                             CoreLocation Foundation AddressBook;
       inherit (darwin) libobjc;
-      stdenv = libcxxStdenv; #  clangStdenv;
     };
   });
 
