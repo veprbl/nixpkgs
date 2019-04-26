@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, substituteAll, gtk-doc, pkgconfig, gobject-introspection, intltool
+{ stdenv, fetchurl, fetchFromGitHub, substituteAll, gtk-doc, pkgconfig, gobject-introspection, intltool
 , libgudev, polkit, libxmlb, gusb, sqlite, libarchive, glib-networking
 , libsoup, help2man, gpgme, libxslt, elfutils, libsmbios, efivar, glibcLocales
 , gnu-efi, libyaml, valgrind, meson, libuuid, colord, docbook_xml_dtd_43, docbook_xsl
@@ -21,10 +21,16 @@ in stdenv.mkDerivation rec {
   pname = "fwupd";
   version = "1.2.8";
 
-  src = fetchurl {
-    url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
-    sha256 = "0qbvq52c0scn1h99i1rf2la6rrhckin6gb02k7l0v3g07mxs20wc";
+  src = fetchFromGitHub {
+    owner = "hughsie";
+    repo = pname;
+    rev = "8b222bd55761dd193bba550ad8e30ecc85f62177";
+    sha256 = "1ak2jfglifp9ksj9d8xzkpgb1v5m9jzrxidv1zqbb2fgvmx865y0";
   };
+  #src = fetchurl {
+  #  url = "https://people.freedesktop.org/~hughsient/releases/fwupd-${version}.tar.xz";
+  #  sha256 = "0qbvq52c0scn1h99i1rf2la6rrhckin6gb02k7l0v3g07mxs20wc";
+  #};
 
   outputs = [ "out" "lib" "dev" "devdoc" "man" "installedTests" ];
 
