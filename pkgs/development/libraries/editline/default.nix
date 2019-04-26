@@ -17,6 +17,7 @@ stdenv.mkDerivation rec {
       url = "https://github.com/troglobit/editline/commit/a4b67d226829a55bc8501f36708d5e104a52fbe4.patch";
       sha256 = "0dbgdqxa4x9wgr9kx89ql74np4qq6fzdbph9j9c65ns3gnaanjkw";
     })
+    ./narrow.patch
   ];
 
   nativeBuildInputs = [ autoreconfHook ];
