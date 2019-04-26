@@ -1,12 +1,12 @@
 { stdenv, fetchFromGitHub, xorg, boost, cmake, gtest }:
 
 stdenv.mkDerivation rec {
-  name = "xlayoutdisplay-${version}";
+  pname = "xlayoutdisplay";
   version = "1.0.2";
 
   src = fetchFromGitHub {
     owner = "alex-courtis";
-    repo = "xlayoutdisplay";
+    repo = pname;
     rev = "v${version}";
     sha256 = "1cqn98lpx9rkfhavbqalaaljw351hvqsrszgqnwvcyq05vq26dwx";
   };
