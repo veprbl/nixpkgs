@@ -4156,6 +4156,8 @@ in
 
   leatherman = callPackage ../development/libraries/leatherman { };
 
+  ledmon = callPackage ../tools/system/ledmon { };
+
   leela = callPackage ../tools/graphics/leela { };
 
   lftp = callPackage ../tools/networking/lftp { };
