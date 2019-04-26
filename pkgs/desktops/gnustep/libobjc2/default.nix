@@ -1,20 +1,17 @@
 { stdenv, lib, fetchFromGitHub, cmake }:
 
-let
-  version = "2.0";
-in
-
 stdenv.mkDerivation rec {
-  name = "libobjc2-${version}";
+  pname = "libobjc2";
+  version = "2.0";
 
   src = fetchFromGitHub {
     owner = "gnustep";
-    repo = "libobjc2";
+    repo = pname;
     rev = "v${version}";
     sha256 = "1b4h0a4pqr8j6300qr2wmi33r7ysvp705gs0ypx69hbmifln0mlf";
   };
 
-  buildInputs = [ cmake ];
+  nativeBuildInputs = [ cmake ];
 
   cmakeFlags = [ "-DCMAKE_INSTALL_LIBDIR=lib" ];
 
