@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
   hardeningDisable = [ "format" "pic" "relro" "pie" ];
 
   configureFlags = [ "BUILD_CC=${buildPackages.stdenv.cc.targetPrefix}cc" ];
-  depsBuildBuild = [ buildPackages.stdenv.cc ];
+  nativeBuildInputs = [ buildPackages.stdenv.cc ];
   buildInputs = [ zlib ];
 
   meta = with stdenv.lib; {
