@@ -1,13 +1,20 @@
-{ stdenv, buildPythonPackage, fetchPypi, pyasn1, isPyPy }:
+{ stdenv, buildPythonPackage, fetchFromGitHub, fetchPypi, pyasn1, isPyPy }:
 
 buildPythonPackage rec {
   pname = "pyasn1-modules";
   version = "0.2.5";
 
-  src = fetchPypi {
-    inherit pname version;
-    sha256 = "ef721f68f7951fab9b0404d42590f479e30d9005daccb1699b0a51bb4177db96";
+  src = fetchFromGitHub {
+    owner = "etingof";
+    repo = pname;
+    rev = "3d59f9af2158b2acd63dd213dad427f8e17dec16";
+    sha256 = "0sng24d1rq1iasbbp0mfhys1l1ajdz3pmijnmq07an04s24jdhfg";
   };
+  # broken, use git for now
+  #src = fetchPypi {
+  #  inherit pname version;
+  #  sha256 = "ef721f68f7951fab9b0404d42590f479e30d9005daccb1699b0a51bb4177db96";
+  #};
 
   propagatedBuildInputs = [ pyasn1 ];
 
