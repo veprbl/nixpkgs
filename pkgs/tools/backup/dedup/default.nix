@@ -1,4 +1,8 @@
-{ stdenv, fetchurl, fetchgit, lz4, snappy, openmp ? null }:
+{ stdenv, fetchurl, fetchgit, lz4, snappy
+, openmp ? null
+# For testing
+, coreutils, gawk
+}:
 
 stdenv.mkDerivation rec {
   pname = "dedup";
@@ -25,6 +29,11 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [ lz4 snappy openmp ];
+
+  doCheck = true;
+
+  checkInputs = [ coreutils gawk ];
+  checkPhase = "sh dotest";
 
   meta = with stdenv.lib; {
     description = "data deduplication program";
