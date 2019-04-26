@@ -8,6 +8,7 @@
 , qtsvg
 , qtwebengine
 
+, akonadi-contacts
 , kcalcore
 , kconfigwidgets
 , kcoreaddons
