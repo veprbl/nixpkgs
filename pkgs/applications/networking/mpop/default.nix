@@ -3,11 +3,11 @@
 with stdenv.lib;
 
 stdenv.mkDerivation rec {
+  pname = "mpop";
   version = "1.4.4";
-  name = "mpop-${version}";
 
   src = fetchurl {
-    url = "https://marlam.de/mpop/releases/${name}.tar.xz";
+    url = "https://marlam.de/${pname}/releases/${pname}-${version}.tar.xz";
     sha256 = "0j21cp8bw12vgfymxi3i4av3j97lrcyb5y9xa3mb59wr17izz73x";
   };
 
