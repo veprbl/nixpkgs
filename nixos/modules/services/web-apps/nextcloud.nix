@@ -492,6 +492,7 @@ in {
               ${optionalString cfg.webfinger ''
                 rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
                 rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json last;
+                rewrite ^/.well-known/webfinger /public.php?service=webfinger last;
               ''}
             '';
           };

@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   name = "tetra-gtk-theme-${version}";
-  version = "201903-r1";
+  version = "201904r2-refresh";
 
   src = fetchFromGitHub {
     owner  = "hrdwrrsk";
     repo   = "tetra-gtk-theme";
     rev    = version;
-    sha256 = "1sqbsrmhzwn76qq02bw4k74zg7vznkhzayi23sy573d9jk2kczwi";
+    sha256 = "0w2wisrz3w48kcvajywqlw6cnajks1c01h2vilqf4l6bq0rm63s2";
   };
 
   preBuild = ''

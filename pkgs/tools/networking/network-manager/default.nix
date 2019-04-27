@@ -28,6 +28,7 @@ in stdenv.mkDerivation rec {
     "-Ddnsmasq=${dnsmasq}/bin/dnsmasq"
     # Upstream prefers dhclient, so don't add dhcpcd to the closure
     "-Ddhcpcd=no"
+    "-Ddhcpcanon=no"
     "-Dpppd=${ppp}/bin/pppd"
     "-Diptables=${iptables}/bin/iptables"
     # to enable link-local connections
@@ -43,12 +44,16 @@ in stdenv.mkDerivation rec {
     "-Dmodem_manager=true"
     "-Dnmtui=true"
     "-Ddocs=true"
-    # TODO: legacy library, will be *removed* in next release!
-    "-Dlibnm_glib=true"
     "-Dtests=no"
     "-Dqt=false"
     # Allow using iwd when configured to do so
     "-Diwd=true"
+    "-Dpolkit_agent=true"
+    "-Dpolkit=true"
+    # Default is symlink, we previously used resolvconf, dunno
+    "-Dconfig_dns_rc_manager_default=resolvconf"
+    "-Debpf=true"
+    "-Dlibaudit=yes-disabled-by-default"
   ];
 
   patches = [

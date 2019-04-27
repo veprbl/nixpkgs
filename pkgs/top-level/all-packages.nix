@@ -1670,6 +1670,7 @@ in
 
   meson = callPackage ../development/tools/build-managers/meson { };
   mesonClang = callPackage meson.override { inherit (llvmPackages_latest) stdenv; };
+  meson_gcc8 = callPackage meson.override { stdenv = gcc8Stdenv; };
 
   metabase = callPackage ../servers/metabase { };
 
@@ -2580,6 +2581,8 @@ in
   eflite = callPackage ../applications/audio/eflite {};
 
   eid-mw = callPackage ../tools/security/eid-mw { };
+
+  epubcheck = callPackage ../tools/text/epubcheck { };
 
   mcrcon = callPackage ../tools/networking/mcrcon {};
 
@@ -4104,7 +4107,20 @@ in
     enableNpm = false;
     openssl = openssl_1_1;
   };
+  nodejs-12_x = callPackage ../development/web/nodejs/v12.nix {
+    openssl = openssl_1_1;
+  };
+  nodejs-slim-12_x = callPackage ../development/web/nodejs/v12.nix {
+    enableNpm = false;
+    openssl = openssl_1_1;
+  };
 
+  nodePackages_12_x = dontRecurseIntoAttrs (callPackage ../development/node-packages/default-v10.nix {
+    nodejs = pkgs.nodejs-12_x;
+  });
+  nodePackages_11_x = dontRecurseIntoAttrs (callPackage ../development/node-packages/default-v10.nix {
+    nodejs = pkgs.nodejs-11_x;
+  });
   nodePackages_10_x = dontRecurseIntoAttrs (callPackage ../development/node-packages/default-v10.nix {
     nodejs = pkgs.nodejs-10_x;
   });
@@ -4142,6 +4158,8 @@ in
   leafpad = callPackage ../applications/editors/leafpad { };
 
   leatherman = callPackage ../development/libraries/leatherman { };
+
+  ledmon = callPackage ../tools/system/ledmon { };
 
   leela = callPackage ../tools/graphics/leela { };
 
@@ -4630,6 +4648,7 @@ in
 
   networkmanager = callPackage ../tools/networking/network-manager {
     stdenv = gcc8Stdenv;
+    meson = meson_gcc8;
     readline = readline80;
   };
 
@@ -4688,6 +4707,8 @@ in
   mpack = callPackage ../tools/networking/mpack { };
 
   pa_applet = callPackage ../tools/audio/pa-applet { };
+
+  pandoc-imagine = python3Packages.callPackage ../tools/misc/pandoc-imagine { };
 
   pasystray = callPackage ../tools/audio/pasystray { };
 
@@ -5269,6 +5290,8 @@ in
   pycangjie = pythonPackages.pycangjie;
 
   pydb = callPackage ../development/tools/pydb { };
+
+  pydf = callPackage ../applications/misc/pydf { };
 
   pygmentex = callPackage ../tools/typesetting/pygmentex { };
 
@@ -7780,6 +7803,8 @@ in
     inherit (ocaml-ng.ocamlPackages_4_05) ocaml;
   };
 
+  pforth = callPackage ../development/compilers/pforth {};
+
   picat = callPackage ../development/compilers/picat {
     stdenv = overrideCC stdenv gcc49;
   };
@@ -7832,6 +7857,7 @@ in
   cargo-bloat = callPackage ../development/tools/rust/cargo-bloat { };
   cargo-expand = callPackage ../development/tools/rust/cargo-expand { };
   cargo-fuzz = callPackage ../development/tools/rust/cargo-fuzz { };
+  cargo-sweep = callPackage ../development/tools/rust/cargo-sweep { };
   cargo-xbuild = callPackage ../development/tools/rust/cargo-xbuild { };
 
   pyo3-pack = callPackage ../development/tools/rust/pyo3-pack { };
@@ -10378,9 +10404,14 @@ in
     else if stdenv.targetPlatform.useiOSPrebuilt then targetPackages.darwin.iosSdkPkgs.libraries or darwin.iosSdkPkgs.libraries
     else if name == "libSystem" then targetPackages.darwin.xcode
     else if name == "nblibc" then targetPackages.netbsdCross.libc
-    else throw "Unknown libc";
+    else if name == "wasilibc" then targetPackages.wasilibc or wasilibc
+    else throw "Unknown libc ${name}";
 
   libcCross = assert stdenv.targetPlatform != stdenv.buildPlatform; libcCrossChooser stdenv.targetPlatform.libc;
+
+  wasilibc = callPackages ../development/libraries/wasilibc {
+    stdenv = crossLibcStdenv;
+  };
 
   # Only supported on Linux, using glibc
   glibcLocales = if stdenv.hostPlatform.libc == "glibc" then callPackage ../development/libraries/glibc/locales.nix { } else null;
@@ -11477,7 +11508,7 @@ in
   # We also provide `libiconvReal`, which will always be a standalone libiconv,
   # just in case you want it regardless of platform.
   libiconv =
-    if (stdenv.hostPlatform.libc == "glibc" || stdenv.hostPlatform.libc == "musl")
+    if lib.elem stdenv.hostPlatform.libc ["glibc" "musl" "wasilibc"]
       then glibcIconv (if stdenv.hostPlatform != stdenv.buildPlatform
                        then libcCross
                        else stdenv.cc.libc)
@@ -12055,7 +12086,7 @@ in
   libGLSupported = lib.elem stdenv.hostPlatform.system lib.platforms.mesaPlatforms;
 
   mesa_noglu = callPackage ../development/libraries/mesa {
-    llvmPackages = llvmPackages_7;
+    llvmPackages = llvmPackages_8;
     inherit (darwin.apple_sdk.frameworks) OpenGL;
     inherit (darwin.apple_sdk.libs) Xplugin;
   };
@@ -14373,6 +14404,8 @@ in
 
   timescaledb-parallel-copy = callPackage ../development/tools/database/timescaledb-parallel-copy { };
 
+  timescaledb-tune = callPackage ../development/tools/database/timescaledb-tune { };
+
   inherit (import ../servers/sql/postgresql pkgs)
     postgresql_9_4
     postgresql_9_5
@@ -15061,6 +15094,7 @@ in
       [ kernelPatches.bridge_stp_helper
         kernelPatches.cpu-cgroup-v2."4.9"
         kernelPatches.modinst_arg_list_too_long
+        kernelPatches.i2c-oops
       ];
   };
 
@@ -15071,6 +15105,7 @@ in
         # when adding a new linux version
         kernelPatches.cpu-cgroup-v2."4.11"
         kernelPatches.modinst_arg_list_too_long
+        kernelPatches.i2c-oops
       ];
   };
 
@@ -15078,6 +15113,7 @@ in
     kernelPatches =
       [ kernelPatches.bridge_stp_helper
         kernelPatches.modinst_arg_list_too_long
+        kernelPatches.i2c-oops
       ];
   };
 
@@ -16488,6 +16524,8 @@ in
   xhtml1 = callPackage ../data/sgml+xml/schemas/xml-dtd/xhtml1 { };
 
   xits-math = callPackage ../data/fonts/xits-math { };
+
+  xkcd-font = callPackage ../data/fonts/xkcd-font { };
 
   xkeyboard_config = xorg.xkeyboardconfig;
 
@@ -18402,7 +18440,7 @@ in
   inherit (kdeApplications)
     akonadi akregator ark dolphin dragon ffmpegthumbs filelight gwenview k3b
     kaddressbook kate kcachegrind kcalc kcharselect kcolorchooser kcontacts kdenlive kdf kdialog
-    keditbookmarks kget kgpg khelpcenter kig kleopatra kmail kmix kmplot kolourpaint kompare konsole
+    keditbookmarks kfind kget kgpg khelpcenter kig kleopatra kmail kmix kmplot kolourpaint kompare konsole
     kpkpass kitinerary kontact korganizer krdc krfb ksystemlog ktouch kwalletmanager marble minuet okular spectacle;
 
   okteta = libsForQt5.callPackage ../applications/editors/okteta { };
@@ -21146,7 +21184,8 @@ in
 
   digikam = libsForQt5.callPackage ../applications/graphics/digikam {
     inherit (plasma5) oxygen;
-    inherit (kdeApplications) kcalcore;
+    inherit (kdeApplications) akonadi-contacts kcalcore;
+    ffmpeg = ffmpeg_4;
     opencv3 = opencv3WithoutCuda;
   };
 
@@ -23389,6 +23428,8 @@ in
 
   ricty = callPackage ../data/fonts/ricty { };
 
+  rmount = callPackage ../tools/filesystems/rmount {};
+
   rss-glx = callPackage ../misc/screensavers/rss-glx { };
 
   run-scaled = callPackage ../tools/X11/run-scaled { };
@@ -23943,5 +23984,7 @@ in
   newlibCross = callPackage ../development/misc/newlib {
     stdenv = crossLibcStdenv;
   };
+
+  wasmtime = callPackage ../development/interpreters/wasmtime {};
 
 }

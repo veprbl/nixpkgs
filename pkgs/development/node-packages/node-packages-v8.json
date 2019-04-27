@@ -4,7 +4,6 @@
 , "bower"
 , "coffee-script"
 , "grunt-cli"
-, "joplin"
 , "node-gyp"
 , "node-gyp-build"
 , "node-pre-gyp"

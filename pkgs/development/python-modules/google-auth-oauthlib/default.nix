@@ -1,6 +1,7 @@
 { lib
 , buildPythonPackage
 , fetchPypi
+, isPy3k
 , click
 , mock
 , pytest
@@ -19,7 +20,9 @@ buildPythonPackage rec {
     sha256 = "03rq2rjac0zh16vsw0q914sp62l9f8fp033wn3191pqd2cchqix0";
   };
 
-  checkInputs = [ click mock pytest ] ++ lib.optional isPy27 futures;
+  checkInputs = [
+    click mock pytest
+  ] ++ lib.optionals (!isPy3k) [ futures ];
 
   propagatedBuildInputs = [
     google_auth requests_oauthlib

@@ -6,7 +6,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://download.nextcloud.com/server/releases/${name}.tar.bz2";
-    sha256 = "0bj014vczlrql1w32pqmr7cyqn9awnyzpi2syxhg16qxic1gfcj5";
+    sha256 = "4532f7028b1d9bf060f75ac4fbbde52a59ecd9c9155f3178a038d3cf3609402e";
   };
 
   installPhase = ''
