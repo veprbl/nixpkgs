@@ -34,7 +34,7 @@ rustPlatform.buildRustPackage rec {
   doCheck = true;
 
   checkPhase = ''
-    make test
+    make test -j$NIX_BUILD_CORES
   '';
 
   postInstall = ''
