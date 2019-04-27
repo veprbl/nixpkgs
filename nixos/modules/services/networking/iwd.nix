@@ -22,7 +22,12 @@ in {
 
     #systemd.packages = [ pkgs.iwd ];
 
-    systemd.services.iwd.wantedBy = [ "multi-user.target" ];
+    # hopefully merges with existing service nicely?
+    systemd.services.iwd = {
+      wantedBy = [ "multi-user.target" ];
+      before = [ "network.target" "multi-user.target" ];
+      after = [ "systemd-udevd.service" "network-pre.target" ];
+    };
 
     systemd.tmpfiles.rules = [
       "d /var/lib/iwd 0700 root root -"
