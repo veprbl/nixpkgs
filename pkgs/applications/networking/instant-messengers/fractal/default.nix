@@ -28,7 +28,7 @@ rustPlatform.buildRustPackage rec {
     substituteInPlace scripts/test.sh --replace /usr/bin/sh '/usr/bin/env sh'
     chmod +x scripts/test.sh
     patchShebangs scripts/test.sh
-    substituteInPlace scripts/test.sh --replace 'cargo test' 'cargo test -v'
+    substituteInPlace scripts/test.sh --replace 'cargo test -j1' 'cargo test'
 
     substituteInPlace meson.build \
       --replace "name_suffix = '" "name_suffix = ' (git)" \
