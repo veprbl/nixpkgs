@@ -55,6 +55,7 @@ in stdenv.mkDerivation rec {
     # Default is symlink, we previously used resolvconf, dunno
     "-Dconfig_dns_rc_manager_default=resolvconf"
     "-Debpf=true"
+    "-Dlibaudit=yes-disabled-by-default"
   ];
 
   patches = [
