@@ -24,7 +24,9 @@ rustPlatform.buildRustPackage rec {
 
   postPatch = ''
     patchShebangs scripts/meson_post_install.py
-    patchShebangs scripts/tests.sh
+    substituteInPlace scripts/test.sh --replace /usr/bin/sh '/usr/bin/env sh'
+    chmod +x scripts/test.sh
+    patchShebangs scripts/test.sh
 
     substituteInPlace meson.build \
       --replace "name_suffix = '" "name_suffix = ' (git)" \
