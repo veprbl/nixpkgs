@@ -31,7 +31,7 @@ stdenv.mkDerivation rec {
   ]);
 
   postPatch = ''
-    patchShebangs meson_post_install.py
+    patchShebangs build-aux/meson_post_install.py
   '';
 
   meta = with stdenv.lib; {
