@@ -435,11 +435,12 @@ in {
                 priority = 300;
                 extraConfig = "deny all;";
               };
-              "~ ^\\/(?:index|remote|public|cron|core/ajax\\/update|status|ocs\\/v[12]|updater\\/.+|oc[ms]-provider\\/.+)\\.php(?:$|\\/)" = {
+              "~ ^\\/(?:index|remote|public|cron|core\\/ajax\\/update|status|ocs\\/v[12]|updater\\/.+|oc[ms]-provider\\/.+)\\.php(?:$|\\/)" = {
                 priority = 500;
                 extraConfig = ''
                   include ${config.services.nginx.package}/conf/fastcgi.conf;
-                  fastcgi_split_path_info ^(.+\.php)(\\/.*)$;
+                  fastcgi_split_path_info ^(.+?\.php)(\/.*|)$;
+
                   fastcgi_param PATH_INFO $fastcgi_path_info;
                   fastcgi_param HTTPS ${if cfg.https then "on" else "off"};
                   fastcgi_param modHeadersAvailable true;
