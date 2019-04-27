@@ -26,7 +26,7 @@ rustPlatform.buildRustPackage rec {
     ++ stdenv.lib.optional stdenv.isDarwin Security;
 
   postBuild = ''
-    make
+    make -j$NIX_BUILD_CORES
   '';
 
   NIX_CFLAGS_COMPILE = "-Wno-error=sign-compare";
