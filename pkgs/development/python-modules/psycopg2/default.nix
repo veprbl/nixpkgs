@@ -2,13 +2,13 @@
 
 buildPythonPackage rec {
   pname = "psycopg2";
-  version = "2.8.2";
+  version = "2.7.7";
 
   disabled = isPyPy;
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "122mn2z3r0zgs8jyq682jjjr6vq5690qmxqf22gj6g41dwdz5b2w";
+    sha256 = "f4526d078aedd5187d0508aa5f9a01eae6a48a470ed678406da94b4cd6524b7e";
   };
 
   buildInputs = lib.optional stdenv.isDarwin openssl;
