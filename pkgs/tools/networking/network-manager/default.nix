@@ -44,8 +44,6 @@ in stdenv.mkDerivation rec {
     "-Dmodem_manager=true"
     "-Dnmtui=true"
     "-Ddocs=true"
-    # TODO: legacy library, will be *removed* in next release!
-    "-Dlibnm_glib=true"
     "-Dtests=no"
     "-Dqt=false"
     # Allow using iwd when configured to do so
