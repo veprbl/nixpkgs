@@ -50,6 +50,11 @@ in stdenv.mkDerivation rec {
     "-Dqt=false"
     # Allow using iwd when configured to do so
     "-Diwd=true"
+    "-Dpolkit_agent=true"
+    "-Dpolkit=true"
+    # Default is symlink, we previously used resolvconf, dunno
+    "-Dconfig_dns_rc_manager_default=resolvconf"
+    "-Debpf=true"
   ];
 
   patches = [
