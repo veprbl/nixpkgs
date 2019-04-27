@@ -291,7 +291,7 @@ in {
               'skeletondirectory' => '${cfg.skeletonDirectory}',
               ${optionalString cfg.caching.apcu "'memcache.local' => '\\OC\\Memcache\\APCu',"}
               'log_type' => 'syslog',
-              'log_level' => '${builtins.toString cfg.logLevel}',
+              'loglevel' => '${builtins.toString cfg.logLevel}',
               ${optionalString (cfg.config.overwriteProtocol != null) "'overwriteprotocol' => '${cfg.config.overwriteProtocol}',"}
             ];
           '';
@@ -492,6 +492,7 @@ in {
               ${optionalString cfg.webfinger ''
                 rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
                 rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json last;
+                rewrite ^/.well-known/webfinger /public.php?service=webfinger last;
               ''}
             '';
           };
