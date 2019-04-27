@@ -1670,6 +1670,7 @@ in
 
   meson = callPackage ../development/tools/build-managers/meson { };
   mesonClang = callPackage meson.override { inherit (llvmPackages_latest) stdenv; };
+  meson_gcc8 = callPackage meson.override { stdenv = gcc8Stdenv; };
 
   metabase = callPackage ../servers/metabase { };
 
@@ -4647,6 +4648,7 @@ in
 
   networkmanager = callPackage ../tools/networking/network-manager {
     stdenv = gcc8Stdenv;
+    meson = meson_gcc8;
     readline = readline80;
   };
 
