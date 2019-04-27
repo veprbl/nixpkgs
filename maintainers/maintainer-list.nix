@@ -588,6 +588,11 @@
     github = "bbarker";
     name = "Brandon Elam Barker";
   };
+  bbigras = {
+    email = "bigras.bruno@gmail.com";
+    github = "bbigras";
+    name = "Bruno Bigras";
+  };
   bcarrell = {
     email = "brandoncarrell@gmail.com";
     github = "bcarrell";

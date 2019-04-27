@@ -417,6 +417,26 @@ luaevent = buildLuarocksPackage {
     };
   };
 };
+luaevent = buildLuarocksPackage {
+  pname = "luaevent";
+  version = "0.4.6-1";
+
+  src = fetchurl {
+      url    = https://luarocks.org/luaevent-0.4.6-1.src.rock;
+      sha256 = "0chq09nawiz00lxd6pkdqcb8v426gdifjw6js3ql0lx5vqdkb6dz";
+  };
+  disabled = ( luaOlder "5.1");
+  propagatedBuildInputs = [ lua ];  
+  buildType = "builtin";
+
+  meta = {
+    homepage = "https://github.com/harningt/luaevent";
+    description="libevent binding for Lua";
+    license = {
+      fullName = "MIT";
+    };
+  };
+};
 luacheck = buildLuarocksPackage {
   pname = "luacheck";
   version = "0.23.0-1";
@@ -545,6 +565,46 @@ say = buildLuarocksPackage {
     description = "Lua String Hashing/Indexing Library";
     license = {
       fullName = "MIT <http://opensource.org/licenses/MIT>";
+    };
+  };
+};
+std__debug = buildLuarocksPackage {
+  pname = "std._debug";
+  version = "1.0.1-1";
+
+  src = fetchurl {
+      url    = https://luarocks.org/std._debug-1.0.1-1.src.rock;
+      sha256 = "1qkcc5rph3ns9mzrfsa1671pb3hzbzfnaxvyw7zdly2b7ll88svz";
+  };
+  disabled = ( luaOlder "5.1") || ( luaAtLeast "5.5");
+  propagatedBuildInputs = [ lua ];  
+  buildType = "builtin";
+
+  meta = {
+    homepage = "http://lua-stdlib.github.io/_debug";
+    description="Debug Hints Library";
+    license = {
+      fullName = "MIT/X11";
+    };
+  };
+};
+std_normalize = buildLuarocksPackage {
+  pname = "std.normalize";
+  version = "2.0.2-1";
+
+  src = fetchurl {
+      url    = https://luarocks.org/std.normalize-2.0.2-1.src.rock;
+      sha256 = "0yn60zqnxflhhlv6xk6w0ifdfxk1qcg8gq1wnrrbwsxwpipsrfjh";
+  };
+  disabled = ( luaOlder "5.1") || ( luaAtLeast "5.4");
+  propagatedBuildInputs = [ lua std__debug ];  
+  buildType = "builtin";
+
+  meta = {
+    homepage = "https://lua-stdlib.github.io/normalize";
+    description="Normalized Lua Functions";
+    license = {
+      fullName = "MIT/X11";
     };
   };
 };
