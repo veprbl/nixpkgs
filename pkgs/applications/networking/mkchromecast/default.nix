@@ -24,13 +24,14 @@ let packages = [
 
 in python3Packages.buildPythonApplication rec {
   pname = "mkchromecast";
-  version = "0.3.8.1";
+  version = "0.3.8.1-git";
 
   src = fetchFromGitHub rec {
     owner = "muammar";
     repo = pname;
-    rev = version;
-    sha256 = "0baxilfalndip3fx8cj03pjkdywv1v65k41srarcdrzvm8dqca9s";
+    #rev = version;
+    rev = "5872a246f0610b74fc2b197eb02dc91b96fb68cc";
+    sha256 = "05ldgx583s4b3qqn2r3sj7wjmfdqndkm59g2bwdkpz7pbcahkfmr";
   };
 
   propagatedBuildInputs = with python3Packages; [
