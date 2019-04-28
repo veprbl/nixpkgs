@@ -2,13 +2,13 @@
 
 buildGoModule rec {
   name = "echoip-${version}";
-  version = "unstable-2018-11-20";
+  version = "unstable-2019-04-27";
 
   src = fetchFromGitHub {
     owner = "mpolden";
     repo = "echoip";
-    rev = "4bfaf671b9f75a7b2b37543b2991401cbf57f1f0";
-    sha256 = "0n5d9i8cc5lqgy5apqd3zhyl3h1xjacf612z8xpvbm75jnllcvxy";
+    rev = "27fa828efb9034f359f638d29eda1f84aa08cc48";
+    sha256 = "1rp2vgpfc514qgq715rkhhiciz6k8ms19qs31q1an3aapacf446p";
   };
 
   modSha256 = "025p891klwpid5fw4z39fimgfkwgkcwqpn5276hflzdp1hfv35ly";
