@@ -65,6 +65,15 @@ in python3Packages.buildPythonApplication rec {
   ];
 
   postInstall = ''
+    ## env
+    ## install -Dm 644 man/mkchromecast.1 $out/share/man/man1/mkchromecast.1
+    ## install -Dm 644 mkchromecast.desktop $out/share/applications/mkchromecast.desktop
+    ## install -Dm 644 -t $out/lib/mkchromecast mkchromecast/*.py
+    ## install -Dm 644 -t $out/lib/mkchromecast/getch mkchromecast/getch/*.py
+    install -Dm 644 nodejs/html5-video-streamer.js $out/lib/nodejs/html5-video-streamer.js
+    install -Dm 644 -t $out/share/images/ images/google*.png
+    install -Dm 644 images/mkchromecast.xpm $out/share/pixmaps/mkchromecast.xpm
+    ## install -Dm 755 mkchromecast.py $out/bin/mkchromecast
     wrapProgram "$out/bin/mkchromecast"
   '';
 
