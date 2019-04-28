@@ -2,16 +2,16 @@
 
 buildGoModule rec {
   name = "gotools-unstable-${version}";
-  version = "2019-03-05";
-  rev = "00c44ba9c14f88ffdd4fb5bfae57fe8dd6d6afb1";
+  version = "2019-04-28";
+  rev = "550556f78a900afacb9e8b22219f5e5b5c6106db";
 
   src = fetchgit {
     inherit rev;
     url = "https://go.googlesource.com/tools";
-    sha256 = "04rpdi52j26szx5kiyfmwad1sg7lfplxrkbwkr3b1kfafh1whgw5";
+    sha256 = "1nbq86i05saz419l4l2zcnk17f5vak6455im29wrq8zrbr9ppw0c";
   };
 
-  modSha256 = "00yjcs26cm5civ96sikbd3wjmhx153xbyd805s3shca1mg99y7mm";
+  modSha256 = "0cm7fwb1k5hvbhh86kagzsw5vwgkr6dr7glhbjxg5xaahlhx2w5w";
 
   postConfigure = ''
     # Make the builtin tools available here
