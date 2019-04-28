@@ -35,10 +35,12 @@ in (haskellPackages.mkDerivation {
     # containers
     # directory
     file-embed
+    fold-debounce
     http-conduit
     http-client
     http-types
     lens
+    raw-strings-qq
     # mtl
     # template-haskell
     # text
