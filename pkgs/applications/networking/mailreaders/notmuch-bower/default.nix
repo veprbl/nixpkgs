@@ -34,7 +34,6 @@ stdenv.mkDerivation rec {
     ./0007-tweak-icons-fix-spacing.patch
 
     ./0001-hack-replace-tabs-with-spaces-in-Subject-header.patch
-    ./total-color.patch
     ./cal.patch
   ];
 
