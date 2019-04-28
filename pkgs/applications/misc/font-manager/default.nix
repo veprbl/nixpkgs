@@ -10,8 +10,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "FontManager";
     repo = "master";
-    rev = "cd8ec129b443e348915a912f43d7035f10297b15";
-    sha256 = "0hg1jvrjl8lbn8165497m0pd4wm5hcwirmqfg834fdmc6nhmbq9f";
+    rev = version;
+    sha256 = "16hma8rrkam6ngn5vbdaryn31vdixvii6920g9z928gylz9xkd3g";
   };
 
   nativeBuildInputs = [
