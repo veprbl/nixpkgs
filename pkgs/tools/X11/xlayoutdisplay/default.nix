@@ -17,6 +17,8 @@ stdenv.mkDerivation rec {
 
   doCheck = true;
 
+  patches = [ ./wexitstatus.patch ];
+
   # format security fixup
   postPatch = ''
     substituteInPlace test/test-Monitors.cpp \
