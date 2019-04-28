@@ -1,6 +1,6 @@
 { lib, fetchFromGitHub, python3Packages, makeWrapper, sox, flac, faac, lame
 , ffmpeg, vorbis-tools, nodejs, pulseaudio, alsaLib, alsaUtils, youtube-dl
-, opusTools, gstreamer
+, opusTools, gstreamer, libnotify, glib, dbus-glib, gobject-introspection, wrapGAppsHook
 , alsaSupport ? false
 , systemTray ? true
 , ffmpegSupport ? true
@@ -17,6 +17,10 @@ let packages = [
   lame
   opusTools
   gstreamer
+  libnotify
+  glib
+  dbus-glib
+  gobject-introspection
 ] ++ lib.optional alsaSupport [ alsaLib ffmpeg ]
   ++ lib.optional (!alsaSupport) pulseaudio
   ++ lib.optional ffmpegSupport ffmpeg
@@ -41,7 +45,9 @@ in python3Packages.buildPythonApplication rec {
     flask
     netifaces
     requests
-  ] ++ lib.optional systemTray pyqt5;
+    pygobject3
+    dbus-python
+  ] ++ lib.optional systemTray pyqt5 ++ packages;
 
   # Relies on an old version (0.7.7) of PyChromecast unavailable in Nixpkgs.
   doCheck = false;
@@ -50,6 +56,8 @@ in python3Packages.buildPythonApplication rec {
   patchPhase = ''
     sed -i "s_\['\./nodejs_['$out/lib/nodejs_" mkchromecast/video.py
   '';
+
+  buildInputs = [ wrapGAppsHook ];
 
   makeWrapperArgs = [
       ''--prefix PYTHONPATH : "$out/lib:$PYTHONPATH"''
