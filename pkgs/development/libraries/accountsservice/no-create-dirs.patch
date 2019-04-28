@@ -13,6 +13,3 @@ index 5cc2dc4..dd27ad5 100644
  ]
  
  for (dst_dir, dst_dir_mode) in dst_dirs:
--- 
-2.21.GIT
-
