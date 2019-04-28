@@ -1,4 +1,5 @@
 { stdenv, lib, fetchFromGitHub, qtbase, qtquickcontrols, cmake
+, fetchpatch
 , qttools, qtmultimedia
 , libqmatrixclient_0_4, libqmatrixclient_0_5 }:
 
@@ -12,6 +13,13 @@ let
       rev   = "${prefix}${version}";
       inherit sha256;
     };
+
+    patches = [
+      (fetchpatch {
+        url = https://github.com/QMatrixClient/Quaternion/pull/580.patch;
+        sha256 = "04lhy7akkd2nlpbqfx4fva2f5fxmnwyjw1433kfrabycqjszab98";
+      })
+    ];
 
     buildInputs = [ qtbase qtmultimedia qtquickcontrols qttools library ];
 
