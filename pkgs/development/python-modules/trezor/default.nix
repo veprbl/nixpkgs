@@ -1,5 +1,6 @@
 { lib, fetchPypi, buildPythonPackage, isPy3k, python, pytest
 , typing-extensions
+, pythonProtobuf
 , protobuf
 , hidapi
 , ecdsa
@@ -24,7 +25,7 @@ buildPythonPackage rec {
   };
 
   nativeBuildInputs = [ protobuf ];
-  propagatedBuildInputs = [ typing-extensions hidapi ecdsa mnemonic requests pyblake2 click construct libusb1 rlp ];
+  propagatedBuildInputs = [ typing-extensions hidapi ecdsa mnemonic requests pyblake2 click construct libusb1 rlp pythonProtobuf ];
 
   # build requires UTF-8 locale
   LANG = "C.UTF-8";

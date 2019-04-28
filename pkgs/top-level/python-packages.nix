@@ -5138,7 +5138,10 @@ in {
 
   ed25519 = callPackage ../development/python-modules/ed25519 { };
 
-  trezor = callPackage ../development/python-modules/trezor { };
+  trezor = callPackage ../development/python-modules/trezor {
+    inherit (pkgs) protobuf;
+    pythonProtobuf = self.protobuf;
+  };
 
   trezor_agent = callPackage ../development/python-modules/trezor_agent { };
 
