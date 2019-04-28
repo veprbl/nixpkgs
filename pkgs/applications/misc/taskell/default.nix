@@ -2,7 +2,7 @@
 
 let
   version = "1.4.2";
-  sha256  = "0cyysvkl9m1ldlprmw9mpvch3r244nl25yv74dwcykga3g5mw4aa";
+  sha256  = "1kpzjsbx2xbp43hd62nq03jcknp0dqvdlxjc9gc3fagaqfbfzny2";
 
 in (haskellPackages.mkDerivation {
   pname = "taskell";
