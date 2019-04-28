@@ -15,6 +15,12 @@ let
     };
 
     patches = [
+      # color users
+      #(fetchpatch {
+      #  url = https://github.com/QMatrixClient/Quaternion/pull/528.patch;
+      #  sha256 = "1iadb4vdmzsbwrkrkl6y1q13676p17smvpjw26896ky17z7305wl";
+      #})
+      # hyperlink users
       (fetchpatch {
         url = https://github.com/QMatrixClient/Quaternion/pull/580.patch;
         sha256 = "04lhy7akkd2nlpbqfx4fva2f5fxmnwyjw1433kfrabycqjszab98";
