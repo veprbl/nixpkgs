@@ -20,6 +20,9 @@ in appimageTools.wrapType2 rec {
     inherit sha256;
   };
 
+  multiPkgs = null; # no 32bit needed
+  extraPkgs = appimageTools.defaultFhsEnvArgs.multiPkgs;
+
   extraInstallCommands = "ln -s $out/bin/${name} $out/bin/standardnotes";
 
   meta = with stdenv.lib; {
