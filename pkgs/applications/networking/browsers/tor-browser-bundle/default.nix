@@ -44,10 +44,13 @@
 with stdenv.lib;
 
 let
+  # XXX: latest tor-browser-build
+  # may not work with earlier versions?
+  inherit (tor-browser-unwrapped) version;
   tor-browser-build_src = fetchgit {
     url = "https://git.torproject.org/builders/tor-browser-build.git";
-    rev = "refs/tags/tbb-7.5a5-build5";
-    sha256 = "0j37mqldj33fnzghxifvy6v8vdwkcz0i4z81prww64md5s8qcsa9";
+    rev = "refs/tags/tbb-${version}";
+    sha256 = "0s3f3ghdi5hhp7vpm4kaxjmf9vd0hmdrkc3szgw22if9g3nx2ga9";
   };
 
   firefoxExtensions = import ./extensions.nix {
@@ -74,8 +77,8 @@ let
   ];
 in
 stdenv.mkDerivation rec {
-  name = "tor-browser-bundle-${version}";
-  version = tor-browser-unwrapped.version;
+  pname = "tor-browser-bundle";
+  inherit version;
 
   buildInputs = [ tor-browser-unwrapped tor ];
 

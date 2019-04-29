@@ -262,6 +262,23 @@ in rec {
     ];
   };
 
-  tor-browser = tor-browser-8-0;
+  tor-browser-8-5 = tbcommon rec {
+    ffversion = "60.6.1esr";
+    tbversion = "8.5a11-build1";
+
+    # FIXME: fetchFromGitHub is not ideal, unpacked source is >900Mb
+    src = fetchFromGitHub {
+      owner = "dtzWill";
+      repo  = "tor-browser";
+      rev   = "tor-browser-60.6.1esr-8.5-1-slnos-patches";
+      sha256 = "0fkxii0245sr1hyhpvmlm65k1m60ld4dff45dk2bcrdyfcqzxkcc";
+    };
+
+    patches = [
+      missing-documentation-patch
+    ];
+  };
+
+  tor-browser = tor-browser-8-5;
 
 })
