@@ -23726,6 +23726,8 @@ in
 
   xlog = callPackage ../applications/radio/xlog { };
 
+  xlunch = callPackage ../tools/X11/xlunch { };
+
   xmagnify = callPackage ../tools/X11/xmagnify { };
 
   xosd = callPackage ../misc/xosd { };
