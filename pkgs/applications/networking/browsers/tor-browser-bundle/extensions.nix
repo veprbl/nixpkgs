@@ -27,8 +27,9 @@
     src = fetchgit {
       url = "https://git.torproject.org/https-everywhere.git";
       rev = "refs/tags/${version}";
-      sha256 = "1dpnqhibw6w102qwyf2ns4cq3l0wnwlcj4vzdq53gpxiq7l8nhdy";
+      sha256 = "04gj4farjvwwp1i507iwk70my805xjzrn7a21cdbyh04dzdxjwgk";
       fetchSubmodules = true; # for translations, TODO: remove
+      leaveDotGit = true;
     };
 
     nativeBuildInputs = [
@@ -45,8 +46,9 @@
     ];
 
     buildPhase = ''
-      patchShebangs scripts/create_zip.py
-      $shell ./make.sh ${version} \
+      patchShebangs utils/create_zip.py
+      BRANCH="${version}" \
+      $shell ./make.sh \
         --remove-update-channel
     ''; # --remove-extension-update ?
 
