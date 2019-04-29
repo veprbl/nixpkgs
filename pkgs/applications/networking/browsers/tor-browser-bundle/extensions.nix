@@ -37,7 +37,7 @@
     ];
 
     buildPhase = ''
-      $shell ./makexpi.sh ${version} --no-recurse
+      $shell ./make.sh ${version} --no-recurse
     '';
 
     installPhase = ''
