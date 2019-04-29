@@ -29,9 +29,12 @@
 # HTTPS Everywhere
 , git
 , libxml2 # xmllint
-, python27
-, python27Packages
+, libxslt
+, python36
 , rsync
+, which
+, xxd
+, utillinux # getopt
 
 # Pluggable transports
 , obfsproxy
@@ -55,7 +58,7 @@ let
 
   firefoxExtensions = import ./extensions.nix {
     inherit stdenv fetchurl fetchgit zip
-      git libxml2 python27 python27Packages rsync;
+      git libxml2 libxslt python36 rsync which xxd utillinux;
   };
 
   bundledExtensions = with firefoxExtensions; [

@@ -8,9 +8,12 @@
 # HTTPS Everywhere
 , git
 , libxml2 # xmllint
-, python27
-, python27Packages
+, libxslt
+, python36
 , rsync
+, which
+, xxd
+, utillinux # getopt
 }:
 
 {
@@ -30,14 +33,17 @@
     nativeBuildInputs = [
       git
       libxml2 # xmllint
-      python27
-      python27Packages.lxml
+      libxslt
+      (python36.withPackages (p: [ p.lxml ]))
       rsync
+      which
+      xxd
+      utillinux
       zip
     ];
 
     buildPhase = ''
-      $shell ./make.sh ${version} --no-recurse
+      $shell ./make.sh --remove-update-channel
     '';
 
     installPhase = ''
