@@ -3780,7 +3780,7 @@ in
 
   john = callPackage ../tools/security/john { };
 
-  inherit (nodePackages) joplin; # 12 soon
+  inherit (nodePackages_11_x) joplin; # 12 soon
 
   joplin-desktop = callPackage ../applications/misc/joplin-desktop { };
 
