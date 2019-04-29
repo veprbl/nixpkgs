@@ -84,7 +84,7 @@ in
     by Hydra.
   '';
 
-  tests = recurseIntoAttrs (callPackages ../test {});
+  tests = callPackages ../test {};
 
   ### Nixpkgs maintainer tools
 
@@ -17034,6 +17034,8 @@ in
 
   ctop = callPackage ../tools/system/ctop { };
 
+  cubicsdr = callPackage ../applications/radio/cubicsdr { wxGTK = wxGTK31; };
+
   cuneiform = callPackage ../tools/graphics/cuneiform {};
 
   curseradio = callPackage ../applications/audio/curseradio { };
@@ -22057,6 +22059,8 @@ in
   alliance = callPackage ../applications/science/electronics/alliance { };
 
   ants = callPackage ../applications/science/biology/ants { };
+
+  aragorn = callPackage ../applications/science/biology/aragorn { };
 
   archimedes = callPackage ../applications/science/electronics/archimedes {
     stdenv = overrideCC stdenv gcc49;
