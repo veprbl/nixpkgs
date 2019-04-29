@@ -15,6 +15,7 @@ let
     };
 
     patches = [
+      ./usercolors.patch
       # color users
       #(fetchpatch {
       #  url = https://github.com/QMatrixClient/Quaternion/pull/528.patch;
