@@ -153,6 +153,7 @@ stdenv.mkDerivation {
   checkPhase = ''
     make runtests
   '';
+  # TODO: install dolfin python module, wrap entry points so they can use it (dolfin-plot)
   postInstall = "source $out/share/dolfin/dolfin.conf";
   meta = {
     description = "The FEniCS Problem Solving Environment in Python and C++";
