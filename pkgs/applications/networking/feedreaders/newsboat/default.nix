@@ -1,16 +1,24 @@
-{ stdenv, rustPlatform, fetchurl, fetchpatch, stfl, sqlite, curl, gettext, pkgconfig, libxml2, json_c, ncurses
+{ stdenv, rustPlatform, fetchurl, fetchFromGitHub, fetchpatch, stfl, sqlite, curl, gettext, pkgconfig, libxml2, json_c, ncurses
 , asciidoc, docbook_xml_dtd_45, libxslt, docbook_xsl, libiconv, Security, makeWrapper }:
 
 rustPlatform.buildRustPackage rec {
-  name = "newsboat-${version}";
-  version = "2.15";
+  #name = "newsboat-${version}";
+  pname = "newsboat";
+#  version = "2.15";
+  version = "2019-04-24";
 
-  src = fetchurl {
-    url = "https://newsboat.org/releases/${version}/${name}.tar.xz";
-    sha256 = "1dqdcp34jmphqf3d8ik0xdhg0s66nd5rky0y8y591nidq29wws6s";
+  src = fetchFromGitHub {
+    owner = pname;
+    repo = pname;
+    rev = "a4a50aa0d9dc8d436d0631c172f9066a528d2bd7";
+    sha256 = "04cdrcz6m621mbl932va8iqv6g1y4dmn2sjbg1viphwmngywq4c7";
   };
+  #src = fetchurl {
+  #  url = "https://newsboat.org/releases/${version}/${name}.tar.xz";
+  #  sha256 = "1dqdcp34jmphqf3d8ik0xdhg0s66nd5rky0y8y591nidq29wws6s";
+  #};
 
-  cargoSha256 = "05pf020jp20ffmvin6d1g8zbwf1zk03bm1cb99b7iqkk4r54g6dn";
+  cargoSha256 = "05y6lz4zzv0b3pddj8kqhggby885fagyp14p34k5l3l2yqbxhpsl";
 
   postPatch = ''
     substituteInPlace Makefile --replace "|| true" ""
