@@ -51,7 +51,16 @@ let
     };
   };
 
+  qmtx_colors = libqmatrixclient_0_5.overrideAttrs(o: {
+    patches = (o.patches or []) ++ [
+      (fetchpatch {
+        url = https://github.com/QMatrixClient/libqmatrixclient/pull/298.patch;
+        sha256 = "05h0wvx45rlqyzz1zfj24l7cwmxrxwkv5f88fzcvqbfq1hwm0542";
+      })
+    ];
+  });
+
 in rec {
   quaternion     = generic "0.0.9.3"     "1hr9zqf301rg583n9jv256vzj7y57d8qgayk7c723bfknf1s6hh3" "v" libqmatrixclient_0_4;
-  quaternion-git = generic "f9fc184880cb43a5fb59fcb59a0a1355806121e4" "05xl1vydznz8sbqx30grh135cy0bhxhnhyk68b1n0fp98lx4ba9d" ""  libqmatrixclient_0_5;
+  quaternion-git = generic "f9fc184880cb43a5fb59fcb59a0a1355806121e4" "05xl1vydznz8sbqx30grh135cy0bhxhnhyk68b1n0fp98lx4ba9d" ""  qmtx_colors; #libqmatrixclient_0_5;
 }
