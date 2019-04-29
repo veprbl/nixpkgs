@@ -129,6 +129,8 @@ stdenv.mkDerivation rec {
   buildInputs = [ openblas gfortran.cc.lib ]
     ++ stdenv.lib.optional enableCuda cudatoolkit;
 
+  propagatedBuildInputs = [ openblas ];
+
   meta = with stdenv.lib; {
     homepage = http://faculty.cse.tamu.edu/davis/suitesparse.html;
     description = "A suite of sparse matrix algorithms";
