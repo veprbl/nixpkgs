@@ -60,7 +60,7 @@ in stdenv.mkDerivation rec{
     zlib
     freetype
     libICE
-    cups
+    cups.lib
     nss nspr
     pango cairo atk dbus gtk2 gdk_pixbuf
     librsvg
