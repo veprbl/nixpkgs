@@ -23,7 +23,7 @@
     src = fetchgit {
       url = "https://git.torproject.org/https-everywhere.git";
       rev = "refs/tags/${version}";
-      sha256 = "1g7971xygnhagnb26xjdf6mli6091ai9igx42d0ww88g8i0cqfzj";
+      sha256 = "1dpnqhibw6w102qwyf2ns4cq3l0wnwlcj4vzdq53gpxiq7l8nhdy";
       fetchSubmodules = true; # for translations, TODO: remove
     };
 
@@ -53,7 +53,7 @@
 
     src = fetchurl {
       url = "https://secure.informaction.com/download/releases/noscript-${version}.xpi";
-      sha256 = "1fzspdiwhjabwz2yxb3gzj7giz9jbc1xxm65i93rvhzcp537cs42";
+      sha256 = "09wprm8ca81b0b4g9j3crasmf0l0hvdlni0y5s5z44jx0k84fl5i";
     };
 
     unpackPhase = ":";
@@ -72,7 +72,7 @@
     src = fetchgit {
       url = "https://git.torproject.org/torbutton.git";
       rev = "refs/tags/${version}";
-      sha256 = "1amp0c9ky1a7fsa0bcbi6n6ginw7s2g3an4rj7kvc1lxmrcsm65l";
+      sha256 = "10x75hxjwi386lciizins3issr5mw0hqxyb954hzlf1i4s081j7x";
     };
 
     nativeBuildInputs = [ zip ];
@@ -95,7 +95,7 @@
     src = fetchgit {
       url = "https://git.torproject.org/tor-launcher.git";
       rev = "refs/tags/${version}";
-      sha256 = "1f98v88y3clwvjiw77kxqc9cacp5h0489a540nc2wmsx7vnskrq0";
+      sha256 = "0bzfsfgp5g192h0rjkf3z27b6ybsvlhpal8dyi8fk4kmn81fgnr2";
     };
 
     nativeBuildInputs = [ zip ];
