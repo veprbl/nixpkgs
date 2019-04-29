@@ -7,6 +7,7 @@
 , numpy
 , pkgconfig
 , pytest
+, pytest_3 # remove once packages all work with pytest 4
 , pythonPackages
 , six
 , sympy
@@ -36,7 +37,7 @@ let
       sha256 = "1ncgbr0bn5cvv16f13g722a0ipw6p9y6p4iasxjziwsp8kn5x97a";
     };
     buildInputs = [ numpy six ];
-    nativeBuildInputs = [ pytest ];
+    checkInputs = [ pytest ];
     preCheck = ''
       export HOME=$PWD
     '';
@@ -59,7 +60,8 @@ let
       url = "https://bitbucket.org/fenics-project/fiat/downloads/fiat-${version}.tar.gz";
       sha256 = "1sbi0fbr7w9g9ajr565g3njxrc3qydqjy3334vmz5xg0rd3106il";
     };
-    buildInputs = [ numpy pytest six sympy ];
+    buildInputs = [ numpy six sympy ];
+    checkInputs = [ pytest_3 ];
     checkPhase = ''
       py.test test/unit/
     '';
@@ -77,7 +79,8 @@ let
       url = "https://bitbucket.org/fenics-project/ufl/downloads/ufl-${version}.tar.gz";
       sha256 = "04daxwg4y9c51sdgvwgmlc82nn0fjw7i2vzs15ckdc7dlazmcfi1";
     };
-    buildInputs = [ numpy pytest six ];
+    buildInputs = [ numpy six ];
+    checkInputs = [ pytest ];
     checkPhase = ''
       py.test test/
     '';
@@ -95,7 +98,8 @@ let
       url = "https://bitbucket.org/fenics-project/ffc/downloads/ffc-${version}.tar.gz";
       sha256 = "1zdg6pziss4va74pd7jjl8sc3ya2gmhpypccmyd8p7c66ji23y2g";
     };
-    buildInputs = [ dijitso fiat numpy pytest six sympy ufl ];
+    buildInputs = [ dijitso fiat numpy six sympy ufl ];
+    checkInputs = [ pytest ];
     checkPhase = ''
       export HOME=$PWD
       py.test test/unit/
