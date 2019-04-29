@@ -7032,7 +7032,9 @@ in
 
   cryptol = haskell.lib.justStaticExecutables haskellPackages.cryptol;
 
-  inherit (callPackages ../development/compilers/crystal {})
+  inherit (callPackages ../development/compilers/crystal {
+    inherit (llvmPackages_6) llvm clang;
+  })
     crystal_0_25
     crystal_0_26
     crystal;
