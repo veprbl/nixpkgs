@@ -130,7 +130,6 @@ stdenv.mkDerivation {
     boost cmake dijitso doxygen eigen ffc fiat gtest hdf5 mpi
     numpy pkgconfig six sphinx suitesparse sympy ufl vtk zlib
     ] ++ stdenv.lib.optionals pythonBindings [ ply python numpy swig ];
-  patches = [ ./unicode.patch ];
   cmakeFlags = "-DDOLFIN_CXX_FLAGS=-std=c++11"
     + " -DDOLFIN_AUTO_DETECT_MPI=OFF"
     + " -DDOLFIN_ENABLE_CHOLMOD=" + (if suitesparse != null then "ON" else "OFF")
