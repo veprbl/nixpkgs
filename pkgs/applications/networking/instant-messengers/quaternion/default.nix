@@ -1,6 +1,5 @@
-{ stdenv, lib, fetchFromGitHub, qtbase, qtquickcontrols, cmake
-, fetchpatch
-, qttools, qtmultimedia
+{ stdenv, lib, fetchFromGitHub, fetchpatch, cmake
+, qtbase, qtquickcontrols, qtkeychain, qtmultimedia, qttools
 , libqmatrixclient_0_4, libqmatrixclient_0_5 }:
 
 let
@@ -28,7 +27,7 @@ let
       })
     ];
 
-    buildInputs = [ qtbase qtmultimedia qtquickcontrols qttools library ];
+    buildInputs = [ qtbase qtmultimedia qtquickcontrols qtkeychain qttools library ];
 
     nativeBuildInputs = [ cmake ];
 
@@ -61,6 +60,6 @@ let
   });
 
 in rec {
-  quaternion     = generic "0.0.9.4"     "05xl1vydznz8sbqx30grh135cy0bhxhnhyk68b1n0fp98lx4ba9d" "" qmtx_colors; # libqmatrixclient_0_5;
-  quaternion-git = generic "f9fc184880cb43a5fb59fcb59a0a1355806121e4" "05xl1vydznz8sbqx30grh135cy0bhxhnhyk68b1n0fp98lx4ba9d" ""  qmtx_colors; # libqmatrixclient_0_5;
+  quaternion     = generic "0.0.9.4"     "12mkwiqqbi4774kwl7gha72jyf0jf547acy6rw8ry249zl4lja54" "" qmtx_colors; # libqmatrixclient_0_5;
+  quaternion-git = quaternion;
 }
