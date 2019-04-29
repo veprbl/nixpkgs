@@ -14,6 +14,7 @@
 , which
 , xxd
 , utillinux # getopt
+, openssl
 }:
 
 {
@@ -39,12 +40,15 @@
       which
       xxd
       utillinux
+      openssl
       zip
     ];
 
     buildPhase = ''
-      $shell ./make.sh --remove-update-channel
-    '';
+      patchShebangs scripts/create_zip.py
+      $shell ./make.sh ${version} \
+        --remove-update-channel
+    ''; # --remove-extension-update ?
 
     installPhase = ''
       install -m 444 -D pkg/https-everywhere-$version-eff.xpi "$out/$extid.xpi"

@@ -35,6 +35,7 @@
 , which
 , xxd
 , utillinux # getopt
+, openssl
 
 # Pluggable transports
 , obfsproxy
@@ -58,7 +59,8 @@ let
 
   firefoxExtensions = import ./extensions.nix {
     inherit stdenv fetchurl fetchgit zip
-      git libxml2 libxslt python36 rsync which xxd utillinux;
+      git libxml2 libxslt python36 rsync
+      which xxd utillinux openssl;
   };
 
   bundledExtensions = with firefoxExtensions; [
