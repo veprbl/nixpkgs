@@ -14,10 +14,10 @@ let
 in
 stdenv.mkDerivation rec {
   name = "cef-binary-${version}";
-  version = "3.3497.1833.g13f506f";
+  version = "3.3683.1920.g9f41a27";
   src = fetchurl {
     url = "http://opensource.spotify.com/cefbuilds/cef_binary_${version}_linux64.tar.bz2";
-    sha256 = "02v22yx1ga2yxagjblzkfw0ax7zkrdpc959l1a15m8nah3y7xf9p";
+    sha256 = "12iv798p6g17jqxx4fid4jgwkrpvlfkx4250lk8byhync53zbw0d";
   };
   nativeBuildInputs = [ cmake ];
   makeFlags = "libcef_dll_wrapper";
