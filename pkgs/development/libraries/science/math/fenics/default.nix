@@ -27,13 +27,13 @@
 assert pythonBindings -> python != null && ply != null && swig != null;
 
 let
-  version = "2017.1.0";
+  version = "2019.1.0";
 
   dijitso = pythonPackages.buildPythonPackage {
     name = "dijitso-${version}";
     src = fetchurl {
       url = "https://bitbucket.org/fenics-project/dijitso/downloads/dijitso-${version}.tar.gz";
-      sha256 = "0mw6mynjmg6yl3l2k33yra2x84s4r6mh44ylhk9znjfk74jra8zg";
+      sha256 = "1ncgbr0bn5cvv16f13g722a0ipw6p9y6p4iasxjziwsp8kn5x97a";
     };
     buildInputs = [ numpy pytest six ];
     checkPhase = ''
@@ -52,7 +52,7 @@ let
     name = "fiat-${version}";
     src = fetchurl {
       url = "https://bitbucket.org/fenics-project/fiat/downloads/fiat-${version}.tar.gz";
-      sha256 = "156ybz70n4n7p88q4pfkvbmg1xr2ll80inzr423mki0nml0q8a6l";
+      sha256 = "1sbi0fbr7w9g9ajr565g3njxrc3qydqjy3334vmz5xg0rd3106il";
     };
     buildInputs = [ numpy pytest six sympy ];
     checkPhase = ''
@@ -70,7 +70,7 @@ let
     name = "ufl-${version}";
     src = fetchurl {
       url = "https://bitbucket.org/fenics-project/ufl/downloads/ufl-${version}.tar.gz";
-      sha256 = "13ysimmwad429fjjs07j1fw1gq196p021j7mv66hwrljyh8gm1xg";
+      sha256 = "13ysimmwad430fjjs07j1fw1gq196p021j7mv66hwrljyh8gm1xg";
     };
     buildInputs = [ numpy pytest six ];
     checkPhase = ''
@@ -88,7 +88,7 @@ let
     name = "ffc-${version}";
     src = fetchurl {
       url = "https://bitbucket.org/fenics-project/ffc/downloads/ffc-${version}.tar.gz";
-      sha256 = "1cw7zsrjms11xrfg7x9wjd90x3w4v5s1wdwa18xqlycqz7cc8wr0";
+      sha256 = "1zdg6pziss4va74pd7jjl8sc3ya2gmhpypccmyd8p7c66ji23y2g";
     };
     buildInputs = [ dijitso fiat numpy pytest six sympy ufl ];
     checkPhase = ''
@@ -103,31 +103,16 @@ let
     };
   };
 
-  instant = pythonPackages.buildPythonPackage {
-    name = "instant-${version}";
-    src = fetchurl {
-      url = "https://bitbucket.org/fenics-project/instant/downloads/instant-${version}.tar.gz";
-      sha256 = "1rsyh6n04w0na2zirfdcdjip8k8ikb8fc2x94fq8ylc3lpcnpx9q";
-    };
-    buildInputs = [ numpy six ];
-    meta = {
-      description = "Instant inlining of C and C++ code in Python";
-      homepage = http://fenicsproject.org/;
-      platforms = stdenv.lib.platforms.all;
-      license = stdenv.lib.licenses.lgpl3;
-    };
-  };
-
 in
 stdenv.mkDerivation {
   name = "dolfin-${version}";
   src = fetchurl {
     url = "https://bitbucket.org/fenics-project/dolfin/downloads/dolfin-${version}.tar.gz";
-    sha256 = "14hfb5q6rz79zmy742s2fiqkb9j2cgh5bsg99v76apcr84nklyds";
+    sha256 = "0kbyi4x5f6j4zpasch0swh0ch81w2h92rqm1nfp3ydi4a93vky33";
   };
   propagatedBuildInputs = [ dijitso fiat numpy six ufl ];
   buildInputs = [
-    boost cmake dijitso doxygen eigen ffc fiat gtest hdf5 instant mpi
+    boost cmake dijitso doxygen eigen ffc fiat gtest hdf5 mpi
     numpy pkgconfig six sphinx suitesparse sympy ufl vtk zlib
     ] ++ stdenv.lib.optionals pythonBindings [ ply python numpy swig ];
   patches = [ ./unicode.patch ];
@@ -158,7 +143,7 @@ stdenv.mkDerivation {
   meta = {
     description = "The FEniCS Problem Solving Environment in Python and C++";
     homepage = http://fenicsproject.org/;
-    platforms = stdenv.lib.platforms.darwin;
+    platforms = stdenv.lib.platforms.all;
     license = stdenv.lib.licenses.lgpl3;
   };
 }
