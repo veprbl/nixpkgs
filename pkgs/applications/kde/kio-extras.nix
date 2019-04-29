@@ -3,7 +3,7 @@
   exiv2, kactivities, karchive, kbookmarks, kconfig, kconfigwidgets,
   kcoreaddons, kdbusaddons, kguiaddons, kdnssd, kiconthemes, ki18n, kio, khtml,
   kdelibs4support, kpty, libmtp, libssh, openexr, ilmbase, openslp, phonon,
-  qtsvg, samba, solid, syntax-highlighting, gperf, taglib
+  qtsvg, samba, solid, syntax-highlighting, gperf
 }:
 
 mkDerivation {
@@ -16,7 +16,7 @@ mkDerivation {
   buildInputs = [
     exiv2 kactivities karchive kbookmarks kconfig kconfigwidgets kcoreaddons
     kdbusaddons kguiaddons kdnssd kiconthemes ki18n kio khtml kdelibs4support
-    kpty libmtp libssh openexr openslp phonon qtsvg samba solid syntax-highlighting gperf taglib
+    kpty libmtp libssh openexr openslp phonon qtsvg samba solid syntax-highlighting gperf
   ];
   CXXFLAGS = [ "-I${ilmbase.dev}/include/OpenEXR" ];
 }
