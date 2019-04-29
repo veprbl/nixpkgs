@@ -35,6 +35,7 @@ in stdenv.mkDerivation rec{
 
   unpackPhase = "dpkg-deb -x $src .";
 
+  runtimeDependencies = buildInputs;
   buildInputs = [
     alsaLib
     libX11
