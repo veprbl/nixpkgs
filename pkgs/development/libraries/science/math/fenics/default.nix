@@ -75,7 +75,7 @@ let
     name = "ufl-${version}";
     src = fetchurl {
       url = "https://bitbucket.org/fenics-project/ufl/downloads/ufl-${version}.tar.gz";
-      sha256 = "13ysimmwad430fjjs07j1fw1gq196p021j7mv66hwrljyh8gm1xg";
+      sha256 = "04daxwg4y9c51sdgvwgmlc82nn0fjw7i2vzs15ckdc7dlazmcfi1";
     };
     buildInputs = [ numpy pytest six ];
     checkPhase = ''
