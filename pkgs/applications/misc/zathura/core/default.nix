@@ -47,6 +47,7 @@ stdenv.mkDerivation rec {
     description = "A core component for zathura PDF viewer";
     license = licenses.zlib;
     platforms = platforms.unix;
-    maintainers = with maintainers; [ garbas ];
+    maintainers = with maintainers; [ garbas rvolosatovs ];
+    broken = stdenv.isDarwin;
   };
 }
