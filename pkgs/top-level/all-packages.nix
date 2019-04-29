@@ -4099,9 +4099,9 @@ in
 
   nixnote2 = libsForQt5.callPackage ../applications/misc/nixnote2 { };
 
-  nodejs = hiPrio nodejs-10_x;
+  nodejs = hiPrio nodejs-12_x;
 
-  nodejs-slim = nodejs-slim-10_x;
+  nodejs-slim = nodejs-slim-12_x;
 
   nodejs-8_x = callPackage ../development/web/nodejs/v8.nix {};
   nodejs-slim-8_x = callPackage ../development/web/nodejs/v8.nix { enableNpm = false; };
@@ -4142,7 +4142,7 @@ in
     nodejs = pkgs.nodejs-8_x;
   });
 
-  nodePackages = nodePackages_10_x;
+  nodePackages = nodePackages_12_x;
 
   npm2nix = nodePackages.npm2nix;
 
