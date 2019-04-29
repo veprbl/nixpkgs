@@ -102,6 +102,9 @@ in stdenv.mkDerivation rec{
     # :(
     rm $prefix/office6/libjs*
 
+    # use ours
+    rm $prefix/office6/libcef*
+
     ## # China fonts
     ## mkdir -p $prefix/resource/fonts/wps-office $out/etc/fonts/conf.d
     ## ln -s $prefix/fonts/* $prefix/resource/fonts/wps-office
