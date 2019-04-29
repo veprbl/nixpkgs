@@ -3,6 +3,7 @@
 , pango, cairo, atk, dbus, gtk2, gdk_pixbuf
 , gnutls, nettle, librsvg
 , fribidi
+, libcef
 , libunistring, avahi
 , zlib, libpng12, libICE, libXrender, cups, nss, nspr }:
 
@@ -64,6 +65,7 @@ in stdenv.mkDerivation rec{
     pango cairo atk dbus gtk2 gdk_pixbuf
     librsvg
     fribidi
+    libcef
     avahi
     libunistring
     gnutls nettle
