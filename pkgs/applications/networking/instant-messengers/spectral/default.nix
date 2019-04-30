@@ -23,12 +23,12 @@ in stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://gitlab.com/b0/spectral.git";
-    rev = "5fe8bafbf388b29a2eed28ed81d7950645102d87";
-    sha256 = "0ikmpsspn34hdy154svm1wrf82l8y0x7rl7kqpmva475plmi6clk";
+    rev = "7458ebf59accaf5b95aa3d06f2f5a6776bcf8edf";
+    sha256 = "1saw5jcvbqcyhnn3lkh7zrp8lbvcbaiqjdrarlqa5vcf9nnskcj8";
     fetchSubmodules = true;
   };
 
-  qmakeFlags = [ "CONFIG+=qtquickcompiler" "BUNDLE_FONT=true" ];
+  qmakeFlags = [ "CONFIG+=qtquickcompiler" ];
 
   postInstall = ''
     wrapProgram $out/bin/spectral \
