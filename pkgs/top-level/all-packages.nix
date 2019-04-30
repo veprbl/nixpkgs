@@ -3451,6 +3451,8 @@ in
 
   halide = callPackage ../development/compilers/halide { };
 
+  ham = pkgs.perlPackages.ham;
+
   hardinfo = callPackage ../tools/system/hardinfo { };
 
   hdapsd = callPackage ../os-specific/linux/hdapsd { };
@@ -6390,6 +6392,8 @@ in
   };
 
   vtun = callPackage ../tools/networking/vtun { };
+
+  waifu2x-converter-cpp = callPackage ../tools/graphics/waifu2x-converter-cpp { };
 
   wakatime = pythonPackages.callPackage ../tools/misc/wakatime { };
 
@@ -19085,7 +19089,9 @@ in
   speedread = callPackage ../applications/misc/speedread { };
 
   sup = callPackage ../applications/networking/mailreaders/sup {
-    ruby = ruby_2_3.override { cursesSupport = true; };
+    bundlerApp = bundlerApp.override{
+      ruby = ruby.override { cursesSupport = true; };
+    };
   };
 
   synapse = callPackage ../applications/misc/synapse { };

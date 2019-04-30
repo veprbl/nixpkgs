@@ -519,6 +519,11 @@
     github = "avnik";
     name = "Alexander V. Nikolaev";
   };
+  aw = {
+    email = "aw-nixos@meterriblecrew.net";
+    github = "herrwiese";
+    name = "Andreas Wiese";
+  };
   aycanirican = {
     email = "iricanaycan@gmail.com";
     github = "aycanirican";
