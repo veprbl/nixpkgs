@@ -1,12 +1,12 @@
 { stdenv, fetchurl, libresolv }:
 
 stdenv.mkDerivation rec {
-  version = "1.10";
+  version = "1.9";
   name = "dnstracer-${version}";
 
   src = fetchurl {
-    url = "https://www.mavetju.org/download/${name}.tar.bz2";
-    sha256 = "089bmrjnmsga2n0r4xgw4bwbf41xdqsnmabjxhw8lngg2pns1kb4";
+    url = "https://www.mavetju.org/download/${name}.tar.gz";
+    sha256 = "177y58smnq2xhx9lbmj1gria371iv3r1d132l2gjvflkjsphig1f";
   };
 
   outputs = [ "out" "man" ];
