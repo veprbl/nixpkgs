@@ -47,7 +47,7 @@
 
 # Wrapper runtime
 , coreutils
-, glibcLocales
+#, glibcLocales
 , gnome3
 , runtimeShell
 , shared-mime-info
@@ -165,7 +165,7 @@ stdenv.mkDerivation rec {
     TBDATA_PATH=TorBrowser-Data
     # The final libPath.  Note, we could split this into firefoxLibPath
     # and torLibPath for accuracy, but this is more convenient ...
-    libPath=${libPath}:$TBB_IN_STORE:$TBB_IN_STORE/TorBrowser/Tor
+    ## libPath=${libPath}:$TBB_IN_STORE:$TBB_IN_STORE/TorBrowser/Tor
 
     # apulse uses a non-standard library path.  For now special-case it.
     ${optionalString (audioSupport && !pulseaudioSupport) ''
@@ -177,20 +177,13 @@ stdenv.mkDerivation rec {
 
     TBDATA_IN_STORE=$self/$TBDATA_PATH
 
+    # Copy bundle data
     cp -dR ${tor-browser-unwrapped}/lib"/"*"/"* .
     chmod -R +w .
 
-    # Configure pluggable transports
-    substituteInPlace $TBDATA_PATH/torrc-defaults \
-      --replace "./TorBrowser/Tor/PluggableTransports/obfs4proxy" \
-                "${obfs4}/bin/obfs4proxy"
-
-
-
-    # Copy bundle data
+    # Generate preferences
     bundlePlatform=linux
     bundleData=$TBBUILD/Bundle-Data
-
     mkdir -p $TBDATA_PATH
     mkdir -p browser/defaults/preferences
     cat \
@@ -273,6 +266,12 @@ stdenv.mkDerivation rec {
     GeoIPv6File $TBDATA_IN_STORE/geoip6
     EOF
 
+    # Configure pluggable transports
+    substituteInPlace $TBDATA_PATH/torrc-defaults \
+      --replace "./TorBrowser/Tor/PluggableTransports/obfs4proxy" \
+                "${obfs4}/bin/obfs4proxy"
+
+
     wrapper_XDG_DATA_DIRS=${concatMapStringsSep ":" (x: "${x}/share") [
       gnome3.adwaita-icon-theme
       shared-mime-info
@@ -307,6 +306,7 @@ stdenv.mkDerivation rec {
     XDG_CACHE_HOME=\$HOME/.cache
     XDG_CONFIG_HOME=\$HOME/.config
     XDG_DATA_HOME=\$HOME/.local/share
+    XDG_RUNTIME_DIR="\$HOME/run"
 
     # Initialize empty TBB runtime state directory hierarchy.  Mirror the
     # layout used by the official TBB, to avoid the hassle of working
