@@ -38,7 +38,7 @@
 , openssl
 
 # Pluggable transports
-, obfsproxy
+, obfs4
 
 # Customization
 , extraPrefs ? ""
@@ -180,9 +180,9 @@ stdenv.mkDerivation rec {
     EOF
 
     # Configure pluggable transports
-    cat >>$TBDATA_PATH/torrc-defaults <<EOF
-    ClientTransportPlugin obfs2,obfs3 exec ${obfsproxy}/bin/obfsproxy managed
-    EOF
+    substituteInPlace $TBDATA_PATH/torrc-defaults \
+      --replace "/TorBrowser/Tor/PluggableTransports/obfs4proxy" \
+                "${obfs4}/bin/obfs4proxy"
 
     # Hard-code path to TBB fonts; xref: FONTCONFIG_FILE in the wrapper below
     sed $bundleData/$bundlePlatform/Data/fontconfig/fonts.conf \
