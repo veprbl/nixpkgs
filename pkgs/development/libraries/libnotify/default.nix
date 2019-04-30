@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, meson, ninja, pkgconfig
+{ stdenv, fetchurl, meson, ninja, pkgconfig, fetchpatch
 , glib, gdk_pixbuf, gobject-introspection, gnome3 }:
 
 stdenv.mkDerivation rec {
