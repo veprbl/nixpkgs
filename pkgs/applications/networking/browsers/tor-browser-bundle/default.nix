@@ -12,6 +12,7 @@
 , shared-mime-info
 , noto-fonts
 , noto-fonts-emoji
+, stix-two
 
 # Audio support
 , audioSupport ? mediaSupport
@@ -72,7 +73,7 @@ let
 
   fontsEnv = symlinkJoin {
     name = "tor-browser-fonts";
-    paths = [ noto-fonts noto-fonts-emoji ];
+    paths = [ noto-fonts noto-fonts-emoji stix-two ];
   };
 
   fontsDir = "${fontsEnv}/share/fonts";
@@ -157,6 +158,7 @@ stdenv.mkDerivation rec {
     bundleData=$TBBUILD/Bundle-Data
 
     mkdir -p $TBDATA_PATH
+    mkdir -p browser/defaults/preferences
     cat \
       $bundleData/PTConfigs/$bundlePlatform/torrc-defaults-appendix \
       $bundleData/$bundlePlatform/Data/Tor/torrc-defaults \
@@ -164,7 +166,7 @@ stdenv.mkDerivation rec {
     cat \
       $bundleData/PTConfigs/bridge_prefs.js \
       | grep -v "default_bridge\.snowflake" \
-      >> mozilla.cfg # defaults/pref/extension-overrides.js
+      >> browser/defaults/preferences/00-prefs.js
 
     # Configure geoip
     #
