@@ -158,12 +158,13 @@ stdenv.mkDerivation rec {
 
     mkdir -p $TBDATA_PATH
     cat \
+      $bundleData/PTConfigs/$bundlePlatform/torrc-defaults-appendix \
       $bundleData/$bundlePlatform/Data/Tor/torrc-defaults \
       >> $TBDATA_PATH/torrc-defaults
     cat \
-      $bundleData/$bundlePlatform/Data/Browser/profile.default/preferences/extension-overrides.js \
       $bundleData/PTConfigs/bridge_prefs.js \
-      >> defaults/pref/extension-overrides.js
+      | grep -v "default_bridge\.snowflake" \
+      >> mozilla.cfg # defaults/pref/extension-overrides.js
 
     # Configure geoip
     #
