@@ -19,12 +19,12 @@ let
 
 in stdenv.mkDerivation rec {
   pname = "spectral";
-  version = "2019-04-26";
+  version = "2019-04-29";
 
   src = fetchgit {
     url = "https://gitlab.com/b0/spectral.git";
-    rev = "d8c98374e46e7cb08dcbb2703d301ca82282e9e1";
-    sha256 = "0pyk69vg0gp2lx4vhicx4s4bx4lb1bngniavgcn6hs1n6qby9ic0";
+    rev = "5fe8bafbf388b29a2eed28ed81d7950645102d87";
+    sha256 = "0ikmpsspn34hdy154svm1wrf82l8y0x7rl7kqpmva475plmi6clk";
     fetchSubmodules = true;
   };
 
