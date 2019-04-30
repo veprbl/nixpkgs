@@ -22,6 +22,7 @@
 , libXt
 , pango
 
+# Audio support
 , audioSupport ? mediaSupport
 , pulseaudioSupport ? false
 , libpulseaudio
@@ -115,11 +116,8 @@ let
 in
 
 stdenv.mkDerivation rec {
-  name = "tor-browser-bundle-bin-${version}";
+  pname = "tor-browser-bundle-bin";
   inherit version;
-
-  src = srcs."${stdenv.hostPlatform.system}" or (throw "unsupported system: ${stdenv.hostPlatform.system}");
-
   preferLocalBuild = true;
   allowSubstitutes = false;
 
@@ -132,6 +130,9 @@ stdenv.mkDerivation rec {
     comment = meta.description;
     categories = "Network;WebBrowser;Security;";
   };
+
+  src = srcs."${stdenv.hostPlatform.system}" or (throw "unsupported system: ${stdenv.hostPlatform.system}");
+
 
   buildCommand = ''
     # For convenience ...
