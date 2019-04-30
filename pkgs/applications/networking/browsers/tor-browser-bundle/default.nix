@@ -183,7 +183,7 @@ stdenv.mkDerivation rec {
 
     # Configure pluggable transports
     substituteInPlace $TBDATA_PATH/torrc-defaults \
-      --replace "/TorBrowser/Tor/PluggableTransports/obfs4proxy" \
+      --replace "./TorBrowser/Tor/PluggableTransports/obfs4proxy" \
                 "${obfs4}/bin/obfs4proxy"
 
     # Hard-code path to TBB fonts; xref: FONTCONFIG_FILE in the wrapper below
