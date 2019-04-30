@@ -188,7 +188,7 @@ stdenv.mkDerivation rec {
 
     # Hard-code path to TBB fonts; xref: FONTCONFIG_FILE in the wrapper below
     sed $bundleData/$bundlePlatform/Data/fontconfig/fonts.conf \
-        -e "s,<dir>fonts</dir>,<dir>${fontsDir}</dir>," \
+        -e "s,<dir>fonts</dir>,\0<dir>${fontsDir}</dir>," \
         > $TBDATA_PATH/fonts.conf
 
     # Generate a suitable wrapper
