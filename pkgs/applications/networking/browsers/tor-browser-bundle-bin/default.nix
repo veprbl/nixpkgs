@@ -35,6 +35,7 @@
 
 # Pluggable transport dependencies
 , python27
+, obfs4
 
 # Wrapper runtime
 , coreutils
@@ -164,11 +165,8 @@ stdenv.mkDerivation rec {
     sed -i TorBrowser/Data/Tor/torrc-defaults \
         -e "s,./TorBrowser,$TBB_IN_STORE/TorBrowser,g"
 
-    # Fixup obfs transport.  Work around patchelf failing to set
-    # interpreter for pre-compiled Go binaries by invoking the interpreter
-    # directly.
     sed -i TorBrowser/Data/Tor/torrc-defaults \
-        -e "s|\(ClientTransportPlugin obfs2,obfs3,obfs4,scramblesuit\) exec|\1 exec $interp|" \
+        -e "s|\(ClientTransportPlugin obfs2,obfs3,obfs4,scramblesuit\) exec|\1 exec ${obfs4}/bin/obfs4proxy|"
 
     # Fixup fte transport
     #
