@@ -1,14 +1,11 @@
 { stdenv, fetchFromGitHub, cmake, libX11, libuuid, xz, vtk }:
 
 stdenv.mkDerivation rec {
-  pname = "itk";
-  version = "5.0rc02";
+  name = "itk-4.13.2";
 
-  src = fetchFromGitHub {
-    owner = "InsightSoftwareConsortium";
-    repo = pname;
-    rev = "refs/tags/v${version}";
-    sha256 = "1ia7smvf72lcy9n4wj98275mj5k6y2hlqbi4y1sympnlfh9w29mz";
+  src = fetchurl {
+    url = mirror://sourceforge/itk/InsightToolkit-4.13.2.tar.xz;
+    sha256 = "19cgfpd63gqrvc3m27m394gy2d7w79g5y6lvznb5qqr49lihbgns";
   };
 
   cmakeFlags = [
