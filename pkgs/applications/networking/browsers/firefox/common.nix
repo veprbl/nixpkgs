@@ -348,6 +348,8 @@ stdenv.mkDerivation rec {
     "$out${execdir}/${browserName}" --version
   '';
 
+  strictDeps = true;
+
   passthru = {
     inherit version updateScript;
     isFirefox3Like = true;
