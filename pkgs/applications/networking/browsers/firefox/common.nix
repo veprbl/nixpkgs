@@ -250,6 +250,7 @@ stdenv.mkDerivation rec {
     "--enable-jemalloc"
     "--disable-gconf"
     "--enable-default-toolkit=${default-toolkit}"
+    "--without-stdcxx-compat"
   ]
   ++ lib.optional (lib.versionOlder ffversion "64") "--disable-maintenance-service"
   ++ lib.optional (stdenv.isDarwin && lib.versionAtLeast ffversion "61") "--disable-xcode-checks"
