@@ -353,7 +353,7 @@ stdenv.mkDerivation rec {
     "$out${execdir}/${browserName}" --version
   '';
 
-  strictDeps = true;
+  # strictDeps = true;
 
   passthru = {
     inherit version updateScript;
