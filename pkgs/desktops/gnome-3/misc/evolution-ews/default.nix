@@ -35,6 +35,8 @@ in stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ cmake ninja intltool itstool libxml2 pkgconfig wrapGAppsHook ];
 
+  ## set env vars like "PKG_CONFIG_$PACKAGE_$VARIABLE"?
+
   # TODO:
   # - [ ] fix install paths
   # - [ ] ensure evolution and other bits actually find what is installed!
