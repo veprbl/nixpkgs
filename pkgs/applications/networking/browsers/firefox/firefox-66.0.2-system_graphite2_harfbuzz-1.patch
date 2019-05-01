@@ -72,18 +72,6 @@ diff -Naur a/gfx/graphite2/moz-gr-update.sh b/gfx/graphite2/moz-gr-update.sh
  
  echo
  echo If gfx/graphite2/src/files.mk has changed, please make corresponding
-diff -Naur a/gfx/harfbuzz/README-mozilla b/gfx/harfbuzz/README-mozilla
---- a/gfx/harfbuzz/README-mozilla	2019-03-04 17:16:10.000000000 +0000
-+++ b/gfx/harfbuzz/README-mozilla	2019-03-07 01:01:36.665737746 +0000
-@@ -15,3 +15,8 @@
- 
- If the collection of source files changes, manual updates to moz.build may be
- needed as we don't use the upstream makefiles.
-+
-+The in-tree copy may be omitted during build by --with-system-harfbuzz.
-+Make sure to keep pkg-config version check within toolkit/moz.configure in sync
-+with checkout version or increment latest tag by one if it's not based
-+on upstream release.
 diff -Naur a/gfx/moz.build b/gfx/moz.build
 --- a/gfx/moz.build	2019-03-04 17:16:10.000000000 +0000
 +++ b/gfx/moz.build	2019-03-07 01:01:36.665737746 +0000

@@ -174,6 +174,8 @@ stdenv.mkDerivation rec {
   nativeBuildInputs =
     [ autoconf213 which gnused pkgconfig perl python2 cargo rustc
       unzip zip makeWrapper file yasm
+      # nspr-config :(
+      nspr nss
     ]
     ++ lib.optional gtk3Support wrapGAppsHook
     ++ lib.optionals stdenv.isDarwin [ xcbuild rsync ]
