@@ -9,11 +9,11 @@
 
 stdenv.mkDerivation rec {
   pname = "luarocks";
-  version = "3.1.0";
+  version = "3.0.4";
 
   src = fetchurl {
     url="http://luarocks.org/releases/luarocks-${version}.tar.gz";
-    sha256="08c9j0j94l3p87b2f8pkrv4qg4p9zavggj61ap4h3xxh94gawpl6";
+    sha256="1pqfzwvjy8dzqg4fqjq2cgqcr00fgrdd7nwzxm7nqmawr83s6dhj";
   };
 
   patches = [ ./darwin.patch ];
