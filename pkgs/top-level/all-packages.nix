@@ -177,6 +177,8 @@ in
 
   docker-sync = callPackage ../tools/misc/docker-sync { };
 
+  docui = callPackage ../tools/misc/docui { };
+
   dotfiles = callPackage ../applications/misc/dotfiles { };
 
   dotnetenv = callPackage ../build-support/dotnetenv {
@@ -5398,6 +5400,8 @@ in
 
   rambox = callPackage ../applications/networking/instant-messengers/rambox { };
 
+  rambox-pro = callPackage ../applications/networking/instant-messengers/rambox/pro.nix { };
+
   ranger = callPackage ../applications/misc/ranger { };
 
   rarcrack = callPackage ../tools/security/rarcrack { };
@@ -5794,6 +5798,8 @@ in
   smbnetfs = callPackage ../tools/filesystems/smbnetfs {};
 
   smenu = callPackage ../tools/misc/smenu { };
+
+  smesh = callPackage ../development/libraries/smesh {};
 
   smugline = python3Packages.smugline;
 
@@ -23598,6 +23604,8 @@ in
   ib-tws = callPackage ../applications/office/ib/tws { jdk=oraclejdk8; };
 
   ib-controller = callPackage ../applications/office/ib/controller { jdk=oraclejdk8; };
+
+  ssh-audit = callPackage ../tools/security/ssh-audit { };
 
   thermald = callPackage ../tools/system/thermald { };
 
