@@ -172,7 +172,7 @@ stdenv.mkDerivation rec {
   '';
 
   nativeBuildInputs =
-    [ autoconf213 which gnused pkgconfig perl python2 cargo rustc ]
+    [ autoconf213 which gnused pkgconfig perl python2 cargo rustc zip ]
     ++ lib.optional gtk3Support wrapGAppsHook
     ++ lib.optionals stdenv.isDarwin [ xcbuild rsync ]
     ++ lib.optionals (lib.versionAtLeast ffversion "63.0") [ rust-cbindgen nodejs ]
