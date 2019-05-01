@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, autoreconfHook, wrapGAppsHook, intltool, pkgconfig
+{ stdenv, fetchFromGitHub, meson, ninja, wrapGAppsHook, intltool, pkgconfig
 , SDL2, zlib, gtk3, libxml2, libXv, epoxy, minizip, portaudio }:
 
 stdenv.mkDerivation rec {
@@ -13,12 +13,11 @@ stdenv.mkDerivation rec {
   };
 
   enableParallelBuilding = true;
-  nativeBuildInputs = [ autoreconfHook wrapGAppsHook intltool pkgconfig ];
+  nativeBuildInputs = [ meson ninja wrapGAppsHook intltool pkgconfig ];
   buildInputs = [ SDL2 zlib gtk3 libxml2 libXv epoxy minizip portaudio ];
 
-  preAutoreconf = ''
+  preConfigure = ''
     cd gtk
-    intltoolize
   '';
 
   meta = with stdenv.lib; {
