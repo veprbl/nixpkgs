@@ -1,5 +1,6 @@
 { stdenv, fetchFromGitHub, meson, ninja, wrapGAppsHook, intltool, pkgconfig
-, SDL2, zlib, gtk3, libxml2, libXv, epoxy, minizip, portaudio }:
+, SDL2, zlib, gtk3, libxml2, libXv, epoxy, minizip
+, portaudio, libpulseaudio, alsaLib }:
 
 stdenv.mkDerivation rec {
   name = "snes9x-gtk-${version}";
@@ -14,7 +15,10 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
   nativeBuildInputs = [ meson ninja wrapGAppsHook intltool pkgconfig ];
-  buildInputs = [ SDL2 zlib gtk3 libxml2 libXv epoxy minizip portaudio ];
+  buildInputs = [
+    SDL2 zlib gtk3 libxml2 libXv epoxy minizip
+    portaudio libpulseaudio alsaLib
+  ];
 
   preConfigure = ''
     cd gtk
