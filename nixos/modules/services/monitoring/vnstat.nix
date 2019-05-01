@@ -33,9 +33,20 @@ in {
       serviceConfig = {
         ExecStart = "${pkgs.vnstat}/bin/vnstatd -n";
         ExecReload = "${pkgs.procps}/bin/kill -HUP $MAINPID";
-        ProtectHome = true;
+
+        # Hardening (from upstream example service)
+        ProtectSystem = "strict";
+        StateDirectory = "vnstat";
         PrivateDevices = true;
+        ProtectKernelTunables = true;
+        ProtectControlGroups = true;
+        ProtectHome = true;
+        ProtectKernelModules = true;
         PrivateTmp = true;
+        MemoryDenyWriteExecute = true;
+        RestrictRealtime = true;
+        RestrictNamespaces = true;
+
         User = "vnstatd";
       };
     };
