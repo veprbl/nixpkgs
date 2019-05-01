@@ -59,6 +59,8 @@ in {
     systemd.services.pcscd = {
       description = "PCSC-Lite daemon";
       environment.PCSCLITE_HP_DROPDIR = pluginEnv;
+      requires = [ "pcscd.socket" ];
+      documentation = [ "man:pcscd(8)" ];
       serviceConfig = {
         ExecStart = "${getBin pkgs.pcsclite}/sbin/pcscd -f -x -c ${cfgFile}";
         ExecReload = "${getBin pkgs.pcsclite}/sbin/pcscd -H";
