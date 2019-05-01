@@ -1937,17 +1937,6 @@ let
     };
   };
 
-  unicode-vim = buildVimPluginFrom2Nix {
-    pname = "unicode-vim";
-    version = "2019-03-08";
-    src = fetchFromGitHub {
-      owner = "chrisbra";
-      repo = "unicode.vim";
-      rev = "e0a060444af297eef131dd140e55c8c3602a72fd";
-      sha256 = "0difrn1p406p9g7xdw4xgmpx8f4ahml5gkmnsx03yv02svlfxp68";
-    };
-  };
-
   unite-vim = buildVimPluginFrom2Nix {
     pname = "unite-vim";
     version = "2019-03-29";
