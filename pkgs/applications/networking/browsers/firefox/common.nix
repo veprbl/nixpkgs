@@ -125,7 +125,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     gtk2 perl zip libIDL libjpeg zlib bzip2
-    dbus dbus-glib cairo pango
+    dbus dbus-glib /* cairo */ pango
     freetype fontconfig graphite2 harfbuzz
     xorg.libXi xorg.libXcursor
     xorg.libX11 xorg.libXrender xorg.libXft xorg.libXt file
@@ -241,7 +241,7 @@ stdenv.mkDerivation rec {
     "--enable-system-ffi"
     "--enable-system-pixman"
     "--enable-system-sqlite"
-    "--enable-system-cairo"
+    #"--enable-system-cairo"
     "--enable-startup-notification"
     "--enable-content-sandbox"
     "--disable-tests"
