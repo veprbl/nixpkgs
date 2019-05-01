@@ -4047,8 +4047,6 @@ in
     pythonPackages = python3Packages;
   };
 
-  nanum-gothic-coding = callPackage ../data/fonts/nanum-gothic-coding {  };
-
   nbench = callPackage ../tools/misc/nbench { };
 
   netdata = callPackage ../tools/system/netdata {
@@ -16268,6 +16266,8 @@ in
   myrica = callPackage ../data/fonts/myrica { };
 
   nafees = callPackage ../data/fonts/nafees { };
+
+  nanum-gothic-coding = callPackage ../data/fonts/nanum-gothic-coding {  };
 
   nordic = callPackage ../data/themes/nordic { };
 
