@@ -131,7 +131,7 @@ stdenv.mkDerivation rec {
     xorg.libX11 xorg.libXrender xorg.libXft xorg.libXt file
     libnotify xorg.pixman yasm libGLU_combined
     xorg.libXScrnSaver xorg.xorgproto
-    xorg.libXext sqlite unzip makeWrapper
+    xorg.libXext sqlite makeWrapper
     libevent libstartup_notification libwebp libvpx
     icu libpng jemalloc glib
     llvmPackages.llvm
@@ -172,7 +172,7 @@ stdenv.mkDerivation rec {
   '';
 
   nativeBuildInputs =
-    [ autoconf213 which gnused pkgconfig perl python2 cargo rustc zip ]
+    [ autoconf213 which gnused pkgconfig perl python2 cargo rustc unzip ]
     ++ lib.optional gtk3Support wrapGAppsHook
     ++ lib.optionals stdenv.isDarwin [ xcbuild rsync ]
     ++ lib.optionals (lib.versionAtLeast ffversion "63.0") [ rust-cbindgen nodejs ]
