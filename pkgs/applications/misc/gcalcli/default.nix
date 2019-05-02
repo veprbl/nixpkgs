@@ -16,14 +16,14 @@ buildPythonApplication rec {
   };
 
   postPatch = lib.optionalString stdenv.isLinux ''
-    substituteInPlace gcalcli/argparsers.py --replace \
-      "command = 'notify-send -u critical" \
-      "command = '${libnotify}/bin/notify-send -u critical"
+    substituteInPlace gcalcli/argparsers.py \
+      --replace "'notify-send" "'${libnotify}/bin/notify-send"
   '';
 
   propagatedBuildInputs = [
     dateutil gflags httplib2 parsedatetime six vobject
     google_api_python_client oauth2client uritemplate
+    libnotify
   ] ++ lib.optional (!isPy3k) futures;
 
   # There are no tests as of 4.0.0a4
