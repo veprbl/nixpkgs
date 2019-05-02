@@ -11324,9 +11324,7 @@ in
 
   libev = callPackage ../development/libraries/libev { };
 
-  libevent = callPackage ../development/libraries/libevent {
-    openssl = openssl_1_1;
-  };
+  libevent = callPackage ../development/libraries/libevent { };
 
   libewf = callPackage ../development/libraries/libewf { };
 
