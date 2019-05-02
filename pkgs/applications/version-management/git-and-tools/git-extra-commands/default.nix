@@ -32,5 +32,7 @@ in stdenv.mkDerivation rec {
       wrapProgram $x --prefix PATH : ${path}
     done
   '';
+
+  meta.priority = 100;
 }
 
