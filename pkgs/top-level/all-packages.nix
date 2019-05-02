@@ -6136,6 +6136,7 @@ in
 
   tor = callPackage ../tools/security/tor {
     openssl = openssl_1_1;
+    libevent = libevent.override { openssl = openssl_1_1; };
   };
 
   tor-arm = callPackage ../tools/security/tor/tor-arm.nix { };
