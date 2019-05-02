@@ -11,7 +11,7 @@ stdenv.mkDerivation rec{
     urls = [ "https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}.tar.gz"
              "https://bitcoin.org/bin/bitcoin-core-${version}/bitcoin-${version}.tar.gz"
            ];
-    sha256 = "0ps0vw9iknz1b1sx74rabd1yhlxvwbd0aimjzn9hlqkvw286hkjy";
+    sha256 = "5e4e6890e07b620a93fdb24605dae2bb53e8435b2a93d37558e1db1913df405f";
   };
 
   nativeBuildInputs = [ pkgconfig autoreconfHook ]
