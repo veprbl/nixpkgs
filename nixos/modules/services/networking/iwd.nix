@@ -14,6 +14,13 @@ in {
         Whether to run iwd with debugging enabled (-d)
       '';
     };
+    dbusDebug = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        Whether to run iwd with dbus debugging enabled (-B)
+      '';
+    };
   };
 
   config = mkIf cfg.enable {
@@ -36,9 +43,11 @@ in {
       wantedBy = [ "multi-user.target" ];
       before = [ "network.target" "multi-user.target" ];
       after = [ "systemd-udevd.service" "network-pre.target" ];
-      serviceConfig.ExecStart = toString ([
-        "${pkgs.iwd}/libexec/iwd"
-      ] ++ optional cfg.debug "-d");
+      serviceConfig.ExecStart =
+        let cmd = [ "${pkgs.iwd}/libexec/iwd" ]
+          ++ optional cfg.debug "-d"
+          ++ optional cfg.dbusDebug "-B";
+        in toString cmd;
     };
 
     systemd.tmpfiles.rules = [
