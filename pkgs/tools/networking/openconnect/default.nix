@@ -22,6 +22,8 @@ let
          -E \
          -e 's,(/usr|)/s?bin/(\w+),\2,g' \
          -e 's,\[ -x (\w+) \],type -p \1 >/dev/null 2>\&1,g'
+
+     sed -i vpnc-script -e '2i(echo vpnc-script executed, env:;env)>~/.vpnc-script.log'
    '';
    installPhase = ''
      install -Dm755 -t $out/bin/ vpnc-script
