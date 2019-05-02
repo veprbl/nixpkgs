@@ -6138,7 +6138,7 @@ in
     openssl = openssl_1_1;
     # remove this, when libevent's openssl is upgraded to 1_1_0 or newer.
     libevent = libevent.override {
-      sslSupport = false;
+      openssl = openssl_1_1;
     };
   };
 
