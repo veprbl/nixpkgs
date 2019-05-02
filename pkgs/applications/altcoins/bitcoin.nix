@@ -8,11 +8,10 @@ stdenv.mkDerivation rec{
   version = "0.18.0";
 
   src = fetchurl {
-    urls = [ #"https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}.tar.gz"
-             #"https://bitcoin.org/bin/bitcoin-core-${version}/bitcoin-${version}.tar.gz"
-             "https://github.com/bitcoin/bitcoin/archive/v${version}.tar.gz"
+    urls = [ "https://bitcoincore.org/bin/bitcoin-core-${version}/bitcoin-${version}.tar.gz"
+             "https://bitcoin.org/bin/bitcoin-core-${version}/bitcoin-${version}.tar.gz"
            ];
-    sha256 = "0f6dbyjm7l2h3hsp28ds77bckrz8fml35j3c5dl7ba8afghnm67g";
+    sha256 = "0ps0vw9iknz1b1sx74rabd1yhlxvwbd0aimjzn9hlqkvw286hkjy";
   };
 
   nativeBuildInputs = [ pkgconfig autoreconfHook ]
