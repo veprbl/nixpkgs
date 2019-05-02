@@ -6136,10 +6136,6 @@ in
 
   tor = callPackage ../tools/security/tor {
     openssl = openssl_1_1;
-    # remove this, when libevent's openssl is upgraded to 1_1_0 or newer.
-    libevent = libevent.override {
-      openssl = openssl_1_1;
-    };
   };
 
   tor-arm = callPackage ../tools/security/tor/tor-arm.nix { };
@@ -11328,7 +11324,9 @@ in
 
   libev = callPackage ../development/libraries/libev { };
 
-  libevent = callPackage ../development/libraries/libevent { };
+  libevent = callPackage ../development/libraries/libevent {
+    openssl = openssl_1_1;
+  };
 
   libewf = callPackage ../development/libraries/libewf { };
 
