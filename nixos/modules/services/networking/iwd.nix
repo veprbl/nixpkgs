@@ -40,7 +40,8 @@ in {
 
     # hopefully merges with existing service nicely?
     systemd.services.iwd = {
-      wantedBy = [ "multi-user.target" ];
+      # Let NM launch us
+      #wantedBy = [ "multi-user.target" ];
       before = [ "network.target" "multi-user.target" ];
       after = [ "systemd-udevd.service" "network-pre.target" ];
       serviceConfig.ExecStart =
