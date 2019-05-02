@@ -5,7 +5,16 @@ with lib;
 let
   cfg = config.networking.wireless.iwd;
 in {
-  options.networking.wireless.iwd.enable = mkEnableOption "iwd";
+  options.networking.wireless.iwd = {
+    enable = mkEnableOption "iwd";
+    debug = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        Whether to run iwd with debugging enabled (-d)
+      '';
+    };
+  };
 
   config = mkIf cfg.enable {
     assertions = [{
@@ -27,6 +36,9 @@ in {
       wantedBy = [ "multi-user.target" ];
       before = [ "network.target" "multi-user.target" ];
       after = [ "systemd-udevd.service" "network-pre.target" ];
+      serviceConfig.ExecStart = toString ([
+        "${pkgs.iwd}/libexec/iwd"
+      ] ++ optional cfg.debug "-d");
     };
 
     systemd.tmpfiles.rules = [
