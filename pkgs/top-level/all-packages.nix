@@ -2123,9 +2123,13 @@ in
 
   colormake = callPackage ../development/tools/build-managers/colormake { };
 
+  ethash = callPackage ../development/libraries/ethash { };
+
   cpuminer = callPackage ../tools/misc/cpuminer { };
 
   cpuminer-multi = callPackage ../tools/misc/cpuminer-multi { };
+
+  ethminer = callPackage ../tools/misc/ethminer { };
 
   cuetools = callPackage ../tools/cd-dvd/cuetools { };
 
@@ -8946,6 +8950,8 @@ in
   # special forks used for dsview
   libsigrok4dsl = callPackage ../applications/science/electronics/dsview/libsigrok4dsl.nix { };
   libsigrokdecode4dsl = callPackage ../applications/science/electronics/dsview/libsigrokdecode4dsl.nix { };
+
+  cli11 = callPackage ../development/tools/misc/cli11 { };
 
   dcadec = callPackage ../development/tools/dcadec { };
 
@@ -15825,35 +15831,9 @@ in
   # Non-upstream U-Boots:
   ubootNanonote = callPackage ../misc/uboot/nanonote.nix { };
 
-  inherit (let
-    dtc = buildPackages.dtc.overrideAttrs (old: rec {
-      version = "1.4.5";
-      src = fetchgit {
-        url = "https://git.kernel.org/pub/scm/utils/dtc/dtc.git";
-        rev = "refs/tags/v${version}";
-        sha256 = "10y5pbkcj5gkijcgnlvrh6q2prpnvsgihb9asz3zfp66mcjwzsy3";
-      };
-    });
-    # Newer dtc versions are incompatible with U-Boot 2017.09
-    inherit (callPackage ../misc/uboot {
-      inherit dtc;
-      buildPackages = buildPackages // {
-        python2 = buildPackages.python2.override (old: {
-          packageOverrides = pySelf: pySuper: {
-            libfdt = pySelf.toPythonModule dtc;
-          };
-        });
-      };
-    }) buildUBoot;
-  in {
-    ubootRock64 = callPackage ../misc/uboot/rock64.nix {
-      inherit buildUBoot;
-    };
+  ubootRock64 = callPackage ../misc/uboot/rock64.nix { };
 
-    ubootRockPro64 = callPackage ../misc/uboot/rockpro64.nix {
-      inherit buildUBoot;
-    };
-  }) ubootRock64 ubootRockPro64;
+  ubootRockPro64 = callPackage ../misc/uboot/rockpro64.nix { };
 
   uclibc = callPackage ../os-specific/linux/uclibc { };
 
