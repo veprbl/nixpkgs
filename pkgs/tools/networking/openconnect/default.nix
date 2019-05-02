@@ -53,7 +53,8 @@ stdenv.mkDerivation rec {
   outputs = [ "out" "dev" ];
 
   configureFlags = [
-    "--with-vpnc-script=${vpnc}/etc/vpnc/vpnc-script"
+    #"--with-vpnc-script=${vpnc}/etc/vpnc/vpnc-script"
+    "--with-vpnc-script=${modern_vpnc_scripts}/etc/vpnc/vpnc-script"
     "--disable-nls"
     "--without-openssl-version-check"
   ];
