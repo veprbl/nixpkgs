@@ -4,5 +4,5 @@ import ./base.nix {
   gitName = "Ant-Dracula";
   desc = "Dracula variant of the Ant theme";
   sha256 = "00b8w69xapqy8kc7zqwlfz1xpld6hibbh35djvhcnd905gzzymkd";
-  outputHash = "180l0b7g84ixfwy672f9xr0pzlhd85ixs6xar4ada51gigryscv4";
+  outputHash = "1pgmvw54gr410p6aidvqzza1kafwqdffghy28iaq006j1hp5qjm3";
 }
