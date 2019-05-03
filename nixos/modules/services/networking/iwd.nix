@@ -25,6 +25,17 @@ in {
         Whether to run iwd with dbus debugging enabled (-B)
       '';
     };
+
+    # XXX: This is bad and I should feel bad.  But fixes issue for now.
+    interface = mkOption {
+      type = types.string;
+      description = ''
+        Name of interface name to bind to the .device of.
+        Not actually passed to iwd, but used to ensure
+        predictable interface renaming is completed
+        before iwd manages an interface.  Probably.
+      '';
+    };
   };
 
   config = mkIf cfg.enable {
@@ -47,7 +58,11 @@ in {
       # Let NM launch us
       #wantedBy = [ "multi-user.target" ];
       before = [ "network.target" "multi-user.target" ];
-      after = [ "systemd-udevd.service" "network-pre.target" ];
+      after = [
+        "systemd-udevd.service" "network-pre.target"
+        "sys-subsystem-net-devices-${cfg.interface}.device"
+      ];
+      requires = [ "sys-subsystem-net-devices-${cfg.interface}.device" ];
       serviceConfig.ExecStart = [
         "" # empty, reset upstream value
         iwdCmd
