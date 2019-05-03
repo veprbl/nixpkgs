@@ -4,6 +4,10 @@ with lib;
 
 let
   cfg = config.networking.wireless.iwd;
+
+  iwdCmd = [ "${pkgs.iwd}/libexec/iwd" ]
+    ++ optional cfg.debug "-d"
+    ++ optional cfg.dbusDebug "-B";
 in {
   options.networking.wireless.iwd = {
     enable = mkEnableOption "iwd";
@@ -44,11 +48,10 @@ in {
       #wantedBy = [ "multi-user.target" ];
       before = [ "network.target" "multi-user.target" ];
       after = [ "systemd-udevd.service" "network-pre.target" ];
-      serviceConfig.ExecStart =
-        let cmd = [ "${pkgs.iwd}/libexec/iwd" ]
-          ++ optional cfg.debug "-d"
-          ++ optional cfg.dbusDebug "-B";
-        in toString cmd;
+      serviceConfig.ExecStart = [
+        "" # empty, reset upstream value
+        iwdCmd
+      ];
     };
 
     systemd.tmpfiles.rules = [
