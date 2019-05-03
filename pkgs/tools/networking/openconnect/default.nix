@@ -35,6 +35,9 @@ let
     };
   };
 
+  # XXX: I don't think this is actually used unless using
+  # openconnect directly -- networkmanager-openconnect uses
+  # its own 'helper' utility, which makes sense.
   vpnc-script = let f =
     if useModernVpncScript
     then "${modern_vpnc_scripts}/bin/vpnc-script"
