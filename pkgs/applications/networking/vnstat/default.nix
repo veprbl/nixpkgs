@@ -1,7 +1,7 @@
 { stdenv, fetchurl, pkgconfig, gd, ncurses, sqlite, check }:
 
 stdenv.mkDerivation rec {
-  pname= "vnstat";
+  pname = "vnstat";
   version = "2.2";
 
   src = fetchurl {
