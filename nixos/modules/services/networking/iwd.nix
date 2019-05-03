@@ -60,9 +60,9 @@ in {
       before = [ "network.target" "multi-user.target" ];
       after = [
         "systemd-udevd.service" "network-pre.target"
-        "sys-subsystem-net-devices-${cfg.interface}.device"
+        #"sys-subsystem-net-devices-${cfg.interface}.device"
       ];
-      requires = [ "sys-subsystem-net-devices-${cfg.interface}.device" ];
+      #requires = [ "sys-subsystem-net-devices-${cfg.interface}.device" ];
       serviceConfig.ExecStart = [
         "" # empty, reset upstream value
         iwdCmd
