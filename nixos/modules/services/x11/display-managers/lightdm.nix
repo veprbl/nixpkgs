@@ -211,7 +211,7 @@ in
 
     # lightdm relaunches itself via just `lightdm`, so needs to be on the PATH
     services.xserver.displayManager.job.execCmd = ''
-      export PATH=${lightdm}/sbin:$PATH
+      export PATH=${lightdm}/sbin:${pkgs.plymouth}/bin:$PATH
       exec ${lightdm}/sbin/lightdm
     '';
 
