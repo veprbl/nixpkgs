@@ -480,6 +480,11 @@ in {
       name = "nm-iodine";
       isSystemUser = true;
       group = "networkmanager";
+    }
+    {
+      name = "nm-openconnect";
+      isSystemUser = true;
+      group = "networkmanager";
     }];
 
     systemd.packages = cfg.packages;
