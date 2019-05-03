@@ -7972,7 +7972,7 @@ in
 
   svd2rust = callPackage ../development/tools/rust/svd2rust { };
 
-  swift = callPackage ../development/compilers/swift { clang = clang_5; };
+  swift = callPackage ../development/compilers/swift { };
 
   swiProlog = callPackage ../development/compilers/swi-prolog { };
 
