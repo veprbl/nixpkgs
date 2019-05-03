@@ -14905,6 +14905,8 @@ in
 
   ebtables = callPackage ../os-specific/linux/ebtables { };
 
+  extrace = callPackage ../os-specific/linux/extrace { };
+
   facetimehd-firmware = callPackage ../os-specific/linux/firmware/facetimehd-firmware { };
 
   fatrace = callPackage ../os-specific/linux/fatrace { };
@@ -23661,6 +23663,8 @@ in
   vokoscreen = libsForQt5.callPackage ../applications/video/vokoscreen { };
 
   vttest = callPackage ../tools/misc/vttest { };
+
+  wasm-pack = callPackage ../development/tools/wasm-pack { };
 
   wavegain = callPackage ../applications/audio/wavegain { };
 

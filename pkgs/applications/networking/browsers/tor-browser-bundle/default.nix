@@ -69,6 +69,9 @@
 , utillinux # getopt
 , openssl
 
+# Pluggable transports
+, obfs4
+
 # Customization
 , extraPrefs ? ""
 , extraExtensions ? [ ]
