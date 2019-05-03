@@ -36,6 +36,30 @@ in {
         before iwd manages an interface.  Probably.
       '';
     };
+
+    mainConfig = mkOption {
+        type = types.attrsOf types.attrs;
+        default = {
+          EAP.mtu = 1400;
+          EAPoL.max_4way_handshake_time = 5;
+          General = {
+            ControlPortOverNL80211 = true;
+            roam_rssi_threshold = -70;
+            # Default behavior is only available if this is NOT set
+            # (either true or false)-- see docs.
+            #use_default_interface = true;
+          };
+          Scan = {
+            disable_periodic_scan = false;
+            disable_roaming_scan = false;
+            disable_mac_address_randomization = false;
+          };
+          # TODO: BSS blacklist settings
+          # TODO: Rank settings
+
+        };
+        description = "settings to write to /etc/iwd/main.conf";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -72,6 +96,8 @@ in {
     systemd.tmpfiles.rules = [
       "d /var/lib/iwd 0700 root root -"
     ];
+
+    environment.etc."iwd/main.conf".text = generators.toINI {} cfg.mainConfig;
   };
 
   meta.maintainers = with lib.maintainers; [ mic92 ];
