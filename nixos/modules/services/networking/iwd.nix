@@ -79,8 +79,7 @@ in {
 
     # hopefully merges with existing service nicely?
     systemd.services.iwd = {
-      # Let NM launch us
-      #wantedBy = [ "multi-user.target" ];
+      wantedBy = [ "multi-user.target" ];
       before = [ "network.target" "multi-user.target" ];
       after = [
         "systemd-udevd.service" "network-pre.target"
