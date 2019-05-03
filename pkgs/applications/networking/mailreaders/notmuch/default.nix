@@ -61,8 +61,8 @@ stdenv.mkDerivation rec {
 
   configureFlags = [
     "--without-emacs"
-    "--without-docs"
-    "--without-api-docs"
+    #"--without-docs"
+    #"--without-api-docs"
     "--zshcompletiondir=${placeholder "out"}/share/zsh/site-functions"
   ];
 
