@@ -11,6 +11,9 @@
 
 with stdenv.lib;
 
+# notmuch no longer supports gmime < 3.0, let's be sure nothing tries to do so
+assert (versionAtLeast gmime.version "3.0");
+
 stdenv.mkDerivation rec {
   version = "0.28.3"; # not really, git
   name = "notmuch-${version}";
