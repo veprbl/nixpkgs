@@ -5,6 +5,7 @@
 , coreutils, gnugrep, iproute, nettools
 , gnused, which
 , useModernVpncScript ? true
+, ocserv, socket_wrapper, uid_wrapper
 }:
 
 assert (openssl != null) == (gnutls == null);
@@ -23,8 +24,6 @@ let
          -E \
          -e 's,(/usr|)/s?bin/(\w+),\2,g' \
          -e 's,\[ -x (\w+) \],type -p \1 >/dev/null 2>\&1,g'
-
-     sed -i vpnc-script -e '2i(echo vpnc-script executed, env:;env)>~/.vpnc-script.log'
    '';
    installPhase = ''
      install -Dm755 -t $out/bin/ vpnc-script
@@ -74,7 +73,10 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ autoreconfHook pkgconfig ];
   propagatedBuildInputs = [ vpnc openssl gnutls gmp libxml2 stoken zlib lz4 libtasn1 pcsclite ];
 
-  passthru.vpnc-scripts = modern_vpnc_scripts;
+  passthru = { inherit vpnc-script; };
+
+  checkInputs = [ ocserv socket_wrapper uid_wrapper ];
+  doCheck = true;
 
   meta = {
     description = "VPN Client for Cisco's AnyConnect SSL VPN";
