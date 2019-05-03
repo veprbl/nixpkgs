@@ -42,9 +42,6 @@
 # Extensions, common
 , zip
 
-# Pluggable transports
-, obfs4
-
 # Wrapper runtime
 , coreutils
 #, glibcLocales
