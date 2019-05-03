@@ -4,6 +4,7 @@
 , makeWrapper
 , coreutils, gnugrep, iproute, nettools
 , gnused, which
+, useModernVpncScript ? true
 }:
 
 assert (openssl != null) == (gnutls == null);
@@ -34,6 +35,13 @@ let
     };
   };
 
+  vpnc-script = let f =
+    if useModernVpncScript
+    then "${modern_vpnc_scripts}/bin/vpnc-script"
+    else "${vpnc}/etc/vpnc/vpnc-script";
+  in f;
+  #in assert builtins.pathExists f; f;
+
 in
 stdenv.mkDerivation rec {
   pname = "openconnect";
@@ -55,8 +63,7 @@ stdenv.mkDerivation rec {
   outputs = [ "out" "dev" ];
 
   configureFlags = [
-    #"--with-vpnc-script=${vpnc}/etc/vpnc/vpnc-script"
-    "--with-vpnc-script=${modern_vpnc_scripts}/etc/vpnc/vpnc-script"
+    "--with-vpnc-script=${vpnc-script}"
     "--disable-nls"
     "--without-openssl-version-check"
   ];
