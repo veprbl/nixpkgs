@@ -9,7 +9,7 @@
 , libjpeg, zlib, dbus, dbus-glib, bzip2, xorg
 , freetype, fontconfig, file, nspr, nss, libnotify
 , yasm, libGLU_combined, sqlite, unzip, makeWrapper
-, hunspell, libXdamage, libevent, libstartup_notification, libwebp, libvpx
+, hunspell, libXdamage, libevent, libstartup_notification, libwebp
 , icu, libpng, jemalloc, glib
 , autoconf213, which, gnused, cargo, rustc, llvmPackages
 , rust-cbindgen, nodejs, nasm, fetchpatch
@@ -132,7 +132,7 @@ stdenv.mkDerivation rec {
     libnotify xorg.pixman yasm libGLU_combined
     xorg.libXScrnSaver xorg.xorgproto
     xorg.libXext sqlite
-    libevent libstartup_notification libwebp libvpx
+    libevent libstartup_notification libwebp
     icu libpng jemalloc glib
     llvmPackages.llvm
   ]
@@ -238,7 +238,6 @@ stdenv.mkDerivation rec {
     "--with-system-zlib"
     "--with-system-bz2"
     "--with-system-libevent"
-    "--with-system-libvpx"
     "--with-system-png" # needs APNG support
     "--with-system-icu"
     "--with-system-graphite2"
