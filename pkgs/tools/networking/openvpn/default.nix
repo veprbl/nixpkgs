@@ -1,5 +1,5 @@
-{ stdenv, fetchurl, pkgconfig
-, iproute, lzo, openssl, pam
+{ stdenv, fetchurl, pkgconfig, fetchFromGitHub, autoreconfHook, cmake
+, iproute, lzo, lz4, openssl, pam
 , useSystemd ? stdenv.isLinux, systemd ? null, utillinux ? null
 , pkcs11Support ? false, pkcs11helper ? null,
 }:
@@ -18,17 +18,23 @@ let
   };
 
 in stdenv.mkDerivation rec {
-  name = "openvpn-${version}";
-  version = "2.4.7";
+  pname = "openvpn";
+  version = "2.5-${builtins.substring 0 7 src.rev}";
 
-  src = fetchurl {
-    url = "https://swupdate.openvpn.net/community/releases/${name}.tar.xz";
-    sha256 = "0j7na936isk9j8nsdrrbw7wmy09inmjqvsb8mw8az7k61xbm6bx4";
+  src = fetchFromGitHub {
+    owner = pname;
+    repo = pname;
+    rev = "19a22ac5a8673e87157a516b936ce008bacb44ea";
+    sha256 = "0xgdvi9dihili0z8izvpdkzvs9rx3829svpxxi93sjnrnmh5prpr";
   };
+  #src = fetchurl {
+  #  url = "https://swupdate.openvpn.net/community/releases/${name}.tar.xz";
+  #  sha256 = "0j7na936isk9j8nsdrrbw7wmy09inmjqvsb8mw8az7k61xbm6bx4";
+  #};
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig autoreconfHook ];
 
-  buildInputs = [ lzo openssl ]
+  buildInputs = [ lzo lz4 openssl ]
                   ++ optionals stdenv.isLinux [ pam iproute ]
                   ++ optional useSystemd systemd
                   ++ optional pkcs11Support pkcs11helper;
