@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchgit, lz4, snappy, openmp
+{ stdenv, fetchurl, fetchgit, lz4, snappy, openmp, libsodium
 # For testing
 , coreutils, gawk
 }:
@@ -27,12 +27,12 @@ stdenv.mkDerivation rec {
     "OPENMPLDLIBS=-lgomp"
   ];
 
-  buildInputs = [ lz4 snappy openmp ];
+  buildInputs = [ lz4 snappy openmp libsodium ];
 
   doCheck = true;
 
   checkInputs = [ coreutils gawk ];
-  checkPhase = "sh dotest";
+  checkTarget = "test";
 
   meta = with stdenv.lib; {
     description = "data deduplication program";
