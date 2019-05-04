@@ -32,7 +32,8 @@ in stdenv.mkDerivation rec {
   #  sha256 = "0j7na936isk9j8nsdrrbw7wmy09inmjqvsb8mw8az7k61xbm6bx4";
   #};
 
-  nativeBuildInputs = [ pkgconfig autoreconfHook ];
+  nativeBuildInputs = [ pkgconfig autoreconfHook cmake ];
+  dontUseCmakeConfigure = true;
 
   buildInputs = [ lzo lz4 openssl ]
                   ++ optionals stdenv.isLinux [ pam iproute ]
@@ -45,6 +46,8 @@ in stdenv.mkDerivation rec {
     ++ optional useSystemd "--enable-systemd"
     ++ optional pkcs11Support "--enable-pkcs11"
     ++ optional stdenv.isDarwin "--disable-plugin-auth-pam";
+
+  doCheck = true;
 
   postInstall = ''
     mkdir -p $out/share/doc/openvpn/examples
