@@ -80,6 +80,7 @@ in {
     # hopefully merges with existing service nicely?
     systemd.services.iwd = {
       wantedBy = [ "multi-user.target" ];
+      wants = [ "network.target" ];
       before = [ "network.target" "multi-user.target" ];
       after = [
         "systemd-udevd.service" "network-pre.target"
@@ -99,5 +100,5 @@ in {
     environment.etc."iwd/main.conf".text = generators.toINI {} cfg.mainConfig;
   };
 
-  meta.maintainers = with lib.maintainers; [ mic92 ];
+  meta.maintainers = with lib.maintainers; [ mic92 dtzWill ];
 }
