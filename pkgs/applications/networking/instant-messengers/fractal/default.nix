@@ -3,15 +3,15 @@
 
 rustPlatform.buildRustPackage rec {
   version = "4.0.0"; # not really
-  name = "fractal-${version}";
+  pname = "fractal";
 
   src = fetchFromGitLab {
     domain = "gitlab.gnome.org";
     owner = "GNOME";
     repo = "fractal";
     #rev = version;
-    rev = "1224e8e86f5a6b3277b23143c5848863a8a0db7e";
-    sha256 = "1adiakkhi0wazbn0xyvsi2r72byxk9plbpd5q4h71k0nipcy951m";
+    rev = "e3714d13b45f135556da7db3931742ff75dc31bf";
+    sha256 = "0crvjvjcvwi26pw4mrqlngv64p722h2xb1lx4736vqinkmiphnp7";
   };
 
   nativeBuildInputs = [
@@ -41,7 +41,7 @@ rustPlatform.buildRustPackage rec {
   checkPhase = null;
   installPhase = null;
 
-  cargoSha256 = "181xabizpsp4psyhwqpwqaqxv9ajk1gjgs7l3pjjqry6q44lkpgb";
+  cargoSha256 = "15v4nynfjp6lpa9vhsrb55ywr6j5ibrambmqr5qlmwbmn4i3861p";
 
   meta = with stdenv.lib; {
     description = "Matrix group messaging app";
