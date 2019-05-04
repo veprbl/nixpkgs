@@ -6,8 +6,8 @@ python3Packages.buildPythonApplication rec {
 
   src = fetchgit {
     url = https://github.com/afewmail/afew;
-    rev = "5f405f033e674703e97d66777a9ac6f2e5dffaa8";
-    sha256 = "18ickcnz4zqkqd0xraqg7k1mk4qbrzn46g81pc6sw036vdmdv96z";
+    rev = "3bb53dbb90b0725f0976027f8ce5ff7181f78398";
+    sha256 = "0bmngl98wz4qwby122b42dpvhd7wifcs2q0s7vx10d10rif5bwzx";
     leaveDotGit = true;
   };
   #src = pythonPackages.fetchPypi {
@@ -21,21 +21,23 @@ python3Packages.buildPythonApplication rec {
     python3Packages.notmuch chardet dkimpy
   ];
 
-  postBuild =  ''
-    make -C docs man
-  '';
+  SETUPTOOLS_SCM_PRETEND_VERSION = version;
+  setupPyBuildFlags = [ "build_sphinx" "-b" "man,html" ];
+
+  outputs = [ "out" "man" "doc" ];
 
   postInstall = ''
-    mandir="$out/share/man/man1"
-    mkdir -p "$mandir"
-    cp docs/build/man/* "$mandir"
+    install -Dt $out/share/man/man1 build/sphinx/man/*
+    mkdir -p $out/share/doc/
+    cp -r build/sphinx/html $out/share/doc/afew
   '';
 
   makeWrapperArgs = [
-    ''--prefix PATH ':' "${notmuch}/bin"''
+    "--prefix" "PATH" ":" "${notmuch}/bin"
   ];
 
   meta = with stdenv.lib; {
+    outputsToInstall = outputs;
     homepage = https://github.com/afewmail/afew;
     description = "An initial tagging script for notmuch mail";
     license = licenses.isc;
