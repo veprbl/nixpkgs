@@ -26,8 +26,8 @@ stdenv.mkDerivation rec {
     owner = "Nheko-Reborn";
     repo = "nheko";
     #rev = "v${version}";
-    rev = "6f13b0df0d7243ed503e31da0e293238570b7c72";
-    sha256 = "1n59lvrrrcadil782a696s62aza186kq04i2kb7ww3bwsw68234z";
+    rev = "b0aa8bc2b4b4a9a243d2969f7ec470adb1048a24";
+    sha256 = "0v1lini3llls1r0sz8kqis5czifzvlizlqb8sh1qxq6qnizc7zk8";
   };
 
   # If, on Darwin, you encounter the error
