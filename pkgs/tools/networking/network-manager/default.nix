@@ -11,11 +11,11 @@ let
   pythonForDocs = python3.withPackages (pkgs: with pkgs; [ pygobject3 ]);
 in stdenv.mkDerivation rec {
   name = "network-manager-${version}";
-  version = "1.18.0";
+  version = "1.19.2";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "19lb5afx4iq8dgfsy26x9j4194v8f64vwr3nq6dk1ix3wljxzs66";
+    sha256 = "0wxx1h8k7ya0ygj045ddwwdr05wc2rkj6jx8j11vnswafrq4l6ri";
   };
 
   outputs = [ "out" "dev" "devdoc" "man" "doc" ];
@@ -50,9 +50,10 @@ in stdenv.mkDerivation rec {
     "-Diwd=true"
     #"-Dpolkit_agent=true"
     "-Dpolkit=true"
-    "-Dconfig_dns_rc_manager_default=symlink"
+    "-Dconfig_dns_rc_manager_default=resolvconf"
     "-Debpf=true"
     "-Dlibaudit=yes-disabled-by-default"
+    "-Dsession_tracking_consolekit=false"
   ];
 
   patches = [
