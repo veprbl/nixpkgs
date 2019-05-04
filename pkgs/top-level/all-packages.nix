@@ -6348,6 +6348,8 @@ in
 
   vit = callPackage ../applications/misc/vit { };
 
+  viu = callPackage ../tools/graphics/viu { };
+
   vnc2flv = callPackage ../tools/video/vnc2flv {};
 
   vncrec = callPackage ../tools/video/vncrec { };
