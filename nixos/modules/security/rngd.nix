@@ -29,7 +29,14 @@ with lib;
 
       description = "Hardware RNG Entropy Gatherer Daemon";
 
-      serviceConfig.ExecStart = "${pkgs.rng-tools}/sbin/rngd -f";
+      serviceConfig = {
+        ExecStart = "${pkgs.rng-tools}/sbin/rngd -f";
+        NoNewPrivileges = true;
+        PrivateNetwork = true;
+        PrivateTmp = true;
+        ProtectSystem = "full";
+        ProtectHome = true;
+      };
     };
   };
 }
