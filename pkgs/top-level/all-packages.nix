@@ -5870,6 +5870,8 @@ in
 
   spaceFM = callPackage ../applications/misc/spacefm { };
 
+  speech-denoiser = callPackage ../applications/audio/speech-denoiser {};
+
   squashfsTools = callPackage ../tools/filesystems/squashfs { };
 
   squashfuse = callPackage ../tools/filesystems/squashfuse { };
@@ -17556,6 +17558,8 @@ in
   exrdisplay = callPackage ../applications/graphics/exrdisplay { };
 
   exrtools = callPackage ../applications/graphics/exrtools { };
+
+  fasttext = callPackage ../applications/science/machine-learning/fasttext { };
 
   fbpanel = callPackage ../applications/window-managers/fbpanel { };
 
