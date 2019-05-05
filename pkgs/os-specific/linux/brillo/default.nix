@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
   makeFlags = [ "PREFIX=$(out)" "AADIR=$(out)/etc/apparmor.d"];
   nativeBuildInputs = [go-md2man which];
   buildFlags = [ "dist" ];
-  installTargets = "install-dist";
+  installTargets = [ "install-dist" "install.apparmor" ];
   patches = [
   (substituteAll {
     src = ./udev-rule.patch;
