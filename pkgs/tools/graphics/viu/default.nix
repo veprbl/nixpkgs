@@ -1,7 +1,7 @@
-{ stdenv, rustPlatform, fetchFromGitHub, cmake, pkgconfig, zlib }:
+{ lib, rustPlatform, fetchFromGitHub }:
 
 rustPlatform.buildRustPackage rec {
-  name = "viu-${version}";
+  pname = "viu";
   version = "0.1";
 
   src = fetchFromGitHub {
@@ -13,10 +13,11 @@ rustPlatform.buildRustPackage rec {
 
   cargoSha256 = "14pf2xvkk9qqq9qj5agxmfl3npgy6my961yfzv7p977712kdakh3";
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "A command-line application to view images from the terminal written in Rust";
-    homepage = https://github.com/atanunq/viu;
+    homepage = "https://github.com/atanunq/viu";
     license = licenses.mit;
     maintainers = with maintainers; [ petabyteboy ];
+    platforms = platforms.all;
   };
 }
