@@ -1,7 +1,8 @@
 { stdenv, fetchurl, pkgconfig, autoreconfHook, makeWrapper
 , ncurses, cpio, gperf, cdrkit, flex, bison, qemu, pcre, augeas, libxml2
 , acl, libcap, libcap_ng, libconfig, systemd, fuse, yajl, libvirt, hivex
-, gmp, readline, file, numactl, xen, libapparmor
+, gmp, readline, file, numactl, xen, libapparmor, jansson
+, gawk, libtirpc, psmisc /* fuser */, libselinux
 , getopt, perlPackages, ocamlPackages
 , appliance ? null
 , javaSupport ? false, jdk ? null }:
@@ -22,7 +23,8 @@ stdenv.mkDerivation rec {
   buildInputs = [
     makeWrapper autoreconfHook ncurses cpio gperf
     cdrkit flex bison qemu pcre augeas libxml2 acl libcap libcap_ng libconfig
-    systemd fuse yajl libvirt gmp readline file hivex
+    systemd fuse yajl libvirt gmp readline file hivex jansson
+    gawk libtirpc psmisc libselinux
     numactl xen libapparmor getopt perlPackages.ModuleBuild
   ] ++ (with perlPackages; [ perl libintl_perl GetoptLong SysVirt ])
     ++ (with ocamlPackages; [ ocaml findlib ocamlbuild ocaml_libvirt ocaml_gettext ounit ])
