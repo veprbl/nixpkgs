@@ -518,6 +518,10 @@ in
 
   amazon-glacier-cmd-interface = callPackage ../tools/backup/amazon-glacier-cmd-interface { };
 
+  amber = callPackage ../tools/text/amber {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
+
   ammonite = callPackage ../development/tools/ammonite {};
 
   amtterm = callPackage ../tools/system/amtterm {};
@@ -11051,7 +11055,7 @@ in
   libb2 = callPackage ../development/libraries/libb2 { };
 
   libbap = callPackage ../development/libraries/libbap {
-    inherit (ocaml-ng.ocamlPackages_4_05) bap ocaml findlib ctypes;
+    inherit (ocamlPackages) bap ocaml findlib ctypes;
   };
 
   libbass = (callPackage ../development/libraries/audio/libbass { }).bass;
@@ -15221,6 +15225,8 @@ in
     cryptodev = callPackage ../os-specific/linux/cryptodev { };
 
     cpupower = callPackage ../os-specific/linux/cpupower { };
+
+    deepin-anything = callPackage ../os-specific/linux/deepin-anything { };
 
     dpdk = callPackage ../os-specific/linux/dpdk { };
 

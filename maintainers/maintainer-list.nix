@@ -613,6 +613,11 @@
     github = "bcdarwin";
     name = "Ben Darwin";
   };
+  bdesham = {
+    email = "benjamin@esham.io";
+    github = "bdesham";
+    name = "Benjamin Esham";
+  };
   bdimcheff = {
     email = "brandon@dimcheff.com";
     github = "bdimcheff";
