@@ -3577,6 +3577,8 @@ in
 
   hubicfuse = callPackage ../tools/filesystems/hubicfuse { };
 
+  hunter = callPackage ../tools/misc/hunter { };
+
   hwinfo = callPackage ../tools/system/hwinfo { };
 
   hybridreverb2 = callPackage ../applications/audio/hybridreverb2 { };
