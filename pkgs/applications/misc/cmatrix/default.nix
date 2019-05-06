@@ -1,18 +1,18 @@
-{ stdenv, fetchurl, pkgconfig, ncurses }:
+{ stdenv, fetchFromGitHub, cmake, pkgconfig, ncurses }:
 
-let
-  version = "2.0";
-in with stdenv.lib;
+with stdenv.lib;
 stdenv.mkDerivation rec {
+  pname = "cmatrix";
+  version = "2.0";
 
-  name = "cmatrix-${version}";
-
-  src = fetchurl{
-    url = "http://www.asty.org/cmatrix/dist/${name}.tar.gz";
-    sha256 = "0k06fw2n8nzp1pcdynhajp5prba03gfgsbj91bknyjr5xb5fd9hz";
+  src = fetchFromGitHub {
+    owner = "abishekvashok";
+    repo = pname;
+    rev = "v${version}";
+    sha256 = "1h9jz4m4s5l8c3figaq46ja0km1gimrkfxm4dg7mf4s84icmasbm";
   };
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ cmake pkgconfig ];
   buildInputs = [ ncurses ];
 
   meta = {
@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
       CMatrix simulates the display from "The Matrix" and is based
       on the screensaver from the movie's website.  
     '';
-    homepage = http://www.asty.org/cmatrix/;
+    homepage = https://github.com/abishekvashok/cmatrix;
     platforms = ncurses.meta.platforms;
     maintainers = [ maintainers.AndersonTorres ];
   };
