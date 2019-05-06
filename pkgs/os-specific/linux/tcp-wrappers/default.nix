@@ -26,7 +26,7 @@ in stdenv.mkDerivation rec {
   '';
 
   # Fix __BEGIN_DECLS usage (even if it wasn't non-standard, this doesn't include sys/cdefs.h)
-  patches = [ ./cdecls.patch ];
+  patches = [ ./cdecls.patch ./tcp-wrappers-7.6-headers.patch ];
 
   postPatch = stdenv.lib.optionalString stdenv.hostPlatform.isMusl ''
     substituteInPlace Makefile \
