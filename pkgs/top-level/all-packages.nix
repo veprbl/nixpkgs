@@ -10449,7 +10449,7 @@ in
 
   libcCross = assert stdenv.targetPlatform != stdenv.buildPlatform; libcCrossChooser stdenv.targetPlatform.libc;
 
-  wasilibc = callPackages ../development/libraries/wasilibc {
+  wasilibc = callPackage ../development/libraries/wasilibc {
     stdenv = crossLibcStdenv;
   };
 
