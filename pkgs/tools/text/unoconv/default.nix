@@ -13,8 +13,9 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "dagwieers";
     repo = "unoconv";
-    rev = version;
-    sha256 = "0mxrzzg9bl42lsiw8hcq624qbq8jrhcgmnal7ys68dj0l901snk3";
+    #rev = version;
+    rev = "63f6b13b6b027b9d552b445dacc8316d7a276043";
+    sha256 = "16fmw6n2n6hqfvfhz6y9nprld1gnxw8kqzfcy91ypxyzg1xi1y5b";
   };
 
   buildInputs = [ asciidoc makeWrapper ];
