@@ -1,23 +1,24 @@
 { stdenv, fetchurl, pam, python3, libxslt, perl, ArchiveZip, gettext
 , IOCompress, zlib, libjpeg, expat, freetype, libwpd
 , libxml2, db, sablotron, curl, fontconfig, libsndfile, neon
-, bison, flex, zip, unzip, gtk3, gtk2, libmspack, getopt, file, cairo, which
+, bison, flex, zip, unzip, gtk3, /* gtk2, */ libmspack, getopt, file, cairo, which
 , icu, boost, jdk, ant, cups, xorg, libcmis, fontforge
 , openssl, gperf, cppunit, GConf, ORBit2, poppler, utillinux
 , librsvg, gnome_vfs, libGLU_combined, bsh, CoinMP, libwps, libabw, mariadb
 , autoconf, automake, openldap, bash, hunspell, librdf_redland, nss, nspr
-, libwpg, dbus-glib, clucene_core, libcdr, lcms, vigra
+, libwpg, dbus-glib, qt4, clucene_core, libcdr, lcms, vigra
 , unixODBC, mdds, sane-backends, mythes, libexttextcat, libvisio
 , fontsConf, pkgconfig, bluez5, libtool, carlito
 , libatomic_ops, graphite2, harfbuzz, libodfgen, libzmf
 , librevenge, libe-book, libmwaw, glm, glew, gst_all_1
 , gdb, commonsLogging, librdf_rasqal, wrapGAppsHook
-, gnome3, glib, ncurses, epoxy, gpgme, gnupg, liblangtag
-, qtbase, qmake
+, gnome3, glib, gobject-introspection, ncurses, epoxy, gpgme, gnupg, liblangtag
+#, qtbase, qmake
+#  https://dev.gentoo.org/~asturm/distfiles/libreoffice-6.2.3.2-patchset-01.tar.xz 
 , langs ? [ "ca" "cs" "de" "en-GB" "en-US" "eo" "es" "fr" "hu" "it" "ja" "nl" "pl" "ru" "sl" "zh-CN" ]
 , withHelp ? true
-, kdeIntegration ? true 
-# Add deps: https://github.com/KDAB/libreoffice-core/blob/master/configure.ac#L10913 or so
+, kdeIntegration ? false
+# kde5! Add deps, maybe these: https://github.com/KDAB/libreoffice-core/blob/master/configure.ac#L10913 or so
 }:
 
 let
@@ -110,7 +111,8 @@ in stdenv.mkDerivation rec {
       'GPGMEPP_CFLAGS=-I${gpgme.dev}/include/gpgme++'
   '';
 
-  dontUseQmakeConfigure = true;
+  QT4DIR = qt4;
+  #dontUseQmakeConfigure = true;
 
   preConfigure = ''
     configureFlagsArray=(
@@ -284,6 +286,8 @@ in stdenv.mkDerivation rec {
     sed -re 's@Icon=libreoffice(dev)?[0-9.]*-?@Icon=@' -i "$out/share/applications/"*.desktop
   '';
 
+  #QT5DIR = qtbase;
+
   configureFlags = [
     "${if withHelp then "" else "--without-help"}"
     "--with-boost=${boost.dev}"
@@ -294,11 +298,14 @@ in stdenv.mkDerivation rec {
     "--disable-report-builder"
     "--disable-online-update"
     "--enable-python=system"
-    "--enable-qt5"
+    "--enable-qt4"
     "--enable-dbus"
+    "--enable-cairo-canvas"
+    "--with-tls=nss"
     # "--enable-eot" # libeot
     "--enable-release-build"
     # XXX: add needed deps
+    (lib.enableFeature kdeIntegration "kde4")
     #(lib.enableFeature kdeIntegration "kde5")
     "--enable-epm"
     "--with-jdk-home=${jdk.home}"
@@ -333,6 +340,9 @@ in stdenv.mkDerivation rec {
     "--without-myspell-dicts"
     "--without-doxygen"
 
+    "--enable-extension-integration"
+    "--enable-mergelib" # one library to rule them all, and in the darkness...
+
     # TODO: package these as system libraries
     "--with-system-beanshell"
     "--without-system-hsqldb"
@@ -360,22 +370,22 @@ in stdenv.mkDerivation rec {
   buildInputs = with xorg;
     [ ant ArchiveZip autoconf automake bison boost cairo clucene_core
       IOCompress cppunit cups curl db dbus-glib expat file flex fontconfig
-      freetype GConf getopt gnome_vfs gperf gtk3 gtk2
-      qtbase
+      freetype GConf getopt gnome_vfs gperf gtk3# gtk2
+    #  qtbase
       hunspell icu jdk lcms libcdr libexttextcat unixODBC libjpeg
       libmspack librdf_redland librsvg libsndfile libvisio libwpd libwpg libX11
       libXaw libXext libXi libXinerama libxml2 libxslt libXtst
       libXdmcp libpthreadstubs libGLU_combined mythes gst_all_1.gstreamer
-      gst_all_1.gst-plugins-base glib mariadb
+      gst_all_1.gst-plugins-base glib gobject-introspection mariadb
       neon nspr nss openldap openssl ORBit2 pam perl pkgconfig poppler
       python3 sablotron sane-backends unzip vigra which zip zlib
       mdds bluez5 libcmis libwps libabw libzmf libtool
       libxshmfence libatomic_ops graphite2 harfbuzz gpgme gnupg utillinux
       librevenge libe-book libmwaw glm glew ncurses epoxy liblangtag
       libodfgen CoinMP librdf_rasqal gnome3.adwaita-icon-theme gettext
-    ];
-    #++ lib.optional kdeIntegration kdelibs4;
-  nativeBuildInputs = [ wrapGAppsHook gdb fontforge qmake ];
+    ]
+    ++ lib.optional kdeIntegration kdelibs4;
+  nativeBuildInputs = [ wrapGAppsHook gdb fontforge /* qmake */ ];
 
   passthru = {
     inherit srcs jdk;
