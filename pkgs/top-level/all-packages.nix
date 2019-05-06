@@ -18649,6 +18649,7 @@ in
         freefont_ttf xorg.fontmiscmisc
         liberation_ttf_v1
         liberation_ttf_v2
+        liberationsansnarrow
       ];
     };
     clucene_core = clucene_core_2;
