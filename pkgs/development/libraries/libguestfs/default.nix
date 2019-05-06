@@ -10,12 +10,12 @@ assert appliance == null || stdenv.lib.isDerivation appliance;
 assert javaSupport -> jdk != null;
 
 stdenv.mkDerivation rec {
-  name = "libguestfs-${version}";
-  version = "1.38.6";
+  pname = "libguestfs";
+  version = "1.40.2";
 
   src = fetchurl {
-    url = "http://libguestfs.org/download/1.38-stable/libguestfs-${version}.tar.gz";
-    sha256 = "1v2mggx2jlaq4m3p5shc46gzf7vmaayha6r0nwdnyzd7x6q0is7p";
+    url = "http://libguestfs.org/download/${stdenv.lib.versions.majorMinor version}-stable/libguestfs-${version}.tar.gz";
+    sha256 = "0n40zqnnqamhcrzr3i4mal282gc4jq4sjifb2jij5s9qik264rdd";
   };
 
   nativeBuildInputs = [ pkgconfig ];
