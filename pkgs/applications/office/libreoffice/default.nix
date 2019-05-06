@@ -12,7 +12,7 @@
 , libatomic_ops, graphite2, harfbuzz, libodfgen, libzmf
 , librevenge, libe-book, libmwaw, glm, glew, gst_all_1
 , gdb, commonsLogging, librdf_rasqal, wrapGAppsHook
-, gnome3, glib, ncurses, epoxy, gpgme
+, gnome3, glib, ncurses, epoxy, gpgme, gnupg, liblangtag, lp_solve
 , langs ? [ "ca" "cs" "de" "en-GB" "en-US" "eo" "es" "fr" "hu" "it" "ja" "nl" "pl" "ru" "sl" "zh-CN" ]
 , withHelp ? true
 , kdeIntegration ? false
@@ -293,6 +293,7 @@ in stdenv.mkDerivation rec {
     "--disable-online-update"
     "--enable-python=system"
     "--enable-dbus"
+    "--enable-eot"
     "--enable-release-build"
     (lib.enableFeature kdeIntegration "kde4")
     "--enable-epm"
@@ -332,10 +333,10 @@ in stdenv.mkDerivation rec {
     "--with-system-beanshell"
     "--without-system-hsqldb"
     "--without-system-altlinuxhyph"
-    "--without-system-lpsolve"
+    "--with-system-lpsolve" # lp_solve
     "--without-system-libetonyek"
     "--without-system-libfreehand"
-    "--without-system-liblangtag"
+    "--with-system-liblangtag"
     "--without-system-libmspub"
     "--without-system-libpagemaker"
     "--without-system-libstaroffice"
@@ -364,8 +365,8 @@ in stdenv.mkDerivation rec {
       neon nspr nss openldap openssl ORBit2 pam perl pkgconfig poppler
       python3 sablotron sane-backends unzip vigra which zip zlib
       mdds bluez5 libcmis libwps libabw libzmf libtool
-      libxshmfence libatomic_ops graphite2 harfbuzz gpgme utillinux
-      librevenge libe-book libmwaw glm glew ncurses epoxy
+      libxshmfence libatomic_ops graphite2 harfbuzz gpgme gnupg utillinux
+      librevenge libe-book libmwaw glm glew ncurses epoxy liblangtag lp_solve
       libodfgen CoinMP librdf_rasqal gnome3.adwaita-icon-theme gettext
     ]
     ++ lib.optional kdeIntegration kdelibs4;
