@@ -17,6 +17,7 @@
 , langs ? [ "ca" "cs" "de" "en-GB" "en-US" "eo" "es" "fr" "hu" "it" "ja" "nl" "pl" "ru" "sl" "zh-CN" ]
 , withHelp ? true
 , kdeIntegration ? true 
+# Add deps: https://github.com/KDAB/libreoffice-core/blob/master/configure.ac#L10913 or so
 }:
 
 let
