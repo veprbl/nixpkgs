@@ -134,7 +134,19 @@ let
       echo "generating kernel configuration..."
       ln -s "$kernelConfigPath" "$buildRoot/kernel-config"
       DEBUG=1 ARCH=$kernelArch KERNEL_CONFIG="$buildRoot/kernel-config" AUTO_MODULES=$autoModules \
-           PREFER_BUILTIN=$preferBuiltin BUILD_ROOT="$buildRoot" SRC=. perl -w $generateConfig
+           PREFER_BUILTIN=$preferBuiltin BUILD_ROOT="$buildRoot" SRC=. perl -w $generateConfig |& tee genconfig.log
+      # convert config warnings to errors!
+      # It looks like generate-config.pl has mechanism to do this,
+      # but I'm not sure how to make use of it, so this works:
+      # if not set correctly, definitely error out -- config won't be what was intended
+      if grep -q '^warning: option not set correctly:'; then
+        echo "ERROR: option not set correctly, see above for details"
+        exit 1
+      fi
+      if grep -q '^warning: unused option:'; then
+        echo "ERROR: unused option, might be okay but aborting build in case"
+        exit 1
+      fi
     '';
 
     installPhase = "mv $buildRoot/.config $out";
