@@ -12,7 +12,7 @@
 , libatomic_ops, graphite2, harfbuzz, libodfgen, libzmf
 , librevenge, libe-book, libmwaw, glm, glew, gst_all_1
 , gdb, commonsLogging, librdf_rasqal, wrapGAppsHook
-, gnome3, glib, ncurses, epoxy, gpgme, gnupg, liblangtag, lp_solve
+, gnome3, glib, ncurses, epoxy, gpgme, gnupg, liblangtag
 , qtbase, qmake
 , langs ? [ "ca" "cs" "de" "en-GB" "en-US" "eo" "es" "fr" "hu" "it" "ja" "nl" "pl" "ru" "sl" "zh-CN" ]
 , withHelp ? true
@@ -337,7 +337,7 @@ in stdenv.mkDerivation rec {
     "--with-system-beanshell"
     "--without-system-hsqldb"
     "--without-system-altlinuxhyph"
-    "--with-system-lpsolve" # lp_solve
+    "--without-system-lpsolve" # not sure why can't use our lp_solve
     "--without-system-libetonyek"
     "--without-system-libfreehand"
     "--with-system-liblangtag"
@@ -371,7 +371,7 @@ in stdenv.mkDerivation rec {
       python3 sablotron sane-backends unzip vigra which zip zlib
       mdds bluez5 libcmis libwps libabw libzmf libtool
       libxshmfence libatomic_ops graphite2 harfbuzz gpgme gnupg utillinux
-      librevenge libe-book libmwaw glm glew ncurses epoxy liblangtag lp_solve
+      librevenge libe-book libmwaw glm glew ncurses epoxy liblangtag
       libodfgen CoinMP librdf_rasqal gnome3.adwaita-icon-theme gettext
     ];
     #++ lib.optional kdeIntegration kdelibs4;
