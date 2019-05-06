@@ -110,6 +110,8 @@ in stdenv.mkDerivation rec {
       'GPGMEPP_CFLAGS=-I${gpgme.dev}/include/gpgme++'
   '';
 
+  dontUseQmakeConfigure = true;
+
   preConfigure = ''
     configureFlagsArray=(
       "--with-parallelism=$NIX_BUILD_CORES"
