@@ -11,6 +11,9 @@ stdenv.mkDerivation rec {
     sha256 = "1f8iafv81xsypa78prazq6k2xz8az09kjhl97vn330drxkcpj7i7";
   };
 
+  # May not be desirable for everyone
+  patches = [ ./hyphens-in-paths.patch ];
+
   dontBuild = true;
 
   buildInputs = [ lua ];
