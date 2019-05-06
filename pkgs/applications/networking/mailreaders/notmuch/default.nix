@@ -15,7 +15,7 @@ with stdenv.lib;
 assert (versionAtLeast gmime.version "3.0");
 
 stdenv.mkDerivation rec {
-  version = "0.28.3"; # not really, git
+  version = "0.28.4"; # not really, git
   name = "notmuch-${version}";
 
   passthru = {
@@ -27,8 +27,8 @@ stdenv.mkDerivation rec {
   src = fetchgit {
     inherit name;
     url = git://git.notmuchmail.org/git/notmuch;
-    rev = "103c11822ee0b7645fda6397fb40f8ac7ed9b49b";
-    sha256 = "0f5qld75axpnl5ad47v79l8a1qqyy2k0p0p7ir158fl00p91m1q9";
+    rev = "6682b4e686b7972883626c9b0f941ae4bf02dedb";
+    sha256 = "147gzqbhzwfbbij0xjig3l1miqg05bdvm2by2d109dhkgxw6zmd3";
   };
   #src = fetchurl {
   #  url = "https://notmuchmail.org/releases/${name}.tar.gz";
