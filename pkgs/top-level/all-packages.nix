@@ -18645,11 +18645,25 @@ in
     zip = zip.override { enableNLS = false; };
     fontsConf = makeFontsConf {
       fontDirectories = [
-        carlito dejavu_fonts
+        caladea carlito dejavu_fonts
+        comic-relief # the most important of fonts
         freefont_ttf xorg.fontmiscmisc
         liberation_ttf_v1
         liberation_ttf_v2
         liberationsansnarrow
+        libertine
+        libertinus
+        noto-fonts
+        gentium
+        gentium-book-basic
+        source-code-pro
+        source-sans-pro
+        source-serif-pro
+        # ... maybe
+        # emojione
+        # culmus
+
+        # Amiri
       ];
     };
     clucene_core = clucene_core_2;
