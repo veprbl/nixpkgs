@@ -1,21 +1,22 @@
 { stdenv, fetchurl, pam, python3, libxslt, perl, ArchiveZip, gettext
 , IOCompress, zlib, libjpeg, expat, freetype, libwpd
 , libxml2, db, sablotron, curl, fontconfig, libsndfile, neon
-, bison, flex, zip, unzip, qt5, gtk3, gtk2, libmspack, getopt, file, cairo, which
+, bison, flex, zip, unzip, gtk3, gtk2, libmspack, getopt, file, cairo, which
 , icu, boost, jdk, ant, cups, xorg, libcmis, fontforge
 , openssl, gperf, cppunit, GConf, ORBit2, poppler, utillinux
 , librsvg, gnome_vfs, libGLU_combined, bsh, CoinMP, libwps, libabw, mariadb
 , autoconf, automake, openldap, bash, hunspell, librdf_redland, nss, nspr
-, libwpg, dbus-glib, qt4, clucene_core, libcdr, lcms, vigra
+, libwpg, dbus-glib, clucene_core, libcdr, lcms, vigra
 , unixODBC, mdds, sane-backends, mythes, libexttextcat, libvisio
 , fontsConf, pkgconfig, bluez5, libtool, carlito
 , libatomic_ops, graphite2, harfbuzz, libodfgen, libzmf
 , librevenge, libe-book, libmwaw, glm, glew, gst_all_1
 , gdb, commonsLogging, librdf_rasqal, wrapGAppsHook
 , gnome3, glib, ncurses, epoxy, gpgme, gnupg, liblangtag, lp_solve
+, qtbase, qmake
 , langs ? [ "ca" "cs" "de" "en-GB" "en-US" "eo" "es" "fr" "hu" "it" "ja" "nl" "pl" "ru" "sl" "zh-CN" ]
 , withHelp ? true
-, kdeIntegration ? false
+, kdeIntegration ? true 
 }:
 
 let
@@ -107,8 +108,6 @@ in stdenv.mkDerivation rec {
       'GPGMEPP_CFLAGS=-I/usr/include/gpgme++' \
       'GPGMEPP_CFLAGS=-I${gpgme.dev}/include/gpgme++'
   '';
-
-  QT4DIR = qt4;
 
   preConfigure = ''
     configureFlagsArray=(
@@ -296,7 +295,8 @@ in stdenv.mkDerivation rec {
     "--enable-dbus"
     # "--enable-eot" # libeot
     "--enable-release-build"
-    (lib.enableFeature kdeIntegration "kde4")
+    # XXX: add needed deps
+    #(lib.enableFeature kdeIntegration "kde5")
     "--enable-epm"
     "--with-jdk-home=${jdk.home}"
     "--with-ant-home=${ant}/lib/ant"
@@ -357,7 +357,8 @@ in stdenv.mkDerivation rec {
   buildInputs = with xorg;
     [ ant ArchiveZip autoconf automake bison boost cairo clucene_core
       IOCompress cppunit cups curl db dbus-glib expat file flex fontconfig
-      freetype GConf getopt gnome_vfs gperf qt5 gtk3 gtk2
+      freetype GConf getopt gnome_vfs gperf gtk3 gtk2
+      qtbase
       hunspell icu jdk lcms libcdr libexttextcat unixODBC libjpeg
       libmspack librdf_redland librsvg libsndfile libvisio libwpd libwpg libX11
       libXaw libXext libXi libXinerama libxml2 libxslt libXtst
@@ -369,9 +370,9 @@ in stdenv.mkDerivation rec {
       libxshmfence libatomic_ops graphite2 harfbuzz gpgme gnupg utillinux
       librevenge libe-book libmwaw glm glew ncurses epoxy liblangtag lp_solve
       libodfgen CoinMP librdf_rasqal gnome3.adwaita-icon-theme gettext
-    ]
-    ++ lib.optional kdeIntegration kdelibs4;
-  nativeBuildInputs = [ wrapGAppsHook gdb fontforge ];
+    ];
+    #++ lib.optional kdeIntegration kdelibs4;
+  nativeBuildInputs = [ wrapGAppsHook gdb fontforge qmake ];
 
   passthru = {
     inherit srcs jdk;
