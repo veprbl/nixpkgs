@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchgit, lz4, snappy, openmp, libsodium
+{ stdenv, fetchurl, fetchgit, lz4, snappy, libsodium
 # For testing
 , coreutils, gawk
 }:
@@ -22,12 +22,9 @@ stdenv.mkDerivation rec {
     "CC:=$(CC)"
     "PREFIX=${placeholder "out"}"
     "MANPREFIX=${placeholder "out"}/share/man"
-    # These are likely wrong on some platforms, please report!
-    "OPENMPCFLAGS=-fopenmp"
-    "OPENMPLDLIBS=-lgomp"
   ];
 
-  buildInputs = [ lz4 snappy openmp libsodium ];
+  buildInputs = [ lz4 snappy libsodium ];
 
   doCheck = true;
 
