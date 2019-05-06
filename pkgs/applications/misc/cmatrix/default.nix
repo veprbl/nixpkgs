@@ -12,6 +12,9 @@ stdenv.mkDerivation rec {
     sha256 = "1h9jz4m4s5l8c3figaq46ja0km1gimrkfxm4dg7mf4s84icmasbm";
   };
 
+  # Fonts are only installed if the directories exist, so create them:
+  preConfigure = "mkdir -p $out/share/consolefonts $out/share/fonts/X11/misc";
+
   nativeBuildInputs = [ cmake pkgconfig ];
   buildInputs = [ ncurses ];
 
