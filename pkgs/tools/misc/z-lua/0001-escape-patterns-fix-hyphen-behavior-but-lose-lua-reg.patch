@@ -1,7 +1,7 @@
 From 351f08420c38ab11964cfba34c52a3b701817215 Mon Sep 17 00:00:00 2001
 From: Will Dietz <w@wdtz.org>
 Date: Mon, 6 May 2019 01:16:53 -0500
-Subject: [PATCH] escape "patterns", fix hyphen behavior but lose lua-regex
+Subject: [PATCH 1/2] escape "patterns", fix hyphen behavior but lose lua-regex
 
 ---
  z.lua | 6 +++++-
