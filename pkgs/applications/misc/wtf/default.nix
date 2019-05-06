@@ -5,7 +5,7 @@
 
 buildGoModule rec {
   pname = "wtf";
-  version = "0.8.0";
+  version = "0.9.1";
 
   goPackagePath = "github.com/wtfutil/wtf";
 
@@ -13,7 +13,7 @@ buildGoModule rec {
     owner = "wtfutil";
     repo = pname;
     rev = version;
-    sha256 = "1m1nwwsnx6ylw2l50vp5c4fg0l2m8ash6w5hmniwmic4w6gv30vm";
+    sha256 = "0l8chb6cjxida1pxz7qyajn4axlbmzkq2jy9awma0hjg8ak9ybjh";
   };
 
   patches = [ ./fix-hash.patch ];
