@@ -2,13 +2,13 @@
 , which, readline, zlib, icu }:
 
 let
-  version = "60.4.0";
+  version = "60.6.2";
 in stdenv.mkDerivation rec {
   name = "spidermonkey-${version}";
 
   src = fetchurl {
     url = "mirror://mozilla/firefox/releases/${version}esr/source/firefox-${version}esr.source.tar.xz";
-    sha256 = "11gzxd82grc3kg1ha4yni6ag6b97n46qycvv6x15s91ziia5hli0";
+    sha256 = "0fvxqxg48c0xrffb720gxfjayz3xqam2xnsz5piri64dcjvxgcyd";
   };
 
   buildInputs = [ readline zlib icu ];
