@@ -1,7 +1,7 @@
 { stdenv, fetchurl, pkgconfig, ncurses }:
 
 let
-  version = "1.2a";
+  version = "2.0";
 in with stdenv.lib;
 stdenv.mkDerivation rec {
 
