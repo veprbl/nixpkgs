@@ -73,6 +73,8 @@ in stdenv.mkDerivation rec {
     # We are replacing the variables in postPatch since substituteAll does not support
     # placeholders.
     ./fix-docs-build.patch
+
+    ./mtu.patch
   ];
 
   buildInputs = [
