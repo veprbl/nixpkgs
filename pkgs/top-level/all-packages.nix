@@ -3577,7 +3577,16 @@ in
 
   hubicfuse = callPackage ../tools/filesystems/hubicfuse { };
 
-  hunter = callPackage ../tools/misc/hunter { };
+  hunter = callPackage ../tools/misc/hunter {
+    # XXX: obviously this is rather specific to my setup...
+    rustPlatform =
+      let
+        r = nur-combined.repos.mozilla.rustChannels.nightly.rust;
+      in pkgs.makeRustPlatform {
+        rustc = r;
+        cargo = r;
+      };
+  };
 
   hwinfo = callPackage ../tools/system/hwinfo { };
 
