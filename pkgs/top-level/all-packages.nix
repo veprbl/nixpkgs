@@ -19599,8 +19599,6 @@ in
 
   psol = callPackage ../development/libraries/psol { };
 
-  pstree = callPackage ../applications/misc/pstree { };
-
   ptask = callPackage ../applications/misc/ptask { };
 
   pulseaudio-ctl = callPackage ../applications/audio/pulseaudio-ctl { };
