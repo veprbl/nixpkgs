@@ -1,7 +1,7 @@
 { stdenv, fetchurl, fetchpatch, autoconf213, pkgconfig, perl, python2, zip
 , which, readline, zlib, icu }:
 
-in stdenv.mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "spidermonkey";
   version = "60.6.2";
 
