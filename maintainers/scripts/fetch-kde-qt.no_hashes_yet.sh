@@ -14,7 +14,7 @@ fi
 
 tmp=$(mktemp -d)
 pushd $tmp >/dev/null
-wget -nH -r -c --no-parent "${WGET_ARGS[@]}" >/dev/null
+wget -nH -r -c --no-parent "${WGET_ARGS[@]}" -A .tar.xz >/dev/null
 
 csv=$(mktemp)
 find . -type f | while read src; do
