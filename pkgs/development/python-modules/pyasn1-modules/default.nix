@@ -18,6 +18,16 @@ buildPythonPackage rec {
 
   propagatedBuildInputs = [ pyasn1 ];
 
+  checkInputs = [
+    pytest
+  ];
+
+  # running tests through setup.py fails only for python2 for some reason:
+  # AttributeError: 'module' object has no attribute 'suitetests'
+  checkPhase = ''
+    py.test
+  '';
+
   meta = with stdenv.lib; {
     description = "A collection of ASN.1-based protocols modules";
     homepage = https://pypi.python.org/pypi/pyasn1-modules;
