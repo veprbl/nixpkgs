@@ -4,7 +4,7 @@ with rustPlatform;
 
 buildRustPackage rec {
   pname = "hunter";
-  version = "1.1.1";
+  version = "1.1.2";
 
   cargoSha256 = "1r0vlpy682y5ydckkhjganby4qzz3kv469yvd3346q0ckqk5x6xx";
 
@@ -12,7 +12,7 @@ buildRustPackage rec {
     owner = "rabite0";
     repo = pname;
     rev = "v${version}";
-    sha256 = "140qb87ahh77wmi3nslayr9ixh0f8m44an487lanqw6ppz8swh5p";
+    sha256 = "10l03sazk2sfa7ai7x7jyxsl38b5zs81l7r7ikpv7c6z27zj22vw";
   };
 
   buildInputs = [ file /* libmagic */];
