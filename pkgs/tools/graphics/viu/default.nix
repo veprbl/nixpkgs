@@ -2,14 +2,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "viu";
-  version = "0.2.0";
+  version = "0.2.1";
 
   src = fetchFromGitHub {
     owner = "atanunq";
     repo = "viu";
-    #rev = "v${version}";
-    rev = "712241291081d5dae6aca5a5f1d80d219997f074";
-    sha256 = "16g0ip5i1iw3mxxsr0n70n79rvk0vac2cmxmzpl3ylw45sa3qvnl";
+    rev = "v${version}";
+    sha256 = "0p4ibvv0qrflqdc2bi9rjn7yhn01ncxrpqpxmh8cbq67rbvm7jnx";
   };
 
   cargoSha256 = "1h9dm2hhld2079dnx4x5nzkn3ivk6g5ijhv49jxnc200mx4mr1s5";
