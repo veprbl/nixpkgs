@@ -1,4 +1,4 @@
-{ stdenv, buildPythonPackage, fetchFromGitHub, fetchPypi, pyasn1, isPyPy }:
+{ stdenv, buildPythonPackage, fetchFromGitHub, fetchPypi, pyasn1, isPyPy, pytest }:
 
 buildPythonPackage rec {
   pname = "pyasn1-modules";
