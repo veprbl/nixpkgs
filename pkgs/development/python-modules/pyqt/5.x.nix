@@ -12,13 +12,13 @@ let
   sip = pythonPackages.sip.override { sip-module = "PyQt5.sip"; };
 
 in buildPythonPackage rec {
-  pname = "PyQt";
-  version = "5.11.3";
+  pname = "PyQt5";
+  version = "5.12.2";
   format = "other";
 
   src = fetchurl {
-    url = "mirror://sourceforge/pyqt/PyQt5/PyQt-${version}/PyQt5_gpl-${version}.tar.gz";
-    sha256 = "0wqh4srqkcc03rvkwrcshaa028psrq58xkys6npnyhqxc0apvdf9";
+    url = "https://www.riverbankcomputing.com/static/Downloads/${pname}/${version}/${pname}_gpl-${version}.tar.gz";
+    sha256 = "03sz7zq6f6a41127mbyb8kwf1m7avbnz5kd0l4d2i76wfyg84rf5";
   };
 
   outputs = [ "out" "dev" ];
