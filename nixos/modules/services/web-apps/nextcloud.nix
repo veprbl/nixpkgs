@@ -417,7 +417,7 @@ in {
               };
               "~ ^/store-apps" = {
                 priority = 201;
-                extraConfig = "root ${cfg.home};";
+                extraConfig = "alias ${cfg.home}/store-apps;";
               };
               "= /.well-known/carddav" = {
                 priority = 210;
