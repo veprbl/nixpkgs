@@ -1,7 +1,7 @@
 { mkDerivation, fetchurl, lib
 , extra-cmake-modules, kdoctools, wrapGAppsHook
-, kconfig, kcrash, kinit, kpmcore
-, eject, libatasmart , utillinux, makeWrapper, qtbase
+, kconfig, kcrash, kinit, kpmcore, kauth
+, eject, smartmontools, utillinux, qtbase
 }:
 
 let
@@ -17,14 +17,14 @@ in mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  nativeBuildInputs = [ extra-cmake-modules kdoctools wrapGAppsHook makeWrapper ];
+  nativeBuildInputs = [ extra-cmake-modules kdoctools wrapGAppsHook ];
 
   # refer to kpmcore for the use of eject
-  buildInputs = [ eject libatasmart utillinux ];
-  propagatedBuildInputs = [ kconfig kcrash kinit kpmcore ];
+  buildInputs = [ eject smartmontools utillinux ];
+  propagatedBuildInputs = [ kauth kconfig kcrash kinit kpmcore ];
 
   postInstall = ''
-    wrapProgram "$out/bin/partitionmanager" --prefix QT_PLUGIN_PATH : "${kpmcore}/lib/qt-5.${lib.versions.minor qtbase.version}/plugins"
+    gappsWrapperArgs+=(--prefix QT_PLUGIN_PATH : "${kpmcore}/${qtbase.qtPluginPrefix}")
   '';
 
   meta = with lib; {
