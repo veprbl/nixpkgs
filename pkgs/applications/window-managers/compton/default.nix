@@ -77,8 +77,8 @@ let
       #owner  = "dtzWill";
       repo   = "compton";
       #rev    = COMPTON_VERSION;
-      rev    = "430b211ee4ff051501ac9a5f98aa66e4fa898163"; # next
-      sha256 = "1gwlvcz5d4jcs9xwpacvzhyfh28337hxhvaajsh81bavafjqnyij";
+      rev    = "315e4bf0accb6bf7f2a1c7f69e8c02e8b82f12a8"; # next
+      sha256 = "1mcck906iaqx253hldak2z7lv40qb91vmmgh971glmsnz69wmzsz";
     };
 
     buildInputs = [
