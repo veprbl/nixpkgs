@@ -9419,6 +9419,8 @@ in
 
   pants = callPackage ../development/tools/build-managers/pants {};
 
+  parinfer-rust = callPackage ../development/tools/parinfer-rust {};
+
   parse-cli-bin = callPackage ../development/tools/parse-cli-bin { };
 
   patchelf = callPackage ../development/tools/misc/patchelf { };
@@ -12371,7 +12373,10 @@ in
 
   opencore-amr = callPackage ../development/libraries/opencore-amr { };
 
-  opencsg = callPackage ../development/libraries/opencsg { };
+  opencsg = callPackage ../development/libraries/opencsg {
+    inherit (qt5) qmake;
+    inherit (darwin.apple_sdk.frameworks) GLUT;
+  };
 
   openct = callPackage ../development/libraries/openct { };
 
@@ -16105,6 +16110,8 @@ in
 
   documize-community = callPackage ../servers/documize-community { };
 
+  doge = callPackage ../misc/doge { };
+
   doulos-sil = callPackage ../data/fonts/doulos-sil { };
 
   cabin = callPackage ../data/fonts/cabin { };
@@ -18147,7 +18154,7 @@ in
 
   gosmore = callPackage ../applications/misc/gosmore { };
 
-  gpsbabel = libsForQt56.callPackage ../applications/misc/gpsbabel {
+  gpsbabel = libsForQt5.callPackage ../applications/misc/gpsbabel {
     inherit (darwin) IOKit;
   };
 

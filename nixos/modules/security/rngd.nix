@@ -40,7 +40,8 @@ in
       description = "Hardware RNG Entropy Gatherer Daemon";
 
       serviceConfig = {
-        ExecStart = "${pkgs.rng-tools}/sbin/rngd -f" + optionalString cfg.debug " -d";
+        ExecStart = "${pkgs.rng-tools}/sbin/rngd -f"
+          + optionalString cfg.debug " -d";
         NoNewPrivileges = true;
         PrivateNetwork = true;
         PrivateTmp = true;

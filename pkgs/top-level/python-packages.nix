@@ -4348,6 +4348,8 @@ in {
 
   terminado = callPackage ../development/python-modules/terminado { };
 
+  tess = callPackage ../development/python-modules/tess { };
+
   testresources = callPackage ../development/python-modules/testresources { };
 
   testtools = callPackage ../development/python-modules/testtools { };

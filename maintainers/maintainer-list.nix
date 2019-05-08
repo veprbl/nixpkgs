@@ -1541,6 +1541,11 @@
     github = "eqyiel";
     name = "Ruben Maher";
   };
+  eraserhd = {
+    email = "jason.m.felice@gmail.com";
+    github = "eraserhd";
+    name = "Jason Felice";
+  };
   ericbmerritt = {
     email = "eric@afiniate.com";
     github = "ericbmerritt";
