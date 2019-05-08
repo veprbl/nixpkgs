@@ -48,7 +48,7 @@
 , "indium"
 , "jake"
 , "javascript-typescript-langserver"
-, "joplin"
+, { "joplin", "git://github.com/laurent22/joplin.git#v1.0.148"}
 , "jsdoc"
 , "jshint"
 , "json"
