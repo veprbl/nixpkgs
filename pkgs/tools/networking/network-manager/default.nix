@@ -4,6 +4,7 @@
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
 , ethtool, gnused, coreutils, iputils, kmod, jansson, gtk-doc, libxslt
 , docbook_xsl, docbook_xml_dtd_412, docbook_xml_dtd_42, docbook_xml_dtd_43
+, fetchFromGitHub
 , openconnect, curl, meson, ninja, libpsl, libredirect }:
 
 let
@@ -13,10 +14,16 @@ in stdenv.mkDerivation rec {
   name = "network-manager-${version}";
   version = "1.19.2";
 
-  src = fetchurl {
-    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "0wxx1h8k7ya0ygj045ddwwdr05wc2rkj6jx8j11vnswafrq4l6ri";
+  src = fetchFromGitHub {
+    owner = pname;
+    repo = pname;
+    rev = "db46d9b82386fab3c139cde30698ca5ca827b948";
+    sha256 = "07qfw0ka3yljhfmh0lvwf6if5nyyh50cb3zcz71qfify1sfqj2zz";
   };
+  #src = fetchurl {
+  #  url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+  #  sha256 = "0wxx1h8k7ya0ygj045ddwwdr05wc2rkj6jx8j11vnswafrq4l6ri";
+  #};
 
   outputs = [ "out" "dev" "devdoc" "man" "doc" ];
 
@@ -74,7 +81,7 @@ in stdenv.mkDerivation rec {
     # placeholders.
     ./fix-docs-build.patch
 
-    ./mtu.patch
+    #./mtu.patch
   ];
 
   buildInputs = [
