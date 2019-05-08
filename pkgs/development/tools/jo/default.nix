@@ -1,13 +1,13 @@
 {stdenv, fetchFromGitHub, autoreconfHook}:
 
 stdenv.mkDerivation rec {
-  name    = "jo-${version}";
+  pname = "jo";
   version = "1.2";
 
   src = fetchFromGitHub {
-    owner  = "jpmens";
-    repo   = "jo";
-    rev    = "${version}";
+    owner = "jpmens";
+    repo = pname;
+    rev = version;
     sha256 ="03b22zb5034ccqyp4ynfzknxagb3jz2dppl0kqz2nv4a08aglpmy";
   };
 
