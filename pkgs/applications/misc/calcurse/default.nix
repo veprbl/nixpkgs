@@ -1,15 +1,16 @@
-{ stdenv, fetchurl, fetchFromGitHub, ncurses, gettext, python3, makeWrapper, autoreconfHook, asciidoc-full, libxml2 }:
+{ stdenv, fetchurl, fetchFromGitHub, ncurses, gettext, python3
+, makeWrapper, autoreconfHook, asciidoc-full, libxml2, tzdata }:
 
 stdenv.mkDerivation rec {
   pname = "calcurse";
   #version = "4.4.0";
-  version = "2019-04-11";
+  version = "2019-05-08-multi";
 
   src = fetchFromGitHub {
     owner = "lfos";
     repo = pname;
-    rev = "8741334d83aa5f77f1169af70493f394f860779f";
-    sha256 = "19bwqcl8d861wx4mcnj5sqn7cpzm6k3a7r4rq6n1sn4j5qm1vmkv";
+    rev = "7425ef982205d24eaaf1a5cfc0e7071d4f36ffb8";
+    sha256 = "1dh7l2j5k68q896m9ylkn6vnbn15fh3vf3l7wlki0l8d77b4iwkw";
   };
   #src = fetchurl {
   #  #url = "https://calcurse.org/files/${pname}-${version}.tar.gz";
@@ -24,6 +25,11 @@ stdenv.mkDerivation rec {
   # Build Python environment with httplib2 for calcurse-caldav
   pythonEnv = python3.withPackages (ps: with ps; [ httplib2 libxml2 oauth2client ]);
 
+  preCheck = ''
+    export TZDIR=${tzdata}/share/zoneinfo
+  '';
+
+  doCheck = true;
 
   postInstall = ''
     install -Dm755 contrib/vdir/calcurse-vdirsyncer $out/bin
