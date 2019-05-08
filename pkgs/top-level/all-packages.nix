@@ -20190,7 +20190,7 @@ in
   subversionClient = appendToName "client" (pkgs.subversion.override {
     bdbSupport = false;
     perlBindings = true;
-    pythonBindings = true;
+    ## pythonBindings = true;
   });
 
   subunit = callPackage ../development/libraries/subunit { };
