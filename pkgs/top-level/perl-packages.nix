@@ -6715,6 +6715,7 @@ let
       sha256 = "1044rj3wbfmgaif2jb0k28m2aczli6ai2n5yvn6pr7zjyw16kvd2";
     };
     buildInputs = [ pkgs.gtk2 Cairo ExtUtilsDepends ExtUtilsPkgConfig Glib Pango ];
+    doCheck = !stdenv.isDarwin;
     meta = {
       homepage = http://gtk2-perl.sourceforge.net/;
       description = "Perl interface to the 2.x series of the Gimp Toolkit library";
@@ -7343,18 +7344,17 @@ let
     };
   };
 
-  HTTPDaemon = buildPerlModule {
-    name = "HTTP-Daemon-6.04";
+  HTTPDaemon = buildPerlPackage {
+    name = "HTTP-Daemon-6.01";
     src = fetchurl {
-      url = mirror://cpan/authors/id/O/OA/OALDERS/HTTP-Daemon-6.04.tar.gz;
-      sha256 = "12m8iasnmp2dh28jrgmi7z10a3gcyz85khyff2j5h7jqbs6ks1fz";
+      url = mirror://cpan/authors/id/G/GA/GAAS/HTTP-Daemon-6.01.tar.gz;
+      sha256 = "1hmd2isrkilf0q0nkxms1q64kikjmcw9imbvrjgky6kh89vqdza3";
     };
     propagatedBuildInputs = [ HTTPMessage ];
     meta = {
       description = "A simple http server class";
       license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
     };
-    buildInputs = [ ModuleBuildTiny TestNeeds ];
   };
 
   HTTPDate = buildPerlPackage {
@@ -14580,6 +14580,7 @@ let
       url = "mirror://cpan/authors/id/D/DW/DWHEELER/${name}.tar.gz";
       sha256 = "1655337l1cyd7q62007wrk87q2gbbwfq9xjy1wgx3hyflxpkkvl4";
     };
+    doCheck = !stdenv.isDarwin;
     meta = {
       description = "Stream TAP from pgTAP test scripts";
       license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
@@ -14737,6 +14738,7 @@ let
       sha256 = "1msxg3j1hx5wsc7vr81x5gs9gdbn4y0x6cvyj3pq4dgi1603dbvi";
     };
     propagatedBuildInputs = [ AppConfig ];
+    doCheck = !stdenv.isDarwin;
     meta = {
       description = "Comprehensive template processing system";
       license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];

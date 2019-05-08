@@ -15,8 +15,6 @@ stdenv.mkDerivation rec {
   buildInputs = [ libpthreadstubs libpciaccess valgrind-light ];
     # libdrm as of 2.4.70 does not actually do anything with udev.
 
-  patches = stdenv.lib.optional stdenv.isDarwin ./libdrm-apple.patch;
-
   postPatch = ''
     for a in */*-symbol-check ; do
       patchShebangs $a
