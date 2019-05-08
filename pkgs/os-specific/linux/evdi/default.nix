@@ -1,7 +1,7 @@
 { stdenv, fetchFromGitHub, kernel, libdrm }:
 
 stdenv.mkDerivation rec {
-  name = "evdi-${version}";
+  pname = "evdi";
   version = "1.6.0";
 
   src = fetchFromGitHub {
