@@ -1755,6 +1755,10 @@ in
 
   pyznap = python3Packages.callPackage ../tools/backup/pyznap {};
 
+  procs = callPackage ../tools/admin/procs {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
+
   scour = with python3Packages; toPythonApplication scour;
 
   s2png = callPackage ../tools/graphics/s2png { };
@@ -5024,6 +5028,8 @@ in
   pamtester = callPackage ../tools/security/pamtester { };
 
   paper-gtk-theme = callPackage ../misc/themes/paper { };
+
+  paperless = callPackage ../applications/office/paperless { };
 
   paperwork = callPackage ../applications/office/paperwork { };
 

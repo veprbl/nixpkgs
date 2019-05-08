@@ -130,6 +130,9 @@ in {
 
   wrapPython = callPackage ../development/interpreters/python/wrap-python.nix {inherit python; inherit (pkgs) makeSetupHook makeWrapper; };
 
+  # Dont take pythonPackages from "global" pkgs scope to avoid mixing python versions
+  pythonPackages = self;
+
   # specials
 
   recursivePthLoader = callPackage ../development/python-modules/recursive-pth-loader { };
@@ -408,6 +411,8 @@ in {
 
   fdint = callPackage ../development/python-modules/fdint { };
 
+  filemagic = callPackage ../development/python-modules/filemagic { };
+
   fuse = callPackage ../development/python-modules/fuse-python {
     inherit (pkgs) fuse pkgconfig;
   };
@@ -470,6 +475,8 @@ in {
 
   imutils = callPackage ../development/python-modules/imutils { };
 
+  inotify-simple = callPackage ../development/python-modules/inotify-simple { };
+
   intake = callPackage ../development/python-modules/intake { };
 
   intelhex = callPackage ../development/python-modules/intelhex { };
@@ -481,6 +488,8 @@ in {
   lammps-cython = callPackage ../development/python-modules/lammps-cython {
     mpi = pkgs.openmpi;
   };
+
+  langdetect = callPackage ../development/python-modules/langdetect { };
 
   libmr = callPackage ../development/python-modules/libmr { };
 
@@ -577,6 +586,8 @@ in {
   pdf2image = callPackage ../development/python-modules/pdf2image { };
 
   pdfminer = callPackage ../development/python-modules/pdfminer_six { };
+
+  pdftotext = callPackage ../development/python-modules/pdftotext { };
 
   pdfx = callPackage ../development/python-modules/pdfx { };
 
@@ -761,6 +772,8 @@ in {
 
   pytest-click = callPackage ../development/python-modules/pytest-click { };
 
+  pytest-env = callPackage ../development/python-modules/pytest-env { };
+
   pytest-mypy = callPackage ../development/python-modules/pytest-mypy { };
 
   pytest-pylint = callPackage ../development/python-modules/pytest-pylint { };
@@ -770,6 +783,8 @@ in {
   python-binance = callPackage ../development/python-modules/python-binance { };
 
   python-dbusmock = callPackage ../development/python-modules/python-dbusmock { };
+
+  python-dotenv = callPackage ../development/python-modules/python-dotenv { };
 
   python-engineio = callPackage ../development/python-modules/python-engineio { };
 
@@ -2490,6 +2505,8 @@ in {
   django_treebeard = callPackage ../development/python-modules/django_treebeard { };
 
   django_pipeline = callPackage ../development/python-modules/django-pipeline { };
+
+  djangoql = callPackage ../development/python-modules/djangoql { };
 
   dj-database-url = callPackage ../development/python-modules/dj-database-url { };
 
