@@ -9,7 +9,7 @@ stdenv.mkDerivation rec {
     repo = "papirus-icon-theme";
     #rev = version;
     rev = "afa8ea1414abf9918d63d820389a67bd2279abae";
-    sha256 = "1sdzbvlzzg43vqahjqcsj6v87y1xhchw7bgiv8jgwd2n4l3gg2zy";
+    sha256 = "0rhkdxs3bm2mja9g0sjr58aqadim3dpdiz0r8ycqlzw9n6294h44";
   };
 
   nativeBuildInputs = [ gtk3 ];
