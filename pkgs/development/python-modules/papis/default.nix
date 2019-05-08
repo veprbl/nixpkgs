@@ -39,11 +39,21 @@ buildPythonPackage rec {
   ];
 
   # most of the downloader tests and 4 other tests require a network connection
-  # test_export_yaml and test_citations check for the exact output produced by pyyaml 3.x and
-  # fail with 5.x
   checkPhase = ''
     HOME=$(mktemp -d) pytest papis tests --ignore tests/downloaders \
-      -k "not test_get_data and not test_doi_to_data and not test_general and not get_document_url and not test_export_yaml and not test_citations"
+      -k "not ${lib.concatStringsSep " and not " [
+        "test_get_data"
+        "test_doi_to_data"
+        "test_general"
+        "get_document_url"
+        # dns resolution failures
+        "test_downloader_getter"
+        "test_validate_doi"
+        # test_export_yaml and test_citations check for the exact output produced by pyyaml 3.x and
+        # fail with 5.x
+        "test_export_yaml"
+        "test_citations"
+      ]}"
   '';
 
   #postInstall = ''
