@@ -5,13 +5,13 @@
 
 stdenv.mkDerivation rec {
   name = "or-tools-${version}";
-  version = "7.1";
+  version = "v7.0";
 
   src = fetchFromGitHub {
     owner = "google";
     repo = "or-tools";
-    rev = "v${version}";
-    sha256 = "0mzmp7fivlzgqw985yqap278bpzcqnr8rfqz17b1k5jmnc86w3ml";
+    rev = version;
+    sha256 = "09rs2j3w4ljw9qhhnsjlvfii297njjszwvkbgj1i6kns3wnlr7cp";
   };
 
   # The original build system uses cmake which does things like pull
