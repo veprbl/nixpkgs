@@ -1,4 +1,4 @@
-{ lib, fetchPypi, buildPythonPackage, pythonOlder, attrs }:
+{ lib, fetchPypi, buildPythonPackage, pythonOlder, attrs, websockets }:
 
 buildPythonPackage rec {
   pname = "aiorpcx";
@@ -10,7 +10,7 @@ buildPythonPackage rec {
     sha256 = "17sh1y36j84kjshxn6whg86cigcx2i5qd8ygpmg9pa1qsv9b19ck";
   };
 
-  propagatedBuildInputs = [ attrs ];
+  propagatedBuildInputs = [ attrs websockets ];
 
   disabled = pythonOlder "3.6";
 
