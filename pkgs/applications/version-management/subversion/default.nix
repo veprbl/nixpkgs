@@ -26,8 +26,6 @@ let
       inherit sha256;
     };
 
-    CPPFLAGS = [ "-P" ];
-
     # Can't do separate $lib and $bin, as libs reference bins
     outputs = [ "out" "dev" "man" ];
 
