@@ -5,13 +5,13 @@ rustPlatform.buildRustPackage rec {
   #name = "newsboat-${version}";
   pname = "newsboat";
 #  version = "2.15";
-  version = "2019-04-24";
+  version = "2019-05-09";
 
   src = fetchFromGitHub {
     owner = pname;
     repo = pname;
-    rev = "a4a50aa0d9dc8d436d0631c172f9066a528d2bd7";
-    sha256 = "04cdrcz6m621mbl932va8iqv6g1y4dmn2sjbg1viphwmngywq4c7";
+    rev = "1d439ede40dadc55e96fa2884c3e27cc9631f68a";
+    sha256 = "191clmzl3wl4rf8fp7md93j1aani8by6rgivqc7hl7zmskac155n";
   };
   #src = fetchurl {
   #  url = "https://newsboat.org/releases/${version}/${name}.tar.xz";
