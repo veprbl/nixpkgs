@@ -1,5 +1,6 @@
 { lib, fetchurl, buildPythonPackage
 , zip, ffmpeg_4, rtmpdump, phantomjs2, atomicparsley, pycryptodome, pandoc
+, fetchFromGitHub
 , fetchpatch
 # Pandoc is required to build the package's man page. Release tarballs contain a
 # formatted man page already, though, it will still be installed. We keep the
@@ -21,10 +22,16 @@ buildPythonPackage rec {
   # to the latest stable release.
   version = "2019.04.30";
 
-  src = fetchurl {
-    url = "https://yt-dl.org/downloads/${version}/${pname}-${version}.tar.gz";
-    sha256 = "1s43adnky8ayhjwmgmiqy6rmmygd4c23v36jhy2lzr2jpn8l53z1";
+  src = fetchFromGitHub {
+    owner = "ytdl-org";
+    repo = "youtube-dl";
+    rev = "a5b92d3590def85aee73d2968875e9a9cc916f26";
+    sha256 = "04z4vyz6487ha78l6mhmm9xvr3pvf0ldxh68faljzmfwq71mpia7";
   };
+  #src = fetchurl {
+  #  url = "https://yt-dl.org/downloads/${version}/${pname}-${version}.tar.gz";
+  #  sha256 = "1s43adnky8ayhjwmgmiqy6rmmygd4c23v36jhy2lzr2jpn8l53z1";
+  #};
 
   nativeBuildInputs = [ makeWrapper ];
   buildInputs = [ zip ] ++ lib.optional generateManPage pandoc;
@@ -47,6 +54,8 @@ buildPythonPackage rec {
   ];
 
   postInstall = ''
+    patchShebangs devscripts/zsh-completion.py
+    devscripts/zsh-completion.py
     mkdir -p $out/share/zsh/site-functions
     cp youtube-dl.zsh $out/share/zsh/site-functions/_youtube-dl
   '';
