@@ -1,5 +1,4 @@
-{ stdenv, fetchurl, python3, python3Packages, zbar, secp256k1
-, fetchFromGitHub, doCheck ? true }:
+{ stdenv, fetchurl, fetchFromGitHub, python3, python3Packages, zbar, secp256k1 }:
 
 let
   version = "3.3.5";
