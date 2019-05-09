@@ -10,10 +10,8 @@
 # $ mkdir ~/.config/nixpkgs/overlays/
 # $ echo 'self: super: super.prefer-remote-fetch self super' > ~/.config/nixpkgs/overlays/prefer-remote-fetch.nix
 #
-self: super: {
-  fetchurl = args: super.fetchurl (args // { preferLocalBuild = false; });
-  fetchgit = args: super.fetchgit (args // { preferLocalBuild = false; });
-  fetchhg = args: super.fetchhg (args // { preferLocalBuild = false; });
-  fetchsvn = args: super.fetchsvn (args // { preferLocalBuild = false; });
-  fetchipfs = args: super.fetchipfs (args // { preferLocalBuild = false; });
+let nolocal = a: if builtins.isAttrs a then (a // { preferLocalBuild = false; }) else a;
+in
+self: super: builtins.mapAttrs (n: v: x: v (nolocal x)) {
+  inherit (super) fetchurl fetchgit fetchhg fetchsvn fetchipfs;
 }
