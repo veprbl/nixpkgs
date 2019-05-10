@@ -1070,12 +1070,12 @@ let
 
   ncm2-jedi = buildVimPluginFrom2Nix {
     pname = "ncm2-jedi";
-    version = "2019-03-01";
+    version = "2019-05-09";
     src = fetchFromGitHub {
       owner = "ncm2";
       repo = "ncm2-jedi";
-      rev = "ea0ee18f3b2c3f40c8264fe3c8ab2af7bba9ee53";
-      sha256 = "1c802l3cr6wgidhxfajikzhpq18y5fi2ms3csy7hww87gs7y7qcj";
+      rev = "485520af57aee528a3448d1f26bb7761dd915b0e";
+      sha256 = "1qq5mydg99y2865gx3i3kzk0vl6agx26l8if4nq47wlxnfcbgslv";
     };
   };
 
