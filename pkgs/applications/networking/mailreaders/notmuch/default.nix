@@ -46,6 +46,8 @@ stdenv.mkDerivation rec {
     ruby  # (optional) ruby bindings
   ];
 
+  patches = [ ./fix-fd-leak.patch ];
+
   postPatch = ''
     patchShebangs configure
     patchShebangs test/
