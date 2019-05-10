@@ -1,5 +1,6 @@
 { stdenv, fetchurl, fetchpatch, autoreconfHook, pkgconfig
 , giflib, libjpeg, libpng, libtiff, libwebp, openjpeg, zlib
+, gnuplot
 }:
 
 stdenv.mkDerivation rec {
@@ -13,6 +14,8 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ autoreconfHook pkgconfig ];
   buildInputs = [ giflib libjpeg libpng libtiff libwebp openjpeg zlib ];
+  checkInputs = [ gnuplot ];
+  doCheck = true;
 
   meta = {
     description = "Image processing and analysis library";
