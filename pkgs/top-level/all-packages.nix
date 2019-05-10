@@ -976,6 +976,8 @@ in
     metricbeat5
     packetbeat5;
 
+  journalbeat5 = callPackage ../tools/system/journalbeat { };
+
   inherit (callPackages ../misc/logging/beats/6.x.nix {
     # XXX: this is failing with Go 1.12. Error is related to cgo, an
     # update to this package might fix it.
@@ -1002,6 +1004,7 @@ in
   heartbeat = heartbeat6;
   metricbeat = metricbeat6;
   packetbeat = packetbeat6;
+  journalbeat = journalbeat6;
 
   bfr = callPackage ../tools/misc/bfr { };
 
@@ -3810,8 +3813,6 @@ in
 
   joplin-desktop = callPackage ../applications/misc/joplin-desktop { };
 
-  journalbeat = callPackage ../tools/system/journalbeat { };
-
   journaldriver = callPackage ../tools/misc/journaldriver { };
 
   jp = callPackage ../development/tools/jp { };
@@ -4884,6 +4885,10 @@ in
 
   ola = callPackage ../applications/misc/ola { };
 
+  olive-editor = libsForQt5.callPackage ../applications/video/olive-editor { 
+    inherit (darwin.apple_sdk.frameworks) CoreFoundation;
+  };
+
   omping = callPackage ../applications/networking/omping { };
 
   onioncircuits = callPackage ../tools/security/onioncircuits { };
@@ -4928,7 +4933,7 @@ in
   openresolv = callPackage ../tools/networking/openresolv { };
 
   opensc = callPackage ../tools/security/opensc {
-    inherit (darwin.apple_sdk.frameworks) Carbon;
+    inherit (darwin.apple_sdk.frameworks) Carbon PCSC;
   };
 
   opensm = callPackage ../tools/networking/opensm { };
@@ -6880,6 +6885,8 @@ in
   zsync = callPackage ../tools/compression/zsync { };
 
   zxing = callPackage ../tools/graphics/zxing {};
+
+  zmap = callPackage ../tools/security/zmap { };
 
 
   ### SHELLS
