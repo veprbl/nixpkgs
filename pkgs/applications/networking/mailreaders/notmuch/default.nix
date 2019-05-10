@@ -27,8 +27,8 @@ stdenv.mkDerivation rec {
   src = fetchgit {
     inherit name;
     url = git://git.notmuchmail.org/git/notmuch;
-    rev = "325a92422737f16377307dbd584158d3ee8cdb51";
-    sha256 = "0ky1v3dqgjl6fphph6mhn0bd6j0x8dwv6fa6zg37cwl9rqfda2m6";
+    rev = "6682b4e686b7972883626c9b0f941ae4bf02dedb";
+    sha256 = "147gzqbhzwfbbij0xjig3l1miqg05bdvm2by2d109dhkgxw6zmd3";
   };
   #src = fetchurl {
   #  url = "https://notmuchmail.org/releases/${name}.tar.gz";
@@ -45,13 +45,6 @@ stdenv.mkDerivation rec {
     emacs  # (optional) to byte compile emacs code, also needed for tests
     ruby  # (optional) ruby bindings
   ];
-
-  # This is actually not 0.28.4, but from git--
-  # latest git is broken for me, but can't drop
-  # to 0.28.4 without having to re-index (again)
-  # so instead cherry-pick the single change
-  # that makes 0.28.4 not 0.28.3 :)
-  patches = [ ./fix-empty-write-0.28.4.patch ];
 
   postPatch = ''
     patchShebangs configure
