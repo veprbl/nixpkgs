@@ -16000,6 +16000,8 @@ in
 
   agave = callPackage ../data/fonts/agave { };
 
+  adementary-theme = callPackage ../data/themes/adementary { };
+
   aileron = callPackage ../data/fonts/aileron { };
 
   andagii = callPackage ../data/fonts/andagii { };
@@ -16565,8 +16567,6 @@ in
   terminus_font_ttf = callPackage ../data/fonts/terminus-font-ttf { };
 
   termtekst = callPackage ../misc/emulators/termtekst { };
-
-  tetra-gtk-theme = callPackage ../data/themes/tetra { };
 
   tex-gyre = callPackages ../data/fonts/tex-gyre { };
 
