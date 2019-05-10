@@ -1,0 +1,315 @@
+From 55095fc2bdcb65b4a34b3e49c1bcb2f3d35b8aac Mon Sep 17 00:00:00 2001
+From: Beniamino Galvani <bgalvani@redhat.com>
+Date: Fri, 26 Apr 2019 13:25:21 +0200
+Subject: [PATCH 1/2] ipv6: add 'disabled' method
+
+Add a new ipv6.method value 'disabled' that completely disables IPv6
+for the interface.
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1643841
+---
+ clients/common/nm-meta-setting-desc.c         |  3 +-
+ clients/tui/nmt-page-ip6.c                    |  1 +
+ libnm-core/nm-setting-ip6-config.c            | 28 +++++-----
+ libnm-core/nm-setting-ip6-config.h            |  7 +++
+ src/devices/nm-device.c                       |  5 ++
+ .../plugins/ifcfg-rh/nms-ifcfg-rh-reader.c    | 12 +++--
+ .../plugins/ifcfg-rh/nms-ifcfg-rh-writer.c    |  7 +++
+ .../ifcfg-test-ip6-disabled.cexpected         | 11 ++++
+ .../plugins/ifcfg-rh/tests/test-ifcfg-rh.c    | 53 +++++++++++++++++++
+ 9 files changed, 109 insertions(+), 18 deletions(-)
+ create mode 100644 src/settings/plugins/ifcfg-rh/tests/network-scripts/ifcfg-test-ip6-disabled.cexpected
+
+diff --git a/clients/common/nm-meta-setting-desc.c b/clients/common/nm-meta-setting-desc.c
+index cc3557d6f..cf1452bbd 100644
+--- a/clients/common/nm-meta-setting-desc.c
++++ b/clients/common/nm-meta-setting-desc.c
+@@ -5763,7 +5763,8 @@ static const NMMetaPropertyInfo *const property_infos_IP6_CONFIG[] = {
+ 			                                          NM_SETTING_IP6_CONFIG_METHOD_DHCP,
+ 			                                          NM_SETTING_IP6_CONFIG_METHOD_LINK_LOCAL,
+ 			                                          NM_SETTING_IP6_CONFIG_METHOD_MANUAL,
+-			                                          NM_SETTING_IP6_CONFIG_METHOD_SHARED),
++			                                          NM_SETTING_IP6_CONFIG_METHOD_SHARED,
++			                                          NM_SETTING_IP6_CONFIG_METHOD_DISABLED),
+ 		),
+ 	),
+ 	PROPERTY_INFO (NM_SETTING_IP_CONFIG_DNS, DESCRIBE_DOC_NM_SETTING_IP6_CONFIG_DNS,
+diff --git a/clients/tui/nmt-page-ip6.c b/clients/tui/nmt-page-ip6.c
+index 2444a93d7..05360e26d 100644
+--- a/clients/tui/nmt-page-ip6.c
++++ b/clients/tui/nmt-page-ip6.c
+@@ -40,6 +40,7 @@ static NmtNewtPopupEntry ip6methods[] = {
+ 	{ N_("Automatic (DHCP-only)"), NM_SETTING_IP6_CONFIG_METHOD_DHCP },
+ 	{ N_("Link-Local"), NM_SETTING_IP6_CONFIG_METHOD_LINK_LOCAL },
+ 	{ N_("Manual"), NM_SETTING_IP6_CONFIG_METHOD_MANUAL },
++	{ N_("Disabled"), NM_SETTING_IP6_CONFIG_METHOD_DISABLED },
+ 	{ NULL, NULL }
+ };
+ 
+diff --git a/libnm-core/nm-setting-ip6-config.c b/libnm-core/nm-setting-ip6-config.c
+index f9b447a68..6e8d01977 100644
+--- a/libnm-core/nm-setting-ip6-config.c
++++ b/libnm-core/nm-setting-ip6-config.c
+@@ -39,7 +39,7 @@
+  * #NMSettingIP6Config has few properties or methods of its own; it inherits
+  * almost everything from #NMSettingIPConfig.
+  *
+- * NetworkManager supports 6 values for the #NMSettingIPConfig:method property
++ * NetworkManager supports 7 values for the #NMSettingIPConfig:method property
+  * for IPv6.  If "auto" is specified then the appropriate automatic method (PPP,
+  * router advertisement, etc) is used for the device and most other properties
+  * can be left unset.  To force the use of DHCP only, specify "dhcp"; this
+@@ -48,7 +48,8 @@
+  * If "manual" is specified, static IP addressing is used and at least one IP
+  * address must be given in the "addresses" property.  If "ignore" is specified,
+  * IPv6 configuration is not done. Note: the "shared" method is not yet
+- * supported.
++ * supported. If "disabled" is specified, IPv6 is disabled completely for the
++ * interface.
+  **/
+ 
+ /*****************************************************************************/
+@@ -166,7 +167,7 @@ verify (NMSetting *setting, NMConnection *connection, GError **error)
+ 	/* Base class already checked that it exists */
+ 	g_assert (method);
+ 
+-	if (!strcmp (method, NM_SETTING_IP6_CONFIG_METHOD_MANUAL)) {
++	if (nm_streq (method, NM_SETTING_IP6_CONFIG_METHOD_MANUAL)) {
+ 		if (nm_setting_ip_config_get_num_addresses (s_ip) == 0) {
+ 			g_set_error (error,
+ 			             NM_CONNECTION_ERROR,
+@@ -176,12 +177,12 @@ verify (NMSetting *setting, NMConnection *connection, GError **error)
+ 			g_prefix_error (error, "%s.%s: ", NM_SETTING_IP6_CONFIG_SETTING_NAME, NM_SETTING_IP_CONFIG_ADDRESSES);
+ 			return FALSE;
+ 		}
+-	} else if (   !strcmp (method, NM_SETTING_IP6_CONFIG_METHOD_IGNORE)
+-	           || !strcmp (method, NM_SETTING_IP6_CONFIG_METHOD_LINK_LOCAL)
+-	           || !strcmp (method, NM_SETTING_IP6_CONFIG_METHOD_SHARED)) {
+-
+-		/* Shared allows IP addresses and DNS; link-local and disabled do not */
+-		if (strcmp (method, NM_SETTING_IP6_CONFIG_METHOD_SHARED) != 0) {
++	} else if (NM_IN_STRSET (method, NM_SETTING_IP6_CONFIG_METHOD_IGNORE,
++	                                 NM_SETTING_IP6_CONFIG_METHOD_LINK_LOCAL,
++	                                 NM_SETTING_IP6_CONFIG_METHOD_SHARED,
++	                                 NM_SETTING_IP6_CONFIG_METHOD_DISABLED)) {
++		/* Shared allows IP addresses and DNS; other methods do not */
++		if (!nm_streq (method, NM_SETTING_IP6_CONFIG_METHOD_SHARED)) {
+ 			if (nm_setting_ip_config_get_num_dns (s_ip) > 0) {
+ 				g_set_error (error,
+ 				             NM_CONNECTION_ERROR,
+@@ -212,8 +213,8 @@ verify (NMSetting *setting, NMConnection *connection, GError **error)
+ 				return FALSE;
+ 			}
+ 		}
+-	} else if (   !strcmp (method, NM_SETTING_IP6_CONFIG_METHOD_AUTO)
+-	           || !strcmp (method, NM_SETTING_IP6_CONFIG_METHOD_DHCP)) {
++	} else if (NM_IN_STRSET (method, NM_SETTING_IP6_CONFIG_METHOD_AUTO,
++	                                 NM_SETTING_IP6_CONFIG_METHOD_DHCP)) {
+ 		/* nothing to do */
+ 	} else {
+ 		g_set_error_literal (error,
+@@ -567,10 +568,11 @@ nm_setting_ip6_config_class_init (NMSettingIP6ConfigClass *klass)
+ 
+ 	/* ---ifcfg-rh---
+ 	 * property: method
+-	 * variable: IPV6INIT, IPV6FORWARDING, IPV6_AUTOCONF, DHCPV6C
++	 * variable: IPV6INIT, IPV6FORWARDING, IPV6_AUTOCONF, DHCPV6C, IPV6_DISABLED
+ 	 * default:  IPV6INIT=yes; IPV6FORWARDING=no; IPV6_AUTOCONF=!IPV6FORWARDING, DHCPV6=no
+ 	 * description: Method used for IPv6 protocol configuration.
+-	 *   ignore ~ IPV6INIT=no; auto ~ IPV6_AUTOCONF=yes; dhcp ~ IPV6_AUTOCONF=no and DHCPV6C=yes
++	 *   ignore ~ IPV6INIT=no; auto ~ IPV6_AUTOCONF=yes; dhcp ~ IPV6_AUTOCONF=no and DHCPV6C=yes;
++	 *   disabled ~ IPV6_DISABLED=yes
+ 	 * ---end---
+ 	 */
+ 
+diff --git a/libnm-core/nm-setting-ip6-config.h b/libnm-core/nm-setting-ip6-config.h
+index ae8ab1a23..6414b2879 100644
+--- a/libnm-core/nm-setting-ip6-config.h
++++ b/libnm-core/nm-setting-ip6-config.h
+@@ -101,6 +101,13 @@ G_BEGIN_DECLS
+  */
+ #define NM_SETTING_IP6_CONFIG_METHOD_SHARED     "shared"
+ 
++/**
++ * NM_SETTING_IP6_CONFIG_METHOD_DISABLED:
++ *
++ * IPv6 is disabled for the connection.
++ */
++#define NM_SETTING_IP6_CONFIG_METHOD_DISABLED   "disabled"
++
+ /**
+  * NMSettingIP6ConfigPrivacy:
+  * @NM_SETTING_IP6_CONFIG_PRIVACY_UNKNOWN: unknown or no value specified
+diff --git a/src/devices/nm-device.c b/src/devices/nm-device.c
+index 62d2e5783..ec0b9b40e 100644
+--- a/src/devices/nm-device.c
++++ b/src/devices/nm-device.c
+@@ -9837,6 +9837,11 @@ act_stage3_ip_config_start (NMDevice *self,
+ 		NMSettingIP6ConfigPrivacy ip6_privacy = NM_SETTING_IP6_CONFIG_PRIVACY_UNKNOWN;
+ 		const char *ip6_privacy_str = "0";
+ 
++		if (nm_streq (method, NM_SETTING_IP6_CONFIG_METHOD_DISABLED)) {
++			set_disable_ipv6 (self, "1");
++			return NM_ACT_STAGE_RETURN_IP_DONE;
++		}
++
+ 		if (nm_streq (method, NM_SETTING_IP6_CONFIG_METHOD_IGNORE)) {
+ 			if (   !priv->master
+ 			    && !nm_device_sys_iface_state_is_external (self)) {
+diff --git a/src/settings/plugins/ifcfg-rh/nms-ifcfg-rh-reader.c b/src/settings/plugins/ifcfg-rh/nms-ifcfg-rh-reader.c
+index 286ee58ab..e22626670 100644
+--- a/src/settings/plugins/ifcfg-rh/nms-ifcfg-rh-reader.c
++++ b/src/settings/plugins/ifcfg-rh/nms-ifcfg-rh-reader.c
+@@ -1906,7 +1906,7 @@ make_ip6_setting (shvarFile *ifcfg,
+ 	gs_unref_object NMSettingIPConfig *s_ip6 = NULL;
+ 	const char *v;
+ 	gs_free char *value = NULL;
+-	gboolean ipv6init, ipv6forwarding, dhcp6 = FALSE;
++	gboolean ipv6init, ipv6forwarding, dhcp6 = FALSE, disabled;
+ 	char *method = NM_SETTING_IP6_CONFIG_METHOD_MANUAL;
+ 	const char *ipv6addr, *ipv6addr_secondaries;
+ 	gs_free char *ipv6addr_to_free = NULL;
+@@ -1964,6 +1964,7 @@ make_ip6_setting (shvarFile *ifcfg,
+ 
+ 	/* Find out method property */
+ 	/* Is IPV6 enabled? Set method to "ignored", when not enabled */
++	disabled = svGetValueBoolean(ifcfg, "IPV6_DISABLED", FALSE);
+ 	nm_clear_g_free (&value);
+ 	v = svGetValueStr (ifcfg, "IPV6INIT", &value);
+ 	ipv6init = svGetValueBoolean (ifcfg, "IPV6INIT", FALSE);
+@@ -1972,8 +1973,10 @@ make_ip6_setting (shvarFile *ifcfg,
+ 			ipv6init = svGetValueBoolean (network_ifcfg, "IPV6INIT", FALSE);
+ 	}
+ 
+-	if (!ipv6init)
+-		method = NM_SETTING_IP6_CONFIG_METHOD_IGNORE;  /* IPv6 is disabled */
++	if (disabled)
++		method = NM_SETTING_IP6_CONFIG_METHOD_DISABLED;
++	else if (!ipv6init)
++		method = NM_SETTING_IP6_CONFIG_METHOD_IGNORE;
+ 	else {
+ 		ipv6forwarding = svGetValueBoolean (ifcfg, "IPV6FORWARDING", FALSE);
+ 		nm_clear_g_free (&value);
+@@ -2039,7 +2042,8 @@ make_ip6_setting (shvarFile *ifcfg,
+ 	              NULL);
+ 
+ 	/* Don't bother to read IP, DNS and routes when IPv6 is disabled */
+-	if (strcmp (method, NM_SETTING_IP6_CONFIG_METHOD_IGNORE) == 0)
++	if (NM_IN_STRSET (method, NM_SETTING_IP6_CONFIG_METHOD_IGNORE,
++	                          NM_SETTING_IP6_CONFIG_METHOD_DISABLED))
+ 		return NM_SETTING (g_steal_pointer (&s_ip6));
+ 
+ 	nm_clear_g_free (&value);
+diff --git a/src/settings/plugins/ifcfg-rh/nms-ifcfg-rh-writer.c b/src/settings/plugins/ifcfg-rh/nms-ifcfg-rh-writer.c
+index e9a023c5b..b5f69adf7 100644
+--- a/src/settings/plugins/ifcfg-rh/nms-ifcfg-rh-writer.c
++++ b/src/settings/plugins/ifcfg-rh/nms-ifcfg-rh-writer.c
+@@ -2805,10 +2805,17 @@ write_ip6_setting (NMConnection *connection,
+ 
+ 	value = nm_setting_ip_config_get_method (s_ip6);
+ 	g_assert (value);
++	svUnsetValue (ifcfg, "IPV6_DISABLED");
+ 	if (!strcmp (value, NM_SETTING_IP6_CONFIG_METHOD_IGNORE)) {
+ 		svSetValueStr (ifcfg, "IPV6INIT", "no");
+ 		svUnsetValue (ifcfg, "DHCPV6C");
+ 		return TRUE;
++	} else if (!strcmp (value, NM_SETTING_IP6_CONFIG_METHOD_DISABLED)) {
++		svSetValueStr (ifcfg, "IPV6_DISABLED", "yes");
++		svSetValueStr (ifcfg, "IPV6INIT", "no");
++		svUnsetValue (ifcfg, "DHCPV6C");
++		svUnsetValue (ifcfg, "IPV6_AUTOCONF");
++		return TRUE;
+ 	} else if (!strcmp (value, NM_SETTING_IP6_CONFIG_METHOD_AUTO)) {
+ 		svSetValueStr (ifcfg, "IPV6INIT", "yes");
+ 		svSetValueStr (ifcfg, "IPV6_AUTOCONF", "yes");
+diff --git a/src/settings/plugins/ifcfg-rh/tests/network-scripts/ifcfg-test-ip6-disabled.cexpected b/src/settings/plugins/ifcfg-rh/tests/network-scripts/ifcfg-test-ip6-disabled.cexpected
+new file mode 100644
+index 000000000..cae51b899
+--- /dev/null
++++ b/src/settings/plugins/ifcfg-rh/tests/network-scripts/ifcfg-test-ip6-disabled.cexpected
+@@ -0,0 +1,11 @@
++TYPE=Ethernet
++PROXY_METHOD=none
++BROWSER_ONLY=no
++BOOTPROTO=dhcp
++DEFROUTE=yes
++IPV4_FAILURE_FATAL=no
++IPV6_DISABLED=yes
++IPV6INIT=no
++NAME="Test Write Wired Disabled IP6"
++UUID=${UUID}
++ONBOOT=yes
+diff --git a/src/settings/plugins/ifcfg-rh/tests/test-ifcfg-rh.c b/src/settings/plugins/ifcfg-rh/tests/test-ifcfg-rh.c
+index 49ab04d4d..031ac200d 100644
+--- a/src/settings/plugins/ifcfg-rh/tests/test-ifcfg-rh.c
++++ b/src/settings/plugins/ifcfg-rh/tests/test-ifcfg-rh.c
+@@ -4768,6 +4768,58 @@ test_write_wired_static_ip6_only (void)
+ 	nmtst_assert_connection_equals (connection, TRUE, reread, FALSE);
+ }
+ 
++static void
++test_write_ip6_disabled (void)
++{
++	nmtst_auto_unlinkfile char *testfile = NULL;
++	gs_unref_object NMConnection *connection = NULL;
++	gs_unref_object NMConnection *reread = NULL;
++	NMSettingConnection *s_con;
++	NMSettingWired *s_wired;
++	NMSettingIPConfig *s_ip4;
++	NMSettingIPConfig *s_ip6;
++
++	connection = nm_simple_connection_new ();
++
++	/* Connection setting */
++	s_con = (NMSettingConnection *) nm_setting_connection_new ();
++	nm_connection_add_setting (connection, NM_SETTING (s_con));
++
++	g_object_set (s_con,
++	              NM_SETTING_CONNECTION_ID, "Test Write Wired Disabled IP6",
++	              NM_SETTING_CONNECTION_UUID, nm_utils_uuid_generate_a (),
++	              NM_SETTING_CONNECTION_AUTOCONNECT, TRUE,
++	              NM_SETTING_CONNECTION_TYPE, NM_SETTING_WIRED_SETTING_NAME,
++	              NULL);
++
++	s_wired = (NMSettingWired *) nm_setting_wired_new ();
++	nm_connection_add_setting (connection, NM_SETTING (s_wired));
++
++	s_ip4 = (NMSettingIPConfig *) nm_setting_ip4_config_new ();
++	nm_connection_add_setting (connection, NM_SETTING (s_ip4));
++	g_object_set (s_ip4,
++	              NM_SETTING_IP_CONFIG_METHOD, NM_SETTING_IP4_CONFIG_METHOD_AUTO,
++	              NULL);
++
++	s_ip6 = (NMSettingIPConfig *) nm_setting_ip6_config_new ();
++	nm_connection_add_setting (connection, NM_SETTING (s_ip6));
++	g_object_set (s_ip6,
++	              NM_SETTING_IP_CONFIG_METHOD, NM_SETTING_IP6_CONFIG_METHOD_DISABLED,
++	              NULL);
++
++	nmtst_assert_connection_verifies (connection);
++
++	_writer_new_connec_exp (connection,
++	                        TEST_SCRATCH_DIR_TMP,
++	                        TEST_IFCFG_DIR"/ifcfg-test-ip6-disabled.cexpected",
++	                        &testfile);
++
++	reread = _connection_from_file (testfile, NULL, TYPE_ETHERNET, NULL);
++	nm_connection_dump (connection);
++	nm_connection_dump (reread);
++	nmtst_assert_connection_equals (connection, TRUE, reread, FALSE);
++}
++
+ /* Test writing an IPv6 config with varying gateway address.
+  * For missing gateway (::), we expect no IPV6_DEFAULTGW to be written
+  * to ifcfg-rh.
+@@ -10177,6 +10229,7 @@ int main (int argc, char **argv)
+ 	g_test_add_data_func (TPATH "static-ip6-only-gw/::", "::", test_write_wired_static_ip6_only_gw);
+ 	g_test_add_data_func (TPATH "static-ip6-only-gw/2001:db8:8:4::2", "2001:db8:8:4::2", test_write_wired_static_ip6_only_gw);
+ 	g_test_add_data_func (TPATH "static-ip6-only-gw/::ffff:255.255.255.255", "::ffff:255.255.255.255", test_write_wired_static_ip6_only_gw);
++	g_test_add_func (TPATH "ip6/disabled", test_write_ip6_disabled);
+ 	g_test_add_func (TPATH "read-dns-options", test_read_dns_options);
+ 	g_test_add_func (TPATH "clear-master", test_clear_master);
+ 
+-- 
+2.21.GIT
+

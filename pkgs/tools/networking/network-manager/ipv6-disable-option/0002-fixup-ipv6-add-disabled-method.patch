@@ -1,0 +1,24 @@
+From 54fb389772915710b22bc2f4f579a911cc083186 Mon Sep 17 00:00:00 2001
+From: Beniamino Galvani <bgalvani@redhat.com>
+Date: Tue, 7 May 2019 18:37:39 +0200
+Subject: [PATCH 2/2] fixup! ipv6: add 'disabled' method
+
+---
+ Makefile.am | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Makefile.am b/Makefile.am
+index 993ee9781..0d3906f89 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -2910,6 +2910,7 @@ EXTRA_DIST += \
+ 	src/settings/plugins/ifcfg-rh/tests/network-scripts/ifcfg-test-fcoe-vn2vn \
+ 	src/settings/plugins/ifcfg-rh/tests/network-scripts/ifcfg-test-ibft \
+ 	src/settings/plugins/ifcfg-rh/tests/network-scripts/ifcfg-test-infiniband \
++	src/settings/plugins/ifcfg-rh/tests/network-scripts/ifcfg-test-ip6-disabled.cexpected \
+ 	src/settings/plugins/ifcfg-rh/tests/network-scripts/ifcfg-test-minimal \
+ 	src/settings/plugins/ifcfg-rh/tests/network-scripts/ifcfg-test-misc-variables \
+ 	src/settings/plugins/ifcfg-rh/tests/network-scripts/ifcfg-test-nm-controlled \
+-- 
+2.21.GIT
+
