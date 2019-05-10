@@ -36,6 +36,8 @@ stdenv.mkDerivation rec {
     substituteInPlace ./configure --replace /usr/bin/file ${file}/bin/file
   '';
 
+  configurePlatforms = [ "build" "host" ];
+
   configureFlags = [
     "--enable-fixed-path=${gnupg}/bin"
     "--with-libgpg-error-prefix=${libgpgerror.dev}"
