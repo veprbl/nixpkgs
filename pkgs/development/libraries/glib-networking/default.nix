@@ -17,11 +17,6 @@ stdenv.mkDerivation rec {
 
   PKG_CONFIG_GIO_2_0_GIOMODULEDIR = "${placeholder "out"}/lib/gio/modules";
 
-  patches = [
-    ./0001-Remove-workaround-for-old-GnuTLS-rehandshaking-bug.patch
-    ./0002-gnutls-Handle-new-GNUTLS_E_CERTIFICATE_REQUIRED.patch
-  ];
-
   postPatch = ''
     chmod +x meson_post_install.py # patchShebangs requires executable file
     patchShebangs meson_post_install.py
