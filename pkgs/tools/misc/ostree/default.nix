@@ -16,6 +16,7 @@ stdenv.mkDerivation rec {
 
   patches = [
     # Workarounds for https://github.com/ostreedev/ostree/issues/1592
+    # XXX: Looks like another test needs similar fixup, FIX BEFORE SENDING AS PR!
     ./fix-1592.patch
     # Disable test-gpg-verify-result.test,
     # https://github.com/ostreedev/ostree/issues/1634
