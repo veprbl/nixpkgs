@@ -52,12 +52,18 @@ argparse = buildLuarocksPackage {
 };
 basexx = buildLuarocksPackage {
   pname = "basexx";
-  version = "0.4.0-1";
+  version = "0.4.1-1";
+
+  knownRockspec = (fetchurl {
+    url    = https://luarocks.org/basexx-0.4.1-1.rockspec;
+    sha256 = "0kmydxm2wywl18cgj303apsx7hnfd68a9hx9yhq10fj7yfcxzv5f";
+  }).outPath;
 
   src = fetchurl {
-    url    = https://luarocks.org/basexx-0.4.0-1.src.rock;
-    sha256 = "1px8yrxg1qkk3kzdqj3siry742jdv4ysp2dmicxi15mkynqpjlzz";
+    url    = https://github.com/aiq/basexx/archive/v0.4.1.tar.gz;
+    sha256 = "1rnz6xixxqwy0q6y2hi14rfid4w47h69gfi0rnlq24fz8q2b0qpz";
   };
+
   disabled = ( luaOlder "5.1" );
   propagatedBuildInputs = [ lua ];
   buildType = "builtin";
@@ -613,16 +619,16 @@ std__debug = buildLuarocksPackage {
   version = "1.0.1-1";
 
   src = fetchurl {
-      url    = https://luarocks.org/std._debug-1.0.1-1.src.rock;
-      sha256 = "1qkcc5rph3ns9mzrfsa1671pb3hzbzfnaxvyw7zdly2b7ll88svz";
+    url    = https://luarocks.org/std._debug-1.0.1-1.src.rock;
+    sha256 = "1qkcc5rph3ns9mzrfsa1671pb3hzbzfnaxvyw7zdly2b7ll88svz";
   };
-  disabled = ( luaOlder "5.1") || ( luaAtLeast "5.5");
-  propagatedBuildInputs = [ lua ];  
+  disabled = ( luaOlder "5.1" ) || ( luaAtLeast "5.5" );
+  propagatedBuildInputs = [ lua ];
   buildType = "builtin";
 
   meta = {
     homepage = "http://lua-stdlib.github.io/_debug";
-    description="Debug Hints Library";
+    description = "Debug Hints Library";
     license = {
       fullName = "MIT/X11";
     };
@@ -633,16 +639,16 @@ std_normalize = buildLuarocksPackage {
   version = "2.0.2-1";
 
   src = fetchurl {
-      url    = https://luarocks.org/std.normalize-2.0.2-1.src.rock;
-      sha256 = "0yn60zqnxflhhlv6xk6w0ifdfxk1qcg8gq1wnrrbwsxwpipsrfjh";
+    url    = https://luarocks.org/std.normalize-2.0.2-1.src.rock;
+    sha256 = "0yn60zqnxflhhlv6xk6w0ifdfxk1qcg8gq1wnrrbwsxwpipsrfjh";
   };
-  disabled = ( luaOlder "5.1") || ( luaAtLeast "5.4");
-  propagatedBuildInputs = [ lua std__debug ];  
+  disabled = ( luaOlder "5.1" ) || ( luaAtLeast "5.4" );
+  propagatedBuildInputs = [ lua std__debug ];
   buildType = "builtin";
 
   meta = {
     homepage = "https://lua-stdlib.github.io/normalize";
-    description="Normalized Lua Functions";
+    description = "Normalized Lua Functions";
     license = {
       fullName = "MIT/X11";
     };
