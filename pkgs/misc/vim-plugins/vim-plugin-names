@@ -36,7 +36,6 @@ chrisbra/csv.vim
 chrisbra/Recover.vim
 chrisbra/unicode.vim
 chrisgeo/sparkup
-chrisbra/unicode.vim
 chriskempson/base16-vim
 christoomey/vim-sort-motion
 christoomey/vim-tmux-navigator
