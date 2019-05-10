@@ -291,7 +291,7 @@ latexindent = perlPackages.buildPerlPackage rec {
 
   outputs = [ "out" ];
 
-  propagatedBuildInputs = with perlPackages; [ FileHomeDir LogDispatch LogLog4perl UnicodeLineBreak YAMLTiny ];
+  buildInputs = [ (perlPackages.perl.withPackages (pp: with pp; [ FileHomeDir LogDispatch LogLog4perl UnicodeLineBreak YAMLTiny ])) ];
 
   postPatch = ''
     substituteInPlace scripts/latexindent/LatexIndent/GetYamlSettings.pm \
