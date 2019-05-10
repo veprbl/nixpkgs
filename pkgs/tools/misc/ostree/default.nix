@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
 
   patches = [
     # Workarounds for https://github.com/ostreedev/ostree/issues/1592
-    ./fix-1592.patch
+    # ./fix-1592.patch
     # Disable test-gpg-verify-result.test,
     # https://github.com/ostreedev/ostree/issues/1634
     ./disable-test-gpg-verify-result.patch
