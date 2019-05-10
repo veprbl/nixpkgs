@@ -2,12 +2,12 @@
 
 stdenv.mkDerivation rec {
   pname = "xlunch";
-  version = "4.4.1";
+  version = "4.4.2";
   src = fetchFromGitHub {
     owner = "Tomas-M";
     repo = pname;
     rev = "v${version}";
-    sha256 = "13snks42n1m442f9k96wv29dipvf8kiwnrkhirb6yljvz3vcbyza";
+    sha256 = "1frlmrlp6ff0ssv4ry9kqfzn49n424d83xgbkz62j014sxpqm7f2";
   };
 
   postPatch = ''
