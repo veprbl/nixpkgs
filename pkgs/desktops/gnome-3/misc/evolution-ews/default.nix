@@ -8,14 +8,14 @@
 
 let
   pname = "evolution-ews";
-  version = "3.32.1";
+  version = "3.32.2";
 in stdenv.mkDerivation rec {
   inherit pname version;
   name = "${pname}-${version}";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "1c44nagax1w0dg806mawi2hwl8ihqq5k5n35f2yd83h6hbbgcv0a";
+    sha256 = "10zx5v383iq66nrzmpvc7h8af1jxd26zjmcffsjk8y2a958q7s7z";
   };
 
   #propagatedUserEnvPkgs = [ gnome3.evolution-data-server gnome3.evolution ];
