@@ -44,6 +44,8 @@ stdenv.mkDerivation rec {
     patchShebangs .
   '';
 
+  doCheck = true;
+
   postInstall = ''
     cp -a test/* $out/bin/
     mkdir -p $out/share
