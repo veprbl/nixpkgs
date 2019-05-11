@@ -9,7 +9,7 @@ stdenv.mkDerivation rec {
     repo   = pname;
     #rev    = version;
     rev    = "d8de1a7247c42104f57f46b7760feb230c3a6de6";
-    sha256 = "0lb8bfjp6v9yixm89f20z5xrcwplkc9mfq07nyvivvbjkgppiqjc";
+    sha256 = "0c6v3kj1vsd5wk15b6l79nb7mkmb2kxy911p2p9fd9yb39lzlaim";
   };
 
   preBuild = ''
