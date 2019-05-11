@@ -17,6 +17,8 @@ stdenv.mkDerivation rec {
 
   doCheck = true;
 
+  patches = [ ./wexitstatus.patch ];
+
   # format security fixup
   postPatch = ''
     substituteInPlace test/test-Monitors.cpp \
@@ -31,5 +33,6 @@ stdenv.mkDerivation rec {
     homepage = https://github.com/alex-courtis/xlayoutdisplay;
     maintainers = with maintainers; [ dtzWill ];
     license = licenses.asl20;
+    platforms = platforms.linux;
   };
 }

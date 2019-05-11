@@ -11,8 +11,11 @@
 
 with stdenv.lib;
 
+# notmuch no longer supports gmime < 3.0, let's be sure nothing tries to do so
+assert (versionAtLeast gmime.version "3.0");
+
 stdenv.mkDerivation rec {
-  version = "0.28.3"; # not really, git
+  version = "0.28.4"; # not really, git
   name = "notmuch-${version}";
 
   passthru = {
@@ -24,8 +27,8 @@ stdenv.mkDerivation rec {
   src = fetchgit {
     inherit name;
     url = git://git.notmuchmail.org/git/notmuch;
-    rev = "325a92422737f16377307dbd584158d3ee8cdb51";
-    sha256 = "0ky1v3dqgjl6fphph6mhn0bd6j0x8dwv6fa6zg37cwl9rqfda2m6";
+    rev = "6682b4e686b7972883626c9b0f941ae4bf02dedb";
+    sha256 = "147gzqbhzwfbbij0xjig3l1miqg05bdvm2by2d109dhkgxw6zmd3";
   };
   #src = fetchurl {
   #  url = "https://notmuchmail.org/releases/${name}.tar.gz";
@@ -42,6 +45,8 @@ stdenv.mkDerivation rec {
     emacs  # (optional) to byte compile emacs code, also needed for tests
     ruby  # (optional) ruby bindings
   ];
+
+  patches = [ ./fix-fd-leak.patch ];
 
   postPatch = ''
     patchShebangs configure
@@ -61,8 +66,8 @@ stdenv.mkDerivation rec {
 
   configureFlags = [
     "--without-emacs"
-    "--without-docs"
-    "--without-api-docs"
+    #"--without-docs"
+    #"--without-api-docs"
     "--zshcompletiondir=${placeholder "out"}/share/zsh/site-functions"
   ];
 

@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, cmake, alsaLib, atk, cairo, cups, dbus, expat, fontconfig
+{ stdenv, fetchurl, cmake, alsaLib, atk, at-spi2-atk, at-spi2-core, cairo, cups, dbus, expat, fontconfig
 , GConf, gdk_pixbuf, glib, gtk2, libX11, libxcb, libXcomposite, libXcursor
 , libXdamage, libXext, libXfixes, libXi, libXrandr, libXrender, libXScrnSaver
 , libXtst, nspr, nss, pango, libpulseaudio, systemd }:
@@ -6,7 +6,7 @@
 let
   libPath =
     stdenv.lib.makeLibraryPath [
-      alsaLib atk cairo cups dbus expat fontconfig GConf gdk_pixbuf glib gtk2
+      alsaLib atk at-spi2-atk at-spi2-core cairo cups dbus expat fontconfig GConf gdk_pixbuf glib gtk2
       libX11 libxcb libXcomposite libXcursor libXdamage libXext libXfixes libXi
       libXrandr libXrender libXScrnSaver libXtst nspr nss pango libpulseaudio
       systemd
@@ -14,10 +14,15 @@ let
 in
 stdenv.mkDerivation rec {
   name = "cef-binary-${version}";
-  version = "3.3497.1833.g13f506f";
+  #version = "3.3683.1920.g9f41a27";
+  version = "74.1.13+g98f22d3+chromium-74.0.3729.108";
   src = fetchurl {
-    url = "http://opensource.spotify.com/cefbuilds/cef_binary_${version}_linux64.tar.bz2";
-    sha256 = "02v22yx1ga2yxagjblzkfw0ax7zkrdpc959l1a15m8nah3y7xf9p";
+    #url = "http://opensource.spotify.com/cefbuilds/cef_binary_${version}_linux64.tar.bz2";
+    # TODO: 's,+,%2B,'
+    name = "${name}.tar.bz2";
+    url = http://opensource.spotify.com/cefbuilds/cef_binary_74.1.13%2Bg98f22d3%2Bchromium-74.0.3729.108_linux64.tar.bz2;
+    #sha256 = "12iv798p6g17jqxx4fid4jgwkrpvlfkx4250lk8byhync53zbw0d";
+    sha256 = "0p0pwdk0iavc70m1wcs6g99skx4ynlndhpppbsw41ndjynw1id57";
   };
   nativeBuildInputs = [ cmake ];
   makeFlags = "libcef_dll_wrapper";

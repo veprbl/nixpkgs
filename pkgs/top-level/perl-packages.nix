@@ -6451,6 +6451,33 @@ let
     };
   };
 
+  GitRepository = buildPerlPackage rec {
+    name = "Git-Repository-1.323";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/B/BO/BOOK/${name}.tar.gz";
+      sha256 = "966575fcecc9f56ab8739ea451b3825e278bc9179d785a20a9ae52473f33683e";
+    };
+    buildInputs = [ TestRequiresGit ];
+    propagatedBuildInputs = [ GitVersionCompare SystemCommand namespaceclean ];
+    meta = {
+      description = "Perl interface to Git repositories";
+      license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
+  GitVersionCompare = buildPerlPackage rec {
+    name = "Git-Version-Compare-1.004";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/B/BO/BOOK/${name}.tar.gz";
+      sha256 = "63e8264ed351cb2371b47852a72366214164b5f3fad9dbd68309c7fc63d06491";
+    };
+    buildInputs = [ TestNoWarnings ];
+    meta = {
+      description = "Functions to compare Git versions";
+      license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
   Glib = buildPerlPackage rec {
     name = "Glib-1.329";
     src = fetchurl {
@@ -6688,6 +6715,7 @@ let
       sha256 = "1044rj3wbfmgaif2jb0k28m2aczli6ai2n5yvn6pr7zjyw16kvd2";
     };
     buildInputs = [ pkgs.gtk2 Cairo ExtUtilsDepends ExtUtilsPkgConfig Glib Pango ];
+    doCheck = !stdenv.isDarwin;
     meta = {
       homepage = http://gtk2-perl.sourceforge.net/;
       description = "Perl interface to the 2.x series of the Gimp Toolkit library";
@@ -6814,6 +6842,47 @@ let
       description = "Return difference between two hashes as a hash";
     };
     buildInputs = [ TestSimple13 ];
+  };
+
+  ham = buildPerlPackage rec {
+    name = "ham-unstable-${version}";
+    version = "2019-01-22";
+
+    src = fetchFromGitHub {
+      owner = "kernkonzept";
+      repo = "ham";
+      rev = "37c2e4e8b8bd779ba0f8c48a3c6ba34bad860b92";
+      sha256 = "0h5r5256niskypl4g1j2573wqi0nn0mai5p04zsa06xrgyjqcy2j";
+    };
+
+    outputs = [ "out" ];
+
+    buildInputs = [ pkgs.makeWrapper ];
+    propagatedBuildInputs = [ pkgs.openssh GitRepository URI XMLMini ];
+
+    preConfigure = ''
+      patchShebangs .
+      touch Makefile.PL
+      rm -f Makefile
+    '';
+
+    installPhase = ''
+      mkdir -p $out/lib $out/bin
+      cp -r . $out/lib/ham
+
+      makeWrapper $out/lib/ham/ham $out/bin/ham --argv0 ham \
+        --prefix PATH : ${pkgs.openssh}/bin
+    '';
+
+    doCheck = false;
+
+    meta = {
+      description = "A tool to manage big projects consisting of multiple loosely-coupled git repositories";
+      homepage = https://github.com/kernkonzept/ham;
+      license = "unknown"; # should be gpl2, but not quite sure
+      maintainers = with stdenv.lib.maintainers; [ aw ];
+      platforms = stdenv.lib.platforms.unix;
+    };
   };
 
   HashFlatten = buildPerlPackage rec {
@@ -7275,18 +7344,17 @@ let
     };
   };
 
-  HTTPDaemon = buildPerlModule {
-    name = "HTTP-Daemon-6.04";
+  HTTPDaemon = buildPerlPackage {
+    name = "HTTP-Daemon-6.01";
     src = fetchurl {
-      url = mirror://cpan/authors/id/O/OA/OALDERS/HTTP-Daemon-6.04.tar.gz;
-      sha256 = "12m8iasnmp2dh28jrgmi7z10a3gcyz85khyff2j5h7jqbs6ks1fz";
+      url = mirror://cpan/authors/id/G/GA/GAAS/HTTP-Daemon-6.01.tar.gz;
+      sha256 = "1hmd2isrkilf0q0nkxms1q64kikjmcw9imbvrjgky6kh89vqdza3";
     };
     propagatedBuildInputs = [ HTTPMessage ];
     meta = {
       description = "A simple http server class";
       license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
     };
-    buildInputs = [ ModuleBuildTiny TestNeeds ];
   };
 
   HTTPDate = buildPerlPackage {
@@ -8947,6 +9015,7 @@ let
     postPatch = stdenv.lib.optionalString (stdenv.buildPlatform != stdenv.hostPlatform) ''
       substituteInPlace Makefile.PL --replace 'if has_module' 'if 0; #'
     '';
+    doCheck = !stdenv.isDarwin;
     meta = with stdenv.lib; {
       description = "The World-Wide Web library for Perl";
       license = with licenses; [ artistic1 gpl1Plus ];
@@ -14481,13 +14550,26 @@ let
     };
   };
 
+  SystemCommand = buildPerlPackage rec {
+    name = "System-Command-1.119";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/B/BO/BOOK/${name}.tar.gz";
+      sha256 = "c8c9fb1e527c52463cab1476500efea70396a0b62bea625d2d6faea994dc46e7";
+    };
+    propagatedBuildInputs = [ IPCRun ];
+    meta = {
+      description = "Object for running system commands";
+      license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
   SysVirt = buildPerlModule rec {
-    version = "4.10.0";
+    version = "5.3.0";
     name = "Sys-Virt-${version}";
     src = assert version == pkgs.libvirt.version; pkgs.fetchgit {
       url = git://libvirt.org/libvirt-perl.git;
-      rev = "v${version}";
-      sha256 = "1dfwq4d46kx18lz27rb3jkxb0g1hirpq70vr4572sc38rybpq59v";
+      rev = "a1e85f96e3897f56e8686e9312c69de764f5a48c"; # there is no "v5.3.0" tag
+      sha256 = "1w80bhsdpcrk99cv355jyhl510a0nawnn9adffwj50a59ka77ihw";
     };
     nativeBuildInputs = [ pkgs.pkgconfig ];
     buildInputs = [ pkgs.libvirt CPANChanges TestPod TestPodCoverage XMLXPath ];
@@ -14499,6 +14581,7 @@ let
       url = "mirror://cpan/authors/id/D/DW/DWHEELER/${name}.tar.gz";
       sha256 = "1655337l1cyd7q62007wrk87q2gbbwfq9xjy1wgx3hyflxpkkvl4";
     };
+    doCheck = !stdenv.isDarwin;
     meta = {
       description = "Stream TAP from pgTAP test scripts";
       license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
@@ -14656,6 +14739,7 @@ let
       sha256 = "1msxg3j1hx5wsc7vr81x5gs9gdbn4y0x6cvyj3pq4dgi1603dbvi";
     };
     propagatedBuildInputs = [ AppConfig ];
+    doCheck = !stdenv.isDarwin;
     meta = {
       description = "Comprehensive template processing system";
       license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
@@ -15685,6 +15769,19 @@ let
     };
     meta = {
       description = "Checks to see if the module can be loaded";
+      license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
+  TestRequiresGit = buildPerlPackage rec {
+    name = "Test-Requires-Git-1.008";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/B/BO/BOOK/${name}.tar.gz";
+      sha256 = "70916210970d84d7491451159ab8b67e15251c8c0dae7c3df6c8d88542ea42a6";
+    };
+    propagatedBuildInputs = [ GitVersionCompare ];
+    meta = {
+      description = "Check your test requirements against the available version of Git";
       license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
     };
   };
@@ -17583,6 +17680,17 @@ let
     };
     buildInputs = [ pkgs.zlib pkgs.libxml2 pkgs.libxslt ];
     propagatedBuildInputs = [ XMLLibXML ];
+  };
+
+  XMLMini = buildPerlPackage rec {
+    name = "XML-Mini-1.38";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/P/PD/PDEEGAN/${name}.tar.gz";
+      sha256 = "af803d38036a3184e124a682e5466f1bc107f48a89ef35b0c7647e11a073fe2d";
+    };
+    meta = {
+      license = "unknown";
+    };
   };
 
   XMLNamespaceSupport = buildPerlPackage {

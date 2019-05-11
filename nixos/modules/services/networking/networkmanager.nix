@@ -492,7 +492,12 @@ in {
         mkdir -m 700 -p /etc/NetworkManager/system-connections
         mkdir -m 700 -p /etc/ipsec.d
         mkdir -m 755 -p ${stateDirs}
+        mkdir -m 700 -p /etc/NetworkManager/dispatcher.d/{no-wait.d,pre-down.d,pre-up.d}
       '';
+    };
+
+    systemd.services.NetworkManager-wait-online = {
+      wantedBy = [ "network-online.target" ];
     };
 
     systemd.services.nm-setup-hostsdirs = mkIf dynamicHostsEnabled {

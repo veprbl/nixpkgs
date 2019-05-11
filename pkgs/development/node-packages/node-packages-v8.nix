@@ -4,13 +4,13 @@
 
 let
   sources = {
-    "@types/node-8.10.46" = {
+    "@types/node-8.10.48" = {
       name = "_at_types_slash_node";
       packageName = "@types/node";
-      version = "8.10.46";
+      version = "8.10.48";
       src = fetchurl {
-        url = "https://registry.npmjs.org/@types/node/-/node-8.10.46.tgz";
-        sha512 = "PfnRbk836fFs9T9QnZh0G1k9oC6YXCqIK3LX6vU/6oiXtEBSFCiJFj6UnLZtqIIHTsgMn8Dojq3yhmpwY7QWcw==";
+        url = "https://registry.npmjs.org/@types/node/-/node-8.10.48.tgz";
+        sha512 = "c35YEBTkL4rzXY2ucpSKy+UYHjUBIIkuJbWYbsGIrKLEWU5dgJMmLkkIb3qeC3O3Tpb1ZQCwecscvJTDjDjkRw==";
       };
     };
     "JSV-4.0.2" = {
@@ -1741,13 +1741,13 @@ let
         sha1 = "1344e694f8d20ef9b29bcbfd1ca5eb4f7a287922";
       };
     };
-    "glob-7.1.3" = {
+    "glob-7.1.4" = {
       name = "glob";
       packageName = "glob";
-      version = "7.1.3";
+      version = "7.1.4";
       src = fetchurl {
-        url = "https://registry.npmjs.org/glob/-/glob-7.1.3.tgz";
-        sha512 = "vcfuiIxogLV4DlGBHIUOwI0IbrJ8HWPc4MU7HzviGeNho/UJDfi6B5p3sHeWIQ0KGIU0Jpxi5ZHxemQfLkkAwQ==";
+        url = "https://registry.npmjs.org/glob/-/glob-7.1.4.tgz";
+        sha512 = "hkLPepehmnKk41pUGm3sYxoFs/umurYfYJCerbXEyFIWcAzvpipAgVkBqqT9RBKMGjnq6kMuyYwha6csxbiM1A==";
       };
     };
     "global-modules-0.2.3" = {
@@ -2218,13 +2218,13 @@ let
         sha512 = "gmh/eWXROncUzRnIa1Ubrt5b8ep/MGSnfAUI3aRp+sqTCs1tv1Isl8d8F6JmkN3dXKc3ehZMrtiPN9eL03NuaQ==";
       };
     };
-    "is-my-json-valid-2.19.0" = {
+    "is-my-json-valid-2.20.0" = {
       name = "is-my-json-valid";
       packageName = "is-my-json-valid";
-      version = "2.19.0";
+      version = "2.20.0";
       src = fetchurl {
-        url = "https://registry.npmjs.org/is-my-json-valid/-/is-my-json-valid-2.19.0.tgz";
-        sha512 = "mG0f/unGX1HZ5ep4uhRaPOS8EkAY8/j6mDRMJrutq4CqhoJWYp7qAlonIPy3TV7p3ju4TK9fo/PbnoksWmsp5Q==";
+        url = "https://registry.npmjs.org/is-my-json-valid/-/is-my-json-valid-2.20.0.tgz";
+        sha512 = "XTHBZSIIxNsIsZXg7XB5l8z/OBFosl1Wao4tXLpeC7eKU4Vm/kdop2azkPqULwnfGQjmeDIyey9g7afMMtdWAA==";
       };
     };
     "is-number-3.0.0" = {
@@ -4270,13 +4270,13 @@ let
         sha512 = "yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==";
       };
     };
-    "v8flags-3.1.2" = {
+    "v8flags-3.1.3" = {
       name = "v8flags";
       packageName = "v8flags";
-      version = "3.1.2";
+      version = "3.1.3";
       src = fetchurl {
-        url = "https://registry.npmjs.org/v8flags/-/v8flags-3.1.2.tgz";
-        sha512 = "MtivA7GF24yMPte9Rp/BWGCYQNaUj86zeYxV/x2RRJMKagImbbv3u8iJC57lNhWLPcGLJmHcHmFWkNsplbbLWw==";
+        url = "https://registry.npmjs.org/v8flags/-/v8flags-3.1.3.tgz";
+        sha512 = "amh9CCg3ZxkzQ48Mhcb8iX7xpAfYJgePHxWMQCBWECpOSqJUXgY26ncA61UTV0BkPqfhcy6mzwCIoP4ygxpW8w==";
       };
     };
     "validator-5.2.0" = {
@@ -4632,7 +4632,7 @@ in
       sha512 = "MMiK5sFfIocNMWCc5PshUCAe6aY4P13/GCmSwudOziA/pFdQMHU8jhu+jU2SSWFug4K1ugeuCwtMXe43oL0PhQ==";
     };
     dependencies = [
-      sources."@types/node-8.10.46"
+      sources."@types/node-8.10.48"
       sources."JSV-4.0.2"
       sources."adal-node-0.1.28"
       sources."ajv-6.10.0"
@@ -4815,7 +4815,7 @@ in
         ];
       })
       sources."github-0.1.6"
-      sources."glob-7.1.3"
+      sources."glob-7.1.4"
       sources."har-schema-2.0.0"
       (sources."har-validator-2.0.6" // {
         dependencies = [
@@ -4835,7 +4835,7 @@ in
       sources."inherits-2.0.3"
       sources."is-buffer-1.1.6"
       sources."is-my-ip-valid-1.0.0"
-      sources."is-my-json-valid-2.19.0"
+      sources."is-my-json-valid-2.20.0"
       sources."is-property-1.0.2"
       sources."is-stream-1.1.0"
       sources."is-typedarray-1.0.0"
@@ -5318,7 +5318,7 @@ in
       })
       sources."urix-0.1.0"
       sources."use-3.1.1"
-      sources."v8flags-3.1.2"
+      sources."v8flags-3.1.3"
       sources."which-1.3.1"
     ];
     buildInputs = globalBuildInputs;
@@ -5373,7 +5373,7 @@ in
       sources."fs.realpath-1.0.0"
       sources."gauge-2.7.4"
       sources."getpass-0.1.7"
-      sources."glob-7.1.3"
+      sources."glob-7.1.4"
       sources."graceful-fs-4.1.15"
       sources."har-schema-2.0.0"
       sources."har-validator-5.1.3"
@@ -5454,15 +5454,15 @@ in
   node-gyp-build = nodeEnv.buildNodePackage {
     name = "node-gyp-build";
     packageName = "node-gyp-build";
-    version = "3.8.0";
+    version = "4.1.0";
     src = fetchurl {
-      url = "https://registry.npmjs.org/node-gyp-build/-/node-gyp-build-3.8.0.tgz";
-      sha512 = "bYbpIHyRqZ7sVWXxGpz8QIRug5JZc/hzZH4GbdT9HTZi6WmKCZ8GLvP8OZ9TTiIBvwPFKgtGrlWQSXDAvYdsPw==";
+      url = "https://registry.npmjs.org/node-gyp-build/-/node-gyp-build-4.1.0.tgz";
+      sha512 = "rGLv++nK20BG8gc0MzzcYe1Nl3p3mtwJ74Q2QD0HTEDKZ6NvOFSelY6s2QBPWIHRR8h7hpad0LiwajfClBJfNg==";
     };
     buildInputs = globalBuildInputs;
     meta = {
       description = "Build tool and bindings loader for node-gyp that supports prebuilds";
-      homepage = https://github.com/mafintosh/node-gyp-build;
+      homepage = https://github.com/prebuild/node-gyp-build;
       license = "MIT";
     };
     production = true;
@@ -5495,7 +5495,7 @@ in
       sources."fs-minipass-1.2.5"
       sources."fs.realpath-1.0.0"
       sources."gauge-2.7.4"
-      sources."glob-7.1.3"
+      sources."glob-7.1.4"
       sources."has-unicode-2.0.1"
       sources."iconv-lite-0.4.24"
       sources."ignore-walk-3.0.1"
@@ -5558,10 +5558,10 @@ in
   pnpm = nodeEnv.buildNodePackage {
     name = "pnpm";
     packageName = "pnpm";
-    version = "3.1.1";
+    version = "3.2.0";
     src = fetchurl {
-      url = "https://registry.npmjs.org/pnpm/-/pnpm-3.1.1.tgz";
-      sha512 = "MqSWfZXft1cQ6rFgpGpl8JIY3O8w8TnTplvjuCPMl4zRxAUAz0Gzr7ARYH6czoiTxBIbbhu41GfbsBfgMSGTwA==";
+      url = "https://registry.npmjs.org/pnpm/-/pnpm-3.2.0.tgz";
+      sha512 = "bujIqiZBgpusV0N/m+PNQ/FAUKc7ue9WqK+FqfN89on44iLEkERYGBWQEZt2a4OMWH4RHzme7muKOQY8ZegD3Q==";
     };
     buildInputs = globalBuildInputs;
     meta = {
@@ -5619,7 +5619,7 @@ in
       sources."fs-extra-7.0.1"
       sources."fs.realpath-1.0.0"
       sources."getpass-0.1.7"
-      sources."glob-7.1.3"
+      sources."glob-7.1.4"
       sources."graceful-fs-4.1.15"
       sources."har-schema-2.0.0"
       sources."har-validator-5.1.3"

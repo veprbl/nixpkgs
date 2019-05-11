@@ -24,10 +24,8 @@ stdenv.mkDerivation rec {
     mkdir -p $out/include
     mkdir -p $out/share/doc/${name}
 
-    sed -i "SuiteSparse_config/SuiteSparse_config.mk" \
-        -e 's/METIS .*$/METIS =/' \
-        -e 's/METIS_PATH .*$/METIS_PATH =/' \
-        -e '/CHOLMOD_CONFIG/ s/$/-DNPARTITION/'
+    # If we don't want metis, we can just remove it
+    rm -rf metis-*
   ''
   + stdenv.lib.optionalString stdenv.isDarwin ''
     sed -i "SuiteSparse_config/SuiteSparse_config.mk" \
@@ -58,7 +56,8 @@ stdenv.mkDerivation rec {
     make library        \
         BLAS=-lopenblas \
         LAPACK=""       \
-        ${stdenv.lib.optionalString openblas.blas64 "CFLAGS=-DBLAS64"}
+        ${stdenv.lib.optionalString openblas.blas64 "CFLAGS=-DBLAS64"} \
+        JOBS=$NIX_BUILD_CORES
 
     # Build libsuitesparse.so which bundles all the individual libraries.
     # Bundling is done by building the static libraries, extracting objects from
@@ -125,8 +124,12 @@ stdenv.mkDerivation rec {
     gnum4
   ] ++ stdenv.lib.optional stdenv.isDarwin fixDarwinDylibNames;
 
+  enableParallelBuilding = true;
+
   buildInputs = [ openblas gfortran.cc.lib ]
     ++ stdenv.lib.optional enableCuda cudatoolkit;
+
+  propagatedBuildInputs = [ openblas ];
 
   meta = with stdenv.lib; {
     homepage = http://faculty.cse.tamu.edu/davis/suitesparse.html;

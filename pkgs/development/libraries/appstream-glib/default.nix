@@ -2,6 +2,7 @@
 , gtk-doc, libarchive, gobject-introspection, libxslt, pngquant
 , sqlite, libsoup, attr, acl, docbook_xsl, docbook_xml_dtd_42
 , libuuid, json-glib, meson, gperf, ninja, gdk_pixbuf
+, libyaml, libstemmer
 }:
 stdenv.mkDerivation rec {
   name = "appstream-glib-0.7.15";
@@ -23,6 +24,7 @@ stdenv.mkDerivation rec {
     glib gettext sqlite libsoup
     attr acl libuuid json-glib
     libarchive gperf gdk_pixbuf
+    libyaml libstemmer
   ];
   propagatedBuildInputs = [ gtk3 ];
 
@@ -35,8 +37,8 @@ stdenv.mkDerivation rec {
 
   mesonFlags = [
     "-Drpm=false"
-    "-Dstemmer=false"
-    "-Ddep11=false"
+    "-Dstemmer=true"
+    "-Ddep11=true"
   ];
 
   doCheck = false; # fails at least 1 test

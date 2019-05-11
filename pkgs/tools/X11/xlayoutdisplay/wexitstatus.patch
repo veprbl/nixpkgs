@@ -1,0 +1,28 @@
+From 0a7b42b3808a2e717d5e25fcd5416fa78e8842c1 Mon Sep 17 00:00:00 2001
+From: Will Dietz <w@wdtz.org>
+Date: Sat, 27 Apr 2019 19:41:01 -0500
+Subject: [PATCH] main.cpp: fix darwin build, also check WIFEXITED first
+
+See manpages, don't use WEXITSTATUS unless WIFEXITED.
+---
+ main.cpp | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/main.cpp b/main.cpp
+index d5b4d49..08bbc42 100644
+--- a/main.cpp
++++ b/main.cpp
+@@ -91,7 +91,9 @@ int main(int argc, const char **argv) {
+         const Settings settings(vm);
+ 
+         // execute
+-        return WEXITSTATUS(layout(settings));
++        auto r = layout(settings);
++        if (!WIFEXITED(r)) return EXIT_FAILURE;
++        return WEXITSTATUS(r);
+     } catch (const exception &e) {
+         cerr << argv[0] << ": " << e.what() << ", exiting\n";
+         return EXIT_FAILURE;
+-- 
+2.21.GIT
+

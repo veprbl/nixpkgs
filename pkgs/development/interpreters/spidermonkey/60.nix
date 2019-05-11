@@ -1,25 +1,17 @@
 { stdenv, fetchurl, fetchpatch, autoconf213, pkgconfig, perl, python2, zip
 , which, readline, zlib, icu }:
 
-let
-  version = "60.4.0";
-in stdenv.mkDerivation rec {
-  name = "spidermonkey-${version}";
+stdenv.mkDerivation rec {
+  pname = "spidermonkey";
+  version = "60.6.2";
 
   src = fetchurl {
     url = "mirror://mozilla/firefox/releases/${version}esr/source/firefox-${version}esr.source.tar.xz";
-    sha256 = "11gzxd82grc3kg1ha4yni6ag6b97n46qycvv6x15s91ziia5hli0";
+    sha256 = "0fvxqxg48c0xrffb720gxfjayz3xqam2xnsz5piri64dcjvxgcyd";
   };
 
   buildInputs = [ readline zlib icu ];
   nativeBuildInputs = [ autoconf213 pkgconfig perl which python2 zip ];
-
-  patches = [
-    (fetchpatch {
-      url = https://bug1415202.bmoattachments.org/attachment.cgi?id=8926363;
-      sha256 = "082ryrvqa3lvs67v3sq9kf2jshf4qp1fpi195wffc40jdrl8fnin";
-    })
-  ];
 
   preConfigure = ''
     export CXXFLAGS="-fpermissive"

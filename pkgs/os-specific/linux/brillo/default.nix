@@ -1,18 +1,18 @@
 {stdenv, fetchFromGitLab , which, go-md2man, coreutils, substituteAll }:
 
 stdenv.mkDerivation rec {
-  version = "1.4.4";
+  version = "1.4.8";
   pname = "brillo";
   src = fetchFromGitLab {
     owner= "cameronnemo";
     repo= "brillo";
     rev= "v${version}";
-    sha256 = "0sadsqjxwvmq2jrvq8skvix3jg936k1qsv1x2hw8v9w6craghm99";
+    sha256 = "0wxvg541caiwm3bjwbmk7xcng7jd9xsiga2agxwp7gpkrlp74j9f";
   };
   makeFlags = [ "PREFIX=$(out)" "AADIR=$(out)/etc/apparmor.d"];
   nativeBuildInputs = [go-md2man which];
   buildFlags = [ "dist" ];
-  installTargets = "install-dist";
+  installTargets = [ "install-dist" "install.apparmor" ];
   patches = [
   (substituteAll {
     src = ./udev-rule.patch;

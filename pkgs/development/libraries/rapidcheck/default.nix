@@ -1,14 +1,14 @@
 { stdenv, cmake, fetchFromGitHub }:
 
 stdenv.mkDerivation rec{
-  name = "rapidcheck-${version}";
-  version = "unstable-2018-09-27";
+  pname = "rapidcheck";
+  version = "unstable-2018-12-13";
 
   src = fetchFromGitHub {
     owner = "emil-e";
-    repo  = "rapidcheck";
-    rev   = "de54478fa35c0d9cea14ec0c5c9dfae906da524c";
-    sha256 = "0n8l0mlq9xqmpkgcj5xicicd1my2cfwxg25zdy8347dqkl1ppgbs";
+    repo  = pname;
+    rev   = "3eb9b4ff69f4ff2d9932e8f852c2b2a61d7c20d3";
+    sha256 = "02qgdk8mlnlbipfrs310hbrqbgm3rdh2va1jz4w9m3is1g2pxs9y";
   };
 
   nativeBuildInputs = [ cmake ];

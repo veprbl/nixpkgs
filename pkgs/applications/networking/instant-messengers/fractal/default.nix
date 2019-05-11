@@ -3,15 +3,15 @@
 
 rustPlatform.buildRustPackage rec {
   version = "4.0.0"; # not really
-  name = "fractal-${version}";
+  pname = "fractal";
 
   src = fetchFromGitLab {
     domain = "gitlab.gnome.org";
     owner = "GNOME";
     repo = "fractal";
     #rev = version;
-    rev = "e1fbb54ca448aa6342fd2974e8361b6dde2aaa06";
-    sha256 = "1lq6ackjv7dzs40jxnylzrzk2kz8y6yr6j1nadw6jziwgl8iynzr";
+    rev = "e3714d13b45f135556da7db3931742ff75dc31bf";
+    sha256 = "0crvjvjcvwi26pw4mrqlngv64p722h2xb1lx4736vqinkmiphnp7";
   };
 
   nativeBuildInputs = [
@@ -24,6 +24,11 @@ rustPlatform.buildRustPackage rec {
 
   postPatch = ''
     patchShebangs scripts/meson_post_install.py
+
+    substituteInPlace scripts/test.sh --replace /usr/bin/sh '/usr/bin/env sh'
+    chmod +x scripts/test.sh
+    patchShebangs scripts/test.sh
+    substituteInPlace scripts/test.sh --replace 'cargo test -j 1' 'cargo test'
 
     substituteInPlace meson.build \
       --replace "name_suffix = '" "name_suffix = ' (git)" \

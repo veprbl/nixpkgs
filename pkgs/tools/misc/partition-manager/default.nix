@@ -1,30 +1,30 @@
 { mkDerivation, fetchurl, lib
 , extra-cmake-modules, kdoctools, wrapGAppsHook
-, kconfig, kcrash, kinit, kpmcore
-, eject, libatasmart , utillinux, makeWrapper, qtbase
+, kconfig, kcrash, kinit, kpmcore, kauth
+, eject, smartmontools, utillinux, qtbase
 }:
 
 let
   pname = "partitionmanager";
 in mkDerivation rec {
   name = "${pname}-${version}";
-  version = "3.3.1";
+  version = "4.0.0";
 
   src = fetchurl {
     url = "mirror://kde/stable/${pname}/${version}/src/${name}.tar.xz";
-    sha256 = "0jhggb4xksb0k0mj752n6pz0xmccnbzlp984xydqbz3hkigra1si";
+    sha256 = "1q8kqi05qv932spln8bh7n739ivq6pra2pgz67zl2dmdknpysrvr";
   };
 
   enableParallelBuilding = true;
 
-  nativeBuildInputs = [ extra-cmake-modules kdoctools wrapGAppsHook makeWrapper ];
+  nativeBuildInputs = [ extra-cmake-modules kdoctools wrapGAppsHook ];
 
   # refer to kpmcore for the use of eject
-  buildInputs = [ eject libatasmart utillinux ];
-  propagatedBuildInputs = [ kconfig kcrash kinit kpmcore ];
+  buildInputs = [ eject smartmontools utillinux ];
+  propagatedBuildInputs = [ kauth kconfig kcrash kinit kpmcore ];
 
   postInstall = ''
-    wrapProgram "$out/bin/partitionmanager" --prefix QT_PLUGIN_PATH : "${kpmcore}/lib/qt-5.${lib.versions.minor qtbase.version}/plugins"
+    gappsWrapperArgs+=(--prefix QT_PLUGIN_PATH : "${kpmcore}/${qtbase.qtPluginPrefix}")
   '';
 
   meta = with lib; {

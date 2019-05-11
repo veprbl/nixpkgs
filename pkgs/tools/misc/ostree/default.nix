@@ -5,17 +5,18 @@
 
 stdenv.mkDerivation rec {
   pname = "ostree";
-  version = "2019.1";
+  version = "2019.2";
 
   outputs = [ "out" "dev" "man" "installedTests" ];
 
   src = fetchurl {
     url = "https://github.com/ostreedev/ostree/releases/download/v${version}/libostree-${version}.tar.xz";
-    sha256 = "08y7nsxl305dnlfak4kyj88lld848y4kg6bvjqngcxaqqvkk9xqm";
+    sha256 = "0nbbrz3p4ms6vpl272q6fimqvizryw2a8mnfqcn69xf03sz5204y";
   };
 
   patches = [
     # Workarounds for https://github.com/ostreedev/ostree/issues/1592
+    # XXX: Looks like another test needs similar fixup, FIX BEFORE SENDING AS PR!
     ./fix-1592.patch
     # Disable test-gpg-verify-result.test,
     # https://github.com/ostreedev/ostree/issues/1634

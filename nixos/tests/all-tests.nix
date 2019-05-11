@@ -72,6 +72,7 @@ in
   #ec2-config = (handleTestOn ["x86_64-linux"] ./ec2.nix {}).boot-ec2-config or {};
   ec2-nixops = (handleTestOn ["x86_64-linux"] ./ec2.nix {}).boot-ec2-nixops or {};
   ecryptfs = handleTest ./ecryptfs.nix {};
+  ejabberd = handleTest ./ejabberd.nix {};
   elk = handleTestOn ["x86_64-linux"] ./elk.nix {};
   env = handleTest ./env.nix {};
   etcd = handleTestOn ["x86_64-linux"] ./etcd.nix {};
@@ -115,6 +116,7 @@ in
   installer = handleTest ./installer.nix {};
   ipv6 = handleTest ./ipv6.nix {};
   jackett = handleTest ./jackett.nix {};
+  jellyfin = handleTest ./jellyfin.nix {};
   jenkins = handleTest ./jenkins.nix {};
   kafka = handleTest ./kafka.nix {};
   kerberos = handleTest ./kerberos/default.nix {};
@@ -172,6 +174,7 @@ in
   nix-ssh-serve = handleTest ./nix-ssh-serve.nix {};
   novacomd = handleTestOn ["x86_64-linux"] ./novacomd.nix {};
   nsd = handleTest ./nsd.nix {};
+  nzbget = handleTest ./nzbget.nix {};
   openldap = handleTest ./openldap.nix {};
   opensmtpd = handleTest ./opensmtpd.nix {};
   openssh = handleTest ./openssh.nix {};
@@ -186,6 +189,7 @@ in
   pam-oath-login = handleTest ./pam-oath-login.nix {};
   pam-u2f = handleTest ./pam-u2f.nix {};
   pantheon = handleTest ./pantheon.nix {};
+  paperless = handleTest ./paperless.nix {};
   peerflix = handleTest ./peerflix.nix {};
   pgjwt = handleTest ./pgjwt.nix {};
   pgmanage = handleTest ./pgmanage.nix {};

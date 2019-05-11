@@ -189,6 +189,11 @@ in
   config = mkIf cfg.enable {
 
     assertions = [
+      { assertion = xcfg.enable;
+        message = ''
+          LightDM requires services.xserver.enable to be true
+        '';
+      }
       { assertion = cfg.autoLogin.enable -> cfg.autoLogin.user != null;
         message = ''
           LightDM auto-login requires services.xserver.displayManager.lightdm.autoLogin.user to be set
@@ -211,7 +216,7 @@ in
 
     # lightdm relaunches itself via just `lightdm`, so needs to be on the PATH
     services.xserver.displayManager.job.execCmd = ''
-      export PATH=${lightdm}/sbin:$PATH
+      export PATH=${lightdm}/sbin:${pkgs.plymouth}/bin:$PATH
       exec ${lightdm}/sbin/lightdm
     '';
 

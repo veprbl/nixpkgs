@@ -15,8 +15,8 @@
 , xlibs
 }:
 let
-  date  = "2019-03-12";
-  rev   = "v0.6-17-g271e784";
+  date  = "2019-04-30";
+  rev   = "v0.6-21-g24f244b";
   xdeps = with xlibs; [
     libXcomposite libXdamage libXrender libXext libXrandr libXinerama
   ];
@@ -29,7 +29,7 @@ stdenv.mkDerivation rec {
     inherit rev;
     owner  = "DelusionalLogic";
     repo   = name;
-    sha256 = "1mp338vz1jm5pwf7pi5azx4hzykmvpkwzx1kw6a9anj272f32zpg";
+    sha256 = "151bqkzz601padxscbdzz5ky07b8rz5rpw7l7xyj06j69fc22gwx";
   };
 
   buildInputs = xdeps ++ [

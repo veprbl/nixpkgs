@@ -29,6 +29,7 @@ buildPythonPackage rec {
   ];
 
   checkPhase = ''
+    rm -fr tests/__pycache__/
     py.test
   '';
 

@@ -1,46 +1,20 @@
-{ writeText, stdenv, fetchurl, ncurses }:
+{ stdenv, fetchFromGitHub, ncurses, autoreconfHook }:
 
 let
-  version = "0.6.1";
+  version = "0.6.2";
 in
 stdenv.mkDerivation rec {
   name = "bwm-ng-${version}";
 
-  src = fetchurl {
-    url = "https://www.gropp.org/bwm-ng/${name}.tar.gz";
-    sha256 = "1w0dwpjjm9pqi613i8glxrgca3rdyqyp3xydzagzr5ndc34z6z02";
+  src = fetchFromGitHub {
+    owner = "vgropp";
+    repo = "bwm-ng";
+    rev = "v${version}";
+    sha256 = "0k906wb4pw3dcqpcwnni78lahzi3bva483f8c17sjykic7as4y5n";
   };
 
+  nativeBuildInputs = [ autoreconfHook ];
   buildInputs = [ ncurses ];
-
-  # gcc7 has some issues with inline functions
-  patches = [
-    (writeText "gcc7.patch"
-    ''
-    --- a/src/bwm-ng.c
-    +++ b/src/bwm-ng.c
-    @@ -27,5 +27,5 @@
-     /* handle interrupt signal */
-     void sigint(int sig) FUNCATTR_NORETURN;
-    -inline void init(void);
-    +static inline void init(void);
-     
-     /* clear stuff and exit */
-    --- a/src/options.c
-    +++ b/src/options.c
-    @@ -35,5 +35,5 @@
-     inline int str2output_type(char *optarg);
-     #endif
-    -inline int str2out_method(char *optarg);
-    +static inline int str2out_method(char *optarg);
-     inline int str2in_method(char *optarg);
-
-    '')
-  ];
-
-
-  # This code uses inline in the gnu89 sense: see http://clang.llvm.org/compatibility.html#inline
-  NIX_CFLAGS_COMPILE = if stdenv.cc.isClang then "-std=gnu89" else null;
 
   meta = with stdenv.lib; {
     description = "A small and simple console-based live network and disk io bandwidth monitor";

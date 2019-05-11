@@ -83,7 +83,7 @@
  #include <sys/types.h>
  #include <sys/stat.h>
  #ifdef INET6
-@@ -35,10 +36,7 @@
+@@ -35,10 +36,6 @@
  #include <netdb.h>
  #include <string.h>
  
@@ -91,23 +91,9 @@
 -extern void exit();
 -extern int optind;
 -extern char *optarg;
-+int cidr_mask_addr(char *str);
  
  #ifndef INADDR_NONE
  #define INADDR_NONE     (-1)		/* XXX should be 0xffffffff */
---- a/clean_exit.c
-+++ b/clean_exit.c
-@@ -13,8 +13,8 @@
- #endif
- 
- #include <stdio.h>
--
--extern void exit();
-+#include <unistd.h>
-+#include <stdlib.h>
- 
- #include "tcpd.h"
- 
 --- a/hosts_access.c
 +++ b/hosts_access.c
 @@ -23,6 +23,7 @@
@@ -118,54 +104,16 @@
  #include <sys/types.h>
  #ifdef INT32_T
      typedef uint32_t u_int32_t;
-@@ -43,8 +44,8 @@
+@@ -43,8 +44,7 @@
  #include <netdb.h>
  #endif
  
 -extern char *fgets();
 -extern int errno;
 +static int match_pattern_ylo(const char *s, const char *pattern);
-+int cidr_mask_addr(char *str);
  
  #ifndef	INADDR_NONE
  #define	INADDR_NONE	(-1)		/* XXX should be 0xffffffff */
---- a/inetcf.c
-+++ b/inetcf.c
-@@ -9,15 +9,14 @@
- static char sccsid[] = "@(#) inetcf.c 1.7 97/02/12 02:13:23";
- #endif
- 
-+#include <stdlib.h>
- #include <sys/types.h>
- #include <sys/stat.h>
- #include <stdio.h>
- #include <errno.h>
- #include <string.h>
- 
--extern int errno;
--extern void exit();
--
-+#include "scaffold.h"
- #include "tcpd.h"
- #include "inetcf.h"
- 
---- a/percent_x.c
-+++ b/percent_x.c
-@@ -16,12 +16,12 @@
- 
- /* System libraries. */
- 
-+#include <unistd.h>
-+#include <stdlib.h>
- #include <stdio.h>
- #include <syslog.h>
- #include <string.h>
- 
--extern void exit();
--
- /* Local stuff. */
- 
- #include "tcpd.h"
 --- a/rfc931.c
 +++ b/rfc931.c
 @@ -15,6 +15,7 @@
@@ -241,55 +189,3 @@
  #ifndef	INADDR_NONE
  #define	INADDR_NONE	(-1)		/* XXX should be 0xffffffff */
  #endif
---- a/fix_options.c
-+++ b/fix_options.c
-@@ -32,6 +32,7 @@
- 
- /* fix_options - get rid of IP-level socket options */
- 
-+void
- fix_options(request)
- struct request_info *request;
- {
-@@ -38,11 +38,8 @@
- #ifdef IP_OPTIONS
-     unsigned char optbuf[BUFFER_SIZE / 3], *cp;
-     char    lbuf[BUFFER_SIZE], *lp;
--#ifdef __GLIBC__
--    size_t  optsize = sizeof(optbuf), ipproto;
--#else
--    int     optsize = sizeof(optbuf), ipproto;
--#endif
-+    socklen_t optsize = sizeof(optbuf);
-+    int ipproto;
-     struct protoent *ip;
-     int     fd = request->fd;
-     unsigned int opt;
---- a/socket.c
-+++ b/socket.c
-@@ -95,11 +95,7 @@
-     static struct sockaddr_in client;
-     static struct sockaddr_in server;
- #endif
--#ifdef __GLIBC__
--    size_t  len;
--#else
--    int     len;
--#endif
-+    socklen_t len;
-     char    buf[BUFSIZ];
-     int     fd = request->fd;
- 
-@@ -430,11 +426,7 @@
- #else
-     struct sockaddr_in sin;
- #endif
--#ifdef __GLIBC__
--    size_t  size = sizeof(sin);
--#else
--    int     size = sizeof(sin);
--#endif
-+    socklen_t size;
- 
-     /*
-      * Eat up the not-yet received datagram. Some systems insist on a

@@ -4,11 +4,12 @@
 , isIceCatLike ? false, icversion ? null
 , isTorBrowserLike ? false, tbversion ? null }:
 
-{ lib, stdenv, pkgconfig, pango, perl, python2, zip, libIDL
+{ lib, stdenv, pkgconfig, perl, python2, zip, libIDL
+, cairo, pango, graphite2, harfbuzz
 , libjpeg, zlib, dbus, dbus-glib, bzip2, xorg
 , freetype, fontconfig, file, nspr, nss, libnotify
 , yasm, libGLU_combined, sqlite, unzip, makeWrapper
-, hunspell, libXdamage, libevent, libstartup_notification, libvpx
+, hunspell, libXdamage, libevent, libstartup_notification, libwebp
 , icu, libpng, jemalloc, glib
 , autoconf213, which, gnused, cargo, rustc, llvmPackages
 , rust-cbindgen, nodejs, nasm, fetchpatch
@@ -43,6 +44,7 @@
 
 , safeBrowsingSupport ? false
 , drmSupport ? false
+, goldLinker ? true
 
 # macOS dependencies
 , xcbuild, CoreMedia, ExceptionHandling, Kerberos, AVFoundation, MediaToolbox
@@ -94,6 +96,7 @@ let
 
   browserPatches = [
     ./env_var_for_system_dir.patch
+    ./firefox-66.0.2-system_graphite2_harfbuzz-1.patch
   ] ++ lib.optionals (stdenv.isAarch64 && lib.versionAtLeast ffversion "66") [
     (fetchpatch {
       url = "https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/09c7fa0dc1d87922e3b464c0fa084df1227fca79/extra/firefox/arm.patch";
@@ -122,13 +125,16 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     gtk2 perl zip libIDL libjpeg zlib bzip2
-    dbus dbus-glib pango freetype fontconfig xorg.libXi xorg.libXcursor
+    dbus dbus-glib /* cairo */ pango
+    freetype fontconfig graphite2 harfbuzz
+    xorg.libXi xorg.libXcursor
     xorg.libX11 xorg.libXrender xorg.libXft xorg.libXt file
     libnotify xorg.pixman yasm libGLU_combined
     xorg.libXScrnSaver xorg.xorgproto
-    xorg.libXext sqlite unzip makeWrapper
-    libevent libstartup_notification libvpx /* cairo */
+    xorg.libXext sqlite
+    libevent libstartup_notification libwebp
     icu libpng jemalloc glib
+    llvmPackages.llvm
   ]
   ++ lib.optionals (!isTorBrowserLike) [ nspr nss ]
   ++ lib.optional (lib.versionOlder ffversion "53") libXdamage
@@ -153,23 +159,22 @@ stdenv.mkDerivation rec {
   ]
   ++ lib.optionals (!isTorBrowserLike) [
     "-I${nss.dev}/include/nss"
-  ]
-  ++ lib.optional stdenv.isDarwin [
-    "-isystem ${llvmPackages.libcxx}/include/c++/v1"
-    "-DMAC_OS_X_VERSION_MAX_ALLOWED=MAC_OS_X_VERSION_10_10"
   ];
 
-  postPatch = lib.optionalString stdenv.isDarwin ''
-    substituteInPlace js/src/jsmath.cpp --replace 'defined(HAVE___SINCOS)' 0
-  '' + lib.optionalString (lib.versionAtLeast ffversion "63.0" && !isTorBrowserLike) ''
+  postPatch = lib.optionalString (lib.versionAtLeast ffversion "63.0" && !isTorBrowserLike) ''
     substituteInPlace third_party/prio/prio/rand.c --replace 'nspr/prinit.h' 'prinit.h'
   '';
 
   nativeBuildInputs =
-    [ autoconf213 which gnused pkgconfig perl python2 cargo rustc ]
+    [ autoconf213 which gnused pkgconfig perl python2 cargo rustc
+      unzip zip makeWrapper file yasm
+      # nspr-config :(
+      nspr nss
+    ]
     ++ lib.optional gtk3Support wrapGAppsHook
     ++ lib.optionals stdenv.isDarwin [ xcbuild rsync ]
     ++ lib.optionals (lib.versionAtLeast ffversion "63.0") [ rust-cbindgen nodejs ]
+    ++ lib.optional (lib.versionAtLeast ffversion "66") nasm
     ++ extraNativeBuildInputs;
 
   preConfigure = ''
@@ -227,9 +232,10 @@ stdenv.mkDerivation rec {
     "--with-system-zlib"
     "--with-system-bz2"
     "--with-system-libevent"
-    "--with-system-libvpx"
     "--with-system-png" # needs APNG support
     "--with-system-icu"
+    "--with-system-graphite2"
+    "--with-system-harfbuzz"
     "--enable-system-ffi"
     "--enable-system-pixman"
     "--enable-system-sqlite"
@@ -242,6 +248,7 @@ stdenv.mkDerivation rec {
     "--enable-jemalloc"
     "--disable-gconf"
     "--enable-default-toolkit=${default-toolkit}"
+    "--without-stdcxx-compat"
   ]
   ++ lib.optional (lib.versionOlder ffversion "64") "--disable-maintenance-service"
   ++ lib.optional (stdenv.isDarwin && lib.versionAtLeast ffversion "61") "--disable-xcode-checks"
@@ -276,6 +283,7 @@ stdenv.mkDerivation rec {
   ++ flag webrtcSupport "webrtc"
   ++ flag crashreporterSupport "crashreporter"
   ++ lib.optional drmSupport "--enable-eme=widevine"
+  ++ lib.optional goldLinker "--enable-linker=gold"
 
   ++ lib.optionals (lib.versionOlder ffversion "60") ([]
     ++ flag geolocationSupport "mozril-geoloc"
@@ -337,6 +345,8 @@ stdenv.mkDerivation rec {
     # Some basic testing
     "$out${execdir}/${browserName}" --version
   '';
+
+  # strictDeps = true;
 
   passthru = {
     inherit version updateScript;

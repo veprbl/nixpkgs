@@ -3,24 +3,19 @@
 
 let
   pname = "glib-networking";
-  version = "2.60.1";
+  version = "2.60.2";
 in
 stdenv.mkDerivation rec {
   name = "${pname}-${version}";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "14jx8ca7plgh196629ghj41gsaha0aza222g64093hjsm8pnn76p";
+    sha256 = "0cl74q7hvq4xqqc88vlzmfw1sh5n9hdh1yvn2v1vg9am1z8z68n0";
   };
 
   outputs = [ "out" "dev" ]; # to deal with propagatedBuildInputs
 
   PKG_CONFIG_GIO_2_0_GIOMODULEDIR = "${placeholder "out"}/lib/gio/modules";
-
-  patches = [
-    ./0001-Remove-workaround-for-old-GnuTLS-rehandshaking-bug.patch
-    ./0002-gnutls-Handle-new-GNUTLS_E_CERTIFICATE_REQUIRED.patch
-  ];
 
   postPatch = ''
     chmod +x meson_post_install.py # patchShebangs requires executable file

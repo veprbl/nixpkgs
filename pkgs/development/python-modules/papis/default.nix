@@ -5,6 +5,7 @@
 , prompt_toolkit, pygments, stevedore, tqdm
 #, optional, dependencies
 , jinja2, whoosh, pytest
+, stdenv
 }:
 
 buildPythonPackage rec {
@@ -29,6 +30,8 @@ buildPythonPackage rec {
     jinja2 whoosh
   ];
 
+  doCheck = !stdenv.isDarwin;
+
   checkInputs = ([
     pytest
   ]) ++ [
@@ -46,6 +49,10 @@ buildPythonPackage rec {
         # dns resolution failures
         "test_downloader_getter"
         "test_validate_doi"
+        # test_export_yaml and test_citations check for the exact output produced by pyyaml 3.x and
+        # fail with 5.x
+        "test_export_yaml"
+        "test_citations"
       ]}"
   '';
 

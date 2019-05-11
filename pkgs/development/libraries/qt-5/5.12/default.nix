@@ -20,7 +20,7 @@ top-level attribute to `top-level/all-packages.nix`.
   stdenv, fetchurl, fetchFromGitHub, makeSetupHook,
   bison, cups ? null, harfbuzz, libGL, perl,
   gstreamer, gst-plugins-base, gtk3, dconf,
-  cf-private,
+  cf-private, llvmPackages_5,
 
   # options
   developerBuild ? false,
@@ -51,18 +51,13 @@ let
   patches = {
     qtbase = [
       ./qtbase.patch
-      ./qtbase-darwin.patch
-      ./qtbase-revert-no-macos10.10.patch
       ./qtbase-fixguicmake.patch
-    ] ++ optionals stdenv.isDarwin [
-      ./qtbase-darwin-nseventtype.patch
     ];
     qtdeclarative = [ ./qtdeclarative.patch ];
     qtscript = [ ./qtscript.patch ];
     qtserialport = [ ./qtserialport.patch ];
     qtwebengine = [
       ./qtwebengine-no-build-skip.patch
-      ./qtwebengine-CVE-2019-5786.patch
     ]
       ++ optional stdenv.isDarwin ./qtwebengine-darwin-no-platform-check.patch;
     qtwebkit = [ ./qtwebkit.patch ]
@@ -73,8 +68,10 @@ let
   };
 
   mkDerivation =
-    import ../mkDerivation.nix
-    { inherit stdenv; inherit (stdenv) lib; }
+    import ../mkDerivation.nix {
+      inherit (stdenv) lib;
+      stdenv = if stdenv.cc.isClang then llvmPackages_5.stdenv else stdenv;
+    }
     { inherit debug; };
 
   qtModule =

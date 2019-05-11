@@ -30,11 +30,11 @@ in
 
 stdenv.mkDerivation rec {
   name = "go-${version}";
-  version = "1.11.6";
+  version = "1.11.10";
 
   src = fetchurl {
     url = "https://dl.google.com/go/go${version}.src.tar.gz";
-    sha256 = "0cz1sdhxf9283p1p4jxb020pym0ncd0qlfh36r3hkv6bbm1a2vd9";
+    sha256 = "06rw962xigbrxblp942jbh7k133blpxg2xfrxi32qdhxkmmfj9yz";
   };
 
   # perl is used for testing go vet
@@ -136,11 +136,6 @@ stdenv.mkDerivation rec {
     ./skip-test-extra-files-on-386.patch
   ];
 
-  postPatch = optionalString stdenv.isDarwin ''
-    echo "substitute hardcoded dsymutil with ${llvm}/bin/llvm-dsymutil"
-    substituteInPlace "src/cmd/link/internal/ld/lib.go" --replace dsymutil ${llvm}/bin/llvm-dsymutil
-  '';
-
   GOOS = stdenv.targetPlatform.parsed.kernel.name;
   GOARCH = goarch stdenv.targetPlatform;
   # GOHOSTOS/GOHOSTARCH must match the building system, not the host system.
@@ -188,7 +183,7 @@ stdenv.mkDerivation rec {
     (cd src && ./make.bash)
   '';
 
-  doCheck = stdenv.hostPlatform == stdenv.targetPlatform;
+  doCheck = stdenv.hostPlatform == stdenv.targetPlatform && !stdenv.isDarwin;
 
   checkPhase = ''
     runHook preCheck

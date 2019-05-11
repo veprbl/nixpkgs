@@ -67,7 +67,7 @@ let
 in
 
 let
-  version = "19.0.2";
+  version = "19.0.4";
   branch  = head (splitString "." version);
 in
 
@@ -82,7 +82,7 @@ let self = stdenv.mkDerivation rec {
       "ftp://ftp.freedesktop.org/pub/mesa/older-versions/${branch}.x/${version}/mesa-${version}.tar.xz"
       "https://mesa.freedesktop.org/archive/mesa-${version}.tar.xz"
     ];
-    sha256 = "00mq5m2w28m9jmrq5faw3zgh6ndlillm2s0yr5vac1k9wlydqbhs";
+    sha256 = "0iyffj3xd7f0vsayirswh6aia37ba26hkihpz273hxwd8hpz7y9r";
   };
 
   prePatch = "patchShebangs .";
@@ -94,25 +94,7 @@ let self = stdenv.mkDerivation rec {
     ./missing-includes.patch # dev_t needs sys/stat.h, time_t needs time.h, etc.-- fixes build w/musl
     ./opencl-install-dir.patch
     ./disk_cache-include-dri-driver-path-in-cache-key.patch
-  ] ++ lib.optional stdenv.isDarwin ./darwin-clock-gettime.patch
-    # do not prefix user provided dri-drivers-path
-    ++ lib.optional (lib.versionOlder version "19.0.0") (fetchpatch {
-      url = "https://gitlab.freedesktop.org/mesa/mesa/commit/f6556ec7d126b31da37c08d7cb657250505e01a0.patch";
-      sha256 = "0z6phi8hbrbb32kkp1js7ggzviq7faz1ria36wi4jbc4in2392d9";
-    })
-    ++ lib.optionals (lib.versionOlder version "19.0.1") [
-      # do not prefix user provided d3d-drivers-path
-      (fetchpatch {
-        url = "https://gitlab.freedesktop.org/mesa/mesa/commit/dcc48664197c7e44684ccfb970a4ae083974d145.patch";
-        sha256 = "1nhs0xpx3hiy8zfb5gx1zd7j7xha6h0hr7yingm93130a5902lkb";
-      })
-
-      # don't build libGLES*.so with GLVND
-      (fetchpatch {
-        url = "https://gitlab.freedesktop.org/mesa/mesa/commit/b01524fff05eef66e8cd24f1c5aacefed4209f03.patch";
-        sha256 = "1pszr6acx2xw469zq89n156p3bf3xf84qpbjw5fr1sj642lbyh7c";
-      })
-    ];
+  ];
 
   outputs = [ "out" "dev" "drivers" ]
             ++ lib.optional (elem "swrast" galliumDrivers) "osmesa";

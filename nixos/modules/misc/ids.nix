@@ -266,7 +266,7 @@
       caddy = 239;
       taskd = 240;
       factorio = 241;
-      emby = 242;
+      # emby = 242; # unusued, removed 2019-05-01
       graylog = 243;
       sniproxy = 244;
       nzbget = 245;
@@ -339,7 +339,8 @@
       rss2email = 312;
       cockroachdb = 313;
       zoneminder = 314;
-      flatpak = 315;
+      paperless = 315;
+      flatpak = 316;
 
       # When adding a uid, make sure it doesn't match an existing gid. And don't use uids above 399!
 
@@ -568,7 +569,7 @@
       caddy = 239;
       taskd = 240;
       factorio = 241;
-      emby = 242;
+      # emby = 242; # unused, removed 2019-05-01
       sniproxy = 244;
       nzbget = 245;
       mosquitto = 246;
@@ -639,7 +640,8 @@
       rss2email = 312;
       cockroachdb = 313;
       zoneminder = 314;
-      flatpak = 315;
+      paperless = 315;
+      flatpak = 316;
 
       # When adding a gid, make sure it doesn't match an existing
       # uid. Users and groups with the same name should have equal

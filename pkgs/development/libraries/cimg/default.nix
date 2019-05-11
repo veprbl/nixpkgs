@@ -3,11 +3,11 @@
 stdenv.mkDerivation rec {
 
   name = "cimg-${version}";
-  version = "2.5.6";
+  version = "2.6.1";
 
   src = fetchurl {
     url = "http://cimg.eu/files/CImg_${version}.zip";
-    sha256 = "02n3xjjs68xszvyk2830i03clbqlngnic0cw1rk6xca7gsvad3ij";
+    sha256 = "1zp3g85pz5ripn7dk4fc0qq36adkmqq9kciz10czibb2w4b6c7d1";
   };
 
   nativeBuildInputs = [ unzip ];

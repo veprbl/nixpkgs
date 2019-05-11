@@ -52,12 +52,18 @@ argparse = buildLuarocksPackage {
 };
 basexx = buildLuarocksPackage {
   pname = "basexx";
-  version = "0.4.0-1";
+  version = "0.4.1-1";
+
+  knownRockspec = (fetchurl {
+    url    = https://luarocks.org/basexx-0.4.1-1.rockspec;
+    sha256 = "0kmydxm2wywl18cgj303apsx7hnfd68a9hx9yhq10fj7yfcxzv5f";
+  }).outPath;
 
   src = fetchurl {
-    url    = https://luarocks.org/basexx-0.4.0-1.src.rock;
-    sha256 = "1px8yrxg1qkk3kzdqj3siry742jdv4ysp2dmicxi15mkynqpjlzz";
+    url    = https://github.com/aiq/basexx/archive/v0.4.1.tar.gz;
+    sha256 = "1rnz6xixxqwy0q6y2hi14rfid4w47h69gfi0rnlq24fz8q2b0qpz";
   };
+
   disabled = ( luaOlder "5.1" );
   propagatedBuildInputs = [ lua ];
   buildType = "builtin";
@@ -344,6 +350,26 @@ lua-iconv = buildLuarocksPackage {
     };
   };
 };
+lua-messagepack = buildLuarocksPackage {
+  pname = "lua-messagepack";
+  version = "0.5.1-2";
+
+  src = fetchurl {
+    url    = https://luarocks.org/lua-messagepack-0.5.1-2.src.rock;
+    sha256 = "0bsdzdd24p9z3j4z1avw7qaqx87baa1pm58v275pw4h6n72z492g";
+  };
+  disabled = ( luaOlder "5.1" );
+  propagatedBuildInputs = [ lua ];
+  buildType = "builtin";
+
+  meta = {
+    homepage = "http://fperrad.frama.io/lua-MessagePack/";
+    description = "a pure Lua implementation of the MessagePack serialization format";
+    license = {
+      fullName = "MIT/X11";
+    };
+  };
+};
 lua-term = buildLuarocksPackage {
   pname = "lua-term";
   version = "0.7-1";
@@ -365,6 +391,26 @@ lua-term = buildLuarocksPackage {
     description = "Terminal functions for Lua";
     license = {
       fullName = "MIT/X11";
+    };
+  };
+};
+lua-toml = buildLuarocksPackage {
+  pname = "lua-toml";
+  version = "2.0-1";
+
+  src = fetchurl {
+    url    = https://luarocks.org/lua-toml-2.0-1.src.rock;
+    sha256 = "0lyqlnydqbplq82brw9ipqy9gijin6hj1wc46plz994pg4i2c74m";
+  };
+  disabled = ( luaOlder "5.1" );
+  propagatedBuildInputs = [ lua ];
+  buildType = "builtin";
+
+  meta = {
+    homepage = "https://github.com/jonstoler/lua-toml";
+    description = "toml decoder/encoder for Lua";
+    license = {
+      fullName = "MIT";
     };
   };
 };
@@ -522,6 +568,26 @@ penlight = buildLuarocksPackage {
     };
   };
 };
+rapidjson = buildLuarocksPackage {
+  pname = "rapidjson";
+  version = "0.5.1-1";
+
+  src = fetchurl {
+    url    = https://luarocks.org/rapidjson-0.5.1-1.src.rock;
+    sha256 = "0hnqsixnbz95cvm9q5dn0lr0qjvhqw4llw6l1sjswwk0am4yybay";
+  };
+  disabled = ( luaOlder "5.1" );
+  propagatedBuildInputs = [ lua ];
+  buildType = "cmake";
+
+  meta = {
+    homepage = "https://github.com/xpol/lua-rapidjson";
+    description = "Json module based on the very fast RapidJSON.";
+    license = {
+      fullName = "MIT";
+    };
+  };
+};
 say = buildLuarocksPackage {
   pname = "say";
   version = "1.3-1";
@@ -548,13 +614,53 @@ say = buildLuarocksPackage {
     };
   };
 };
-luv = buildLuarocksPackage {
-  pname = "luv";
-  version = "1.27.0-0";
+std__debug = buildLuarocksPackage {
+  pname = "std._debug";
+  version = "1.0.1-1";
 
   src = fetchurl {
-    url    = https://luarocks.org/luv-1.27.0-0.src.rock;
-    sha256 = "16csnnypi2m71ncr8qwc9drqbrb40l5li1nk7zpsxnslg5fiax6x";
+    url    = https://luarocks.org/std._debug-1.0.1-1.src.rock;
+    sha256 = "1qkcc5rph3ns9mzrfsa1671pb3hzbzfnaxvyw7zdly2b7ll88svz";
+  };
+  disabled = ( luaOlder "5.1" ) || ( luaAtLeast "5.5" );
+  propagatedBuildInputs = [ lua ];
+  buildType = "builtin";
+
+  meta = {
+    homepage = "http://lua-stdlib.github.io/_debug";
+    description = "Debug Hints Library";
+    license = {
+      fullName = "MIT/X11";
+    };
+  };
+};
+std_normalize = buildLuarocksPackage {
+  pname = "std.normalize";
+  version = "2.0.2-1";
+
+  src = fetchurl {
+    url    = https://luarocks.org/std.normalize-2.0.2-1.src.rock;
+    sha256 = "0yn60zqnxflhhlv6xk6w0ifdfxk1qcg8gq1wnrrbwsxwpipsrfjh";
+  };
+  disabled = ( luaOlder "5.1" ) || ( luaAtLeast "5.4" );
+  propagatedBuildInputs = [ lua std__debug ];
+  buildType = "builtin";
+
+  meta = {
+    homepage = "https://lua-stdlib.github.io/normalize";
+    description = "Normalized Lua Functions";
+    license = {
+      fullName = "MIT/X11";
+    };
+  };
+};
+luv = buildLuarocksPackage {
+  pname = "luv";
+  version = "1.28.0-1";
+
+  src = fetchurl {
+    url    = https://luarocks.org/luv-1.28.0-1.src.rock;
+    sha256 = "15m946p982bk4apig7yf07jm25ck26v2qxcvnrfh60vrbaw6gihw";
   };
   disabled = ( luaOlder "5.1" );
   propagatedBuildInputs = [ lua ];

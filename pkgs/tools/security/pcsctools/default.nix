@@ -1,5 +1,5 @@
 { stdenv, lib, fetchurl, makeWrapper, pkgconfig, udev, dbus, pcsclite
-, wget, coreutils, perlPackages
+, wget, coreutils, perlPackages, gtk3, gobject-introspection, wrapGAppsHook
 }:
 
 let deps = lib.makeBinPath [ wget coreutils ];
@@ -12,15 +12,17 @@ in stdenv.mkDerivation rec {
     sha256 = "14vw6ya8gzyw3lzyrsvfcxx7qm7ry39fbxcdqqh552c1lyxnm7n3";
   };
 
-  buildInputs = [ udev dbus perlPackages.perl pcsclite ];
+  buildInputs = [ udev dbus perlPackages.perl pcsclite gtk3 ];
 
-  nativeBuildInputs = [ makeWrapper pkgconfig ];
+  nativeBuildInputs = [ makeWrapper pkgconfig wrapGAppsHook gobject-introspection ];
+
+  #dontWrapGApps = true;
 
   postInstall = ''
     wrapProgram $out/bin/scriptor \
       --set PERL5LIB "${with perlPackages; makePerlPath [ pcscperl ]}"
     wrapProgram $out/bin/gscriptor \
-      --set PERL5LIB "${with perlPackages; makePerlPath [ pcscperl Glib Gtk2 Pango Cairo ]}"
+      --set PERL5LIB "${with perlPackages; makePerlPath [ pcscperl Glib Gtk3 Pango Cairo CairoGObject GlibObjectIntrospection ]}"
     wrapProgram $out/bin/ATR_analysis \
       --set PERL5LIB "${with perlPackages; makePerlPath [ pcscperl ]}"
     wrapProgram $out/bin/pcsc_scan \

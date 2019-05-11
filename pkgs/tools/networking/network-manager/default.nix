@@ -4,6 +4,7 @@
 , gobject-introspection, modemmanager, openresolv, libndp, newt, libsoup
 , ethtool, gnused, coreutils, iputils, kmod, jansson, gtk-doc, libxslt
 , docbook_xsl, docbook_xml_dtd_412, docbook_xml_dtd_42, docbook_xml_dtd_43
+, fetchFromGitHub
 , openconnect, curl, meson, ninja, libpsl, libredirect }:
 
 let
@@ -11,12 +12,18 @@ let
   pythonForDocs = python3.withPackages (pkgs: with pkgs; [ pygobject3 ]);
 in stdenv.mkDerivation rec {
   name = "network-manager-${version}";
-  version = "1.18.0";
+  version = "1.19.2";
 
-  src = fetchurl {
-    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "19lb5afx4iq8dgfsy26x9j4194v8f64vwr3nq6dk1ix3wljxzs66";
+  src = fetchFromGitHub {
+    owner = pname;
+    repo = pname;
+    rev = "db46d9b82386fab3c139cde30698ca5ca827b948";
+    sha256 = "07qfw0ka3yljhfmh0lvwf6if5nyyh50cb3zcz71qfify1sfqj2zz";
   };
+  #src = fetchurl {
+  #  url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+  #  sha256 = "0wxx1h8k7ya0ygj045ddwwdr05wc2rkj6jx8j11vnswafrq4l6ri";
+  #};
 
   outputs = [ "out" "dev" "devdoc" "man" "doc" ];
 
@@ -48,18 +55,18 @@ in stdenv.mkDerivation rec {
     "-Dqt=false"
     # Allow using iwd when configured to do so
     "-Diwd=true"
-    "-Dpolkit_agent=true"
+    #"-Dpolkit_agent=true"
     "-Dpolkit=true"
-    # Default is symlink, we previously used resolvconf, dunno
     "-Dconfig_dns_rc_manager_default=resolvconf"
     "-Debpf=true"
     "-Dlibaudit=yes-disabled-by-default"
+    "-Dsession_tracking_consolekit=false"
   ];
 
   patches = [
     (substituteAll {
       src = ./fix-paths.patch;
-      inherit iputils kmod openconnect ethtool coreutils dbus;
+      inherit iputils kmod openconnect ethtool gnused dbus;
       inherit (stdenv) shell;
     })
 
@@ -73,6 +80,13 @@ in stdenv.mkDerivation rec {
     # We are replacing the variables in postPatch since substituteAll does not support
     # placeholders.
     ./fix-docs-build.patch
+
+    #./mtu.patch
+    ./ipv6-disable-option/0001-ipv6-add-disabled-method.patch
+    ./ipv6-disable-option/0002-fixup-ipv6-add-disabled-method.patch
+    ./vpn-persistent/0001-vpn-minor-improvements.patch
+    ./vpn-persistent/0002-vpn-fix-persistent-reconnection.patch
+    ./vpn-persistent/0003-vpn-set-STOPPED-state-when-service-disappears.patch
   ];
 
   buildInputs = [
@@ -92,7 +106,6 @@ in stdenv.mkDerivation rec {
 
   doCheck = false; # requires /sys, the net
 
-  enableParallelBuilding = true;
 
   postPatch = ''
     patchShebangs ./tools

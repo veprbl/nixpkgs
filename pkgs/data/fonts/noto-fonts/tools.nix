@@ -1,14 +1,14 @@
 { fetchFromGitHub, lib, buildPythonPackage, isPy3k, fonttools, numpy, pillow, scour }:
 
 buildPythonPackage rec {
-  version = "2019-02-21";
+  version = "2019-03-19";
   name = "nototools-${version}";
 
   src = fetchFromGitHub {
     owner = "googlei18n";
     repo = "nototools";
-    rev = "bb309e87d273b3afd89b6c66c43b332899e74f5d";
-    sha256 = "1gz9kmzrgayxvxn3vj8j6dqp66g1angmbq2yyh5r9x6g9p6k2dy8";
+    rev = "9c4375f07c9adc00c700c5d252df6a25d7425870";
+    sha256 = "0z9i23vl6xar4kvbqbc8nznq3s690mqc5zfv280l1c02l5n41smc";
   };
 
   propagatedBuildInputs = [

@@ -1,21 +1,27 @@
-{ stdenv, fetchurl
-, libX11, glib, xorg, fontconfig, freetype
-, zlib, libpng12, libICE, libXrender, cups }:
+{ stdenv, fetchurl, dpkg, autoPatchelfHook
+, libX11, glib, xorg, fontconfig, freetype, alsaLib
+, pango, cairo, atk, dbus, gtk2, gdk_pixbuf
+, gnutls, nettle, librsvg
+, fribidi
+, libcef
+, libunistring, avahi
+, zlib, libpng12, libICE, libXrender, cups, nss, nspr }:
 
 let
   bits = if stdenv.hostPlatform.system == "x86_64-linux" then "x86_64"
          else "x86";
 
-  version = "10.1.0.5672";
+  version = "11.1.0.8392";
 in stdenv.mkDerivation rec{
   name = "wpsoffice-${version}";
 
   src = fetchurl {
-    name = "${name}.tar.xz";
-    url = "http://kdl.cc.ksosoft.com/wps-community/download/a21/wps-office_${version}~a21_${bits}.tar.xz";
+    name = "${name}.deb";
+    url = "http://kdl.cc.ksosoft.com/wps-community/download/8392/wps-office_${version}_amd64.deb";
+    #url = "http://kdl.cc.ksosoft.com/wps-community/download/a21/wps-office_${version}~a21_${bits}.tar.xz";
     sha256 = if bits == "x86_64" then
-      "0mi3n9kplf82gd0g2m0np957agy53p4g1qh81pbban49r4n0ajcz" else
-      "1dk400ap5qwdhjvn8lnk602f5akayr391fkljxdkrpn5xac01m97";
+      "0bvwnx85ph4m236s85iwqid5dvym21qcikr32r7c9kqr714njxgg" else
+      "1111111111111111111111111111111111111111111111111111";
   };
 
   meta = {
@@ -26,18 +32,44 @@ in stdenv.mkDerivation rec{
     license = stdenv.lib.licenses.unfreeRedistributable;
   };
 
-  libPath = stdenv.lib.makeLibraryPath [
+  nativeBuildInputs = [ dpkg autoPatchelfHook ];
+
+  unpackPhase = "dpkg-deb -x $src .";
+
+  runtimeDependencies = buildInputs;
+  buildInputs = [
+    alsaLib
     libX11
+    xorg.libxcb
+    xorg.libXau
+    xorg.libXcomposite
+    xorg.libXcursor
+    xorg.libXdamage
+    xorg.libXdmcp
+    xorg.libXext
+    xorg.libXfixes
+    xorg.libXi
+    xorg.libXrandr
+    xorg.libXrender
+    xorg.libXScrnSaver
+    xorg.libXtst
+    xorg.libSM
     libpng12
     glib
-    xorg.libSM
-    xorg.libXext
     fontconfig
     zlib
     freetype
     libICE
-    cups
-    libXrender
+    cups.lib
+    nss nspr
+    pango cairo atk dbus gtk2 gdk_pixbuf
+    librsvg
+    fribidi
+    libcef
+    avahi
+    libunistring
+    gnutls nettle
+    stdenv.cc.cc # libstdc++
   ];
 
   dontPatchELF = true;
@@ -47,33 +79,37 @@ in stdenv.mkDerivation rec{
   noAuditTmpdir = true;
 
   installPhase = ''
+    mkdir -p $out
+    mv usr/{share,bin} $out/
+    mv opt $out/opt
     prefix=$out/opt/kingsoft/wps-office
-    mkdir -p $prefix
-    cp -r . $prefix
 
-    # Avoid forbidden reference error due use of patchelf
-    rm -r $PWD
+    ## for i in wps wpp et wpsoffice; do
+    ##   patchelf \
+    ##     --set-interpreter "${stdenv.cc.bintools.dynamicLinker}" \
+    ##     --force-rpath --set-rpath "$prefix/office6:$libPath" \
+    ##     $prefix/office6/$i
+    ## done
 
-    mkdir $out/bin
     for i in wps wpp et; do
-      patchelf \
-        --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
-        --force-rpath --set-rpath "$prefix/office6:$libPath" \
-        $prefix/office6/$i
-
-      substitute $prefix/$i $out/bin/$i \
+      substituteInPlace $out/bin/$i \
         --replace /opt/kingsoft/wps-office $prefix
-      chmod +x $out/bin/$i
 
-      substituteInPlace $prefix/resource/applications/wps-office-$i.desktop \
+      substituteInPlace $out/share/applications/wps-office-$i.desktop \
         --replace /usr/bin $out/bin
     done
 
-    # China fonts
-    mkdir -p $prefix/resource/fonts/wps-office $out/etc/fonts/conf.d
-    ln -s $prefix/fonts/* $prefix/resource/fonts/wps-office
-    ln -s $prefix/fontconfig/*.conf $out/etc/fonts/conf.d
+    # :(
+    rm $prefix/office6/libjs*
 
-    ln -s $prefix/resource $out/share
+    # use ours
+    rm $prefix/office6/libcef*
+
+    ## # China fonts
+    ## mkdir -p $prefix/resource/fonts/wps-office $out/etc/fonts/conf.d
+    ## ln -s $prefix/fonts/* $prefix/resource/fonts/wps-office
+    ## ln -s $prefix/fontconfig/*.conf $out/etc/fonts/conf.d
+
+    ## ln -s $prefix/resource $out/share
   '';
 }

@@ -8,14 +8,14 @@ buildRustPackage rec {
   name = "exa-${version}";
   version = "0.9.0-pre";
 
-  cargoSha256 = "0xx1yspha31818fdzk6930cv5p0nsxmmmbnyrspbcals9byfsr59";
+  cargoSha256 = "1vh76rg7blz6l55cvndnlmfjqzrpaz0q4fw9ca9lj0jlqh1lsszz";
 
   src = fetchFromGitHub {
     owner = "ogham";
     repo = "exa";
    # rev = "v${version}";
-    rev = "485611e7c97d2043731ae83653a70eee2eb69a4b";
-    sha256 = "14igs2if815iz4j7lzrr5ii4cqbwqhjq88v0hkwkqwyg0pzp85m8";
+    rev = "35bf32abb9b8b445127c4722f45dcda25a55075a";
+    sha256 = "0zcflma7nrxr61z5j4czwmc7v4jkg7d5llbgzl6hgk8fiq19q13a";
   };
 
   nativeBuildInputs = [ cmake pkgconfig perl ];

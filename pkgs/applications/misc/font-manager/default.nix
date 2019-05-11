@@ -5,13 +5,15 @@
 
 stdenv.mkDerivation rec {
   pname = "font-manager";
-  version = "0.7.5";
+#  version = "0.7.5";
+  version = "2019-05-10";
 
   src = fetchFromGitHub {
     owner = "FontManager";
     repo = "master";
-    rev = "cd8ec129b443e348915a912f43d7035f10297b15";
-    sha256 = "0hg1jvrjl8lbn8165497m0pd4wm5hcwirmqfg834fdmc6nhmbq9f";
+    #rev = version;
+    rev = "296a8e17028cf951c71124c573e581b8eaf0b26f";
+    sha256 = "1jniplwfm55cdk4ajsjp8bdbpgpb3rwdsz3x7m5wp41i9rvlb8vb";
   };
 
   nativeBuildInputs = [
@@ -36,10 +38,6 @@ stdenv.mkDerivation rec {
     librsvg
     gtk3
     gnome3.adwaita-icon-theme
-  ];
-
-  patches = [
-   ./correct-post-install.patch
   ];
 
   mesonFlags = [

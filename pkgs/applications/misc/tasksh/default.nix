@@ -1,18 +1,24 @@
-{ stdenv, fetchurl, cmake, readline }:
+{ stdenv, fetchurl, cmake, git, readline, fetchFromGitHub }:
 
 stdenv.mkDerivation rec {
-  name = "tasksh-${version}";
-  version = "1.2.0";
+  pname = "tasksh";
+  version = "2019-05-06";
 
   enableParallelBuilding = true;
 
-  src = fetchurl {
-    url = "https://taskwarrior.org/download/${name}.tar.gz";
-    sha256 = "1z8zw8lld62fjafjvy248dncjk0i4fwygw0ahzjdvyyppx4zjhkf";
+  src = fetchFromGitHub {
+    owner = "GothenburgBitFactory";
+    repo = "taskshell";
+    rev = "954431793a9c58720913d32e91653b23986447c3"; # 1.3.0, moving
+    sha256 = "0pmsxdhy40j6c0v9llhn4z7gcz7d89icbwjcgms49skl3yiskyg7";
+    fetchSubmodules = true;
+    leaveDotGit = true;
   };
 
   buildInputs = [ readline ];
-  nativeBuildInputs = [ cmake ];
+  nativeBuildInputs = [ cmake git ];
+
+  preConfigure = "touch .git/index";
 
   meta = with stdenv.lib; {
     description = "REPL for taskwarrior";

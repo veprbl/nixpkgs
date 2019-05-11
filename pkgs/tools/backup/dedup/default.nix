@@ -1,5 +1,4 @@
-{ stdenv, fetchurl, fetchgit, lz4, snappy
-, openmp ? null
+{ stdenv, fetchurl, fetchgit, lz4, snappy, libsodium
 # For testing
 , coreutils, gawk
 }:
@@ -7,7 +6,7 @@
 stdenv.mkDerivation rec {
   pname = "dedup";
   #version = "1.0";
-  version = "2019-04-26";
+  version = "2019-05-06";
 
   #src = fetchurl {
   #  url = "https://dl.2f30.org/releases/${pname}-${version}.tar.gz";
@@ -15,25 +14,22 @@ stdenv.mkDerivation rec {
   #};
   src = fetchgit {
     url =  git://git.2f30.org/dedup.git;
-    rev = "74e630b82162820aef9515874dcf5ef06269e9a8";
-    sha256 = "05sx4whg46683vvdmdj5nswkxc7lqhpiivsycs985lvngb328yvn";
+    rev = "a7753b65b2b40ba265e30e8f2f0bda25da7baa53";
+    sha256 = "0g5k32m4h9c0q3z4lqnckcrw9m0gvnm6ih1628xygk2gw7nwr9zk";
   };
 
   makeFlags = [
     "CC:=$(CC)"
     "PREFIX=${placeholder "out"}"
     "MANPREFIX=${placeholder "out"}/share/man"
-  ] ++ stdenv.lib.optional (openmp != null) [
-    "OPENMPCFLAGS=-fopenmp"
-    "OPENMPLDLIBS=-lgomp"
   ];
 
-  buildInputs = [ lz4 snappy openmp ];
+  buildInputs = [ lz4 snappy libsodium ];
 
   doCheck = true;
 
   checkInputs = [ coreutils gawk ];
-  checkPhase = "sh dotest";
+  checkTarget = "test";
 
   meta = with stdenv.lib; {
     description = "data deduplication program";

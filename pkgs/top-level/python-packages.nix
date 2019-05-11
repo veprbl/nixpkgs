@@ -130,6 +130,9 @@ in {
 
   wrapPython = callPackage ../development/interpreters/python/wrap-python.nix {inherit python; inherit (pkgs) makeSetupHook makeWrapper; };
 
+  # Dont take pythonPackages from "global" pkgs scope to avoid mixing python versions
+  pythonPackages = self;
+
   # specials
 
   recursivePthLoader = callPackage ../development/python-modules/recursive-pth-loader { };
@@ -336,6 +339,8 @@ in {
 
   datamodeldict = callPackage ../development/python-modules/datamodeldict { };
 
+  datasette = callPackage ../development/python-modules/datasette { };
+
   dbf = callPackage ../development/python-modules/dbf { };
 
   dbfread = callPackage ../development/python-modules/dbfread { };
@@ -408,6 +413,8 @@ in {
 
   fdint = callPackage ../development/python-modules/fdint { };
 
+  filemagic = callPackage ../development/python-modules/filemagic { };
+
   fuse = callPackage ../development/python-modules/fuse-python {
     inherit (pkgs) fuse pkgconfig;
   };
@@ -466,9 +473,13 @@ in {
 
   httpsig = callPackage ../development/python-modules/httpsig { };
 
+  httptools = callPackage ../development/python-modules/httptools { };
+
   i3ipc = callPackage ../development/python-modules/i3ipc { };
 
   imutils = callPackage ../development/python-modules/imutils { };
+
+  inotify-simple = callPackage ../development/python-modules/inotify-simple { };
 
   intake = callPackage ../development/python-modules/intake { };
 
@@ -481,6 +492,8 @@ in {
   lammps-cython = callPackage ../development/python-modules/lammps-cython {
     mpi = pkgs.openmpi;
   };
+
+  langdetect = callPackage ../development/python-modules/langdetect { };
 
   libmr = callPackage ../development/python-modules/libmr { };
 
@@ -578,6 +591,8 @@ in {
 
   pdfminer = callPackage ../development/python-modules/pdfminer_six { };
 
+  pdftotext = callPackage ../development/python-modules/pdftotext { };
+
   pdfx = callPackage ../development/python-modules/pdfx { };
 
   perf = callPackage ../development/python-modules/perf { };
@@ -647,6 +662,8 @@ in {
   PyChromecast = callPackage ../development/python-modules/pychromecast { };
 
   py-cpuinfo = callPackage ../development/python-modules/py-cpuinfo { };
+
+  py-lru-cache = callPackage ../development/python-modules/py-lru-cache { };
 
   pydbus = callPackage ../development/python-modules/pydbus { };
 
@@ -761,6 +778,8 @@ in {
 
   pytest-click = callPackage ../development/python-modules/pytest-click { };
 
+  pytest-env = callPackage ../development/python-modules/pytest-env { };
+
   pytest-mypy = callPackage ../development/python-modules/pytest-mypy { };
 
   pytest-pylint = callPackage ../development/python-modules/pytest-pylint { };
@@ -770,6 +789,8 @@ in {
   python-binance = callPackage ../development/python-modules/python-binance { };
 
   python-dbusmock = callPackage ../development/python-modules/python-dbusmock { };
+
+  python-dotenv = callPackage ../development/python-modules/python-dotenv { };
 
   python-engineio = callPackage ../development/python-modules/python-engineio { };
 
@@ -781,6 +802,10 @@ in {
   python-ldap-test = callPackage ../development/python-modules/python-ldap-test { };
 
   python-mnist = callPackage ../development/python-modules/python-mnist { };
+
+  pythonocc-core = toPythonModule (callPackage ../development/python-modules/pythonocc-core {
+    inherit (pkgs.xorg) libX11;
+  });
 
   python-igraph = callPackage ../development/python-modules/python-igraph {
     pkgconfig = pkgs.pkgconfig;
@@ -903,6 +928,8 @@ in {
 
   unifi = callPackage ../development/python-modules/unifi { };
 
+  uvloop = callPackage ../development/python-modules/uvloop { };
+
   pyunifi = callPackage ../development/python-modules/pyunifi { };
 
   vidstab = callPackage ../development/python-modules/vidstab { };
@@ -920,6 +947,8 @@ in {
   # packages defined here
 
   aafigure = callPackage ../development/python-modules/aafigure { };
+
+  addic7ed-cli = callPackage ../development/python-modules/addic7ed-cli { };
 
   altair = callPackage ../development/python-modules/altair { };
 
@@ -1156,6 +1185,8 @@ in {
 
   bitstruct = callPackage ../development/python-modules/bitstruct { };
 
+  caldav = callPackage ../development/python-modules/caldav { };
+
   caldavclientlibrary-asynk = callPackage ../development/python-modules/caldavclientlibrary-asynk { };
 
   biopython = callPackage ../development/python-modules/biopython { };
@@ -1221,6 +1252,8 @@ in {
   cram = callPackage ../development/python-modules/cram { };
 
   csscompressor = callPackage ../development/python-modules/csscompressor {};
+
+  csvs-to-sqlite = callPackage ../development/python-modules/csvs-to-sqlite { };
 
   cufflinks = callPackage ../development/python-modules/cufflinks { };
 
@@ -1314,7 +1347,7 @@ in {
 
   bottle = callPackage ../development/python-modules/bottle { };
 
-  box2d = callPackage ../development/python-modules/box2d { pkgs-box2d = pkgs.box2d; };
+  box2d = callPackage ../development/python-modules/box2d { };
 
   branca = callPackage ../development/python-modules/branca { };
 
@@ -1396,6 +1429,8 @@ in {
     callPackage ../development/python-modules/cherrypy/17.nix { };
 
   cfgv = callPackage ../development/python-modules/cfgv { };
+
+  cfn-lint = callPackage ../development/python-modules/cfn-lint { };
 
   cftime = callPackage ../development/python-modules/cftime {};
 
@@ -1633,6 +1668,8 @@ in {
   pytest-rerunfailures = callPackage ../development/python-modules/pytest-rerunfailures { };
 
   pytest-relaxed = callPackage ../development/python-modules/pytest-relaxed { };
+
+  pytest-sanic = callPackage ../development/python-modules/pytest-sanic { };
 
   pytest-flake8 = callPackage ../development/python-modules/pytest-flake8 { };
 
@@ -1913,6 +1950,8 @@ in {
 
   fastcache = callPackage ../development/python-modules/fastcache { };
 
+  fastentrypoints = callPackage ../development/python-modules/fastentrypoints { };
+
   functools32 = callPackage ../development/python-modules/functools32 { };
 
   future-fstrings = callPackage ../development/python-modules/future-fstrings { };
@@ -2018,7 +2057,9 @@ in {
 
   immutables = callPackage ../development/python-modules/immutables {};
 
-  imread = callPackage ../development/python-modules/imread { };
+  imread = callPackage ../development/python-modules/imread {
+    inherit (pkgs) pkgconfig libjpeg libpng libtiff libwebp;
+  };
 
   imaplib2 = callPackage ../development/python-modules/imaplib2 { };
 
@@ -2476,6 +2517,8 @@ in {
   django_treebeard = callPackage ../development/python-modules/django_treebeard { };
 
   django_pipeline = callPackage ../development/python-modules/django-pipeline { };
+
+  djangoql = callPackage ../development/python-modules/djangoql { };
 
   dj-database-url = callPackage ../development/python-modules/dj-database-url { };
 
@@ -3053,6 +3096,8 @@ in {
   le = callPackage ../development/python-modules/le { };
 
   lektor = callPackage ../development/python-modules/lektor { };
+
+  leveldb = callPackage ../development/python-modules/leveldb { };
 
   python-oauth2 = callPackage ../development/python-modules/python-oauth2 { };
 
@@ -4232,6 +4277,8 @@ in {
 
   seaborn = callPackage ../development/python-modules/seaborn { };
 
+  seabreeze = callPackage ../development/python-modules/seabreeze { };
+
   selenium = callPackage ../development/python-modules/selenium { };
 
   serpy = callPackage ../development/python-modules/serpy { };
@@ -4333,6 +4380,8 @@ in {
   tempita = callPackage ../development/python-modules/tempita { };
 
   terminado = callPackage ../development/python-modules/terminado { };
+
+  tess = callPackage ../development/python-modules/tess { };
 
   testresources = callPackage ../development/python-modules/testresources { };
 
@@ -4614,6 +4663,8 @@ in {
   semantic = callPackage ../development/python-modules/semantic { };
 
   sandboxlib = callPackage ../development/python-modules/sandboxlib { };
+
+  sanic = callPackage ../development/python-modules/sanic { };
 
   scales = callPackage ../development/python-modules/scales { };
 
@@ -5138,7 +5189,10 @@ in {
 
   ed25519 = callPackage ../development/python-modules/ed25519 { };
 
-  trezor = callPackage ../development/python-modules/trezor { };
+  trezor = callPackage ../development/python-modules/trezor {
+    inherit (pkgs) protobuf;
+    pythonProtobuf = self.protobuf;
+  };
 
   trezor_agent = callPackage ../development/python-modules/trezor_agent { };
 

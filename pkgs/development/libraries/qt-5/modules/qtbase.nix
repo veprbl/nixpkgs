@@ -2,7 +2,7 @@
   stdenv, lib,
   src, patches, version, qtCompatVersion,
 
-  coreutils, bison, flex, gdb, gperf, lndir, patchelf, perl, pkgconfig, python2,
+  coreutils, bison, flex, gdb, gperf, lndir, perl, pkgconfig, python2,
   which,
   # darwin support
   darwin, libiconv,
@@ -78,17 +78,15 @@ stdenv.mkDerivation {
       [ libinput ]
       ++ lib.optional withGtk3 gtk3
     )
-    ++ lib.optional stdenv.isDarwin
-      # Needed for OBJC_CLASS_$_NSDate symbols.
-      [ darwin.cf-private ]
+       # Needed for OBJC_CLASS_$_NSDate symbols.
+    ++ lib.optional stdenv.isDarwin darwin.cf-private
     ++ lib.optional developerBuild gdb
     ++ lib.optional (cups != null) cups
     ++ lib.optional (mysql != null) mysql.connector-c
     ++ lib.optional (postgresql != null) postgresql;
 
   nativeBuildInputs =
-    [ bison flex gperf lndir perl pkgconfig python2 which ]
-    ++ lib.optional (!stdenv.isDarwin) patchelf;
+    [ bison flex gperf lndir perl pkgconfig python2 which ];
 
   propagatedNativeBuildInputs = [ lndir ];
 
@@ -199,26 +197,11 @@ stdenv.mkDerivation {
       ''-DNIXPKGS_LIBXCURSOR="${libXcursor.out}/lib/libXcursor"''
     ]
 
-    ++ (
-      if stdenv.isDarwin
-      then
-        [
-          "-Wno-missing-sysroot"
-          "-D__MAC_OS_X_VERSION_MAX_ALLOWED=1090"
-          "-D__AVAILABILITY_INTERNAL__MAC_10_10=__attribute__((availability(macosx,introduced=10.10)))"
-          # Note that nixpkgs's objc4 is from macOS 10.11 while the SDK is
-          # 10.9 which necessitates the above macro definition that mentions
-          # 10.10
-        ]
-      else
-        lib.optional libGLSupported ''-DNIXPKGS_MESA_GL="${libGL.out}/lib/libGL"''
-        ++ lib.optionals withGtk3
-          [
-            ''-DNIXPKGS_QGTK3_XDG_DATA_DIRS="${gtk3}/share/gsettings-schemas/${gtk3.name}"''
-            ''-DNIXPKGS_QGTK3_GIO_EXTRA_MODULES="${dconf.lib}/lib/gio/modules"''
-          ]
-    )
-
+    ++ lib.optional libGLSupported ''-DNIXPKGS_MESA_GL="${libGL.out}/lib/libGL"''
+    ++ lib.optionals withGtk3 [
+         ''-DNIXPKGS_QGTK3_XDG_DATA_DIRS="${gtk3}/share/gsettings-schemas/${gtk3.name}"''
+         ''-DNIXPKGS_QGTK3_GIO_EXTRA_MODULES="${dconf.lib}/lib/gio/modules"''
+       ]
     ++ lib.optional decryptSslTraffic "-DQT_DECRYPT_SSL_TRAFFIC";
 
   prefixKey = "-prefix ";
@@ -248,6 +231,8 @@ stdenv.mkDerivation {
       "-widgets"
       "-opengl desktop"
       "-icu"
+      "-L" "${icu.out}/lib"
+      "-I" "${icu.dev}/include"
       "-pch"
     ]
     ++ lib.optionals (compareVersion "5.11.0" < 0)
@@ -266,25 +251,36 @@ stdenv.mkDerivation {
     ++ (
       if (!stdenv.hostPlatform.isx86_64)
       then [ "-no-sse2" ]
-      else lib.optional (compareVersion "5.9.0" >= 0) [ "-sse2" ]
+      else lib.optionals (compareVersion "5.9.0" >= 0) {
+        "default"        = [ "-sse2" "-no-sse3" "-no-ssse3" "-no-sse4.1" "-no-sse4.2" "-no-avx" "-no-avx2" ];
+        "westmere"       = [ "-sse2"    "-sse3"    "-ssse3"    "-sse4.1"    "-sse4.2" "-no-avx" "-no-avx2" ];
+        "sandybridge"    = [ "-sse2"    "-sse3"    "-ssse3"    "-sse4.1"    "-sse4.2"    "-avx" "-no-avx2" ];
+        "ivybridge"      = [ "-sse2"    "-sse3"    "-ssse3"    "-sse4.1"    "-sse4.2"    "-avx" "-no-avx2" ];
+        "haswell"        = [ "-sse2"    "-sse3"    "-ssse3"    "-sse4.1"    "-sse4.2"    "-avx"    "-avx2" ];
+        "broadwell"      = [ "-sse2"    "-sse3"    "-ssse3"    "-sse4.1"    "-sse4.2"    "-avx"    "-avx2" ];
+        "skylake"        = [ "-sse2"    "-sse3"    "-ssse3"    "-sse4.1"    "-sse4.2"    "-avx"    "-avx2" ];
+        "skylake-avx512" = [ "-sse2"    "-sse3"    "-ssse3"    "-sse4.1"    "-sse4.2"    "-avx"    "-avx2" ];
+      }.${stdenv.hostPlatform.platform.gcc.arch or "default"}
     )
     ++ [
-      "-no-sse3"
-      "-no-ssse3"
-      "-no-sse4.1"
-      "-no-sse4.2"
-      "-no-avx"
-      "-no-avx2"
       "-no-mips_dsp"
       "-no-mips_dspr2"
     ]
 
     ++ [
       "-system-zlib"
+      "-L" "${zlib.out}/lib"
+      "-I" "${zlib.dev}/include"
       "-system-libjpeg"
+      "-L" "${libjpeg.out}/lib"
+      "-I" "${libjpeg.dev}/include"
       "-system-harfbuzz"
+      "-L" "${harfbuzz.out}/lib"
+      "-I" "${harfbuzz.dev}/include"
       "-system-pcre"
       "-openssl-linked"
+      "-L" "${openssl.out}/lib"
+      "-I" "${openssl.dev}/include"
       "-system-sqlite"
       ''-${if mysql != null then "plugin" else "no"}-sql-mysql''
       ''-${if postgresql != null then "plugin" else "no"}-sql-psql''
@@ -313,10 +309,14 @@ stdenv.mkDerivation {
           "-system-xcb"
           "-xcb"
           "-qpa xcb"
+          "-L" "${libX11.out}/lib"
+          "-I" "${libX11.out}/include"
+          "-L" "${libXext.out}/lib"
+          "-I" "${libXext.out}/include"
+          "-L" "${libXrender.out}/lib"
+          "-I" "${libXrender.out}/include"
 
-          "-system-xkbcommon"
           "-libinput"
-          "-xkbcommon-evdev"
 
           "-no-eglfs"
           "-no-gbm"
@@ -336,6 +336,19 @@ stdenv.mkDerivation {
           # https://github.com/NixOS/nixpkgs/issues/38832
           "-no-feature-renameat2"
           "-no-feature-getentropy"
+        ]
+        ++ lib.optionals (compareVersion "5.12.1" < 0) [
+          # use -xkbcommon and -xkbcommon-evdev for versions before 5.12.1
+          "-system-xkbcommon"
+          "-xkbcommon-evdev"
+        ]
+        ++ lib.optionals (cups != null) [
+          "-L" "${cups.lib}/lib"
+          "-I" "${cups.dev}/include"
+        ]
+        ++ lib.optionals (mysql != null) [
+          "-L" "${mysql.out}/lib"
+          "-I" "${mysql.out}/include"
         ]
     );
 
@@ -392,6 +405,7 @@ stdenv.mkDerivation {
     license = with licenses; [ fdl13 gpl2 lgpl21 lgpl3 ];
     maintainers = with maintainers; [ qknight ttuegel periklis bkchr ];
     platforms = platforms.unix;
+    broken = stdenv.isDarwin && (compareVersion "5.9.0" < 0);
   };
 
 }

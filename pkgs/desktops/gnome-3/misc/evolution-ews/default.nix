@@ -8,14 +8,14 @@
 
 let
   pname = "evolution-ews";
-  version = "3.30.3";
+  version = "3.32.2";
 in stdenv.mkDerivation rec {
   inherit pname version;
   name = "${pname}-${version}";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "08k3p6fgj0mvvg62hpmz1hsd1rb9lxp34hxcsmwhjqsgxlyrdxib";
+    sha256 = "10zx5v383iq66nrzmpvc7h8af1jxd26zjmcffsjk8y2a958q7s7z";
   };
 
   #propagatedUserEnvPkgs = [ gnome3.evolution-data-server gnome3.evolution ];
@@ -35,11 +35,22 @@ in stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ cmake ninja intltool itstool libxml2 pkgconfig wrapGAppsHook ];
 
+  ## set env vars like "PKG_CONFIG_$PACKAGE_$VARIABLE"?
+
   # TODO:
   # - [ ] fix install paths
   # - [ ] ensure evolution and other bits actually find what is installed!
+  # - [ ] meta
+
   #postPatch = ''
   #  sed -i CMakeLists.txt -e 's,set(ewsdatadir.*,set(ewsdatadir "${placeholder "out"}/share/evolution-data-dir/ews"),'
   #'';
+
+  passthru = {
+    updateScript = gnome3.updateScript {
+      packageName = "evolution-ews";
+      attrPath = "gnome3.evolution-ews";
+    };
+  };
 }
 

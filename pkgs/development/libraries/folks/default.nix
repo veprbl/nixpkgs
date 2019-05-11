@@ -6,11 +6,11 @@
 
 stdenv.mkDerivation rec {
   pname = "folks";
-  version = "0.11.4";
+  version = "0.12.1";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "16hqh2gxlbx0b0hgq216hndr1m72vj54jvryzii9zqkk0g9kxc57";
+    sha256 = "0xfl6rnzhdbmw1q26xiq34cdiy7a9karpi2r7wyplnnz1zaz5a9w";
   };
 
   propagatedBuildInputs = [ glib libgee sqlite ];

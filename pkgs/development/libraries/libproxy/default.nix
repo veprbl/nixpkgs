@@ -1,5 +1,5 @@
-{ stdenv, fetchFromGitHub, pkgconfig, cmake, zlib
-, dbus, networkmanager, spidermonkey_38, pcre, python2, python3
+{ stdenv, fetchFromGitHub, pkgconfig, cmake, zlib, fetchpatch
+, dbus, networkmanager, withNetworkManager ? false, spidermonkey_38, pcre, python2, python3
 , SystemConfiguration, CoreFoundation, JavaScriptCore }:
 
 stdenv.mkDerivation rec {
@@ -20,15 +20,21 @@ stdenv.mkDerivation rec {
   buildInputs = [ pcre python2 python3 zlib ]
         ++ (if stdenv.hostPlatform.isDarwin
             then [ SystemConfiguration CoreFoundation JavaScriptCore ]
-            else [ spidermonkey_38 dbus networkmanager ]);
+            else [ spidermonkey_38 dbus ])
+            ++ stdenv.lib.optional (!stdenv.hostPlatform.isDarwin && withNetworkManager) networkmanager;
 
-  preConfigure = ''
-    cmakeFlagsArray+=(
-      "-DWITH_MOZJS=ON"
-      "-DPYTHON2_SITEPKG_DIR=$out/${python2.sitePackages}"
-      "-DPYTHON3_SITEPKG_DIR=$out/${python3.sitePackages}"
-    )
-  '';
+  cmakeFlags = [
+    "-DWITH_MOZJS=ON"
+    "-DWITH_NM=${if withNetworkManager then "ON" else "OFF"}"
+    "-DPYTHON2_SITEPKG_DIR=${placeholder "out"}/${python2.sitePackages}"
+    "-DPYTHON3_SITEPKG_DIR=${placeholder "out"}/${python3.sitePackages}"
+  ];
+
+  patches = stdenv.lib.optional stdenv.isDarwin
+    (fetchpatch {
+      url = "https://github.com/libproxy/libproxy/commit/44158f03f8522116758d335688ed840dfcb50ac8.patch";
+      sha256 = "0axfvb6j7gcys6fkwi9dkn006imhvm3kqr83gpwban8419n0q5v1";
+    });
 
   doCheck = false; # fails 1 out of 10 tests
 

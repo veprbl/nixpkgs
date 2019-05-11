@@ -6,13 +6,14 @@
 
 stdenv.mkDerivation rec {
   pname = "feedreader";
-  version = "2.8.2";
+  version = "2.8.2-git";
 
   src = fetchFromGitHub {
     owner = "jangernert";
     repo = pname;
-    rev = "v${version}";
-    sha256 = "1qm7scrz8xm68zizcfn13ll4ksdd004fahki7gbwqagsr1fg62y8";
+    #rev = "v${version}";
+    rev = "1f8431bce62b292578bf5adac65e4788ef3ea87c";
+    sha256 = "089lrmz3ip38wlc2xiapsdp0iifisspsxsr9v7gz0ih0n745afbl";
   };
 
   nativeBuildInputs = [
@@ -30,7 +31,7 @@ stdenv.mkDerivation rec {
   ]);
 
   postPatch = ''
-    patchShebangs meson_post_install.py
+    patchShebangs build-aux/meson_post_install.py
   '';
 
   meta = with stdenv.lib; {

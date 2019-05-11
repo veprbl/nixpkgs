@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
     cp -v $(find . -name '*Narrow*.ttf') $out/share/fonts/truetype
 
     mkdir -p "$out/doc/${pname}-${version}"
-    cp -v AUTHORS ChangeLog COPYING License.txt README "$out/doc/${pname}-${version}" || true
+    cp -v AUTHORS ChangeLog COPYING License.txt "$out/doc/${pname}-${version}" || true
   '';
 
   meta = with stdenv.lib; {

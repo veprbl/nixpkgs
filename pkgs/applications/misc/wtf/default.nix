@@ -1,31 +1,26 @@
-{ buildGoPackage
+{ buildGoModule
 , fetchFromGitHub
 , lib
 }:
 
-buildGoPackage rec {
+buildGoModule rec {
   pname = "wtf";
-  version = "0.6.0";
+  version = "0.9.1";
 
   goPackagePath = "github.com/wtfutil/wtf";
 
   src = fetchFromGitHub {
     owner = "wtfutil";
-    repo = "wtf";
+    repo = pname;
     rev = version;
-    sha256 = "1662b63xy63fi96xn5c622ppmwn4lzlhmx2w57wyhvh8dpsrzkl6";
+    sha256 = "0l8chb6cjxida1pxz7qyajn4axlbmzkq2jy9awma0hjg8ak9ybjh";
   };
 
-  buildFlagsArray = let
-    # this is easy when version is a date already :)
-    release-datetime = version + "T00:00:00+0000";
-  in ''
-    -ldflags=
-    -X main.version=${version}
-    -X main.date=${release-datetime}
-  '';
+  patches = [ ./fix-hash.patch ];
 
-  goDeps = ./deps.nix;
+  buildFlagsArray = '' -ldflags= -X main.version=${version} '';
+
+  modSha256 = "00bhhx6mpamqx5xkhphx5hplaca53srmnv2r4ykiagzhdsbxk2g1";
 
   meta = with lib; {
     description = "The personal information dashboard for your terminal";

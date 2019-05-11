@@ -1,16 +1,24 @@
-{ stdenv, rustPlatform, fetchurl, fetchpatch, stfl, sqlite, curl, gettext, pkgconfig, libxml2, json_c, ncurses
+{ stdenv, rustPlatform, fetchurl, fetchFromGitHub, fetchpatch, stfl, sqlite, curl, gettext, pkgconfig, libxml2, json_c, ncurses
 , asciidoc, docbook_xml_dtd_45, libxslt, docbook_xsl, libiconv, Security, makeWrapper }:
 
 rustPlatform.buildRustPackage rec {
-  name = "newsboat-${version}";
-  version = "2.15";
+  #name = "newsboat-${version}";
+  pname = "newsboat";
+#  version = "2.15";
+  version = "2019-05-09";
 
-  src = fetchurl {
-    url = "https://newsboat.org/releases/${version}/${name}.tar.xz";
-    sha256 = "1dqdcp34jmphqf3d8ik0xdhg0s66nd5rky0y8y591nidq29wws6s";
+  src = fetchFromGitHub {
+    owner = pname;
+    repo = pname;
+    rev = "1d439ede40dadc55e96fa2884c3e27cc9631f68a";
+    sha256 = "191clmzl3wl4rf8fp7md93j1aani8by6rgivqc7hl7zmskac155n";
   };
+  #src = fetchurl {
+  #  url = "https://newsboat.org/releases/${version}/${name}.tar.xz";
+  #  sha256 = "1dqdcp34jmphqf3d8ik0xdhg0s66nd5rky0y8y591nidq29wws6s";
+  #};
 
-  cargoSha256 = "05pf020jp20ffmvin6d1g8zbwf1zk03bm1cb99b7iqkk4r54g6dn";
+  cargoSha256 = "05y6lz4zzv0b3pddj8kqhggby885fagyp14p34k5l3l2yqbxhpsl";
 
   postPatch = ''
     substituteInPlace Makefile --replace "|| true" ""
@@ -26,7 +34,7 @@ rustPlatform.buildRustPackage rec {
     ++ stdenv.lib.optional stdenv.isDarwin Security;
 
   postBuild = ''
-    make
+    make -j$NIX_BUILD_CORES
   '';
 
   NIX_CFLAGS_COMPILE = "-Wno-error=sign-compare";
@@ -34,7 +42,7 @@ rustPlatform.buildRustPackage rec {
   doCheck = true;
 
   checkPhase = ''
-    make test
+    make test -j$NIX_BUILD_CORES
   '';
 
   postInstall = ''

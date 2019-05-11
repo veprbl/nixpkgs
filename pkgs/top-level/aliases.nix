@@ -85,6 +85,7 @@ mapAliases ({
   emacsMelpa = emacs25PackagesNg; # for backward compatibility
   emacsPackagesGen = emacsPackagesFor; # added 2018-08-18
   emacsPackagesNgGen = emacsPackagesNgFor; # added 2018-08-18
+  emby = throw "The Emby derivation has been removed, see jellyfin instead for a free software fork."; # added 2019-05-01
   enblendenfuse = enblend-enfuse; # 2015-09-30
   evolution_data_server = evolution-data-server; # added 2018-02-25
   etcdctl = etcd; # added 2018-04-25
@@ -252,7 +253,9 @@ mapAliases ({
   pg_topn = postgresqlPackages.pg_topn;
   postgis = postgresqlPackages.postgis;
   # end
+  ppl-address-book = throw "deprecated in 2019-05-02: abandoned by upstream.";
   procps-ng = procps; # added 2018-06-08
+  pstree = psmisc; # added 2019-05-05
   pulseaudioLight = pulseaudio; # added 2018-04-25
   qca-qt5 = libsForQt5.qca-qt5;  # added 2015-12-19
   qt_gstreamer = qt-gstreamer;  # added 2017-02
@@ -321,6 +324,7 @@ mapAliases ({
   terraform-provider-libvirt = terraform-providers.libvirt; # added 2018-09-28
   terraform-provider-nixos = terraform-providers.nixos; # added 2018-09-28
   tesseract_4 = tesseract4; # added 2018-12-19
+  tetra-gtk-theme = adementary-theme; # added 2019-05-10
   tex-gyre-bonum-math = tex-gyre-math.bonum; # added 2018-04-03
   tex-gyre-pagella-math = tex-gyre-math.pagella; # added 2018-04-03
   tex-gyre-schola-math = tex-gyre-math.schola; # added 2018-04-03

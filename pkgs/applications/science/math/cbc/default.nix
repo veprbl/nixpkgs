@@ -1,10 +1,11 @@
 { lib, stdenv, fetchurl, zlib, bzip2 }:
 
-stdenv.mkDerivation {
-  name = "cbc-2.9.9";
+stdenv.mkDerivation rec {
+  pname = "cbc";
+  version = "2.9.9";
 
   src = fetchurl {
-    url = "https://www.coin-or.org/download/source/Cbc/Cbc-2.9.9.tgz";
+    url = "https://www.coin-or.org/download/source/Cbc/Cbc-${version}.tgz";
     sha256 = "1w8axdzm05xf5y13c31w7rc5z6ywxqxiwafnxcq3p195kgj0915a";
   };
 

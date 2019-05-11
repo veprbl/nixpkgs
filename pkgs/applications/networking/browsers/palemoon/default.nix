@@ -3,7 +3,7 @@
 , dbus, dbus-glib, file, fontconfig, freetype
 , gstreamer, gst-plugins-base, gst_all_1
 , gtk2, hunspell, icu, libevent, libjpeg, libnotify
-, libstartup_notification, libvpx, makeWrapper, libGLU_combined
+, libstartup_notification, makeWrapper, libGLU_combined
 , nspr, nss, pango, perl, python, libpulseaudio, sqlite
 , unzip, xorg, which, yasm, zip, zlib
 }:
@@ -42,7 +42,7 @@ stdenv.mkDerivation rec {
     alsaLib bzip2 cairo dbus dbus-glib file fontconfig freetype
     gst-plugins-base gstreamer gst_all_1.gst-plugins-base gtk2
     hunspell icu libevent libjpeg libnotify libstartup_notification
-    libvpx makeWrapper libGLU_combined nspr nss pango perl pkgconfig python
+    makeWrapper libGLU_combined nspr nss pango perl pkgconfig python
     libpulseaudio sqlite unzip which yasm zip zlib
   ] ++ (with xorg; [
     libX11 libXext libXft libXi libXrender libXScrnSaver

@@ -5,6 +5,7 @@
 # Not mentioned but seems needed
 , qtgraphicaleffects
 , qtdeclarative
+, qtmacextras
 }:
 
 let
@@ -19,16 +20,18 @@ let
 
 in stdenv.mkDerivation rec {
   pname = "spectral";
-  version = "2019-04-26";
+  #version = "603";
+  version = "2019-05-10";
 
   src = fetchgit {
     url = "https://gitlab.com/b0/spectral.git";
-    rev = "2a86fbd8b6c52fccbcc0ad862ecf3b20cf63359e";
-    sha256 = "0shwdh2xfrksb63vv11z126s94ajqjzkcgww5qdmadi26my8ww74";
+    #rev = "refs/tags/${version}";
+    rev = "588c23ebdc9cd4264edc7a52b70f93958bf21ab9";
+    sha256 = "1nmqwlwzvs0pn8lf27mw1xkpma9fxcwxrha5s8klyd8vlzv69d0p";
     fetchSubmodules = true;
   };
 
-  qmakeFlags = [ "CONFIG+=qtquickcompiler" "BUNDLE_FONT=true" ];
+  qmakeFlags = [ "CONFIG+=qtquickcompiler" ];
 
   postInstall = ''
     wrapProgram $out/bin/spectral \
@@ -37,7 +40,8 @@ in stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkgconfig qmake makeWrapper ];
   buildInputs = [ qtbase qtquickcontrols2 qtmultimedia qtgraphicaleffects qtdeclarative ]
-    ++ stdenv.lib.optional stdenv.hostPlatform.isLinux libpulseaudio;
+    ++ stdenv.lib.optional stdenv.hostPlatform.isLinux libpulseaudio
+    ++ stdenv.lib.optional stdenv.hostPlatform.isDarwin qtmacextras;
 
   meta = with stdenv.lib; {
     description = "A glossy client for Matrix, written in QtQuick Controls 2 and C++";

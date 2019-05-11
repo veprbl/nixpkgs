@@ -2,14 +2,14 @@
 
 buildPythonPackage rec {
   pname = sip-module;
-  version = "4.19.13";
+  version = "4.19.17";
   format = "other";
 
   disabled = isPyPy;
 
   src = fetchurl {
-    url = "mirror://sourceforge/pyqt/sip/sip-${version}/sip-${version}.tar.gz";
-    sha256 = "0pniq03jk1n5bs90yjihw3s3rsmjd8m89y9zbnymzgwrcl2sflz3";
+    url = "https://www.riverbankcomputing.com/static/Downloads/sip/${version}/sip-${version}.tar.gz";
+    sha256 = "1wsxqh75vfdqj4y5ca0773vq7rqf172i4p87ph2w3vzyspsdig0j";
   };
 
   configurePhase = ''

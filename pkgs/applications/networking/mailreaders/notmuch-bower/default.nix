@@ -8,8 +8,8 @@ stdenv.mkDerivation rec {
     owner = "wangp";
     repo = "bower";
     #rev = version;
-    rev = "c4107ef8b302883d450c407872f3306a77431246";
-    sha256 = "196pr7831s2khji9cvj04w7f9gn446ayhfnbi823ap95z6nhxg67";
+    rev = "e409fdcb96818eadff6c7c1c261acd073ec789aa";
+    sha256 = "1ns2grqbnacxg8f82gidjgpa88rkhsq2992yfg0ay7pm1kr7iyhx";
   };
 
   nativeBuildInputs = [ gawk mercury pandoc ];
@@ -34,10 +34,7 @@ stdenv.mkDerivation rec {
     ./0007-tweak-icons-fix-spacing.patch
 
     ./0001-hack-replace-tabs-with-spaces-in-Subject-header.patch
-    ./total-color.patch
     ./cal.patch
-
-    ./author-toggle.patch
   ];
 
   installPhase = ''

@@ -12,10 +12,13 @@
 , libatomic_ops, graphite2, harfbuzz, libodfgen, libzmf
 , librevenge, libe-book, libmwaw, glm, glew, gst_all_1
 , gdb, commonsLogging, librdf_rasqal, wrapGAppsHook
-, gnome3, glib, ncurses, epoxy, gpgme
+, gnome3, glib, gobject-introspection, ncurses, epoxy, gpgme, gnupg, liblangtag
+#, qtbase, qmake
+#  https://dev.gentoo.org/~asturm/distfiles/libreoffice-6.2.3.2-patchset-01.tar.xz 
 , langs ? [ "ca" "cs" "de" "en-GB" "en-US" "eo" "es" "fr" "hu" "it" "ja" "nl" "pl" "ru" "sl" "zh-CN" ]
 , withHelp ? true
 , kdeIntegration ? false
+# kde5! Add deps, maybe these: https://github.com/KDAB/libreoffice-core/blob/master/configure.ac#L10913 or so
 }:
 
 let
@@ -55,14 +58,14 @@ let
 
     translations = fetchSrc {
       name = "translations";
-      sha256 = "0i8pmgdm0i6klb06s3nwad9xz4whbvb5mjjqjqvl6fh0flk6zs1p";
+      sha256 = "0gnx596sr498n3frz1wgcnq9kqqaqksxfyjm145235pvrv2ymgvp";
     };
 
     # TODO: dictionaries
 
     help = fetchSrc {
       name = "help";
-      sha256 = "14hd6rnq9316p78zharqznps80mxxwz3n80zm15cpj3xg3dr57v1";
+      sha256 = "0chips6h2ymaqwvjlxzjn7jm64y6r4lcr7z7rppan436nqz95dn1";
     };
 
   };
@@ -73,7 +76,7 @@ in stdenv.mkDerivation rec {
 
   # For some reason librdf_redland sometimes refers to rasqal.h instead
   # of rasqal/rasqal.h
-  NIX_CFLAGS_COMPILE = [ "-I${librdf_rasqal}/include/rasqal" ];
+  NIX_CFLAGS_COMPILE = [ "-I${librdf_rasqal}/include/rasqal" ] ++ lib.optional stdenv.isx86_64 "-mno-fma";
 
   patches = [
     ./xdg-open-brief.patch
@@ -109,6 +112,7 @@ in stdenv.mkDerivation rec {
   '';
 
   QT4DIR = qt4;
+  #dontUseQmakeConfigure = true;
 
   preConfigure = ''
     configureFlagsArray=(
@@ -265,7 +269,7 @@ in stdenv.mkDerivation rec {
 
     mkdir -p "$out/share/gsettings-schemas/collected-for-libreoffice/glib-2.0/schemas/"
 
-    for a in sbase scalc sdraw smath swriter simpress soffice; do
+    for a in sbase scalc sdraw smath swriter simpress soffice unopkg; do
       ln -s $out/lib/libreoffice/program/$a $out/bin/$a
     done
 
@@ -282,6 +286,8 @@ in stdenv.mkDerivation rec {
     sed -re 's@Icon=libreoffice(dev)?[0-9.]*-?@Icon=@' -i "$out/share/applications/"*.desktop
   '';
 
+  #QT5DIR = qtbase;
+
   configureFlags = [
     "${if withHelp then "" else "--without-help"}"
     "--with-boost=${boost.dev}"
@@ -292,9 +298,15 @@ in stdenv.mkDerivation rec {
     "--disable-report-builder"
     "--disable-online-update"
     "--enable-python=system"
+    "--enable-qt4"
     "--enable-dbus"
+    "--enable-cairo-canvas"
+    "--with-tls=nss"
+    # "--enable-eot" # libeot
     "--enable-release-build"
+    # XXX: add needed deps
     (lib.enableFeature kdeIntegration "kde4")
+    #(lib.enableFeature kdeIntegration "kde5")
     "--enable-epm"
     "--with-jdk-home=${jdk.home}"
     "--with-ant-home=${ant}/lib/ant"
@@ -328,14 +340,17 @@ in stdenv.mkDerivation rec {
     "--without-myspell-dicts"
     "--without-doxygen"
 
+    "--enable-extension-integration"
+    "--enable-mergelib" # one library to rule them all, and in the darkness...
+
     # TODO: package these as system libraries
     "--with-system-beanshell"
     "--without-system-hsqldb"
     "--without-system-altlinuxhyph"
-    "--without-system-lpsolve"
+    "--without-system-lpsolve" # not sure why can't use our lp_solve
     "--without-system-libetonyek"
     "--without-system-libfreehand"
-    "--without-system-liblangtag"
+    "--with-system-liblangtag"
     "--without-system-libmspub"
     "--without-system-libpagemaker"
     "--without-system-libstaroffice"
@@ -356,20 +371,21 @@ in stdenv.mkDerivation rec {
     [ ant ArchiveZip autoconf automake bison boost cairo clucene_core
       IOCompress cppunit cups curl db dbus-glib expat file flex fontconfig
       freetype GConf getopt gnome_vfs gperf gtk3 gtk2
+    #  qtbase
       hunspell icu jdk lcms libcdr libexttextcat unixODBC libjpeg
       libmspack librdf_redland librsvg libsndfile libvisio libwpd libwpg libX11
       libXaw libXext libXi libXinerama libxml2 libxslt libXtst
       libXdmcp libpthreadstubs libGLU_combined mythes gst_all_1.gstreamer
-      gst_all_1.gst-plugins-base glib mariadb
+      gst_all_1.gst-plugins-base glib gobject-introspection mariadb
       neon nspr nss openldap openssl ORBit2 pam perl pkgconfig poppler
       python3 sablotron sane-backends unzip vigra which zip zlib
       mdds bluez5 libcmis libwps libabw libzmf libtool
-      libxshmfence libatomic_ops graphite2 harfbuzz gpgme utillinux
-      librevenge libe-book libmwaw glm glew ncurses epoxy
+      libxshmfence libatomic_ops graphite2 harfbuzz gpgme gnupg utillinux
+      librevenge libe-book libmwaw glm glew ncurses epoxy liblangtag
       libodfgen CoinMP librdf_rasqal gnome3.adwaita-icon-theme gettext
     ]
     ++ lib.optional kdeIntegration kdelibs4;
-  nativeBuildInputs = [ wrapGAppsHook gdb fontforge ];
+  nativeBuildInputs = [ wrapGAppsHook gdb fontforge /* qmake */ ];
 
   passthru = {
     inherit srcs jdk;

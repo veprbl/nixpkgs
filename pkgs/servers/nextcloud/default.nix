@@ -1,18 +1,11 @@
-{ stdenv, fetchurl, fetchpatch }:
-
-stdenv.mkDerivation rec {
+{ stdenv, fetchzip }:
+let
+  version = "16.0.1RC1";
+in fetchzip {
   name = "nextcloud-${version}";
-  version = "16.0.0";
 
-  src = fetchurl {
-    url = "https://download.nextcloud.com/server/releases/${name}.tar.bz2";
-    sha256 = "4532f7028b1d9bf060f75ac4fbbde52a59ecd9c9155f3178a038d3cf3609402e";
-  };
-
-  installPhase = ''
-    mkdir -p $out/
-    cp -R . $out/
-  '';
+  url = "https://download.nextcloud.com/server/prereleases/nextcloud-${version}.tar.bz2";
+  sha256 = "0pqf3czn8dgw6nchbvrpp8pcyhphqkdan7470qsz7zz75dq4vgcv";
 
   meta = {
     description = "Sharing solution for files, calendars, contacts and more";

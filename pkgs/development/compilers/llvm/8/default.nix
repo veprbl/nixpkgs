@@ -188,6 +188,7 @@ let
 
     libcxxStdenv = overrideCC stdenv buildLlvmTools.libcxxClang;
     libcxxStdenv-prepo = overrideCC stdenv buildLlvmTools.libcxxClang-prepo;
+    llvmStdenv = overrideCC stdenv buildLlvmTools.lldClang;
 
     libcxx = callPackage ./libc++ ({} //
       (stdenv.lib.optionalAttrs (stdenv.hostPlatform.useLLVM or false) {
