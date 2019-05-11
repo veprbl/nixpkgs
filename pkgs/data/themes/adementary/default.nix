@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   pname = "adementary-theme";
-  version = "201905-refresh"; # plus commits for rename
+  version = "201905-refresh-git"; # plus commits for rename
 
   src = fetchFromGitHub {
     owner  = "hrdwrrsk";
     repo   = pname;
     #rev    = version;
-    rev    = "6271e97038756ebfdfd8761e5b9fa1f43f39d037";
+    rev    = "d8de1a7247c42104f57f46b7760feb230c3a6de6";
     sha256 = "0lb8bfjp6v9yixm89f20z5xrcwplkc9mfq07nyvivvbjkgppiqjc";
   };
 
