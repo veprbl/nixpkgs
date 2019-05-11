@@ -20,18 +20,12 @@ buildPythonPackage rec {
   # The websites youtube-dl deals with are a very moving target. That means that
   # downloads break constantly. Because of that, updates should always be backported
   # to the latest stable release.
-  version = "2019.04.30";
+  version = "2019.05.11";
 
-  src = fetchFromGitHub {
-    owner = "ytdl-org";
-    repo = "youtube-dl";
-    rev = "a5b92d3590def85aee73d2968875e9a9cc916f26";
-    sha256 = "04z4vyz6487ha78l6mhmm9xvr3pvf0ldxh68faljzmfwq71mpia7";
+  src = fetchurl {
+    url = "https://yt-dl.org/downloads/${version}/${pname}-${version}.tar.gz";
+    sha256 = "1y272jgdqwhf2njzqfln80zb2pmw83rvp6lxza6wghb7cld249j1";
   };
-  #src = fetchurl {
-  #  url = "https://yt-dl.org/downloads/${version}/${pname}-${version}.tar.gz";
-  #  sha256 = "1s43adnky8ayhjwmgmiqy6rmmygd4c23v36jhy2lzr2jpn8l53z1";
-  #};
 
   nativeBuildInputs = [ makeWrapper ];
   buildInputs = [ zip ] ++ lib.optional generateManPage pandoc;
