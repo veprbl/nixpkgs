@@ -15,13 +15,13 @@
 
 stdenv.mkDerivation rec {
   pname = "nasc";
-  version = "0.5.2";
+  version = "0.5.3";
 
   src = fetchFromGitHub {
     owner = "parnold-x";
     repo = pname;
     rev = version;
-    sha256 = "009xmlsgl7r6wp6sczbdp8sjqqd6k2mychx5b4zn7wnrl7435y5y";
+    sha256 = "0mrmiaciv1y5xpfbdji4g05sg0v8saiy6aaqvq9dw24brzj3dqia";
   };
 
   nativeBuildInputs = [
