@@ -15,6 +15,19 @@ let
       mv ./all/electrum/tests $out
     '';
   };
+
+  # Not provided in official source releases, which are what upstream signs.
+  tests = fetchFromGitHub {
+    owner = "spesmilo";
+    repo = "electrum";
+    rev = version;
+    sha256 = "11rzzrv5xxqazcb7q1ig93d6cisqmd1x0jrgvfgzysbzvi51gg11";
+
+    extraPostFetch = ''
+      mv $out ./all
+      mv ./all/electrum/tests $out
+    '';
+  };
 in
 
 python3Packages.buildPythonApplication rec {

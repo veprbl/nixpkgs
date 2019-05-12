@@ -157,6 +157,8 @@ in
 
   deadcode = callPackage ../development/tools/deadcode { };
 
+  proto-contrib = callPackage ../development/tools/proto-contrib {};
+
   demoit = callPackage ../servers/demoit { };
 
   diffPlugins = (callPackage ../build-support/plugins.nix {}).diffPlugins;
@@ -672,7 +674,9 @@ in
 
   bcachefs-tools = callPackage ../tools/filesystems/bcachefs-tools { };
 
-  bitwarden_rs = callPackage ../tools/security/bitwarden_rs { };
+  bitwarden_rs = callPackage ../tools/security/bitwarden_rs {
+    inherit (darwin.apple_sdk.frameworks) Security CoreServices;
+  };
 
   bitwarden_rs-vault = callPackage ../tools/security/bitwarden_rs/vault.nix { };
 
@@ -1703,6 +1707,8 @@ in
 
   mp3blaster = callPackage ../applications/audio/mp3blaster { };
 
+  mp3cat = callPackage ../tools/audio/mp3cat {};
+
   mp3fs = callPackage ../tools/filesystems/mp3fs { };
 
   mpdas = callPackage ../tools/audio/mpdas { };
@@ -2677,8 +2683,19 @@ in
   elasticsearch-oss = elasticsearch6-oss;
 
   elasticsearchPlugins = recurseIntoAttrs (
-    callPackage ../servers/search/elasticsearch/plugins.nix { }
+    callPackage ../servers/search/elasticsearch/plugins.nix {
+      elasticsearch = elasticsearch-oss;
+    }
   );
+  elasticsearch5Plugins = elasticsearchPlugins.override {
+    elasticsearch = elasticsearch5;
+  };
+  elasticsearch6Plugins = elasticsearchPlugins.override {
+    elasticsearch = elasticsearch6-oss;
+  };
+  elasticsearch7Plugins = elasticsearchPlugins.override {
+    elasticsearch = elasticsearch7-oss;
+  };
 
   elasticsearch-curator = with (python3.override {
     packageOverrides = self: super: {
@@ -3444,6 +3461,8 @@ in
   haproxy = callPackage ../tools/networking/haproxy {
     stdenv = if stdenv.cc.isClang then llvmPackages_6.stdenv else stdenv;
   };
+
+  hackertyper = callPackage ../tools/misc/hackertyper { };
 
   haveged = callPackage ../tools/security/haveged { };
 
@@ -4527,6 +4546,8 @@ in
     withMinimal = false;
   };
 
+  mkclean = callPackage ../applications/video/mkclean {};
+
   mkcue = callPackage ../tools/cd-dvd/mkcue { };
 
   mkp224o = callPackage ../tools/security/mkp224o { };
@@ -5049,6 +5070,8 @@ in
   parcellite = callPackage ../tools/misc/parcellite { };
 
   patchutils = callPackage ../tools/text/patchutils { };
+
+  patchutils_0_3_3 = callPackage ../tools/text/patchutils/0.3.3.nix { };
 
   parted = callPackage ../tools/misc/parted { };
 
@@ -6269,7 +6292,8 @@ in
     libX11 = xorg.libX11;
   };
 
-  twitterBootstrap3 = callPackage ../development/web/twitter-bootstrap {};
+  twitterBootstrap3 = callPackage ../development/web/twitter-bootstrap/3.nix {};
+  twitterBootstrap4 = callPackage ../development/web/twitter-bootstrap {};
   twitterBootstrap = twitterBootstrap3;
 
   txr = callPackage ../tools/misc/txr { stdenv = clangStdenv; };
@@ -8275,7 +8299,7 @@ in
   mesos = callPackage ../applications/networking/cluster/mesos {
     sasl = cyrus_sasl;
     inherit (pythonPackages) python boto setuptools wrapPython;
-    pythonProtobuf = pythonPackages.protobuf;
+    pythonProtobuf = pythonPackages.protobuf.override { protobuf = protobuf3_6; };
     perf = linuxPackages.perf;
   };
 
@@ -8775,13 +8799,16 @@ in
 
   bam = callPackage ../development/tools/build-managers/bam {};
 
-  bazel_0_4 = callPackage ../development/tools/build-managers/bazel/0.4.nix { };
+  bazel_0_4 = callPackage ../development/tools/build-managers/bazel/0.4.nix {
+    stdenv = if stdenv.cc.isClang then llvmPackages_6.stdenv else stdenv;
+  };
   bazel = callPackage ../development/tools/build-managers/bazel {
     inherit (darwin) cctools;
     inherit (darwin.apple_sdk.frameworks) CoreFoundation CoreServices Foundation;
     buildJdk = jdk8;
     buildJdkName = "jdk8";
     runJdk = jdk11;
+    stdenv = if stdenv.cc.isClang then llvmPackages_6.stdenv else stdenv;
   };
 
   bazel-buildtools = callPackage ../development/tools/build-managers/bazel/buildtools { };
@@ -21571,7 +21598,10 @@ in
 
   nethack = callPackage ../games/nethack { };
 
-  nethack-qt = callPackage ../games/nethack { qtMode = true; };
+  nethack-qt = callPackage ../games/nethack {
+    qtMode = true;
+    stdenv = gccStdenv;
+  };
 
   nethack-x11 = callPackage ../games/nethack { x11Mode = true; };
 
@@ -22969,7 +22999,7 @@ in
 
   ### SCIENCE/ROBOTICS
 
-  apmplanner2 = libsForQt59.callPackage ../applications/science/robotics/apmplanner2 { };
+  apmplanner2 = libsForQt511.callPackage ../applications/science/robotics/apmplanner2 { };
 
   ### MISC
 
