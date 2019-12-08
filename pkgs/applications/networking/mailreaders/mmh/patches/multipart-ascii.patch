@@ -1,0 +1,21 @@
+From: Dmitry Bogatov <KAction@debian.org>
+Date: Fri, 3 May 2019 18:37:19 +0000
+Subject: Ensure that multipart message boundaries are ascii-only
+
+---
+ uip/mhsign.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/uip/mhsign.sh b/uip/mhsign.sh
+index 894ca5e..44b3870 100755
+--- a/uip/mhsign.sh
++++ b/uip/mhsign.sh
+@@ -182,7 +182,7 @@ fixheaders() {
+ 
+ ### newboundary -- output a suitable boundary marker
+ newboundary() {
+-	b=$$_`date|sed 's/[ :	]/_/g'`
++	b=$$_`LC_ALL=C date|sed 's/[ :	]/_/g'`
+ 	for i in 0 x '=' _ + , Z 9 4 ; do
+ 		if grep "^--$b" $TEMP/body >/dev/null 2>&1 ; then
+ 			## oops, bad boundary -- try again

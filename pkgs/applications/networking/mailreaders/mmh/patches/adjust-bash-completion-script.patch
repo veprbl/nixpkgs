@@ -1,0 +1,297 @@
+From: Dmitry Bogatov <KAction@gnu.org>
+Date: Thu, 15 Feb 2018 23:16:13 +0300
+Subject: [PATCH] adjust-bash-completion-script
+
+Modern installations of bash-completion do not use "have" function.
+Instead, autocompletion is loaded on-demand.
+
+---
+ docs/COMPLETION-BASH | 264 +++++++++++++++++++++++++--------------------------
+ 1 file changed, 130 insertions(+), 134 deletions(-)
+
+diff --git a/docs/COMPLETION-BASH b/docs/COMPLETION-BASH
+index 35cdf9f..813a465 100644
+--- a/docs/COMPLETION-BASH
++++ b/docs/COMPLETION-BASH
+@@ -2,151 +2,147 @@
+ # Copyright 2003 "Wade Richards" <wade@wabyn.net>
+ # Permission granted to redistribute under the BSD license
+ 
+-[ "$BASH_COMPLETION" ] || echo "ERROR: COMPLETION-BASH is not intended to be \
+-sourced directly, but rather added to a bash-completion package installation."
++if ! type _nmh &>/dev/null ; then
++    _nmh()
++    {
++        # args: command comp-word prev-word
++        local command current prev folder origfolder i orig_opts
+ 
+-have show &&
+-_nmh()
+-{
+-    # args: command comp-word prev-word
+-    local command current prev folder origfolder i orig_opts
++        COMPREPLY=()
++        current=${COMP_WORDS[COMP_CWORD]}
++        prev=${COMP_WORDS[COMP_CWORD-1]}
++        command=$1
+ 
+-    COMPREPLY=()
+-    current=${COMP_WORDS[COMP_CWORD]}
+-    prev=${COMP_WORDS[COMP_CWORD-1]}
+-    command=$1
++        orig_opts=$(shopt -p extglob)
++        shopt -s extglob
+ 
+-    orig_opts=$(shopt -p extglob)
+-    shopt -s extglob
++        # Get the folder, if specified
++        for (( i=0; i < ${#COMP_WORDS}-1; i++ ))
++        do
++            case "${COMP_WORDS[i]}" in
++            \++([a-zA-Z_]) )
++                folder=${COMP_WORDS[i]}
++                origfolder=$( folder -f )
++                ;;
++            esac
++        done
+ 
+-    # Get the folder, if specified
+-    for (( i=0; i < ${#COMP_WORDS}-1; i++ ))
+-    do
+-        case "${COMP_WORDS[i]}" in
+-        \++([a-zA-Z_]) )
+-            folder=${COMP_WORDS[i]}
+-            origfolder=$( folder -f )
++        case $current in
++        -* )
++            # Command-line switches for the most common commands.
++            case $command in
++            ali )
++                # no sequences or messages
++                options=(-alias -list -nolist -normalize -nonormalize -user
++                        -nouser -Version -help)
++                ;;
++            burst )
++                options=(-inplace -noinplace -quiet -noquiet -verbose
++                        -noverbose -Version -help)
++                ;;
++            comp )
++                options=(-form -use -nouse
++                        -editor -noedit -whatnowproc
++                        -Version -help )
++               ;;
++            flist* )
++                options=(-sequence -all -noall -showzero -noshowzero
++                        -recurse -norecurse -fast -nofast -alpha -noalpha -Version
++                        -help)
++                ;;
++            folder* )
++                options=(-all -noall -create -nocreate -fast -nofast -header
++                        -noheader -recurse -norecurse -total -nototal -list -nolist
++                        -push -pop -pack -nopack -print -verbose -noverbose
++                        -Version -help)
++                ;;
++            forw )
++                options=(-annotate -noannotate -form
++                        -editor -noedit -whatnowproc -build
++                        -Version -help)
++                ;;
++            inc )
++                options=(-audit -noaudit -changecur -nochangecur -form
++                        -file -silent -nosilent -truncate -notruncate -width
++                        -Version -help)
++                ;;
++            mark )
++                options=(-sequence -add -delete -list -public -nopublic
++                        -zero -nozero -Version -help)
++                ;;
++            packf )
++                options=(-file -Version -help)
++                ;;
++            pick )
++                options=(-and -or -not -lbrace -rbrace --component -cc
++                        -date -from -search -subject -to -after -before -datefield
++                        -sequence -public -nopublic -zero -nozero -list -nolist
++                        -Version -help)
++                ;;
++            refile )
++                options=(-link -nolink -src -file -Version -help)
++                ;;
++            repl )
++                options=(-annotate -noannotate -group -nogroup -cc
++                        -nocc -query -noquery -form -filter -nofilter
++                        -mime -nomime -editor -noedit -whatnowproc
++                        -build -file -Version -help)
++                ;;
++            rmf )
++                options=(-interactive -nointeractive -Version -help)
++                ;;
++            rmm )
++                options=(-link -nolink -Version -help)
++                ;;
++            scan )
++                options=(-form -header -noheader
++                        -width -file -Version -help )
++                ;;
++            show|next|prev )
++                options=(-file -part -type -form -Version -help)
++                ;;
++            sortm )
++                options=(-datefield -textfield -notextfield -limit -nolimit
++                        -verbose -noverbose -Version -help)
++                ;;
++            * )
++                options=(-help -Version -seq)
++                ;;
++            esac
+             ;;
+-        esac
+-    done
+ 
+-    case $current in
+-    -* )
+-        # Command-line switches for the most common commands.
+-        case $command in
+-        ali )
+-            # no sequences or messages
+-            options=(-alias -list -nolist -normalize -nonormalize -user
+-                    -nouser -Version -help)
+-            ;;
+-        burst )
+-            options=(-inplace -noinplace -quiet -noquiet -verbose
+-                    -noverbose -Version -help)
+-            ;;
+-        comp )
+-            options=(-form -use -nouse
+-                    -editor -noedit -whatnowproc
+-                    -Version -help )
+-           ;;
+-        flist* )
+-            options=(-sequence -all -noall -showzero -noshowzero
+-                    -recurse -norecurse -fast -nofast -alpha -noalpha -Version
+-                    -help)
+-            ;;
+-        folder* )
+-            options=(-all -noall -create -nocreate -fast -nofast -header
+-                    -noheader -recurse -norecurse -total -nototal -list -nolist
+-                    -push -pop -pack -nopack -print -verbose -noverbose
+-                    -Version -help)
+-            ;;
+-        forw )
+-            options=(-annotate -noannotate -form
+-                    -editor -noedit -whatnowproc -build
+-                    -Version -help)
+-            ;;
+-        inc )
+-            options=(-audit -noaudit -changecur -nochangecur -form
+-                    -file -silent -nosilent -truncate -notruncate -width
+-                    -Version -help)
+-            ;;
+-        mark )
+-            options=(-sequence -add -delete -list -public -nopublic
+-                    -zero -nozero -Version -help)
+-            ;;
+-        packf )
+-            options=(-file -Version -help)
+-            ;;
+-        pick )
+-            options=(-and -or -not -lbrace -rbrace --component -cc
+-                    -date -from -search -subject -to -after -before -datefield
+-                    -sequence -public -nopublic -zero -nozero -list -nolist
+-                    -Version -help)
+-            ;;
+-        refile )
+-            options=(-link -nolink -src -file -Version -help)
+-            ;;
+-        repl )
+-            options=(-annotate -noannotate -group -nogroup -cc
+-                    -nocc -query -noquery -form -filter -nofilter
+-                    -mime -nomime -editor -noedit -whatnowproc
+-                    -build -file -Version -help)
+-            ;;
+-        rmf )
+-            options=(-interactive -nointeractive -Version -help)
++        +* )
++            # Folders
++            options=( $( folder -all -r -fast | grep -v "^\." | sed "s/^/+/" ) )
+             ;;
+-        rmm )
+-            options=(-link -nolink -Version -help)
+-            ;;
+-        scan )
+-            options=(-form -header -noheader
+-                    -width -file -Version -help )
+-            ;;
+-        show )
+-        next )
+-        prev )
+-            options=(-file -part -type -form -Version -help)
+-            ;;
+-        sortm )
+-            options=(-datefield -textfield -notextfield -limit -nolimit
+-                    -verbose -noverbose -Version -help)
+-            ;;
+-        * )
+-            options=(-help -Version -seq)
+-            ;;
+-        esac
+-        ;;
+ 
+-    +* )
+-        # Folders
+-        options=( $( folder -all -r -fast | grep -v "^\." | sed "s/^/+/" ) )
+-        ;;
+-
+-    +([0-9a-z])-* )
+-        # Partial range
+-        start=${current/%-*/}
+-        options=( $( scan $folder -form "=%(msg)" "${start}-last" ) first prev cur next last )
+-        options=( ${options[@]//#/${start}-} )
+-        ;;
++        +([0-9a-z])-* )
++            # Partial range
++            start=${current/%-*/}
++            options=( $( scan $folder -form "=%(msg)" "${start}-last" ) first prev cur next last )
++            options=( ${options[@]//#/${start}-} )
++            ;;
+ 
+-    +([0-9]) )
+-        # Message number, or start of range
+-        options=( $( scan $folder -form "=%(msg)" ) first prev cur next last )
+-        options=( ${options[@]} ${options[@]//%/-} )
+-        ;;
++        +([0-9]) )
++            # Message number, or start of range
++            options=( $( scan $folder -form "=%(msg)" ) first prev cur next last )
++            options=( ${options[@]} ${options[@]//%/-} )
++            ;;
+ 
+-    [fpcnlu]* )
+-        # special message aliases
+-        options=( first prev cur next last unseen )
+-        ;;
++        [fpcnlu]* )
++            # special message aliases
++            options=( first prev cur next last unseen )
++            ;;
+ 
+-        # What about sequences?  I can't quite see how to get the list of possible sequences, so I
+-        # guess the user will have to type them in the old-fashioned way.
++            # What about sequences?  I can't quite see how to get the list of possible sequences, so I
++            # guess the user will have to type them in the old-fashioned way.
+ 
+-    esac
++        esac
+ 
+-    eval $orig_opts
++        eval $orig_opts
+ 
+-    COMPREPLY=( $( compgen -W "${options[*]}" -- $current ) )
+-    return 0
+-}
+-[ "$have" ] && complete -F _nmh ali anno burst comp dist flist flists folder folders forw inc mark mhbuild mhl mhlist mhmail mhparam mhpath mhstore next packf pick prev prompter rcvdist rcvpack rcvstore refile repl rmf rmm scan send sendfiles show slocal sortm whatnow
++        COMPREPLY=( $( compgen -W "${options[*]}" -- $current ) )
++        return 0
++    }
++    complete -F _nmh ali anno burst comp dist flist flists folder folders forw inc mark mhbuild mhl mhlist mhmail mhparam mhpath mhstore next packf pick prev prompter rcvdist rcvpack rcvstore refile repl rmf rmm scan send sendfiles show slocal sortm whatnow
++fi

@@ -1,0 +1,92 @@
+From: Dmitry Bogatov <KAction@debian.org>
+Date: Mon, 6 May 2019 20:20:55 +0000
+Subject: Fix spelling errors
+
+Forwarded: yes
+Last-Update: 2019-01-21
+---
+ man/mh-alias.man5 |  2 +-
+ man/mhl.man1      |  2 +-
+ man/pick.man1     | 12 ++++++------
+ 3 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/man/mh-alias.man5 b/man/mh-alias.man5
+index 3769141..0f96f99 100644
+--- a/man/mh-alias.man5
++++ b/man/mh-alias.man5
+@@ -220,7 +220,7 @@ file as appropriate.
+ .RE
+ .PP
+ Earlier versions of this man page showed a semicolon at the end of the
+-blind list example.  That caused the preceeding alias to not be
++blind list example.  That caused the preceding alias to not be
+ expanded.  There must not be a semicolon at the end of, or within, the
+ address group of a blind list.
+ .B post
+diff --git a/man/mhl.man1 b/man/mhl.man1
+index b6af953..e1a4b4b 100644
+--- a/man/mhl.man1
++++ b/man/mhl.man1
+@@ -170,7 +170,7 @@ ignores=component,...
+ specifies a list of components which are never output.
+ This option supports some simple globbing,
+ so a '*' at the end of a component will match
+-for all components which start wich the string.
++for all components which start which the string.
+ When you want to match a component which ends with
+ a '*', you can escape the '*' with a '\\'.
+ .PP
+diff --git a/man/pick.man1 b/man/pick.man1
+index 5e20903..2de3ce5 100644
+--- a/man/pick.man1
++++ b/man/pick.man1
+@@ -94,11 +94,11 @@ With the others,
+ .B pick
+ compares the header field name case insensitive
+ and the tries to match the field body with the
+-.IR patern.
++.IR pattern.
+ .PP
+ With
+ .BR --componend
+-you can sepcify the exact header field name you are looking for.
++you can specify the exact header field name you are looking for.
+ It is used to pick a component which is not one of `To:',
+ `Cc:', `Date:', `From:', or `Subject:'.
+ An example is
+@@ -107,7 +107,7 @@ An example is
+ Pattern matching is performed on a per\-header-field basis. Within the header
+ of the message, each field is treated as one long line, but in the
+ body, each line is separate.  The
+-.IR patern
++.IR pattern
+ will match any case.
+ .PP
+ Note that since the
+@@ -304,7 +304,7 @@ The default
+ .B Scan
+ line contains the message number
+ (name), the date, the `From:' field and the `Subject' field.
+-The folowing example shows the default output of
++The following example shows the default output of
+ .B scan
+ .PP
+ .RS 5
+@@ -450,7 +450,7 @@ mark(1)
+ .RB ` "\-datefield date" '
+ .RB ` \-zero '
+ .RB ` \-list "' is the default if no `\-sequence', `\-nolist' otherwise"
+-.RB ` "\-format pick\.default" "' if the programm is called with scan `scan.default' is used
++.RB ` "\-format pick\.default" "' if the program is called with scan `scan.default' is used
+ .fi
+ 
+ .SH CONTEXT
+@@ -507,7 +507,7 @@ In
+ .B nmh
+ and old
+ .B mmh
+-versions scan and pick where two diffrent tools. So instand of typing
++versions scan and pick where two different tools. So instand of typing
+ .PP
+ .RS 5
+ .nf
