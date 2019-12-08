@@ -3698,6 +3698,16 @@
     githubId = 66669;
     name = "Jeff Zellner";
   };
+  kaction = {
+    name  = "Dmitry Bogatov";
+    email = "KAction@disroot.org";
+    github = "kaction";
+    githubId = 44864956;
+    key = [{
+      longkeyid = "rsa4096/0x2E20FEEE71FC7D81";
+      fingerprint = "7214 B3C8 D5FF 8F26 E125  93D5 2E20 FEEE 71FC 7D81";
+    }];
+  };
   kaiha = {
     email = "kai.harries@gmail.com";
     github = "kaiha";
