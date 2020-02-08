@@ -7,17 +7,14 @@
 # it may be worth thinking about using multiple derivation outputs
 # In that case its about 6MB which could be separated
 
-let
-  pname = "gobject-introspection";
-  version = "1.62.0";
-in
 with stdenv.lib;
 stdenv.mkDerivation rec {
-  name = "${pname}-${version}";
+  pname = "gobject-introspection";
+  version = "1.64.0";
 
   src = fetchurl {
-    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "18lhglg9v6y83lhqzyifc1z0wrlawzrhzzxx0a3h1g7xaz97xvmi";
+    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+    sha256 = "10pwykfnk7pw8k9k8iz3p72phxvyrh5q4d7gr3ysv08w15immh7a";
   };
 
   outputs = [ "out" "dev" "man" ];
@@ -32,6 +29,8 @@ stdenv.mkDerivation rec {
 
   mesonFlags = [
     "--datadir=${placeholder "dev"}/share"
+    "-Ddoctool=disabled"
+    "-Dcairo=disabled"
   ];
 
   # outputs TODO: share/gobject-introspection-1.0/tests is needed during build
@@ -40,6 +39,8 @@ stdenv.mkDerivation rec {
   setupHook = ./setup-hook.sh;
 
   patches = [
+    # the gitypelibtest fails as the required libs aren't installed yet
+    ./disabled_tests.patch
     (substituteAll {
       src = ./test_shlibs.patch;
       inherit nixStoreDir;
