@@ -27,14 +27,14 @@
 
 let
   pname = "gnome-flashback";
-  version = "3.34.2";
+  version = "3.35.2";
   requiredComponents = wmName: "RequiredComponents=${wmName};gnome-flashback;gnome-panel;org.gnome.SettingsDaemon.A11ySettings;org.gnome.SettingsDaemon.Color;org.gnome.SettingsDaemon.Datetime;org.gnome.SettingsDaemon.Housekeeping;org.gnome.SettingsDaemon.Keyboard;org.gnome.SettingsDaemon.MediaKeys;org.gnome.SettingsDaemon.Power;org.gnome.SettingsDaemon.PrintNotifications;org.gnome.SettingsDaemon.Rfkill;org.gnome.SettingsDaemon.ScreensaverProxy;org.gnome.SettingsDaemon.Sharing;org.gnome.SettingsDaemon.Smartcard;org.gnome.SettingsDaemon.Sound;org.gnome.SettingsDaemon.Wacom;org.gnome.SettingsDaemon.XSettings;";
   gnome-flashback = stdenv.mkDerivation rec {
     name = "${pname}-${version}";
 
     src = fetchurl {
       url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-      sha256 = "1726xcm2q94nfvb055d3m61m20s0xy3xl1fc3ds3k3rcrn457riv";
+      sha256 = "177zlyd7gbyg2g1hskn87hp57c6826zsq11c02akd4mw87hfzpam";
     };
 
     # make .desktop Execs absolute
