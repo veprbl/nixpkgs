@@ -25,7 +25,7 @@
 , gtk3
 , gnome-desktop
 , geocode-glib
-, pipewire
+, pipewire_0_3
 , libgudev
 , libwacom
 , xwayland
@@ -95,7 +95,7 @@ stdenv.mkDerivation rec {
     libxkbcommon
     libxkbfile
     pango
-    pipewire
+    pipewire_0_3
     sysprof
     upower
     xkeyboard_config
