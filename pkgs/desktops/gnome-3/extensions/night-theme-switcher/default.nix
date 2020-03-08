@@ -1,13 +1,14 @@
-{ stdenv, fetchgit }:
+{ stdenv, fetchFromGitLab }:
 
 stdenv.mkDerivation rec {
   pname = "gnome-shell-extension-night-theme-switcher";
-  version = "2.1";
+  version = "19";
 
-  src = fetchgit {
-    url = "https://git.romainvigier.fr/Romain/nightthemeswitcher-gnome-shell-extension";
+  src = fetchFromGitLab {
+    owner = "rmnvgr";
+    repo = "nightthemeswitcher-gnome-shell-extension";
     rev = "v${version}";
-    sha256 = "1md44vmc83cp35riszhdvysnvl8pmkcpf5j6n4i2b3wwcjwxqwfy";
+    sha256 = "1ll0yf1skf51wa10mlrajd1dy459w33kx0i3vhfcx2pdk7mw5a3c";
   };
 
   makeFlags = [ "GSEXT_DIR_LOCAL=${placeholder "out"}/share/gnome-shell/extensions" ];
@@ -16,6 +17,6 @@ stdenv.mkDerivation rec {
     description = "Automatically change the GTK theme to dark variant when Night Light activates";
     license = licenses.gpl3;
     maintainers = with maintainers; [ jonafato ];
-    homepage = https://git.romainvigier.fr/Romain/nightthemeswitcher-gnome-shell-extension;
+    homepage = "https://gitlab.com/rmnvgr/nightthemeswitcher-gnome-shell-extension/";
   };
 }
