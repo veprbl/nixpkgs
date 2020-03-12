@@ -52,7 +52,6 @@ stdenv.mkDerivation rec {
       src = ./fix-paths.patch;
       inherit tzdata;
     })
-    # ./global-backlight-helper.patch
   ];
 
   nativeBuildInputs = [
