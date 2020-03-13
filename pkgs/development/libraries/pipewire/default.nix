@@ -33,7 +33,7 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "pipewire";
-  version = "0.3.0";
+  version = "0.3.1";
 
   outputs = [ "out" "lib" "dev" "doc" ];
 
@@ -42,7 +42,7 @@ stdenv.mkDerivation rec {
     owner = "pipewire";
     repo = "pipewire";
     rev = version;
-    sha256 = "0wrgvn0sc7h2k5zwgwzffyzv70jknnlj9qg8cqfzjib516zz37lj";
+    sha256 = "DfUgXTSSCl+JszFEKwBha67nauQi4noR25m00auXDnA=";
   };
 
   patches = [
