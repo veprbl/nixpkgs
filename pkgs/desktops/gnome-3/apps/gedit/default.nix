@@ -3,7 +3,6 @@
 , libpeas, gtksourceview4, gsettings-desktop-schemas
 , wrapGAppsHook, ninja, libsoup, tepl
 , gnome3, gspell, perl, itstool, desktop-file-utils
-, amtk
 }:
 
 stdenv.mkDerivation rec {
@@ -25,7 +24,7 @@ stdenv.mkDerivation rec {
     adwaita-icon-theme libsoup
     libpeas gtksourceview4
     gsettings-desktop-schemas gspell
-    tepl amtk
+    tepl
   ];
 
   postPatch = ''
