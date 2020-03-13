@@ -146,8 +146,6 @@ lib.makeScope pkgs.newScope (self: with self; {
 
   totem = callPackage ./core/totem { };
 
-  vino = callPackage ./core/vino { };
-
   yelp = callPackage ./core/yelp { };
 
   yelp-xsl = callPackage ./core/yelp-xsl { };
