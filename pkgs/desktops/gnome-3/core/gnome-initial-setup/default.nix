@@ -87,9 +87,7 @@ stdenv.mkDerivation rec {
   ];
 
   mesonFlags = [
-    "-Dregion-page=true"
     "-Dcheese=disabled"
-    "-Dsoftware-sources=disabled"
     "-Dibus=disabled"
     "-Dvendor-conf-file=${./vendor.conf}"
   ];
