@@ -68,10 +68,6 @@ in stdenv.mkDerivation rec {
     substituteInPlace src/gnome-shell-perf-tool.in --replace "@PYTHON@" "${pythonEnv}/bin/python"
   '';
 
-  postInstall = ''
-    glib-compile-schemas $out/share/glib-2.0/schemas
-  '';
-
   preFixup = ''
     gappsWrapperArgs+=(
       # Until glib’s xdgmime is patched
