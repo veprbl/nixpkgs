@@ -12,7 +12,6 @@
 , libgtop
 , libnotify
 , upower
-, dbus-glib
 , wirelesstools
 , linuxPackages
 , adwaita-icon-theme
@@ -51,7 +50,6 @@ in stdenv.mkDerivation rec {
     libgtop
     libnotify
     upower
-    dbus-glib
     adwaita-icon-theme
     libgweather
     gucharmap
