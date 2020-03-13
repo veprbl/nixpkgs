@@ -40,7 +40,7 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "HTTP client/server library for GNOME";
-    homepage = https://wiki.gnome.org/Projects/libsoup;
+    homepage = "https://wiki.gnome.org/Projects/libsoup";
     license = stdenv.lib.licenses.gpl2;
     inherit (glib.meta) maintainers platforms;
   };
