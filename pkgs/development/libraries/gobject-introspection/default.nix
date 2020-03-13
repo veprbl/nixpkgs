@@ -39,8 +39,6 @@ stdenv.mkDerivation rec {
   setupHook = ./setup-hook.sh;
 
   patches = [
-    # the gitypelibtest fails as the required libs aren't installed yet
-    ./disabled_tests.patch
     (substituteAll {
       src = ./test_shlibs.patch;
       inherit nixStoreDir;
@@ -56,6 +54,19 @@ stdenv.mkDerivation rec {
     });
 
   doCheck = !stdenv.isAarch64;
+
+  preBuild = ''
+    # Our gobject-introspection patches make the shared library paths absolute
+    # in the GIR files. When running tests, the library is not yet installed,
+    # though, so we need to replace the absolute path with a local one during build.
+    # We are using a symlink that we will delete before installation.
+    mkdir -p $out/lib
+    ln -s $PWD/tests/scanner/libregress-1.0.so $out/lib/libregress-1.0.so
+    cleanLibregressSymlink() {
+      rm $out/lib/libregress-1.0.so
+    }
+    preInstallPhases="$preInstallPhases cleanLibregressSymlink"
+  '';
 
   passthru = {
     updateScript = gnome3.updateScript {
