@@ -11,7 +11,16 @@ stdenv.mkDerivation rec {
     sha256 = "1ll0yf1skf51wa10mlrajd1dy459w33kx0i3vhfcx2pdk7mw5a3c";
   };
 
-  makeFlags = [ "GSEXT_DIR_LOCAL=${placeholder "out"}/share/gnome-shell/extensions" ];
+  # makefile tries to do install in home directory using
+  # `gnome-extensions install`
+  dontBuild = true;
+
+  uuid = "nightthemeswitcher@romainvigier.fr";
+
+  installPhase = ''
+    mkdir -p $out/share/gnome-shell/extensions/
+    cp -r src/ $out/share/gnome-shell/extensions/${uuid}
+  '';
 
   meta = with stdenv.lib; {
     description = "Automatically change the GTK theme to dark variant when Night Light activates";
