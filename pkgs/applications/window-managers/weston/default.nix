@@ -1,7 +1,7 @@
 { stdenv, fetchurl, meson, ninja, pkgconfig
 , wayland, libGL, mesa, libxkbcommon, cairo, libxcb
 , libXcursor, xlibsWrapper, udev, libdrm, mtdev, libjpeg, pam, dbus, libinput, libevdev
-, colord, lcms2, pipewire_0_2 ? null
+, colord, lcms2, pipewire ? null
 , pango ? null, libunwind ? null, freerdp ? null, vaapi ? null, libva ? null
 , libwebp ? null, xwayland ? null, wayland-protocols
 # beware of null defaults, as the parameters *are* supplied by callPackage by default
@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
     wayland libGL mesa libxkbcommon cairo libxcb libXcursor xlibsWrapper udev libdrm
     mtdev libjpeg pam dbus libinput libevdev pango libunwind freerdp vaapi libva
     libwebp wayland-protocols
-    colord lcms2 pipewire_0_2
+    colord lcms2 pipewire
   ];
 
   mesonFlags= [
