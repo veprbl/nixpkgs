@@ -54,6 +54,11 @@ stdenv.mkDerivation rec {
     "-Dprofiler=disabled"
   ];
 
+  patches = [
+    # gjs have some libs which are only used for the installed tests.
+    ./move-installed-tests-libs.patch
+  ];
+
   postPatch = ''
     for f in installed-tests/*.test.in; do
       substituteInPlace "$f" --subst-var-by pkglibexecdir "$installedTests/libexec/gjs"
