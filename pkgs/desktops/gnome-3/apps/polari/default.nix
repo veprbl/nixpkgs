@@ -14,6 +14,13 @@ in stdenv.mkDerivation rec {
     sha256 = "0wi7bpscm4rghlwljilsgrls5dy9p0b27k246a1vrdadjghc69l4";
   };
 
+  patches = [
+    # Upstream runs the thumbnailer by passing it to gjs.
+    # If we wrap it in a shell script, gjs can no longer run it.
+    # Let’s change the code to run the script directly by making it executable and having gjs in shebang.
+    ./make-thumbnailer-wrappable.patch
+  ];
+
   propagatedUserEnvPkgs = [ telepathy-idle telepathy-logger ];
 
   nativeBuildInputs = [
@@ -25,6 +32,10 @@ in stdenv.mkDerivation rec {
     gtk3 glib adwaita-icon-theme gsettings-desktop-schemas
     telepathy-glib telepathy-logger gjs gspell gdk-pixbuf libsecret libsoup webkitgtk
   ];
+
+  postFixup = ''
+    wrapGApp "$out/share/polari/thumbnailer.js"
+  '';
 
   passthru = {
     updateScript = gnome3.updateScript {
