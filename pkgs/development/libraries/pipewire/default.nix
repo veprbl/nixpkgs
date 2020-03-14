@@ -1,6 +1,5 @@
 { stdenv
 , fetchFromGitLab
-, fetchpatch
 , meson
 , ninja
 , pkgconfig
@@ -44,14 +43,6 @@ stdenv.mkDerivation rec {
     rev = version;
     sha256 = "DfUgXTSSCl+JszFEKwBha67nauQi4noR25m00auXDnA=";
   };
-
-  patches = [
-    # https://gitlab.freedesktop.org/pipewire/pipewire/-/merge_requests/235
-    (fetchpatch {
-      url = "https://gitlab.freedesktop.org/pipewire/pipewire/-/commit/42993d1402042dfbd023b3afe099c39709618daf.patch";
-      sha256 = "1yvlajfz9nbksrjv80cg4af7w04n9z4ajncl2jg0d0mfxzpmv8vc";
-    })
-  ];
 
   nativeBuildInputs = [
     doxygen
