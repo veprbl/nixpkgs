@@ -52,25 +52,28 @@ stdenv.mkDerivation rec {
 
   mesonFlags = [
     "-Dprofiler=disabled"
+    "-Dinstalled_test_prefix=${placeholder "installedTests"}"
   ];
 
   patches = [
-    # gjs have some libs which are only used for the installed tests.
-    ./move-installed-tests-libs.patch
+    # Hard-code various paths
+    ./fix-paths.patch
+
+    # Clean-ups to make installing installed tests separately easier.
+    # https://gitlab.gnome.org/GNOME/gjs/-/merge_requests/403
+    ./meson-tests-cleanups.patch
+
+    # Allow installing installed tests to a separate output.
+    ./installed-tests-path.patch
   ];
 
   postPatch = ''
-    for f in installed-tests/*.test.in; do
-      substituteInPlace "$f" --subst-var-by pkglibexecdir "$installedTests/libexec/gjs"
-    done
+    substituteInPlace installed-tests/debugger-test.sh --subst-var-by gjsConsole $out/bin/gjs-console
   '';
 
   postInstall = ''
-    moveToOutput "share/installed-tests" "$installedTests"
-    moveToOutput "libexec/gjs/installed-tests" "$installedTests"
-
     wrapProgram "$installedTests/libexec/gjs/installed-tests/minijasmine" \
-      --prefix GI_TYPELIB_PATH : "${stdenv.lib.makeSearchPath "lib/girepository-1.0" [ gtk3 atk pango.out gdk-pixbuf ]}:$installedTests/libexec/gjs/installed-tests"
+      --prefix GI_TYPELIB_PATH : "${stdenv.lib.makeSearchPath "lib/girepository-1.0" [ gtk3 glib atk pango.out gdk-pixbuf ]}"
   '';
 
   separateDebugInfo = stdenv.isLinux;
