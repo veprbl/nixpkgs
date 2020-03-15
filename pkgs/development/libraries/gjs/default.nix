@@ -73,7 +73,10 @@ stdenv.mkDerivation rec {
 
   postInstall = ''
     wrapProgram "$installedTests/libexec/gjs/installed-tests/minijasmine" \
-      --prefix GI_TYPELIB_PATH : "${stdenv.lib.makeSearchPath "lib/girepository-1.0" [ gtk3 glib atk pango.out gdk-pixbuf ]}"
+      --prefix GI_TYPELIB_PATH : "${stdenv.lib.makeSearchPath "lib/girepository-1.0" [
+        gobject-introspection # for Gio and cairo typelibs
+        gtk3 atk pango.out gdk-pixbuf
+      ]}"
   '';
 
   separateDebugInfo = stdenv.isLinux;
