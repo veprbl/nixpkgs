@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgconfig, glib, gtk3, libgee, gettext, gnome3
+{ stdenv, fetchurl, pkgconfig, glib, gtk3, libgee, gettext, vala, gnome3
 , libintl, meson, ninja }:
 
 let
@@ -12,7 +12,7 @@ in stdenv.mkDerivation rec {
     sha256 = "0xifkj5dg4n3cy0hi76zy1ixyssxxpgy4yi4li7iq39cqbnkc9d8";
   };
 
-  nativeBuildInputs = [ meson ninja pkgconfig gettext ];
+  nativeBuildInputs = [ meson ninja pkgconfig gettext vala ];
   buildInputs = [ libintl ];
   propagatedBuildInputs = [
     # Required by libgnome-games-support-1.pc
