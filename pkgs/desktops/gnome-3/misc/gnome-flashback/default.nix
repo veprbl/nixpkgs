@@ -17,7 +17,10 @@
 , libxml2
 , pkgconfig
 , polkit
+, gdm
+, systemd
 , upower
+, pam
 , wrapGAppsHook
 , writeTextFile
 , writeShellScriptBin
@@ -27,14 +30,14 @@
 
 let
   pname = "gnome-flashback";
-  version = "3.35.2";
+  version = "3.36.0";
   requiredComponents = wmName: "RequiredComponents=${wmName};gnome-flashback;gnome-panel;org.gnome.SettingsDaemon.A11ySettings;org.gnome.SettingsDaemon.Color;org.gnome.SettingsDaemon.Datetime;org.gnome.SettingsDaemon.Housekeeping;org.gnome.SettingsDaemon.Keyboard;org.gnome.SettingsDaemon.MediaKeys;org.gnome.SettingsDaemon.Power;org.gnome.SettingsDaemon.PrintNotifications;org.gnome.SettingsDaemon.Rfkill;org.gnome.SettingsDaemon.ScreensaverProxy;org.gnome.SettingsDaemon.Sharing;org.gnome.SettingsDaemon.Smartcard;org.gnome.SettingsDaemon.Sound;org.gnome.SettingsDaemon.Wacom;org.gnome.SettingsDaemon.XSettings;";
   gnome-flashback = stdenv.mkDerivation rec {
     name = "${pname}-${version}";
 
     src = fetchurl {
       url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-      sha256 = "177zlyd7gbyg2g1hskn87hp57c6826zsq11c02akd4mw87hfzpam";
+      sha256 = "qwlTFs4wn6PpB7uZkpvnmECsSTa62OQMpgiIXoZoMRk=";
     };
 
     # make .desktop Execs absolute
@@ -76,13 +79,20 @@ let
       libpulseaudio
       libxkbfile
       polkit
+      gdm
+      gnome-panel
+      systemd
       upower
+      pam
       xkeyboard_config
     ];
 
     doCheck = true;
 
     enableParallelBuilding = true;
+
+    PKG_CONFIG_LIBGNOME_PANEL_LAYOUTSDIR = "${placeholder "out"}/share/gnome-panel/layouts";
+    PKG_CONFIG_LIBGNOME_PANEL_MODULESDIR = "${placeholder "out"}/lib/gnome-panel/modules";
 
     passthru = {
       updateScript = gnome3.updateScript {
