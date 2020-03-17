@@ -31,7 +31,31 @@
 let
   pname = "gnome-flashback";
   version = "3.36.0";
-  requiredComponents = wmName: "RequiredComponents=${wmName};gnome-flashback;gnome-panel;org.gnome.SettingsDaemon.A11ySettings;org.gnome.SettingsDaemon.Color;org.gnome.SettingsDaemon.Datetime;org.gnome.SettingsDaemon.Housekeeping;org.gnome.SettingsDaemon.Keyboard;org.gnome.SettingsDaemon.MediaKeys;org.gnome.SettingsDaemon.Power;org.gnome.SettingsDaemon.PrintNotifications;org.gnome.SettingsDaemon.Rfkill;org.gnome.SettingsDaemon.ScreensaverProxy;org.gnome.SettingsDaemon.Sharing;org.gnome.SettingsDaemon.Smartcard;org.gnome.SettingsDaemon.Sound;org.gnome.SettingsDaemon.Wacom;org.gnome.SettingsDaemon.XSettings;";
+
+  # From data/sessions/Makefile.am
+  requiredComponentsCommon = [
+    "gnome-flashback"
+    "gnome-panel"
+  ];
+  requiredComponentsGsd = [
+    "org.gnome.SettingsDaemon.A11ySettings"
+    "org.gnome.SettingsDaemon.Color"
+    "org.gnome.SettingsDaemon.Datetime"
+    "org.gnome.SettingsDaemon.Housekeeping"
+    "org.gnome.SettingsDaemon.Keyboard"
+    "org.gnome.SettingsDaemon.MediaKeys"
+    "org.gnome.SettingsDaemon.Power"
+    "org.gnome.SettingsDaemon.PrintNotifications"
+    "org.gnome.SettingsDaemon.Rfkill"
+    "org.gnome.SettingsDaemon.ScreensaverProxy"
+    "org.gnome.SettingsDaemon.Sharing"
+    "org.gnome.SettingsDaemon.Smartcard"
+    "org.gnome.SettingsDaemon.Sound"
+    "org.gnome.SettingsDaemon.UsbProtection"
+    "org.gnome.SettingsDaemon.Wacom"
+    "org.gnome.SettingsDaemon.XSettings"
+  ];
+  requiredComponents = wmName: "RequiredComponents=${stdenv.lib.concatStringsSep ";" ([wmName] ++ requiredComponentsCommon ++ requiredComponentsGsd)};";
   gnome-flashback = stdenv.mkDerivation rec {
     name = "${pname}-${version}";
 
