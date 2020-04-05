@@ -1,6 +1,7 @@
-{ stdenv, fetchPypi, python, buildPythonPackage, isPy3k, pycairo, backports_functools_lru_cache
+{ stdenv, fetchPypi, fetchzip, fetchFromGitHub, python, buildPythonPackage, isPy3k, pycairo, backports_functools_lru_cache
 , which, cycler, dateutil, nose, numpy, pyparsing, sphinx, tornado, kiwisolver
 , freetype, libpng, pkgconfig, mock, pytz, pygobject3, gobject-introspection
+, pytest, pytestCheckHook
 , enableGhostscript ? true, ghostscript ? null, gtk3
 , enableGtk3 ? false, cairo
 # darwin has its own "MacOSX" backend
@@ -20,17 +21,56 @@ assert enableTk -> (tcl != null)
 assert enableQt -> pyqt5 != null;
 
 buildPythonPackage rec {
-  version = "3.1.3";
+  version = "3.2.1";
   pname = "matplotlib";
 
   disabled = !isPy3k;
 
-  src = fetchPypi {
+  _src = fetchPypi {
     inherit pname version;
-    sha256 = "db3121f12fb9b99f105d1413aebaeb3d943f269f3d262b45586d12765866f0c6";
+    sha256 = "ffe2f9cdcea1086fc414e82f42271ecf1976700b8edd16ca9d376189c6d93aee";
   };
 
-  NIX_CFLAGS_COMPILE = stdenv.lib.optionalString stdenv.isDarwin "-I${libcxx}/include/c++/v1";
+  src = fetchFromGitHub {
+    owner = "matplotlib";
+    repo = pname;
+    rev = "v${version}";
+    sha256 = "0wk4qahmpmvl47qq1vqh99lsyrhaflbwb2bqg2f2m0qj6spnmp16";
+  };
+
+  jquery = fetchzip {
+    url = "https://jqueryui.com/resources/download/jquery-ui-1.12.1.zip";
+    sha256 = "14g4zv4pzpimnirz6sn5l823p3lfva3x2009dyliy5ccdav5i4w5";
+    stripRoot = false;
+  };
+
+  freetype = fetchzip {
+    url = "https://download.savannah.gnu.org/releases/freetype/freetype-2.6.1.tar.gz";
+    sha256 = "13ilnhar7wm2jvnkkz7q2zhb115qpaahrnpc80z018w0vddgjiyd";
+    stripRoot = false;
+  };
+
+  preBuild = ''
+    cp -r "$jquery"/* lib/matplotlib/backends/web_backend/
+    mkdir -p build
+    cp -r "$freetype"/* build/
+    chmod -R +w build/
+
+
+echo $PYTHONPATH
+cat > setup.cfg <<EOF
+[directories]
+basedirlist = ./
+[packages]
+tests = True
+toolkit_tests = True
+sample_data = True
+[test]
+local_freetype = True
+EOF
+  '';
+  
+  #NIX_CFLAGS_COMPILE = stdenv.lib.optionalString stdenv.isDarwin "-I${libcxx}/include/c++/v1";
 
   XDG_RUNTIME_DIR = "/tmp";
 
@@ -48,8 +88,10 @@ buildPythonPackage rec {
     ++ stdenv.lib.optionals enableTk [ tcl tk tkinter libX11 ]
     ++ stdenv.lib.optionals enableQt [ pyqt5 ];
 
-  patches =
-    [ ./basedirlist.patch ];
+  checkInputs = [ pytestCheckHook ];
+
+#  patches =
+#    [ ./basedirlist.patch ];
 
   # Matplotlib tries to find Tcl/Tk by opening a Tk window and asking the
   # corresponding interpreter object for its library paths. This fails if
@@ -65,19 +107,34 @@ buildPythonPackage rec {
     stdenv.lib.optionalString enableTk
       "sed -i '/self.tcl_tk_cache = None/s|None|${tcl_tk_cache}|' setupext.py";
 
+  dontUseSetuptoolsCheck = true;
+  preCheck = ''
+#    ln -s $src/lib/matplotlib/tests/baseline_images $out/lib/python3.7/site-packages/matplotlib/tests
+cd $out/lib/python3.7/site-packages/matplotlib
+echo $PYTHONPATH
+export src=
+export OLDPWD=
+export jquery=
+echo ===============
+env | grep source
+echo ===============
+grep -r 274m6fjlqfcar7wvwjz3hcyq2dv8v5yd $out || true
+  '';
   checkPhase = ''
+runHook preCheck
+pytest
+'';
+  pytestFlagsArray = [ "; pwd" ];
+  _checkPhase = ''
+echo $PYTHONPATH
     ${python.interpreter} tests.py
   '';
 
   # Test data is not included in the distribution (the `tests` folder
   # is missing)
-  doCheck = false;
+  doCheck = true;
 
   prePatch = ''
-    # Failing test: ERROR: matplotlib.tests.test_style.test_use_url
-    sed -i 's/test_use_url/fails/' lib/matplotlib/tests/test_style.py
-    # Failing test: ERROR: test suite for <class 'matplotlib.sphinxext.tests.test_tinypages.TestTinyPages'>
-    sed -i 's/TestTinyPages/fails/' lib/matplotlib/sphinxext/tests/test_tinypages.py
     # Transient errors
     sed -i 's/test_invisible_Line_rendering/noop/' lib/matplotlib/tests/test_lines.py
   '';
