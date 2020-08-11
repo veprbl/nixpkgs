@@ -16597,6 +16597,8 @@ in
 
   rpcbind = callPackage ../servers/rpcbind { };
 
+  rpcsvc-proto = callPackage ../tools/misc/rpcsvc-proto { };
+
   libmysqlclient = libmysqlclient_3_1;
   libmysqlclient_3_1 = mariadb-connector-c_3_1;
   mariadb-connector-c = mariadb-connector-c_3_1;
