@@ -9,17 +9,18 @@
 , tornado
 , websocket_client
 , websockets
+, pytest
 }:
 
 buildPythonPackage rec {
   pname = "python-engineio";
-  version = "3.13.0";
+  version = "3.13.2";
 
   src = fetchFromGitHub {
     owner = "miguelgrinberg";
     repo = "python-engineio";
     rev = "v${version}";
-    sha256 = "1fgfrgcvjg3fyza5lhl1l9cfq073xrwwhh3xs178csrjz4s8s378";
+    sha256 = "1hn5nnxp7y2dpf52vrwdxza2sqmzj8admcnwgjkmcxk65s2dhvy1";
   };
 
   propagatedBuildInputs = [
@@ -34,6 +35,7 @@ buildPythonPackage rec {
     tornado
     websocket_client
     websockets
+    pytest
   ];
 
   # make /etc/protocols accessible to fix socket.getprotobyname('tcp') in sandbox
