@@ -2,7 +2,7 @@
 , buildPythonPackage
 , fetchPypi
 , numpy
-, awkward
+, awkward0
 }:
 
 buildPythonPackage rec {
@@ -14,7 +14,7 @@ buildPythonPackage rec {
     sha256 = "57da3d67e1a42b548020debdd23285b5710e3bb2aac20eb7b2d2a686822aa1ab";
   };
 
-  propagatedBuildInputs = [ numpy awkward ];
+  propagatedBuildInputs = [ numpy awkward0 ];
 
   # No tests on PyPi
   doCheck = false;

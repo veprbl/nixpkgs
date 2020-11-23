@@ -1,5 +1,5 @@
 { lib, fetchPypi, buildPythonPackage, isPy27
-, awkward
+, awkward0
 , backports_lzma
 , cachetools
 , lz4
@@ -39,7 +39,7 @@ buildPythonPackage rec {
     numpy
     cachetools
     uproot-methods
-    awkward
+    awkward0
   ];
 
   # skip tests which do network calls
