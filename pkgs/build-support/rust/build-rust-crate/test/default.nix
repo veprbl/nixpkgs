@@ -594,7 +594,7 @@ let
       };
       expectedFiles = [
         "./nix-support/propagated-build-inputs"
-        "./lib/libtest_lib-042a1fdbef.rlib"
+        "./lib/libtest_lib-8f0679c26b.rlib"
         "./lib/link"
       ];
     };
@@ -611,7 +611,7 @@ let
       };
       expectedFiles = [
         "./nix-support/propagated-build-inputs"
-        "./lib/libtest_lib-042a1fdbef.rlib"
+        "./lib/libtest_lib-8f0679c26b.rlib"
         "./lib/link"
       ];
     };
