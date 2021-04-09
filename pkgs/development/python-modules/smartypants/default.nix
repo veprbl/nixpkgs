@@ -2,6 +2,9 @@
 , buildPythonPackage
 , fetchFromGitHub
 , isPyPy
+, pytestCheckHook
+, docutils
+, pygments
 }:
 
 buildPythonPackage rec {
@@ -15,6 +18,12 @@ buildPythonPackage rec {
     rev = "v${version}";
     sha256 = "sha256-V1rV1B8jVADkS0NhnDkoVz8xxkqrsIHb1mP9m5Z94QI=";
   };
+
+  checkInputs = [ pytestCheckHook docutils pygments ];
+  preCheck = ''
+    substituteInPlace tests/test_cli.py \
+      --replace "CLI_SCRIPT = " "CLI_SCRIPT = \"$out/bin/smartypants\" #"
+  '';
 
   meta = with lib; {
     description = "Python with the SmartyPants";
