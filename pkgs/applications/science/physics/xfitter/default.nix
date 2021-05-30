@@ -16,9 +16,6 @@ stdenv.mkDerivation rec {
     ./undefined_behavior.patch
   ];
 
-  # patch needs to updated due to version bump
-  #CXXFLAGS = "-Werror=return-type";
-
   preConfigure =
   # Fix F77LD to workaround for a following build error:
   #
@@ -48,14 +45,12 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  hardeningDisable = [ "format" ];
-
   NIX_CFLAGS_COMPILE = lib.optional (stdenv.hostPlatform.libc == "glibc") "-I${libtirpc.dev}/include/tirpc";
   NIX_LDFLAGS = lib.optional (stdenv.hostPlatform.libc == "glibc") "-ltirpc";
 
   meta = with lib; {
     description = "The xFitter project is an open source QCD fit framework ready to extract PDFs and assess the impact of new data";
-    license     = licenses.gpl3;
+    license     = licenses.gpl3Plus;
     homepage    = "https://www.xfitter.org/xFitter";
     platforms   = platforms.unix;
     maintainers = with maintainers; [ veprbl ];
