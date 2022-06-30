@@ -1,6 +1,7 @@
 { stdenv, lib, fetchFromGitHub, fetchgit, python2, gn, ninja
 , fontconfig, expat, icu58, libglvnd, libjpeg, libpng, libwebp, zlib
 , mesa, libX11
+, AppKit, ApplicationServices, OpenGL, fixDarwinDylibNames
 }:
 
 let
@@ -27,12 +28,16 @@ stdenv.mkDerivation {
     sha256 = "0n3vrkswvi6rib9zv2pzi18h3j5wm7flmgkgaikcm6q7iw4l2c7x";
   };
 
-  nativeBuildInputs = [ python2 gnOld ninja ];
+  nativeBuildInputs = [ python2 gnOld ninja ]
+    ++ lib.optionals stdenv.isDarwin [ fixDarwinDylibNames ];
 
   buildInputs = [
     fontconfig expat icu58 libglvnd libjpeg libpng libwebp zlib
+  ] ++ (if stdenv.isDarwin then [
+    AppKit ApplicationServices OpenGL
+  ] else [
     mesa libX11
-  ];
+  ]);
 
   preConfigure = with depSrcs; ''
     mkdir -p third_party/externals
@@ -42,9 +47,16 @@ stdenv.mkDerivation {
     ln -s ${sfntly} third_party/externals/sfntly
   '';
 
+  gnArgs = [
+    "is_debug=false"
+    "is_official_build=true"
+  ] ++ lib.optionals (!stdenv.hostPlatform.isStatic) [
+    "is_component_build=true"
+  ];
+
   configurePhase = ''
     runHook preConfigure
-    gn gen out/Release --args="is_debug=false is_official_build=true"
+    gn gen out/Release --args="$gnArgs"
     runHook postConfigure
   '';
 
@@ -55,6 +67,8 @@ stdenv.mkDerivation {
   '';
 
   installPhase = ''
+    runHook preInstall
+
     mkdir -p $out
 
     # Glob will match all subdirs.
@@ -69,10 +83,17 @@ stdenv.mkDerivation {
       include/gpu \
       include/private \
       include/utils \
-      out/Release/*.a \
       src/gpu/**/*.h \
       third_party/externals/angle2/include \
       third_party/skcms/**/*.h
+
+  '' + (if stdenv.hostPlatform.isStatic then ''
+    install -Dm555 out/Release/libskia.a $out/lib/libskia.a
+  '' else ''
+    install -Dm555 out/Release/libskia.so $out/lib/libskia${stdenv.hostPlatform.extensions.sharedLibrary}
+  '') + ''
+
+    runHook postInstall
   '';
 
   meta = with lib; {
