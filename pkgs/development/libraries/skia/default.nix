@@ -2,6 +2,7 @@
 , fontconfig, expat, icu58, libglvnd, libjpeg, libpng, libwebp, zlib
 , mesa, libX11
 , AppKit, ApplicationServices, OpenGL, fixDarwinDylibNames
+, is_debug ? false
 }:
 
 let
@@ -18,17 +19,19 @@ let
 in
 stdenv.mkDerivation {
   pname = "skia";
-  version = "aseprite-m71";
+  version = "unstable-2022-06-30";
 
-  src = fetchFromGitHub {
-    owner = "aseprite";
-    repo = "skia";
-    # latest commit from aseprite-m71 branch
-    rev = "89e4ca4352d05adc892f5983b108433f29b2c0c2"; # TODO: Remove the gnOld override
-    sha256 = "0n3vrkswvi6rib9zv2pzi18h3j5wm7flmgkgaikcm6q7iw4l2c7x";
+  src = fetchgit {
+    url = "https://skia.googlesource.com/skia.git";
+    rev = "d9eeef0790b96953a58142c888b7947cb80858b9";
+    hash = "sha256-4qTZnFgNEl3HmpARkF2kgvVu7xtMmHdwXZVTmt8TeCM=";
   };
 
-  nativeBuildInputs = [ python2 gnOld ninja ]
+  postPatch = ''
+    patchShebangs --host gn/
+  '';
+
+  nativeBuildInputs = [ python2 gn ninja ]
     ++ lib.optionals stdenv.isDarwin [ fixDarwinDylibNames ];
 
   buildInputs = [
@@ -48,15 +51,15 @@ stdenv.mkDerivation {
   '';
 
   gnArgs = [
-    "is_debug=false"
-    "is_official_build=true"
+    "is_debug=${if is_debug then "true" else "false"}"
+    "is_official_build=${if (!is_debug) then "true" else "false"}"
   ] ++ lib.optionals (!stdenv.hostPlatform.isStatic) [
     "is_component_build=true"
   ];
 
   configurePhase = ''
     runHook preConfigure
-    gn gen out/Release --args="$gnArgs"
+    gn gen out/Release --args="$gnArgs" -v
     runHook postConfigure
   '';
 

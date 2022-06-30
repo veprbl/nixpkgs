@@ -3262,7 +3262,16 @@ in {
 
   fontmake = callPackage ../development/python-modules/fontmake { };
 
-  skia-pathops = callPackage ../development/python-modules/skia-pathops { };
+  skia-pathops = callPackage ../development/python-modules/skia-pathops {
+    # Avoid error:
+    # Symbol not found: __ZN6SkPath4Iter4nextEP7SkPoint
+    skia = pkgs.skia.overrideAttrs (prev: {
+      postPatch = (prev.postPatch or "") + ''
+        substituteInPlace gn/BUILDCONFIG.gn \
+          --replace '"//gn:optimize",' ""
+      '';
+    });
+  };
 
   openstep-plist = callPackage ../development/python-modules/openstep-plist { };
 

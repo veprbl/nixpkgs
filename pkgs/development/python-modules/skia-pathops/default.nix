@@ -7,6 +7,7 @@
 , fetchPypi
 , gn
 , pytestCheckHook
+, skia
 }:
 
 buildPythonPackage rec {
@@ -20,15 +21,13 @@ buildPythonPackage rec {
     sha256 = "sha256-Gdhcmv77oVr5KxPIiJlk935jgvWPQsYEC0AZ6yjLppA=";
   };
 
-  postPatch = ''
-    substituteInPlace setup.py \
-      --replace "build_cmd = [sys.executable, build_skia_py, build_dir]" \
-        'build_cmd = [sys.executable, build_skia_py, "--no-fetch-gn", "--no-virtualenv", "--gn-path", "${gn}/bin/gn", build_dir]'
-  '';
-
   nativeBuildInputs = [ cython ninja setuptools-scm ];
 
   propagatedBuildInputs = [ setuptools ];
+
+  buildInputs = [ skia ];
+
+  BUILD_SKIA_FROM_SOURCE=0;
 
   checkInputs = [ pytestCheckHook ];
 

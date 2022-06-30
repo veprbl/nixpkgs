@@ -20455,6 +20455,10 @@ with pkgs;
 
   re2 = callPackage ../development/libraries/re2 { };
 
+  skia = callPackage ../development/libraries/skia {
+    inherit (darwin.apple_sdk.frameworks) AppKit ApplicationServices OpenGL;
+  };
+
   qbs = libsForQt5.callPackage ../development/tools/build-managers/qbs { };
 
   qca2 = callPackage ../development/libraries/qca2 { qt = qt4; };
