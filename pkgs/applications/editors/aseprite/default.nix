@@ -1,6 +1,6 @@
-{ stdenv, lib, callPackage, fetchFromGitHub, fetchpatch, cmake, ninja, pkg-config
-, curl, freetype, giflib, libjpeg, libpng, libwebp, pixman, tinyxml, zlib
-, harfbuzzFull, glib, fontconfig, pcre
+{ stdenv, lib, fetchFromGitHub, fetchpatch, cmake, ninja, pkg-config
+, curl, freetype, giflib, libjpeg, libpng, libwebp, pixman, skia, tinyxml
+, zlib, harfbuzzFull, glib, fontconfig, pcre
 , libX11, libXext, libXcursor, libXxf86vm, libGL
 , unfree ? false
 , cmark
@@ -10,9 +10,6 @@
 # https://dev.aseprite.org/2016/09/01/new-source-code-license/
 # Consider supporting the developer: https://aseprite.org/#buy
 
-let
-  skia = callPackage ./skia.nix {};
-in
 stdenv.mkDerivation rec {
   pname = "aseprite";
   version = if unfree then "1.2.16.3" else "1.1.7";

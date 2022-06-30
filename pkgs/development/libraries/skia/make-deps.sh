@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 FILTER=$1
-OUT=skia-deps.nix
+OUT=deps.nix
 REVISION=89e4ca4352d05adc892f5983b108433f29b2c0c2
 DEPS=$(curl -s https://raw.githubusercontent.com/aseprite/skia/$REVISION/DEPS)
 THIRD_PARTY_DEPS=$(echo "$DEPS" | grep third_party | grep "#" -v | sed 's/"//g')
