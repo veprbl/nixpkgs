@@ -1,6 +1,7 @@
 { lib
 , buildPythonPackage
 , fetchFromGitHub
+, fetchpatch
 , pythonOlder
 , awkward
 , hatchling
@@ -17,7 +18,7 @@
 
 buildPythonPackage rec {
   pname = "uproot";
-  version = "5.0.10";
+  version = "5.0.11";
   format = "pyproject";
 
   disabled = pythonOlder "3.7";
@@ -67,6 +68,7 @@ buildPythonPackage rec {
     "tests/test_0066-fix-http-fallback-freeze.py"
     "tests/test_0088-read-with-http.py"
     "tests/test_0220-contiguous-byte-ranges-in-http.py"
+    "tests/test_0916-read-from-s3.py"
   ];
 
   pythonImportsCheck = [
