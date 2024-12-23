@@ -28,8 +28,29 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-ll5P8cqJBzoieExElggn5tRbDcmH7L3yvcbtAQ0BBww=";
   };
 
+  postPatch = ''
+    # Workaround a CMake bug (we don't generally do distributable bundles in nixpkgs anyway):
+    #   warning: cannot resolve item '/usr/lib/libSystem.B.dylib'
+    #
+    #   possible problems:
+    #       need more directories?
+    #           need to use InstallRequiredSystemLibraries?
+    #               run in install tree instead of build tree?
+    for filename in \
+      qucs/CMakeLists.txt \
+      qucs-transcalc/CMakeLists.txt \
+      qucs-attenuator/CMakeLists.txt \
+      qucs-s-spar-viewer/CMakeLists.txt \
+      ; do
+      substituteInPlace "$filename" \
+        --replace-fail 'fixup_bundle(' 'message(\"nixpkgs will not fixup_bundle: \" '
+    done
+  '';
+
   nativeBuildInputs = [ flex bison wrapQtAppsHook cmake ];
-  buildInputs = [ qtbase qtcharts qttools qtsvg qtwayland libX11 gperf adms ] ++ kernels;
+  buildInputs = [ qtbase qtcharts qttools qtsvg gperf adms ]
+    ++ lib.optionals stdenv.isLinux [ qtwayland libX11 ]
+    ++ kernels;
 
   cmakeFlags = [
     "-DWITH_QT6=ON"
@@ -54,6 +75,6 @@ stdenv.mkDerivation rec {
     homepage = "https://ra3xdh.github.io/";
     license = licenses.gpl2Plus;
     maintainers = with maintainers; [ mazurel kashw2 ];
-    platforms = with platforms; linux;
+    platforms = with platforms; unix;
   };
 }
