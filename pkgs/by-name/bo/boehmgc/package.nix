@@ -54,13 +54,16 @@ stdenv.mkDerivation (finalAttrs: {
     "CFLAGS_EXTRA=-DNO_SOFT_VDB"
   ];
 
-  # `gctest` fails under x86_64 emulation on aarch64-darwin
-  # and also on aarch64-linux (qemu-user)
   doCheck =
+    # `gctest` fails under x86_64 emulation on aarch64-darwin
+    # and also on aarch64-linux (qemu-user)
     !(
       (stdenv.hostPlatform.isDarwin && stdenv.hostPlatform.isx86_64)
       || (stdenv.hostPlatform.isLinux && stdenv.hostPlatform.isAarch64)
-    );
+    )
+    &&
+    # segfaults in QEMU
+    !stdenv.hostPlatform.isAarch32;
 
   enableParallelBuilding = true;
 

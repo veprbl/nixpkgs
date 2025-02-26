@@ -103,35 +103,22 @@
     && !stdenv.hostPlatform.isRiscV32,
   # adds bzip2, lz4, xz and zstd
   withCompression ? true,
-  withCoredump ? true,
+  withCoredump ? false,
   withCryptsetup ? true,
-  withRepart ? true,
-  withDocumentation ? true,
+  withRepart ? false,
+  withDocumentation ? false,
   withEfi ? stdenv.hostPlatform.isEfi,
-  withFido2 ? true,
+  withFido2 ? false,
   # conflicts with the NixOS /etc management
   withFirstboot ? false,
-  withHomed ? !stdenv.hostPlatform.isMusl,
+  withHomed ? false,
   withHostnamed ? true,
   withHwdb ? true,
-  withImportd ? !stdenv.hostPlatform.isMusl,
-  withIptables ? true,
+  withImportd ? false,
+  withIptables ? false,
   withKmod ? true,
-  withLibBPF ?
-    lib.versionAtLeast buildPackages.llvmPackages.clang.version "10.0"
-    # assumes hard floats
-    && (stdenv.hostPlatform.isAarch -> lib.versionAtLeast stdenv.hostPlatform.parsed.cpu.version "6")
-    # see https://github.com/NixOS/nixpkgs/pull/194149#issuecomment-1266642211
-    && !stdenv.hostPlatform.isMips64
-    # can't find gnu/stubs-32.h
-    && (stdenv.hostPlatform.isPower64 -> stdenv.hostPlatform.isBigEndian)
-    # https://reviews.llvm.org/D43106#1019077
-    && (stdenv.hostPlatform.isRiscV32 -> stdenv.cc.isClang)
-    # buildPackages.targetPackages.llvmPackages is the same as llvmPackages,
-    # but we do it this way to avoid taking llvmPackages as an input, and
-    # risking making it too easy to ignore the above comment about llvmPackages.
-    && lib.meta.availableOn stdenv.hostPlatform buildPackages.targetPackages.llvmPackages.compiler-rt,
-  withLibidn2 ? true,
+  withLibBPF ? false,
+  withLibidn2 ? false,
   withLocaled ? true,
   withLogind ? true,
   withMachined ? true,
@@ -151,7 +138,7 @@
   withSysupdate ? true,
   withTimedated ? true,
   withTimesyncd ? true,
-  withTpm2Tss ? true,
+  withTpm2Tss ? false,
   # adds python to closure which is too much by default
   withUkify ? false,
   withUserDb ? true,

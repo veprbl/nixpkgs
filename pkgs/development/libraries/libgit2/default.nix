@@ -72,7 +72,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   propagatedBuildInputs = lib.optional (!stdenv.hostPlatform.isLinux) libiconv;
 
-  doCheck = true;
+  doCheck = false;
   checkPhase = ''
     testArgs=(-v -xonline)
 

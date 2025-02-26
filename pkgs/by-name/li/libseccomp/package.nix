@@ -60,6 +60,7 @@ stdenv.mkDerivation rec {
     license = licenses.lgpl21Only;
     platforms = platforms.linux;
     badPlatforms = [
+      "armv6l-linux"
       "alpha-linux"
       "loongarch64-linux"
       "m68k-linux"

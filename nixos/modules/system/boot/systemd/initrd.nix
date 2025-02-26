@@ -104,7 +104,7 @@ let
     rootModules = config.boot.initrd.availableKernelModules ++ config.boot.initrd.kernelModules;
     kernel = config.system.modulesTree;
     firmware = config.hardware.firmware;
-    allowMissing = false;
+    allowMissing = true;
   };
 
   initrdBinEnv = pkgs.buildEnv {

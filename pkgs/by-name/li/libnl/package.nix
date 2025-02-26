@@ -43,11 +43,6 @@ stdenv.mkDerivation rec {
     flex
     pkg-config
     file
-    doxygen
-    graphviz
-    mscgen
-    asciidoc
-    sourceHighlight
   ] ++ lib.optional pythonSupport swig;
 
   postBuild = lib.optionalString (pythonSupport) ''

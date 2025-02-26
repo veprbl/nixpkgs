@@ -14,7 +14,7 @@
   xmlto,
   autoreconfHook,
   autoconf-archive,
-  x11Support ? (stdenv.hostPlatform.isLinux || stdenv.hostPlatform.isDarwin),
+  x11Support ? false,
   xorg,
 }:
 
@@ -50,8 +50,6 @@ stdenv.mkDerivation rec {
     "out"
     "dev"
     "lib"
-    "doc"
-    "man"
   ];
   separateDebugInfo = true;
 
@@ -60,9 +58,6 @@ stdenv.mkDerivation rec {
     autoreconfHook
     autoconf-archive
     pkg-config
-    docbook_xml_dtd_44
-    docbook-xsl-nons
-    xmlto
   ];
 
   propagatedBuildInputs = [
@@ -90,7 +85,6 @@ stdenv.mkDerivation rec {
   configureFlags =
     [
       "--enable-user-session"
-      "--enable-xml-docs"
       "--libexecdir=${placeholder "out"}/libexec"
       "--datadir=/etc"
       "--localstatedir=/var"

@@ -193,7 +193,6 @@ in
     ];
 
     pythonScriptsToInstall = {
-      "tools/efivar.py" = (python3.withPackages (ps: [ ps.pyopenssl ]));
     };
   };
 
@@ -608,8 +607,19 @@ in
 
   ubootRaspberryPi = buildUBoot {
     defconfig = "rpi_defconfig";
-    extraMeta.platforms = [ "armv6l-linux" ];
-    filesToInstall = [ "u-boot.bin" ];
+    extraMeta.platforms = ["armv6l-linux"];
+    filesToInstall = ["u-boot.bin"];
+    extraConfig = ''
+      CONFIG_SYS_PROMPT="uboot: "
+      CONFIG_BOOTDELAY=3
+      CONFIG_BOOT_RETRY_TIME=3
+      CONFIG_AUTOBOOT_DELAY_STR=" "
+      CONFIG_AUTOBOOT_KEYED=y
+      CONFIG_AUTOBOOT_KEYED_CTRLC=y
+      CONFIG_SILENT_CONSOLE=y
+      CONFIG_SILENT_CONSOLE_UPDATE_ON_SET=y
+      CONFIG_SYS_DEVICE_NULLDEV=y
+    '';
   };
 
   ubootRaspberryPi2 = buildUBoot {

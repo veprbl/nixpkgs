@@ -172,7 +172,10 @@ stdenv.mkDerivation (finalAttrs: {
 
   doCheck =
     # routinely hangs on powerpc64le
-    !stdenv.hostPlatform.isPower64;
+    (!stdenv.hostPlatform.isPower64)
+    &&
+    # segfaults in QEMU
+    (!stdenv.hostPlatform.isAarch32);
 
   # Some of the tests use localhost networking.
   __darwinAllowLocalNetworking = true;

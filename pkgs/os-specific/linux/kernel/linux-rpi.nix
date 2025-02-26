@@ -12,8 +12,8 @@
 
 let
   # NOTE: raspberrypifw & raspberryPiWirelessFirmware should be updated with this
-  modDirVersion = "6.6.31";
-  tag = "stable_20240529";
+  modDirVersion = "6.6.51";
+  tag = "stable_20241008";
 in
 lib.overrideDerivation
   (buildLinux (
@@ -27,17 +27,15 @@ lib.overrideDerivation
         owner = "raspberrypi";
         repo = "linux";
         rev = tag;
-        hash = "sha256-UWUTeCpEN7dlFSQjog6S3HyEWCCnaqiUqV5KxCjYink=";
+        hash = "sha256-phCxkuO+jUGZkfzSrBq6yErQeO2Td+inIGHxctXbD5U=";
       };
 
-      defconfig =
-        {
-          "1" = "bcmrpi_defconfig";
-          "2" = "bcm2709_defconfig";
-          "3" = if stdenv.hostPlatform.isAarch64 then "bcmrpi3_defconfig" else "bcm2709_defconfig";
-          "4" = "bcm2711_defconfig";
-        }
-        .${toString rpiVersion};
+      defconfig = {
+        "1" = "bcmrpi_defconfig";
+        "2" = "bcm2709_defconfig";
+        "3" = if stdenv.hostPlatform.isAarch64 then "bcmrpi3_defconfig" else "bcm2709_defconfig";
+        "4" = "bcm2711_defconfig";
+      }.${toString rpiVersion};
 
       structuredExtraConfig =
         (args.structuredExtraConfig or { })
@@ -53,23 +51,6 @@ lib.overrideDerivation
       } // (args.features or { });
 
       kernelPatches = (args.kernelPatches or [ ]) ++ [
-        # Fix compilation errors due to incomplete patch backport.
-        # https://github.com/raspberrypi/linux/pull/6223
-        {
-          name = "gpio-pwm_-_pwm_apply_might_sleep.patch";
-          patch = fetchpatch {
-            url = "https://github.com/peat-psuwit/rpi-linux/commit/879f34b88c60dd59765caa30576cb5bfb8e73c56.patch";
-            hash = "sha256-HlOkM9EFmlzOebCGoj7lNV5hc0wMjhaBFFZvaRCI0lI=";
-          };
-        }
-
-        {
-          name = "ir-rx51_-_pwm_apply_might_sleep.patch";
-          patch = fetchpatch {
-            url = "https://github.com/peat-psuwit/rpi-linux/commit/23431052d2dce8084b72e399fce82b05d86b847f.patch";
-            hash = "sha256-UDX/BJCJG0WVndP/6PbPK+AZsfU3vVxDCrpn1kb1kqE=";
-          };
-        }
       ];
 
       extraMeta =

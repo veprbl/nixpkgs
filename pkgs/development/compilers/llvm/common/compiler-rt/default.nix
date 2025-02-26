@@ -115,6 +115,10 @@ stdenv.mkDerivation (
             # wrong, or perhaps there is a way to provide an assert.h.
             "-Wno-error=implicit-function-declaration"
           ]
+          ++ lib.optionals (stdenv.hostPlatform.system == "armv6l-linux") [
+            "-march=armv6k"
+            "-mfpu=vfpv2"
+          ]
         );
       }
       // lib.optionalAttrs (stdenv.hostPlatform.isDarwin) {
@@ -127,6 +131,9 @@ stdenv.mkDerivation (
         "-DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON"
         "-DCMAKE_C_COMPILER_TARGET=${stdenv.hostPlatform.config}"
         "-DCMAKE_ASM_COMPILER_TARGET=${stdenv.hostPlatform.config}"
+      ]
+      ++ lib.optionals (stdenv.hostPlatform.system == "armv6l-linux") [
+        "-DCOMPILER_RT_BUILD_BUILTINS=OFF"
       ]
       ++ lib.optionals (haveLibc && stdenv.hostPlatform.libc == "glibc") [
         "-DSANITIZER_COMMON_CFLAGS=-I${libxcrypt}/include"

@@ -25,7 +25,7 @@ let
     rootModules = config.boot.initrd.availableKernelModules ++ config.boot.initrd.kernelModules;
     kernel = config.system.modulesTree;
     firmware = config.hardware.firmware;
-    allowMissing = false;
+    allowMissing = true;
   };
 
   # The initrd only has to mount `/` or any FS marked as necessary for

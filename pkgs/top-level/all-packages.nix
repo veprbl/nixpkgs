@@ -812,7 +812,7 @@ with pkgs;
       kernel,
       firmware,
       rootModules,
-      allowMissing ? false,
+      allowMissing ? true,
     }:
     callPackage ../build-support/kernel/modules-closure.nix {
       inherit

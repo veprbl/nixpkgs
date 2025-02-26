@@ -97,6 +97,18 @@ in
             request_key_helper
           ];
           rpiVersion = 1;
+          extraConfig = ''
+            VIDEO_RP1_CFE n
+            PWM_RP1 n
+            I2C_DESIGNWARE_CORE n
+            I2C_DESIGNWARE_SLAVE n
+            I2C_DESIGNWARE_PLATFORM n
+            I2C_DESIGNWARE_AMDPSP n
+            I2C_DESIGNWARE_BAYTRAIL n
+            I2C_DESIGNWARE_PCI n
+            STRICT_DEVMEM n
+            KEXEC y
+          '';
         };
 
         linux_rpi2 = callPackage ../os-specific/linux/kernel/linux-rpi.nix {
